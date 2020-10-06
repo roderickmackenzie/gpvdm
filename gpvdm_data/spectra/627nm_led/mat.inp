@@ -1,0 +1,9 @@
+#gpvdm_file_type
+spectra
+#status
+public
+#changelog
+An LED with about a 30 nm line width. Modeled on Autolab LED for IMPS
+#ver
+1.0
+#end

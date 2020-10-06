@@ -1,0 +1,13 @@
+#node_name
+my_node
+#store_path
+/dev/shm/node_store/
+#interface
+lo
+#port
+8080
+#master_ip
+128.243.72.200
+#ver
+1.0
+#end

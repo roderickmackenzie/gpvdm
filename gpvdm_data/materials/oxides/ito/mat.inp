@@ -1,0 +1,22 @@
+#gpvdm_file_type
+mat
+#red_green_blue
+0.8
+0.8
+0.8
+#material_type
+oxide
+#status
+public_all
+#mat_alpha
+0.54
+#mat_default_file_alpha
+auto
+#mat_default_file_n
+auto
+#changelog
+*Equations from Philip Bennett
+*Raw data - could be Brabec
+#ver
+1.0
+#end

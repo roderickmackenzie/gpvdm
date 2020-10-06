@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="48px"
+   height="48px"
+   id="svg3080"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="jv.svg"
+   inkscape:export-filename="/home/rod/juan/hpc/j73/win/gui/fit.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs3082">
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Lend"
+       style="overflow:visible;"
+       inkscape:isstock="true">
+      <path
+         id="path4194"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;"
+         transform="scale(0.8) rotate(180) translate(12.5,0)" />
+    </marker>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter4260"
+       x="-0.038969993"
+       width="1.07794"
+       y="-0.051588206"
+       height="1.1031764">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.5909821"
+         id="feGaussianBlur4262" />
+    </filter>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="5.453876"
+     inkscape:cx="-44.840965"
+     inkscape:cy="7.1426282"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:grid-bbox="true"
+     inkscape:document-units="px"
+     inkscape:window-width="1920"
+     inkscape:window-height="953"
+     inkscape:window-x="0"
+     inkscape:window-y="49"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata3085">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Roderick C. I. MacKenize</dc:title>
+          </cc:Agent>
+        </dc:creator>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       x="9.6744184"
+       y="8.9417048"
+       id="text3947"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3949"
+         x="9.6744184"
+         y="8.9417048"
+         style="font-size:8px">J</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       x="38.588928"
+       y="31.688766"
+       id="text3947-7"
+       sodipodi:linespacing="125%"
+       inkscape:transform-center-x="-1.405748"
+       inkscape:transform-center-y="-9.0202161"><tspan
+         sodipodi:role="line"
+         id="tspan3949-4"
+         x="38.588928"
+         y="31.688766"
+         style="font-size:8px">V</tspan></text>
+    <path
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 16.361974,3.1097634 -1.562403,4.2408076 3.124807,0 z"
+       id="path4475"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc" />
+    <path
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 46.10729,22.830004 -4.272887,-1.472411 0.06605,3.124108 z"
+       id="path4475-4"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc"
+       inkscape:transform-center-x="4.4830837"
+       inkscape:transform-center-y="-7.934186" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 16.221595,3.8339502 16.40495,36.287935"
+       id="path4176"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 1.8558031,23.294614 42.10241,23.202934"
+       id="path4178"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#0000ff;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter4260)"
+       d="M 6.1055641,30.774228 C 34.593137,31.243219 36.07273,28.542839 36.882166,3.9961805"
+       id="path4180"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <rect
+       style="fill:#000000;fill-opacity:1;stroke:none"
+       id="rect3805"
+       width="31.53108"
+       height="0.79812104"
+       x="7.7575707"
+       y="39.338947" />
+    <ellipse
+       style="fill:#ff0000;fill-opacity:1;stroke:none"
+       id="path3807"
+       cx="9.6626234"
+       cy="39.796558"
+       rx="2.0320356"
+       ry="2.2263024" />
+    <ellipse
+       style="fill:#ff0000;fill-opacity:1;stroke:none"
+       id="path3807-0"
+       cx="37.241375"
+       cy="39.690502"
+       rx="2.0320356"
+       ry="2.2263024" />
+    <ellipse
+       style="fill:#ff0000;fill-opacity:1;stroke:none"
+       id="path3807-0-0"
+       cx="27.806698"
+       cy="39.771191"
+       rx="2.0320356"
+       ry="2.2263024" />
+    <ellipse
+       style="fill:#ff0000;fill-opacity:1;stroke:none"
+       id="path3807-0-0-4"
+       cx="18.527327"
+       cy="39.71529"
+       rx="2.0320356"
+       ry="2.2263024" />
+  </g>
+</svg>

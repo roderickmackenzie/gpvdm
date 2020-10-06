@@ -1,0 +1,5586 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Roderick C. I. MacKenzie
+# This file is distributed under the same license as the gpvdm package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gpvdm 5.0\n"
+"Report-Msgid-Bugs-To: roderick.mackenzie@nottingham.ac.uk\n"
+"POT-Creation-Date: 2018-12-17 13:19+0000\n"
+"PO-Revision-Date: 2018-12-17 13:23+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: hi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.9\n"
+"Plural-Forms: nplurals=2; plural=(n==0 || n==1);\n"
+
+# mechanical load or like inserting a sample
+#: ../liblight/light_config.c:59 ../liblight/light_config.c:110
+#, fuzzy
+msgid "load"
+msgstr "लोड / डाले /बोझ "
+
+#: ../liblight/light_dump.c:285
+msgid "Electron generation rate"
+msgstr "इलेक्ट्रॉन उत्पादन की गति "
+
+#: ../liblight/light_dump.c:287 ../liblight/light_dump.c:314
+#: ../liblight/light_dump.c:386 ../liblight/light_dump.c:420
+#: ../liblight/light_dump.c:454 ../liblight/light_dump.c:489
+#: ../liblight/light_dump.c:524 ../liblight/light_dump.c:562
+#: ../liblight/light_dump.c:598 ../src/initial.c:68 ../src/initial.c:92
+#: ../src/initial.c:116 ../src/initial.c:140 ../src/initial.c:164
+#: ../src/pos.c:67 ../src/pos.c:84 ../src/pos.c:119 ../src/pos.c:137
+#: ../src/pos.c:154 ../gui/band_graph.py:218 ../gui/qe.py:60
+#: ../gui/measure_tab.py:92 ../gui/measure_tab.py:140
+#: ../libdump/dump_1d_slice.c:62 ../libdump/dump_1d_slice.c:149
+#: ../libdump/dump_1d_slice.c:207 ../libdump/dump_1d_slice.c:236
+#: ../libdump/dump_1d_slice.c:265 ../libdump/dump_1d_slice.c:323
+#: ../libdump/dump_1d_slice.c:352 ../libdump/dump_1d_slice.c:440
+#: ../libdump/dump_1d_slice.c:503 ../libdump/dump_1d_slice.c:535
+#: ../libdump/dump_1d_slice.c:564 ../libdump/dump_1d_slice.c:594
+#: ../libdump/dump_1d_slice.c:623 ../libdump/dump_1d_slice.c:659
+#: ../libdump/dump_1d_slice.c:693 ../libdump/dump_1d_slice.c:722
+#: ../libdump/dump_1d_slice.c:752 ../libdump/dump_1d_slice.c:781
+#: ../libdump/dump_1d_slice.c:882 ../libdump/dump_1d_slice.c:912
+#: ../libdump/dump_1d_slice.c:942 ../libdump/dump_1d_slice.c:971
+#: ../libdump/dump_1d_slice.c:1000 ../libdump/dump_1d_slice.c:1035
+#: ../libdump/dump_1d_slice.c:1069 ../libdump/dump_1d_slice.c:1105
+#: ../libdump/dump_1d_slice.c:1141 ../libdump/dump_1d_slice.c:1183
+#: ../libdump/dump_1d_slice.c:1220 ../libdump/dump_1d_slice.c:1254
+#: ../libdump/dump_1d_slice.c:1288 ../libdump/dump_1d_slice.c:1317
+#: ../libdump/dump_1d_slice.c:1347 ../libdump/dump_1d_slice.c:1377
+#: ../libdump/dump_1d_slice.c:1406 ../libdump/dump_1d_slice.c:1435
+#: ../libdump/dump_1d_slice.c:1464 ../libdump/dump_1d_slice.c:1505
+#: ../libdump/dump_1d_slice.c:1546 ../libdump/dump_1d_slice.c:1580
+#: ../libdump/dump_1d_slice.c:1618 ../libdump/dump_1d_slice.c:1648
+#: ../libdump/dump_1d_slice.c:1706
+msgid "Position"
+msgstr "स्तिथि "
+
+#: ../liblight/light_dump.c:288 ../liblight/light_dump.c:315
+#: ../libmeasure/probe.c:274 ../libmeasure/probe.c:299
+#: ../plugins/pulse/pulse.c:335 ../gui/optics.py:130
+#: ../libdump/dump_dynamic.c:428 ../libdump/dump_1d_slice.c:1293
+#: ../libdump/dump_1d_slice.c:1322
+msgid "Generation rate"
+msgstr "उत्पादन की गति "
+
+#: ../liblight/light_dump.c:312 ../src/main.c:72
+msgid "Hole generation rate"
+msgstr "होल उत्पादन की गति "
+
+#: ../liblight/light_dump.c:387
+msgid "Layer number"
+msgstr "परत की संख्या "
+
+#: ../liblight/light_dump.c:421
+msgid "|Electric field|"
+msgstr "विद्युत् छेत्र "
+
+#: ../liblight/light_dump.c:455
+msgid "Transmittance"
+msgstr "संचरण (ट्रांस्मिटेन्स )"
+
+#: ../liblight/light_dump.c:490
+msgid "Reflectance"
+msgstr "प्रतिचारण(रिफ्लेक्टेंस )"
+
+# quantity?
+#: ../liblight/light_dump.c:525
+#, fuzzy
+msgid "Photons absorbed"
+msgstr "अवशोषित फोटॉन"
+
+#: ../liblight/light_dump.c:563
+msgid "Real refractive index"
+msgstr "असल अपवर्तक सूचकांक (रिफ्रैक्टिव  इंडेक्स )"
+
+#: ../liblight/light_dump.c:599 ../gui/materials_main.py:69
+#: ../gui/materials_main.py:129 ../gui/materials_main.py:133
+#: ../gui/materials_main.py:161 ../gui/materials_main.py:176
+#: ../gui/materials_main.py:195 ../gui/import_data.py:296
+#: ../gui/import_data.py:297 ../gui/import_data.py:298 ../gui/token_lib.py:385
+msgid "Absorption"
+msgstr "अवशोषण"
+
+#: ../liblight/light_interface.c:52
+msgid "Initializing optical model"
+msgstr "प्रकाशीय मॉडल शुरु की या राहा हे"
+
+# leaving the file extension alone
+#: ../liblight/light_interface.c:92 ../lib/newton_interface.c:88
+#: ../lib/solver_interface.c:89 ../src/run_electrical_dll.c:79
+#, fuzzy
+msgid "dll not loaded"
+msgstr "dll नहीं डला"
+
+#: ../liblight/light_interface.c:98
+msgid "dll function light_dll_init not found\n"
+msgstr ""
+"light_dll_init dll फाइल नहीं मिली \n"
+"\n"
+
+#: ../liblight/light_interface.c:104
+msgid "dll function light_dll_solve_lam_slice not found\n"
+msgstr "light_dll_solve_lam_slice dll फाइल नहीं मिली \n"
+
+#: ../liblight/light_interface.c:110
+msgid "dll function light_dll_ver not found\n"
+msgstr ""
+"light_dll_ver  dll फाइल नहीं मिली \n"
+"\n"
+
+#: ../liblight/light_materials.c:46
+msgid "load: materials"
+msgstr "सामग्रीक तत्व डालें "
+
+#: ../liblight/light_materials.c:61
+msgid "Optical spectra directory not found\n"
+msgstr "ऑप्टिकल स्पेक्ट्रम की डिरेक्ट्री नहीं मिली\n"
+
+#: ../liblight/light_materials.c:83
+#, python-format
+msgid "spectrum file: I do not know what to do with %s"
+msgstr "स्पेक्ट्रम फाइल: में  नहीं जानता की %s के साथ क्या किया जाए "
+
+#: ../liblight/light_materials.c:88 ../liblight/light_materials.c:211
+#: ../liblight/light_materials.c:231 ../lib/util.c:410 ../lib/util.c:530
+#: ../lib/util.c:590 ../lib/util.c:680
+msgid "File not found"
+msgstr "फाइल नहीं मिली "
+
+#: ../liblight/light_materials.c:110
+msgid "No optical materials found\n"
+msgstr "कोई भी ऑप्टिकल सामग्री नहीं मिली \n"
+
+#: ../liblight/light_materials.c:261 ../liblight/light_materials.c:351
+#: ../liblight/light_materials.c:417
+msgid "file not found"
+msgstr "फाइल नहीं मिली "
+
+# dont know much about programming but i think patch and inter files are a type of file not the name of a specific directory or dependency
+#: ../liblight/light_materials.c:337
+#, fuzzy
+msgid "Error at end of patch file\n"
+msgstr "पैच फाइल के अंत में त्रुटि है \n"
+
+#: ../liblight/light_materials.c:397
+msgid "Error at end of inter file"
+msgstr "इंटर  फाइल के अंत में त्रुटि है "
+
+#: ../liblight/light_materials.c:444 ../liblight/light_materials.c:496
+msgid "Wavelength - Reflected light"
+msgstr "प्रतिबिंबित प्रकाश का तरंग दैर्ध्य"
+
+#: ../liblight/light_materials.c:446 ../liblight/light_materials.c:498
+#: ../libmeasure/probe.c:158 ../libmeasure/probe.c:160
+#: ../libmeasure/probe.c:183 ../libmeasure/probe.c:185
+#: ../libmeasure/probe.c:208 ../libmeasure/probe.c:210
+#: ../gui/import_data.py:282 ../gui/import_data.py:283
+#: ../gui/import_data.py:284 ../gui/import_data.py:285 ../gui/equation.py:181
+msgid "Wavelength"
+msgstr "तरंग दैर्ध्य"
+
+#: ../liblight/light_memory.c:192
+msgid "Freeing memory from the optical model\n"
+msgstr "ऑप्टिकल मॉडल से मेमोरी छुड़वा रहा हूँ\n"
+
+#: ../liblight/light_utils.c:298
+msgid "It was dark I did not solve any slices\n"
+msgstr "अँधेरा था, मैंने कोई भी टुकड़ा नहीं सुलझाया \n"
+
+#: ../lib/util.c:182 ../lib/util.c:200
+msgid "Error writing file"
+msgstr "फाइल लिखने में त्रुटि "
+
+#: ../lib/util.c:367
+msgid "I don't understand the command"
+msgstr "मुझे आदेश नहीं समझ आया "
+
+#: ../lib/util.c:379
+msgid "Can not read file"
+msgstr "फाइल नहीं पढ़ पाया "
+
+#: ../lib/util.c:568 ../lib/util.c:628 ../lib/util.c:726
+msgid "Can not write file"
+msgstr "फाइल नहीं लिख पाया "
+
+#: ../lib/util.c:643 ../lib/util.c:651
+msgid "Can not open file"
+msgstr "फाइल नहीं खोल पाया "
+
+#: ../lib/util.c:718
+msgid "Token not found in file"
+msgstr "फाइल में टोकन नहीं मिला "
+
+#: ../lib/util.c:875
+msgid "Deleting directory"
+msgstr "डायरेक्टरी हटा रहा हूँ "
+
+#: ../lib/complex_solver.c:44
+msgid "out of memory!\n"
+msgstr "मेमरी नहीं बची !\n"
+
+#: ../lib/complex_solver.c:47
+msgid "matrix is singular!\n"
+msgstr "मैट्रिक्स सिंगुअलर है !\n"
+
+# matrix thrown away or dumped like copied?
+#: ../lib/complex_solver.c:81
+#, fuzzy
+msgid "Matrix dumped\n"
+msgstr "मैट्रिक्स फ़ेंक दिया गया \n"
+
+# is available
+#: ../lib/complex_solver.c:100
+#, fuzzy
+msgid "Complex solver free\n"
+msgstr "काम्प्लेक्स सॉल्वर उपलब्ध है \n"
+
+#: ../lib/complex_solver.c:132 ../lib/complex_solver.c:141
+#: ../lib/complex_solver.c:150 ../lib/complex_solver.c:159
+#: ../lib/complex_solver.c:168 ../lib/complex_solver.c:177
+msgid "complex_solver realloc memory error"
+msgstr "complex_solver रीललोकेशन मेमोरी त्रुटि "
+
+# need to change this if this means "solver being initalized" as a status message
+#: ../lib/newton_interface.c:49
+#, fuzzy
+msgid "Solver initialization\n"
+msgstr "सॉल्वर शुरुआत \n"
+
+# you can replace these strings with "%s dll not found" to make it easier to translate
+# I've translated these as "couldnt find x.dll file" let me know if a dll function and a dll file arent the same thing
+#: ../lib/newton_interface.c:94
+#, fuzzy
+msgid "dll function dll_solve_cur not found\n"
+msgstr "dll function light_dll_ver not found\n"
+
+#: ../lib/newton_interface.c:101
+msgid "dll function dll_solver_realloc not found\n"
+msgstr "dll_solver_realloc dll फाइल नहीं मिली \n"
+
+#: ../lib/newton_interface.c:107
+msgid "dll function dll_solver_free_memory not found\n"
+msgstr "dll_solver_free_memory dll फाइल नहीं मिली \n"
+
+#: ../lib/log.c:72
+#, python-format
+msgid "File access log written to %s\n"
+msgstr ""
+
+#: ../lib/solver_interface.c:95
+msgid "dll function dll_matrix_solve not found\n"
+msgstr "dll_matrix_solve dll फाइल नहीं मिली \n"
+
+#: ../lib/solver_interface.c:101
+msgid "dll function dll_matrix_dump not found\n"
+msgstr "dll_matrix_dump dll फाइल नहीं मिली \n"
+
+#: ../lib/solver_interface.c:107 ../src/run_electrical_dll.c:85
+msgid "dll function set_interface not found\n"
+msgstr "function set_interface dll फाइल नहीं मिली \n"
+
+#: ../lib/solver_interface.c:113
+msgid "dll function dll_matrix_solver_free not found\n"
+msgstr "dll_matrix_solver_free dll फाइल नहीं मिली \n"
+
+#: ../lib/solver_interface.c:152
+msgid "Freeing memory"
+msgstr "मेमोरी छुड़वा रहा हूँ "
+
+#: ../lib/solver_interface.c:156
+msgid "Error closing dll"
+msgstr "dll बंद करने में त्रुटि "
+
+#: ../libmesh/time.c:96
+msgid "You must load the optical plugin before making the time mesh"
+msgstr "समय मेष बनाने से पहले आपको ऑप्टिकल प्लगइन लोड करना ज़रूरी है "
+
+#: ../libmeasure/probe.c:271 ../libmeasure/probe.c:273
+#: ../libmeasure/probe.c:296 ../libmeasure/probe.c:298
+#: ../plugins/pulse/pulse.c:220 ../plugins/pulse/pulse.c:222
+#: ../plugins/pulse/pulse.c:241 ../plugins/pulse/pulse.c:243
+#: ../plugins/pulse/pulse.c:264 ../plugins/pulse/pulse.c:266
+#: ../plugins/pulse/pulse.c:289 ../plugins/pulse/pulse.c:291
+#: ../plugins/pulse/pulse.c:312 ../plugins/pulse/pulse.c:314
+#: ../plugins/pulse/pulse.c:332 ../plugins/pulse/pulse.c:334
+#: ../plugins/fxdomain/fxdomain.c:357 ../plugins/fxdomain/fxdomain.c:359
+#: ../plugins/fxdomain/fxdomain.c:380 ../plugins/fxdomain/fxdomain.c:382
+#: ../plugins/fxdomain/fxdomain.c:405 ../plugins/fxdomain/fxdomain.c:409
+#: ../plugins/fxdomain/fxdomain.c:414 ../plugins/fxdomain/fxdomain.c:460
+#: ../plugins/fxdomain/fxdomain.c:464 ../plugins/fxdomain/fxdomain.c:469
+#: ../gui/tmesh.py:221 ../gui/import_data.py:300 ../libdump/dump_dynamic.c:207
+#: ../libdump/dump_dynamic.c:230 ../libdump/dump_dynamic.c:254
+#: ../libdump/dump_dynamic.c:273 ../libdump/dump_dynamic.c:292
+#: ../libdump/dump_dynamic.c:311 ../libdump/dump_dynamic.c:330
+#: ../libdump/dump_dynamic.c:349 ../libdump/dump_dynamic.c:368
+#: ../libdump/dump_dynamic.c:397 ../libdump/dump_dynamic.c:427
+#: ../libdump/dump_dynamic.c:446 ../libdump/dump_dynamic.c:471
+#: ../libdump/dump_dynamic.c:491 ../libdump/dump_dynamic.c:512
+#: ../libdump/dump_dynamic.c:532 ../libdump/dump_dynamic.c:573
+#: ../libdump/dump_dynamic.c:592 ../libdump/dump_dynamic.c:611
+#: ../libdump/dump_dynamic.c:630 ../libdump/dump_dynamic.c:649
+#: ../libdump/dump_dynamic.c:668 ../libdump/dump_dynamic.c:723
+#: ../libdump/dump_dynamic.c:742 ../libdump/dump_dynamic.c:767
+#: ../libdump/dump_dynamic.c:787 ../libdump/dump_dynamic.c:829
+#: ../libdump/dump_dynamic.c:857 ../libdump/dump_dynamic.c:878
+#: ../libdump/dump_dynamic.c:897 ../libdump/dump_dynamic.c:916
+#: ../libdump/dump_dynamic.c:935 ../libdump/dump_dynamic.c:954
+#: ../libdump/dump_dynamic.c:973 ../libdump/dump_dynamic.c:992
+#: ../libdump/dump_dynamic.c:1011 ../libdump/dump_dynamic.c:1030
+#: ../libdump/dump_dynamic.c:1049 ../libfit/fit_dump.c:107
+#: ../libfit/fit_dump.c:130 ../libfit/fit_dump.c:154 ../libfit/fit_dump.c:178
+msgid "Time"
+msgstr "समय "
+
+#: ../libmeasure/probe.c:271 ../libmeasure/probe.c:296
+#: ../plugins/pulse/pulse.c:332
+msgid "Photogeneration rate"
+msgstr "फोटो-उत्पादन की गति "
+
+#: ../libmeasure/probe.c:330
+msgid "Probe load configuration"
+msgstr "लोडिंग विन्यास को जांचे "
+
+#: ../libmeasure/probe.c:355
+msgid "Probe calculate modes"
+msgstr "गणना मोड़ो को जांचे "
+
+#: ../libmeasure/probe.c:403
+msgid "Probe free memory"
+msgstr "उपलब्ध मेमोरी को जांचे "
+
+#: ../libmeasure/measure.c:152
+#, python-format
+msgid "Token not found: %s"
+msgstr "%s टोकन नहीं मिला "
+
+#: ../libmeasure/measure.c:157
+#, python-format
+msgid "File not found: %s"
+msgstr "%s फाइल नहीं मिली "
+
+#: ../plugins/pulse/pulse.c:73
+msgid "no pulse config file found"
+msgstr "कोई pulse config फाइल नहीं मिली "
+
+#: ../plugins/pulse/pulse.c:127 ../plugins/pulse/pulse.c:177
+msgid "pulse mode not known\n"
+msgstr "pulse mode अनजान \n"
+
+#: ../plugins/pulse/pulse.c:184
+msgid "pulse time"
+msgstr "पल्स समय "
+
+#: ../plugins/pulse/pulse.c:184 ../plugins/fxdomain/fxdomain.c:261
+msgid "step"
+msgstr "वृद्धि "
+
+#: ../plugins/pulse/pulse.c:185 ../plugins/pulse/pulse.c:289
+#: ../plugins/fxdomain/fxdomain.c:262 ../plugins/fxdomain/fxdomain.c:357
+#: ../plugins/fxdomain/fxdomain.c:380
+msgid "current"
+msgstr "विद्युत् धरा "
+
+#: ../plugins/pulse/pulse.c:220 ../plugins/pulse/pulse.c:225
+#: ../plugins/pulse/pulse.c:241 ../plugins/pulse/pulse.c:246
+#: ../plugins/pulse/pulse.c:292 ../plugins/fxdomain/fxdomain.c:360
+#: ../plugins/fxdomain/fxdomain.c:383 ../plugins/jv/jv.c:268
+#: ../plugins/jv/jv.c:482 ../gui/token_lib.py:451 ../libdump/dump_dynamic.c:398
+#: ../libdump/dump_contacts.c:72
+msgid "Current"
+msgstr "विद्युत् धरा "
+
+#: ../plugins/pulse/pulse.c:264
+msgid "current density"
+msgstr "विद्युत् धरा का घनत्व"
+
+#: ../plugins/pulse/pulse.c:269 ../plugins/jv/jv.c:421 ../plugins/jv/jv.c:424
+#: ../plugins/jv/jv.c:440 ../plugins/jv/jv.c:443 ../plugins/jv/jv.c:459
+#: ../plugins/jv/jv.c:462 ../plugins/jv/jv.c:520 ../libdump/dump_dynamic.c:231
+#: ../libdump/dump_1d_slice.c:503 ../libdump/dump_1d_slice.c:535
+msgid "Current density"
+msgstr "विद्युत् धरा का घनत्व"
+
+#: ../plugins/pulse/pulse.c:312 ../plugins/pulse/pulse.c:317
+#: ../plugins/fxdomain/fxdomain.c:405 ../plugins/fxdomain/fxdomain.c:419
+#: ../plugins/fxdomain/fxdomain.c:460 ../plugins/fxdomain/fxdomain.c:474
+#: ../plugins/jv/jv.c:268 ../plugins/jv/jv.c:320 ../plugins/jv/jv.c:499
+#: ../plugins/equilibrium/equilibrium.c:125 ../gui/contacts.py:155
+#: ../gui/import_data.py:290 ../gui/import_data.py:291
+#: ../gui/import_data.py:292 ../libdump/dump_dynamic.c:830
+#: ../libdump/dump_contacts.c:70
+msgid "Voltage"
+msgstr "विद्युत दाब"
+
+#: ../plugins/pulse/pulse.c:315 ../plugins/jv/jv.c:444 ../plugins/jv/jv.c:463
+#: ../plugins/jv/jv.c:483 ../gui/fxmesh.py:187
+msgid "Volts"
+msgstr "वोल्ट "
+
+# does fx domain mean frequency domain? or is it a string that should be left alone?
+#: ../plugins/fxdomain/fxdomain.c:100
+#, fuzzy
+msgid "no fxdomain config file found"
+msgstr "कोई fxdomain config फाइल नहीं मिली"
+
+#: ../plugins/fxdomain/fxdomain.c:140
+msgid "Running frequency"
+msgstr "चालक  आवृति "
+
+#: ../plugins/fxdomain/fxdomain.c:180 ../plugins/fxdomain/fxdomain.c:255
+#, fuzzy
+msgid "fxdomain mode not known"
+msgstr "fxdomain मोड अज्ञात "
+
+#: ../plugins/fxdomain/fxdomain.c:261
+#, fuzzy
+msgid "fxdomain time"
+msgstr "fxdomain समय "
+
+#: ../plugins/fxdomain/fxdomain.c:409 ../plugins/fxdomain/fxdomain.c:464
+#: ../gui/tb_item_sun.py:75
+msgid "Light intensity"
+msgstr " प्रकाशन तीव्रता "
+
+#: ../plugins/fxdomain/fxdomain.c:423 ../plugins/fxdomain/fxdomain.c:436
+#: ../plugins/fxdomain/fxdomain.c:478 ../plugins/fxdomain/fxdomain.c:491
+#: ../gui/tmesh.py:220 ../gui/tmesh.py:278 ../gui/tb_item_sun.py:75
+msgid "Suns"
+msgstr "सूर्य"
+
+#: ../plugins/fxdomain/fxdomain.c:528
+msgid "Real"
+msgstr "वास्तविक "
+
+#: ../plugins/fxdomain/fxdomain.c:528
+msgid "Imaginary"
+msgstr "काल्पनिक "
+
+#: ../plugins/fxdomain/fxdomain.c:530 ../gui/token_lib.py:149
+#: ../gui/token_lib.py:360
+msgid "Re(i)"
+msgstr "वास्तविक (i)"
+
+#: ../plugins/fxdomain/fxdomain.c:531 ../gui/token_lib.py:150
+#: ../gui/token_lib.py:361
+msgid "Im(i)"
+msgstr "काल्पनिक (i)"
+
+#: ../plugins/light_full/light.c:41
+msgid "Full transfer matrix based light model"
+msgstr "पूर्ण  ट्रांसफर मैट्रिक्स पर आधारित लाइट  मॉडल "
+
+# Hindi grammar requires the object to be placed instead of %s.
+# cant think of any way to place it at the end
+#: ../plugins/light_full/light.c:54
+#, fuzzy
+msgid "Solve optical slice at"
+msgstr "%s पर ऑप्टिकल भाग को सुलझाए "
+
+#: ../plugins/light_full/light.c:232
+msgid "I can't solve the matrix because I don't have enough equations."
+msgstr ""
+
+#: ../plugins/jv/jv.c:48
+msgid "Running JV simulation\n"
+msgstr ""
+
+#: ../plugins/jv/jv.c:65
+msgid "no jv config file found"
+msgstr ""
+
+#: ../plugins/jv/jv.c:260
+msgid "Stopping because of Vexternal"
+msgstr ""
+
+#: ../plugins/jv/jv.c:322 ../plugins/equilibrium/equilibrium.c:127
+msgid "Efficiency"
+msgstr ""
+
+#: ../plugins/jv/jv.c:361 ../plugins/jv/jv.c:364
+msgid "Recombination prefactor"
+msgstr ""
+
+#: ../plugins/jv/jv.c:361 ../plugins/jv/jv.c:381 ../plugins/jv/jv.c:421
+#: ../plugins/jv/jv.c:440 ../plugins/jv/jv.c:459 ../plugins/jv/jv.c:479
+msgid "Applied voltage"
+msgstr ""
+
+#: ../plugins/jv/jv.c:363 ../plugins/jv/jv.c:383 ../plugins/jv/jv.c:403
+#: ../plugins/jv/jv.c:423 ../plugins/jv/jv.c:442 ../plugins/jv/jv.c:461
+#: ../plugins/jv/jv.c:481
+msgid "Applied Voltage"
+msgstr ""
+
+#: ../plugins/jv/jv.c:381 ../plugins/jv/jv.c:384 ../libdump/dump_1d_slice.c:334
+#: ../libdump/dump_1d_slice.c:953 ../libdump/dump_1d_slice.c:982
+#: ../libdump/dump_1d_slice.c:1011 ../libdump/dump_1d_slice.c:1046
+#: ../libdump/dump_1d_slice.c:1116 ../libdump/dump_1d_slice.c:1152
+#: ../libdump/dump_1d_slice.c:1194 ../libdump/dump_1d_slice.c:1231
+#: ../libdump/dump_1d_slice.c:1265
+msgid "Charge density"
+msgstr ""
+
+#: ../plugins/jv/jv.c:401 ../plugins/jv/jv.c:404
+msgid "Total charge density"
+msgstr ""
+
+#: ../plugins/jv/jv.c:401
+msgid "App.ed voltage"
+msgstr ""
+
+#: ../plugins/jv/jv.c:479
+msgid "Current "
+msgstr ""
+
+#: ../plugins/jv/jv.c:499 ../plugins/jv/jv.c:520 ../plugins/jv/jv.c:523
+msgid "Light flux"
+msgstr ""
+
+#: ../plugins/equilibrium/equilibrium.c:49
+msgid "Holes on left contact"
+msgstr ""
+
+#: ../plugins/equilibrium/equilibrium.c:50
+msgid "Electrons on left contact"
+msgstr ""
+
+#: ../plugins/equilibrium/equilibrium.c:52
+msgid "Holes on right contact"
+msgstr ""
+
+#: ../plugins/equilibrium/equilibrium.c:53
+msgid "Electrons on right contact"
+msgstr ""
+
+#: ../plugins/equilibrium/equilibrium.c:75
+msgid "Running equilibrium simulation\n"
+msgstr ""
+
+#: ../libserver/server.c:111
+msgid "Job stalled. Time since last run:"
+msgstr ""
+
+#: ../libserver/server.c:160
+msgid "Bytes written"
+msgstr ""
+
+#: ../libserver/server.c:161
+msgid "Bytes read"
+msgstr ""
+
+#: ../libserver/server.c:162
+msgid "Files read"
+msgstr ""
+
+#: ../libserver/server.c:163
+msgid "Files written"
+msgstr ""
+
+#: ../libserver/server.c:167
+msgid "I have shut down the server"
+msgstr ""
+
+#: ../libserver/server.c:245
+msgid "Number of CPUs:"
+msgstr ""
+
+#: ../libserver/server.c:254
+msgid "Start time"
+msgstr ""
+
+#: ../libserver/server.c:257
+msgid "End time"
+msgstr ""
+
+#: ../libserver/server.c:513
+msgid "All jobs finished jobs"
+msgstr ""
+
+#: ../libserver/server.c:519
+msgid "I have finished all my jobs"
+msgstr ""
+
+#: ../libserver/server.c:526
+msgid "The server has detected a crash"
+msgstr ""
+
+#: ../libdos/dos.c:219
+msgid "Loading file"
+msgstr ""
+
+#: ../libdos/dos.c:265 ../libdos/dos.c:271
+msgid "DOS file not found\n"
+msgstr ""
+
+#: ../libdos/dos.c:306
+msgid "DoS n file not found\n"
+msgstr ""
+
+#: ../libdos/gendosfdgaus.c:841
+msgid "Expected dos size is different from generated\n"
+msgstr ""
+
+#: ../libdos/gendosfdgaus.c:1308
+msgid "Finished generating DoS....\n"
+msgstr ""
+
+#: ../src/initial.c:66
+msgid "Equilibrium Fermi-level"
+msgstr ""
+
+#: ../src/initial.c:66 ../src/initial.c:90 ../src/initial.c:114
+#: ../src/initial.c:138 ../src/initial.c:162 ../libdump/dump_1d_slice.c:91
+#: ../libdump/dump_1d_slice.c:120 ../libdump/dump_1d_slice.c:178
+#: ../libdump/dump_1d_slice.c:294 ../libdump/dump_1d_slice.c:381
+#: ../libdump/dump_1d_slice.c:410 ../libdump/dump_1d_slice.c:1677
+msgid "position"
+msgstr ""
+
+#: ../src/initial.c:72 ../src/initial.c:96 ../src/initial.c:120
+#: ../src/initial.c:144 ../src/initial.c:168 ../libdump/dump_1d_slice.c:72
+#: ../libdump/dump_1d_slice.c:101 ../libdump/dump_1d_slice.c:130
+#: ../libdump/dump_1d_slice.c:159 ../libdump/dump_1d_slice.c:188
+#: ../libdump/dump_1d_slice.c:217 ../libdump/dump_1d_slice.c:246
+#: ../libdump/dump_1d_slice.c:275 ../libdump/dump_1d_slice.c:304
+#: ../libdump/dump_1d_slice.c:333 ../libdump/dump_1d_slice.c:362
+#: ../libdump/dump_1d_slice.c:391 ../libdump/dump_1d_slice.c:420
+#: ../libdump/dump_1d_slice.c:450 ../libdump/dump_1d_slice.c:513
+#: ../libdump/dump_1d_slice.c:545 ../libdump/dump_1d_slice.c:574
+#: ../libdump/dump_1d_slice.c:604 ../libdump/dump_1d_slice.c:633
+#: ../libdump/dump_1d_slice.c:669 ../libdump/dump_1d_slice.c:703
+#: ../libdump/dump_1d_slice.c:732 ../libdump/dump_1d_slice.c:762
+#: ../libdump/dump_1d_slice.c:791 ../libdump/dump_1d_slice.c:820
+#: ../libdump/dump_1d_slice.c:858 ../libdump/dump_1d_slice.c:892
+#: ../libdump/dump_1d_slice.c:922 ../libdump/dump_1d_slice.c:952
+#: ../libdump/dump_1d_slice.c:981 ../libdump/dump_1d_slice.c:1010
+#: ../libdump/dump_1d_slice.c:1045 ../libdump/dump_1d_slice.c:1079
+#: ../libdump/dump_1d_slice.c:1115 ../libdump/dump_1d_slice.c:1151
+#: ../libdump/dump_1d_slice.c:1193 ../libdump/dump_1d_slice.c:1230
+#: ../libdump/dump_1d_slice.c:1264 ../libdump/dump_1d_slice.c:1298
+#: ../libdump/dump_1d_slice.c:1327 ../libdump/dump_1d_slice.c:1357
+#: ../libdump/dump_1d_slice.c:1387 ../libdump/dump_1d_slice.c:1416
+#: ../libdump/dump_1d_slice.c:1445 ../libdump/dump_1d_slice.c:1474
+#: ../libdump/dump_1d_slice.c:1515 ../libdump/dump_1d_slice.c:1556
+#: ../libdump/dump_1d_slice.c:1590 ../libdump/dump_1d_slice.c:1628
+#: ../libdump/dump_1d_slice.c:1658 ../libdump/dump_1d_slice.c:1687
+#: ../libdump/dump_1d_slice.c:1716
+msgid "1D position space output"
+msgstr ""
+
+#: ../src/initial.c:73 ../src/initial.c:97 ../src/initial.c:121
+#: ../src/initial.c:145 ../src/initial.c:169 ../libdump/dump_1d_slice.c:73
+#: ../libdump/dump_1d_slice.c:102 ../libdump/dump_1d_slice.c:131
+#: ../libdump/dump_1d_slice.c:160 ../libdump/dump_1d_slice.c:247
+#: ../libdump/dump_1d_slice.c:276 ../libdump/dump_1d_slice.c:305
+#: ../libdump/dump_1d_slice.c:514 ../libdump/dump_1d_slice.c:546
+#: ../libdump/dump_1d_slice.c:575 ../libdump/dump_1d_slice.c:605
+#: ../libdump/dump_1d_slice.c:634 ../libdump/dump_1d_slice.c:670
+msgid "Transport"
+msgstr ""
+
+#: ../src/initial.c:90 ../libdump/dump_1d_slice.c:178
+msgid "LUMO"
+msgstr ""
+
+#: ../src/initial.c:114 ../libdump/dump_1d_slice.c:207
+msgid "HOMO"
+msgstr ""
+
+#: ../src/initial.c:138 ../src/pos.c:120 ../libdump/dump_dynamic.c:612
+#: ../libdump/dump_dynamic.c:650 ../libdump/dump_dynamic.c:768
+#: ../libdump/dump_1d_slice.c:1225
+msgid "Electron density"
+msgstr ""
+
+#: ../src/initial.c:162 ../src/pos.c:138 ../libdump/dump_dynamic.c:631
+#: ../libdump/dump_dynamic.c:669 ../libdump/dump_dynamic.c:788
+#: ../libdump/dump_1d_slice.c:1259
+msgid "Hole density"
+msgstr ""
+
+#: ../src/initial.c:165
+msgid "n"
+msgstr ""
+
+#: ../src/mesh.c:78
+msgid ""
+"The mesh does not match the device length and I am not alowed to remesh it"
+msgstr ""
+
+#: ../src/mesh.c:279
+msgid "Direction wrong"
+msgstr ""
+
+#: ../src/main.c:128 ../src/main.c:149
+msgid "Copyright (C) 2012-2017 Roderick C. I. MacKenzie, Releced under GPLv2"
+msgstr ""
+
+#: ../src/main.c:130
+msgid "options"
+msgstr ""
+
+#: ../src/main.c:132
+msgid "Options"
+msgstr ""
+
+#: ../src/main.c:134
+msgid "output data path"
+msgstr ""
+
+#: ../src/main.c:135
+msgid "sets the input path"
+msgstr ""
+
+#: ../src/main.c:136 ../gui/command_args.py:81 ../gui/command_args.py:82
+msgid "displays the current version"
+msgstr ""
+
+#: ../src/main.c:137
+msgid "zip the results"
+msgstr ""
+
+#: ../src/main.c:138
+msgid "Forces a simulation mode."
+msgstr ""
+
+#: ../src/main.c:139
+msgid "sets the number of CPUs"
+msgstr ""
+
+#: ../src/main.c:141
+msgid ""
+"Additional information about gpvdm is available at https://www.gpvdm.com."
+msgstr ""
+
+#: ../src/main.c:143
+msgid "Report bugs to: roderick.mackenzie@nottingham.ac.uk"
+msgstr ""
+
+#: ../src/main.c:148
+#, python-format
+msgid "gpvdm_core, Version %s\n"
+msgstr ""
+
+#: ../src/main.c:150
+msgid "This is free software; see the source code for copying conditions."
+msgstr ""
+
+#: ../src/main.c:151
+msgid "There is ABSOLUTELY NO WARRANTY; not even for MERCHANTABILITY or\n"
+msgstr ""
+
+#: ../src/main.c:152
+msgid "FITNESS FOR A PARTICULAR PURPOSE.\n"
+msgstr ""
+
+#: ../src/main.c:205 ../gui/scan_tab.py:451 ../gui/constraints.py:143
+#: ../gui/constraints.py:182 ../gui/fit_vars.py:155 ../gui/fit_patch.py:119
+msgid "Token"
+msgstr ""
+
+#: ../src/main.c:207
+msgid "General-purpose Photovoltaic Device Model (https://www.gpvdm.com)\n"
+msgstr ""
+
+#: ../src/main.c:208
+msgid "You should have received a copy of the GNU General Public License\n"
+msgstr ""
+
+#: ../src/main.c:209
+msgid "along with this software.  If not, see www.gnu.org/licenses/.\n"
+msgstr ""
+
+#: ../src/main.c:211
+msgid "If you wish to collaborate in anyway please get in touch:\n"
+msgstr ""
+
+#: ../src/run_electrical_dll.c:46
+msgid "Loading electrical dll\n"
+msgstr ""
+
+#: ../src/run_electrical_dll.c:92
+msgid "dll function dll_run_simulation not found\n"
+msgstr ""
+
+#: ../src/sim_run.c:49
+msgid "Runing simulation"
+msgstr ""
+
+#: ../src/sim_run.c:130
+msgid "Loading DoS layers"
+msgstr ""
+
+#: ../src/sim_run.c:139
+msgid "Load DoS"
+msgstr ""
+
+#: ../src/pos.c:65
+msgid "Intrinsic Fermi - position"
+msgstr ""
+
+#: ../src/pos.c:82
+msgid "LUMO energy - position"
+msgstr ""
+
+#: ../src/pos.c:99
+msgid "HOMO energy - position"
+msgstr ""
+
+#: ../src/pos.c:117
+msgid "Electron density - position"
+msgstr ""
+
+#: ../src/pos.c:135
+msgid "Hole density - position"
+msgstr ""
+
+#: ../src/pos.c:152
+msgid "Potential - position"
+msgstr ""
+
+#: ../src/pos.c:155 ../libdump/dump_1d_slice.c:440
+#: ../libdump/dump_1d_slice.c:445 ../libdump/dump_1d_slice.c:469
+#: ../libdump/dump_1d_slice.c:474
+msgid "Potential"
+msgstr ""
+
+#: ../src/pos.c:205
+msgid "Solving Poisson's equation"
+msgstr ""
+
+#: ../src/pos.c:523
+msgid "Poisson solver error"
+msgstr ""
+
+#: ../src/pos.c:594
+msgid "Solved Poisson's equation"
+msgstr ""
+
+#: ../src/config.c:45
+msgid "load: config files"
+msgstr ""
+
+#: ../src/sim_find_n0.c:39
+msgid "Finding equilibrium conditions"
+msgstr ""
+
+#: ../src/sim_find_n0.c:100
+msgid "Finished finding equilibrium conditions"
+msgstr ""
+
+#: ../gui/pl_main.py:70
+msgid "Luminescence of "
+msgstr ""
+
+#: ../gui/pl_main.py:79 ../gui/electrical.py:72
+msgid ""
+"<big><b>Luminescence</b></big>\n"
+"If you set 'Turn on luminescence' to true, the simulation will assume "
+"recombination is a raditave process and intergrate it to produce Voltage-"
+"Light intensity curves (lv.dat).  Each number in the tab tells the model how "
+"efficient each recombination mechanism is at producing photons."
+msgstr ""
+
+#: ../gui/cmp_class.py:256
+msgid "Examine simulation results in time domain"
+msgstr ""
+
+#: ../gui/cmp_class.py:281
+msgid "Save video"
+msgstr ""
+
+#: ../gui/cmp_class.py:296
+msgid ""
+"No electrical slice data has been stored in the snapshots directory.  To "
+"turn this on set Simulation->Configure->Dump->Dump 1D Slices to on.  This "
+"will dump a lot of data and slow down your simulations."
+msgstr ""
+
+#: ../gui/gtkswitch.py:79
+msgid "ON"
+msgstr ""
+
+#: ../gui/gtkswitch.py:85
+msgid "OFF"
+msgstr ""
+
+#: ../gui/experiment_tab.py:67
+msgid "time mesh"
+msgstr ""
+
+#: ../gui/experiment_tab.py:72 ../gui/fxexperiment_tab.py:77
+msgid "Circuit"
+msgstr ""
+
+#: ../gui/experiment_tab.py:75 ../gui/experiment_tab.py:76
+#: ../gui/ribbon_configure.py:56 ../gui/ribbon_configure.py:96
+#: ../gui/gpvdm_viewer.py:330 ../gui/config_window.py:72 ../gui/ribbon.py:136
+#: ../gui/fit_window.py:175 ../gui/jvexperiment_tab.py:68
+#: ../gui/jvexperiment_tab.py:69 ../gui/fxexperiment_tab.py:80
+#: ../gui/fxexperiment_tab.py:81 ../gui/cluster_config_window.py:93
+msgid "Configure"
+msgstr ""
+
+#: ../gui/gl_cmp.py:38
+msgid "Results viewer"
+msgstr ""
+
+#: ../gui/band_graph.py:219 ../gui/qe.py:59 ../gui/cost.py:111
+#: ../libdump/dump_1d_slice.c:698
+msgid "Energy"
+msgstr ""
+
+#: ../gui/qe.py:81
+msgid "No file"
+msgstr ""
+
+#: ../gui/qe.py:101
+msgid "Quantum Efficiency calculator"
+msgstr ""
+
+#: ../gui/qe.py:119 ../gui/optics_ribbon.py:59
+#: ../gui/fit_window_plot_real.py:119
+msgid "Save graph"
+msgstr ""
+
+#: ../gui/qe.py:123 ../gui/matlab_editor.py:95
+msgid "Run"
+msgstr ""
+
+#: ../gui/tb_pulse_load_type.py:50
+msgid "Load type"
+msgstr ""
+
+#: ../gui/solar_main.py:57
+msgid "Solar Spectrum Generator"
+msgstr ""
+
+#: ../gui/ribbon_configure.py:64
+msgid ""
+"Electrical\n"
+"mesh"
+msgstr ""
+
+#: ../gui/ribbon_configure.py:84
+msgid ""
+"<big><b>Mesh editor</b></big>\n"
+"Use this window to setup the mesh, the window can also be used to change the "
+"dimensionality of the simulation."
+msgstr ""
+
+#: ../gui/ribbon_configure.py:102
+msgid ""
+"<big><b>Configuration editor</b></big><br> Use this window to control "
+"advanced simulation parameters."
+msgstr ""
+
+#: ../gui/tb_item_is_imps.py:74
+msgid "Modulation type"
+msgstr ""
+
+#: ../gui/scan_item.py:112 ../gui/token_lib.py:111
+msgid "Material type"
+msgstr ""
+
+#: ../gui/scan_item.py:113
+msgid "Layer width"
+msgstr ""
+
+#: ../gui/fx_selector.py:43
+msgid "Wavelengths"
+msgstr ""
+
+#: ../gui/ribbon_database.py:66
+msgid ""
+"Materials\n"
+"database"
+msgstr ""
+
+#: ../gui/ribbon_database.py:70
+msgid ""
+"Optical\n"
+"database"
+msgstr ""
+
+#: ../gui/ribbon_database.py:75
+msgid ""
+"Update materials\n"
+"from PVLighthouse"
+msgstr ""
+
+#: ../gui/ribbon_database.py:79
+msgid ""
+"Update materials\n"
+"from refractiveindex.info"
+msgstr ""
+
+#: ../gui/ribbon_database.py:92 ../gui/gpvdm_viewer.py:231
+msgid "New material name:"
+msgstr ""
+
+#: ../gui/ribbon_database.py:92 ../gui/gpvdm_viewer.py:231
+msgid "New material name"
+msgstr ""
+
+#: ../gui/ribbon_database.py:98
+msgid "I cant write to:"
+msgstr ""
+
+#: ../gui/ribbon_database.py:98
+msgid ""
+"This means either the disk is full or your system administrator has not "
+"given you write permissions to that location."
+msgstr ""
+
+#: ../gui/ribbon_database.py:103
+#, fuzzy
+#| msgid "load: materials"
+msgid "Add Material"
+msgstr "सामग्रीक तत्व डालें "
+
+#: ../gui/progress.py:66 ../gui/progress.py:147
+msgid "Finish time:"
+msgstr ""
+
+#: ../gui/progress.py:125
+msgid "Running"
+msgstr ""
+
+#: ../gui/fit_tab.py:81 ../libfit/fit_dump.c:59 ../libfit/fit_dump.c:82
+#: ../libfit/fit_dump.c:105 ../libfit/fit_dump.c:128 ../libfit/fit_dump.c:152
+#: ../libfit/fit_dump.c:176
+msgid "Fit error"
+msgstr ""
+
+#: ../gui/fit_tab.py:85
+msgid "Configure fit"
+msgstr ""
+
+#: ../gui/fit_tab.py:88
+msgid "Experimental data"
+msgstr ""
+
+#: ../gui/fit_tab.py:91
+msgid "Fit patch"
+msgstr ""
+
+#: ../gui/fit_tab.py:94
+msgid "MATLAB code"
+msgstr ""
+
+#: ../gui/fit_configure_window.py:61
+msgid "Fit configure"
+msgstr ""
+
+#: ../gui/fit_configure_window.py:74 ../gui/ideal_diode_editor.py:64
+#: ../gui/optics_ribbon.py:81 ../gui/electrical.py:93 ../gui/electrical.py:94
+#: ../gui/contacts.py:192 ../gui/measure_ribbon.py:76
+#: ../gui/mesh_configure.py:64 ../gui/config_window.py:84
+#: ../gui/config_window.py:85 ../gui/ribbon_home.py:114
+#: ../gui/ribbon_materials.py:85 ../gui/emesh.py:169 ../gui/ribbon_import.py:73
+#: ../gui/ribbon_import.py:74 ../gui/ribbon_solar.py:69
+#: ../gui/ribbon_information.py:95 ../gui/ribbon.py:80 ../gui/info.py:63
+#: ../gui/timedomain_ribbon.py:77 ../gui/cost.py:89 ../gui/fxexperiment.py:207
+#: ../gui/fit_window.py:202 ../gui/ribbon_cluster.py:101
+#: ../gui/cluster_config_ribbon.py:79 ../gui/dim_editor.py:126 ../gui/ref.py:90
+#: ../gui/ref.py:91 ../gui/lasers.py:139 ../gui/scan_ribbon.py:71
+#: ../gui/parasitic.py:64 ../gui/spectra_main.py:79 ../gui/sunsvoc.py:74
+#: ../gui/jvexperiment.py:134 ../gui/doping.py:190
+msgid "Help"
+msgstr ""
+
+#: ../gui/fit_configure_window.py:75 ../gui/ideal_diode_editor.py:65
+#: ../gui/contacts.py:193 ../gui/mesh_configure.py:65 ../gui/emesh.py:170
+#: ../gui/info.py:64 ../gui/fxexperiment.py:208 ../gui/ref.py:110
+#: ../gui/lasers.py:140 ../gui/about.py:156 ../gui/help.py:132
+#: ../gui/parasitic.py:65 ../gui/sunsvoc.py:75 ../gui/jvexperiment.py:135
+msgid "Close"
+msgstr ""
+
+#: ../gui/fit_configure_window.py:90
+msgid "Configure minimizer"
+msgstr ""
+
+#: ../gui/fit_configure_window.py:98
+msgid "Duplicate window"
+msgstr ""
+
+#: ../gui/fit_configure_window.py:101
+msgid "Fit variable window"
+msgstr ""
+
+#: ../gui/fit_configure_window.py:104
+msgid "Fit constraints"
+msgstr ""
+
+#: ../gui/tmesh.py:117 ../gui/tmesh.py:118 ../gui/tmesh.py:119
+#: ../gui/tmesh.py:120 ../gui/tmesh.py:121 ../gui/tmesh.py:122
+#: ../gui/tmesh.py:123 ../gui/fxmesh.py:82 ../gui/fxmesh.py:86
+#: ../gui/fxmesh.py:90 ../gui/fxmesh.py:94 ../gui/fxmesh.py:109
+#: ../gui/fxmesh.py:110 ../gui/fxmesh.py:111 ../gui/fxmesh.py:112
+msgid "Part "
+msgstr ""
+
+#: ../gui/tmesh.py:117
+msgid " period"
+msgstr ""
+
+#: ../gui/tmesh.py:118
+msgid " dt"
+msgstr ""
+
+#: ../gui/tmesh.py:119
+msgid " start voltage"
+msgstr ""
+
+#: ../gui/tmesh.py:120
+msgid " stop voltage"
+msgstr ""
+
+#: ../gui/tmesh.py:121
+msgid " mul"
+msgstr ""
+
+#: ../gui/tmesh.py:122
+msgid " Sun"
+msgstr ""
+
+#: ../gui/tmesh.py:123
+msgid " CW laser"
+msgstr ""
+
+#: ../gui/tmesh.py:158
+msgid "Enter the time at which the laser pulse will fire (-1) to turn it off"
+msgstr ""
+
+#: ../gui/tmesh.py:175
+msgid "You have entered a non numeric value."
+msgstr ""
+
+#: ../gui/tmesh.py:207
+msgid "Voltage (Volts)"
+msgstr ""
+
+#: ../gui/tmesh.py:278
+msgid "Length"
+msgstr ""
+
+#: ../gui/tmesh.py:278 ../gui/token_lib.py:83
+msgid "dt"
+msgstr ""
+
+#: ../gui/tmesh.py:278
+msgid "Start Voltage"
+msgstr ""
+
+#: ../gui/tmesh.py:278
+msgid "Stop Voltage"
+msgstr ""
+
+#: ../gui/tmesh.py:278
+msgid "step multiplyer"
+msgstr ""
+
+#: ../gui/tmesh.py:278 ../gui/timedomain_ribbon.py:130
+msgid "Laser"
+msgstr ""
+
+#: ../gui/tmesh.py:387
+msgid "Enter the start time of the simulation"
+msgstr ""
+
+#: ../gui/tmesh.py:441 ../gui/fxmesh.py:306 ../gui/equation.py:365
+msgid "Add section"
+msgstr ""
+
+#: ../gui/tmesh.py:445 ../gui/fxmesh.py:310 ../gui/equation.py:369
+msgid "Delete section"
+msgstr ""
+
+#: ../gui/tmesh.py:449 ../gui/fxmesh.py:314 ../gui/scan_tab.py:575
+#: ../gui/scan_tab.py:645 ../gui/scan_tab.py:649 ../gui/constraints.py:251
+#: ../gui/measure_tab.py:214 ../gui/duplicate.py:215 ../gui/fit_vars.py:233
+#: ../gui/equation.py:373 ../gui/fit_patch.py:173
+msgid "Move down"
+msgstr ""
+
+#: ../gui/tmesh.py:453 ../gui/fxmesh.py:318 ../gui/scan_tab.py:579
+#: ../gui/constraints.py:255 ../gui/measure_tab.py:218 ../gui/duplicate.py:219
+#: ../gui/fit_vars.py:237 ../gui/equation.py:377 ../gui/fit_patch.py:177
+msgid "Move up"
+msgstr ""
+
+#: ../gui/dlg_export.py:46
+msgid "Export the simulation as"
+msgstr ""
+
+#: ../gui/dlg_export.py:49 ../gui/dlg_export.py:64
+msgid "gpvdm archive input+output files"
+msgstr ""
+
+#: ../gui/dlg_export.py:50 ../gui/dlg_export.py:66
+msgid "gpvdm archive input files"
+msgstr ""
+
+#: ../gui/dlg_export.py:51 ../gui/dlg_export.py:68
+msgid "optical materials database"
+msgstr ""
+
+#: ../gui/dlg_export.py:52 ../gui/dlg_export.py:70
+msgid "pdf file"
+msgstr ""
+
+#: ../gui/dlg_export.py:53 ../gui/dlg_export.py:70
+msgid "jpg image"
+msgstr ""
+
+#: ../gui/dlg_export.py:54 ../gui/dlg_export.py:70
+msgid "tex file"
+msgstr ""
+
+#: ../gui/dlg_export.py:55 ../gui/dlg_export.py:72
+msgid "Excel file"
+msgstr ""
+
+#: ../gui/gpvdm_viewer.py:204 ../gui/gpvdm_viewer.py:224
+msgid "New directory"
+msgstr ""
+
+#: ../gui/gpvdm_viewer.py:206
+msgid "New material"
+msgstr ""
+
+#: ../gui/gpvdm_viewer.py:209
+msgid "New spectra"
+msgstr ""
+
+#: ../gui/gpvdm_viewer.py:211
+msgid "Delete file"
+msgstr ""
+
+#: ../gui/gpvdm_viewer.py:212
+msgid "Rename"
+msgstr ""
+
+#: ../gui/gpvdm_viewer.py:224
+msgid "New directory name:"
+msgstr ""
+
+#: ../gui/gpvdm_viewer.py:237
+msgid "New spectra name:"
+msgstr ""
+
+#: ../gui/gpvdm_viewer.py:237
+msgid "New spectra name"
+msgstr ""
+
+#: ../gui/gpvdm_viewer.py:246
+msgid "Are you sure you want to delete the files ?"
+msgstr ""
+
+#: ../gui/gpvdm_viewer.py:253
+msgid "Rename:"
+msgstr ""
+
+#: ../gui/gpvdm_viewer.py:310 ../gui/gpvdm.py:300 ../gui/ribbon.py:130
+#: ../gui/gpvdm_open.py:90
+msgid "Home"
+msgstr ""
+
+#: ../gui/gpvdm_viewer.py:317
+msgid "Desktop"
+msgstr ""
+
+# mechanical load or like inserting a sample
+#: ../gui/gpvdm_viewer.py:324
+#, fuzzy
+msgid "Downloads"
+msgstr "लोड / डाले /बोझ "
+
+#: ../gui/gpvdm_viewer.py:346 ../gui/ribbon.py:146
+#: ../gui/cluster_config_ribbon.py:96 ../gui/tab_terminal.py:158
+msgid "Cluster"
+msgstr ""
+
+#: ../gui/gpvdm_viewer.py:352 ../gui/gpvdm_viewer.py:602
+msgid "Language"
+msgstr ""
+
+#: ../gui/gpvdm_viewer.py:358
+msgid "Solver"
+msgstr ""
+
+#: ../gui/gpvdm_viewer.py:364 ../gui/gpvdm_viewer.py:617
+msgid "LED"
+msgstr ""
+
+#: ../gui/gpvdm_viewer.py:370 ../gui/gpvdm_viewer.py:624
+#: ../gui/dump_select.py:343
+msgid "Output files"
+msgstr ""
+
+#: ../gui/gpvdm_viewer.py:376 ../gui/gpvdm_viewer.py:631
+msgid "GUI configuration"
+msgstr ""
+
+#: ../gui/gpvdm_viewer.py:382 ../gui/gpvdm_viewer.py:638
+#: ../gui/inp_description.py:49
+msgid "Thermal"
+msgstr ""
+
+#: ../gui/gpvdm_viewer.py:388
+msgid "Server"
+msgstr ""
+
+#: ../gui/gpvdm_viewer.py:396
+msgid "The directory is gone, so I can't open it.  Did you delete it?"
+msgstr ""
+
+#: ../gui/gpvdm_viewer.py:609
+msgid "Solver configuration"
+msgstr ""
+
+#: ../gui/gpvdm_viewer.py:645
+msgid "Server configuration"
+msgstr ""
+
+#: ../gui/gpvdm_viewer.py:716
+msgid "title"
+msgstr ""
+
+#: ../gui/gpvdm_viewer.py:716
+msgid "x axis"
+msgstr ""
+
+#: ../gui/gpvdm_viewer.py:716
+msgid "y axis"
+msgstr ""
+
+#: ../gui/gpvdm_viewer.py:716
+msgid "Double click to open"
+msgstr ""
+
+#: ../gui/gpvdm_viewer.py:722
+msgid "equilibrium"
+msgstr ""
+
+#: ../gui/gpvdm_viewer.py:722
+msgid "This contains the simulation output at 0V in the dark."
+msgstr ""
+
+#: ../gui/ideal_diode_editor.py:51
+msgid "Ideal diode editor"
+msgstr ""
+
+#: ../gui/ideal_diode_editor.py:80 ../gui/sunsvoc.py:47
+msgid "Diode equation"
+msgstr ""
+
+#: ../gui/optics_ribbon.py:56
+msgid "Run optical simulation"
+msgstr ""
+
+#: ../gui/optics_ribbon.py:99 ../gui/measure_ribbon.py:99
+#: ../gui/ribbon_solar.py:84 ../gui/ribbon.py:114
+#: ../gui/timedomain_ribbon.py:121 ../gui/cool_menu.py:68
+#: ../gui/scan_ribbon.py:199 ../gui/about.py:50 ../gui/about.py:82
+#: ../gui/status_icon.py:48
+msgid "About"
+msgstr ""
+
+#: ../gui/optics_ribbon.py:105
+msgid "Optics"
+msgstr ""
+
+#: ../gui/tb_spectrum.py:45
+msgid "Solar spectrum"
+msgstr ""
+
+#: ../gui/electrical.py:65 ../gui/electrical.py:107 ../gui/electrical.py:108
+#: ../gui/inp_description.py:37
+msgid "Device"
+msgstr ""
+
+#: ../gui/electrical.py:66
+msgid ""
+"<big><b>Device tab</b></big><br>This tab contains information about the "
+"device,carrier density on the contacts."
+msgstr ""
+
+#: ../gui/electrical.py:68 ../gui/electrical.py:117
+msgid "Complex DoS"
+msgstr ""
+
+#: ../gui/electrical.py:69
+msgid ""
+"<big><b>The Complex DoS tab</b></big><br> Use this tab to edit the energetic "
+"distribution of the density of states. <b>If you want to use this feature "
+"contact me.</b>"
+msgstr ""
+
+#: ../gui/electrical.py:71 ../gui/electrical.py:121 ../gui/materials_main.py:64
+#: ../gui/materials_main.py:146 ../gui/inp_description.py:56
+msgid "Luminescence"
+msgstr ""
+
+#: ../gui/electrical.py:80
+msgid "Electrical parameter editor"
+msgstr ""
+
+#: ../gui/electrical.py:112 ../gui/materials_main.py:59
+#: ../gui/materials_main.py:146 ../gui/gpvdm_notebook.py:95
+msgid "Electrical parameters"
+msgstr ""
+
+#: ../gui/fxmesh.py:82 ../gui/fxmesh.py:109 ../gui/equation.py:198
+#: ../gui/jobs.py:72
+msgid "start"
+msgstr ""
+
+#: ../gui/fxmesh.py:86 ../gui/fxmesh.py:110 ../gui/equation.py:198
+#: ../gui/token_lib.py:85 ../gui/jobs.py:72
+msgid "stop"
+msgstr ""
+
+#: ../gui/fxmesh.py:90 ../gui/fxmesh.py:111 ../gui/fxmesh.py:199
+#: ../gui/token_lib.py:368
+msgid "points"
+msgstr ""
+
+#: ../gui/fxmesh.py:94 ../gui/fxmesh.py:112
+msgid "mul"
+msgstr ""
+
+#: ../gui/fxmesh.py:187 ../gui/electrical_mesh_editor.py:180
+msgid "Magnitude"
+msgstr ""
+
+#: ../gui/fxmesh.py:192 ../gui/token_lib.py:364
+msgid "Frequency"
+msgstr ""
+
+#: ../gui/fxmesh.py:199
+msgid "Frequency start"
+msgstr ""
+
+#: ../gui/fxmesh.py:199
+msgid "Frequency stop"
+msgstr ""
+
+#: ../gui/fxmesh.py:199
+msgid "Multiply"
+msgstr ""
+
+#: ../gui/command_args.py:80
+msgid "Additional information about gpvdm is available at"
+msgstr ""
+
+#: ../gui/command_args.py:80
+msgid "Report bugs to:"
+msgstr ""
+
+#: ../gui/command_args.py:83
+msgid "replaces file in device lib --replace file.inp path_to_device_lib"
+msgstr ""
+
+#: ../gui/command_args.py:84
+msgid "deletes file in device lib --delete file.inp path_to_device_lib"
+msgstr ""
+
+#: ../gui/command_args.py:85
+msgid ""
+"cleans the current simulation directory deleting .dat files but not  scan "
+"dirs"
+msgstr ""
+
+#: ../gui/command_args.py:86
+msgid "export a simulation to a gz file"
+msgstr ""
+
+#: ../gui/command_args.py:87
+msgid "Synchronizes the saved file version to that of the source code."
+msgstr ""
+
+#: ../gui/command_args.py:88
+msgid "Generate the manual pages referring to the output files.."
+msgstr ""
+
+#: ../gui/command_args.py:89
+msgid "Only imports the scan directories."
+msgstr ""
+
+#: ../gui/command_args.py:90
+msgid "Deletes the content of all scan directories."
+msgstr ""
+
+#: ../gui/command_args.py:91
+msgid "Patch a .gpvdm file with an older .gpvdm file."
+msgstr ""
+
+#: ../gui/command_args.py:92
+msgid ""
+"Patch an .inp file with an older .inp file. usage --patchfile dest_file "
+"base_file input_file"
+msgstr ""
+
+#: ../gui/command_args.py:93
+msgid "usage --import abc.gpvdm ./path/to/output/ "
+msgstr ""
+
+#: ../gui/command_args.py:94
+msgid "Dumps simulation parameters as jpg, usage: --dump-tab output_path"
+msgstr ""
+
+#: ../gui/command_args.py:95
+msgid "Generate a clean simulation in the current directory"
+msgstr ""
+
+#: ../gui/command_args.py:96
+msgid "Clone the source code."
+msgstr ""
+
+#: ../gui/command_args.py:97
+msgid ""
+"edits a value in a .gpvdm archive. Usage --edit-value /path/to/sim.gpvdm "
+"#token_to_change new_value "
+msgstr ""
+
+#: ../gui/command_args.py:98
+msgid "Runs an oplot file, usage --scanplot /path/to/oplot/file.oplot "
+msgstr ""
+
+#: ../gui/command_args.py:99
+msgid "Runs a scan, usage --runscan /path/to/scan/dir/ "
+msgstr ""
+
+#: ../gui/command_args.py:100
+msgid ""
+"Builds a scan, usage --buildscan /path/to/scan/dir/ /path/containing/base/"
+"files/"
+msgstr ""
+
+#: ../gui/command_args.py:101
+msgid ""
+"Builds a nested scan, usage --buildnestedscan /path/to/scan/dir/ sim_to_nest"
+msgstr ""
+
+#: ../gui/command_args.py:102
+msgid "Loads a simulation --load /path/containing/simulation/sim.gpvdm"
+msgstr ""
+
+#: ../gui/command_args.py:103
+msgid "Encrypt a gpvdm file --file sim.gpvdm"
+msgstr ""
+
+#: ../gui/command_args.py:104
+msgid "Extract the sim.gpvdm archive --extract"
+msgstr ""
+
+#: ../gui/command_args.py:105
+msgid "Compress a scandir --scanarchive path_to_scan_dir"
+msgstr ""
+
+#: ../gui/command_args.py:106
+msgid "Build vectors from scan dir --scanbuildvectors path_to_scan_dir"
+msgstr ""
+
+#: ../gui/command_args.py:107
+msgid "Unpacks a gpvdm archive --unpack path/to/gpvdm_file.gpvdm"
+msgstr ""
+
+#: ../gui/command_args.py:108
+msgid "Compresses the materials dir"
+msgstr ""
+
+#: ../gui/tb_optical_model.py:44
+msgid "Optical model"
+msgstr ""
+
+#: ../gui/tb_optical_model.py:88
+msgid ""
+"I can't find any optical plugins, I think the model is not installed "
+"properly."
+msgstr ""
+
+#: ../gui/scan_tab.py:140
+msgid ""
+"<big><b>The scan window</b></big><br> Now using the drop down menu in the "
+"prameter to change 'column', select the device parameter you wish to vary, "
+"an example may be dos0/Electron Mobility. Now enter the values you would "
+"like it to scan oveer in the  'Values', an example could be '1e-3 1e-4 1e-5 "
+"1e-6'.  And hit the double arrorw to run the simulation."
+msgstr ""
+
+#: ../gui/scan_tab.py:150
+msgid "Select parameter"
+msgstr ""
+
+#: ../gui/scan_tab.py:252
+msgid ""
+"I can't load flat_list.inp.  This usually means there is a problem with how "
+"you have set up your scan."
+msgstr ""
+
+#: ../gui/scan_tab.py:264
+msgid ""
+"You have not selected any parameters to scan through.  Use the add button."
+msgstr ""
+
+#: ../gui/scan_tab.py:269
+msgid "No sim dir name"
+msgstr ""
+
+#: ../gui/scan_tab.py:451 ../gui/plot_ribbon.py:137 ../gui/gpvdm.py:309
+#: ../gui/ribbon_materials.py:95 ../gui/constraints.py:143
+#: ../gui/constraints.py:182 ../gui/ribbon.py:127 ../gui/measure_tab.py:92
+#: ../gui/measure_tab.py:140 ../gui/snapshot_slider.py:131
+#: ../gui/fit_vars.py:96 ../gui/fit_vars.py:155 ../gui/fit_patch.py:119
+msgid "File"
+msgstr ""
+
+#: ../gui/scan_tab.py:451
+msgid "Parameter to change"
+msgstr ""
+
+#: ../gui/scan_tab.py:451 ../gui/fit_patch.py:119
+msgid "Values"
+msgstr ""
+
+#: ../gui/scan_tab.py:451
+msgid "Opperation"
+msgstr ""
+
+#: ../gui/scan_tab.py:529 ../gui/ribbon_home.py:189
+msgid ""
+"Re-run the simulation with 'dump all slices' set to one to use this tool."
+msgstr ""
+
+#: ../gui/scan_tab.py:567
+msgid "Add parameter to scan"
+msgstr ""
+
+#: ../gui/scan_tab.py:571 ../gui/scan_tab.py:627
+msgid "Delete item"
+msgstr ""
+
+#: ../gui/scan_tab.py:591
+msgid "Insert python command"
+msgstr ""
+
+#: ../gui/scan_tab.py:631
+msgid "Copy"
+msgstr ""
+
+#: ../gui/scan_tab.py:635
+msgid "Paste"
+msgstr ""
+
+#: ../gui/scan_tab.py:641
+msgid "Add item"
+msgstr ""
+
+#: ../gui/layer_widget.py:168
+msgid "Layer editor"
+msgstr ""
+
+#: ../gui/layer_widget.py:179
+msgid "Add device layer"
+msgstr ""
+
+#: ../gui/layer_widget.py:183
+msgid "Delete device layer"
+msgstr ""
+
+#: ../gui/layer_widget.py:188 ../gui/layer_widget.py:192
+msgid "Move device layer"
+msgstr ""
+
+#: ../gui/layer_widget.py:222
+msgid "Layer name"
+msgstr ""
+
+#: ../gui/layer_widget.py:222 ../gui/electrical_mesh_editor.py:210
+msgid "Thicknes"
+msgstr ""
+
+#: ../gui/layer_widget.py:222
+msgid "Optical material"
+msgstr ""
+
+#: ../gui/layer_widget.py:222
+msgid "Layer type"
+msgstr ""
+
+#: ../gui/layer_widget.py:222
+msgid "DoS Layer"
+msgstr ""
+
+#: ../gui/layer_widget.py:222
+msgid "PL Layer"
+msgstr ""
+
+#: ../gui/layer_widget.py:270
+msgid "contact"
+msgstr ""
+
+#: ../gui/layer_widget.py:271
+msgid "active layer"
+msgstr ""
+
+#: ../gui/layer_widget.py:272
+msgid "other"
+msgstr ""
+
+#: ../gui/layer_widget.py:350
+msgid "Error in epitaxy, check the input values."
+msgstr ""
+
+#: ../gui/dump_io.py:71
+msgid "<big><b>Write all data to disk (slow)</b></big><br>"
+msgstr ""
+
+#: ../gui/dump_io.py:76
+msgid "<big><b>Write minimal data to disk (fast)</b></big><br>"
+msgstr ""
+
+#: ../gui/dump_io.py:102
+msgid ""
+"Data dump\n"
+"control"
+msgstr ""
+
+#: ../gui/experiment.py:75 ../gui/fxexperiment.py:66 ../gui/jvexperiment.py:115
+msgid "New experiment name"
+msgstr ""
+
+#: ../gui/experiment.py:75 ../gui/fxexperiment.py:66 ../gui/jvexperiment.py:117
+msgid "experiment "
+msgstr ""
+
+#: ../gui/experiment.py:93 ../gui/jvexperiment.py:118
+msgid "Clone the current experiment to a new experiment called:"
+msgstr ""
+
+#: ../gui/experiment.py:99 ../gui/experiment.py:102
+msgid "Error copying file"
+msgstr ""
+
+#: ../gui/experiment.py:115 ../gui/fxexperiment.py:109
+#: ../gui/jvexperiment.py:119
+msgid "Rename the experiment to be called"
+msgstr ""
+
+#: ../gui/experiment.py:140 ../gui/jvexperiment.py:120
+msgid "Should I remove the experiment file "
+msgstr ""
+
+#: ../gui/experiment.py:173
+msgid "Loading"
+msgstr ""
+
+#: ../gui/experiment.py:199
+msgid "Time domain experiment window"
+msgstr ""
+
+#: ../gui/information_noweb.py:99
+msgid ""
+"<big><b>Welcome to gpvdm</b></big>\n"
+" The window will provide you with information about new versions and bugs in "
+"gpvdm."
+msgstr ""
+
+#: ../gui/new_simulation.py:72
+msgid ""
+"<big><b>Now save the simulation</b></big><br>Now select where you would like "
+"to save the simulation directory."
+msgstr ""
+
+#: ../gui/new_simulation.py:78
+msgid "password:"
+msgstr ""
+
+#: ../gui/new_simulation.py:80
+msgid "Wrong password"
+msgstr ""
+
+#: ../gui/new_simulation.py:87
+msgid ""
+"It's not a good idea to save the simulation in the gpvdm installation "
+"directory.  Try saving it somewhere else, such as your desktop or home "
+"directory."
+msgstr ""
+
+#: ../gui/new_simulation.py:91
+msgid ""
+"That directory already exists.  Pick another name or delete the old one."
+msgstr ""
+
+#: ../gui/new_simulation.py:129
+msgid "Please select a device before clicking next"
+msgstr ""
+
+#: ../gui/new_simulation.py:136
+msgid "Organic LED"
+msgstr ""
+
+#: ../gui/new_simulation.py:137
+msgid "Crystalline silicon solar cell"
+msgstr ""
+
+#: ../gui/new_simulation.py:138
+msgid "a-Si solar cell "
+msgstr ""
+
+#: ../gui/new_simulation.py:139
+msgid "polycrystalline silicon "
+msgstr ""
+
+#: ../gui/new_simulation.py:140
+msgid "OFET "
+msgstr ""
+
+#: ../gui/new_simulation.py:141
+msgid "Perovskite solar cell"
+msgstr ""
+
+#: ../gui/new_simulation.py:142
+msgid "CIGS Solar cell"
+msgstr ""
+
+#: ../gui/new_simulation.py:153 ../gui/ribbon.py:66
+msgid "New simulation"
+msgstr ""
+
+#: ../gui/new_simulation.py:155
+msgid "Which type of device would you like to simulate?"
+msgstr ""
+
+#: ../gui/new_simulation.py:166 ../gui/help.py:116
+msgid "Next"
+msgstr ""
+
+#: ../gui/new_simulation.py:167 ../gui/dlg_get_multi_text.py:68
+#: ../gui/scan_select.py:78 ../gui/connect_to_cluster.py:85
+#: ../gui/materials_select.py:75
+msgid "Cancel"
+msgstr ""
+
+#: ../gui/new_simulation.py:172
+msgid "Show hidden"
+msgstr ""
+
+#: ../gui/plot_ribbon.py:60 ../gui/tab_homo.py:281 ../gui/doping.py:181
+msgid "Save"
+msgstr ""
+
+#: ../gui/plot_ribbon.py:63 ../gui/open_save_dlg.py:54
+msgid "Save as"
+msgstr ""
+
+#: ../gui/plot_ribbon.py:73
+msgid "Black"
+msgstr ""
+
+#: ../gui/plot_ribbon.py:76
+msgid "Rainbow"
+msgstr ""
+
+#: ../gui/plot_ribbon.py:86
+msgid "Autoscale"
+msgstr ""
+
+#: ../gui/plot_ribbon.py:89
+msgid "Set log scale y"
+msgstr ""
+
+#: ../gui/plot_ribbon.py:92
+msgid "Set log scale x"
+msgstr ""
+
+#: ../gui/plot_ribbon.py:103
+msgid "Subtract first point"
+msgstr ""
+
+#: ../gui/plot_ribbon.py:106
+msgid "Add min point"
+msgstr ""
+
+#: ../gui/plot_ribbon.py:109
+msgid "Invert y-axis"
+msgstr ""
+
+#: ../gui/plot_ribbon.py:112
+msgid "Norm to 1.0 y"
+msgstr ""
+
+#: ../gui/plot_ribbon.py:115
+msgid "Norm to peak of all data"
+msgstr ""
+
+#: ../gui/plot_ribbon.py:118
+msgid "Heat map"
+msgstr ""
+
+#: ../gui/plot_ribbon.py:121
+msgid "Heat map edit"
+msgstr ""
+
+#: ../gui/plot_ribbon.py:134 ../gui/ribbon_import.py:84
+#: ../gui/ribbon_import.py:97 ../gui/scan_ribbon.py:90
+msgid "Plot"
+msgstr ""
+
+#: ../gui/plot_ribbon.py:140 ../gui/token_lib.py:113
+msgid "Color"
+msgstr ""
+
+#: ../gui/plot_ribbon.py:143
+msgid "Scale"
+msgstr ""
+
+#: ../gui/plot_ribbon.py:146 ../gui/inp_description.py:42
+msgid "Math"
+msgstr ""
+
+#: ../gui/scan_io.py:80
+msgid "Adding: "
+msgstr ""
+
+#: ../gui/scan_io.py:106
+msgid "Problem generating tree."
+msgstr ""
+
+#: ../gui/scan_io.py:200
+msgid "and "
+msgstr ""
+
+#: ../gui/scan_io.py:200
+msgid " more."
+msgstr ""
+
+#: ../gui/scan_io.py:205
+msgid "Should I delete these files?:\n"
+msgstr ""
+
+#: ../gui/open_save_dlg.py:40
+msgid "Save a the simulation as"
+msgstr ""
+
+#: ../gui/open_save_dlg.py:41
+msgid "Directory"
+msgstr ""
+
+#: ../gui/open_save_dlg.py:80 ../gui/gpvdm_open.py:69
+msgid "Open file"
+msgstr ""
+
+#: ../gui/measure.py:95
+msgid "Measurment editor"
+msgstr ""
+
+#: ../gui/tab.py:137 ../gui/tab.py:183
+msgid "File not found."
+msgstr ""
+
+#: ../gui/contacts.py:98
+msgid "top"
+msgstr ""
+
+#: ../gui/contacts.py:99
+msgid "bottom"
+msgstr ""
+
+#: ../gui/contacts.py:107
+msgid "true"
+msgstr ""
+
+#: ../gui/contacts.py:108
+msgid "false"
+msgstr ""
+
+#: ../gui/contacts.py:144
+msgid "There are some non numeric values in the table"
+msgstr ""
+
+#: ../gui/contacts.py:155
+msgid "Name"
+msgstr ""
+
+#: ../gui/contacts.py:155
+msgid "Top/Bottom"
+msgstr ""
+
+#: ../gui/contacts.py:155
+msgid "Active contact"
+msgstr ""
+
+#: ../gui/contacts.py:155 ../gui/doping.py:109
+msgid "Start"
+msgstr ""
+
+#: ../gui/contacts.py:155 ../gui/doping.py:109
+msgid "Width"
+msgstr ""
+
+#: ../gui/contacts.py:155
+msgid "Depth"
+msgstr ""
+
+#: ../gui/contacts.py:172
+msgid "Edit contacts"
+msgstr ""
+
+#: ../gui/contacts.py:179
+msgid "Add contact"
+msgstr ""
+
+#: ../gui/contacts.py:183
+msgid "Remove contacts"
+msgstr ""
+
+#: ../gui/measure_ribbon.py:57
+msgid "New measurement"
+msgstr ""
+
+#: ../gui/measure_ribbon.py:58
+msgid "Delete measurement"
+msgstr ""
+
+#: ../gui/measure_ribbon.py:59
+msgid "Clone measurement"
+msgstr ""
+
+#: ../gui/measure_ribbon.py:60
+msgid "Rename measurement"
+msgstr ""
+
+#: ../gui/measure_ribbon.py:61
+msgid "New measurement name"
+msgstr ""
+
+#: ../gui/measure_ribbon.py:63
+msgid "measurement"
+msgstr ""
+
+#: ../gui/measure_ribbon.py:64
+msgid "Clone the current measurement to a new measurement called:"
+msgstr ""
+
+#: ../gui/measure_ribbon.py:65
+msgid "Rename the measurement to be called"
+msgstr ""
+
+#: ../gui/measure_ribbon.py:66
+msgid "Should I remove the measurment file "
+msgstr ""
+
+#: ../gui/measure_ribbon.py:105
+msgid "Measurement"
+msgstr ""
+
+#: ../gui/dlg_get_multi_text.py:66 ../gui/scan_select.py:77
+#: ../gui/materials_select.py:74
+msgid "OK"
+msgstr ""
+
+#: ../gui/mesh_configure.py:51
+msgid "Mesh configuration"
+msgstr ""
+
+#: ../gui/mesh_configure.py:80
+msgid "Mesh x"
+msgstr ""
+
+#: ../gui/mesh_configure.py:80
+msgid "Mesh y"
+msgstr ""
+
+#: ../gui/mesh_configure.py:80
+msgid "Mesh z"
+msgstr ""
+
+#: ../gui/config_window.py:109
+msgid "Detailed dump control"
+msgstr ""
+
+#: ../gui/ribbon_home.py:69
+msgid "Undo"
+msgstr ""
+
+#: ../gui/ribbon_home.py:74
+msgid "Run simulation"
+msgstr ""
+
+#: ../gui/ribbon_home.py:77
+msgid ""
+"Stop\n"
+"simulation"
+msgstr ""
+
+#: ../gui/ribbon_home.py:83
+msgid ""
+"Parameter\n"
+"scan"
+msgstr ""
+
+#: ../gui/ribbon_home.py:90
+msgid ""
+"Fit\n"
+"data"
+msgstr ""
+
+#: ../gui/ribbon_home.py:96
+msgid ""
+"Plot\n"
+"File"
+msgstr ""
+
+#: ../gui/ribbon_home.py:100
+msgid ""
+"Examine results\n"
+"in time domain"
+msgstr ""
+
+#: ../gui/ribbon_home.py:150
+msgid ""
+"<big>Select a file to plot</big><br>Single clicking shows you the content of "
+"the file"
+msgstr ""
+
+#: ../gui/ribbon_home.py:169
+msgid ""
+"<big><b>The scan window</b></big><br> Very often it is useful to be able to "
+"systematically very a device parameter such as mobility or density of trap "
+"states.  This window allows you to do just that."
+msgstr ""
+
+#: ../gui/ribbon_home.py:169
+msgid "Use the plus icon to add a new scan line to the list."
+msgstr ""
+
+#: ../gui/ribbon_home.py:182
+msgid ""
+"<big><b>Examine the results in time domain</b></big><br> After you have run "
+"a simulation in time domain, if is often nice to be able to step through the "
+"simulation and look at the results.  This is what this window does.  Use the "
+"slider bar to move through the simulation.  When you are simulating a JV "
+"curve, the slider sill step through voltage points rather than time points."
+msgstr ""
+
+#: ../gui/ribbon_home.py:200
+msgid ""
+"<big><b>Fit window</b></big><br> Use this window to fit the simulation to "
+"experimental data."
+msgstr ""
+
+#: ../gui/materials_main.py:60
+msgid ""
+"<big><b>Electrical parameters</b></big><br>Use this tab to configure the "
+"electrical parameters for the material."
+msgstr ""
+
+#: ../gui/materials_main.py:65
+msgid ""
+"<big><b>Luminescence</b></big><br>Use this tab to edit the materials "
+"Luminescence."
+msgstr ""
+
+#: ../gui/materials_main.py:73
+msgid "<big><b>Absorption</b></big><br>"
+msgstr ""
+
+#: ../gui/materials_main.py:77 ../gui/materials_main.py:138
+#: ../gui/materials_main.py:142 ../gui/materials_main.py:164
+#: ../gui/materials_main.py:179 ../gui/materials_main.py:198
+#: ../gui/import_data.py:295 ../gui/spectra_main.py:50
+msgid "Refractive index"
+msgstr ""
+
+#: ../gui/materials_main.py:81 ../gui/spectra_main.py:54
+msgid "<big><b>Refractive index</b></big><br>"
+msgstr ""
+
+#: ../gui/materials_main.py:98
+msgid "Material editor"
+msgstr ""
+
+#: ../gui/materials_main.py:146
+msgid "Basic"
+msgstr ""
+
+#: ../gui/gpvdm.py:184
+msgid "Don't run me as root!!"
+msgstr ""
+
+#: ../gui/gpvdm.py:220 ../gui/gpvdm_notebook.py:98 ../gui/gpvdm_notebook.py:160
+#: ../gui/ribbon.py:159
+msgid "Terminal"
+msgstr ""
+
+#: ../gui/gpvdm.py:273
+msgid "file opened"
+msgstr ""
+
+#: ../gui/gpvdm.py:278
+msgid ""
+"<big><b>New simulation!</b></big><br> Now selected the type of device you "
+"would like to simulate."
+msgstr ""
+
+#: ../gui/gpvdm.py:295
+msgid ""
+"<big><b>Now run the simulation</b></big><br> Click on the play icon to start "
+"a simulation."
+msgstr ""
+
+#: ../gui/gpvdm.py:310
+msgid ""
+"<big><b>Hi!</b></big><br> I'm the on-line help system :).  If you find any "
+"bugs please report them to <a href=\"mailto:roderick.mackenzie@nottingham.ac."
+"uk\">roderick.mackenzie@nottingham.ac.uk</a>."
+msgstr ""
+
+#: ../gui/gpvdm.py:310
+msgid "Click on the new icon to make a new simulation directory."
+msgstr ""
+
+#: ../gui/gpvdm.py:340
+msgid ""
+"There was a problem loading the electrical mesh, I suspect you are trying to "
+"open a file generated in a very old version of gpvdm."
+msgstr ""
+
+#: ../gui/gpvdm.py:366
+msgid "You should not try to open simulations in the root gpvdm directory."
+msgstr ""
+
+#: ../gui/gpvdm.py:372
+msgid ""
+"The simulation you want to import looks like it was made on an old version "
+"of gpvdm, do you want to try to open it anyway?"
+msgstr ""
+
+#: ../gui/gpvdm.py:379
+msgid ""
+"It looks like there is no materials database in the simulation directory "
+"should I import one?"
+msgstr ""
+
+#: ../gui/gpvdm.py:385
+msgid "Open an existing gpvdm simulation"
+msgstr ""
+
+#: ../gui/gpvdm.py:425
+msgid "The simulation directory has been deleted."
+msgstr ""
+
+#: ../gui/gpvdm.py:443
+msgid "I can't run from inside a zip file!"
+msgstr ""
+
+#: ../gui/ribbon_simulations.py:76
+msgid ""
+"Time domain\n"
+"simulation editor."
+msgstr ""
+
+#: ../gui/ribbon_simulations.py:86
+msgid ""
+"Steady state\n"
+"simulation editor"
+msgstr ""
+
+#: ../gui/ribbon_simulations.py:90
+msgid ""
+"Suns Voc\n"
+"simulation editor"
+msgstr ""
+
+#: ../gui/ribbon_simulations.py:94
+msgid "Simple diode model"
+msgstr ""
+
+#: ../gui/ribbon_simulations.py:98
+msgid ""
+"Quantum\n"
+"efficiency"
+msgstr ""
+
+#: ../gui/ribbon_simulations.py:108
+msgid ""
+"Optical\n"
+"Simulation"
+msgstr ""
+
+#: ../gui/ribbon_simulations.py:112
+msgid ""
+"Laser\n"
+"editor"
+msgstr ""
+
+#: ../gui/ribbon_simulations.py:116
+msgid "Measure"
+msgstr ""
+
+#: ../gui/ribbon_simulations.py:120
+msgid ""
+"Calculate\n"
+"the cost"
+msgstr ""
+
+#: ../gui/ribbon_simulations.py:173
+msgid ""
+"<big><b>The time mesh editor</b></big><br> To do time domain simulations one "
+"must define how voltage the light vary as a function of time.  This can be "
+"done in this window.  Also use this window to define the simulation length "
+"and time step."
+msgstr ""
+
+#: ../gui/ribbon_simulations.py:185
+msgid ""
+"<big><b>Frequency domain mesh editor</b></big><br> Some times it is useful "
+"to do frequency domain simulations such as when simulating impedance "
+"spectroscopy.  This window will allow you to choose which frequencies will "
+"be simulated."
+msgstr ""
+
+#: ../gui/ribbon_simulations.py:196
+msgid ""
+"<big><b>Laser setup</b></big><br> Use this window to set up your lasers."
+msgstr ""
+
+#: ../gui/ribbon_simulations.py:207
+msgid ""
+"<big><b>Measure window</b></big><br>Use this window to set up measurement "
+"points.  If for example you want to extract the value of current density "
+"from jv.dat at 0.2 Volts, set a measurement point for jv.dat to 0.2 V.  This "
+"will work with any file"
+msgstr ""
+
+#: ../gui/ribbon_simulations.py:219
+msgid ""
+"<big><b>JV simulation editor</b></big><br> Use this window to configure the "
+"Suns Voc simulations."
+msgstr ""
+
+#: ../gui/ribbon_simulations.py:230
+msgid ""
+"<big><b>Suns voc simulation editor</b></big><br> Use this window to select "
+"the step size and parameters of the JV simulations."
+msgstr ""
+
+#: ../gui/ribbon_simulations.py:241
+msgid ""
+"<big><b>Ideal diode editor</b></big><br> Use this window to configure the "
+"ideal diode model based on the simple diode equation."
+msgstr ""
+
+#: ../gui/ribbon_simulations.py:249
+msgid ""
+"<big><b>The optical simulation window</b></big><br>Use this window to "
+"perform optical simulations.  Click on the play button to run a simulation."
+msgstr ""
+
+#: ../gui/ribbon_simulations.py:249
+msgid ""
+"Click on the play button to run an optical simulation.  The results will be "
+"displayed in the tabs to the right."
+msgstr ""
+
+#: ../gui/ribbon_simulations.py:272
+msgid ""
+"<big><b>Costs window</b></big>\n"
+"Use this window to calculate the cost of the solar cell and the energy "
+"payback time."
+msgstr ""
+
+#: ../gui/tab_homo.py:65 ../gui/constraints.py:143 ../gui/constraints.py:182
+msgid "Function"
+msgstr ""
+
+#: ../gui/tab_homo.py:65 ../gui/duplicate.py:103 ../gui/duplicate.py:144
+#: ../gui/fit_vars.py:155 ../gui/radiobutton.py:84
+msgid "Enabled"
+msgstr ""
+
+#: ../gui/tab_homo.py:65
+msgid "a"
+msgstr ""
+
+#: ../gui/tab_homo.py:65
+msgid "b"
+msgstr ""
+
+#: ../gui/tab_homo.py:65
+msgid "c"
+msgstr ""
+
+#: ../gui/tab_homo.py:125 ../gui/electrical_mesh_editor.py:249
+msgid "Add "
+msgstr ""
+
+#: ../gui/tab_homo.py:129 ../gui/electrical_mesh_editor.py:253
+msgid "Remove "
+msgstr ""
+
+#: ../gui/ribbon_materials.py:62 ../gui/cost.py:111
+msgid "Cost"
+msgstr ""
+
+#: ../gui/ribbon_materials.py:63
+msgid "Cost of material"
+msgstr ""
+
+#: ../gui/ribbon_materials.py:67
+msgid ""
+"Material\n"
+"directory"
+msgstr ""
+
+#: ../gui/ribbon_materials.py:71 ../gui/equation.py:336
+msgid "Insert reference information"
+msgstr ""
+
+#: ../gui/ribbon_materials.py:74 ../gui/timedomain_ribbon.py:69
+#: ../gui/fxexperiment.py:193 ../gui/equation.py:332 ../gui/gl.py:518
+msgid "Save image"
+msgstr ""
+
+#: ../gui/ribbon_materials.py:77 ../gui/ribbon_import.py:65
+#: ../gui/fit_window.py:179 ../gui/import_data.py:206 ../gui/equation.py:340
+msgid "Import data"
+msgstr ""
+
+#: ../gui/constraints.py:143 ../gui/constraints.py:182 ../gui/fit_vars.py:155
+#: ../gui/fit_patch.py:119
+msgid "Path"
+msgstr ""
+
+#: ../gui/constraints.py:143 ../gui/constraints.py:182
+msgid "Max"
+msgstr ""
+
+#: ../gui/constraints.py:143 ../gui/constraints.py:182
+msgid "Min"
+msgstr ""
+
+#: ../gui/constraints.py:143 ../gui/constraints.py:182 ../gui/error_han.py:73
+#: ../libfit/fit_dump.c:62 ../libfit/fit_dump.c:85 ../libfit/fit_dump.c:108
+msgid "Error"
+msgstr ""
+
+#: ../gui/constraints.py:151 ../gui/constraints.py:210
+msgid "File (a)"
+msgstr ""
+
+#: ../gui/constraints.py:151 ../gui/constraints.py:210
+msgid "Token (a)"
+msgstr ""
+
+#: ../gui/constraints.py:151 ../gui/constraints.py:210
+msgid "Path (a)"
+msgstr ""
+
+#: ../gui/constraints.py:151 ../gui/constraints.py:210
+msgid "File (b)"
+msgstr ""
+
+#: ../gui/constraints.py:151 ../gui/constraints.py:210
+msgid "Token (b)"
+msgstr ""
+
+#: ../gui/constraints.py:151 ../gui/constraints.py:210
+msgid "Path (b)"
+msgstr ""
+
+#: ../gui/constraints.py:151 ../gui/constraints.py:210
+#: ../gui/tb_item_mat_file.py:57 ../gui/tb_item_mat_file.py:80
+msgid "Equation"
+msgstr ""
+
+#: ../gui/constraints.py:233
+msgid "Fit constraints window"
+msgstr ""
+
+#: ../gui/constraints.py:243 ../gui/constraints.py:282
+#: ../gui/measure_tab.py:206 ../gui/duplicate.py:207 ../gui/fit_patch.py:165
+msgid "Add"
+msgstr ""
+
+#: ../gui/constraints.py:247 ../gui/constraints.py:286
+#: ../gui/measure_tab.py:210 ../gui/duplicate.py:211 ../gui/fit_patch.py:169
+msgid "Minus"
+msgstr ""
+
+#: ../gui/QParasitic.py:39
+msgid "See Parasitic window"
+msgstr ""
+
+#: ../gui/tab_main.py:82 ../gui/tab_view.py:77
+msgid ""
+"<big><b>The device structure tab</b></big>\n"
+" Use this tab to change the structure of the device, the layer thicknesses "
+"and to perform optical simulations.  You can also browse the materials data "
+"base and  edit the electrical mesh."
+msgstr ""
+
+#: ../gui/tab_main.py:86 ../gui/tab_view.py:81
+msgid "<big><b>Update available!</b></big><br>"
+msgstr ""
+
+#: ../gui/ribbon_device.py:74
+msgid ""
+"Layer\n"
+"editor"
+msgstr ""
+
+#: ../gui/ribbon_device.py:79
+msgid "Contacts"
+msgstr ""
+
+#: ../gui/ribbon_device.py:83 ../libdump/dump_1d_slice.c:323
+msgid "Doping"
+msgstr ""
+
+#: ../gui/ribbon_device.py:87
+msgid ""
+"Parasitic\n"
+" components"
+msgstr ""
+
+#: ../gui/ribbon_device.py:91
+msgid ""
+"Electrical\n"
+"parameters"
+msgstr ""
+
+#: ../gui/ribbon_device.py:95
+msgid "xz-size"
+msgstr ""
+
+#: ../gui/ribbon_device.py:136
+msgid ""
+"<big><b>Doping window</b></big>\n"
+"Use this window to add doping to the simulation"
+msgstr ""
+
+#: ../gui/ribbon_device.py:149
+msgid ""
+"<big><b>Contacts window</b></big>\n"
+"Use this window to change the layout of the contacts on the device"
+msgstr ""
+
+#: ../gui/ribbon_device.py:161
+msgid ""
+"<big><b>Parasitic components</b></big>\n"
+"Use this window to edit the shunt and series resistance."
+msgstr ""
+
+#: ../gui/ribbon_device.py:172
+msgid ""
+"<big><b>Device layers</b></big>\n"
+"Use this window to configure the structure of the device."
+msgstr ""
+
+#: ../gui/ribbon_device.py:183
+msgid ""
+"<big><b>xz dimension editor</b></big>\n"
+"Use this window to configure the xz size of the device."
+msgstr ""
+
+#: ../gui/ribbon_device.py:195
+msgid ""
+"<big><b>Electrical parameters</b></big>\n"
+"Use this window to change the electrical parameters of each layer."
+msgstr ""
+
+#: ../gui/tb_lasers.py:73
+msgid "Laser:"
+msgstr ""
+
+#: ../gui/emesh.py:141
+msgid "Electrical Mesh Editor"
+msgstr ""
+
+#: ../gui/emesh.py:149
+msgid "1D simulation"
+msgstr ""
+
+#: ../gui/emesh.py:153
+msgid "2D simulation"
+msgstr ""
+
+#: ../gui/emesh.py:157
+msgid "3D simulation"
+msgstr ""
+
+#: ../gui/emesh.py:161
+msgid "Configure mesh"
+msgstr ""
+
+#: ../gui/display.py:99
+msgid "xy"
+msgstr ""
+
+#: ../gui/display.py:103
+msgid "yz"
+msgstr ""
+
+#: ../gui/display.py:107
+msgid "xz"
+msgstr ""
+
+#: ../gui/display.py:111
+msgid "Rotate"
+msgstr ""
+
+#: ../gui/display.py:116
+msgid "Configuration"
+msgstr ""
+
+#: ../gui/display.py:188
+msgid ""
+"<big><b>OpenGL warning</b></big><br>It looks as if you don't have working 3D "
+"graphics acceleration on your computer.  gpvdm will therefore fallback to 2D "
+"mode. The model will still be fully functional, but not look quite so nice."
+msgstr ""
+
+#: ../gui/fit_poly.py:53
+msgid "Poly fit"
+msgstr ""
+
+#: ../gui/fit_poly.py:67
+msgid "Polynomial coefficients"
+msgstr ""
+
+#: ../gui/fit_poly.py:71
+msgid "Ok"
+msgstr ""
+
+#: ../gui/gpvdm_notebook.py:92 ../gui/gpvdm_notebook.py:153
+#: ../gui/gpvdm_notebook.py:175
+msgid "Device structure"
+msgstr ""
+
+#: ../gui/gpvdm_notebook.py:93
+msgid ""
+"<big><b>The device structure tab</b></big><br> Use this tab to change the "
+"structure of the device, the layer thicknesses and to perform optical "
+"simulations.  You can also browse the materials data base and  edit the "
+"electrical mesh."
+msgstr ""
+
+#: ../gui/gpvdm_notebook.py:96
+msgid ""
+"<big><b>The electrical parameters</b></big>\n"
+"This tab contains the electrical model parameters, such as mobility, tail "
+"slope energy, and band gap."
+msgstr ""
+
+#: ../gui/gpvdm_notebook.py:99
+msgid ""
+"<big><b>The terminal window</b></big>\n"
+"The output of the model will be displayed in this window, watch this screen "
+"for debugging and convergence information."
+msgstr ""
+
+#: ../gui/gpvdm_notebook.py:101 ../gui/gpvdm_notebook.py:132
+#: ../gui/gpvdm_notebook.py:179 ../gui/ribbon.py:149
+msgid "Information"
+msgstr ""
+
+#: ../gui/gpvdm_notebook.py:102
+msgid ""
+"<big><b>On-line help</b></big>\n"
+"You can view the on-line help and manual here."
+msgstr ""
+
+#: ../gui/gpvdm_notebook.py:165
+msgid "Output"
+msgstr ""
+
+#: ../gui/ribbon_import.py:62
+msgid "Open data file"
+msgstr ""
+
+#: ../gui/ribbon_import.py:94
+msgid "Load/Import"
+msgstr ""
+
+#: ../gui/ribbon_solar.py:57 ../gui/equation.py:381
+msgid "Calculate"
+msgstr ""
+
+#: ../gui/ribbon_solar.py:60
+msgid "Export spectrum"
+msgstr ""
+
+#: ../gui/ribbon_solar.py:90
+msgid "Spectrum"
+msgstr ""
+
+#: ../gui/ribbon_information.py:58 ../gui/cool_menu.py:59 ../gui/about.py:108
+msgid "License"
+msgstr ""
+
+#: ../gui/ribbon_information.py:62
+msgid ""
+"How to\n"
+"cite"
+msgstr ""
+
+#: ../gui/ribbon_information.py:66
+msgid ""
+"Hints\n"
+"Window"
+msgstr ""
+
+#: ../gui/ribbon_information.py:78
+msgid "Assosiated paper"
+msgstr ""
+
+#: ../gui/ribbon_information.py:82
+msgid "twitter"
+msgstr ""
+
+#: ../gui/ribbon_information.py:86
+msgid "Facebook"
+msgstr ""
+
+#: ../gui/ribbon_information.py:91
+msgid ""
+"Youtube\n"
+"channel"
+msgstr ""
+
+#: ../gui/wiz.py:79
+msgid "aaa"
+msgstr ""
+
+#: ../gui/wiz.py:82
+msgid "bbb"
+msgstr ""
+
+#: ../gui/tb_item_sim_mode.py:101
+msgid "Simulation mode:"
+msgstr ""
+
+#: ../gui/ribbon.py:70
+msgid ""
+"Open\n"
+"simulation"
+msgstr ""
+
+#: ../gui/ribbon.py:73
+msgid ""
+"Export\n"
+"data"
+msgstr ""
+
+#: ../gui/ribbon.py:117 ../gui/connect_to_cluster.py:65
+msgid "Connect to cluster"
+msgstr ""
+
+#: ../gui/ribbon.py:133 ../gui/scan.py:243 ../gui/scan_ribbon.py:208
+msgid "Simulations"
+msgstr ""
+
+#: ../gui/ribbon.py:142
+msgid "Databases"
+msgstr ""
+
+#: ../gui/ribbon.py:162
+msgid "Can not connect to cluster."
+msgstr ""
+
+#: ../gui/inp_description.py:38
+msgid "JV"
+msgstr ""
+
+#: ../gui/inp_description.py:39
+msgid "JV Simple"
+msgstr ""
+
+#: ../gui/inp_description.py:40
+msgid "Dump"
+msgstr ""
+
+#: ../gui/inp_description.py:41
+msgid "CELIV"
+msgstr ""
+
+#: ../gui/inp_description.py:43
+msgid "ToF"
+msgstr ""
+
+#: ../gui/inp_description.py:44
+msgid "Stark"
+msgstr ""
+
+#: ../gui/inp_description.py:45
+msgid "Pulse"
+msgstr ""
+
+#: ../gui/inp_description.py:46
+msgid "Pulse Voc"
+msgstr ""
+
+#: ../gui/inp_description.py:47
+msgid "IMPS"
+msgstr ""
+
+#: ../gui/inp_description.py:48
+msgid "Light Exp"
+msgstr ""
+
+#: ../gui/inp_description.py:50
+msgid "FDTD"
+msgstr ""
+
+#: ../gui/inp_description.py:51
+msgid "Sun Voc"
+msgstr ""
+
+#: ../gui/inp_description.py:52
+msgid "TPC"
+msgstr ""
+
+#: ../gui/inp_description.py:53
+msgid "Fit"
+msgstr ""
+
+#: ../gui/inp_description.py:54
+msgid "Bands"
+msgstr ""
+
+#: ../gui/inp_description.py:55
+msgid "Density of States"
+msgstr ""
+
+#: ../gui/scan.py:65
+msgid "Change directory"
+msgstr ""
+
+#: ../gui/scan.py:74
+msgid "All files"
+msgstr ""
+
+#: ../gui/scan.py:97
+msgid "New simulation name:"
+msgstr ""
+
+#: ../gui/scan.py:97
+msgid "Simulation "
+msgstr ""
+
+#: ../gui/scan.py:119
+msgid "Clone the current simulation to a new simulation called:"
+msgstr ""
+
+#: ../gui/scan.py:126
+msgid "This directory already exists."
+msgstr ""
+
+#: ../gui/scan.py:192
+msgid "Rename the simulation to be called:"
+msgstr ""
+
+#: ../gui/scan.py:210
+msgid "Should I remove the simulation directory "
+msgstr ""
+
+#: ../gui/scan.py:264
+msgid "Parameter scan - gpvdm"
+msgstr ""
+
+#: ../gui/info.py:50
+msgid "Simulation information"
+msgstr ""
+
+#: ../gui/info.py:79
+msgid "Simulation Information"
+msgstr ""
+
+#: ../gui/measure_tab.py:92 ../gui/measure_tab.py:140
+msgid "Output token"
+msgstr ""
+
+#: ../gui/measure_tab.py:92 ../gui/measure_tab.py:140
+msgid "Mathematical operation"
+msgstr ""
+
+#: ../gui/timedomain_ribbon.py:57 ../gui/fxexperiment.py:177
+#: ../gui/jvexperiment.py:111
+msgid "New experiment"
+msgstr ""
+
+#: ../gui/timedomain_ribbon.py:60 ../gui/fxexperiment.py:181
+#: ../gui/jvexperiment.py:112
+msgid "Delete experiment"
+msgstr ""
+
+#: ../gui/timedomain_ribbon.py:63 ../gui/fxexperiment.py:185
+#: ../gui/jvexperiment.py:113
+msgid "Clone experiment"
+msgstr ""
+
+#: ../gui/timedomain_ribbon.py:66 ../gui/fxexperiment.py:189
+#: ../gui/jvexperiment.py:114
+msgid "Rename experiment"
+msgstr ""
+
+#: ../gui/timedomain_ribbon.py:87
+msgid "Laser start time"
+msgstr ""
+
+#: ../gui/timedomain_ribbon.py:100
+msgid "Simulation start time"
+msgstr ""
+
+#: ../gui/timedomain_ribbon.py:127
+msgid "Experiment"
+msgstr ""
+
+#: ../gui/timedomain_ribbon.py:133
+msgid "Simulation"
+msgstr ""
+
+#: ../gui/snapshot_slider.py:97
+msgid "Snapshot slider"
+msgstr ""
+
+#: ../gui/cost.py:72
+msgid "Cost and energy payback calculator"
+msgstr ""
+
+#: ../gui/cost.py:80
+msgid "Re-calcualte"
+msgstr ""
+
+#: ../gui/cost.py:111
+msgid "material"
+msgstr ""
+
+#: ../gui/cost.py:111 ../gui/token_lib.py:97
+msgid "Volume"
+msgstr ""
+
+#: ../gui/cost.py:111
+msgid "Mass"
+msgstr ""
+
+#: ../gui/cost.py:117
+msgid "python3-openpyxl not found"
+msgstr ""
+
+#: ../gui/duplicate.py:103
+msgid "Source file"
+msgstr ""
+
+#: ../gui/duplicate.py:103
+msgid "Source token"
+msgstr ""
+
+#: ../gui/duplicate.py:103 ../gui/duplicate.py:144
+msgid "Source path"
+msgstr ""
+
+#: ../gui/duplicate.py:103
+msgid "Destination file"
+msgstr ""
+
+#: ../gui/duplicate.py:103
+msgid "Destination token"
+msgstr ""
+
+#: ../gui/duplicate.py:103 ../gui/duplicate.py:144
+msgid "Destination path"
+msgstr ""
+
+#: ../gui/duplicate.py:144
+msgid "Source File"
+msgstr ""
+
+#: ../gui/duplicate.py:144
+msgid "Source Token"
+msgstr ""
+
+#: ../gui/duplicate.py:144
+msgid "Destination File"
+msgstr ""
+
+#: ../gui/duplicate.py:144
+msgid "Destination Token"
+msgstr ""
+
+#: ../gui/duplicate.py:199
+msgid "Fit variables duplicate window"
+msgstr ""
+
+#: ../gui/fxexperiment.py:82
+msgid "Clone the current experiment to a new experiment called"
+msgstr ""
+
+#: ../gui/fxexperiment.py:123
+msgid "Should I remove the experiment file"
+msgstr ""
+
+#: ../gui/fxexperiment.py:170
+msgid "Frequency domain experiment editor"
+msgstr ""
+
+#: ../gui/fit_window.py:87
+msgid ""
+"<big><b>The fitting variables window</b></big><br> Use this window to select "
+"the variables use to perform the fit."
+msgstr ""
+
+#: ../gui/fit_window.py:146
+msgid "Fit window"
+msgstr ""
+
+#: ../gui/fit_window.py:155
+msgid "New fit"
+msgstr ""
+
+#: ../gui/fit_window.py:156
+msgid "Delete fit"
+msgstr ""
+
+#: ../gui/fit_window.py:157
+msgid "Clone fit"
+msgstr ""
+
+#: ../gui/fit_window.py:158
+msgid "Rename fit"
+msgstr ""
+
+#: ../gui/fit_window.py:159
+msgid "New fit name:"
+msgstr ""
+
+#: ../gui/fit_window.py:161
+msgid "fit "
+msgstr ""
+
+#: ../gui/fit_window.py:162
+msgid "Clone the current fit to a new fit called:"
+msgstr ""
+
+#: ../gui/fit_window.py:163
+msgid "Rename the fit to be called:"
+msgstr ""
+
+#: ../gui/fit_window.py:164
+msgid "Should I remove the fit file "
+msgstr ""
+
+#: ../gui/fit_window.py:185
+msgid "Run a single fit"
+msgstr ""
+
+#: ../gui/fit_window.py:189
+msgid "Start the fitting process"
+msgstr ""
+
+#: ../gui/fit_window.py:193
+msgid "Stop the simulation"
+msgstr ""
+
+#: ../gui/fit_vars.py:96
+msgid "token"
+msgstr ""
+
+#: ../gui/fit_vars.py:96 ../gui/jobs.py:72
+msgid "path"
+msgstr ""
+
+#: ../gui/fit_vars.py:115
+msgid ""
+"The data file does not have a #begin or #end token indicating where the data "
+"starts and ends."
+msgstr ""
+
+#: ../gui/fit_vars.py:155
+msgid "Lines to edit"
+msgstr ""
+
+#: ../gui/fit_vars.py:155
+msgid "Line section to edit"
+msgstr ""
+
+#: ../gui/fit_vars.py:215
+msgid "Fit vars window - gpvdm"
+msgstr ""
+
+#: ../gui/fit_vars.py:225
+msgid "Add line"
+msgstr ""
+
+#: ../gui/fit_vars.py:229
+msgid "Remove line"
+msgstr ""
+
+#: ../gui/fit_vars.py:241
+msgid "Open"
+msgstr ""
+
+#: ../gui/ribbon_cluster.py:65
+msgid "Cluster get data"
+msgstr ""
+
+#: ../gui/ribbon_cluster.py:70
+msgid "Copy src to cluster"
+msgstr ""
+
+#: ../gui/ribbon_cluster.py:75
+msgid "Make on cluster"
+msgstr ""
+
+#: ../gui/ribbon_cluster.py:80
+msgid "Clean cluster"
+msgstr ""
+
+#: ../gui/ribbon_cluster.py:85
+msgid "Kill all cluster code"
+msgstr ""
+
+#: ../gui/ribbon_cluster.py:91
+msgid "Sync"
+msgstr ""
+
+#: ../gui/leftright.py:85
+msgid "Right"
+msgstr ""
+
+#: ../gui/leftright.py:91
+msgid "Left"
+msgstr ""
+
+#: ../gui/hpc.py:237
+msgid "Cluster status (www.gpvdm.com)"
+msgstr ""
+
+#: ../gui/fit_window_plot_real.py:75
+msgid "x"
+msgstr ""
+
+#: ../gui/fit_window_plot_real.py:76
+msgid "y"
+msgstr ""
+
+#: ../gui/cluster_config_ribbon.py:55 ../gui/cluster_config_ribbon.py:56
+#, fuzzy
+#| msgid "Generation rate"
+msgid "Generate keys"
+msgstr "उत्पादन की गति "
+
+#: ../gui/cluster_config_ribbon.py:59 ../gui/cluster_config_ribbon.py:60
+msgid "Install to cluster"
+msgstr ""
+
+#: ../gui/cluster_config_ribbon.py:63 ../gui/cluster_config_ribbon.py:64
+msgid "Boot cluster"
+msgstr ""
+
+#: ../gui/cluster_config_ribbon.py:67 ../gui/cluster_config_ribbon.py:68
+msgid "Stop cluster"
+msgstr ""
+
+#: ../gui/cluster_config_ribbon.py:71 ../gui/cluster_config_ribbon.py:72
+msgid "Remove from cluster"
+msgstr ""
+
+#: ../gui/cluster_config_ribbon.py:90
+#, fuzzy
+#| msgid "Probe load configuration"
+msgid "New cluster configuration"
+msgstr "लोडिंग विन्यास को जांचे "
+
+#: ../gui/cluster_config_ribbon.py:91
+#, fuzzy
+#| msgid "Probe load configuration"
+msgid "Delete configuration"
+msgstr "लोडिंग विन्यास को जांचे "
+
+#: ../gui/cluster_config_ribbon.py:92
+#, fuzzy
+#| msgid "Probe load configuration"
+msgid "Clone configuration"
+msgstr "लोडिंग विन्यास को जांचे "
+
+#: ../gui/cluster_config_ribbon.py:93
+#, fuzzy
+#| msgid "Probe load configuration"
+msgid "Rename configuration"
+msgstr "लोडिंग विन्यास को जांचे "
+
+#: ../gui/cluster_config_ribbon.py:94
+#, fuzzy
+#| msgid "Probe load configuration"
+msgid "New cluster configuration:"
+msgstr "लोडिंग विन्यास को जांचे "
+
+#: ../gui/cluster_config_ribbon.py:97
+msgid ""
+"Clone the current cluster configuration to a cluster configuration called:"
+msgstr ""
+
+#: ../gui/cluster_config_ribbon.py:98
+msgid "Rename the cluster configuration to be called:"
+msgstr ""
+
+#: ../gui/cluster_config_ribbon.py:99
+msgid "Should I remove the cluster configuration "
+msgstr ""
+
+#: ../gui/cluster_config_ribbon.py:113
+msgid "SSH"
+msgstr ""
+
+#: ../gui/cluster_config_ribbon.py:116
+msgid "Clusters"
+msgstr ""
+
+#: ../gui/dim_editor.py:108
+msgid "xz dimension editor"
+msgstr ""
+
+#: ../gui/server.py:167
+msgid "Running job "
+msgstr ""
+
+#: ../gui/server.py:307
+msgid ""
+"<big><b>Simulation finished!</b></big><br>Click on the plot icon to plot the "
+"results"
+msgstr ""
+
+#: ../gui/server.py:317
+msgid ""
+"<big><b>Excel workbook error</b></big><br>I can't write new data to the file "
+"data.xlsx, I think you have are viewing it using another program.  Please "
+"close data.xlsx to enable me to write new data to it."
+msgstr ""
+
+#: ../gui/server.py:408
+msgid "I did not think I was running any jobs"
+msgstr ""
+
+#: ../gui/information_webkit.py:66
+msgid "back"
+msgstr ""
+
+#: ../gui/information_webkit.py:70
+msgid "home"
+msgstr ""
+
+#: ../gui/ref.py:59 ../gui/ref.py:64
+msgid "Data provided by"
+msgstr ""
+
+#: ../gui/ref.py:60
+msgid "Associated paper"
+msgstr ""
+
+#: ../gui/ref.py:78
+msgid "Reference manager"
+msgstr ""
+
+#: ../gui/ref.py:98
+msgid "Reference"
+msgstr ""
+
+#: ../gui/ref.py:161
+msgid "New file"
+msgstr ""
+
+#: ../gui/dump_select.py:55
+msgid "Dump File Selector"
+msgstr ""
+
+#: ../gui/dump_select.py:75
+msgid "Refresh"
+msgstr ""
+
+#: ../gui/device_lib.py:53
+msgid "File name"
+msgstr ""
+
+#: ../gui/device_lib.py:53
+msgid "Device type"
+msgstr ""
+
+#: ../gui/device_lib.py:53
+msgid "Description"
+msgstr ""
+
+#: ../gui/device_lib.py:106
+msgid "You have not selected anything"
+msgstr ""
+
+#: ../gui/lasers.py:110
+msgid "Laser configuration window"
+msgstr ""
+
+#: ../gui/lasers.py:119
+msgid "New laser"
+msgstr ""
+
+#: ../gui/lasers.py:120
+msgid "Delete laser"
+msgstr ""
+
+#: ../gui/lasers.py:121
+msgid "Clone laser"
+msgstr ""
+
+#: ../gui/lasers.py:122
+msgid "Rename laser"
+msgstr ""
+
+#: ../gui/lasers.py:123
+msgid "New laser name:"
+msgstr ""
+
+#: ../gui/lasers.py:125
+msgid "laser "
+msgstr ""
+
+#: ../gui/lasers.py:126
+msgid "Clone the current laser to a new laser called:"
+msgstr ""
+
+#: ../gui/lasers.py:127
+msgid "Rename the laser to be called:"
+msgstr ""
+
+#: ../gui/lasers.py:128
+msgid "Should I remove the laser file "
+msgstr ""
+
+#: ../gui/cool_menu.py:53
+msgid "Help window"
+msgstr ""
+
+#: ../gui/cool_menu.py:56 ../gui/status_icon.py:50
+msgid "Manual"
+msgstr ""
+
+#: ../gui/cool_menu.py:62
+msgid "Youtube"
+msgstr ""
+
+#: ../gui/cool_menu.py:65
+msgid "Citing the model"
+msgstr ""
+
+#: ../gui/tab_terminal.py:112
+msgid "Running: "
+msgstr ""
+
+#: ../gui/tab_terminal.py:124
+msgid "I could not find a free cpu to run the command on"
+msgstr ""
+
+#: ../gui/tab_terminal.py:154
+msgid "CPU"
+msgstr ""
+
+#: ../gui/tab_terminal.py:166
+msgid "Nodes"
+msgstr ""
+
+#: ../gui/gpvdm_open.py:86 ../gui/help.py:112
+msgid "Back"
+msgstr ""
+
+#: ../gui/import_data.py:233
+msgid "The file to import:"
+msgstr ""
+
+#: ../gui/import_data.py:248
+msgid "The imported file, the numbers should now be in SI units"
+msgstr ""
+
+#: ../gui/import_data.py:286 ../gui/import_data.py:287
+#: ../gui/import_data.py:288 ../gui/import_data.py:289
+msgid "J"
+msgstr ""
+
+#: ../gui/import_data.py:288
+msgid "Amps"
+msgstr ""
+
+#: ../gui/import_data.py:289
+msgid "-Amps"
+msgstr ""
+
+#: ../gui/import_data.py:291
+msgid "-Voltage"
+msgstr ""
+
+#: ../gui/import_data.py:298
+msgid "Attenuation coefficient"
+msgstr ""
+
+#: ../gui/import_data.py:320
+msgid "x units:"
+msgstr ""
+
+#: ../gui/import_data.py:321
+msgid "y units:"
+msgstr ""
+
+#: ../gui/import_data.py:329
+msgid "Title:"
+msgstr ""
+
+#: ../gui/import_data.py:340
+msgid "x-label:"
+msgstr ""
+
+#: ../gui/import_data.py:342
+msgid "x-column:"
+msgstr ""
+
+#: ../gui/import_data.py:359
+msgid "y-label:"
+msgstr ""
+
+#: ../gui/import_data.py:361
+msgid "y-column:"
+msgstr ""
+
+#: ../gui/import_data.py:377
+msgid "device area:"
+msgstr ""
+
+#: ../gui/scan_ribbon.py:55
+msgid "New scan"
+msgstr ""
+
+#: ../gui/scan_ribbon.py:58
+msgid "Delete scan"
+msgstr ""
+
+#: ../gui/scan_ribbon.py:61
+msgid "Clone scan"
+msgstr ""
+
+#: ../gui/scan_ribbon.py:64
+msgid "Rename scan"
+msgstr ""
+
+#: ../gui/scan_ribbon.py:81
+msgid "Run scan"
+msgstr ""
+
+#: ../gui/scan_ribbon.py:85 ../gui/doping.py:109
+msgid "Stop"
+msgstr ""
+
+#: ../gui/scan_ribbon.py:93
+msgid "Time domain plot"
+msgstr ""
+
+#: ../gui/scan_ribbon.py:107
+msgid "Build scan"
+msgstr ""
+
+#: ../gui/scan_ribbon.py:110
+msgid "Rerun"
+msgstr ""
+
+#: ../gui/scan_ribbon.py:113
+msgid "Archive simulations"
+msgstr ""
+
+#: ../gui/scan_ribbon.py:117
+msgid "Clean simulation"
+msgstr ""
+
+#: ../gui/scan_ribbon.py:120
+msgid "Run all scans"
+msgstr ""
+
+#: ../gui/scan_ribbon.py:123
+msgid "Notes"
+msgstr ""
+
+#: ../gui/scan_ribbon.py:135
+msgid "Build nested simulation"
+msgstr ""
+
+#: ../gui/scan_ribbon.py:145
+msgid "Plot fits"
+msgstr ""
+
+#: ../gui/scan_ribbon.py:148
+msgid "Run simulation no generation"
+msgstr ""
+
+#: ../gui/scan_ribbon.py:151
+msgid "Run single fit"
+msgstr ""
+
+#: ../gui/scan_ribbon.py:154
+msgid "Clean unconverged simulation"
+msgstr ""
+
+#: ../gui/scan_ribbon.py:157
+msgid "Clean simulation output"
+msgstr ""
+
+#: ../gui/scan_ribbon.py:160
+msgid "Push unconverged to hpc"
+msgstr ""
+
+#: ../gui/scan_ribbon.py:163
+msgid "Change dir"
+msgstr ""
+
+#: ../gui/scan_ribbon.py:166
+msgid "Report"
+msgstr ""
+
+#: ../gui/scan_ribbon.py:176
+msgid "Build vectors"
+msgstr ""
+
+#: ../gui/scan_ribbon.py:205
+msgid "Scan"
+msgstr ""
+
+#: ../gui/scan_ribbon.py:213
+msgid "Advanced"
+msgstr ""
+
+#: ../gui/scan_ribbon.py:217
+msgid "Nested"
+msgstr ""
+
+#: ../gui/scan_ribbon.py:221
+msgid "ML"
+msgstr ""
+
+#: ../gui/about.py:54
+msgid "Written by Roderick MacKenzie 2012-2017, published under GPL v2.0"
+msgstr ""
+
+#: ../gui/about.py:56
+msgid "Version "
+msgstr ""
+
+#: ../gui/about.py:69
+msgid ""
+"gpvdm is a free general-purpose tool for simulation of light harvesting "
+"devices. It was originally written to simulate organic solar cells and "
+"OLEDs, but it has recently been extended to simulate other devices including "
+"silicon based devices. Currently the model can sumulate:"
+msgstr ""
+
+#: ../gui/about.py:71
+msgid "Organic solar cells"
+msgstr ""
+
+#: ../gui/about.py:72
+msgid "Organic LEDs"
+msgstr ""
+
+#: ../gui/about.py:73
+msgid "Crystalline silicon solar cells"
+msgstr ""
+
+#: ../gui/about.py:74
+msgid "a-Si solar cells"
+msgstr ""
+
+#: ../gui/about.py:75
+msgid "CIGS solar cells"
+msgstr ""
+
+#: ../gui/about.py:77
+msgid ""
+"The model solves both electron and hole drift-diffusion, and carrier "
+"continuity equations in position space to describe the movement of charge "
+"within the device. The model also solves Poisson's equation to calculate the "
+"internal electrostatic potential. Recombination and carrier trapping are "
+"described within the model using a Shockley-Read-Hall (SRH) formalism, the "
+"distribution of trap sates can be arbitrarily defined. All equations can be "
+"solved either in steady state or in time domain. A fuller description of the "
+"model can be found in the here, in the associated publications and in the "
+"manual."
+msgstr ""
+
+#: ../gui/about.py:86
+msgid ""
+"General-purpose Photovoltaic Device Model - a drift diffusion base/Shockley-"
+"Read-Hall model"
+msgstr ""
+
+#: ../gui/about.py:90
+msgid ""
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License v2.0, as published by the "
+"Free Software Foundation."
+msgstr ""
+
+#: ../gui/about.py:94
+msgid ""
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details."
+msgstr ""
+
+#: ../gui/about.py:98
+msgid ""
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 51 "
+"Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA."
+msgstr ""
+
+#: ../gui/about.py:102
+msgid ""
+"When you start gpvdm the software checks the gpvdm.com server for updates "
+"and bug reports.  To do this it transmits your opperating system type, gpvdm "
+"version number.  It also tells the gpvdm.com server if opengl is working on "
+"your pc.  By installing gpvdm you agree that the gpvdm software may transmit "
+"this information to the gpvdm.com server.  The communications  process "
+"between gpvdm software and the gpvdm.com server is described in more detail "
+"in the manual."
+msgstr ""
+
+#: ../gui/about.py:143
+msgid "Translations"
+msgstr ""
+
+#: ../gui/about.py:146 ../gui/materials_select.py:116
+msgid "Materials"
+msgstr ""
+
+#: ../gui/scan_select.py:58
+msgid "Select simulation parameter"
+msgstr ""
+
+#: ../gui/scan_select.py:118
+msgid "Simulation parameters"
+msgstr ""
+
+#: ../gui/scan_select.py:170
+msgid "No row selected in the scan window, can't insert the selection"
+msgstr ""
+
+#: ../gui/equation.py:198
+msgid "Python Equation"
+msgstr ""
+
+#: ../gui/equation.py:245
+msgid "You've made a mistake in the equation, use w for wavelength. "
+msgstr ""
+
+#: ../gui/equation.py:291
+msgid ""
+"<big><b>Solar spectrum editor</b></big><br> Use this tool to generate custom "
+"solar spectra."
+msgstr ""
+
+#: ../gui/equation.py:308
+msgid "No items selected"
+msgstr ""
+
+#: ../gui/equation.py:346
+msgid "Solar spectra"
+msgstr ""
+
+#: ../gui/equation.py:385
+msgid "Fit data"
+msgstr ""
+
+#: ../gui/ver.py:101
+msgid "version.h not found"
+msgstr ""
+
+#: ../gui/help.py:126
+msgid "Online help"
+msgstr ""
+
+#: ../gui/help.py:127
+msgid "On line help"
+msgstr ""
+
+#: ../gui/help.py:131
+msgid "Hide"
+msgstr ""
+
+#: ../gui/help.py:242
+msgid "gpvdm in your language!"
+msgstr ""
+
+#: ../gui/help.py:244
+msgid "gpvdm translated by:"
+msgstr ""
+
+#: ../gui/parasitic.py:51
+msgid "Edit parasitic components"
+msgstr ""
+
+#: ../gui/parasitic.py:80
+msgid "Parasitic components"
+msgstr ""
+
+#: ../gui/fxexperiment_tab.py:72
+msgid "Frequency mesh"
+msgstr ""
+
+#: ../gui/electrical_mesh_editor.py:185
+msgid "Thickness"
+msgstr ""
+
+#: ../gui/electrical_mesh_editor.py:210
+msgid "Mesh points"
+msgstr ""
+
+#: ../gui/electrical_mesh_editor.py:210
+msgid "Step multiply"
+msgstr ""
+
+#: ../gui/electrical_mesh_editor.py:210
+msgid "Left/Right"
+msgstr ""
+
+#: ../gui/tb_item_mat_file.py:50
+msgid "Use:"
+msgstr ""
+
+#: ../gui/tb_item_mat_file.py:56 ../gui/tb_item_mat_file.py:78
+msgid "Raw data"
+msgstr ""
+
+#: ../gui/token_lib.py:44
+msgid "Mesh points (lambda)"
+msgstr ""
+
+#: ../gui/token_lib.py:45
+msgid "Lambda start"
+msgstr ""
+
+#: ../gui/token_lib.py:46
+msgid "Lambda stop"
+msgstr ""
+
+#: ../gui/token_lib.py:47
+msgid "Laser wavelength"
+msgstr ""
+
+#: ../gui/token_lib.py:48
+msgid "Spot size x"
+msgstr ""
+
+#: ../gui/token_lib.py:49
+msgid "Spot size y"
+msgstr ""
+
+#: ../gui/token_lib.py:50
+msgid "Energy in pulse"
+msgstr ""
+
+#: ../gui/token_lib.py:51
+msgid "#gather"
+msgstr ""
+
+#: ../gui/token_lib.py:52
+msgid "Length of pulse"
+msgstr ""
+
+#: ../gui/token_lib.py:53
+msgid "Electron generation efficiency"
+msgstr ""
+
+#: ../gui/token_lib.py:54
+msgid "Hole generation efficiency"
+msgstr ""
+
+#: ../gui/token_lib.py:55 ../gui/token_lib.py:502
+msgid "filename"
+msgstr ""
+
+#: ../gui/token_lib.py:55
+msgid "Sun's spectra"
+msgstr ""
+
+#: ../gui/token_lib.py:56
+msgid "File containing generation rate"
+msgstr ""
+
+#: ../gui/token_lib.py:57
+msgid "Photon efficiency"
+msgstr ""
+
+#: ../gui/token_lib.py:60
+msgid "DoS distribution"
+msgstr ""
+
+#: ../gui/token_lib.py:60
+msgid "exponential"
+msgstr ""
+
+#: ../gui/token_lib.py:60
+msgid "complex"
+msgstr ""
+
+#: ../gui/token_lib.py:61
+msgid "Effective density of free electron states"
+msgstr ""
+
+#: ../gui/token_lib.py:62
+msgid "Effective density of free hole states"
+msgstr ""
+
+#: ../gui/token_lib.py:63 ../libdump/dump_dynamic.c:721
+#: ../libdump/dump_1d_slice.c:752 ../libdump/dump_1d_slice.c:757
+msgid "Electron mobility"
+msgstr ""
+
+#: ../gui/token_lib.py:64 ../libdump/dump_dynamic.c:740
+#: ../libdump/dump_1d_slice.c:781 ../libdump/dump_1d_slice.c:786
+msgid "Hole mobility"
+msgstr ""
+
+#: ../gui/token_lib.py:65
+msgid "Electron trap density"
+msgstr ""
+
+#: ../gui/token_lib.py:66
+msgid "Hole trap density"
+msgstr ""
+
+#: ../gui/token_lib.py:67
+msgid "Electron tail slope"
+msgstr ""
+
+#: ../gui/token_lib.py:68
+msgid "Hole tail slope"
+msgstr ""
+
+#: ../gui/token_lib.py:69 ../libdump/dump_1d_slice.c:722
+#: ../libdump/dump_1d_slice.c:727
+msgid "Relative permittivity"
+msgstr ""
+
+#: ../gui/token_lib.py:70
+msgid "Free electron to Trapped electron"
+msgstr ""
+
+#: ../gui/token_lib.py:71
+msgid "Trapped electron to Free hole"
+msgstr ""
+
+#: ../gui/token_lib.py:72
+msgid "Trapped hole to Free electron"
+msgstr ""
+
+#: ../gui/token_lib.py:73
+msgid "Free hole to Trapped hole"
+msgstr ""
+
+#: ../gui/token_lib.py:74
+#, python-brace-format
+msgid "n_{free} to p_{free} Recombination rate constant"
+msgstr ""
+
+#: ../gui/token_lib.py:77
+msgid "startime"
+msgstr ""
+
+#: ../gui/token_lib.py:78
+msgid "ea_factor"
+msgstr ""
+
+#: ../gui/token_lib.py:79
+msgid "Np"
+msgstr ""
+
+#: ../gui/token_lib.py:80
+msgid "den"
+msgstr ""
+
+#: ../gui/token_lib.py:81
+msgid "externalv"
+msgstr ""
+
+#: ../gui/token_lib.py:82
+msgid "dt_neg_time"
+msgstr ""
+
+#: ../gui/token_lib.py:84
+msgid "dt_mull"
+msgstr ""
+
+#: ../gui/token_lib.py:86
+msgid "stark"
+msgstr ""
+
+#: ../gui/token_lib.py:87
+msgid "lasereff"
+msgstr ""
+
+#: ../gui/token_lib.py:88
+msgid "wavelength"
+msgstr ""
+
+#: ../gui/token_lib.py:89
+msgid "sim_contacts"
+msgstr ""
+
+#: ../gui/token_lib.py:92
+msgid "Website"
+msgstr ""
+
+#: ../gui/token_lib.py:93
+msgid "Research group"
+msgstr ""
+
+#: ../gui/token_lib.py:94
+msgid "Authors"
+msgstr ""
+
+#: ../gui/token_lib.py:95
+msgid "Journal"
+msgstr ""
+
+#: ../gui/token_lib.py:96
+msgid "Title"
+msgstr ""
+
+#: ../gui/token_lib.py:98
+msgid "Pages"
+msgstr ""
+
+#: ../gui/token_lib.py:99
+msgid "Year"
+msgstr ""
+
+#: ../gui/token_lib.py:100
+msgid "md5 sum"
+msgstr ""
+
+#: ../gui/token_lib.py:101
+msgid "DOI"
+msgstr ""
+
+#: ../gui/token_lib.py:102
+msgid "Scraped text"
+msgstr ""
+
+#: ../gui/token_lib.py:105 ../gui/token_lib.py:352
+#, python-brace-format
+msgid "R_{short}"
+msgstr ""
+
+#: ../gui/token_lib.py:106
+#, python-brace-format
+msgid "V_{bias}"
+msgstr ""
+
+#: ../gui/token_lib.py:107
+msgid "Efficiency of light"
+msgstr ""
+
+#: ../gui/token_lib.py:108 ../gui/token_lib.py:158 ../gui/token_lib.py:199
+#: ../gui/token_lib.py:205 ../gui/token_lib.py:216 ../gui/token_lib.py:228
+#: ../gui/token_lib.py:233 ../gui/token_lib.py:234 ../gui/token_lib.py:235
+#: ../gui/token_lib.py:236 ../gui/token_lib.py:238 ../gui/token_lib.py:239
+#: ../gui/token_lib.py:244 ../gui/token_lib.py:245 ../gui/token_lib.py:247
+#: ../gui/token_lib.py:248 ../gui/token_lib.py:249 ../gui/token_lib.py:250
+#: ../gui/token_lib.py:251 ../gui/token_lib.py:252 ../gui/token_lib.py:253
+#: ../gui/token_lib.py:254 ../gui/token_lib.py:255 ../gui/token_lib.py:256
+#: ../gui/token_lib.py:257 ../gui/token_lib.py:258 ../gui/token_lib.py:259
+#: ../gui/token_lib.py:260 ../gui/token_lib.py:261 ../gui/token_lib.py:262
+#: ../gui/token_lib.py:263 ../gui/token_lib.py:264 ../gui/token_lib.py:265
+#: ../gui/token_lib.py:267 ../gui/token_lib.py:268 ../gui/token_lib.py:269
+#: ../gui/token_lib.py:270 ../gui/token_lib.py:271 ../gui/token_lib.py:273
+#: ../gui/token_lib.py:276 ../gui/token_lib.py:280 ../gui/token_lib.py:298
+#: ../gui/token_lib.py:345 ../gui/token_lib.py:482 ../gui/token_lib.py:483
+#: ../gui/token_lib.py:485 ../gui/token_lib.py:496 ../gui/token_lib.py:500
+#: ../gui/token_lib.py:501 ../gui/token_lib.py:503
+msgid "True/False"
+msgstr ""
+
+#: ../gui/token_lib.py:108
+msgid "subtract DC"
+msgstr ""
+
+#: ../gui/token_lib.py:111
+msgid "Organic"
+msgstr ""
+
+#: ../gui/token_lib.py:111
+msgid "Oxide"
+msgstr ""
+
+#: ../gui/token_lib.py:111
+msgid "Inorganic"
+msgstr ""
+
+#: ../gui/token_lib.py:111
+msgid "Metal"
+msgstr ""
+
+#: ../gui/token_lib.py:111
+msgid "Other"
+msgstr ""
+
+#: ../gui/token_lib.py:112
+msgid "Alpha channel"
+msgstr ""
+
+#: ../gui/token_lib.py:114
+msgid "Transparency"
+msgstr ""
+
+#: ../gui/token_lib.py:115
+msgid "Publish material data?"
+msgstr ""
+
+#: ../gui/token_lib.py:115
+msgid "Public"
+msgstr ""
+
+#: ../gui/token_lib.py:115
+msgid "Private"
+msgstr ""
+
+#: ../gui/token_lib.py:116
+msgid "Change log"
+msgstr ""
+
+#: ../gui/token_lib.py:119
+msgid "JV voltage step multiplyer"
+msgstr ""
+
+#: ../gui/token_lib.py:120
+msgid "Maximum current density"
+msgstr ""
+
+#: ../gui/token_lib.py:121
+msgid "JV curve photon generation efficiency"
+msgstr ""
+
+#: ../gui/token_lib.py:122
+#, python-brace-format
+msgid "Average carrier density at P_{max}"
+msgstr ""
+
+#: ../gui/token_lib.py:123
+msgid "Recombination time constant"
+msgstr ""
+
+#: ../gui/token_lib.py:124
+msgid "Start voltage"
+msgstr ""
+
+#: ../gui/token_lib.py:125
+msgid "Stop voltage"
+msgstr ""
+
+#: ../gui/token_lib.py:126
+msgid "Voltage step"
+msgstr ""
+
+#: ../gui/token_lib.py:127
+msgid "Contact resistance"
+msgstr ""
+
+#: ../gui/token_lib.py:128 ../gui/token_lib.py:290
+msgid "Shunt resistance"
+msgstr ""
+
+#: ../gui/token_lib.py:131
+#, python-brace-format
+msgid "V_{oc}"
+msgstr ""
+
+#: ../gui/token_lib.py:132
+msgid "Power conversion efficiency"
+msgstr ""
+
+#: ../gui/token_lib.py:133
+msgid "Fill factor"
+msgstr ""
+
+#: ../gui/token_lib.py:134
+msgid "Max power"
+msgstr ""
+
+#: ../gui/token_lib.py:135
+msgid "Trapped electrons at Voc"
+msgstr ""
+
+#: ../gui/token_lib.py:136
+msgid "Trapped holes at Voc"
+msgstr ""
+
+#: ../gui/token_lib.py:137
+msgid "Free electrons at Voc"
+msgstr ""
+
+#: ../gui/token_lib.py:138
+msgid "Free holes at Voc"
+msgstr ""
+
+#: ../gui/token_lib.py:139
+msgid "Total carriers (n+p)/2 at Voc"
+msgstr ""
+
+#: ../gui/token_lib.py:140
+msgid "Recombination time constant at Voc"
+msgstr ""
+
+#: ../gui/token_lib.py:141
+msgid "Recombination rate at Voc"
+msgstr ""
+
+#: ../gui/token_lib.py:142
+msgid "Current density at Voc"
+msgstr ""
+
+#: ../gui/token_lib.py:143
+#, python-brace-format
+msgid "J_{sc}"
+msgstr ""
+
+# quantity?
+#: ../gui/token_lib.py:146
+#, fuzzy
+msgid "Photos absorbed in active layer"
+msgstr "अवशोषित फोटॉन"
+
+#: ../gui/token_lib.py:151 ../gui/token_lib.py:362
+msgid "Re(J)"
+msgstr ""
+
+#: ../gui/token_lib.py:152 ../gui/token_lib.py:363
+msgid "Im(J)"
+msgstr ""
+
+#: ../gui/token_lib.py:153
+msgid "fx"
+msgstr ""
+
+#: ../gui/token_lib.py:154
+msgid "di"
+msgstr ""
+
+#: ../gui/token_lib.py:155
+msgid "dmodulation"
+msgstr ""
+
+#: ../gui/token_lib.py:156
+msgid "dphase"
+msgstr ""
+
+#: ../gui/token_lib.py:158
+msgid "Modulation roll off enable"
+msgstr ""
+
+#: ../gui/token_lib.py:159
+msgid "Modulation roll off start"
+msgstr ""
+
+#: ../gui/token_lib.py:160
+msgid "Modulation roll off speed"
+msgstr ""
+
+#: ../gui/token_lib.py:166
+msgid "Left hole density"
+msgstr ""
+
+#: ../gui/token_lib.py:167
+msgid "Left electron density"
+msgstr ""
+
+#: ../gui/token_lib.py:168
+msgid "Right hole density"
+msgstr ""
+
+#: ../gui/token_lib.py:169
+msgid "Right electron density"
+msgstr ""
+
+#: ../gui/token_lib.py:170
+msgid "Built in potential"
+msgstr ""
+
+#: ../gui/token_lib.py:171
+msgid "Electron affinity left"
+msgstr ""
+
+#: ../gui/token_lib.py:172
+msgid "Electron affinity right"
+msgstr ""
+
+#: ../gui/token_lib.py:175
+msgid "Number of CPUs"
+msgstr ""
+
+#: ../gui/token_lib.py:183
+msgid "Path to source code"
+msgstr ""
+
+#: ../gui/token_lib.py:184
+msgid "Path to compiled libs for cluster"
+msgstr ""
+
+#: ../gui/token_lib.py:185
+msgid "Make command"
+msgstr ""
+
+#: ../gui/token_lib.py:186
+msgid "exe name"
+msgstr ""
+
+#: ../gui/token_lib.py:191
+#, fuzzy
+#| msgid "Deleting directory"
+msgid "Remote cluster directory"
+msgstr "डायरेक्टरी हटा रहा हूँ "
+
+#: ../gui/token_lib.py:192
+msgid "Remote node list"
+msgstr ""
+
+#: ../gui/token_lib.py:196
+msgid "Max Electrical itterations (first step)"
+msgstr ""
+
+#: ../gui/token_lib.py:197
+msgid "Electrical clamp (first step)"
+msgstr ""
+
+#: ../gui/token_lib.py:198
+msgid "Desired electrical solver error (first step)"
+msgstr ""
+
+#: ../gui/token_lib.py:199
+msgid "Enable poisson solver"
+msgstr ""
+
+#: ../gui/token_lib.py:200
+msgid "Max electrical itterations"
+msgstr ""
+
+#: ../gui/token_lib.py:201
+msgid "Electrical clamp"
+msgstr ""
+
+#: ../gui/token_lib.py:202
+msgid "Poisson clamping"
+msgstr ""
+
+#: ../gui/token_lib.py:203
+msgid "Minimum electrical error"
+msgstr ""
+
+#: ../gui/token_lib.py:204
+msgid "Poisson solver max itterations"
+msgstr ""
+
+#: ../gui/token_lib.py:206
+msgid "Newton minimum iterations"
+msgstr ""
+
+#: ../gui/token_lib.py:207 ../gui/token_lib.py:208
+msgid "dll name"
+msgstr ""
+
+#: ../gui/token_lib.py:207
+msgid "Matrix solver to use"
+msgstr ""
+
+#: ../gui/token_lib.py:208
+msgid "Newton solver to use"
+msgstr ""
+
+#: ../gui/token_lib.py:209
+msgid "Slotboom T0"
+msgstr ""
+
+#: ../gui/token_lib.py:210
+msgid "Slotboom D0"
+msgstr ""
+
+#: ../gui/token_lib.py:211
+msgid "Slotboom n0"
+msgstr ""
+
+#: ../gui/token_lib.py:215
+msgid "Fit error multiplyer"
+msgstr ""
+
+#: ../gui/token_lib.py:216
+msgid "Randomize fit"
+msgstr ""
+
+#: ../gui/token_lib.py:217
+msgid "Number of iterations between random reset"
+msgstr ""
+
+#: ../gui/token_lib.py:218
+msgid "Stall steps"
+msgstr ""
+
+#: ../gui/token_lib.py:219
+msgid "Disable reset at level"
+msgstr ""
+
+#: ../gui/token_lib.py:220
+msgid "Fit define convergence"
+msgstr ""
+
+#: ../gui/token_lib.py:221
+msgid "Enable simplex reset"
+msgstr ""
+
+#: ../gui/token_lib.py:222 ../gui/token_lib.py:225
+msgid "Simplex reset steps"
+msgstr ""
+
+#: ../gui/token_lib.py:223
+msgid "Fiting method"
+msgstr ""
+
+#: ../gui/token_lib.py:224
+msgid "Start simplex step multiplication"
+msgstr ""
+
+#: ../gui/token_lib.py:228
+msgid "Subtract lowest point"
+msgstr ""
+
+#: ../gui/token_lib.py:231
+msgid "Device temperature on left"
+msgstr ""
+
+#: ../gui/token_lib.py:232
+msgid "Device temperature on right"
+msgstr ""
+
+#: ../gui/token_lib.py:233
+msgid "Enable thermal solver"
+msgstr ""
+
+#: ../gui/token_lib.py:234
+msgid "Lattice heat model"
+msgstr ""
+
+#: ../gui/token_lib.py:235
+msgid "Electron heat model"
+msgstr ""
+
+#: ../gui/token_lib.py:236
+msgid "Hole heat model"
+msgstr ""
+
+#: ../gui/token_lib.py:237
+msgid "Thermal conductivity"
+msgstr ""
+
+#: ../gui/token_lib.py:238
+msgid "Isothermal boundary on left"
+msgstr ""
+
+#: ../gui/token_lib.py:239
+msgid "Isothermal boundary on right"
+msgstr ""
+
+#: ../gui/token_lib.py:240
+msgid "Electron relaxation time"
+msgstr ""
+
+#: ../gui/token_lib.py:241
+msgid "Hole relaxation time"
+msgstr ""
+
+#: ../gui/token_lib.py:244
+msgid "Dump from newton solver"
+msgstr ""
+
+#: ../gui/token_lib.py:245
+msgid "Plot bands etc.. "
+msgstr ""
+
+#: ../gui/token_lib.py:247
+msgid "dump slices by time"
+msgstr ""
+
+#: ../gui/token_lib.py:248
+msgid "Dump 1D slices"
+msgstr ""
+
+#: ../gui/token_lib.py:249
+msgid "Dump slices"
+msgstr ""
+
+#: ../gui/token_lib.py:250
+msgid "Dump dynamic"
+msgstr ""
+
+#: ../gui/token_lib.py:251
+msgid "Dump fx domain data"
+msgstr ""
+
+#: ../gui/token_lib.py:252
+msgid "Dump zip files"
+msgstr ""
+
+#: ../gui/token_lib.py:253
+msgid "Write out band structure"
+msgstr ""
+
+#: ../gui/token_lib.py:254
+msgid "Dump optical information"
+msgstr ""
+
+#: ../gui/token_lib.py:255
+msgid "Dump optics verbose"
+msgstr ""
+
+#: ../gui/token_lib.py:256
+msgid "Print newton error"
+msgstr ""
+
+#: ../gui/token_lib.py:257
+msgid "Print solver convergence"
+msgstr ""
+
+#: ../gui/token_lib.py:258
+msgid "Write newton solver convergence to disk"
+msgstr ""
+
+#: ../gui/token_lib.py:259
+msgid "Print poisson solver convergence"
+msgstr ""
+
+#: ../gui/token_lib.py:260
+msgid "Dump PL spectra"
+msgstr ""
+
+#: ../gui/token_lib.py:261
+msgid "Normalize output x-time to one"
+msgstr ""
+
+#: ../gui/token_lib.py:262
+msgid "Dump the built in voltage."
+msgstr ""
+
+#: ../gui/token_lib.py:263
+msgid "Dump optical probe spectrum"
+msgstr ""
+
+#: ../gui/token_lib.py:264
+msgid "Dump optical summary"
+msgstr ""
+
+#: ../gui/token_lib.py:265
+msgid "Dump raytrace plots"
+msgstr ""
+
+#: ../gui/token_lib.py:267
+msgid "Dump an excel workbook for each simulation run congaing the results."
+msgstr ""
+
+#: ../gui/token_lib.py:268
+msgid "Write file access log to disk."
+msgstr ""
+
+#: ../gui/token_lib.py:269
+msgid "Use cache for file writes"
+msgstr ""
+
+#: ../gui/token_lib.py:270
+msgid "Write headers to output files"
+msgstr ""
+
+#: ../gui/token_lib.py:271
+msgid "Write energetic distribution of carriers"
+msgstr ""
+
+#: ../gui/token_lib.py:272
+msgid "Position energetic distribution to dump"
+msgstr ""
+
+#: ../gui/token_lib.py:273
+msgid "Write first guess to equations"
+msgstr ""
+
+#: ../gui/token_lib.py:274 ../gui/token_lib.py:275
+msgid "Log verbocity"
+msgstr ""
+
+#: ../gui/token_lib.py:274 ../gui/token_lib.py:275
+msgid "None"
+msgstr ""
+
+#: ../gui/token_lib.py:274 ../gui/token_lib.py:275
+msgid "Screen"
+msgstr ""
+
+#: ../gui/token_lib.py:274 ../gui/token_lib.py:275
+msgid "Disk"
+msgstr ""
+
+#: ../gui/token_lib.py:274 ../gui/token_lib.py:275
+msgid "Screen and disk"
+msgstr ""
+
+#: ../gui/token_lib.py:276
+msgid "Clean up DoS cache files"
+msgstr ""
+
+#: ../gui/token_lib.py:280
+msgid "Turn on LED"
+msgstr ""
+
+#: ../gui/token_lib.py:281
+msgid "LED emission wavelength"
+msgstr ""
+
+#: ../gui/token_lib.py:282
+msgid "LED extraction efficiency"
+msgstr ""
+
+#: ../gui/token_lib.py:285
+msgid "Invert applied bias"
+msgstr ""
+
+#: ../gui/token_lib.py:286
+msgid "Charge on left contact"
+msgstr ""
+
+#: ../gui/token_lib.py:287
+msgid "Charge on right contact"
+msgstr ""
+
+#: ../gui/token_lib.py:291
+msgid "Series resistance"
+msgstr ""
+
+#: ../gui/token_lib.py:292
+msgid "Other layers"
+msgstr ""
+
+#: ../gui/token_lib.py:295
+msgid "Automatic remesh"
+msgstr ""
+
+#: ../gui/token_lib.py:298
+msgid "Turn on luminescence"
+msgstr ""
+
+#: ../gui/token_lib.py:299
+#, python-brace-format
+msgid "n_{free} to p_{free} photon generation efficiency"
+msgstr ""
+
+#: ../gui/token_lib.py:300
+#, python-brace-format
+msgid "n_{free} to n_{trap} photon generation efficiency"
+msgstr ""
+
+#: ../gui/token_lib.py:301
+#, python-brace-format
+msgid "n_{trap} to p_{free} photon generation efficiency"
+msgstr ""
+
+#: ../gui/token_lib.py:302
+#, python-brace-format
+msgid "p_{trap} to n_{free} photon generation efficiency"
+msgstr ""
+
+#: ../gui/token_lib.py:303
+#, python-brace-format
+msgid "p_{free} to p_{trap} photon generation efficiency"
+msgstr ""
+
+#: ../gui/token_lib.py:306
+msgid "Load resistor"
+msgstr ""
+
+#: ../gui/token_lib.py:307
+msgid "fx domain mesh points"
+msgstr ""
+
+#: ../gui/token_lib.py:308
+msgid "Cycles to simulate"
+msgstr ""
+
+#: ../gui/token_lib.py:309
+#, python-brace-format
+msgid "V_{external}"
+msgstr ""
+
+#: ../gui/token_lib.py:310
+msgid "Voltage modulation depth"
+msgstr ""
+
+#: ../gui/token_lib.py:312
+msgid "Light modulation depth"
+msgstr ""
+
+#: ../gui/token_lib.py:313
+msgid "Run fit after simulation"
+msgstr ""
+
+#: ../gui/token_lib.py:314
+msgid "Periods to fit"
+msgstr ""
+
+#: ../gui/token_lib.py:317
+msgid "Node list"
+msgstr ""
+
+#: ../gui/token_lib.py:320
+msgid "Initialization vector"
+msgstr ""
+
+#: ../gui/token_lib.py:321
+msgid "Cryptographic key"
+msgstr ""
+
+#: ../gui/token_lib.py:323
+msgid "I0"
+msgstr ""
+
+#: ../gui/token_lib.py:324
+msgid "ideality factor"
+msgstr ""
+
+#: ../gui/token_lib.py:327
+msgid "#saturation_n0"
+msgstr ""
+
+#: ../gui/token_lib.py:328
+msgid "#saturation_rate"
+msgstr ""
+
+#: ../gui/token_lib.py:329
+msgid "#imps_saturate"
+msgstr ""
+
+#: ../gui/token_lib.py:332 ../gui/optics.py:120
+msgid "Photon density"
+msgstr ""
+
+#: ../gui/token_lib.py:333
+msgid "Absorption of material"
+msgstr ""
+
+#: ../gui/token_lib.py:334
+msgid "#simmode"
+msgstr ""
+
+#: ../gui/token_lib.py:335
+msgid "Mesh points (x)"
+msgstr ""
+
+#: ../gui/token_lib.py:337
+msgid "#function"
+msgstr ""
+
+#: ../gui/token_lib.py:338
+msgid "left/right"
+msgstr ""
+
+#: ../gui/token_lib.py:338
+msgid "Hole majority contact on left/right of device."
+msgstr ""
+
+#: ../gui/token_lib.py:339
+msgid "start voltage"
+msgstr ""
+
+#: ../gui/token_lib.py:340
+msgid "Max voltage"
+msgstr ""
+
+#: ../gui/token_lib.py:341
+msgid "Eg"
+msgstr ""
+
+#: ../gui/token_lib.py:342
+msgid "Xi"
+msgstr ""
+
+#: ../gui/token_lib.py:343
+msgid "Time of pause"
+msgstr ""
+
+#: ../gui/token_lib.py:344
+msgid "Pause between iterations"
+msgstr ""
+
+#: ../gui/token_lib.py:345
+msgid "Invert output"
+msgstr ""
+
+#: ../gui/token_lib.py:348
+msgid "Use capacitor"
+msgstr ""
+
+#: ../gui/token_lib.py:353
+msgid "Backgroud light bias"
+msgstr ""
+
+#: ../gui/token_lib.py:354
+msgid "Modulation depth"
+msgstr ""
+
+#: ../gui/token_lib.py:355
+msgid "Modulation frequency"
+msgstr ""
+
+#: ../gui/token_lib.py:356
+msgid "High light multiplyer"
+msgstr ""
+
+#: ../gui/token_lib.py:365 ../gui/token_lib.py:366 ../gui/token_lib.py:367
+msgid "Phase shift"
+msgstr ""
+
+#: ../gui/token_lib.py:369
+msgid "Wavelengths to simulate"
+msgstr ""
+
+#: ../gui/token_lib.py:370
+msgid "External voltage"
+msgstr ""
+
+#: ../gui/token_lib.py:372
+msgid "External C"
+msgstr ""
+
+#: ../gui/token_lib.py:373
+msgid "External R"
+msgstr ""
+
+#: ../gui/token_lib.py:375
+msgid "Resistance of scope"
+msgstr ""
+
+#: ../gui/token_lib.py:376
+msgid "Number of traps"
+msgstr ""
+
+#: ../gui/token_lib.py:378
+msgid "Single point"
+msgstr ""
+
+#: ../gui/token_lib.py:379
+msgid "Start intensity"
+msgstr ""
+
+#: ../gui/token_lib.py:380
+msgid "Stop intensity"
+msgstr ""
+
+#: ../gui/token_lib.py:381
+msgid "step multiplier"
+msgstr ""
+
+#: ../gui/token_lib.py:384
+msgid "Photon Flux"
+msgstr ""
+
+#: ../gui/token_lib.py:386
+msgid "device width"
+msgstr ""
+
+#: ../gui/token_lib.py:387
+msgid "device breadth"
+msgstr ""
+
+#: ../gui/token_lib.py:452
+msgid "Solve Kirchhoff's current law in Newton solver"
+msgstr ""
+
+#: ../gui/token_lib.py:482
+msgid "Enable 3d effects"
+msgstr ""
+
+#: ../gui/token_lib.py:483
+msgid "Use icons from OS"
+msgstr ""
+
+#: ../gui/token_lib.py:484 ../gui/token_lib.py:487 ../gui/token_lib.py:488
+#: ../gui/token_lib.py:489 ../libfit/fit_dump.c:63 ../libfit/fit_dump.c:64
+#: ../libfit/fit_dump.c:181
+msgid "au"
+msgstr ""
+
+#: ../gui/token_lib.py:484
+msgid "Matlab interpreter"
+msgstr ""
+
+#: ../gui/token_lib.py:485
+msgid "Render grid"
+msgstr ""
+
+#: ../gui/token_lib.py:486
+msgid "rgb"
+msgstr ""
+
+#: ../gui/token_lib.py:486
+msgid "Color used for 3d background"
+msgstr ""
+
+#: ../gui/token_lib.py:487
+msgid "Render text in 3d"
+msgstr ""
+
+#: ../gui/token_lib.py:488
+msgid "Device Heigh (display only)"
+msgstr ""
+
+#: ../gui/token_lib.py:489
+msgid "Layer offset (display only)"
+msgstr ""
+
+#: ../gui/token_lib.py:496
+msgid "Enable fit"
+msgstr ""
+
+#: ../gui/token_lib.py:500
+msgid "log x"
+msgstr ""
+
+#: ../gui/token_lib.py:501
+msgid "log y"
+msgstr ""
+
+#: ../gui/token_lib.py:503
+msgid "Invert simulated data (y)"
+msgstr ""
+
+#: ../gui/token_lib.py:512
+msgid "Active layer width"
+msgstr ""
+
+#: ../gui/token_lib.py:528
+msgid "External load resistor"
+msgstr ""
+
+#: ../gui/token_lib.py:531
+msgid "Filp the opticl field"
+msgstr ""
+
+#: ../gui/spectra_main.py:65
+msgid "Optical spectrum editor"
+msgstr ""
+
+#: ../gui/spectra_main.py:94
+msgid "Parameters"
+msgstr ""
+
+#: ../gui/spectra_main.py:99 ../gui/spectra_main.py:101
+msgid "Intensity"
+msgstr ""
+
+#: ../gui/plot_dlg.py:81
+msgid "Steady state simulation (www.gpvdm.com)"
+msgstr ""
+
+#: ../gui/jobs.py:72
+msgid "name"
+msgstr ""
+
+#: ../gui/jobs.py:72
+msgid "ip"
+msgstr ""
+
+#: ../gui/jobs.py:72
+msgid "CPUs"
+msgstr ""
+
+#: ../gui/jobs.py:72
+msgid "status"
+msgstr ""
+
+#: ../gui/sunsvoc.py:44
+msgid "JV simulation"
+msgstr ""
+
+#: ../gui/sunsvoc.py:45
+msgid ""
+"<big><b>JV simulation</b></big><br>This controls the jv curve simulation. "
+"You can set paramets such as start voltage, stop voltage and voltage step."
+msgstr ""
+
+#: ../gui/sunsvoc.py:48
+msgid ""
+"<big><b>Diode equation</b></big><br>The model can also use the standard "
+"diode equtaion to simulate solar cells (rather than a complex model).  Use "
+"this window to configure the simulation."
+msgstr ""
+
+#: ../gui/sunsvoc.py:50 ../gui/sunsvoc.py:90
+msgid "Suns v.s. Voc"
+msgstr ""
+
+#: ../gui/sunsvoc.py:51
+msgid "<big><b>Suns v.s. Voc</b></big><br>Configure the sun v.s. Voc plot."
+msgstr ""
+
+#: ../gui/sunsvoc.py:61
+msgid "Steady state simulation"
+msgstr ""
+
+#: ../gui/jvexperiment.py:103
+msgid "JV experiment window"
+msgstr ""
+
+#: ../gui/plot_widget.py:177
+msgid "I don't know how to process this type of file!"
+msgstr ""
+
+#: ../gui/plot_widget.py:183 ../libdump/dump_dynamic.c:510
+#: ../libdump/dump_dynamic.c:530 ../libdump/dump_dynamic.c:895
+#: ../libdump/dump_dynamic.c:914 ../libdump/dump_dynamic.c:933
+#: ../libdump/dump_dynamic.c:952 ../libdump/dump_dynamic.c:971
+#: ../libdump/dump_dynamic.c:990 ../libdump/dump_dynamic.c:1009
+#: ../libdump/dump_dynamic.c:1028 ../libdump/dump_dynamic.c:1047
+msgid "time"
+msgstr ""
+
+#: ../gui/plot_widget.py:326
+msgid "No files were given to load"
+msgstr ""
+
+#: ../gui/plot_widget.py:582
+msgid "Refresh graph"
+msgstr ""
+
+#: ../gui/status_icon.py:53
+msgid "Youtube channel"
+msgstr ""
+
+#: ../gui/status_icon.py:57
+msgid "Quit"
+msgstr ""
+
+#: ../gui/update.py:125
+msgid ""
+"This feature is sill under development.  It searches the gpvdm web page for "
+"updates then uses them to update gpvdm.  Use it at your own risk - I take no "
+"responsibility for any data loss!  Do you wish to continue?"
+msgstr ""
+
+#: ../gui/doping.py:80
+msgid "Doping (m^{-3})"
+msgstr ""
+
+#: ../gui/doping.py:87
+msgid "Position (nm)"
+msgstr ""
+
+#: ../gui/doping.py:109
+msgid "File Name"
+msgstr ""
+
+#: ../gui/doping.py:174
+msgid "Doping profile editor"
+msgstr ""
+
+#: ../gui/export_archive.py:71
+#, fuzzy
+#| msgid "Can not open file"
+msgid "Can't open file "
+msgstr "फाइल नहीं खोल पाया "
+
+#: ../gui/connect_to_cluster.py:81
+msgid "Connect"
+msgstr ""
+
+#: ../gui/connect_to_cluster.py:83
+msgid "Disconnect"
+msgstr ""
+
+#: ../gui/optics.py:87
+msgid "Photon distribution"
+msgstr ""
+
+#: ../gui/optics.py:88
+msgid "Photon distribution absorbed"
+msgstr ""
+
+#: ../gui/optics.py:89
+msgid "Reflection"
+msgstr ""
+
+#: ../gui/optics.py:93
+msgid "Optical simulation editor"
+msgstr ""
+
+#: ../gui/optics.py:125
+msgid "Photon absorbed"
+msgstr ""
+
+#: ../gui/optics.py:133 ../gui/optics.py:134
+msgid "Optical setup"
+msgstr ""
+
+#: ../gui/radiobutton.py:91
+msgid "Disabled"
+msgstr ""
+
+#: ../gui/fit_patch.py:90
+msgid "value"
+msgstr ""
+
+#: ../gui/gl.py:708
+msgid "active"
+msgstr ""
+
+#: ../gui/materials_select.py:55
+msgid "Select material"
+msgstr ""
+
+#: ../gui/materials_select.py:151
+msgid "You need to select a material"
+msgstr ""
+
+#: ../gui/materials_select.py:167
+msgid "No row selected in the layer editor, can't insert the selection"
+msgstr ""
+
+#: ../gui/error_han.py:98
+msgid "Reporting error...."
+msgstr ""
+
+#: ../libmemory/memory.c:256
+msgid "Solved"
+msgstr ""
+
+#: ../libmemory/memory.c:256
+msgid "Equations"
+msgstr ""
+
+#: ../libmemory/memory.c:265
+msgid "I can't allocate a device with less than 1 mesh point."
+msgstr ""
+
+#: ../libmemory/memory.c:270
+msgid ""
+"You are asking me to simulate a device with more than 50000 mesh points, "
+"although I could do this I am not going to because it seems a bad idea to me."
+msgstr ""
+
+#: ../libdump/cache.c:50 ../libdump/cache.c:57
+msgid "Writing files to disk"
+msgstr ""
+
+#: ../libdump/dump_dynamic.c:181 ../libdump/dump_dynamic.c:309
+msgid "Hole drift current"
+msgstr ""
+
+#: ../libdump/dump_dynamic.c:181
+msgid " Hole diffusion current"
+msgstr ""
+
+#: ../libdump/dump_dynamic.c:205 ../libdump/dump_dynamic.c:271
+msgid "Electron drift current"
+msgstr ""
+
+#: ../libdump/dump_dynamic.c:205 ../libdump/dump_dynamic.c:290
+msgid "Electron diffusion current"
+msgstr ""
+
+#: ../libdump/dump_dynamic.c:208 ../libdump/dump_dynamic.c:312
+#: ../libdump/dump_dynamic.c:331 ../libdump/dump_dynamic.c:369
+#: ../libdump/dump_1d_slice.c:540 ../libdump/dump_1d_slice.c:599
+msgid "Hole current density"
+msgstr ""
+
+#: ../libdump/dump_dynamic.c:228
+msgid "Current density at contacts"
+msgstr ""
+
+#: ../libdump/dump_dynamic.c:252
+msgid "Change in charge distribution"
+msgstr ""
+
+#: ../libdump/dump_dynamic.c:255 ../libdump/dump_dynamic.c:1052
+msgid "percent"
+msgstr ""
+
+#: ../libdump/dump_dynamic.c:274 ../libdump/dump_dynamic.c:293
+#: ../libdump/dump_dynamic.c:350 ../libdump/dump_1d_slice.c:508
+#: ../libdump/dump_1d_slice.c:569
+msgid "Electron current density"
+msgstr ""
+
+#: ../libdump/dump_dynamic.c:328
+msgid "Hole diffusion current"
+msgstr ""
+
+#: ../libdump/dump_dynamic.c:347
+msgid "Jn at contacts"
+msgstr ""
+
+#: ../libdump/dump_dynamic.c:366
+msgid "Jp at contacts"
+msgstr ""
+
+#: ../libdump/dump_dynamic.c:395
+msgid "External Current"
+msgstr ""
+
+#: ../libdump/dump_dynamic.c:425
+msgid "Free carrier generation rate"
+msgstr ""
+
+#: ../libdump/dump_dynamic.c:444
+msgid "Dynamic quantum efficiency"
+msgstr ""
+
+#: ../libdump/dump_dynamic.c:447
+msgid "Percent"
+msgstr ""
+
+#: ../libdump/dump_dynamic.c:469
+msgid "Free hole recombination"
+msgstr ""
+
+#: ../libdump/dump_dynamic.c:472 ../libdump/dump_dynamic.c:492
+#: ../libdump/dump_1d_slice.c:1299 ../libdump/dump_1d_slice.c:1328
+#: ../libdump/dump_1d_slice.c:1358 ../libdump/dump_1d_slice.c:1388
+#: ../libdump/dump_1d_slice.c:1417 ../libdump/dump_1d_slice.c:1446
+#: ../libdump/dump_1d_slice.c:1475 ../libdump/dump_1d_slice.c:1516
+#: ../libdump/dump_1d_slice.c:1629 ../libdump/dump_1d_slice.c:1659
+#: ../libdump/dump_1d_slice.c:1688 ../libdump/dump_1d_slice.c:1717
+msgid "Recombination"
+msgstr ""
+
+#: ../libdump/dump_dynamic.c:489
+msgid "Free electron recombination"
+msgstr ""
+
+#: ../libdump/dump_dynamic.c:510 ../libdump/dump_dynamic.c:513
+msgid "Free electron loss"
+msgstr ""
+
+#: ../libdump/dump_dynamic.c:530 ../libdump/dump_dynamic.c:533
+msgid "Free hole loss"
+msgstr ""
+
+#: ../libdump/dump_dynamic.c:571
+msgid "Electron relaxation"
+msgstr ""
+
+#: ../libdump/dump_dynamic.c:574 ../libdump/dump_dynamic.c:593
+msgid "Relaxation"
+msgstr ""
+
+#: ../libdump/dump_dynamic.c:590
+msgid "Hole relaxation"
+msgstr ""
+
+#: ../libdump/dump_dynamic.c:609
+msgid "Trapped electron density"
+msgstr ""
+
+#: ../libdump/dump_dynamic.c:628
+msgid "Trapped hole density"
+msgstr ""
+
+#: ../libdump/dump_dynamic.c:647
+msgid "Free electron density"
+msgstr ""
+
+#: ../libdump/dump_dynamic.c:666
+msgid "Free hole density"
+msgstr ""
+
+#: ../libdump/dump_dynamic.c:724 ../libdump/dump_dynamic.c:743
+#: ../libdump/dump_1d_slice.c:815 ../libdump/dump_1d_slice.c:853
+msgid "Mobility"
+msgstr ""
+
+#: ../libdump/dump_dynamic.c:765 ../libdump/dump_1d_slice.c:1035
+msgid "Total electron density"
+msgstr ""
+
+#: ../libdump/dump_dynamic.c:785 ../libdump/dump_1d_slice.c:1000
+msgid "Total hole density"
+msgstr ""
+
+#: ../libdump/dump_dynamic.c:827
+msgid "Voltage applied to diode"
+msgstr ""
+
+#: ../libdump/dump_dynamic.c:855
+msgid "PL intensity"
+msgstr ""
+
+#: ../libdump/dump_dynamic.c:858 ../libdump/dump_dynamic.c:879
+msgid "PL Intensity"
+msgstr ""
+
+#: ../libdump/dump_dynamic.c:876
+msgid "PL intensity normalized"
+msgstr ""
+
+#: ../libdump/dump_dynamic.c:1047
+msgid "band bend (percent)"
+msgstr ""
+
+#: ../libdump/dump_dynamic.c:1050
+msgid "band bend"
+msgstr ""
+
+#: ../libdump/dump_contacts.c:68
+msgid "Voltage - Current"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:62 ../libdump/dump_1d_slice.c:120
+msgid "Drift current density"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:64 ../libdump/dump_1d_slice.c:93
+#: ../libdump/dump_1d_slice.c:122 ../libdump/dump_1d_slice.c:151
+#: ../libdump/dump_1d_slice.c:180 ../libdump/dump_1d_slice.c:209
+#: ../libdump/dump_1d_slice.c:238 ../libdump/dump_1d_slice.c:267
+#: ../libdump/dump_1d_slice.c:296 ../libdump/dump_1d_slice.c:325
+#: ../libdump/dump_1d_slice.c:354 ../libdump/dump_1d_slice.c:383
+#: ../libdump/dump_1d_slice.c:412 ../libdump/dump_1d_slice.c:442
+#: ../libdump/dump_1d_slice.c:471 ../libdump/dump_1d_slice.c:505
+#: ../libdump/dump_1d_slice.c:537 ../libdump/dump_1d_slice.c:566
+#: ../libdump/dump_1d_slice.c:596 ../libdump/dump_1d_slice.c:625
+#: ../libdump/dump_1d_slice.c:661 ../libdump/dump_1d_slice.c:695
+#: ../libdump/dump_1d_slice.c:724 ../libdump/dump_1d_slice.c:754
+#: ../libdump/dump_1d_slice.c:783 ../libdump/dump_1d_slice.c:812
+#: ../libdump/dump_1d_slice.c:850 ../libdump/dump_1d_slice.c:884
+#: ../libdump/dump_1d_slice.c:914 ../libdump/dump_1d_slice.c:944
+#: ../libdump/dump_1d_slice.c:973 ../libdump/dump_1d_slice.c:1002
+#: ../libdump/dump_1d_slice.c:1037 ../libdump/dump_1d_slice.c:1071
+#: ../libdump/dump_1d_slice.c:1107 ../libdump/dump_1d_slice.c:1143
+#: ../libdump/dump_1d_slice.c:1185 ../libdump/dump_1d_slice.c:1222
+#: ../libdump/dump_1d_slice.c:1256 ../libdump/dump_1d_slice.c:1290
+#: ../libdump/dump_1d_slice.c:1319 ../libdump/dump_1d_slice.c:1349
+#: ../libdump/dump_1d_slice.c:1379 ../libdump/dump_1d_slice.c:1408
+#: ../libdump/dump_1d_slice.c:1437 ../libdump/dump_1d_slice.c:1466
+#: ../libdump/dump_1d_slice.c:1507 ../libdump/dump_1d_slice.c:1548
+#: ../libdump/dump_1d_slice.c:1582 ../libdump/dump_1d_slice.c:1620
+#: ../libdump/dump_1d_slice.c:1650 ../libdump/dump_1d_slice.c:1679
+#: ../libdump/dump_1d_slice.c:1708
+msgid "x-position"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:65 ../libdump/dump_1d_slice.c:94
+#: ../libdump/dump_1d_slice.c:123 ../libdump/dump_1d_slice.c:152
+#: ../libdump/dump_1d_slice.c:181 ../libdump/dump_1d_slice.c:210
+#: ../libdump/dump_1d_slice.c:239 ../libdump/dump_1d_slice.c:268
+#: ../libdump/dump_1d_slice.c:297 ../libdump/dump_1d_slice.c:326
+#: ../libdump/dump_1d_slice.c:355 ../libdump/dump_1d_slice.c:384
+#: ../libdump/dump_1d_slice.c:413 ../libdump/dump_1d_slice.c:443
+#: ../libdump/dump_1d_slice.c:472 ../libdump/dump_1d_slice.c:506
+#: ../libdump/dump_1d_slice.c:538 ../libdump/dump_1d_slice.c:567
+#: ../libdump/dump_1d_slice.c:597 ../libdump/dump_1d_slice.c:626
+#: ../libdump/dump_1d_slice.c:662 ../libdump/dump_1d_slice.c:696
+#: ../libdump/dump_1d_slice.c:725 ../libdump/dump_1d_slice.c:755
+#: ../libdump/dump_1d_slice.c:784 ../libdump/dump_1d_slice.c:813
+#: ../libdump/dump_1d_slice.c:851 ../libdump/dump_1d_slice.c:885
+#: ../libdump/dump_1d_slice.c:915 ../libdump/dump_1d_slice.c:945
+#: ../libdump/dump_1d_slice.c:974 ../libdump/dump_1d_slice.c:1003
+#: ../libdump/dump_1d_slice.c:1038 ../libdump/dump_1d_slice.c:1072
+#: ../libdump/dump_1d_slice.c:1108 ../libdump/dump_1d_slice.c:1144
+#: ../libdump/dump_1d_slice.c:1186 ../libdump/dump_1d_slice.c:1223
+#: ../libdump/dump_1d_slice.c:1257 ../libdump/dump_1d_slice.c:1291
+#: ../libdump/dump_1d_slice.c:1320 ../libdump/dump_1d_slice.c:1350
+#: ../libdump/dump_1d_slice.c:1380 ../libdump/dump_1d_slice.c:1409
+#: ../libdump/dump_1d_slice.c:1438 ../libdump/dump_1d_slice.c:1467
+#: ../libdump/dump_1d_slice.c:1508 ../libdump/dump_1d_slice.c:1549
+#: ../libdump/dump_1d_slice.c:1583 ../libdump/dump_1d_slice.c:1621
+#: ../libdump/dump_1d_slice.c:1651 ../libdump/dump_1d_slice.c:1680
+#: ../libdump/dump_1d_slice.c:1709
+msgid "y-position"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:66 ../libdump/dump_1d_slice.c:95
+#: ../libdump/dump_1d_slice.c:124 ../libdump/dump_1d_slice.c:153
+#: ../libdump/dump_1d_slice.c:182 ../libdump/dump_1d_slice.c:211
+#: ../libdump/dump_1d_slice.c:240 ../libdump/dump_1d_slice.c:269
+#: ../libdump/dump_1d_slice.c:298 ../libdump/dump_1d_slice.c:327
+#: ../libdump/dump_1d_slice.c:356 ../libdump/dump_1d_slice.c:385
+#: ../libdump/dump_1d_slice.c:414 ../libdump/dump_1d_slice.c:444
+#: ../libdump/dump_1d_slice.c:473 ../libdump/dump_1d_slice.c:507
+#: ../libdump/dump_1d_slice.c:539 ../libdump/dump_1d_slice.c:568
+#: ../libdump/dump_1d_slice.c:598 ../libdump/dump_1d_slice.c:627
+#: ../libdump/dump_1d_slice.c:663 ../libdump/dump_1d_slice.c:697
+#: ../libdump/dump_1d_slice.c:726 ../libdump/dump_1d_slice.c:756
+#: ../libdump/dump_1d_slice.c:785 ../libdump/dump_1d_slice.c:814
+#: ../libdump/dump_1d_slice.c:852 ../libdump/dump_1d_slice.c:886
+#: ../libdump/dump_1d_slice.c:916 ../libdump/dump_1d_slice.c:946
+#: ../libdump/dump_1d_slice.c:975 ../libdump/dump_1d_slice.c:1004
+#: ../libdump/dump_1d_slice.c:1039 ../libdump/dump_1d_slice.c:1073
+#: ../libdump/dump_1d_slice.c:1109 ../libdump/dump_1d_slice.c:1145
+#: ../libdump/dump_1d_slice.c:1187 ../libdump/dump_1d_slice.c:1224
+#: ../libdump/dump_1d_slice.c:1258 ../libdump/dump_1d_slice.c:1292
+#: ../libdump/dump_1d_slice.c:1321 ../libdump/dump_1d_slice.c:1351
+#: ../libdump/dump_1d_slice.c:1381 ../libdump/dump_1d_slice.c:1410
+#: ../libdump/dump_1d_slice.c:1439 ../libdump/dump_1d_slice.c:1468
+#: ../libdump/dump_1d_slice.c:1509 ../libdump/dump_1d_slice.c:1550
+#: ../libdump/dump_1d_slice.c:1584 ../libdump/dump_1d_slice.c:1622
+#: ../libdump/dump_1d_slice.c:1652 ../libdump/dump_1d_slice.c:1681
+#: ../libdump/dump_1d_slice.c:1710
+msgid "z-position"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:67
+msgid "Electron current density (drift)"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:91 ../libdump/dump_1d_slice.c:149
+msgid "Diffusion current density"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:96
+msgid "Electron current density (diffusion)"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:125
+msgid "Hole current density (drift)"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:154
+msgid "Hole current density (diffusion)"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:183 ../libdump/dump_1d_slice.c:212
+#: ../libdump/dump_1d_slice.c:357 ../libdump/dump_1d_slice.c:386
+#: ../libdump/dump_1d_slice.c:415
+msgid "Electron Energy"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:189 ../libdump/dump_1d_slice.c:218
+#: ../libdump/dump_1d_slice.c:363 ../libdump/dump_1d_slice.c:392
+#: ../libdump/dump_1d_slice.c:421 ../libdump/dump_1d_slice.c:451
+#: ../libdump/dump_1d_slice.c:480 ../libdump/dump_1d_slice.c:704
+#: ../libdump/dump_1d_slice.c:1591
+msgid "Band structure"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:236
+msgid "Lattice temperature"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:241 ../libdump/dump_1d_slice.c:270
+#: ../libdump/dump_1d_slice.c:299
+msgid "Temperature"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:265
+msgid "Electron temperature"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:294
+msgid "Hole temperature"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:328
+msgid "Doping density"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:352
+msgid "Band gap"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:381
+msgid "Electron quasi Fermi-level"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:410
+msgid "Hole quasi Fermi-level"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:479
+msgid "Change in 1D position space output"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:564 ../libdump/dump_1d_slice.c:594
+msgid "Electron current density x"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:623 ../libdump/dump_1d_slice.c:628
+#: ../libdump/dump_1d_slice.c:659 ../libdump/dump_1d_slice.c:664
+msgid "Total current density (Jn+Jp)"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:693
+msgid "Equlibrium Fermi-level"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:733 ../libdump/dump_1d_slice.c:763
+#: ../libdump/dump_1d_slice.c:792 ../libdump/dump_1d_slice.c:821
+#: ../libdump/dump_1d_slice.c:859 ../libdump/dump_1d_slice.c:893
+#: ../libdump/dump_1d_slice.c:923
+msgid "Material parameters"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:810 ../libdump/dump_1d_slice.c:848
+msgid "Average electron mobility"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:882
+msgid "Free electron carrier density"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:887 ../libdump/dump_1d_slice.c:917
+#: ../libdump/dump_1d_slice.c:947 ../libdump/dump_1d_slice.c:976
+#: ../libdump/dump_1d_slice.c:1005 ../libdump/dump_1d_slice.c:1040
+#: ../libdump/dump_1d_slice.c:1074 ../libdump/dump_1d_slice.c:1110
+#: ../libdump/dump_1d_slice.c:1146 ../libdump/dump_1d_slice.c:1188
+msgid "Carrier density"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:912
+msgid "Free hole carrier density"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:942
+msgid "Trapped electron carrier density"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:971
+msgid "Trapped hole carrier density"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:1069
+msgid "Change in electron population"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:1080
+msgid "Chaerge density"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:1105
+msgid "Total charge"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:1141
+msgid "Change in total charge"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:1183
+msgid "Change in hole population"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:1220
+msgid "Excess electron density"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:1254
+msgid "Excess hole density"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:1288
+msgid "Free electron generation rate"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:1317
+msgid "Free hole generation rate"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:1347 ../libdump/dump_1d_slice.c:1352
+msgid "Photon generation rate"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:1377
+msgid "SRH electron recombination rate"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:1382 ../libdump/dump_1d_slice.c:1411
+#: ../libdump/dump_1d_slice.c:1440
+msgid "Recombination rate"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:1406
+msgid "SRH hole recombination rate"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:1435
+msgid "Free electron-hole recombination rate"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:1464 ../libdump/dump_1d_slice.c:1505
+msgid "Trap fermi level"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:1469 ../libdump/dump_1d_slice.c:1510
+msgid "Electron Fermi level"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:1546 ../libdump/dump_1d_slice.c:1580
+msgid "Material number"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:1551 ../libdump/dump_1d_slice.c:1585
+msgid "Number"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:1557
+msgid "Model"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:1618
+msgid "Free hole to trapped electron"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:1623 ../libdump/dump_1d_slice.c:1653
+#: ../libdump/dump_1d_slice.c:1682 ../libdump/dump_1d_slice.c:1711
+msgid "Rate"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:1648
+msgid "Free electron to trapped hole"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:1677
+msgid "Hole relaxation rate"
+msgstr ""
+
+#: ../libdump/dump_1d_slice.c:1706
+msgid "Electron relaxation rate"
+msgstr ""
+
+#: ../libfit/fit_dump.c:61 ../libfit/fit_dump.c:84
+msgid "Step"
+msgstr ""
+
+#: ../libfit/fit_dump.c:65 ../libfit/fit_dump.c:66 ../libfit/fit_dump.c:88
+#: ../libfit/fit_dump.c:89 ../libfit/fit_dump.c:111 ../libfit/fit_dump.c:112
+#: ../libfit/fit_dump.c:134 ../libfit/fit_dump.c:135 ../libfit/fit_dump.c:158
+#: ../libfit/fit_dump.c:159 ../libfit/fit_dump.c:182 ../libfit/fit_dump.c:183
+msgid "Fitting"
+msgstr ""
+
+#: ../libfit/fit_dump.c:131 ../libfit/fit_dump.c:155
+msgid "Speed"
+msgstr ""
+
+#: ../libfit/fit_dump.c:133 ../libfit/fit_dump.c:157
+msgid "odes/s"
+msgstr ""
+
+#: ../libfit/fit_dump.c:179
+msgid "Reset flag"
+msgstr ""

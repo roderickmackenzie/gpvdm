@@ -1,0 +1,9 @@
+#port
+8080
+#file_store
+/dev/shm/cluster_store/
+#interface
+wlp3s0
+#ver
+1.0
+#end

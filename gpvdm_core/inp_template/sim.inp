@@ -1,0 +1,9 @@
+#simmode
+eqe@eqe
+#stoppoint
+0
+#epitaxy
+device_epitaxy.inp
+#ver
+1.2
+#end

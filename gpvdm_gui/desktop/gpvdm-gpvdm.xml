@@ -1,0 +1,12 @@
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+   <mime-type type="application/gpvdm">
+     <comment>general purpose photovoltaic model</comment>
+     <magic priority="50">
+       <match value="gpvdm" type="string" offset="10:140"/>
+     </magic>
+	 <acronym>gpvdm</acronym>
+	 <expanded-acronym>general purpose photovoltaic model</expanded-acronym>
+     <glob pattern="*.gpvdm"/>
+	 <generic-icon name="simulation-gpvdm"/>
+   </mime-type>
+</mime-info>

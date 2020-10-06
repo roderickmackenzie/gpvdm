@@ -1,0 +1,25 @@
+1 ICON "solver.ico"
+2 VERSIONINFO
+FILEVERSION     1,0,0,0
+PRODUCTVERSION  1,0,0,0
+BEGIN
+  BLOCK "StringFileInfo"
+  BEGIN
+    BLOCK "080904E4"
+    BEGIN
+      VALUE "CompanyName", "None"
+      VALUE "FileDescription", "General-purpose Photovoltaic Device Model"
+      VALUE "FileVersion", "4.40"
+      VALUE "InternalName", "gpvdm"
+      VALUE "LegalCopyright", "Roderick MacKenzie"
+      VALUE "OriginalFilename", "gpvdm.exe"
+      VALUE "ProductName", "gpvdm"
+      VALUE "ProductVersion", "1.0"
+    END
+  END
+
+  BLOCK "VarFileInfo"
+  BEGIN
+    VALUE "Translation", 0x809, 1252
+  END
+END

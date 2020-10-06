@@ -1,0 +1,9 @@
+#probe_wavelength
+500e-9
+#use_ss_spectra
+1
+#stark_mul
+1.524237e-15
+#ver
+1.0
+#end

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   height="300"
+   width="300"
+   viewBox="0 0 300 300"
+   version="1.1"
+   id="svg10"
+   sodipodi:docname="ch.svg"
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)">
+  <metadata
+     id="metadata16">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs14" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="640"
+     inkscape:window-height="480"
+     id="namedview12"
+     showgrid="false"
+     inkscape:zoom="0.78666667"
+     inkscape:cx="150"
+     inkscape:cy="150"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg10" />
+  <title
+     id="title2">Flag of Switzerland</title>
+  <!-- From http://commons.wikimedia.org/wiki/Image:Flag_of_Switzerland.svg .  This file is in the public domain. -->
+  <rect
+     fill="#d81e05"
+     height="300"
+     width="300"
+     id="rect4" />
+  <rect
+     fill="#ffffff"
+     height="60"
+     width="200"
+     x="50"
+     y="120"
+     id="rect6" />
+  <rect
+     height="200"
+     width="60"
+     x="117.45763"
+     y="47.457626"
+     id="rect8"
+     style="fill:#ffffff" />
+</svg>

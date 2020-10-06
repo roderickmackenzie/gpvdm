@@ -1,0 +1,4578 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2017 Liu Di (刘迪) and Zhao Chenyao (赵辰尧)
+# This file is distributed under the same license as the gpvdm package.
+# Liu Di (刘迪) <EMAIL@ADDRESS>, 2017
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gpvdm 4.88\n"
+"Report-Msgid-Bugs-To: roderick.mackenzie@nottingham.ac.uk\n"
+"POT-Creation-Date: 2017-03-18 18:59+0000\n"
+"PO-Revision-Date: 2017-03-23 22:39+0800\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.12\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: ../liblight/light_config.c:59 ../liblight/light_config.c:109
+msgid "load"
+msgstr "加载"
+
+#: ../liblight/light_dump.c:471
+msgid "Electron generation rate"
+msgstr "电子产生率"
+
+#: ../liblight/light_dump.c:473 ../liblight/light_dump.c:500
+#: ../src/initial.c:52 ../src/initial.c:76 ../src/initial.c:100
+#: ../src/initial.c:124 ../src/initial.c:148 ../src/pos.c:67 ../src/pos.c:84
+#: ../src/pos.c:119 ../src/pos.c:137 ../src/pos.c:154 ../gui/band_graph.py:205
+#: ../gui/qe.py:60 ../libdump/dump_1d_slice.c:70 ../libdump/dump_1d_slice.c:157
+#: ../libdump/dump_1d_slice.c:215 ../libdump/dump_1d_slice.c:244
+#: ../libdump/dump_1d_slice.c:273 ../libdump/dump_1d_slice.c:331
+#: ../libdump/dump_1d_slice.c:360 ../libdump/dump_1d_slice.c:448
+#: ../libdump/dump_1d_slice.c:511 ../libdump/dump_1d_slice.c:541
+#: ../libdump/dump_1d_slice.c:570 ../libdump/dump_1d_slice.c:600
+#: ../libdump/dump_1d_slice.c:629 ../libdump/dump_1d_slice.c:665
+#: ../libdump/dump_1d_slice.c:699 ../libdump/dump_1d_slice.c:728
+#: ../libdump/dump_1d_slice.c:758 ../libdump/dump_1d_slice.c:787
+#: ../libdump/dump_1d_slice.c:888 ../libdump/dump_1d_slice.c:917
+#: ../libdump/dump_1d_slice.c:946 ../libdump/dump_1d_slice.c:975
+#: ../libdump/dump_1d_slice.c:1004 ../libdump/dump_1d_slice.c:1039
+#: ../libdump/dump_1d_slice.c:1073 ../libdump/dump_1d_slice.c:1109
+#: ../libdump/dump_1d_slice.c:1145 ../libdump/dump_1d_slice.c:1187
+#: ../libdump/dump_1d_slice.c:1224 ../libdump/dump_1d_slice.c:1258
+#: ../libdump/dump_1d_slice.c:1292 ../libdump/dump_1d_slice.c:1321
+#: ../libdump/dump_1d_slice.c:1351 ../libdump/dump_1d_slice.c:1380
+#: ../libdump/dump_1d_slice.c:1410 ../libdump/dump_1d_slice.c:1451
+#: ../libdump/dump_1d_slice.c:1492 ../libdump/dump_1d_slice.c:1526
+#: ../libdump/dump_1d_slice.c:1564 ../libdump/dump_1d_slice.c:1594
+#: ../libdump/dump_1d_slice.c:1652
+msgid "Position"
+msgstr "位置"
+
+#: ../liblight/light_dump.c:474 ../liblight/light_dump.c:501
+#: ../libmeasure/probe.c:273 ../libmeasure/probe.c:298
+#: ../plugins/pulse/pulse.c:299 ../gui/optics.py:184
+#: ../libdump/dump_dynamic.c:420 ../libdump/dump_1d_slice.c:1297
+#: ../libdump/dump_1d_slice.c:1326
+msgid "Generation rate"
+msgstr "产生率"
+
+#: ../liblight/light_dump.c:498 ../src/main.c:67
+msgid "Hole generation rate"
+msgstr "空穴产生率"
+
+#: ../liblight/light_interface.c:52
+msgid "Initializing optical model"
+msgstr "正在初始化光学模型"
+
+#: ../liblight/light_interface.c:92 ../lib/newton_interface.c:88
+#: ../lib/solver_interface.c:89 ../src/run_electrical_dll.c:79
+msgid "dll not loaded"
+msgstr "dll 未加载"
+
+#: ../liblight/light_interface.c:98
+msgid "dll function light_dll_init not found\n"
+msgstr "未找到dll函数light_dll_init \n"
+
+#: ../liblight/light_interface.c:104
+msgid "dll function light_dll_solve_lam_slice not found\n"
+msgstr "未找到dll函数light_dll_solve_lam_slice \n"
+
+#: ../liblight/light_interface.c:110
+msgid "dll function light_dll_ver not found\n"
+msgstr "未找到dll函数light_dll_ver\n"
+
+#: ../liblight/light_materials.c:46
+msgid "load: materials"
+msgstr "加载:材料"
+
+#: ../liblight/light_materials.c:59
+msgid "No optical materials found\n"
+msgstr "未找到光学材料\n"
+
+#: ../liblight/light_materials.c:173 ../liblight/light_materials.c:263
+#: ../liblight/light_materials.c:329
+msgid "file not found"
+msgstr "未找到文件"
+
+#: ../liblight/light_materials.c:249
+msgid "Error at end of patch file\n"
+msgstr "补丁文件末尾有错误\n"
+
+#: ../liblight/light_materials.c:309
+msgid "Error at end of inter file"
+msgstr "内部文件末尾有错误"
+
+#: ../liblight/light_materials.c:356 ../liblight/light_materials.c:408
+msgid "Wavelength - Reflected light"
+msgstr "波长-反射光"
+
+#: ../liblight/light_materials.c:358 ../liblight/light_materials.c:410
+#: ../libmeasure/probe.c:163 ../libmeasure/probe.c:165
+#: ../libmeasure/probe.c:188 ../libmeasure/probe.c:190
+#: ../libmeasure/probe.c:213 ../libmeasure/probe.c:215 ../gui/equation.py:161
+msgid "Wavelength"
+msgstr "波长"
+
+#: ../liblight/light_memory.c:192
+msgid "Freeing memory from the optical model\n"
+msgstr "光学模型中清空内存\n"
+
+#: ../liblight/light_utils.c:299
+msgid "It was dark I did not solve any slices\n"
+msgstr "黑暗条件，结果无法求得\n"
+
+#: ../lib/util.c:182 ../lib/util.c:200
+msgid "Error writing file"
+msgstr "写入文件错误"
+
+#: ../lib/util.c:367
+msgid "I don't understand the command"
+msgstr "无法理解此条指令"
+
+#: ../lib/util.c:379
+msgid "Can not read file"
+msgstr "无法读取文件"
+
+#: ../lib/util.c:410 ../lib/util.c:530 ../lib/util.c:590 ../lib/util.c:680
+msgid "File not found"
+msgstr "未找到文件"
+
+#: ../lib/util.c:568 ../lib/util.c:628 ../lib/util.c:726
+msgid "Can not write file"
+msgstr "无法写入文件"
+
+#: ../lib/util.c:643 ../lib/util.c:651
+msgid "Can not open file"
+msgstr "无法打开文件"
+
+#: ../lib/util.c:718
+msgid "Token not found in file"
+msgstr "文件中未发现令牌"
+
+#: ../lib/util.c:894
+msgid "Deleting directory"
+msgstr "正在删除目录"
+
+#: ../lib/complex_solver.c:44
+msgid "out of memory!\n"
+msgstr "内存不足！\n"
+
+#: ../lib/complex_solver.c:47
+msgid "matrix is singular!\n"
+msgstr "此矩阵奇异！\n"
+
+#: ../lib/complex_solver.c:81
+msgid "Matrix dumped\n"
+msgstr "矩阵转存\n"
+
+#: ../lib/complex_solver.c:100
+msgid "Complex solver free\n"
+msgstr "无需复数求解器\n"
+
+#: ../lib/complex_solver.c:132 ../lib/complex_solver.c:141
+#: ../lib/complex_solver.c:150 ../lib/complex_solver.c:159
+#: ../lib/complex_solver.c:168 ../lib/complex_solver.c:177
+msgid "complex_solver realloc memory error"
+msgstr "complex_solver重新分配内存时发生错误"
+
+#: ../lib/newton_interface.c:49
+msgid "Solver initialization\n"
+msgstr "求解器初始化\n"
+
+#: ../lib/newton_interface.c:94
+msgid "dll function dll_solve_cur not found\n"
+msgstr "未找到dll函数dll_solve_cur\n"
+
+#: ../lib/newton_interface.c:101
+msgid "dll function dll_solver_realloc not found\n"
+msgstr "未找到dll函数dll_solver_realloc\n"
+
+#: ../lib/newton_interface.c:107
+msgid "dll function dll_solver_free_memory not found\n"
+msgstr "未找到dll函数dll_solver_free_memory\n"
+
+#: ../lib/log.c:69
+#, python-format
+msgid "File access log written to %s\n"
+msgstr "文件访问日志被写入%s\n"
+
+#: ../lib/solver_interface.c:95
+msgid "dll function dll_matrix_solve not found\n"
+msgstr "未找到dll函数dll_matrix_solve \n"
+
+#: ../lib/solver_interface.c:101
+msgid "dll function dll_matrix_dump not found\n"
+msgstr "未找到dll函数dll_matrix_dump \n"
+
+#: ../lib/solver_interface.c:107 ../src/run_electrical_dll.c:85
+msgid "dll function set_interface not found\n"
+msgstr "未找到dll函数set_interface\n"
+
+#: ../lib/solver_interface.c:113
+msgid "dll function dll_matrix_solver_free not found\n"
+msgstr "未找到dll函数dll_matrix_solver_free \n"
+
+#: ../lib/solver_interface.c:152
+msgid "Freeing memory"
+msgstr "正在释放内存"
+
+#: ../lib/solver_interface.c:156
+msgid "Error closing dll"
+msgstr "关闭dll文件错误"
+
+#: ../libmesh/time.c:96
+msgid "You must load the optical plugin before making the time mesh"
+msgstr "您必须在划分时间之前加载光学插件"
+
+#: ../libmeasure/probe.c:270 ../libmeasure/probe.c:272
+#: ../libmeasure/probe.c:295 ../libmeasure/probe.c:297
+#: ../plugins/pulse/pulse.c:206 ../plugins/pulse/pulse.c:208
+#: ../plugins/pulse/pulse.c:229 ../plugins/pulse/pulse.c:231
+#: ../plugins/pulse/pulse.c:253 ../plugins/pulse/pulse.c:255
+#: ../plugins/pulse/pulse.c:276 ../plugins/pulse/pulse.c:278
+#: ../plugins/pulse/pulse.c:296 ../plugins/pulse/pulse.c:298
+#: ../plugins/fxdomain/fxdomain.c:259 ../plugins/fxdomain/fxdomain.c:261
+#: ../plugins/fxdomain/fxdomain.c:279 ../plugins/fxdomain/fxdomain.c:281
+#: ../gui/tmesh.py:206 ../libdump/dump_dynamic.c:207
+#: ../libdump/dump_dynamic.c:230 ../libdump/dump_dynamic.c:254
+#: ../libdump/dump_dynamic.c:273 ../libdump/dump_dynamic.c:292
+#: ../libdump/dump_dynamic.c:311 ../libdump/dump_dynamic.c:330
+#: ../libdump/dump_dynamic.c:349 ../libdump/dump_dynamic.c:368
+#: ../libdump/dump_dynamic.c:393 ../libdump/dump_dynamic.c:419
+#: ../libdump/dump_dynamic.c:438 ../libdump/dump_dynamic.c:463
+#: ../libdump/dump_dynamic.c:483 ../libdump/dump_dynamic.c:504
+#: ../libdump/dump_dynamic.c:524 ../libdump/dump_dynamic.c:559
+#: ../libdump/dump_dynamic.c:578 ../libdump/dump_dynamic.c:597
+#: ../libdump/dump_dynamic.c:616 ../libdump/dump_dynamic.c:635
+#: ../libdump/dump_dynamic.c:654 ../libdump/dump_dynamic.c:694
+#: ../libdump/dump_dynamic.c:713 ../libdump/dump_dynamic.c:736
+#: ../libdump/dump_dynamic.c:756 ../libdump/dump_dynamic.c:790
+#: ../libdump/dump_dynamic.c:815 ../libdump/dump_dynamic.c:836
+#: ../libdump/dump_dynamic.c:855 ../libdump/dump_dynamic.c:874
+#: ../libdump/dump_dynamic.c:893 ../libdump/dump_dynamic.c:912
+#: ../libdump/dump_dynamic.c:931 ../libdump/dump_dynamic.c:950
+#: ../libdump/dump_dynamic.c:969 ../libdump/dump_dynamic.c:988
+#: ../libdump/dump_dynamic.c:1007 ../libfit/fit_dump.c:107
+#: ../libfit/fit_dump.c:130 ../libfit/fit_dump.c:154 ../libfit/fit_dump.c:178
+msgid "Time"
+msgstr "时间"
+
+#: ../libmeasure/probe.c:270 ../libmeasure/probe.c:295
+#: ../plugins/pulse/pulse.c:296
+msgid "Photogeneration rate"
+msgstr "光子产生率"
+
+#: ../libmeasure/probe.c:326
+msgid "Probe load configuration"
+msgstr "探头加载配置"
+
+#: ../libmeasure/probe.c:352
+msgid "Probe calculate modes"
+msgstr "探头计算模型"
+
+#: ../libmeasure/probe.c:393
+msgid "Probe free memory"
+msgstr "探头可用内存"
+
+#: ../plugins/pulse/pulse.c:68
+msgid "no pulse config file found"
+msgstr "找不到脉冲配置文件"
+
+#: ../plugins/pulse/pulse.c:118 ../plugins/pulse/pulse.c:169
+msgid "pulse mode not known\n"
+msgstr "脉冲模式未知\n"
+
+#: ../plugins/pulse/pulse.c:176
+msgid "pulse time"
+msgstr "脉冲时间"
+
+#: ../plugins/pulse/pulse.c:176 ../plugins/fxdomain/fxdomain.c:191
+msgid "step"
+msgstr "步骤"
+
+#: ../plugins/pulse/pulse.c:177 ../plugins/pulse/pulse.c:253
+#: ../plugins/fxdomain/fxdomain.c:192 ../plugins/fxdomain/fxdomain.c:259
+msgid "current"
+msgstr "电流"
+
+#: ../plugins/pulse/pulse.c:206 ../plugins/pulse/pulse.c:209
+#: ../plugins/pulse/pulse.c:256 ../plugins/fxdomain/fxdomain.c:262
+#: ../plugins/jv/jv.c:242 ../plugins/jv/jv.c:417 ../plugins/jv/jv.c:454
+#: ../gui/token_lib.py:364 ../libdump/dump_dynamic.c:394
+#: ../libdump/dump_contacts.c:72
+msgid "Current"
+msgstr "电流"
+
+#: ../plugins/pulse/pulse.c:229
+msgid "current density"
+msgstr "电流密度"
+
+#: ../plugins/pulse/pulse.c:232 ../plugins/jv/jv.c:357 ../plugins/jv/jv.c:360
+#: ../plugins/jv/jv.c:376 ../plugins/jv/jv.c:379 ../plugins/jv/jv.c:395
+#: ../plugins/jv/jv.c:398 ../libdump/dump_dynamic.c:231
+#: ../libdump/dump_1d_slice.c:511 ../libdump/dump_1d_slice.c:541
+msgid "Current density"
+msgstr "电流密度"
+
+#: ../plugins/pulse/pulse.c:276 ../plugins/pulse/pulse.c:281
+#: ../plugins/fxdomain/fxdomain.c:279 ../plugins/fxdomain/fxdomain.c:282
+#: ../plugins/jv/jv.c:242 ../plugins/jv/jv.c:293 ../plugins/jv/jv.c:433
+#: ../gui/tmesh.py:232 ../gui/tmesh.py:234 ../gui/tmesh.py:237
+#: ../gui/tmesh.py:239 ../gui/contacts.py:161 ../libdump/dump_dynamic.c:791
+#: ../libdump/dump_contacts.c:70
+msgid "Voltage"
+msgstr "电压"
+
+#: ../plugins/pulse/pulse.c:279 ../plugins/jv/jv.c:380 ../plugins/jv/jv.c:399
+#: ../plugins/jv/jv.c:418 ../gui/fxmesh.py:173
+msgid "Volts"
+msgstr "伏特"
+
+#: ../plugins/fxdomain/fxdomain.c:85
+msgid "no fxdomain config file found"
+msgstr "找不到fxdomain配置文件"
+
+#: ../plugins/fxdomain/fxdomain.c:115
+msgid "Running frequency"
+msgstr "运行频率"
+
+#: ../plugins/fxdomain/fxdomain.c:144 ../plugins/fxdomain/fxdomain.c:185
+msgid "fxdomain mode not known"
+msgstr "fxdomain模式未知"
+
+#: ../plugins/fxdomain/fxdomain.c:191
+msgid "fxdomain time"
+msgstr "fxdomain时间"
+
+#: ../plugins/fxdomain/fxdomain.c:312
+msgid "Real"
+msgstr "实部"
+
+#: ../plugins/fxdomain/fxdomain.c:312
+msgid "Imaginary"
+msgstr "虚部"
+
+#: ../plugins/fxdomain/fxdomain.c:314 ../gui/token_lib.py:271
+msgid "Re(i)"
+msgstr "电流的实部"
+
+#: ../plugins/fxdomain/fxdomain.c:315 ../gui/token_lib.py:272
+msgid "Im(i)"
+msgstr "电流的虚部"
+
+#: ../plugins/light_full/light.c:41
+msgid "Full transfer matrix based light model"
+msgstr "基于光学模形的完全转移矩阵"
+
+#: ../plugins/light_full/light.c:54
+msgid "Solve optical slice at"
+msgstr "在这个位置求解光学层："
+
+#: ../plugins/light_full/light.c:232
+msgid "I can't solve the matrix because I don't have enough equations."
+msgstr "因为缺少足够的方程，此矩阵无法解得"
+
+#: ../plugins/jv/jv.c:46
+msgid "Running JV simulation\n"
+msgstr "正在仿真JV曲线\n"
+
+#: ../plugins/jv/jv.c:234
+#, python-format
+msgid "Stopping because of Vexternal %Le>%Le\n"
+msgstr "正在停止，因为Vexternal %Le>%Le\n"
+
+#: ../plugins/jv/jv.c:295
+msgid "Efficiency"
+msgstr "效率"
+
+#: ../plugins/jv/jv.c:333 ../plugins/jv/jv.c:336 ../libdump/dump_1d_slice.c:342
+#: ../libdump/dump_1d_slice.c:957 ../libdump/dump_1d_slice.c:986
+#: ../libdump/dump_1d_slice.c:1015 ../libdump/dump_1d_slice.c:1050
+#: ../libdump/dump_1d_slice.c:1120 ../libdump/dump_1d_slice.c:1156
+#: ../libdump/dump_1d_slice.c:1198 ../libdump/dump_1d_slice.c:1235
+#: ../libdump/dump_1d_slice.c:1269
+msgid "Charge density"
+msgstr "电荷密度"
+
+#: ../plugins/jv/jv.c:333 ../plugins/jv/jv.c:357 ../plugins/jv/jv.c:376
+#: ../plugins/jv/jv.c:395 ../plugins/jv/jv.c:414
+msgid "Applied voltage"
+msgstr "外加电压"
+
+#: ../plugins/jv/jv.c:335 ../plugins/jv/jv.c:359 ../plugins/jv/jv.c:378
+#: ../plugins/jv/jv.c:397 ../plugins/jv/jv.c:416
+msgid "Applied Voltage"
+msgstr "外加电压"
+
+#: ../plugins/jv/jv.c:414
+msgid "Current "
+msgstr "电流"
+
+#: ../plugins/jv/jv.c:433 ../plugins/jv/jv.c:454
+msgid "Light generated"
+msgstr "生成的光"
+
+#: ../plugins/jv/jv.c:457
+msgid "Light power"
+msgstr "光功率"
+
+#: ../libserver/server.c:111
+msgid "Job stalled. Time since last run:"
+msgstr "任务暂停。距离上次运行已经过去："
+
+#: ../libserver/server.c:154
+msgid "Bytes written"
+msgstr "已写入的字节"
+
+#: ../libserver/server.c:155
+msgid "Bytes read"
+msgstr "已读取的字节"
+
+#: ../libserver/server.c:156
+msgid "Files read"
+msgstr "已读取的文件"
+
+#: ../libserver/server.c:157
+msgid "Files written"
+msgstr "已写入的文件"
+
+#: ../libserver/server.c:161
+msgid "I have shut down the server"
+msgstr "服务器已经关闭"
+
+#: ../libserver/server.c:237
+msgid "Number of CPUs:"
+msgstr "CPU数量："
+
+#: ../libserver/server.c:246
+msgid "Start time"
+msgstr "起始时间"
+
+#: ../libserver/server.c:249
+msgid "End time"
+msgstr "截止时间"
+
+#: ../libserver/server.c:503
+msgid "All jobs finished jobs"
+msgstr "所有任务 已完成的任务"
+
+#: ../libserver/server.c:509
+msgid "I have finished all my jobs"
+msgstr "已经完成所有任务"
+
+#: ../libserver/server.c:516
+msgid "The server has detected a crash"
+msgstr "服务器检测到异常"
+
+#: ../libdos/dos.c:218
+msgid "Loading file"
+msgstr "正在加载文件"
+
+#: ../libdos/dos.c:264 ../libdos/dos.c:270
+msgid "DOS file not found\n"
+msgstr "未找到DOS文件\n"
+
+#: ../libdos/dos.c:305
+msgid "DoS n file not found\n"
+msgstr "未找到DoS n文件\n"
+
+#: ../libdos/gendosfdgaus.c:840
+msgid "Expected dos size is different from generated\n"
+msgstr "预期dos大小与生成结果不同\n"
+
+#: ../libdos/gendosfdgaus.c:1304
+msgid "Finished generating DoS....\n"
+msgstr "已完成生成DoS\n"
+
+#: ../src/initial.c:50
+msgid "Equilibrium Fermi-level"
+msgstr "平衡态费米能级"
+
+#: ../src/initial.c:50 ../src/initial.c:74 ../src/initial.c:98
+#: ../src/initial.c:122 ../src/initial.c:146 ../libdump/dump_1d_slice.c:99
+#: ../libdump/dump_1d_slice.c:128 ../libdump/dump_1d_slice.c:186
+#: ../libdump/dump_1d_slice.c:302 ../libdump/dump_1d_slice.c:389
+#: ../libdump/dump_1d_slice.c:418 ../libdump/dump_1d_slice.c:1623
+msgid "position"
+msgstr "位置"
+
+#: ../src/initial.c:56 ../src/initial.c:80 ../src/initial.c:104
+#: ../src/initial.c:128 ../src/initial.c:152 ../libdump/dump_1d_slice.c:80
+#: ../libdump/dump_1d_slice.c:109 ../libdump/dump_1d_slice.c:138
+#: ../libdump/dump_1d_slice.c:167 ../libdump/dump_1d_slice.c:196
+#: ../libdump/dump_1d_slice.c:225 ../libdump/dump_1d_slice.c:254
+#: ../libdump/dump_1d_slice.c:283 ../libdump/dump_1d_slice.c:312
+#: ../libdump/dump_1d_slice.c:341 ../libdump/dump_1d_slice.c:370
+#: ../libdump/dump_1d_slice.c:399 ../libdump/dump_1d_slice.c:428
+#: ../libdump/dump_1d_slice.c:458 ../libdump/dump_1d_slice.c:521
+#: ../libdump/dump_1d_slice.c:551 ../libdump/dump_1d_slice.c:580
+#: ../libdump/dump_1d_slice.c:610 ../libdump/dump_1d_slice.c:639
+#: ../libdump/dump_1d_slice.c:675 ../libdump/dump_1d_slice.c:709
+#: ../libdump/dump_1d_slice.c:738 ../libdump/dump_1d_slice.c:768
+#: ../libdump/dump_1d_slice.c:797 ../libdump/dump_1d_slice.c:826
+#: ../libdump/dump_1d_slice.c:864 ../libdump/dump_1d_slice.c:898
+#: ../libdump/dump_1d_slice.c:927 ../libdump/dump_1d_slice.c:956
+#: ../libdump/dump_1d_slice.c:985 ../libdump/dump_1d_slice.c:1014
+#: ../libdump/dump_1d_slice.c:1049 ../libdump/dump_1d_slice.c:1083
+#: ../libdump/dump_1d_slice.c:1119 ../libdump/dump_1d_slice.c:1155
+#: ../libdump/dump_1d_slice.c:1197 ../libdump/dump_1d_slice.c:1234
+#: ../libdump/dump_1d_slice.c:1268 ../libdump/dump_1d_slice.c:1302
+#: ../libdump/dump_1d_slice.c:1331 ../libdump/dump_1d_slice.c:1361
+#: ../libdump/dump_1d_slice.c:1390 ../libdump/dump_1d_slice.c:1420
+#: ../libdump/dump_1d_slice.c:1461 ../libdump/dump_1d_slice.c:1502
+#: ../libdump/dump_1d_slice.c:1536 ../libdump/dump_1d_slice.c:1574
+#: ../libdump/dump_1d_slice.c:1604 ../libdump/dump_1d_slice.c:1633
+#: ../libdump/dump_1d_slice.c:1662
+msgid "1D position space output"
+msgstr "一维位置空间输出"
+
+#: ../src/initial.c:57 ../src/initial.c:81 ../src/initial.c:105
+#: ../src/initial.c:129 ../src/initial.c:153 ../libdump/dump_1d_slice.c:81
+#: ../libdump/dump_1d_slice.c:110 ../libdump/dump_1d_slice.c:139
+#: ../libdump/dump_1d_slice.c:168 ../libdump/dump_1d_slice.c:255
+#: ../libdump/dump_1d_slice.c:284 ../libdump/dump_1d_slice.c:313
+#: ../libdump/dump_1d_slice.c:522 ../libdump/dump_1d_slice.c:552
+#: ../libdump/dump_1d_slice.c:581 ../libdump/dump_1d_slice.c:611
+#: ../libdump/dump_1d_slice.c:640 ../libdump/dump_1d_slice.c:676
+msgid "Transport"
+msgstr "输运"
+
+#: ../src/initial.c:74 ../libdump/dump_1d_slice.c:186
+msgid "LUMO"
+msgstr "最低未占分子轨道"
+
+#: ../src/initial.c:98 ../libdump/dump_1d_slice.c:215
+msgid "HOMO"
+msgstr "最高占据分子轨道"
+
+#: ../src/initial.c:122 ../src/pos.c:120 ../libdump/dump_dynamic.c:598
+#: ../libdump/dump_dynamic.c:636 ../libdump/dump_dynamic.c:737
+#: ../libdump/dump_1d_slice.c:1229
+msgid "Electron density"
+msgstr "电子密度"
+
+#: ../src/initial.c:146 ../src/pos.c:138 ../libdump/dump_dynamic.c:617
+#: ../libdump/dump_dynamic.c:655 ../libdump/dump_dynamic.c:757
+#: ../libdump/dump_1d_slice.c:1263
+msgid "Hole density"
+msgstr "空穴密度"
+
+#: ../src/initial.c:149 ../gui/jobs.py:86
+msgid "n"
+msgstr "n"
+
+#: ../src/initial.c:257
+msgid "Holes on left contact"
+msgstr "左接触层的空穴"
+
+#: ../src/initial.c:258
+msgid "Electrons on left contact"
+msgstr "左接触层的电子"
+
+#: ../src/initial.c:260
+msgid "Holes on right contact"
+msgstr "右接触层的空穴"
+
+#: ../src/initial.c:261
+msgid "Electrons on right contact"
+msgstr "右接触层的电子"
+
+#: ../src/main.c:116 ../src/main.c:137
+msgid "Copyright (C) 2012-2017 Roderick C. I. MacKenzie, Releced under GPLv2"
+msgstr "版权 (C) 2012-2017 Roderick C. I. MacKenzie,   发布在 GPLv2 下"
+
+#: ../src/main.c:118
+msgid "options"
+msgstr "选项"
+
+#: ../src/main.c:120
+msgid "Options"
+msgstr "选项"
+
+#: ../src/main.c:122
+msgid "output data path"
+msgstr "输出数据路径"
+
+#: ../src/main.c:123
+msgid "sets the input path"
+msgstr "设置输入路径"
+
+#: ../src/main.c:124 ../gui/command_args.py:58 ../gui/command_args.py:59
+msgid "displays the current version"
+msgstr "运行当前版本"
+
+#: ../src/main.c:125
+msgid "zip the results"
+msgstr "压缩结果"
+
+#: ../src/main.c:126
+msgid "Forces a simulation mode."
+msgstr "构造仿真模型"
+
+#: ../src/main.c:127
+msgid "sets the number of CPUs"
+msgstr "设置CPU数量 "
+
+#: ../src/main.c:129
+msgid ""
+"Additional information about gpvdm is available at https://www.gpvdm.com."
+msgstr "详细信息请访问https://www.gpvdm.com. "
+
+#: ../src/main.c:131
+msgid "Report bugs to: roderick.mackenzie@nottingham.ac.uk"
+msgstr "若有错误，请向此邮箱报错：roderick.mackenzie@nottingham.ac.uk"
+
+#: ../src/main.c:136
+#, python-format
+msgid "gpvdm_core, Version %s\n"
+msgstr "gpvdm_core,版本%s\n"
+
+#: ../src/main.c:138
+msgid "This is free software; see the source code for copying conditions."
+msgstr "本软件完全免费，若想拷贝请参见源代码。"
+
+#: ../src/main.c:139
+msgid "There is ABSOLUTELY NO WARRANTY; not even for MERCHANTABILITY or\n"
+msgstr "绝对没有保证书，甚至连可买卖性也没有\n"
+
+#: ../src/main.c:140
+msgid "FITNESS FOR A PARTICULAR PURPOSE.\n"
+msgstr "为某个特定目的的拟合\n"
+
+#: ../src/main.c:191 ../gui/scan_tab.py:405 ../gui/fit_vars.py:156
+#: ../gui/fit_patch.py:124
+msgid "Token"
+msgstr "令牌"
+
+#: ../src/main.c:193
+msgid "General-purpose Photovoltaic Device Model (https://www.gpvdm.com)\n"
+msgstr "通用光伏器件模型(https://www.gpvdm.com)\n"
+
+#: ../src/main.c:194
+msgid "You should have received a copy of the GNU General Public License\n"
+msgstr "你应该接收到一份GNU通用公共许可证的副本\n"
+
+#: ../src/main.c:195
+msgid "along with this software.  If not, see www.gnu.org/licenses/.\n"
+msgstr "和这个软件一起。如果没有，请访问www.gnu.org/licenses/.\n"
+
+#: ../src/main.c:197
+msgid "If you wish to collaborate in anyway please get in touch:\n"
+msgstr "如果您有意合作，无论在什么方面，都请联系我：\n"
+
+#: ../src/run_electrical_dll.c:46
+msgid "Loading electrical dll\n"
+msgstr "正在加载电气dll文件\n"
+
+#: ../src/run_electrical_dll.c:92
+msgid "dll function dll_run_simulation not found\n"
+msgstr "未找到dll函数dll_run_simulation\n"
+
+#: ../src/sim_run.c:45
+msgid "Runing simulation"
+msgstr "正在进行仿真"
+
+#: ../src/sim_run.c:109
+msgid "Loading DoS layers"
+msgstr "正在加载DoS层"
+
+#: ../src/sim_run.c:118
+msgid "Load DoS"
+msgstr "加载DoS"
+
+#: ../src/pos.c:65
+msgid "Intrinsic Fermi - position"
+msgstr "本征费米 - 位置 "
+
+#: ../src/pos.c:82
+msgid "LUMO energy - position"
+msgstr "LUMO能量 - 位置 "
+
+#: ../src/pos.c:99
+msgid "HOMO energy - position"
+msgstr "HOMO能量 - 位置 "
+
+#: ../src/pos.c:117
+msgid "Electron density - position"
+msgstr "电子密度 - 位置 "
+
+#: ../src/pos.c:135
+msgid "Hole density - position"
+msgstr "空穴密度 - 位置 "
+
+#: ../src/pos.c:152
+msgid "Potential - position"
+msgstr "势能 - 位置 "
+
+#: ../src/pos.c:155 ../libdump/dump_1d_slice.c:448
+#: ../libdump/dump_1d_slice.c:453 ../libdump/dump_1d_slice.c:477
+#: ../libdump/dump_1d_slice.c:482
+msgid "Potential"
+msgstr "势能"
+
+#: ../src/pos.c:206
+msgid "Solving Poisson's equation"
+msgstr "正在解决泊松方程 "
+
+#: ../src/pos.c:525
+msgid "Poisson solver error"
+msgstr "泊松方程分析器错误 "
+
+#: ../src/pos.c:596
+msgid "Solved Poisson's equation"
+msgstr "已解决泊松方程"
+
+#: ../src/config.c:45
+msgid "load: config files"
+msgstr "加载：配置文件 "
+
+#: ../src/sim_find_n0.c:39
+msgid "Finding equilibrium conditions"
+msgstr "正在寻找平衡条件 "
+
+#: ../src/sim_find_n0.c:105
+msgid "Finished finding equilibrium conditions"
+msgstr "寻找平衡条件完成 "
+
+#: ../gui/pl_main.py:77
+msgid "Luminescence of "
+msgstr "光强"
+
+#: ../gui/pl_main.py:87 ../gui/gpvdm_notebook.py:100
+msgid ""
+"<big><b>Luminescence</b></big>\n"
+"If you set 'Turn on luminescence' to true, the simulation will assume "
+"recombination is a raditave process and intergrate it to produce Voltage-"
+"Light intensity curves (lv.dat).  Each number in the tab tells the model how "
+"efficient each recombination mechanism is at producing photons."
+msgstr ""
+"<big><b>光</b></big>\n"
+"如果将“打开发光”设置为真，仿真将假设重组是一个放射性过程，并将其合并以产生电"
+"压 - 光强度曲线（lv.dat）。 选项卡中的每个数字告诉模型每种重组机制在产生光子"
+"方面的效率。"
+
+#: ../gui/cmp_class.py:258
+msgid "Examine simulation results in time domain"
+msgstr "在时域中检查仿真结果"
+
+#: ../gui/cmp_class.py:285
+msgid "Save video"
+msgstr "保存视频"
+
+#: ../gui/cmp_class.py:299 ../gui/fit_configure_window.py:72
+#: ../gui/experiment.py:199 ../gui/experiment.py:200 ../gui/experiment.py:234
+#: ../gui/contacts.py:201 ../gui/config_window.py:70 ../gui/config_window.py:71
+#: ../gui/ribbon_home.py:107 ../gui/materials_main.py:97 ../gui/jv.py:77
+#: ../gui/emesh.py:170 ../gui/ribbon_information.py:75 ../gui/ribbon.py:76
+#: ../gui/scan.py:318 ../gui/scan.py:319 ../gui/scan.py:353 ../gui/info.py:67
+#: ../gui/cost.py:92 ../gui/fxexperiment.py:195 ../gui/fxexperiment.py:196
+#: ../gui/fxexperiment.py:229 ../gui/fit_window.py:244 ../gui/fit_window.py:245
+#: ../gui/ref.py:94 ../gui/ref.py:95 ../gui/lasers.py:198 ../gui/lasers.py:199
+#: ../gui/lasers.py:233 ../gui/import_data.py:256 ../gui/import_data.py:257
+#: ../gui/parasitic.py:68 ../gui/doping.py:205 ../gui/optics.py:157
+msgid "Help"
+msgstr "帮助"
+
+#: ../gui/cmp_class.py:300 ../gui/band_graph.py:73
+#: ../gui/fit_configure_window.py:73 ../gui/experiment.py:178
+#: ../gui/experiment.py:235 ../gui/contacts.py:202 ../gui/jv.py:78
+#: ../gui/emesh.py:171 ../gui/scan.py:259 ../gui/scan.py:354 ../gui/info.py:68
+#: ../gui/fxexperiment.py:177 ../gui/fxexperiment.py:230
+#: ../gui/fit_window.py:226 ../gui/ref.py:114 ../gui/lasers.py:177
+#: ../gui/lasers.py:234 ../gui/about.py:153 ../gui/help.py:130
+#: ../gui/parasitic.py:69
+msgid "Close"
+msgstr "关闭"
+
+#: ../gui/cmp_class.py:319
+msgid ""
+"No electrical slice data has been stored in the snapshots directory.  To "
+"turn this on set Simulation->Configure->Dump->Dump 1D Slices to on.  This "
+"will dump a lot of data and slow down your simulations."
+msgstr ""
+"快照目录下没有储存任何电气部分的数据。想打开此功能可以依次选择 仿真->配置->转"
+"存->转存一维各层 。但这将会丢弃大量数据并降低仿真速度。"
+
+#: ../gui/gtkswitch.py:79
+msgid "ON"
+msgstr "开启"
+
+#: ../gui/gtkswitch.py:85
+msgid "OFF"
+msgstr "关闭"
+
+#: ../gui/experiment_tab.py:62
+msgid "time mesh"
+msgstr "时间划分"
+
+#: ../gui/experiment_tab.py:67 ../gui/fxexperiment_tab.py:66
+msgid "Circuit"
+msgstr "电路"
+
+#: ../gui/experiment_tab.py:70 ../gui/experiment_tab.py:71
+#: ../gui/ribbon_configure.py:54 ../gui/config_window.py:57
+#: ../gui/ribbon.py:140 ../gui/fit_window.py:277
+msgid "Configure"
+msgstr "配置"
+
+#: ../gui/gl_cmp.py:38
+msgid "Results viewer"
+msgstr "结果查看"
+
+#: ../gui/band_graph.py:206 ../gui/qe.py:59 ../gui/cost.py:117
+#: ../libdump/dump_1d_slice.c:704
+msgid "Energy"
+msgstr "能量"
+
+#: ../gui/qe.py:81
+msgid "No file"
+msgstr "无文件"
+
+#: ../gui/qe.py:101
+msgid "Quantum Efficiency calculator"
+msgstr "量子效率计算器"
+
+#: ../gui/qe.py:119 ../gui/fit_window_plot_real.py:130
+#: ../gui/plot_widget.py:564
+msgid "Save graph"
+msgstr "保存图像"
+
+#: ../gui/qe.py:123 ../gui/optics.py:123
+msgid "Run"
+msgstr "运行"
+
+#: ../gui/tb_pulse_load_type.py:48
+msgid "Load type"
+msgstr "负载类型"
+
+#: ../gui/ribbon_configure.py:62
+msgid ""
+"Electrical\n"
+"mesh"
+msgstr "电器网格"
+
+#: ../gui/ribbon_configure.py:81
+msgid ""
+"<big><b>Mesh editor</b></big>\n"
+"Use this window to setup the mesh, the window can also be used to change the "
+"dimensionality of the simulation."
+msgstr ""
+"<big><b>网格编辑器</b></big>\n"
+"使用此窗口设置网格，也可以用于更改仿真的维度。"
+
+#: ../gui/ribbon_configure.py:95
+msgid ""
+"<big><b>Configuration editor</b></big><br> Use this window to control "
+"advanced simulation parameters."
+msgstr "<big><b>配置编辑器</b></big><br> 使用此窗口可以控制高级仿真参数。"
+
+#: ../gui/fx_selector.py:42
+msgid "Wavelengths"
+msgstr "波长"
+
+#: ../gui/progress.py:49
+msgid "Running"
+msgstr "运行中"
+
+#: ../gui/fit_tab.py:72
+msgid "Experimental data"
+msgstr "实验数据"
+
+#: ../gui/fit_tab.py:75 ../libfit/fit_dump.c:59 ../libfit/fit_dump.c:82
+#: ../libfit/fit_dump.c:105 ../libfit/fit_dump.c:128 ../libfit/fit_dump.c:152
+#: ../libfit/fit_dump.c:176
+msgid "Fit error"
+msgstr "匹配错误"
+
+#: ../gui/fit_tab.py:78
+msgid "Fit patch"
+msgstr "匹配补丁"
+
+#: ../gui/fit_tab.py:82
+msgid "Configure fit"
+msgstr "配置匹配"
+
+#: ../gui/fit_configure_window.py:59
+msgid "Fit configure"
+msgstr "匹配配置"
+
+#: ../gui/fit_configure_window.py:88
+msgid "Configure minimizer"
+msgstr "配置最小化"
+
+#: ../gui/fit_configure_window.py:96
+msgid "Duplicate window"
+msgstr "复制窗口"
+
+#: ../gui/fit_configure_window.py:99
+msgid "Fit variable window"
+msgstr "匹配变量窗口"
+
+#: ../gui/tmesh.py:124 ../gui/tmesh.py:125 ../gui/tmesh.py:126
+#: ../gui/tmesh.py:127 ../gui/tmesh.py:128 ../gui/tmesh.py:129
+#: ../gui/tmesh.py:130 ../gui/fxmesh.py:82 ../gui/fxmesh.py:86
+#: ../gui/fxmesh.py:90 ../gui/fxmesh.py:106 ../gui/fxmesh.py:107
+#: ../gui/fxmesh.py:108
+msgid "Part "
+msgstr "部分"
+
+#: ../gui/tmesh.py:124
+msgid " period"
+msgstr "周期"
+
+#: ../gui/tmesh.py:125
+msgid " dt"
+msgstr "dt"
+
+#: ../gui/tmesh.py:126
+msgid " start voltage"
+msgstr "起始电压"
+
+#: ../gui/tmesh.py:127
+msgid " stop voltage"
+msgstr "截止电压"
+
+#: ../gui/tmesh.py:128
+msgid " mul"
+msgstr "mul"
+
+#: ../gui/tmesh.py:129
+msgid " Sun"
+msgstr "太阳"
+
+#: ../gui/tmesh.py:130
+msgid " CW laser"
+msgstr "连续激光"
+
+#: ../gui/tmesh.py:159
+msgid "Enter the time at which the laser pulse will fire (-1) to turn it off"
+msgstr "当激光脉冲发射的时候输入时间来关掉激光"
+
+#: ../gui/tmesh.py:203
+msgid "Voltage (Volts)"
+msgstr "电压（伏特）"
+
+#: ../gui/tmesh.py:209 ../gui/fxmesh.py:173
+msgid "Magnitude"
+msgstr "幅值"
+
+#: ../gui/tmesh.py:232 ../gui/tmesh.py:234 ../gui/tmesh.py:237
+#: ../gui/tmesh.py:239
+msgid "Sun"
+msgstr "光照"
+
+#: ../gui/tmesh.py:232 ../gui/tmesh.py:234
+msgid "CW laser"
+msgstr "连续激光"
+
+#: ../gui/tmesh.py:232 ../gui/tmesh.py:237
+msgid "fs laser"
+msgstr "飞秒激光"
+
+#: ../gui/tmesh.py:269
+msgid "Length"
+msgstr "长度"
+
+#: ../gui/tmesh.py:269 ../gui/token_lib.py:79
+msgid "dt"
+msgstr "dt"
+
+#: ../gui/tmesh.py:269
+msgid "Start Voltage"
+msgstr "起始电压"
+
+#: ../gui/tmesh.py:269
+msgid "Stop Voltage"
+msgstr "截止电压"
+
+#: ../gui/tmesh.py:269
+msgid "step multiplyer"
+msgstr "步进乘法器"
+
+#: ../gui/tmesh.py:269 ../gui/tb_item_sun.py:72
+msgid "Suns"
+msgstr "太阳"
+
+#: ../gui/tmesh.py:269
+msgid "Laser"
+msgstr "激光"
+
+#: ../gui/tmesh.py:365
+msgid "Enter the start time of the simulation"
+msgstr "输入仿真开始时间"
+
+#: ../gui/tmesh.py:398 ../gui/fxmesh.py:285 ../gui/equation.py:267
+msgid "Save image"
+msgstr "保存图像"
+
+#: ../gui/tmesh.py:402
+msgid "Laser start time"
+msgstr "激光开始时间"
+
+#: ../gui/tmesh.py:410
+msgid "Simulation start time"
+msgstr "仿真开始时间"
+
+#: ../gui/tmesh.py:440 ../gui/fxmesh.py:307 ../gui/equation.py:287
+msgid "Add section"
+msgstr "添加片段"
+
+#: ../gui/tmesh.py:444 ../gui/fxmesh.py:311 ../gui/equation.py:291
+msgid "Delete section"
+msgstr "删除片段"
+
+#: ../gui/tmesh.py:448 ../gui/fxmesh.py:315 ../gui/scan_tab.py:515
+#: ../gui/scan_tab.py:597 ../gui/scan_tab.py:601 ../gui/equation.py:295
+msgid "Move down"
+msgstr "下移"
+
+#: ../gui/dlg_export.py:45
+msgid "Export the simulation as"
+msgstr "输出仿真结果到"
+
+#: ../gui/dlg_export.py:48 ../gui/dlg_export.py:62
+msgid "gpvdm archive input+output files"
+msgstr "gpvdm归档输入输出文件"
+
+#: ../gui/dlg_export.py:49 ../gui/dlg_export.py:64
+msgid "gpvdm archive input files"
+msgstr "gpvdm归档输入文件"
+
+#: ../gui/dlg_export.py:50 ../gui/dlg_export.py:66
+msgid "optical materials database"
+msgstr "光学材料数据库"
+
+#: ../gui/dlg_export.py:51 ../gui/dlg_export.py:68
+msgid "pdf file"
+msgstr "pdf文件"
+
+#: ../gui/dlg_export.py:52 ../gui/dlg_export.py:68
+msgid "jpg image"
+msgstr "jpg图像"
+
+#: ../gui/dlg_export.py:53 ../gui/dlg_export.py:68
+msgid "tex file"
+msgstr "tex文件"
+
+#: ../gui/dlg_export.py:54 ../gui/dlg_export.py:70
+msgid "Excel file"
+msgstr "Excel文件"
+
+#: ../gui/fxmesh.py:82 ../gui/fxmesh.py:106
+msgid "period"
+msgstr "周期"
+
+#: ../gui/fxmesh.py:86 ../gui/fxmesh.py:107 ../gui/fxmesh.py:194
+msgid "dfx"
+msgstr "dfx"
+
+#: ../gui/fxmesh.py:90 ../gui/fxmesh.py:108
+msgid "mul"
+msgstr "mul"
+
+#: ../gui/fxmesh.py:139
+msgid "Enter the start frequency of the simulation"
+msgstr "输入仿真开始频率"
+
+#: ../gui/fxmesh.py:176 ../gui/token_lib.py:275
+msgid "Frequency"
+msgstr "频率"
+
+#: ../gui/fxmesh.py:194
+msgid "Frequency segment"
+msgstr "频率段"
+
+#: ../gui/fxmesh.py:194
+msgid "Multiply"
+msgstr "增加"
+
+#: ../gui/fxmesh.py:289
+msgid "Simulation start frequency"
+msgstr "仿真开始频率"
+
+#: ../gui/command_args.py:57
+msgid "Additional information about gpvdm is available at"
+msgstr "关于gpvdm的其它信息请关注"
+
+#: ../gui/command_args.py:57
+msgid "Report bugs to:"
+msgstr "报告错误到："
+
+#: ../gui/command_args.py:60
+msgid "replaces file in device lib"
+msgstr "替换装置字典库中文件"
+
+#: ../gui/command_args.py:61
+msgid ""
+"cleans the current simulation directory deleting .dat files but not  scan "
+"dirs"
+msgstr "清除当前仿真目录。删除.dat文件但不扫描dirs"
+
+#: ../gui/command_args.py:62
+msgid "export a simulation to a gz file"
+msgstr "输出仿真结果到gz文件"
+
+#: ../gui/command_args.py:63
+msgid "Synchronizes the saved file version to that of the source code."
+msgstr "将保存的文件版本与源代码的版本同步。"
+
+#: ../gui/command_args.py:64
+msgid "Generate the manual pages referring to the output files.."
+msgstr "参考输出文件的生成手册页。"
+
+#: ../gui/command_args.py:65
+msgid "Only imports the scan directories."
+msgstr "仅导入扫描目录。"
+
+#: ../gui/command_args.py:66
+msgid "Deletes the content of all scan directories."
+msgstr "删除所有扫描目录的内容。"
+
+#: ../gui/command_args.py:67
+msgid "Patch a .gpvdm file with an older .gpvdm file."
+msgstr "使用旧的.gpvdm文件修补.gpvdm文件。"
+
+#: ../gui/command_args.py:68
+msgid "usage --import abc.gpvdm ./path/to/output/ "
+msgstr "方法--输入 abc.gpvdm ./路径/到/输出/"
+
+#: ../gui/command_args.py:69
+msgid "Dumps simulation parameters as jpg, usage: --dump-tab output_path"
+msgstr "另存仿真参数为jpg，用法：--转存-tab 输出路径"
+
+#: ../gui/command_args.py:70
+msgid "Generate a clean simulation in the current directory"
+msgstr "在当前目录中生成一个空白仿真"
+
+#: ../gui/command_args.py:71
+msgid "Clone the source code."
+msgstr "复制源代码。"
+
+#: ../gui/command_args.py:72
+msgid ""
+"edits a value in a .gpvdm archive. Usage --edit-value /path/to/sim.gpvdm "
+"#token_to_change new_value "
+msgstr ""
+"编辑.gpvdm存档中的值。 方法--编辑-数值 /路径/到/sim.gpvdm #token_to_change "
+"new_value"
+
+#: ../gui/command_args.py:73
+msgid "Runs an oplot file, usage --scanplot /path/to/oplot/file.oplot "
+msgstr "运行oplot文件，方法 --扫描图像 /路径/到/oplot/file.oplot"
+
+#: ../gui/command_args.py:74
+msgid ""
+"Runs a scan, usage --runscan /path/containing/base/files/ /path/to/scan/dir/ "
+msgstr ""
+"运行一个扫描结果，方法 --运行扫描 / 路径 / 包括 / 库 / 文件 / / 路径 / 到 / "
+"扫描结果 / dir /"
+
+#: ../gui/command_args.py:75
+msgid "Runs a scan, usage --load /path/containing/simulation/sim.gpvdm"
+msgstr "运行一个扫描结果，方法 --加载 / 路径 / 包括 / 仿真 / sim.gpvdm"
+
+#: ../gui/scan_tab.py:123
+msgid ""
+"<big><b>The scan window</b></big><br> Now using the drop down menu in the "
+"prameter to change 'column', select the device parameter you wish to vary, "
+"an example may be dos0/Electron Mobility. Now enter the values you would "
+"like it to scan oveer in the  'Values', an example could be '1e-3 1e-4 1e-5 "
+"1e-6'.  And hit the double arrorw to run the simulation."
+msgstr ""
+"<big><b>扫描窗口</b></big><br> 现在使用参数的下拉菜单来更改“列”，选择你想改变"
+"的器件参数参数，比如dos0/电子迁移率。现在输入你希望在“值”中显示的数值，比"
+"如“1e-3 1e-4 1e-5 1e-6”。然后点击双箭头来运行仿真。"
+
+#: ../gui/scan_tab.py:133
+msgid "Select parameter"
+msgstr "选择参数"
+
+#: ../gui/scan_tab.py:231
+msgid ""
+"You have not selected any parameters to scan through.  Use the add button."
+msgstr "未选择任何参数来扫描。使用添加按钮。"
+
+#: ../gui/scan_tab.py:236
+msgid "No sim dir name"
+msgstr "没有sim dir文件名"
+
+#: ../gui/scan_tab.py:253
+msgid "Problem generating tree."
+msgstr "问题发生树"
+
+#: ../gui/scan_tab.py:405 ../gui/experiment.py:177 ../gui/gpvdm.py:254
+#: ../gui/ribbon.py:131 ../gui/scan.py:256 ../gui/snapshot_slider.py:133
+#: ../gui/fxexperiment.py:176 ../gui/fit_window.py:225 ../gui/fit_vars.py:95
+#: ../gui/fit_vars.py:156 ../gui/lasers.py:176 ../gui/plot_widget.py:583
+#: ../gui/fit_patch.py:124
+msgid "File"
+msgstr "文件"
+
+#: ../gui/scan_tab.py:405
+msgid "Parameter to change"
+msgstr "修改参数"
+
+#: ../gui/scan_tab.py:405 ../gui/fit_patch.py:124
+msgid "Values"
+msgstr "值"
+
+#: ../gui/scan_tab.py:405
+msgid "Opperation"
+msgstr "操作"
+
+#: ../gui/scan_tab.py:484 ../gui/ribbon_home.py:181
+msgid ""
+"Re-run the simulation with 'dump all slices' set to one to use this tool."
+msgstr "重新运行仿真，将“转存所有层”设置为1，以使用此工具。"
+
+#: ../gui/scan_tab.py:507
+msgid "Add parameter to scan"
+msgstr "添加参数到扫描结果"
+
+#: ../gui/scan_tab.py:511 ../gui/scan_tab.py:579
+msgid "Delete item"
+msgstr "删除项目"
+
+#: ../gui/scan_tab.py:527 ../gui/ribbon_home.py:68 ../gui/scan.py:279
+msgid "Run simulation"
+msgstr "运行仿真"
+
+#: ../gui/scan_tab.py:531 ../gui/fit_window.py:291
+msgid "Stop the simulation"
+msgstr "停止仿真"
+
+#: ../gui/scan_tab.py:535
+msgid "Find a file to plot"
+msgstr "找到要绘制的文件"
+
+#: ../gui/scan_tab.py:539
+msgid "Examine results in time domain"
+msgstr "在时域中检测结果"
+
+#: ../gui/scan_tab.py:543
+msgid "Insert python command"
+msgstr "插入python指令"
+
+#: ../gui/scan_tab.py:583
+msgid "Copy"
+msgstr "复制"
+
+#: ../gui/scan_tab.py:587
+msgid "Paste"
+msgstr "粘贴"
+
+#: ../gui/scan_tab.py:593
+msgid "Add item"
+msgstr "添加项目"
+
+#: ../gui/layer_widget.py:180
+msgid "Add device layer"
+msgstr "添加器件层"
+
+#: ../gui/layer_widget.py:184
+msgid "Delete device layer"
+msgstr "删除器件层"
+
+#: ../gui/layer_widget.py:189
+msgid "Move device layer"
+msgstr "移动器件层"
+
+#: ../gui/layer_widget.py:218
+msgid "Layer name"
+msgstr "层名"
+
+#: ../gui/layer_widget.py:218 ../gui/electrical_mesh_editor.py:119
+msgid "Thicknes"
+msgstr "厚度"
+
+#: ../gui/layer_widget.py:218
+msgid "Optical material"
+msgstr "光学材料"
+
+#: ../gui/layer_widget.py:218
+msgid "Layer type"
+msgstr "层类型"
+
+#: ../gui/layer_widget.py:218
+msgid "DoS Layer"
+msgstr "DoS层"
+
+#: ../gui/layer_widget.py:218
+msgid "PL Layer"
+msgstr "PL层"
+
+#: ../gui/layer_widget.py:267
+msgid "contact"
+msgstr "接触"
+
+#: ../gui/layer_widget.py:268
+msgid "active layer"
+msgstr "活动层 "
+
+#: ../gui/layer_widget.py:269
+msgid "other"
+msgstr "其他"
+
+#: ../gui/layer_widget.py:281
+msgid "Material for "
+msgstr "材料赋给"
+
+#: ../gui/layer_widget.py:282
+msgid "Layer width "
+msgstr "层宽"
+
+#: ../gui/layer_widget.py:345
+msgid "Error in epitaxy, check the input values."
+msgstr "外延中出错，请检查输入值。"
+
+#: ../gui/dump_io.py:69
+msgid "<big><b>Write all data to disk (slow)</b></big><br>"
+msgstr "<big><b>将所有数据写入磁盘（缓慢）</ b> </ big> <br>"
+
+#: ../gui/dump_io.py:74
+msgid "<big><b>Write minimal data to disk (fast)</b></big><br>"
+msgstr "<big><b>将最少数据写入磁盘（快速）</b></big><br>"
+
+#: ../gui/dump_io.py:100
+msgid ""
+"Data dump\n"
+"control"
+msgstr "数据转存控制"
+
+#: ../gui/experiment.py:76 ../gui/fxexperiment.py:72
+msgid "New experiment name"
+msgstr "新实验名称"
+
+#: ../gui/experiment.py:76 ../gui/fxexperiment.py:72
+msgid "experiment "
+msgstr "实验"
+
+#: ../gui/experiment.py:90
+msgid "Clone the current experiment to a new experiment called:"
+msgstr "将当前实验复制到新实验名为："
+
+#: ../gui/experiment.py:96 ../gui/experiment.py:99
+msgid "Error copying file"
+msgstr "复制文件时发生错误"
+
+#: ../gui/experiment.py:112 ../gui/fxexperiment.py:117
+msgid "Rename the experiment to be called"
+msgstr "重命名要调用的实验"
+
+#: ../gui/experiment.py:130
+msgid "Should I remove the experiment file "
+msgstr "我应该删除实验文件吗"
+
+#: ../gui/experiment.py:182 ../gui/fxexperiment.py:181
+msgid "Experiments"
+msgstr "实验"
+
+#: ../gui/experiment.py:183 ../gui/scan.py:265 ../gui/fxexperiment.py:182
+#: ../gui/fit_window.py:231 ../gui/lasers.py:182
+msgid "New"
+msgstr "新建"
+
+#: ../gui/experiment.py:186 ../gui/experiment.py:217 ../gui/fxexperiment.py:185
+#: ../gui/fxexperiment.py:212
+msgid "Delete experiment"
+msgstr "删除实验"
+
+#: ../gui/experiment.py:189 ../gui/experiment.py:192 ../gui/experiment.py:225
+#: ../gui/fxexperiment.py:188 ../gui/fxexperiment.py:220
+msgid "Rename experiment"
+msgstr "重命名实验"
+
+#: ../gui/experiment.py:195 ../gui/experiment.py:221 ../gui/fxexperiment.py:191
+#: ../gui/fxexperiment.py:216
+msgid "Clone experiment"
+msgstr "复制实验"
+
+#: ../gui/experiment.py:207
+msgid "Time domain experiment window"
+msgstr "时域实验窗口"
+
+#: ../gui/experiment.py:213 ../gui/fxexperiment.py:208
+msgid "New experiment"
+msgstr "新建实验"
+
+#: ../gui/information_noweb.py:63
+msgid "Click to find out more"
+msgstr "点击获取更多信息"
+
+#: ../gui/information_noweb.py:65
+msgid ""
+"To make a new simulation click <i><u>N</u>ew Simulation</i> in the menu or "
+"to open an existing simulation select <i><u>O</u>pen simulation</i>. "
+msgstr ""
+"点击菜单中的仿真选项来创建一个新的仿真文件，或者选择打开显存仿真选项来打开一"
+"个 现存的仿真文件"
+
+#: ../gui/information_noweb.py:67
+msgid ""
+"There is more help on the <a href=\"http://www.gpvdm.com/man/index.html"
+"\">man pages</a>."
+msgstr ""
+"更多帮助详询 <a href=\"http://www.gpvdm.com/man/index.html\">man pages</a>."
+
+#: ../gui/information_noweb.py:69
+msgid ""
+"Please report bugs to <br><a href=\"mailto:roderick.mackenzie@nottingham.ac."
+"uk?Subject=gpvdm%20bug\">"
+msgstr ""
+"请把错误报告至 <br><a href=\"mailto:roderick.mackenzie@nottingham.ac.uk?"
+"Subject=gpvdm%20bug\">"
+
+#: ../gui/information_noweb.py:90
+msgid ""
+"<big><b>Welcome to gpvdm</b></big>\n"
+" The window will provide you with information about new versions and bugs in "
+"gpvdm."
+msgstr ""
+"<big><b>欢迎来到gpvdm</b></big>\n"
+"这个窗口将告诉你新版本的信息和错误。"
+
+#: ../gui/new_simulation.py:60
+msgid ""
+"<big><b>Now save the simulation</b></big><br>Now select where you would like "
+"to save the simulation directory."
+msgstr "<big><b>现在保存仿真</b></big><br>现在选择你喜欢的地址来保存仿真目录。"
+
+#: ../gui/new_simulation.py:67
+msgid ""
+"It's not a good idea to save the simulation in the gpvdm installation "
+"directory."
+msgstr "尽量不要把将仿真保存在gpvdm安装目录中。"
+
+#: ../gui/new_simulation.py:82
+msgid "Please select a device before clicking next"
+msgstr "请在单击下一步之前选择一个器件"
+
+#: ../gui/new_simulation.py:92 ../gui/ribbon.py:62 ../gui/scan.py:328
+msgid "New simulation"
+msgstr "新建仿真"
+
+#: ../gui/new_simulation.py:93
+msgid "Which type of device would you like to simulate?"
+msgstr "您想仿真哪种类型的器件？"
+
+#: ../gui/new_simulation.py:101 ../gui/help.py:114
+msgid "Next"
+msgstr "下一步"
+
+#: ../gui/new_simulation.py:102 ../gui/dlg_get_multi_text.py:72
+#: ../gui/scan_select.py:72
+msgid "Cancel"
+msgstr "取消"
+
+#: ../gui/new_simulation.py:125
+msgid "Organic solar cell"
+msgstr "有机太阳能电池"
+
+#: ../gui/new_simulation.py:129
+msgid "Organic LED"
+msgstr "（OLED）有机发光二极管"
+
+#: ../gui/new_simulation.py:133
+msgid "Crystalline silicon solar cell"
+msgstr "晶体硅太阳能电池"
+
+#: ../gui/new_simulation.py:137
+msgid "CIGS Solar cell"
+msgstr "（CIGS）铜铟镓硒太阳能电池"
+
+#: ../gui/new_simulation.py:141
+msgid "a-Si solar cell "
+msgstr "非晶硅太阳能电池"
+
+#: ../gui/new_simulation.py:145
+msgid "polycrystalline silicon "
+msgstr "多晶硅"
+
+#: ../gui/new_simulation.py:149
+msgid "OFET "
+msgstr "(OFET)有机场效应晶体管"
+
+#: ../gui/scan_io.py:101
+msgid "and "
+msgstr "和"
+
+#: ../gui/scan_io.py:101
+msgid " more."
+msgstr "更多。"
+
+#: ../gui/scan_io.py:106
+msgid "Should I delete these files?:\n"
+msgstr "我应该删除这些文件吗？：\n"
+
+#: ../gui/open_save_dlg.py:31
+msgid "Save a the simulation as"
+msgstr "保存仿真文件到"
+
+#: ../gui/open_save_dlg.py:32
+msgid "Directory"
+msgstr "目录"
+
+#: ../gui/open_save_dlg.py:44 ../gui/plot_widget.py:588
+msgid "Save as"
+msgstr "另存为"
+
+#: ../gui/open_save_dlg.py:66 ../gui/gpvdm_open.py:64 ../gui/import_data.py:244
+msgid "Open file"
+msgstr "打开文件"
+
+#: ../gui/contacts.py:100
+msgid "top"
+msgstr "顶部"
+
+#: ../gui/contacts.py:101
+msgid "bottom"
+msgstr "底部"
+
+#: ../gui/contacts.py:109
+msgid "true"
+msgstr "正确"
+
+#: ../gui/contacts.py:110
+msgid "false"
+msgstr "错误"
+
+#: ../gui/contacts.py:146
+msgid "There are some non numeric values in the table"
+msgstr "表中存在非数值"
+
+#: ../gui/contacts.py:161
+msgid "Name"
+msgstr "名称"
+
+#: ../gui/contacts.py:161
+msgid "Top/Bottom"
+msgstr "顶部/底部"
+
+#: ../gui/contacts.py:161
+msgid "Active contact"
+msgstr "活动接触"
+
+#: ../gui/contacts.py:161 ../gui/doping.py:119
+msgid "Start"
+msgstr "开始"
+
+#: ../gui/contacts.py:161 ../gui/doping.py:119
+msgid "Width"
+msgstr "宽度"
+
+#: ../gui/contacts.py:161
+msgid "Depth"
+msgstr "深度"
+
+#: ../gui/contacts.py:181
+msgid "Edit contacts"
+msgstr "编辑接触"
+
+#: ../gui/contacts.py:188
+msgid "Add contact"
+msgstr "添加接触"
+
+#: ../gui/contacts.py:192
+msgid "Remove contacts"
+msgstr "移除接触"
+
+#: ../gui/dlg_get_multi_text.py:70 ../gui/scan_select.py:71
+msgid "OK"
+msgstr "确认"
+
+#: ../gui/config_window.py:86
+msgid "Solver configuration"
+msgstr "求解器配置"
+
+#: ../gui/config_window.py:86
+msgid "Output files"
+msgstr "输出文件"
+
+#: ../gui/config_window.py:86 ../gui/inp_description.py:49
+msgid "Thermal"
+msgstr "热量"
+
+#: ../gui/config_window.py:86
+msgid "LED"
+msgstr "LED"
+
+#: ../gui/config_window.py:86
+msgid "GUI configuration"
+msgstr "GUI配置"
+
+#: ../gui/config_window.py:86
+msgid "Server configuration"
+msgstr "服务器配置"
+
+#: ../gui/config_window.py:96
+msgid "Language"
+msgstr "语言"
+
+#: ../gui/ribbon_home.py:63
+msgid "Undo"
+msgstr "撤销"
+
+#: ../gui/ribbon_home.py:71
+msgid ""
+"Stop\n"
+"simulation"
+msgstr "停止仿真"
+
+#: ../gui/ribbon_home.py:77
+msgid ""
+"Parameter\n"
+"scan"
+msgstr "参数扫描"
+
+#: ../gui/ribbon_home.py:84
+msgid ""
+"Fit\n"
+"data"
+msgstr "拟合数据"
+
+#: ../gui/ribbon_home.py:89
+msgid ""
+"Plot\n"
+"File"
+msgstr ""
+"图像\n"
+"文件"
+
+#: ../gui/ribbon_home.py:93
+msgid ""
+"Examine results\n"
+"in time domain"
+msgstr "时域中检查结果"
+
+#: ../gui/ribbon_home.py:135
+msgid ""
+"<big>Select a file to plot</big><br>Single clicking shows you the content of "
+"the file"
+msgstr "<big>选择要绘制的文件</big><br>单击显示文件的内容"
+
+#: ../gui/ribbon_home.py:161
+msgid ""
+"<big><b>The scan window</b></big><br> Very often it is useful to be able to "
+"systematically very a device parameter such as mobility or density of trap "
+"states.  This window allows you to do just that."
+msgstr ""
+"<big><b>扫描窗口</b></big><br> 这个窗口在大多数情况下能够系统地核查设备参数，"
+"例如迁移率或陷阱状态的密度。 这个窗口有这个功能。"
+
+#: ../gui/ribbon_home.py:161
+msgid "Use the plus icon to add a new scan line to the list."
+msgstr "使用加号图标将新的扫描线添加到列表中。"
+
+#: ../gui/ribbon_home.py:174
+msgid ""
+"<big><b>Examine the results in time domain</b></big><br> After you have run "
+"a simulation in time domain, if is often nice to be able to step through the "
+"simulation and look at the results.  This is what this window does.  Use the "
+"slider bar to move through the simulation.  When you are simulating a JV "
+"curve, the slider sill step through voltage points rather than time points."
+msgstr ""
+"<big><b>检查时域中的结果</b></big><br>在时域中运行仿真之后，如果能够通过仿真"
+"并查看结果，通常是很好的情况。 这是这个窗口的工作。 使用滑块移动仿真。 当您仿"
+"真JV曲线时，滑块将单步调试电压点而不是时间点。"
+
+#: ../gui/ribbon_home.py:193
+msgid ""
+"<big><b>Fit window</b></big><br> Use this window to fit the simulation to "
+"experimental data."
+msgstr "<big><b>调整窗口</b></big><br> 使用此窗口将仿真拟合到实验数据。"
+
+#: ../gui/materials_main.py:48 ../gui/materials_main.py:112
+msgid "Electrical parameters"
+msgstr "电气参数"
+
+#: ../gui/materials_main.py:49
+msgid ""
+"<big><b>Electrical parameters</b></big><br>Use this tab to configure the "
+"electrical parameters for the material."
+msgstr "<big><b>电气参数</b></big><br>使用此选项卡配置材料的电气参数。"
+
+#: ../gui/materials_main.py:51 ../gui/materials_main.py:112
+#: ../gui/gpvdm_notebook.py:99 ../gui/inp_description.py:55
+msgid "Luminescence"
+msgstr "光"
+
+#: ../gui/materials_main.py:52
+msgid ""
+"<big><b>Luminescence</b></big><br>Use this tab to edit the materials "
+"Luminescence."
+msgstr "<big><b>光</b></big><br>使用此选项卡编辑材料光属性。"
+
+#: ../gui/materials_main.py:54 ../gui/materials_main.py:122
+#: ../gui/token_lib.py:298
+msgid "Absorption"
+msgstr "吸收"
+
+#: ../gui/materials_main.py:58
+msgid "<big><b>Absorption</b></big><br>"
+msgstr "<big><b>吸收</b></big><br>"
+
+#: ../gui/materials_main.py:60 ../gui/materials_main.py:128
+#: ../gui/materials_main.py:130
+msgid "Refractive index"
+msgstr "折射率"
+
+#: ../gui/materials_main.py:64
+msgid "<big><b>Refractive index</b></big><br>"
+msgstr "<big><b>折射率</b></big><br>"
+
+#: ../gui/materials_main.py:78
+msgid "Material editor"
+msgstr "材料编辑器"
+
+#: ../gui/materials_main.py:87
+msgid "Cost of material"
+msgstr "材料成本"
+
+#: ../gui/gpvdm.py:125
+msgid "Don't run me as root!!"
+msgstr "不要以root身份运行此程序！"
+
+#: ../gui/gpvdm.py:154 ../gui/gpvdm_notebook.py:102
+#: ../gui/gpvdm_notebook.py:229
+msgid "Terminal"
+msgstr "结束"
+
+#: ../gui/gpvdm.py:207
+msgid "file opened"
+msgstr "文件已打开"
+
+#: ../gui/gpvdm.py:212
+msgid ""
+"<big><b>New simulation!</b></big><br> Now selected the type of device you "
+"would like to simulate."
+msgstr "<big><b>新的仿真！</b></big><br> 现在选择您要仿真的设备类型。"
+
+#: ../gui/gpvdm.py:240
+msgid ""
+"<big><b>Now run the simulation</b></big><br> Click on the play icon to start "
+"a simulation."
+msgstr "<big><b>现在运行仿真</b></big><br> 单击播放图标开始仿真。"
+
+#: ../gui/gpvdm.py:245 ../gui/ribbon.py:134
+msgid "Home"
+msgstr "主页"
+
+#: ../gui/gpvdm.py:255
+msgid ""
+"<big><b>Hi!</b></big><br> I'm the on-line help system :).  If you find any "
+"bugs please report them to <a href=\"mailto:roderick.mackenzie@nottingham.ac."
+"uk\">roderick.mackenzie@nottingham.ac.uk</a>."
+msgstr ""
+"<big><b>您好！</b></big><br> 我是在线帮助系统（哈~）。如果您发现此软件有任何"
+"故障，请发送报告到 <a href=\"mailto:roderick.mackenzie@nottingham.ac.uk"
+"\">roderick.mackenzie@nottingham.ac.uk</a>."
+
+#: ../gui/gpvdm.py:255
+msgid "Click on the new icon to make a new simulation directory."
+msgstr "单击新键图标以创建一个新的仿真目录。"
+
+#: ../gui/gpvdm.py:283
+msgid "Open an existing gpvdm simulation"
+msgstr "打开现有的gpvdm仿真"
+
+#: ../gui/ribbon_simulations.py:64
+msgid ""
+"Time domain\n"
+"simulation editor."
+msgstr "时域仿真编辑器"
+
+#: ../gui/ribbon_simulations.py:69
+msgid ""
+"Frequency domain\n"
+"simulation editor"
+msgstr "频域仿真编辑器"
+
+#: ../gui/ribbon_simulations.py:74
+msgid ""
+"Steady state\n"
+"simulation editor"
+msgstr "稳态仿真编辑器"
+
+#: ../gui/ribbon_simulations.py:79
+msgid ""
+"Quantum\n"
+"efficiency"
+msgstr "量子效率"
+
+#: ../gui/ribbon_simulations.py:89
+msgid ""
+"Optical\n"
+"Simulation"
+msgstr "光学仿真"
+
+#: ../gui/ribbon_simulations.py:93
+msgid ""
+"Laser\n"
+"editor"
+msgstr "激光编辑器"
+
+#: ../gui/ribbon_simulations.py:135
+msgid ""
+"<big><b>The time mesh editor</b></big><br> To do time domain simulations one "
+"must define how voltage the light vary as a function of time.  This can be "
+"done in this window.  Also use this window to define the simulation length "
+"and time step."
+msgstr ""
+"<big><b>时间网格编辑器</b></big><br> 为了进行时域仿真，必须定义光的电压如何随"
+"时间而变化。 这可以在这个窗口中完成。 也可以使用此窗口定义仿真长度和时间步"
+"长。"
+
+#: ../gui/ribbon_simulations.py:148
+msgid ""
+"<big><b>Frequency domain mesh editor</b></big><br> Some times it is useful "
+"to do frequency domain simulations such as when simulating impedance "
+"spectroscopy.  This window will allow you to choose which frequencies will "
+"be simulated."
+msgstr ""
+"<big> <b>频域网格编辑器</ b> </ big> <br>有时，进行频域仿真（例如仿真阻抗光"
+"谱）时有用。 此窗口将允许您选择要仿真的频率。"
+
+#: ../gui/ribbon_simulations.py:159
+msgid ""
+"<big><b>Laser setup</b></big><br> Use this window to set up your lasers."
+msgstr "<big><b>激光设置</b></big><br> 用这个窗口来设置激光。"
+
+#: ../gui/ribbon_simulations.py:170
+msgid ""
+"<big><b>JV simulation editor</b></big><br> Use this window to select the "
+"step size and parameters of the JV simulations."
+msgstr "<big><b>JV 仿真编辑</b></big><br> 使用此窗口选择JV仿真的步长和参数。"
+
+#: ../gui/ribbon_simulations.py:177
+msgid ""
+"<big><b>The optical simulation window</b></big><br>Use this window to "
+"perform optical simulations.  Click on the play button to run a simulation."
+msgstr ""
+"<big><b>光学仿真窗口</b></big><br>使用这个窗口进行光学仿真。点击运行按钮来运"
+"行仿真。"
+
+#: ../gui/ribbon_simulations.py:177
+msgid ""
+"Click on the play button to run an optical simulation.  The results will be "
+"displayed in the tabs to the right."
+msgstr "点击运行按钮以运行光学仿真。结果将显示在右侧的选项卡中。"
+
+#: ../gui/tab_homo.py:65
+msgid "Function"
+msgstr "函数"
+
+#: ../gui/tab_homo.py:65
+msgid "Enabled"
+msgstr "使能"
+
+#: ../gui/tab_homo.py:65
+msgid "a"
+msgstr "a"
+
+#: ../gui/tab_homo.py:65
+msgid "b"
+msgstr "b"
+
+#: ../gui/tab_homo.py:65
+msgid "c"
+msgstr "c"
+
+#: ../gui/tab_homo.py:125 ../gui/electrical_mesh_editor.py:159
+msgid "Add "
+msgstr "添加"
+
+#: ../gui/tab_homo.py:129 ../gui/electrical_mesh_editor.py:163
+msgid "Remove "
+msgstr "移除"
+
+#: ../gui/tab_homo.py:281 ../gui/plot_widget.py:585 ../gui/doping.py:196
+msgid "Save"
+msgstr "保存"
+
+#: ../gui/jv.py:43 ../gui/jv.py:93
+msgid "JV simulation"
+msgstr "JV曲线仿真"
+
+#: ../gui/jv.py:44
+msgid ""
+"<big><b>JV simulation</b></big><br>This controls the jv curve simulation. "
+"You can set paramets such as start voltage, stop voltage and voltage step."
+msgstr ""
+"<big><b>JV 仿真</b></big><br>这控制jv曲线仿真。 您可以设置参数，如启动电压，"
+"停止电压和电压步进。"
+
+#: ../gui/jv.py:46 ../gui/jv.py:93
+msgid "Diode equation"
+msgstr "二极管方程"
+
+#: ../gui/jv.py:47
+msgid ""
+"<big><b>Diode equation</b></big><br>The model can also use the standard "
+"diode equtaion to simulate solar cells (rather than a complex model).  Use "
+"this window to configure the simulation."
+msgstr ""
+"<big><b>二极管方程</b></big><br>该模型还可以使用标准二极管方程来仿真太阳能电"
+"池（不是复杂模型）。 使用此窗口配置仿真。"
+
+#: ../gui/jv.py:49 ../gui/jv.py:93
+msgid "Suns v.s. Voc"
+msgstr "光照强度 v.s. 电压"
+
+#: ../gui/jv.py:50
+msgid "<big><b>Suns v.s. Voc</b></big><br>Configure the sun v.s. Voc plot."
+msgstr "<big><b>光照 v.s. 电压</b></big><br>配置光照 v.s. 电压图。"
+
+#: ../gui/jv.py:64
+msgid "Steady state simulation"
+msgstr "稳态仿真"
+
+#: ../gui/tab_main.py:93
+msgid ""
+"<big><b>The device structure tab</b></big>\n"
+" Use this tab to change the structure of the device, the layer thicknesses "
+"and to perform optical simulations.  You can also browse the materials data "
+"base and  edit the electrical mesh."
+msgstr ""
+"<big><b>设备结构选项卡</b></big>\n"
+"使用此选项卡可更改设备的结构，层厚度并执行光学仿真。 您还可以浏览材料数据库并"
+"编辑电网格。"
+
+#: ../gui/tab_main.py:97
+msgid "<big><b>Update available!</b></big><br>"
+msgstr "<big> <b>可更新！</ b> </ big> <br>"
+
+#: ../gui/ribbon_device.py:63 ../libdump/dump_1d_slice.c:331
+msgid "Doping"
+msgstr "掺杂"
+
+#: ../gui/ribbon_device.py:67
+msgid ""
+"Materials\n"
+"database"
+msgstr "材料数据库"
+
+#: ../gui/ribbon_device.py:71
+msgid ""
+"Calculate\n"
+"the cost"
+msgstr "计算成本"
+
+#: ../gui/ribbon_device.py:75
+msgid "Contacts"
+msgstr "接触"
+
+#: ../gui/ribbon_device.py:79
+msgid ""
+"Parasitic\n"
+" components"
+msgstr "寄生元件"
+
+#: ../gui/ribbon_device.py:112
+msgid ""
+"<big><b>Doping window</b></big>\n"
+"Use this window to add doping to the simulation"
+msgstr ""
+"<big><b>掺杂窗口</b></big>\n"
+"使用此窗口在仿真中掺杂"
+
+#: ../gui/ribbon_device.py:125
+msgid ""
+"<big><b>Contacts window</b></big>\n"
+"Use this window to change the layout of the contacts on the device"
+msgstr ""
+"<big><b>接触窗口</b></big>\n"
+"使用此窗口可更改设备上接触的布局"
+
+#: ../gui/ribbon_device.py:149
+msgid ""
+"<big><b>Parasitic components</b></big>\n"
+"Use this window to edit the shunt and series resistance."
+msgstr "使用此窗口来编辑串联和并联电阻"
+
+#: ../gui/ribbon_device.py:160
+msgid ""
+"<big><b>Costs window</b></big>\n"
+"Use this window to calculate the cost of the solar cell and the energy "
+"payback time."
+msgstr ""
+"<big><b>成本窗口</b></big>\n"
+"使用此窗口计算太阳能电池的成本和能量回收时间。"
+
+#: ../gui/tb_lasers.py:70
+msgid "Laser:"
+msgstr "激光："
+
+#: ../gui/emesh.py:146
+msgid "Electrical Mesh Editor"
+msgstr "电气网格编辑器"
+
+#: ../gui/emesh.py:154
+msgid "1D simulation"
+msgstr "一维仿真"
+
+#: ../gui/emesh.py:158
+msgid "2D simulation"
+msgstr "二维仿真"
+
+#: ../gui/emesh.py:162
+msgid "3D simulation"
+msgstr "三维仿真"
+
+#: ../gui/display.py:81
+msgid "Rotate"
+msgstr "旋转"
+
+#: ../gui/display.py:86
+msgid "Configuration"
+msgstr "配置"
+
+#: ../gui/display.py:146
+msgid ""
+"<big><b>OpenGL warning</b></big><br>It looks as if you don't have working 3D "
+"graphics acceleration on your computer.  gpvdm will therefore fallback to 2D "
+"mode. The model will still be fully functional, but not look quite so nice."
+msgstr ""
+"<big><b>OpenGL警告</b></big><br>似乎在您的计算机上没有正在工作中的3D图形加速"
+"器。 因此gpvdm将回退到2D模式。该模型将仍然保留全部功能，但看起来没有那么好。"
+
+#: ../gui/gpvdm_notebook.py:87 ../gui/ribbon.py:143
+#: ../gui/inp_description.py:37
+msgid "Device"
+msgstr "器件"
+
+#: ../gui/gpvdm_notebook.py:88
+msgid ""
+"<big><b>Device tab</b></big><br>This tab contains information about the "
+"device, such as width breadth, carrier density on the contacts, shunt and "
+"contact resistance."
+msgstr ""
+"<big><b>设备选项卡</b></big><br>此选项卡包含有关器件的信息，例如宽度，触点上"
+"的载流子密度，分流和接触电阻。"
+
+#: ../gui/gpvdm_notebook.py:90 ../gui/gpvdm_notebook.py:160
+#: ../gui/gpvdm_notebook.py:242
+msgid "Device structure"
+msgstr "器件结构"
+
+#: ../gui/gpvdm_notebook.py:91
+msgid ""
+"<big><b>The device structure tab</b></big><br> Use this tab to change the "
+"structure of the device, the layer thicknesses and to perform optical "
+"simulations.  You can also browse the materials data base and  edit the "
+"electrical mesh."
+msgstr ""
+"<big><b>设备结构卡</b></big><br> 使用此选项卡可更改设备的结构，层厚度并执行光"
+"学仿真。 您还可以浏览材料数据库并编辑电网格。"
+
+#: ../gui/gpvdm_notebook.py:93 ../gui/inp_description.py:53
+msgid "Bands"
+msgstr "能带"
+
+#: ../gui/gpvdm_notebook.py:94
+msgid ""
+"<big><b>The bands tab</b></big><br> Use this tab to edit the energetic "
+"distribution of the density of states."
+msgstr "<big><b>能带选项卡</b></big><br> 使用此选项卡编辑成态密度的能量分布。"
+
+#: ../gui/gpvdm_notebook.py:96
+msgid "Density of states"
+msgstr "成态密度"
+
+#: ../gui/gpvdm_notebook.py:97
+msgid ""
+"<big><b>Density of States</b></big>\n"
+"This tab contains the electrical model parameters, such as mobility, tail "
+"slope energy, and band gap."
+msgstr ""
+"<big><b>成态密度</b></big>\n"
+"此选项卡包含电气模型参数，例如移动性，尾坡能量和带隙。"
+
+#: ../gui/gpvdm_notebook.py:103
+msgid ""
+"<big><b>The terminal window</b></big>\n"
+"The output of the model will be displayed in this window, watch this screen "
+"for debugging and convergence information."
+msgstr ""
+"<big><b>结束窗口</b></big>\n"
+"模型的输出将显示在此窗口中，观察此屏幕的调试和收敛信息。"
+
+#: ../gui/gpvdm_notebook.py:105 ../gui/gpvdm_notebook.py:139
+#: ../gui/gpvdm_notebook.py:246 ../gui/ribbon.py:150
+msgid "Information"
+msgstr "信息"
+
+#: ../gui/gpvdm_notebook.py:106
+msgid ""
+"<big><b>On-line help</b></big>\n"
+"You can view the on-line help and manual here."
+msgstr ""
+"<big><b>在线帮助</b></big>\n"
+"您可以在这里查看在线帮助和手册。"
+
+#: ../gui/ribbon_information.py:51 ../gui/cool_menu.py:59 ../gui/about.py:107
+msgid "License"
+msgstr "许可证"
+
+#: ../gui/ribbon_information.py:55
+msgid ""
+"How to\n"
+"cite"
+msgstr "如何引用"
+
+#: ../gui/ribbon_information.py:59
+msgid ""
+"Hints\n"
+"Window"
+msgstr "提示窗口"
+
+#: ../gui/ribbon_information.py:71
+msgid ""
+"Youtube\n"
+"channel"
+msgstr "Youtube频道"
+
+#: ../gui/tb_item_sim_mode.py:94
+msgid "Simulation mode:"
+msgstr "仿真模式："
+
+#: ../gui/ribbon.py:66
+msgid ""
+"Open\n"
+"simulation"
+msgstr "打开仿真"
+
+#: ../gui/ribbon.py:69
+msgid ""
+"Export\n"
+"data"
+msgstr "拟合数据"
+
+#: ../gui/ribbon.py:125 ../gui/cool_menu.py:68 ../gui/about.py:49
+#: ../gui/about.py:81 ../gui/status_icon.py:48
+msgid "About"
+msgstr "关于"
+
+#: ../gui/ribbon.py:137 ../gui/scan.py:264
+msgid "Simulations"
+msgstr "仿真"
+
+#: ../gui/ribbon.py:147
+msgid "Cluster"
+msgstr "多层"
+
+#: ../gui/inp_description.py:38
+msgid "JV"
+msgstr "JV曲线"
+
+#: ../gui/inp_description.py:39
+msgid "JV Simple"
+msgstr "简单JV曲线"
+
+#: ../gui/inp_description.py:40
+msgid "Dump"
+msgstr "转存"
+
+#: ../gui/inp_description.py:41
+msgid "CELIV"
+msgstr "CELIV"
+
+#: ../gui/inp_description.py:42 ../gui/plot_widget.py:617
+msgid "Math"
+msgstr "数学"
+
+#: ../gui/inp_description.py:43
+msgid "ToF"
+msgstr "ToF"
+
+#: ../gui/inp_description.py:44
+msgid "Stark"
+msgstr "斯塔尔克效应"
+
+#: ../gui/inp_description.py:45
+msgid "Pulse"
+msgstr "脉冲"
+
+#: ../gui/inp_description.py:46
+msgid "Pulse Voc"
+msgstr "脉冲开路电压"
+
+#: ../gui/inp_description.py:47
+msgid "IMPS"
+msgstr "强度调制光电流谱"
+
+#: ../gui/inp_description.py:48
+msgid "Light Exp"
+msgstr "光通道"
+
+#: ../gui/inp_description.py:50
+msgid "Sun Voc"
+msgstr "光强 开路电压"
+
+#: ../gui/inp_description.py:51
+msgid "TPC"
+msgstr "TPC"
+
+#: ../gui/inp_description.py:52
+msgid "Fit"
+msgstr "拟合"
+
+#: ../gui/inp_description.py:54
+msgid "Density of States"
+msgstr "成态密度"
+
+#: ../gui/scan.py:59
+msgid "Change directory"
+msgstr "更改目录"
+
+#: ../gui/scan.py:68
+msgid "All files"
+msgstr "所有文件"
+
+#: ../gui/scan.py:91
+msgid "New simulation name:"
+msgstr "新仿真名"
+
+#: ../gui/scan.py:91
+msgid "Simulation "
+msgstr "仿真"
+
+#: ../gui/scan.py:111
+msgid "Clone the current simulation to a new simulation called:"
+msgstr "将当前仿真复制为一个新的仿真："
+
+#: ../gui/scan.py:119
+msgid "I want to copy"
+msgstr "我想复制"
+
+#: ../gui/scan.py:168
+msgid "Rename the simulation to be called:"
+msgstr "重命名仿真为："
+
+#: ../gui/scan.py:184
+msgid "Should I remove the simulation directory "
+msgstr "我应该重新移动仿真目录吗"
+
+#: ../gui/scan.py:189
+msgid "I am going to delete file"
+msgstr "我将删除文件"
+
+#: ../gui/scan.py:233
+msgid "Parameter scan - gpvdm"
+msgstr "参数扫描 - gpvdm"
+
+#: ../gui/scan.py:257
+msgid "Change dir"
+msgstr "改变dir文件"
+
+#: ../gui/scan.py:268 ../gui/scan.py:332
+msgid "Delete simulation"
+msgstr "删除仿真"
+
+#: ../gui/scan.py:271 ../gui/scan.py:340
+msgid "Rename simulation"
+msgstr "重命名仿真"
+
+#: ../gui/scan.py:274 ../gui/scan.py:336
+msgid "Clone simulation"
+msgstr "复制仿真"
+
+#: ../gui/scan.py:282
+msgid "Advanced"
+msgstr "高级"
+
+#: ../gui/scan.py:284
+msgid "Plot fits"
+msgstr "绘图匹配"
+
+#: ../gui/scan.py:287
+msgid "Run nested simulation"
+msgstr "运行嵌套仿真"
+
+#: ../gui/scan.py:290 ../gui/scan.py:293
+msgid "Run simulation no generation"
+msgstr "运行模拟文件，无结果生成"
+
+#: ../gui/scan.py:296
+msgid "Run single fit"
+msgstr "运行单匹配"
+
+#: ../gui/scan.py:299
+msgid "Clean simulation"
+msgstr "清除仿真"
+
+#: ../gui/scan.py:302
+msgid "Clean unconverged simulation"
+msgstr "清除未收敛的仿真"
+
+#: ../gui/scan.py:305 ../gui/scan.py:308
+msgid "Clean simulation output"
+msgstr "清除仿真输出"
+
+#: ../gui/scan.py:313
+msgid "Push unconverged to hpc"
+msgstr "把未聚合的到hpc"
+
+#: ../gui/scan.py:344
+msgid "Run all simulations"
+msgstr "运行所有仿真"
+
+#: ../gui/info.py:54
+msgid "Simulation information"
+msgstr "仿真信息"
+
+#: ../gui/info.py:83
+msgid "Simulation Information"
+msgstr "仿真信息 "
+
+#: ../gui/snapshot_slider.py:99
+msgid "Snapshot slider"
+msgstr "快照滑动"
+
+#: ../gui/cost.py:75
+msgid ""
+"Cost and energy payback calculator (BETA - missing realistic data at the "
+"moment!!!)"
+msgstr "成本和能量返回计算（BETA版本目前缺失实际材料）"
+
+#: ../gui/cost.py:83
+msgid "Re-calcualte"
+msgstr "重新计算"
+
+#: ../gui/cost.py:117
+msgid "material"
+msgstr "材料"
+
+#: ../gui/cost.py:117 ../gui/token_lib.py:92
+msgid "Volume"
+msgstr "体积"
+
+#: ../gui/cost.py:117
+msgid "Mass"
+msgstr "质量"
+
+#: ../gui/cost.py:117
+msgid "Cost"
+msgstr "花费"
+
+#: ../gui/cost.py:123
+msgid "pyton3-openpyxl not found"
+msgstr "未发现pyton3-openpyxl"
+
+#: ../gui/duplicate.py:105
+msgid "Source file"
+msgstr "源文件"
+
+#: ../gui/duplicate.py:105
+msgid "Source token"
+msgstr "源标志"
+
+#: ../gui/duplicate.py:105 ../gui/duplicate.py:135
+msgid "Source path"
+msgstr "源路径"
+
+#: ../gui/duplicate.py:105
+msgid "Destination file"
+msgstr "目的文件"
+
+#: ../gui/duplicate.py:105
+msgid "Destination token"
+msgstr "目的地址"
+
+#: ../gui/duplicate.py:105 ../gui/duplicate.py:135
+msgid "Destination path"
+msgstr "目的路径"
+
+#: ../gui/duplicate.py:135
+msgid "Source File"
+msgstr "源文件"
+
+#: ../gui/duplicate.py:135
+msgid "Source Token"
+msgstr "源标志"
+
+#: ../gui/duplicate.py:135
+msgid "Destination File"
+msgstr "目的文件"
+
+#: ../gui/duplicate.py:135
+msgid "Destination Token"
+msgstr "目的标志"
+
+#: ../gui/duplicate.py:183
+msgid "Fit variables duplicate window"
+msgstr "合适的变量幅值窗口"
+
+#: ../gui/duplicate.py:196 ../gui/fit_patch.py:169
+msgid "Add"
+msgstr "加"
+
+#: ../gui/duplicate.py:200 ../gui/fit_patch.py:173
+msgid "Minus"
+msgstr "减"
+
+#: ../gui/tb_item_sun.py:72
+msgid "Light intensity"
+msgstr "光强"
+
+#: ../gui/fxexperiment.py:89
+msgid "Clone the current experiment to a new experiment called"
+msgstr "复制当前实验到一个新的实验，叫做"
+
+#: ../gui/fxexperiment.py:131
+msgid "Should I remove the experiment file"
+msgstr "我应该删除实验文件么？"
+
+#: ../gui/fxexperiment.py:202
+msgid "Frequency domain experiment editor"
+msgstr "频域实验编辑器"
+
+#: ../gui/fit_window.py:91
+msgid ""
+"<big><b>The fitting variables window</b></big><br> Use this window to select "
+"the variables use to perform the fit."
+msgstr ""
+"<big><b>拟合变量窗口</b></big><br> 使用这个窗口来选择变量使用来运行适合。"
+
+#: ../gui/fit_window.py:101
+msgid "New fit name:"
+msgstr "新拟合文件名"
+
+#: ../gui/fit_window.py:101
+msgid "fit "
+msgstr "拟合"
+
+#: ../gui/fit_window.py:118
+msgid "Clone the current fit to a new fit called:"
+msgstr "复制当前文件到一个新的文件，新文件叫："
+
+#: ../gui/fit_window.py:135
+msgid "Rename the fit to be called:"
+msgstr "重命名拟合文件，叫做："
+
+#: ../gui/fit_window.py:148
+msgid "Should I remove the fit file "
+msgstr "我应该删除拟合文件么？"
+
+#: ../gui/fit_window.py:230
+msgid "Fits"
+msgstr "拟合"
+
+#: ../gui/fit_window.py:234 ../gui/fit_window.py:263
+msgid "Delete fit"
+msgstr "删除拟合文件"
+
+#: ../gui/fit_window.py:237 ../gui/fit_window.py:271
+msgid "Rename fit"
+msgstr "重命名拟合文件"
+
+#: ../gui/fit_window.py:240 ../gui/fit_window.py:267
+msgid "Clone fit"
+msgstr "复制拟合文件"
+
+#: ../gui/fit_window.py:253
+msgid "Fit window - gpvdm"
+msgstr "拟合窗口——gpvdm"
+
+#: ../gui/fit_window.py:259
+msgid "New fit"
+msgstr "新建拟合文件"
+
+#: ../gui/fit_window.py:283
+msgid "Run a single fit"
+msgstr "运行一个简单的拟合文件"
+
+#: ../gui/fit_window.py:287
+msgid "Start the fitting process"
+msgstr "开始拟合过程"
+
+#: ../gui/fit_vars.py:95
+msgid "token"
+msgstr "令牌"
+
+#: ../gui/fit_vars.py:95
+msgid "path"
+msgstr "路径"
+
+#: ../gui/fit_vars.py:114
+msgid ""
+"The data file does not have a #begin or #end token indicating where the data "
+"starts and ends."
+msgstr "数据文件没有 #begin 或者 #end 标志来显示数据在哪儿开始结束。"
+
+#: ../gui/fit_vars.py:156 ../gui/fit_patch.py:124
+msgid "Path"
+msgstr "路径"
+
+#: ../gui/fit_vars.py:156
+msgid "Lines to edit"
+msgstr "待编辑的线性"
+
+#: ../gui/fit_vars.py:156
+msgid "Line section to edit"
+msgstr "待编辑的线性结"
+
+#: ../gui/fit_vars.py:205
+msgid "Fit vars window - gpvdm"
+msgstr "合适vars窗口-gpvdm"
+
+#: ../gui/fit_vars.py:216
+msgid "Add line"
+msgstr "加载行"
+
+#: ../gui/fit_vars.py:220
+msgid "Remove line"
+msgstr "清除行"
+
+#: ../gui/fit_vars.py:224
+msgid "Open"
+msgstr "打开"
+
+#: ../gui/leftright.py:85
+msgid "Right"
+msgstr "右"
+
+#: ../gui/leftright.py:91
+msgid "Left"
+msgstr "左"
+
+#: ../gui/hpc.py:215
+msgid "Can not connect to cluster."
+msgstr "无法连接到集群"
+
+#: ../gui/hpc.py:261 ../gui/plot_dlg.py:81
+msgid "Steady state simulation (www.gpvdm.com)"
+msgstr "稳定状态模拟（www.gpvdm.com）"
+
+#: ../gui/hpc.py:269
+msgid "Cluster get data"
+msgstr "集群得到数据"
+
+#: ../gui/hpc.py:274
+msgid "Cluster get info"
+msgstr "集群得到信息"
+
+#: ../gui/hpc.py:279
+msgid "Copy src to cluster"
+msgstr "将src复制到群中"
+
+#: ../gui/hpc.py:284
+msgid "Make on cluster"
+msgstr "创建一个新群"
+
+#: ../gui/hpc.py:289
+msgid "Clean cluster"
+msgstr "清空集群"
+
+#: ../gui/hpc.py:294
+msgid "Kill all cluster code"
+msgstr "删除所有集群代码"
+
+#: ../gui/hpc.py:300
+msgid "Sync"
+msgstr "同步"
+
+#: ../gui/hpc.py:305 ../gui/doping.py:119
+msgid "Stop"
+msgstr "停止"
+
+#: ../gui/hpc.py:311
+msgid "Get jobs"
+msgstr "获得任务"
+
+#: ../gui/hpc.py:316
+msgid "Configure cluster"
+msgstr "设置集群"
+
+#: ../gui/hpc.py:353
+msgid "Connect to cluster"
+msgstr "连接集群"
+
+#: ../gui/fit_window_plot_real.py:75
+msgid "x"
+msgstr "x"
+
+#: ../gui/fit_window_plot_real.py:76
+msgid "y"
+msgstr "y"
+
+#: ../gui/fit_window_plot_real.py:126 ../gui/import_data.py:233
+msgid "Import data"
+msgstr "导入数据"
+
+#: ../gui/server.py:130
+msgid ""
+"<big><b>Simulation finished!</b></big><br>Click on the plot icon to plot the "
+"results"
+msgstr "<big><b>仿真已完成！</b></big><br>点击绘图图标来绘出结果"
+
+#: ../gui/server.py:140
+msgid ""
+"<big><b>Excel workbook error</b></big><br>I can't write new data to the file "
+"data.xlsx, I think you have are viewing it using another program.  Please "
+"close data.xlsx to enable me to write new data to it."
+msgstr ""
+"<big><b>Excel错误</b></big><br>我无法将新数据写入文件data.xlsx中，您可能用另"
+"一个程序带开了它。请关闭data.xlsx，这样就能写入新数据。"
+
+#: ../gui/server.py:200
+msgid "Running job "
+msgstr "正在运行的任务"
+
+#: ../gui/server.py:309
+msgid "I did not think I was running any jobs"
+msgstr "真相就是，我没在运行任何东西。"
+
+#: ../gui/information_webkit.py:66
+msgid "back"
+msgstr "返回"
+
+#: ../gui/information_webkit.py:70
+msgid "home"
+msgstr "主页"
+
+#: ../gui/ref.py:64 ../gui/ref.py:69
+msgid "Data provided by"
+msgstr "数据提供者："
+
+#: ../gui/ref.py:65
+msgid "Associated paper"
+msgstr "相关论文"
+
+#: ../gui/ref.py:82
+msgid "Reference manager"
+msgstr "参考管理"
+
+#: ../gui/ref.py:102
+msgid "Reference"
+msgstr "参考"
+
+#: ../gui/ref.py:161
+msgid "New file"
+msgstr "新建文件"
+
+#: ../gui/device_lib.py:59
+msgid "File name"
+msgstr "文件名"
+
+#: ../gui/device_lib.py:59
+msgid "Device type"
+msgstr "器件类型"
+
+#: ../gui/device_lib.py:59
+msgid "Description"
+msgstr "描述"
+
+#: ../gui/device_lib.py:112
+msgid "You have not selected anything"
+msgstr "您未选中任何东西"
+
+#: ../gui/lasers.py:84
+msgid "New laser name:"
+msgstr "新激光名字："
+
+#: ../gui/lasers.py:84
+msgid "laser "
+msgstr "激光"
+
+#: ../gui/lasers.py:94
+msgid "Clone the current laser to a new laser called:"
+msgstr "复制目前的激光层到新的激光层，称之为："
+
+#: ../gui/lasers.py:111
+msgid "Rename the laser to be called:"
+msgstr "重命名激光层"
+
+#: ../gui/lasers.py:121
+msgid "Should I remove the laser file "
+msgstr "我应该清除激光文件么？"
+
+#: ../gui/lasers.py:181
+msgid "Lasers"
+msgstr "激光层"
+
+#: ../gui/lasers.py:185 ../gui/lasers.py:216
+msgid "Delete laser"
+msgstr "删除激光"
+
+#: ../gui/lasers.py:188 ../gui/lasers.py:191 ../gui/lasers.py:224
+msgid "Rename laser"
+msgstr "重命名激光"
+
+#: ../gui/lasers.py:194 ../gui/lasers.py:220
+msgid "Clone laser"
+msgstr "克隆激光"
+
+#: ../gui/lasers.py:206
+msgid "Laser configuration window"
+msgstr "激光配置窗口"
+
+#: ../gui/lasers.py:212
+msgid "New laser"
+msgstr "新激光"
+
+#: ../gui/cool_menu.py:53
+msgid "Help window"
+msgstr "帮助窗口"
+
+#: ../gui/cool_menu.py:56 ../gui/status_icon.py:50
+msgid "Manual"
+msgstr "软件使用指南"
+
+#: ../gui/cool_menu.py:62
+msgid "Youtube"
+msgstr "Youtube"
+
+#: ../gui/cool_menu.py:65
+msgid "Citing the model"
+msgstr "关于引用模型的声明"
+
+#: ../gui/tab_terminal.py:64
+msgid "Running: "
+msgstr "正在运行： "
+
+#: ../gui/tab_terminal.py:76
+msgid "I could not find a free cpu to run the command on"
+msgstr "CPU无空闲，无法运行命令 "
+
+#: ../gui/tab_terminal.py:109
+msgid "CPU"
+msgstr "CPU(中央处理单元)"
+
+#: ../gui/gpvdm_open.py:123
+msgid "The directory is gone, so I can't open it.  Did you delete it?"
+msgstr "目录不见了，我没法打开。你有没有删目录？"
+
+#: ../gui/gpvdm_open.py:221
+msgid "title"
+msgstr "标题"
+
+#: ../gui/gpvdm_open.py:221
+msgid "x axis"
+msgstr "x 轴"
+
+#: ../gui/gpvdm_open.py:221
+msgid "y axis"
+msgstr "y 轴"
+
+#: ../gui/gpvdm_open.py:221
+msgid "Double click to open"
+msgstr "双击打开"
+
+#: ../gui/gpvdm_open.py:227
+msgid "equilibrium"
+msgstr "平衡态"
+
+#: ../gui/gpvdm_open.py:227
+msgid "This contains the simulation output at 0V in the dark."
+msgstr "本仿真包含黑暗条件下，0V时的输出。"
+
+#: ../gui/import_data.py:141
+msgid "x units:"
+msgstr "x 单位"
+
+#: ../gui/import_data.py:142
+msgid "y units:"
+msgstr "y 单位"
+
+#: ../gui/import_data.py:151
+msgid "Title:"
+msgstr "标题："
+
+#: ../gui/import_data.py:160 ../gui/import_data.py:171
+msgid "x-label:"
+msgstr "x-标签"
+
+#: ../gui/import_data.py:248
+msgid "Import data to model"
+msgstr "将数据输入到模型中"
+
+#: ../gui/import_data.py:275
+msgid "The file to import:"
+msgstr "带输入的文件"
+
+#: ../gui/import_data.py:290
+msgid "The imported file, the numbers should now be in SI units"
+msgstr "外源文件，数字现在应该用国际单位制。"
+
+#: ../gui/about.py:53
+msgid "Written by Roderick MacKenzie 2012-2017, published under GPL v2.0"
+msgstr "本软件由Roderick MacKenzie在2012~2017年开发，在GPL2.0版本下出版"
+
+#: ../gui/about.py:55
+msgid "Version "
+msgstr "版本"
+
+#: ../gui/about.py:68
+msgid ""
+"gpvdm is a free general-purpose tool for simulation of light harvesting "
+"devices. It was originally written to simulate organic solar cells and "
+"OLEDs, but it has recently been extended to simulate other devices including "
+"silicon based devices. Currently the model can sumulate:"
+msgstr ""
+"本软件是一个免费的通用工具，用来模拟捕获光的器件的模拟。最初设计时用于模拟有"
+"机 太阳电池和OLED电池，但最近经更新拓展，其可模拟其他器件，包括基于硅材料的器"
+"件。目前本模型 可以用来模拟："
+
+#: ../gui/about.py:70
+msgid "Organic solar cells"
+msgstr "有机太阳能电池"
+
+#: ../gui/about.py:71
+msgid "Organic LEDs"
+msgstr "有机发光二极管"
+
+#: ../gui/about.py:72
+msgid "Crystalline silicon solar cells"
+msgstr "结晶硅太阳能电池"
+
+#: ../gui/about.py:73
+msgid "a-Si solar cells"
+msgstr "非硅太阳能电池"
+
+#: ../gui/about.py:74
+msgid "CIGS solar cells"
+msgstr "CIGS铜铟镓硒太阳电池"
+
+#: ../gui/about.py:76
+msgid ""
+"The model solves both electron and hole drift-diffusion, and carrier "
+"continuity equations in position space to describe the movement of charge "
+"within the device. The model also solves Poisson's equation to calculate the "
+"internal electrostatic potential. Recombination and carrier trapping are "
+"described within the model using a Shockley-Read-Hall (SRH) formalism, the "
+"distribution of trap sates can be arbitrarily defined. All equations can be "
+"solved either in steady state or in time domain. A fuller description of the "
+"model can be found in the here, in the associated publications and in the "
+"manual."
+msgstr ""
+"本模型可求解有关电子空穴漂移扩散的问题，及在器件中用于描述坐标系中 载流子连续"
+"性方程的问题。本模型也可用于求解泊松方程，来计算内部静电势能。复合和载流子被"
+"俘获 用一个基于Shockley-Read-Hall模型来描述，俘获状态的分布可以随机定义。上述"
+"所有方程 要么可以在稳态中求解，要么能在时域中求解。在此处、或者附带的出版物和"
+"手册中可以找到对此模型更详尽的描述。"
+
+#: ../gui/about.py:85
+msgid ""
+"General-purpose Photovoltaic Device Model - a drift diffusion base/Shockley-"
+"Read-Hall model"
+msgstr "通用光伏器件模型--一个基于漂移扩散/肖克里雷德-霍尔模型"
+
+#: ../gui/about.py:89
+msgid ""
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License v2.0, as published by the "
+"Free Software Foundation."
+msgstr ""
+"本程序完全免费。您可以转发此软件，改动此软件。但必须依据由免费软件基金会 出版"
+"的GNU通用公共许可证2.0版本的条款。"
+
+#: ../gui/about.py:93
+msgid ""
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details."
+msgstr ""
+"本程序已共享，希望有益于大众，但是不包括任何保证书，甚至不包括针对某特殊意图"
+"进行销售 改版所暗含的保证书。详情参见GNU通用公共许可证。"
+
+#: ../gui/about.py:97
+msgid ""
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 51 "
+"Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA."
+msgstr ""
+"和这个程序一起，您应该已经获得了一份GNU通用公共许可证的拷贝。如果没有， 向以"
+"下地址写信：Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, "
+"Boston, MA 02110-1301 USA."
+
+#: ../gui/about.py:101
+msgid ""
+"When you start gpvdm the software checks the gpvdm.com server for updates "
+"and bug reports.  To do this it transmits your opperating system type, gpvdm "
+"version number.  It also tells the gpvdm.com server if opengl is working on "
+"your pc.  By installing gpvdm you agree that the gpvdm software may transmit "
+"this information to the gpvdm.com server.  The communications  process "
+"between gpvdm software and the gpvdm.com server is described in more detail "
+"in the manual."
+msgstr ""
+"当您启动本软件时，软件会到gpvdm.com的服务器上检查更新和报错情况。为此，软件将"
+"会传送您的操作系统 类型，版本数。同样地，软件告知服务器开放图形库是否在您的个"
+"人计算机上工作 。安装此软件时， 您已同意本软件可能会将这些信息传送给服务器。"
+"软件和服务器之间的通讯处理过程在手册中有 更详细的描述。"
+
+#: ../gui/about.py:140
+msgid "Translations"
+msgstr "翻译"
+
+#: ../gui/about.py:143
+msgid "Materials"
+msgstr "材料"
+
+#: ../gui/scan_select.py:60
+msgid "Select simulation parameter"
+msgstr "选择仿真参数"
+
+#: ../gui/scan_select.py:111
+msgid "Simulation parameters"
+msgstr "仿真参数"
+
+#: ../gui/scan_select.py:164
+msgid "No row selected in the scan window, can't insert the selection"
+msgstr "扫描窗中没有行被选中，不能插入选择"
+
+#: ../gui/equation.py:178 ../gui/jobs.py:86
+msgid "start"
+msgstr "起始"
+
+#: ../gui/equation.py:178 ../gui/token_lib.py:81 ../gui/jobs.py:86
+msgid "stop"
+msgstr "截止"
+
+#: ../gui/equation.py:178
+msgid "Python Equation"
+msgstr "Python方程"
+
+#: ../gui/equation.py:224
+msgid "You've made a mistake in the equation, use w for wavelength. "
+msgstr "您在方程中犯了个错误：用w表示波长."
+
+#: ../gui/equation.py:271
+msgid "Insert reference information"
+msgstr "插入参考信息"
+
+#: ../gui/equation.py:299
+msgid "Calculate"
+msgstr "计算"
+
+#: ../gui/ver.py:94
+msgid "version.h not found"
+msgstr "version.h 未发现此版本"
+
+#: ../gui/help.py:110
+msgid "Back"
+msgstr "返回"
+
+#: ../gui/help.py:124
+msgid "Online help"
+msgstr "在线帮助"
+
+#: ../gui/help.py:125
+msgid "On line help"
+msgstr "在线帮助"
+
+#: ../gui/help.py:129
+msgid "Hide"
+msgstr "隐藏"
+
+#: ../gui/help.py:241
+msgid "gpvdm in your language!"
+msgstr "用你的语言运行"
+
+#: ../gui/help.py:243
+msgid "gpvdm translated by:"
+msgstr "本软件翻译者如下："
+
+#: ../gui/parasitic.py:55
+msgid "Edit parasitic components"
+msgstr "编辑寄生元件"
+
+#: ../gui/parasitic.py:84
+msgid "Parasitic components"
+msgstr "寄生元件"
+
+#: ../gui/fxexperiment_tab.py:61
+msgid "Frequency mesh"
+msgstr "频率网格"
+
+#: ../gui/electrical_mesh_editor.py:119
+msgid "Mesh points"
+msgstr "网格点"
+
+#: ../gui/token_lib.py:41
+msgid "Mesh points (lambda)"
+msgstr "网格点（lambda）"
+
+#: ../gui/token_lib.py:42
+msgid "Lambda start"
+msgstr "Lambda启动"
+
+#: ../gui/token_lib.py:43
+msgid "Lambda stop"
+msgstr "Lambda截止"
+
+#: ../gui/token_lib.py:44
+msgid "Laser wavelength"
+msgstr "激光波长"
+
+#: ../gui/token_lib.py:45
+msgid "Spot size x"
+msgstr "x轴大小"
+
+#: ../gui/token_lib.py:46
+msgid "Spot size y"
+msgstr "y轴大小"
+
+#: ../gui/token_lib.py:47
+msgid "Energy in pulse"
+msgstr "脉冲能量"
+
+#: ../gui/token_lib.py:48
+msgid "#gather"
+msgstr "#聚集"
+
+#: ../gui/token_lib.py:49
+msgid "Length of pulse"
+msgstr "脉冲长度"
+
+#: ../gui/token_lib.py:50
+msgid "Electron generation efficiency"
+msgstr "电子生成率"
+
+#: ../gui/token_lib.py:51
+msgid "Hole generation efficiency"
+msgstr "空穴生成率"
+
+#: ../gui/token_lib.py:52 ../gui/token_lib.py:402
+msgid "filename"
+msgstr "文件名称"
+
+#: ../gui/token_lib.py:52
+msgid "Sun's spectra"
+msgstr "太阳光谱"
+
+#: ../gui/token_lib.py:53
+msgid "File containing generation rate"
+msgstr "文件包含生成率"
+
+#: ../gui/token_lib.py:56
+msgid "Effective density of free electron states"
+msgstr "自由电子状态的有效密度"
+
+#: ../gui/token_lib.py:57
+msgid "Effective density of free hole states"
+msgstr "自由空穴状态的有效密度"
+
+#: ../gui/token_lib.py:58 ../libdump/dump_dynamic.c:692
+#: ../libdump/dump_1d_slice.c:758 ../libdump/dump_1d_slice.c:763
+msgid "Electron mobility"
+msgstr "电子迁移率"
+
+#: ../gui/token_lib.py:59 ../libdump/dump_dynamic.c:711
+#: ../libdump/dump_1d_slice.c:787 ../libdump/dump_1d_slice.c:792
+msgid "Hole mobility"
+msgstr "空穴迁移率"
+
+#: ../gui/token_lib.py:60
+msgid "Electron trap density"
+msgstr "电子陷阱密度"
+
+#: ../gui/token_lib.py:61
+msgid "Hole trap density"
+msgstr "空穴陷阱密度"
+
+#: ../gui/token_lib.py:62
+msgid "Electron tail slope"
+msgstr "电子带尾斜率"
+
+#: ../gui/token_lib.py:63
+msgid "Hole tail slope"
+msgstr "空穴尾部斜率"
+
+#: ../gui/token_lib.py:64 ../libdump/dump_1d_slice.c:728
+#: ../libdump/dump_1d_slice.c:733
+msgid "Relative permittivity"
+msgstr "相对介电常数"
+
+#: ../gui/token_lib.py:65
+msgid "Free electron to Trapped electron"
+msgstr "自由电子到被俘获电子"
+
+#: ../gui/token_lib.py:66
+msgid "Trapped electron to Free hole"
+msgstr "被俘获电子到自由空穴"
+
+#: ../gui/token_lib.py:67
+msgid "Trapped hole to Free electron"
+msgstr "被俘获空穴到自由电子"
+
+#: ../gui/token_lib.py:68
+msgid "Free hole to Trapped hole"
+msgstr "自由空穴到被俘获空穴"
+
+#: ../gui/token_lib.py:69
+#, python-brace-format
+msgid "n_{free} to p_{free} Recombination rate constant"
+msgstr "n型{自由}到p型{自由}  复合率是常数 "
+
+#: ../gui/token_lib.py:73
+msgid "startime"
+msgstr "起始时间"
+
+#: ../gui/token_lib.py:74
+msgid "ea_factor"
+msgstr "ea-因子"
+
+#: ../gui/token_lib.py:75
+msgid "Np"
+msgstr "p型载流子浓度"
+
+#: ../gui/token_lib.py:76
+msgid "den"
+msgstr "密度"
+
+#: ../gui/token_lib.py:77
+msgid "externalv"
+msgstr "外电压"
+
+#: ../gui/token_lib.py:78
+msgid "dt_neg_time"
+msgstr "dt_neg_time"
+
+#: ../gui/token_lib.py:80
+msgid "dt_mull"
+msgstr "dt_mull"
+
+#: ../gui/token_lib.py:82
+msgid "stark"
+msgstr "猛烈的"
+
+#: ../gui/token_lib.py:83
+msgid "lasereff"
+msgstr "激光效率"
+
+#: ../gui/token_lib.py:84
+msgid "wavelength"
+msgstr "波长"
+
+#: ../gui/token_lib.py:85
+msgid "sim_contacts"
+msgstr "sim_接触"
+
+#: ../gui/token_lib.py:88
+msgid "Website"
+msgstr "网站"
+
+#: ../gui/token_lib.py:89
+msgid "Research group"
+msgstr "研究团队"
+
+#: ../gui/token_lib.py:90
+msgid "Authors"
+msgstr "作者"
+
+#: ../gui/token_lib.py:91
+msgid "Journal"
+msgstr "期刊"
+
+#: ../gui/token_lib.py:93
+msgid "Pages"
+msgstr "页"
+
+#: ../gui/token_lib.py:94
+msgid "Year"
+msgstr "年"
+
+#: ../gui/token_lib.py:95
+msgid "md5 sum"
+msgstr "和"
+
+#: ../gui/token_lib.py:98 ../gui/token_lib.py:262
+#, python-brace-format
+msgid "R_{short}"
+msgstr "短路电阻{short}"
+
+#: ../gui/token_lib.py:99
+#, python-brace-format
+msgid "V_{bias}"
+msgstr "偏置电压{bias}"
+
+#: ../gui/token_lib.py:100
+msgid "Efficiency of light"
+msgstr "光的效率"
+
+#: ../gui/token_lib.py:103
+msgid "JV voltage step multiplyer"
+msgstr "JV 电压跨步乘积"
+
+#: ../gui/token_lib.py:104
+msgid "Maximum current density"
+msgstr "最大电流密度"
+
+#: ../gui/token_lib.py:105
+msgid "JV curve photon generation efficiency"
+msgstr "JV 曲线光子产生效率"
+
+#: ../gui/token_lib.py:106
+#, python-brace-format
+msgid "Average carrier density at P_{max}"
+msgstr "P_{max}平均携带密度 "
+
+#: ../gui/token_lib.py:107
+msgid "Recombination time constant"
+msgstr "复合时间常数 "
+
+#: ../gui/token_lib.py:110
+#, python-brace-format
+msgid "V_{oc}"
+msgstr "开路电压{oc}"
+
+#: ../gui/token_lib.py:111
+msgid "Power conversion efficiency"
+msgstr "功率转化效率"
+
+#: ../gui/token_lib.py:112
+msgid "Fill factor"
+msgstr "填充因子"
+
+#: ../gui/token_lib.py:113
+msgid "Max power"
+msgstr "最大功率"
+
+#: ../gui/token_lib.py:114
+msgid "Trapped electrons at Voc"
+msgstr "开路电压下被俘获的电子"
+
+#: ../gui/token_lib.py:115
+msgid "Trapped holes at Voc"
+msgstr "开路电压下被俘获的空穴"
+
+#: ../gui/token_lib.py:116
+msgid "Free electrons at Voc"
+msgstr "开路电压下的自由电子"
+
+#: ../gui/token_lib.py:117
+msgid "Free holes at Voc"
+msgstr "开路电压下的自由空穴"
+
+#: ../gui/token_lib.py:118
+msgid "Total carriers (n+p)/2 at Voc"
+msgstr "开路电压下总载流子数 (n+p)/2"
+
+#: ../gui/token_lib.py:119
+msgid "Recombination time constant at Voc"
+msgstr "开路电压下复合时间常数"
+
+#: ../gui/token_lib.py:120
+msgid "Recombination rate at Voc"
+msgstr "开路电压下的复合率"
+
+#: ../gui/token_lib.py:121
+msgid "Current density at Voc"
+msgstr "开路电压下的电流密度"
+
+#: ../gui/token_lib.py:124
+msgid "Number of CPUs"
+msgstr "CPU个数"
+
+#: ../gui/token_lib.py:139
+msgid "Max Electrical itterations (first step)"
+msgstr "最大电子迭代步（第一步） "
+
+#: ../gui/token_lib.py:140
+msgid "Electrical clamp (first step)"
+msgstr "电夹（第一步）"
+
+#: ../gui/token_lib.py:141
+msgid "Desired electrical solver error (first step)"
+msgstr "预期电气求解器出现错误（第一步）"
+
+#: ../gui/token_lib.py:142 ../gui/token_lib.py:148 ../gui/token_lib.py:159
+#: ../gui/token_lib.py:174 ../gui/token_lib.py:175 ../gui/token_lib.py:176
+#: ../gui/token_lib.py:177 ../gui/token_lib.py:179 ../gui/token_lib.py:180
+#: ../gui/token_lib.py:185 ../gui/token_lib.py:186 ../gui/token_lib.py:188
+#: ../gui/token_lib.py:189 ../gui/token_lib.py:190 ../gui/token_lib.py:191
+#: ../gui/token_lib.py:192 ../gui/token_lib.py:193 ../gui/token_lib.py:196
+#: ../gui/token_lib.py:198 ../gui/token_lib.py:199 ../gui/token_lib.py:200
+#: ../gui/token_lib.py:201 ../gui/token_lib.py:202 ../gui/token_lib.py:203
+#: ../gui/token_lib.py:204 ../gui/token_lib.py:205 ../gui/token_lib.py:206
+#: ../gui/token_lib.py:207 ../gui/token_lib.py:209 ../gui/token_lib.py:210
+#: ../gui/token_lib.py:213 ../gui/token_lib.py:251 ../gui/token_lib.py:394
+#: ../gui/token_lib.py:397 ../gui/token_lib.py:401 ../gui/token_lib.py:403
+#: ../gui/token_lib.py:429
+msgid "True/False"
+msgstr "真确/错误"
+
+#: ../gui/token_lib.py:142
+msgid "Enable poisson solver"
+msgstr "使用泊松方程求解器"
+
+#: ../gui/token_lib.py:143
+msgid "Max electrical itterations"
+msgstr "最大电气迭代"
+
+#: ../gui/token_lib.py:144
+msgid "Electrical clamp"
+msgstr "电气钳"
+
+#: ../gui/token_lib.py:145
+msgid "Poisson clamping"
+msgstr "泊松嵌套"
+
+#: ../gui/token_lib.py:146
+msgid "Minimum electrical error"
+msgstr "最小电气误差"
+
+#: ../gui/token_lib.py:147
+msgid "Poisson solver max itterations"
+msgstr "泊松解决器最大迭代"
+
+#: ../gui/token_lib.py:149
+msgid "Newton minimum iterations"
+msgstr "牛顿最小迭代"
+
+#: ../gui/token_lib.py:150 ../gui/token_lib.py:151
+msgid "dll name"
+msgstr "名称"
+
+#: ../gui/token_lib.py:150
+msgid "Matrix solver to use"
+msgstr "使用矩阵解决器"
+
+#: ../gui/token_lib.py:151
+msgid "Newton solver to use"
+msgstr "使用牛顿解决器"
+
+#: ../gui/token_lib.py:152
+msgid "Slotboom T0"
+msgstr "Slotboom T0"
+
+#: ../gui/token_lib.py:153
+msgid "Slotboom D0"
+msgstr "Slotboom D0"
+
+#: ../gui/token_lib.py:154
+msgid "Slotboom n0"
+msgstr "Slotboom n0"
+
+#: ../gui/token_lib.py:158
+msgid "Fit error multiplyer"
+msgstr "累乘器拟合失败"
+
+#: ../gui/token_lib.py:159
+msgid "Randomize fit"
+msgstr "重设fit"
+
+#: ../gui/token_lib.py:160
+msgid "Number of iterations between random reset"
+msgstr "随机设置间的迭代次数"
+
+#: ../gui/token_lib.py:161
+msgid "Stall steps"
+msgstr "安装步骤"
+
+#: ../gui/token_lib.py:162
+msgid "Disable reset at level"
+msgstr "在能及不可充重置"
+
+#: ../gui/token_lib.py:163
+msgid "Fit define convergence"
+msgstr "合适确定收敛"
+
+#: ../gui/token_lib.py:164
+msgid "Enable simplex reset"
+msgstr "使simplex重置"
+
+#: ../gui/token_lib.py:165
+msgid "Simplex reset steps"
+msgstr "简化重设步骤"
+
+#: ../gui/token_lib.py:166
+msgid "Fiting method"
+msgstr "拟合方法 "
+
+#: ../gui/token_lib.py:169
+msgid "Subtract lowest point"
+msgstr "减去最低点"
+
+#: ../gui/token_lib.py:172
+msgid "Device temperature on left"
+msgstr "左器件温度"
+
+#: ../gui/token_lib.py:173
+msgid "Device temperature on right"
+msgstr "右器件温度"
+
+#: ../gui/token_lib.py:174
+msgid "Enable thermal solver"
+msgstr "开启热解决器"
+
+#: ../gui/token_lib.py:175
+msgid "Lattice heat model"
+msgstr "晶格热模型"
+
+#: ../gui/token_lib.py:176
+msgid "Electron heat model"
+msgstr "电子热模型"
+
+#: ../gui/token_lib.py:177
+msgid "Hole heat model"
+msgstr "空穴热模型"
+
+#: ../gui/token_lib.py:178
+msgid "Thermal conductivity"
+msgstr "导热系数 "
+
+#: ../gui/token_lib.py:179
+msgid "Isothermal boundary on left"
+msgstr "左隔离热边界"
+
+#: ../gui/token_lib.py:180
+msgid "Isothermal boundary on right"
+msgstr "右隔离热边界"
+
+#: ../gui/token_lib.py:181
+msgid "Electron relaxation time"
+msgstr "电子弛豫时间"
+
+#: ../gui/token_lib.py:182
+msgid "Hole relaxation time"
+msgstr "空穴弛豫时间"
+
+#: ../gui/token_lib.py:185
+msgid "Dump from newton solver"
+msgstr "从牛顿法求解器中转存"
+
+#: ../gui/token_lib.py:186
+msgid "Plot bands etc.. "
+msgstr "绘制能带图等等"
+
+#: ../gui/token_lib.py:188
+msgid "dump slices by time"
+msgstr "以时间转存各层"
+
+#: ../gui/token_lib.py:189
+msgid "Dump 1D slices"
+msgstr "转存一维各层"
+
+#: ../gui/token_lib.py:190
+msgid "Dump slices"
+msgstr "转存各层"
+
+#: ../gui/token_lib.py:191
+msgid "Dump dynamic"
+msgstr "转存动态"
+
+#: ../gui/token_lib.py:192
+msgid "Dump zip files"
+msgstr "转存zip文件"
+
+#: ../gui/token_lib.py:193
+msgid "Write out band structure"
+msgstr "写出能带结构"
+
+#: ../gui/token_lib.py:196
+msgid "Dump optical information"
+msgstr "转存光学信息"
+
+#: ../gui/token_lib.py:198
+msgid "Print newton error"
+msgstr "打印牛顿错误"
+
+#: ../gui/token_lib.py:199
+msgid "Print solver convergence"
+msgstr "打印收敛"
+
+#: ../gui/token_lib.py:200
+msgid "Write newton solver convergence to disk"
+msgstr "将牛顿收敛写入盘中"
+
+#: ../gui/token_lib.py:201
+msgid "Print poisson solver convergence"
+msgstr "打印泊松收敛"
+
+#: ../gui/token_lib.py:202
+msgid "Dump PL spectra"
+msgstr "转存PL光谱"
+
+#: ../gui/token_lib.py:203
+msgid "Normalize output x-time to one"
+msgstr "标准化输出 x-时间 到一个"
+
+#: ../gui/token_lib.py:204
+msgid "Dump the built in voltage."
+msgstr "在电压中转存所搭建的内容"
+
+#: ../gui/token_lib.py:205
+msgid "Dump optical probe spectrum"
+msgstr "转存光探测光谱"
+
+#: ../gui/token_lib.py:206
+msgid "Dump optical summary"
+msgstr "转存光存储"
+
+#: ../gui/token_lib.py:207
+msgid "Dump raytrace plots"
+msgstr "转存光追踪点"
+
+#: ../gui/token_lib.py:209
+msgid "Dump an excel workbook for each simulation run congaing the results."
+msgstr "每次仿真运行后，转存一个EXCEL工作书包含结果"
+
+#: ../gui/token_lib.py:210
+msgid "Write file access log to disk."
+msgstr "将文件路径日志写到硬盘中"
+
+#: ../gui/token_lib.py:213
+msgid "Turn on LED"
+msgstr "打开发光二极管"
+
+#: ../gui/token_lib.py:214
+msgid "LED emission wavelength"
+msgstr "LED排放波长"
+
+#: ../gui/token_lib.py:215
+msgid "LED extraction efficiency"
+msgstr "LED收回效率"
+
+#: ../gui/token_lib.py:218
+msgid "Invert applied bias"
+msgstr "反相施加偏置"
+
+#: ../gui/token_lib.py:219
+msgid "Shunt resistance"
+msgstr "并联电阻"
+
+#: ../gui/token_lib.py:220
+msgid "Series resistance"
+msgstr "串联电阻"
+
+#: ../gui/token_lib.py:221
+msgid "Charge on left contact"
+msgstr "左接触面的电荷"
+
+#: ../gui/token_lib.py:222
+msgid "Charge on right contact"
+msgstr "右接触面的电荷"
+
+#: ../gui/token_lib.py:226
+msgid "Start voltage"
+msgstr "起始电压"
+
+#: ../gui/token_lib.py:227
+msgid "Stop voltage"
+msgstr "截止电压"
+
+#: ../gui/token_lib.py:228
+msgid "Voltage step"
+msgstr "电压阶"
+
+#: ../gui/token_lib.py:229
+msgid "I0"
+msgstr "输入输出"
+
+#: ../gui/token_lib.py:230
+msgid "ideality factor"
+msgstr "理想因子"
+
+#: ../gui/token_lib.py:233
+msgid "#saturation_n0"
+msgstr "#饱和"
+
+#: ../gui/token_lib.py:234
+msgid "#saturation_rate"
+msgstr "#饱和率"
+
+#: ../gui/token_lib.py:235
+msgid "#imps_saturate"
+msgstr "#脉冲饱和"
+
+#: ../gui/token_lib.py:238 ../gui/optics.py:174
+msgid "Photon density"
+msgstr "光子密度"
+
+#: ../gui/token_lib.py:239
+msgid "Absorption of material"
+msgstr "材料吸收率"
+
+#: ../gui/token_lib.py:240
+msgid "#simmode"
+msgstr "#sim模式"
+
+#: ../gui/token_lib.py:241
+msgid "Mesh points (x)"
+msgstr "网点（x）"
+
+#: ../gui/token_lib.py:243
+msgid "#function"
+msgstr "#function 函数"
+
+#: ../gui/token_lib.py:244
+msgid "left/right"
+msgstr "左/右"
+
+#: ../gui/token_lib.py:244
+msgid "Hole majority contact on left/right of device."
+msgstr "器件左/右侧的空穴大多数接触"
+
+#: ../gui/token_lib.py:245
+msgid "start voltage"
+msgstr "起始电压"
+
+#: ../gui/token_lib.py:246
+msgid "Max voltage"
+msgstr "最大电压"
+
+#: ../gui/token_lib.py:247
+msgid "Eg"
+msgstr "禁带宽度"
+
+#: ../gui/token_lib.py:248
+msgid "Xi"
+msgstr "Xi"
+
+#: ../gui/token_lib.py:249
+msgid "Time of pause"
+msgstr "暂停时间"
+
+#: ../gui/token_lib.py:250
+msgid "Pause between iterations"
+msgstr "迭代之间的暂停"
+
+#: ../gui/token_lib.py:251
+msgid "Invert output"
+msgstr "转换输出"
+
+#: ../gui/token_lib.py:256
+msgid "Other layers"
+msgstr "其他层"
+
+#: ../gui/token_lib.py:258
+msgid "Use capacitor"
+msgstr "使用电容"
+
+#: ../gui/token_lib.py:263
+msgid "Backgroud light bias"
+msgstr "背景光偏差"
+
+#: ../gui/token_lib.py:264
+msgid "Modulation depth"
+msgstr "调制宽度"
+
+#: ../gui/token_lib.py:265
+msgid "Modulation frequency"
+msgstr "调制频率"
+
+#: ../gui/token_lib.py:266
+msgid "High light multiplyer"
+msgstr "高光的多层"
+
+#: ../gui/token_lib.py:267
+msgid "Photon efficiency"
+msgstr "光子效率"
+
+#: ../gui/token_lib.py:273
+msgid "Re(J)"
+msgstr "J的实部"
+
+#: ../gui/token_lib.py:274
+msgid "Im(J)"
+msgstr "J的虚部"
+
+#: ../gui/token_lib.py:276 ../gui/token_lib.py:277 ../gui/token_lib.py:278
+msgid "Phase shift"
+msgstr "相移"
+
+#: ../gui/token_lib.py:279
+msgid "points"
+msgstr "点"
+
+#: ../gui/token_lib.py:280
+msgid "Wavelengths to simulate"
+msgstr "根据波长来仿真"
+
+#: ../gui/token_lib.py:281
+msgid "External voltage"
+msgstr "外电压"
+
+#: ../gui/token_lib.py:283
+msgid "External C"
+msgstr "外部电容"
+
+#: ../gui/token_lib.py:284
+msgid "External R"
+msgstr "外部电阻"
+
+#: ../gui/token_lib.py:286
+msgid "Resistance of scope"
+msgstr "净的电阻"
+
+#: ../gui/token_lib.py:287
+msgid "Number of traps"
+msgstr "陷阱数量"
+
+#: ../gui/token_lib.py:289
+msgid "DoS distribution"
+msgstr "DoS分布"
+
+#: ../gui/token_lib.py:289
+msgid "exponential"
+msgstr "指数 "
+
+#: ../gui/token_lib.py:289
+msgid "complex"
+msgstr "复数 "
+
+#: ../gui/token_lib.py:291
+msgid "Single point"
+msgstr "奇点"
+
+#: ../gui/token_lib.py:292
+msgid "Start intensity"
+msgstr "开始时强度"
+
+#: ../gui/token_lib.py:293
+msgid "Stop intensity"
+msgstr "截止时强度"
+
+#: ../gui/token_lib.py:294
+msgid "step multiplier"
+msgstr "步乘"
+
+#: ../gui/token_lib.py:297
+msgid "Photon Flux"
+msgstr "光子流量"
+
+#: ../gui/token_lib.py:299
+msgid "device width"
+msgstr "器件宽度"
+
+#: ../gui/token_lib.py:300
+msgid "device breadth"
+msgstr "器件宽度"
+
+#: ../gui/token_lib.py:365
+msgid "Solve Kirchhoff's current law in Newton solver"
+msgstr "在牛顿分析器中分析基尔霍夫电流定律 "
+
+#: ../gui/token_lib.py:394
+msgid "Enable 3d effects"
+msgstr "开启三维效果"
+
+#: ../gui/token_lib.py:397
+msgid "Enable fit"
+msgstr "有效 合适"
+
+#: ../gui/token_lib.py:401
+msgid "log x"
+msgstr "x的对数"
+
+#: ../gui/token_lib.py:403
+msgid "Invert simulated data (y)"
+msgstr "逆变模拟数据"
+
+#: ../gui/token_lib.py:407
+msgid "Active layer width"
+msgstr "活动层宽度 "
+
+#: ../gui/token_lib.py:423
+msgid "External load resistor"
+msgstr "外部负载电阻 "
+
+#: ../gui/token_lib.py:426
+msgid "Filp the opticl field"
+msgstr "翻到光场"
+
+#: ../gui/token_lib.py:429
+msgid "Turn on luminescence"
+msgstr "打开光"
+
+#: ../gui/token_lib.py:430
+#, python-brace-format
+msgid "n_{free} to p_{free} photon generation efficiency"
+msgstr "自由n{free}到自由p{free}光子产生效率"
+
+#: ../gui/token_lib.py:431
+#, python-brace-format
+msgid "n_{free} to n_{trap} photon generation efficiency"
+msgstr "n型{自由}到n型{陷阱}光子产生效率 "
+
+#: ../gui/token_lib.py:432
+#, python-brace-format
+msgid "n_{trap} to p_{free} photon generation efficiency"
+msgstr "n型{陷阱}到p型{自由}光子产生效率 "
+
+#: ../gui/token_lib.py:433
+#, python-brace-format
+msgid "p_{trap} to n_{free} photon generation efficiency"
+msgstr "p型{陷阱}到n型{自由}光子产生效率 "
+
+#: ../gui/token_lib.py:434
+#, python-brace-format
+msgid "p_{free} to p_{trap} photon generation efficiency"
+msgstr "p型{自由}到p型{陷阱}光子产生效率 "
+
+#: ../gui/jobs.py:86
+msgid "done"
+msgstr "已完成"
+
+#: ../gui/jobs.py:86
+msgid "status"
+msgstr "地位"
+
+#: ../gui/jobs.py:86
+msgid "target"
+msgstr "靶"
+
+#: ../gui/jobs.py:86
+msgid "ip"
+msgstr "ip"
+
+#: ../gui/jobs.py:86
+msgid "copy state"
+msgstr "拷贝状态"
+
+#: ../gui/plot_widget.py:170
+msgid "I don't know how to process this type of file!"
+msgstr "我不知道如何处理此类文件！"
+
+#: ../gui/plot_widget.py:176 ../libdump/dump_dynamic.c:502
+#: ../libdump/dump_dynamic.c:522 ../libdump/dump_dynamic.c:853
+#: ../libdump/dump_dynamic.c:872 ../libdump/dump_dynamic.c:891
+#: ../libdump/dump_dynamic.c:910 ../libdump/dump_dynamic.c:929
+#: ../libdump/dump_dynamic.c:948 ../libdump/dump_dynamic.c:967
+#: ../libdump/dump_dynamic.c:986 ../libdump/dump_dynamic.c:1005
+msgid "time"
+msgstr "时间"
+
+#: ../gui/plot_widget.py:568
+msgid "Refresh graph"
+msgstr "刷新图像"
+
+#: ../gui/plot_widget.py:592
+msgid "Key"
+msgstr "关键"
+
+#: ../gui/plot_widget.py:594 ../gui/plot_widget.py:601
+msgid "Color"
+msgstr "颜色"
+
+#: ../gui/plot_widget.py:595
+msgid "Black"
+msgstr "黑"
+
+#: ../gui/plot_widget.py:598
+msgid "Rainbow"
+msgstr "彩虹"
+
+#: ../gui/plot_widget.py:602
+msgid "Autoscale"
+msgstr "自动大小"
+
+#: ../gui/plot_widget.py:605
+msgid "Set log scale y"
+msgstr "设置y"
+
+#: ../gui/plot_widget.py:608 ../gui/plot_widget.py:611
+msgid "Set log scale x"
+msgstr "设置x"
+
+#: ../gui/plot_widget.py:614
+msgid "Label data"
+msgstr "标签数据"
+
+#: ../gui/plot_widget.py:619
+msgid "Subtract first point"
+msgstr "减去第一个点"
+
+#: ../gui/plot_widget.py:622
+msgid "Add min point"
+msgstr "加入最小点"
+
+#: ../gui/plot_widget.py:625
+msgid "Invert y-axis"
+msgstr "反转y轴"
+
+#: ../gui/plot_widget.py:628
+msgid "Norm to 1.0 y"
+msgstr "规范到1.0y"
+
+#: ../gui/plot_widget.py:631
+msgid "Norm to peak of all data"
+msgstr "规范到所有数据的峰值"
+
+#: ../gui/plot_widget.py:634
+msgid "Heat map"
+msgstr "热地图"
+
+#: ../gui/plot_widget.py:637
+msgid "Heat map edit"
+msgstr "热地图编辑"
+
+#: ../gui/status_icon.py:53
+msgid "Youtube channel"
+msgstr "Youtube频道"
+
+#: ../gui/status_icon.py:57
+msgid "Quit"
+msgstr "退出软件"
+
+#: ../gui/update.py:120
+msgid ""
+"This feature is sill under development.  It searches the gpvdm web page for "
+"updates then uses them to update gpvdm.  Use it at your own risk - I take no "
+"responsibility for any data loss!  Do you wish to continue?"
+msgstr ""
+"这神器还在开发当中。启动后它会搜索gpvdm网页，如果有更新的版本，会自动下载并安"
+"装。你愿意冒这个险吗——对任何数据损失本人不负任何责任 ！仍然继续？"
+
+#: ../gui/doping.py:88
+msgid "Doping (m^{-3})"
+msgstr "掺杂浓度（m^{-3}）"
+
+#: ../gui/doping.py:95
+msgid "Position (nm)"
+msgstr "位置(纳米)"
+
+#: ../gui/doping.py:119
+msgid "File Name"
+msgstr "文件名"
+
+#: ../gui/doping.py:188
+msgid "Doping profile editor"
+msgstr "掺杂信息编辑器"
+
+#: ../gui/optics.py:105
+msgid "Photon distribution"
+msgstr "光子分布"
+
+#: ../gui/optics.py:106
+msgid "Photon distribution absorbed"
+msgstr "被吸收的光子分布"
+
+#: ../gui/optics.py:107
+msgid "Reflection"
+msgstr "反射"
+
+#: ../gui/optics.py:111
+msgid "Optical simulation editor"
+msgstr "光学仿真编辑器"
+
+#: ../gui/optics.py:136 ../gui/optics.py:247
+msgid "Optical model"
+msgstr "光学模形"
+
+#: ../gui/optics.py:145
+msgid "Solar spectrum"
+msgstr "太阳能光谱"
+
+#: ../gui/optics.py:179
+msgid "Photon absorbed"
+msgstr "被吸收的光子"
+
+#: ../gui/optics.py:188
+msgid "Optical setup"
+msgstr "光学安装"
+
+#: ../gui/optics.py:232
+msgid ""
+"I can't find any optical plugins, I think the model is not installed "
+"properly."
+msgstr "我找不到任何光学插件，我琢磨着这模型没安装好吧。"
+
+#: ../gui/fit_patch.py:95
+msgid "value"
+msgstr "值"
+
+#: ../gui/gl.py:479
+msgid "active"
+msgstr "活动的 "
+
+#: ../gui/error_han.py:77 ../libfit/fit_dump.c:62 ../libfit/fit_dump.c:85
+#: ../libfit/fit_dump.c:108
+msgid "Error"
+msgstr "错误"
+
+#: ../gui/error_han.py:102
+msgid "Reporting error...."
+msgstr "报告错误..."
+
+#: ../libmemory/memory.c:251
+msgid "Solved"
+msgstr "已解决"
+
+#: ../libmemory/memory.c:251
+msgid "Equations"
+msgstr "方程组"
+
+#: ../libmemory/memory.c:260
+msgid "I can't allocate a device with less than 1 mesh point."
+msgstr "一个器件连一个网格点都没有，这我没法儿分配啊。"
+
+#: ../libmemory/memory.c:265
+msgid ""
+"You are asking me to simulate a device with more than 50000 mesh points, "
+"although I could do this I am not going to because it seems a bad idea to me."
+msgstr ""
+"你让我模拟一个有超过五万个网格点的器件，虽然我能做到但我不会干的因为对我而言"
+"这想法真蛋疼。"
+
+#: ../libdump/dump_dynamic.c:181 ../libdump/dump_dynamic.c:309
+msgid "Hole drift current"
+msgstr "空穴漂移电流"
+
+#: ../libdump/dump_dynamic.c:181
+msgid " Hole diffusion current"
+msgstr "空穴扩散电流"
+
+#: ../libdump/dump_dynamic.c:205 ../libdump/dump_dynamic.c:271
+msgid "Electron drift current"
+msgstr "电子漂移电流"
+
+#: ../libdump/dump_dynamic.c:205 ../libdump/dump_dynamic.c:290
+msgid "Electron diffusion current"
+msgstr "电子扩散电流"
+
+#: ../libdump/dump_dynamic.c:208 ../libdump/dump_dynamic.c:312
+#: ../libdump/dump_dynamic.c:331 ../libdump/dump_dynamic.c:369
+#: ../libdump/dump_1d_slice.c:546 ../libdump/dump_1d_slice.c:605
+msgid "Hole current density"
+msgstr "空穴电流密度"
+
+#: ../libdump/dump_dynamic.c:228
+msgid "Current density at contacts"
+msgstr "接触点的电流密度"
+
+#: ../libdump/dump_dynamic.c:252
+msgid "Change in charge distribution"
+msgstr "电荷分布的变化"
+
+#: ../libdump/dump_dynamic.c:255 ../libdump/dump_dynamic.c:1010
+msgid "percent"
+msgstr "百分比"
+
+#: ../libdump/dump_dynamic.c:274 ../libdump/dump_dynamic.c:293
+#: ../libdump/dump_dynamic.c:350 ../libdump/dump_1d_slice.c:516
+#: ../libdump/dump_1d_slice.c:575
+msgid "Electron current density"
+msgstr "电子电流密度"
+
+#: ../libdump/dump_dynamic.c:328
+msgid "Hole diffusion current"
+msgstr "空穴扩散电流"
+
+#: ../libdump/dump_dynamic.c:347
+msgid "Jn at contacts"
+msgstr "接触点Jn"
+
+#: ../libdump/dump_dynamic.c:366
+msgid "Jp at contacts"
+msgstr "接触点Jp"
+
+#: ../libdump/dump_dynamic.c:391
+msgid "External Current"
+msgstr "外电流"
+
+#: ../libdump/dump_dynamic.c:417
+msgid "Free carrier generation rate"
+msgstr "自由载流子生成率"
+
+#: ../libdump/dump_dynamic.c:436
+msgid "Dynamic quantum efficiency"
+msgstr "动态量子效率"
+
+#: ../libdump/dump_dynamic.c:439
+msgid "Percent"
+msgstr "百分率"
+
+#: ../libdump/dump_dynamic.c:461
+msgid "Free hole recombination"
+msgstr "自由空穴复合"
+
+#: ../libdump/dump_dynamic.c:464 ../libdump/dump_dynamic.c:484
+#: ../libdump/dump_1d_slice.c:1303 ../libdump/dump_1d_slice.c:1332
+#: ../libdump/dump_1d_slice.c:1362 ../libdump/dump_1d_slice.c:1391
+#: ../libdump/dump_1d_slice.c:1421 ../libdump/dump_1d_slice.c:1462
+#: ../libdump/dump_1d_slice.c:1575 ../libdump/dump_1d_slice.c:1605
+#: ../libdump/dump_1d_slice.c:1634 ../libdump/dump_1d_slice.c:1663
+msgid "Recombination"
+msgstr "复合"
+
+#: ../libdump/dump_dynamic.c:481
+msgid "Free electron recombination"
+msgstr "自由电子复合"
+
+#: ../libdump/dump_dynamic.c:502 ../libdump/dump_dynamic.c:505
+msgid "Free electron loss"
+msgstr "自由电子损失"
+
+#: ../libdump/dump_dynamic.c:522 ../libdump/dump_dynamic.c:525
+msgid "Free hole loss"
+msgstr "自由空穴损失"
+
+#: ../libdump/dump_dynamic.c:557
+msgid "Electron relaxation"
+msgstr "电子弛豫"
+
+#: ../libdump/dump_dynamic.c:560 ../libdump/dump_dynamic.c:579
+msgid "Relaxation"
+msgstr "弛豫"
+
+#: ../libdump/dump_dynamic.c:576
+msgid "Hole relaxation"
+msgstr "空穴弛豫"
+
+#: ../libdump/dump_dynamic.c:595
+msgid "Trapped electron density"
+msgstr "被俘获电子密度"
+
+#: ../libdump/dump_dynamic.c:614
+msgid "Trapped hole density"
+msgstr "被俘获空穴密度"
+
+#: ../libdump/dump_dynamic.c:633
+msgid "Free electron density"
+msgstr "自由电子密度"
+
+#: ../libdump/dump_dynamic.c:652
+msgid "Free hole density"
+msgstr "自由空穴密度"
+
+#: ../libdump/dump_dynamic.c:695 ../libdump/dump_dynamic.c:714
+#: ../libdump/dump_1d_slice.c:821 ../libdump/dump_1d_slice.c:859
+msgid "Mobility"
+msgstr "迁移率"
+
+#: ../libdump/dump_dynamic.c:734 ../libdump/dump_1d_slice.c:1039
+msgid "Total electron density"
+msgstr "总电子密度"
+
+#: ../libdump/dump_dynamic.c:754 ../libdump/dump_1d_slice.c:1004
+msgid "Total hole density"
+msgstr "总空穴密度"
+
+#: ../libdump/dump_dynamic.c:788
+msgid "Voltage applied to diode"
+msgstr "二极管两端电压"
+
+#: ../libdump/dump_dynamic.c:813
+msgid "PL intensity"
+msgstr "PL强度"
+
+#: ../libdump/dump_dynamic.c:816 ../libdump/dump_dynamic.c:837
+msgid "PL Intensity"
+msgstr "PL强度"
+
+#: ../libdump/dump_dynamic.c:834
+msgid "PL intensity normalized"
+msgstr "PL强度归一化"
+
+#: ../libdump/dump_dynamic.c:1005
+msgid "band bend (percent)"
+msgstr "能带弯曲（百分比）"
+
+#: ../libdump/dump_dynamic.c:1008
+msgid "band bend"
+msgstr "能带弯曲"
+
+#: ../libdump/dump_contacts.c:68
+msgid "Voltage - Current"
+msgstr "电压-电流"
+
+#: ../libdump/dump_1d_slice.c:70 ../libdump/dump_1d_slice.c:128
+msgid "Drift current density"
+msgstr "漂移电流密度"
+
+#: ../libdump/dump_1d_slice.c:72 ../libdump/dump_1d_slice.c:101
+#: ../libdump/dump_1d_slice.c:130 ../libdump/dump_1d_slice.c:159
+#: ../libdump/dump_1d_slice.c:188 ../libdump/dump_1d_slice.c:217
+#: ../libdump/dump_1d_slice.c:246 ../libdump/dump_1d_slice.c:275
+#: ../libdump/dump_1d_slice.c:304 ../libdump/dump_1d_slice.c:333
+#: ../libdump/dump_1d_slice.c:362 ../libdump/dump_1d_slice.c:391
+#: ../libdump/dump_1d_slice.c:420 ../libdump/dump_1d_slice.c:450
+#: ../libdump/dump_1d_slice.c:479 ../libdump/dump_1d_slice.c:513
+#: ../libdump/dump_1d_slice.c:543 ../libdump/dump_1d_slice.c:572
+#: ../libdump/dump_1d_slice.c:602 ../libdump/dump_1d_slice.c:631
+#: ../libdump/dump_1d_slice.c:667 ../libdump/dump_1d_slice.c:701
+#: ../libdump/dump_1d_slice.c:730 ../libdump/dump_1d_slice.c:760
+#: ../libdump/dump_1d_slice.c:789 ../libdump/dump_1d_slice.c:818
+#: ../libdump/dump_1d_slice.c:856 ../libdump/dump_1d_slice.c:890
+#: ../libdump/dump_1d_slice.c:919 ../libdump/dump_1d_slice.c:948
+#: ../libdump/dump_1d_slice.c:977 ../libdump/dump_1d_slice.c:1006
+#: ../libdump/dump_1d_slice.c:1041 ../libdump/dump_1d_slice.c:1075
+#: ../libdump/dump_1d_slice.c:1111 ../libdump/dump_1d_slice.c:1147
+#: ../libdump/dump_1d_slice.c:1189 ../libdump/dump_1d_slice.c:1226
+#: ../libdump/dump_1d_slice.c:1260 ../libdump/dump_1d_slice.c:1294
+#: ../libdump/dump_1d_slice.c:1323 ../libdump/dump_1d_slice.c:1353
+#: ../libdump/dump_1d_slice.c:1382 ../libdump/dump_1d_slice.c:1412
+#: ../libdump/dump_1d_slice.c:1453 ../libdump/dump_1d_slice.c:1494
+#: ../libdump/dump_1d_slice.c:1528 ../libdump/dump_1d_slice.c:1566
+#: ../libdump/dump_1d_slice.c:1596 ../libdump/dump_1d_slice.c:1625
+#: ../libdump/dump_1d_slice.c:1654
+msgid "x-position"
+msgstr "x轴位置"
+
+#: ../libdump/dump_1d_slice.c:73 ../libdump/dump_1d_slice.c:102
+#: ../libdump/dump_1d_slice.c:131 ../libdump/dump_1d_slice.c:160
+#: ../libdump/dump_1d_slice.c:189 ../libdump/dump_1d_slice.c:218
+#: ../libdump/dump_1d_slice.c:247 ../libdump/dump_1d_slice.c:276
+#: ../libdump/dump_1d_slice.c:305 ../libdump/dump_1d_slice.c:334
+#: ../libdump/dump_1d_slice.c:363 ../libdump/dump_1d_slice.c:392
+#: ../libdump/dump_1d_slice.c:421 ../libdump/dump_1d_slice.c:451
+#: ../libdump/dump_1d_slice.c:480 ../libdump/dump_1d_slice.c:514
+#: ../libdump/dump_1d_slice.c:544 ../libdump/dump_1d_slice.c:573
+#: ../libdump/dump_1d_slice.c:603 ../libdump/dump_1d_slice.c:632
+#: ../libdump/dump_1d_slice.c:668 ../libdump/dump_1d_slice.c:702
+#: ../libdump/dump_1d_slice.c:731 ../libdump/dump_1d_slice.c:761
+#: ../libdump/dump_1d_slice.c:790 ../libdump/dump_1d_slice.c:819
+#: ../libdump/dump_1d_slice.c:857 ../libdump/dump_1d_slice.c:891
+#: ../libdump/dump_1d_slice.c:920 ../libdump/dump_1d_slice.c:949
+#: ../libdump/dump_1d_slice.c:978 ../libdump/dump_1d_slice.c:1007
+#: ../libdump/dump_1d_slice.c:1042 ../libdump/dump_1d_slice.c:1076
+#: ../libdump/dump_1d_slice.c:1112 ../libdump/dump_1d_slice.c:1148
+#: ../libdump/dump_1d_slice.c:1190 ../libdump/dump_1d_slice.c:1227
+#: ../libdump/dump_1d_slice.c:1261 ../libdump/dump_1d_slice.c:1295
+#: ../libdump/dump_1d_slice.c:1324 ../libdump/dump_1d_slice.c:1354
+#: ../libdump/dump_1d_slice.c:1383 ../libdump/dump_1d_slice.c:1413
+#: ../libdump/dump_1d_slice.c:1454 ../libdump/dump_1d_slice.c:1495
+#: ../libdump/dump_1d_slice.c:1529 ../libdump/dump_1d_slice.c:1567
+#: ../libdump/dump_1d_slice.c:1597 ../libdump/dump_1d_slice.c:1626
+#: ../libdump/dump_1d_slice.c:1655
+msgid "y-position"
+msgstr "y轴位置"
+
+#: ../libdump/dump_1d_slice.c:74 ../libdump/dump_1d_slice.c:103
+#: ../libdump/dump_1d_slice.c:132 ../libdump/dump_1d_slice.c:161
+#: ../libdump/dump_1d_slice.c:190 ../libdump/dump_1d_slice.c:219
+#: ../libdump/dump_1d_slice.c:248 ../libdump/dump_1d_slice.c:277
+#: ../libdump/dump_1d_slice.c:306 ../libdump/dump_1d_slice.c:335
+#: ../libdump/dump_1d_slice.c:364 ../libdump/dump_1d_slice.c:393
+#: ../libdump/dump_1d_slice.c:422 ../libdump/dump_1d_slice.c:452
+#: ../libdump/dump_1d_slice.c:481 ../libdump/dump_1d_slice.c:515
+#: ../libdump/dump_1d_slice.c:545 ../libdump/dump_1d_slice.c:574
+#: ../libdump/dump_1d_slice.c:604 ../libdump/dump_1d_slice.c:633
+#: ../libdump/dump_1d_slice.c:669 ../libdump/dump_1d_slice.c:703
+#: ../libdump/dump_1d_slice.c:732 ../libdump/dump_1d_slice.c:762
+#: ../libdump/dump_1d_slice.c:791 ../libdump/dump_1d_slice.c:820
+#: ../libdump/dump_1d_slice.c:858 ../libdump/dump_1d_slice.c:892
+#: ../libdump/dump_1d_slice.c:921 ../libdump/dump_1d_slice.c:950
+#: ../libdump/dump_1d_slice.c:979 ../libdump/dump_1d_slice.c:1008
+#: ../libdump/dump_1d_slice.c:1043 ../libdump/dump_1d_slice.c:1077
+#: ../libdump/dump_1d_slice.c:1113 ../libdump/dump_1d_slice.c:1149
+#: ../libdump/dump_1d_slice.c:1191 ../libdump/dump_1d_slice.c:1228
+#: ../libdump/dump_1d_slice.c:1262 ../libdump/dump_1d_slice.c:1296
+#: ../libdump/dump_1d_slice.c:1325 ../libdump/dump_1d_slice.c:1355
+#: ../libdump/dump_1d_slice.c:1384 ../libdump/dump_1d_slice.c:1414
+#: ../libdump/dump_1d_slice.c:1455 ../libdump/dump_1d_slice.c:1496
+#: ../libdump/dump_1d_slice.c:1530 ../libdump/dump_1d_slice.c:1568
+#: ../libdump/dump_1d_slice.c:1598 ../libdump/dump_1d_slice.c:1627
+#: ../libdump/dump_1d_slice.c:1656
+msgid "z-position"
+msgstr "z轴位置"
+
+#: ../libdump/dump_1d_slice.c:75
+msgid "Electron current density (drift)"
+msgstr "电子电流密度（漂移）"
+
+#: ../libdump/dump_1d_slice.c:99 ../libdump/dump_1d_slice.c:157
+msgid "Diffusion current density"
+msgstr "扩散电流密度"
+
+#: ../libdump/dump_1d_slice.c:104
+msgid "Electron current density (diffusion)"
+msgstr "电子电流密度（扩散）"
+
+#: ../libdump/dump_1d_slice.c:133
+msgid "Hole current density (drift)"
+msgstr "空穴电流密度（漂移）"
+
+#: ../libdump/dump_1d_slice.c:162
+msgid "Hole current density (diffusion)"
+msgstr "空穴电流密度（扩散）"
+
+#: ../libdump/dump_1d_slice.c:191 ../libdump/dump_1d_slice.c:220
+#: ../libdump/dump_1d_slice.c:365 ../libdump/dump_1d_slice.c:394
+#: ../libdump/dump_1d_slice.c:423
+msgid "Electron Energy"
+msgstr "电子能量"
+
+#: ../libdump/dump_1d_slice.c:197 ../libdump/dump_1d_slice.c:226
+#: ../libdump/dump_1d_slice.c:371 ../libdump/dump_1d_slice.c:400
+#: ../libdump/dump_1d_slice.c:429 ../libdump/dump_1d_slice.c:459
+#: ../libdump/dump_1d_slice.c:488 ../libdump/dump_1d_slice.c:710
+#: ../libdump/dump_1d_slice.c:1537
+msgid "Band structure"
+msgstr "能带结构"
+
+#: ../libdump/dump_1d_slice.c:244
+msgid "Lattice temperature"
+msgstr "晶格温度"
+
+#: ../libdump/dump_1d_slice.c:249 ../libdump/dump_1d_slice.c:278
+#: ../libdump/dump_1d_slice.c:307
+msgid "Temperature"
+msgstr "温度"
+
+#: ../libdump/dump_1d_slice.c:273
+msgid "Electron temperature"
+msgstr "电子密度"
+
+#: ../libdump/dump_1d_slice.c:302
+msgid "Hole temperature"
+msgstr "空穴温度"
+
+#: ../libdump/dump_1d_slice.c:336
+msgid "Doping density"
+msgstr "掺杂浓度"
+
+#: ../libdump/dump_1d_slice.c:360
+msgid "Band gap"
+msgstr "带隙"
+
+#: ../libdump/dump_1d_slice.c:389
+msgid "Electron quasi Fermi-level"
+msgstr "电子准费米能级"
+
+#: ../libdump/dump_1d_slice.c:418
+msgid "Hole quasi Fermi-level"
+msgstr "空穴准费米能级"
+
+#: ../libdump/dump_1d_slice.c:487
+msgid "Change in 1D position space output"
+msgstr "一维位置空间输出变化"
+
+#: ../libdump/dump_1d_slice.c:570 ../libdump/dump_1d_slice.c:600
+msgid "Electron current density x"
+msgstr "电子电流密度 x"
+
+#: ../libdump/dump_1d_slice.c:629 ../libdump/dump_1d_slice.c:634
+#: ../libdump/dump_1d_slice.c:665 ../libdump/dump_1d_slice.c:670
+msgid "Total current density (Jn+Jp)"
+msgstr "总电流密度 (Jn+Jp)"
+
+#: ../libdump/dump_1d_slice.c:699
+msgid "Equlibrium Fermi-level"
+msgstr "平衡费米能级"
+
+#: ../libdump/dump_1d_slice.c:739 ../libdump/dump_1d_slice.c:769
+#: ../libdump/dump_1d_slice.c:798 ../libdump/dump_1d_slice.c:827
+#: ../libdump/dump_1d_slice.c:865 ../libdump/dump_1d_slice.c:899
+#: ../libdump/dump_1d_slice.c:928
+msgid "Material parameters"
+msgstr "材料参数"
+
+#: ../libdump/dump_1d_slice.c:816 ../libdump/dump_1d_slice.c:854
+msgid "Average electron mobility"
+msgstr "平均电子迁移"
+
+#: ../libdump/dump_1d_slice.c:888
+msgid "Free electron carrier density"
+msgstr "自由电子载流子密度"
+
+#: ../libdump/dump_1d_slice.c:893 ../libdump/dump_1d_slice.c:922
+#: ../libdump/dump_1d_slice.c:951 ../libdump/dump_1d_slice.c:980
+#: ../libdump/dump_1d_slice.c:1009 ../libdump/dump_1d_slice.c:1044
+#: ../libdump/dump_1d_slice.c:1078 ../libdump/dump_1d_slice.c:1114
+#: ../libdump/dump_1d_slice.c:1150 ../libdump/dump_1d_slice.c:1192
+msgid "Carrier density"
+msgstr "载流子密度"
+
+#: ../libdump/dump_1d_slice.c:917
+msgid "Free hole carrier density"
+msgstr "自由空穴载流子密度"
+
+#: ../libdump/dump_1d_slice.c:946
+msgid "Trapped electron carrier density"
+msgstr "被俘获电子载流子密度"
+
+#: ../libdump/dump_1d_slice.c:975
+msgid "Trapped hole carrier density"
+msgstr "被俘获空穴载流子密度"
+
+#: ../libdump/dump_1d_slice.c:1073
+msgid "Change in electron population"
+msgstr "电子数量的改变"
+
+#: ../libdump/dump_1d_slice.c:1084
+msgid "Chaerge density"
+msgstr "电荷密度"
+
+#: ../libdump/dump_1d_slice.c:1109
+msgid "Total charge"
+msgstr "总电荷数"
+
+#: ../libdump/dump_1d_slice.c:1145
+msgid "Change in total charge"
+msgstr "总电荷数的改变"
+
+#: ../libdump/dump_1d_slice.c:1187
+msgid "Change in hole population"
+msgstr "空穴数的改变"
+
+#: ../libdump/dump_1d_slice.c:1224
+msgid "Excess electron density"
+msgstr "过剩电子密度"
+
+#: ../libdump/dump_1d_slice.c:1258
+msgid "Excess hole density"
+msgstr "过剩空穴密度"
+
+#: ../libdump/dump_1d_slice.c:1292
+msgid "Free electron generation rate"
+msgstr "自由电子产生率"
+
+#: ../libdump/dump_1d_slice.c:1321
+msgid "Free hole generation rate"
+msgstr "自由空穴产生率"
+
+#: ../libdump/dump_1d_slice.c:1351
+msgid "Electron recombination rate"
+msgstr "电子复合率"
+
+#: ../libdump/dump_1d_slice.c:1356 ../libdump/dump_1d_slice.c:1385
+msgid "Recombination rate"
+msgstr "复合率"
+
+#: ../libdump/dump_1d_slice.c:1380
+msgid "Hole recombination rate"
+msgstr "空穴复合率"
+
+#: ../libdump/dump_1d_slice.c:1410 ../libdump/dump_1d_slice.c:1451
+msgid "Trap fermi level"
+msgstr "陷阱费米能级"
+
+#: ../libdump/dump_1d_slice.c:1415 ../libdump/dump_1d_slice.c:1456
+msgid "Electron Fermi level"
+msgstr "电子费米能级"
+
+#: ../libdump/dump_1d_slice.c:1492 ../libdump/dump_1d_slice.c:1526
+msgid "Material number"
+msgstr "物质编号"
+
+#: ../libdump/dump_1d_slice.c:1497 ../libdump/dump_1d_slice.c:1531
+msgid "Number"
+msgstr "号码"
+
+#: ../libdump/dump_1d_slice.c:1503
+msgid "Model"
+msgstr "模型"
+
+#: ../libdump/dump_1d_slice.c:1564
+msgid "Free hole to trapped electron"
+msgstr "自由空穴到被俘获电子"
+
+#: ../libdump/dump_1d_slice.c:1569 ../libdump/dump_1d_slice.c:1599
+#: ../libdump/dump_1d_slice.c:1628 ../libdump/dump_1d_slice.c:1657
+msgid "Rate"
+msgstr "比率"
+
+#: ../libdump/dump_1d_slice.c:1594
+msgid "Free electron to trapped hole"
+msgstr "自由点电子到被俘获空穴"
+
+#: ../libdump/dump_1d_slice.c:1623
+msgid "Hole relaxation rate"
+msgstr "空穴弛豫率"
+
+#: ../libdump/dump_1d_slice.c:1652
+msgid "Electron relaxation rate"
+msgstr "电子弛豫率"
+
+#: ../libfit/fit_dump.c:61 ../libfit/fit_dump.c:84
+msgid "Step"
+msgstr "步"
+
+#: ../libfit/fit_dump.c:63 ../libfit/fit_dump.c:64 ../libfit/fit_dump.c:181
+msgid "au"
+msgstr "任意单位"
+
+#: ../libfit/fit_dump.c:65 ../libfit/fit_dump.c:66 ../libfit/fit_dump.c:88
+#: ../libfit/fit_dump.c:89 ../libfit/fit_dump.c:111 ../libfit/fit_dump.c:112
+#: ../libfit/fit_dump.c:134 ../libfit/fit_dump.c:135 ../libfit/fit_dump.c:158
+#: ../libfit/fit_dump.c:159 ../libfit/fit_dump.c:182 ../libfit/fit_dump.c:183
+msgid "Fitting"
+msgstr "设备"
+
+#: ../libfit/fit_dump.c:131 ../libfit/fit_dump.c:155
+msgid "Speed"
+msgstr "速率"
+
+#: ../libfit/fit_dump.c:133 ../libfit/fit_dump.c:157
+msgid "odes/s"
+msgstr "odes/s"
+
+#: ../libfit/fit_dump.c:179
+msgid "Reset flag"
+msgstr "重设标志"
+
+#~ msgid "LANG TEST.\n"
+#~ msgstr "TRANSLATED to zh_CN\n"
+
+#~ msgid "It's dark I know what the answer is\n"
+#~ msgstr "黑暗条件，但结果可得\n"
+
+#~ msgid "Make a new simulation"
+#~ msgstr "建立新的仿真"
+
+#~ msgid "I have shut down the server."
+#~ msgstr "已将服务器关闭。"
+
+#~ msgid "Light free memory\n"
+#~ msgstr "Light free memory\n"
+
+#~ msgid "Optical simulation"
+#~ msgstr "光学仿真"
+
+#~ msgid "Look at the materials database"
+#~ msgstr "查看材料数据库"
+
+#~ msgid "Calculate the cost of the solar cell"
+#~ msgstr "计算太阳能电池成本"
+
+#~ msgid "Set how much data is dumped from a simulation"
+#~ msgstr "设置从仿真中转储的数据量"
+
+#~ msgid ""
+#~ "To make a new simulation click <i><u>N</u>ew Simulation</i> in the "
+#~ "<i><u>F</u>ile</i> menu<br> or to open an existing simulation select "
+#~ "<i><u>O</u>pen simulation</i>. "
+#~ msgstr ""
+#~ "要进行新的仿真请点击 <i><u>N</u>新建仿真</i> 在 <i><u>F</u>ile</i> 菜单"
+#~ "<br> 或打开现有的仿真。选择 <i><u>O</u>打开仿真</i>. "
+
+#~ msgid "Import an old gpvdm simulation"
+#~ msgstr "导入旧的gpvdm仿真"
+
+#~ msgid "New optical material"
+#~ msgstr "新建光学材料"
+
+#~ msgid "Export data"
+#~ msgstr "导出数据"
+
+#~ msgid "Import from library"
+#~ msgstr "从库中导入"
+
+#~ msgid "Simulation"
+#~ msgstr "仿真"
+
+#~ msgid "Edit the electrical mesh"
+#~ msgstr "编辑电气网格"
+
+#~ msgid ""
+#~ "Run\n"
+#~ "simulation"
+#~ msgstr "运行仿真"
+
+#~ msgid "Run a fit command"
+#~ msgstr "运行fit命令"
+
+#~ msgid "Quantum efficiency"
+#~ msgstr "量子效率"
+
+#~ msgid "Optics"
+#~ msgstr "光学"
+
+#~ msgid "Lasers editor"
+#~ msgstr "激光编辑器"
+
+#~ msgid "xy plot"
+#~ msgstr "xy 绘图"
+
+#~ msgid "Refresh"
+#~ msgstr "重新更新"

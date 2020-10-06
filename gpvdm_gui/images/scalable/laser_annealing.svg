@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="48"
+   height="48"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   sodipodi:docname="laser_annealing.svg">
+  <defs
+     id="defs4">
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter1123"
+       x="-0.16253494"
+       width="1.3250699"
+       y="-0.21413333"
+       height="1.4282667">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="1.106235"
+         id="feGaussianBlur1125" />
+    </filter>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="7.1859002"
+     inkscape:cx="13.062647"
+     inkscape:cy="5.3818076"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="953"
+     inkscape:window-x="0"
+     inkscape:window-y="49"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Roderick C.I. MacKenzie</dc:title>
+          </cc:Agent>
+        </dc:creator>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-1004.3622)">
+    <path
+       style="fill:#a99b98;fill-opacity:1;stroke:#000000;stroke-width:0.23377012px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 0.6712327,1034.4281 20.0759433,-20.2709 26.410585,14.7159 -19.198838,19.881 z"
+       id="path2996"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:#b3b3b3;fill-opacity:1;stroke:#000000;stroke-width:0.23377012px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 0.70332934,1034.3659 -0.0172289,0.6892 27.35799456,14.2992 -0.08614,-0.7236 z"
+       id="path3865"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc" />
+    <path
+       style="fill:#cccccc;stroke:#000000;stroke-width:0.23377012px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 28.095779,1049.3543 19.054122,-19.8811 -0.03446,-0.5858 -19.157489,19.8122 z"
+       id="path3867"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc" />
+    <rect
+       style="opacity:0.70499998;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:0.2;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect838"
+       width="4.8706493"
+       height="29.780542"
+       x="24.770729"
+       y="1004.4908" />
+    <path
+       style="opacity:0.60700001;fill:none;fill-rule:evenodd;stroke:#ff0000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 24.962076,1033.8452 c 1.62355,0.9741 2.777429,0.9741 4.400979,0"
+       id="path840"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <ellipse
+       style="opacity:0.439;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:0.2;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;filter:url(#filter1123)"
+       id="path889"
+       cx="27.257347"
+       cy="1033.5674"
+       rx="8.1673641"
+       ry="6.1993246" />
+  </g>
+</svg>

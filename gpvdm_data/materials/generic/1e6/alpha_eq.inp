@@ -1,0 +1,13 @@
+#points
+400
+#equations
+1
+#start0
+100e-9
+#stop0
+1000e-9
+#equation0
+1e6
+#ver
+1.0
+#end

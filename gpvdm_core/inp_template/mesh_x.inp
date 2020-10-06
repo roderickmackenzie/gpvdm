@@ -1,0 +1,15 @@
+#remesh_enable
+True
+#mesh_layers
+1
+#mesh_layer_length0
+0.0024495
+#mesh_layer_points0
+1.0
+#mesh_layer_mul0
+1.0
+#mesh_layer_left_right0
+left
+#ver
+1.0
+#end
