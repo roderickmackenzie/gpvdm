@@ -47,6 +47,7 @@ from css import css_apply
 from inp import inp
 
 from cal_path import get_sim_path
+from gpvdm_json import gpvdm_data
 
 class interface_editor(QWidget,tab_base):
 
@@ -94,15 +95,16 @@ class interface_editor(QWidget,tab_base):
 
 	def update(self):
 		self.notebook.clear()
-
-		epi=get_epi()
+		data=gpvdm_data()
+		
+		epi=data.epi
 		for i in range(0,len(epi.layers)-1):
 			l0=epi.layers[i]
 			l1=epi.layers[i+1]
-			if l0.interface_file!="none":
-				name=l0.name+"/"+l1.name
-				widget=tab_class(l0.interface_file+".inp")
-				self.notebook.addTab(widget,name)
+
+			name=l0.shape_name+"/"+l1.shape_name
+			widget=tab_class(l0.layer_interface)
+			self.notebook.addTab(widget,name)
 
 
 	def help(self):

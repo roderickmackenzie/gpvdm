@@ -22,348 +22,119 @@
 # 
 
 ## @package mesh
-#  The underlying mesh class.
+#  Extra mesh function on top of json object
 #
 
 
-#import sys
 import os
-#import shutil
-from inp import inp_save
-
-from cal_path import get_sim_path
-from str2bool import str2bool
-from inp import inp
-
-from newton_solver import newton_solver_get_type
-
-class mlayer():
-	def __init__(self):
-		self.thick=0.0
-		self.points=0
-		self.mul=1.0
-		self.mesh=[]
-		self.left_right="left"
-		self.start=0.0
-		self.end=0.0
+from json_mesh import json_mesh_segment
+from epitaxy import get_epi
+from gpvdm_json import gpvdm_data
 
 class mesh_zxy:
-	def __init__(self,direction):
-		self.direction=direction
-		self.layers=[]
-		self.remesh=False
+	def __init__(self,data,xyz):
+		self.xyz=xyz
+		self.data=data
 		self.points=[]
-		self.circuit_model=False
 		self.tot_points=0
-		self.epi=None
 
 	def calculate_points(self):
 		total_pos=0.0
 		out_x=[]
 		out_y=[]
-
+		epi=get_epi()
 		self.tot_points=0
 		pos=0.0
-		if self.circuit_model==True:
-			for i in range(0,len(self.epi.layers)):
-				l=self.epi.layers[i]
-				out_x.append(pos)
-				out_y.append(1.0)
-				pos=pos+l.dy/2
-				out_x.append(pos)
-				out_y.append(1.0)
-				pos=pos+l.dy/2
+		if self.xyz=="y" and gpvdm_data().electrical_solver.solver_type=="circuit":
+				for l in epi.layers:
+					if l.layer_type=="active" or l.layer_type=="contact":
+						out_x.append(pos)
+						out_y.append(1.0)
+						pos=pos+l.dy/2
+						out_x.append(pos)
+						out_y.append(1.0)
+						pos=pos+l.dy/2
 
-			out_x.append(pos)
-			out_y.append(1.0)
+				out_x.append(pos)
+				out_y.append(1.0)
 
 		else:
-			for i in range(0,len(self.layers)):
-				l=self.layers[i]
-
-				layer_length=l.thick
-				layer_points=l.points
-				layer_mul=l.mul
-				layer_left_right=l.left_right
-
-				if layer_points!=0:
-					dx=layer_length/layer_points
-					pos=0.0
-					ii=0
+			for l in self.data.segments:
+				pos=0.0
+				if l.points!=0:
+					dx=l.len/l.points
 					temp_x=[]
 					temp_mag=[]
-					while(pos<layer_length):
+					while(pos<l.len):
 						pos=pos+dx/2
 						temp_x.append(pos)
 						temp_mag.append(1.0)
 						pos=pos+dx/2
 
-						#pos=pos+dx*pow(layer_mul,ii)
-
-						ii=ii+1
-						dx=dx*layer_mul
+						dx=dx*l.mul
 						self.tot_points=self.tot_points+1
 						if dx==0 or self.tot_points>2000:
 							break
 
 					l.mesh=[]
 					for i in range(0,len(temp_x)):
-						if layer_left_right=="left":
+						if l.left_right=="left":
 							l.mesh.append((temp_x[i]+total_pos))
 						else:
-							l.mesh.append((layer_length-temp_x[i]+total_pos))
+							l.mesh.append((l.len-temp_x[i]+total_pos))
 
 
 						out_y.append(temp_mag[i])
 
 					l.mesh.sort()
 
-				total_pos=total_pos+layer_length
+				total_pos=total_pos+l.len
 
 			out_x=[]	
-			for l in self.layers:
+			for l in self.data.segments:
 				out_x.extend(l.mesh)
-
-			#out_x.sort()
 
 		self.points=out_x
 		return out_x,out_y
 
-	def mesh_cal_epi_layers(self,epi):
-		ret=[]
-		device_start=epi.get_device_start()
-		layer=epi.get_next_dos_layer(-1)
-		for p in self.points:
-			if p+device_start>epi.layers[layer].end:
-				layer=layer+1
-
-			ret.append(layer)
-
-		return ret
-
-	def check_curcuit_sim(self,epi):
-		newton_solver=newton_solver_get_type()
-
-		if newton_solver=="newton_simple" and self.direction=="y":
-			for l in epi.layers:
-				self.add_layer(l.dy,1,1.0,"left")
-			self.circuit_model=True
-			return True
-
-		return False
-
-	def load(self,epi):
-		self.epi=epi
-		self.file=inp()
-		file_name=os.path.join(get_sim_path(),"mesh_"+self.direction+".inp")
-
-		self.clear()
-
-		if self.check_curcuit_sim(epi)==True:
-			self.update()
-			return True
-
-		if self.file.load(file_name)!=False:
-
-			remesh=str2bool(self.file.get_next_val())
-
-			self.remesh=remesh
-
-			mesh_layers=int(self.file.get_next_val())
-
-			for i in range(0, mesh_layers):
-				#thick
-				thick=float(self.file.get_next_val())	#length
-
-				points=float(self.file.get_next_val()) 	#points
-			
-				mul=float(self.file.get_next_val()) 		#mul
-
-				left_right=self.file.get_next_val() 		#left_right
-
-				self.add_layer(thick,points,mul,left_right)
-
-		self.update()
-		return True
-
-	def clear(self):
-		self.remesh=True
-		self.layers=[]
-
-
-	def add_layer(self,thick,points,mul,left_right):
-		if len(self.layers)==0:
-			start=0.0
-			end=thick
-		else:
-			start=self.layers[-1].end
-			end=self.layers[-1].end+thick
-
-		a=mlayer()
-		a.thick=thick
-		a.points=points
-		a.mul=mul
-		a.left_right=left_right
-		a.start=start
-		a.end=end
-		self.layers.append(a)
-
-	def update(self):
-		self.calculate_points()
-
-	def save(self):
-		file_name=os.path.join(get_sim_path(),"mesh_"+self.direction+".inp")
-		lines=[]
-		lines.append("#remesh_enable")
-		lines.append(str(self.remesh))	
-		lines.append("#mesh_layers")
-		lines.append(str(len(self.layers)))
-		i=0
-		for item in self.layers:
-			lines.append("#mesh_layer_length"+str(i))
-			lines.append(str(item.thick))
-			lines.append("#mesh_layer_points"+str(i))
-			lines.append(str(item.points))
-			lines.append("#mesh_layer_mul"+str(i))
-			lines.append(str(item.mul))
-			lines.append("#mesh_layer_left_right"+str(i))
-			lines.append(str(item.left_right))
-			i=i+1
-		lines.append("#ver")
-		lines.append("1.0")
-		lines.append("#end")
-		inp_save(file_name,lines,id="mesh")
-
 	def do_remesh(self,to_size):
-		if len(self.layers)!=1:
-			return
+		if len(self.data.segments)!=1:
+			return False
 
-		if self.layers[0].thick!=to_size:
-			print("changing ",self.layers[0].thick,to_size)
+		if self.data.segments[0].len!=to_size:
+			print("changing ",self.data.segments[0].len,to_size)
 
-			self.layers[0].thick=to_size
-			self.save()
+			self.data.segments[0].len=to_size
 
+			return True
 
+	def get_len(self):
+		tot=0.0
+		for l in self.data.segments:
+			tot=tot+l.len
+
+		return tot
+
+	def get_points(self):
+		tot=0.0
+		for l in self.data.segments:
+			tot=tot+l.points
+
+		return tot
+
+	def set_len(self,value):
+		if len(self.data.segments)==1:
+			self.data.segments[0].len=value
+			return True
+		else:
+			return False
 
 class mesh:
 	def __init__(self):
-		self.x=mesh_zxy("x")
-		self.y=mesh_zxy("y")
-		self.z=mesh_zxy("z")
-
-	def save(self):
-		self.x.save()
-		self.y.save()
-		self.z.save()
+		self.x=mesh_zxy(gpvdm_data().mesh.mesh_x,"x")
+		self.y=mesh_zxy(gpvdm_data().mesh.mesh_y,"y")
+		self.z=mesh_zxy(gpvdm_data().mesh.mesh_z,"z")
 	
-
-	def load(self,epi):
-		self.epi=epi
-		ret=True
-		r=self.x.load(epi)
-		ret=ret and r
-		r=self.y.load(epi)
-		ret=ret and r
-		r=self.z.load(epi)
-		ret=ret and r
-		return ret
-	
-	def set_xlen(self,value):
-		if len(self.x.layers)==1:
-			self.x.layers[0].thick=value
-			return True
-		else:
-			return False
-
-	def set_zlen(self,value):
-		if len(self.z.layers)==1:
-			self.z.layers[0].thick=value
-			return True
-		else:
-			return False
-
-
-	def get_xlen(self):
-		tot=0.0
-		for a in self.x.layers:
-			tot=tot+a.thick
-		return tot
-
-	def get_ylen(self):
-		tot=0.0
-		for a in self.y.layers:
-			tot=tot+a.thick
-		return tot
-
-	def get_zlen(self):
-		tot=0.0
-		for a in self.z.layers:
-			tot=tot+a.thick
-		return tot
-
-	def get_xpoints(self):
-		tot=0.0
-		for a in self.x.layers:
-			tot=tot+a.points
-		return tot
-
-	def get_ypoints(self):
-		tot=0.0
-		for a in self.y.layers:
-			tot=tot+a.points
-		return tot
-
-	def get_zpoints(self):
-		tot=0.0
-		for a in self.z.layers:
-			tot=tot+a.points
-		return tot
-
-	def get_xlayers(self):
-		return len(self.x.layers)
-
-	def get_ylayers(self):
-		return len(self.y.layers)
-
-	def get_zlayers(self):
-		return len(self.z.layers)
-		
-	def clear(self):
-		self.x.clear()
-		self.y.clear()
-		self.z.clear()
-
-	def build_device_shadow(self):
-		y,temp=self.y.calculate_points()
-		x,temp=self.x.calculate_points()
-		z,temp=self.z.calculate_points()
-		ret=[]
-		build_x=[]
-		build_y=[]
-
-		#print(self.epi.device_mask(x[0],y[14],z[0]))
-		#import sys
-		#sys.exit(0)
-		for zi in range(0,len(z)):
-			build_x=[]
-			for xi in range(0,len(x)):
-				build_y=[]
-				for yi in range(0,len(y)):
-					#print(self.x.tot_points,self.z.tot_points)
-					if self.x.tot_points==1 and self.z.tot_points==1:
-						val=True
-					else:
-						val=self.epi.device_mask(x[xi],y[yi],z[zi])
-					build_y.append(val)
-					#if xi==0:
-						
-				build_x.append(build_y)
-				#sys.exit(0)
-			ret.append(build_x)
-		#print(ret)
-		return ret
-
 
 mesh_data=mesh()
 def get_mesh():

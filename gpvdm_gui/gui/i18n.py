@@ -29,35 +29,18 @@ import os
 import locale
 import gettext
 from cal_path import get_lang_path
-from inp import inp_get_token_value
-from cal_path import get_inp_file_path
-from cal_path import get_user_settings_dir
-from inp import inp_save
-locale_path = get_lang_path()
+from gpvdm_local import gpvdm_local
 
-def write_lang_config_file():
-	lines=[]
-	lines.append("#lang")
-	lines.append("auto")
-	lines.append("#ver")
-	lines.append("1.0")
-	lines.append("#end")
-	inp_save(os.path.join(get_user_settings_dir(),"lang.inp"),lines)
+a=gpvdm_local()
 
-config_path =os.path.join(get_user_settings_dir(),"lang.inp")
-file_lang=inp_get_token_value(config_path, "#lang",archive="base.gpvdm")
-if file_lang==None:
-	file_lang="auto"
-	write_lang_config_file()
-
-if file_lang=="auto":
+if a.international.lang=="auto":
 	current_locale, encoding = locale.getdefaultlocale()
 	if current_locale==None:
 		print("No local language set assuming en_US")	
 		current_locale="en_US"
 else:
-	current_locale=file_lang
-language = gettext.translation ('gpvdm', locale_path, [current_locale] , fallback=True)
+	current_locale=a.international.lang
+language = gettext.translation ('gpvdm', get_lang_path(), [current_locale] , fallback=True)
 language.install()
 
 
@@ -76,7 +59,6 @@ def get_languages():
 	langs=[]
 	langs.append("en_US")
 	path=get_lang_path()
-	print(">>>>>>>>>>>>>>>>",get_lang_path())	
 	if os.path.isdir(path)==False:
 		return False
 

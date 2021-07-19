@@ -72,18 +72,19 @@ from triangle_io import triangles_flip_in_box
 from shape import shape
 from inp import inp_get_token_value
 from cal_path import get_sim_path
+from gpvdm_json import gpvdm_data
 
 class gl_draw_light_profile():
 
 	def draw_light_profile(self):
 
 		self.gl_objects_remove_regex("light_profile")
-		name=inp_get_token_value(os.path.join(get_sim_path(),"light.inp"), "#light_profile")
-		if name!="box":
+		data=gpvdm_data()
+		if data.light.light_profile!="box":
 			epi=get_epi()
 
 			s=shape()
-			s.type=name
+			s.type=data.light.light_profile
 			s.load_triangles()
 			s.triangles.data=triangles_remove_below(s.triangles.data,0.1)
 
@@ -105,9 +106,9 @@ class gl_draw_light_profile():
 			a.alpha=1.0
 
 			my_vec=vec()
-			my_vec.x=get_mesh().get_xlen()
+			my_vec.x=get_mesh().z.get_len()
 			my_vec.y=epi.ylen()*1.0
-			my_vec.z=get_mesh().get_zlen()
+			my_vec.z=get_mesh().z.get_len()
 
 			t=triangles_mul_vec(s.triangles.data,my_vec)
 

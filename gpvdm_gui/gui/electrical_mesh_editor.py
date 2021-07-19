@@ -21,20 +21,25 @@
 #
 # 
 
-## @package electrical_mesh_editor
-#  Window to edit the electrical mesh.
+## @package emesh
+#  The main window to edit the electrical mesh, can select between a 1D, 2D and 3D mesh.
 #
 
 import os
-from code_ctrl import enable_betafeatures
+from cal_path import get_exe_command
+from numpy import *
+from matplotlib.figure import Figure
 from icon_lib import icon_get
+import webbrowser
 
 #qt
 from PyQt5.QtWidgets import QMainWindow, QTextEdit, QAction, QApplication
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import QSize, Qt 
-from PyQt5.QtWidgets import QWidget,QSizePolicy,QHBoxLayout,QPushButton,QDialog,QFileDialog,QToolBar, QMessageBox, QVBoxLayout, QGroupBox, QTableWidget,QAbstractItemView, QTableWidgetItem
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtWidgets import QWidget,QSizePolicy,QHBoxLayout,QPushButton,QDialog,QFileDialog,QToolBar,QMessageBox,QVBoxLayout
+
+#windows
+from mesh import get_mesh
 
 #matplotlib
 import matplotlib
@@ -42,221 +47,161 @@ matplotlib.use('Qt5Agg')
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
-import matplotlib.cm as cm
-from matplotlib import rcParams
 
-from mesh import get_mesh
+from global_objects import global_object_run
+from QWidgetSavePos import QWidgetSavePos
 
-import numpy as np
+from global_objects import global_object_register
+from electrical_mesh_editor_tab import electrical_mesh_editor_tab
+from config_window import class_config_window
+from tab_view import tab_view
 
-from util import distance_with_units
+from gpvdm_json import gpvdm_data
 
-from leftright import leftright
-from str2bool import str2bool
+class electrical_mesh_editor(QWidgetSavePos):
 
-from file_watch import get_watch
-
-from cal_path import get_sim_path
-
-from gpvdm_tab import gpvdm_tab
-
-class electrical_mesh_editor(QGroupBox):
-
-	changed = pyqtSignal()
-
-	def insert_row(self,pos,thick,points,mul,left_right):
-
-		item=QTableWidgetItem(str(thick))
-		self.tab.setItem(pos,0,item)
-
-		item=QTableWidgetItem(str(points))
-		self.tab.setItem(pos,1,item)
-
-		item=QTableWidgetItem(str(mul))
-		self.tab.setItem(pos,2,item)
-
-		self.item = leftright()
-		self.item.set_value(str2bool(left_right))
-		self.item.changed.connect(self.tab_changed)
-		self.tab.setCellWidget(pos,3,self.item)
-	
-	def on_add_mesh_clicked(self):
-		self.tab.blockSignals(True)
-		index = self.tab.selectionModel().selectedRows()
-
-		if len(index)>0:
-			pos=index[0].row()+1
-		else:
-			pos = self.tab.rowCount()
-
-		self.tab.insertRow(pos)
-		self.insert_row(pos,100e-9,20,1.1,"left")
-
-		self.save()
-
-		self.tab.blockSignals(False)
-		self.changed.emit()
-
-	def save_and_emit(self):
-		self.save()
-		self.changed.emit()
-
-	def save(self):
-		self.mesh.clear()
-
-		for i in range(0,self.tab.rowCount()):
-			self.mesh.add_layer(float(self.tab.item(i, 0).text()),float(self.tab.item(i, 1).text()),float(self.tab.item(i, 2).text()),self.tab.get_value(i, 3))
-		
-		self.mesh.save()
-
-
-	def redraw(self):
-		self.ax1.clear()
-		self.x=[]
-		self.mag=[]
-		pos=0
-		ii=0
-		tot=0.0
-		for i in range(0,self.tab.rowCount()):
-			tot=tot+float(self.tab.item(i, 0).text())
-			
-		mul,unit=distance_with_units(tot)
-		x_ret,self.mag=self.mesh.calculate_points()
-
-		self.x=[]
-		for i in range(0,len(x_ret)):
-			self.x.append(x_ret[i]*mul)
-			#print(x_ret[i])
-		c = np.linspace(0, 10, len(self.x))
-		
-		self.ax1.set_ylabel(_("Magnitude"))
-		cmap = cm.jet
-		self.ax1.clear()
-		self.ax1.scatter(self.x,self.mag ,c=c, cmap=cmap)
-		self.fig.canvas.draw()
-		self.ax1.set_xlabel(_("Thickness")+" ("+unit+")")
-		self.ax1.get_yaxis().set_visible(False)
-		self.ax1.spines['top'].set_visible(False)
-		self.ax1.spines['right'].set_visible(False)
-		#self.ax1.spines['bottom'].set_visible(False)
-		self.ax1.spines['left'].set_visible(False)
-		self.ax1.set_xlim(xmin=0.0)
+	def save_image(self,file_name):
+		self.fig.savefig(file_name)
 
 	def update(self):
-		self.load()
+		self.emesh_editor_x.update()
+		self.emesh_editor_y.update()
+		self.emesh_editor_z.update()
+		self.update_dim()
 
-	def disable_dim(self):
-		self.tab.setItem(0,1,QTableWidgetItem("1"))
-		self.redraw()
-		self.save()
+	def callback_help(self, widget, data=None):
+		webbrowser.open('https://www.gpvdm.com/man/index.html')
 
-	def enable_dim(self):
-
-		if int(self.tab.rowCount())==1:
-			self.tab.setItem(0,1,QTableWidgetItem("10"))
-			self.redraw()
-			self.save()
-
-
-	def load(self):
-		self.tab.blockSignals(True)
-		self.tab.clear()
-		self.tab.setHorizontalHeaderLabels([_("Thicknes"), _("Mesh points"), _("Step multiply"), _("Left/Right")])
-		lines=[]
-		pos=0
-
-
-		mesh_layers=len(self.mesh.layers)
-		layer_list=self.mesh.layers
-
-		self.tab.setRowCount(mesh_layers)
-		for i in range(0, mesh_layers):
-			self.insert_row(i,layer_list[i].thick,layer_list[i].points,layer_list[i].mul,layer_list[i].left_right)
-
-		self.redraw()
-		self.tab.blockSignals(False)
+	def callback_dim_1d(self):
+		self.emesh_editor_y.enable_dim()
+		self.emesh_editor_x.disable_dim()
+		self.emesh_editor_z.disable_dim()
+		self.update_dim()
 		
-	def tab_changed(self):
-		self.save()
-		self.redraw()
-		self.changed.emit()
+	def callback_dim_2d(self):
+		self.emesh_editor_y.enable_dim()
+		self.emesh_editor_x.enable_dim()
+		self.emesh_editor_z.disable_dim()
+		self.update_dim()
 
-	def on_move_down(self):
-		self.tab.move_down()
-		self.save()
-		self.redraw()
+	def callback_dim_3d(self):
+		self.emesh_editor_y.enable_dim()
+		self.emesh_editor_x.enable_dim()
+		self.emesh_editor_z.enable_dim()
+		self.update_dim()
 
-	def on_move_up(self):
-		self.tab.move_up()
-		self.save()
-		self.redraw()
 
-	def __init__(self,xyz):
-		self.xyz=xyz
-		QGroupBox.__init__(self)
-		rcParams.update({'figure.autolayout': True})
-		self.setTitle(self.xyz)
-		self.setStyleSheet("QGroupBox {  border: 1px solid gray;}")
-		vbox=QVBoxLayout()
-		self.setLayout(vbox)
+	def update_dim(self):
+		if get_mesh().x.get_points()==1 and get_mesh().z.get_points()==1:
+			self.one_d.setEnabled(False)
+			self.two_d.setEnabled(True)
+			self.three_d.setEnabled(True)
+			self.emesh_editor_y.setEnabled(True)
+			self.emesh_editor_x.setEnabled(False)
+			self.emesh_editor_z.setEnabled(False)
+			self.emesh_editor_y.show()
+			self.emesh_editor_x.hide()
+			self.emesh_editor_z.hide()
 
-		self.toolbar=QToolBar()
-		self.toolbar.setIconSize(QSize(32, 32))
 
-		vbox.addWidget(self.toolbar)
+		if get_mesh().x.get_points()>1 and get_mesh().z.get_points()==1:
+			self.one_d.setEnabled(True)
+			self.two_d.setEnabled(False)
+			self.three_d.setEnabled(True)
+			self.emesh_editor_y.setEnabled(True)
+			self.emesh_editor_x.setEnabled(True)
+			self.emesh_editor_z.setEnabled(False)
+			self.emesh_editor_y.show()
+			self.emesh_editor_x.show()
+			self.emesh_editor_z.hide()
 
-		self.tab = gpvdm_tab(toolbar=self.toolbar)
+		if get_mesh().x.get_points()>1 and get_mesh().z.get_points()>1:
+			self.one_d.setEnabled(True)
+			self.two_d.setEnabled(True)
+			self.three_d.setEnabled(False)
+			self.emesh_editor_y.setEnabled(True)
+			self.emesh_editor_x.setEnabled(True)
+			self.emesh_editor_z.setEnabled(True)
+			self.emesh_editor_y.show()
+			self.emesh_editor_x.show()
+			self.emesh_editor_z.show()
 
-		self.tab.tb_add.triggered.connect(self.on_add_mesh_clicked)
-		self.tab.tb_down.triggered.connect(self.on_move_down)
-		self.tab.tb_up.triggered.connect(self.on_move_up)
-		self.tab.user_remove_rows.connect(self.callback_remove_rows)
+		self.emit_now()
 
-		self.tab.resizeColumnsToContents()
-
-		self.tab.verticalHeader().setVisible(False)
-
-		self.tab.clear()
-		self.tab.setColumnCount(4)
-		self.tab.setSelectionBehavior(QAbstractItemView.SelectRows)
-
-		self.tab.cellChanged.connect(self.tab_changed)
-
-		vbox.addWidget(self.tab)
-
-		self.fig = Figure(figsize=(5,2), dpi=100)
-		self.canvas = FigureCanvas(self.fig)
-		self.canvas.figure.patch.set_facecolor('white')
+	def emit_now(self):
+		global_object_run("gl_force_redraw")
 		
-		self.fig.subplots_adjust(bottom=0.2)
-		self.fig.subplots_adjust(left=0.1)
-		self.ax1 = self.fig.add_subplot(111)
-		self.ax1.ticklabel_format(useOffset=False)
+	def __init__(self):
+		QWidgetSavePos.__init__(self,"emesh")
 
-		vbox.addWidget(self.canvas)
+		self.setMinimumSize(1200, 600)
+		self.setWindowIcon(icon_get("mesh"))
 
-		if self.xyz=="y": 
-			self.mesh=get_mesh().y
-			get_watch().add_call_back("mesh_y.inp",self.load)
-		elif self.xyz=="x":
-			self.mesh=get_mesh().x
-			get_watch().add_call_back("mesh_x.inp",self.load)
-		elif self.xyz=="z":
-			self.mesh=get_mesh().z
-			get_watch().add_call_back("mesh_z.inp",self.load)
+		self.setWindowTitle(_("Electrical Mesh Editor")+" - (https://www.gpvdm.com)") 
+		
 
-		if self.mesh.circuit_model==True:
-			self.tab.tb_add.setEnabled(False)
-			self.tab.tb_remove.setEnabled(False)
-			self.tab.tb_down.setEnabled(False)
-			self.tab.tb_up.setEnabled(False)
-			self.tab.setEnabled(False)
+		self.main_vbox = QVBoxLayout()
 
-		self.load()
+		toolbar=QToolBar()
+		toolbar.setIconSize(QSize(48, 48))
 
-	def callback_remove_rows(self):
-		self.tab.remove()
-		self.save()
-		self.redraw()
+		self.one_d = QAction(icon_get("1d"), _("1D simulation"), self)
+		self.one_d.triggered.connect(self.callback_dim_1d)
+		toolbar.addAction(self.one_d)
+
+		self.two_d = QAction(icon_get("2d"), _("2D simulation"), self)
+		self.two_d.triggered.connect(self.callback_dim_2d)
+		toolbar.addAction(self.two_d)
+
+		self.three_d = QAction(icon_get("3d"), _("3D simulation"), self)
+		self.three_d.triggered.connect(self.callback_dim_3d)
+		toolbar.addAction(self.three_d)
+
+		configure = QAction(icon_get("preferences-system",size=32),  _("Configure mesh"), self)
+		configure.triggered.connect(self.on_configure_click)
+		toolbar.addAction(configure)
+
+		spacer = QWidget()
+		spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+		toolbar.addWidget(spacer)
+
+		self.undo = QAction(icon_get("help"), _("Help"), self)
+		self.undo.setStatusTip(_("Close"))
+		self.undo.triggered.connect(self.callback_help)
+		toolbar.addAction(self.undo)
+
+		self.main_vbox.addWidget(toolbar)
+		
+
+		widget=QWidget()
+		mesh_hbox=QHBoxLayout()
+		widget.setLayout(mesh_hbox)
+	
+		self.emesh_editor_x=electrical_mesh_editor_tab("x")
+		self.emesh_editor_x.changed.connect(self.emit_now)
+		
+		self.emesh_editor_y=electrical_mesh_editor_tab("y")
+		self.emesh_editor_y.changed.connect(self.emit_now)
+
+		self.emesh_editor_z=electrical_mesh_editor_tab("z")
+		self.emesh_editor_z.changed.connect(self.emit_now)
 
 
+		mesh_hbox.addWidget(self.emesh_editor_x)
+		mesh_hbox.addWidget(self.emesh_editor_y)
+		mesh_hbox.addWidget(self.emesh_editor_z)
+
+		self.main_vbox.addWidget(widget)
+
+		self.update_dim()
+
+		self.setLayout(self.main_vbox)
+		self.mesh_config=None
+		global_object_register("mesh_update",self.update)
+	
+	def on_configure_click(self):
+		if self.mesh_config==None:
+			data=gpvdm_data()
+			self.mesh_config=class_config_window([data.mesh.config],[_("Thermal boundary conditions")],title=_("Configure mesh"),icon="mesh")
+			self.mesh_config.show()
+		self.mesh_config.show()

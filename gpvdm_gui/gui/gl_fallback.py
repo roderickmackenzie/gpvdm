@@ -28,16 +28,6 @@
 
 import math
 import os
-from cal_path import get_materials_path
-from inp import inp_load_file
-from inp import inp_search_token_value
-from str2bool import str2bool
-from tab_base import tab_base
-from epitaxy import epitaxy_get_layers
-from epitaxy import epitaxy_get_dy
-from epitaxy import epitaxy_get_dos_file
-from help import my_help_class
-from epitaxy import epitaxy_get_pl_file
 from epitaxy import epitaxy_get_name
 
 import i18n
@@ -56,10 +46,11 @@ from math import pi,acos,sin,cos
 
 from dat_file import dat_file
 from global_objects import global_object_register
-from inp import inp_search_token_array
 from cal_path import get_sim_path
 from gl_base_widget import gl_base_widget
 from epitaxy import get_epi
+
+from gpvdm_json import gpvdm_data
 
 class gl_fallback(QWidget,gl_base_widget):
 
@@ -78,51 +69,35 @@ class gl_fallback(QWidget,gl_base_widget):
 
 
 	def drawWidget(self, qp):
-
+		data=gpvdm_data()
 		font = QFont('Sans', 11, QFont.Normal)
 		qp.setFont(font)
-
+		epi=data.epi
 		emission=False
-		lines=[]
-		for i in range(0,epitaxy_get_layers()):
-			if epitaxy_get_pl_file(i)!="none":
-				lines=inp_load_file(epitaxy_get_pl_file(i)+".inp")
-				if lines!=False:
-					if str2bool(lines[1])==True:
-						emission=True
 
-		tot=0
-		for i in range(0,epitaxy_get_layers()):
-			tot=tot+epitaxy_get_dy(i)
+		for l in epi.layers:
+			if l.layer_type=="active":
+				if l.shape_pl.pl_emission_enabled==True:
+					emission=True
+
+		tot=epi.ylen()
 
 		pos=0.0
-		l=epitaxy_get_layers()-1
+		total_layers=len(epi.layers)
 		lines=[]
 
-		for i in range(0,len(self.epi.layers)):
-			
-			red=0.0
-			green=0.0
-			blue=0.0
-
-			thick=200.0*epitaxy_get_dy(l-i)/tot
+		for i in range(0,total_layers):
+			thick=200.0*epi.layers[total_layers-1-i].dy/tot
 			pos=pos+thick
-			path=os.path.join(get_materials_path(),self.epi.layers[l-i].optical_material,"mat.inp")
-			lines=inp_load_file(path)
-			if lines!=False:
-				ret=inp_search_token_array(lines, "#red_green_blue")
-				if ret!=False:
-					red=float(ret[0])
-					green=float(ret[1])
-					blue=float(ret[2])
+			l=epi.layers[i]
+			red=l.color_r
+			green=l.color_g
+			blue=l.color_b
 
-			self.draw_box(qp,200,450.0-pos,thick*0.9,red,green,blue,l-i)
+			self.draw_box(qp,200,450.0-pos,thick*0.9,red,green,blue,total_layers-1-i)
 		step=50.0
 
-		lines=inp_load_file(os.path.join(get_sim_path(),"light.inp"))
-
-		if lines!=False:
-			self.suns=float(inp_search_token_value(lines, "#Psun"))
+		self.suns=float(data.light.Psun)
 
 		if self.suns<=0.01:
 			step=200
@@ -194,8 +169,9 @@ class gl_fallback(QWidget,gl_base_widget):
 		w=200
 		qp.setBrush(QColor(r*255,g*255,b*255))
 		qp.drawRect(x, y, 200,h)
-		
-		if epitaxy_get_dos_file(layer).startswith("dos")==True:
+		data=gpvdm_data()
+		epi=data.epi
+		if epi.layers[layer].layer_type=="active":
 			text=epitaxy_get_name(layer)+" (active)"
 			qp.setBrush(QColor(0,0,0.7*255))
 			qp.drawRect(x+w+5, y, 20,h)

@@ -30,11 +30,6 @@
 import os
 from icon_lib import icon_get
 
-from dump_io import dump_io
-from tb_item_sim_mode import tb_item_sim_mode
-from tb_item_sun import tb_item_sun
-
-from code_ctrl import enable_betafeatures
 from cal_path import get_css_path
 
 #qt
@@ -44,26 +39,19 @@ from PyQt5.QtCore import QSize, Qt,QFile,QIODevice
 from PyQt5.QtWidgets import QWidget,QSizePolicy,QVBoxLayout,QHBoxLayout,QPushButton,QDialog,QFileDialog,QToolBar,QMessageBox, QLineEdit, QToolButton
 from PyQt5.QtWidgets import QTabWidget
 
-from info import sim_info
-from win_lin import desktop_open
-
 #windows
-from scan import scan_class 
 from help import help_window
 from error_dlg import error_dlg
 from server import server_get
-from fit_window import fit_window
-from cmp_class import cmp_class
 
 from global_objects import global_object_run
-from util import isfiletype
 
 from util import wrap_text
+from ribbon_page import ribbon_page
 
-
-class ribbon_cluster(QToolBar):
+class ribbon_cluster(ribbon_page):
 	def __init__(self):
-		QToolBar.__init__(self)
+		ribbon_page.__init__(self)
 		self.myserver=server_get()
 
 		self.setToolButtonStyle( Qt.ToolButtonTextUnderIcon)
@@ -99,6 +87,12 @@ class ribbon_cluster(QToolBar):
 		self.cluster_sync.triggered.connect(self.callback_cluster_sync)
 		self.addAction(self.cluster_sync)
 		self.cluster_sync.setEnabled(False)
+
+		self.config_cluster = QAction(icon_get("server"), _("Cluster"), self)
+		self.config_cluster.setStatusTip(_("Cluster"))
+		self.config_cluster.triggered.connect(self.callback_configure_cluster)
+		self.config_cluster.setEnabled(False)
+		self.addAction(self.config_cluster)
 
 
 		spacer = QWidget()
@@ -142,6 +136,7 @@ class ribbon_cluster(QToolBar):
 			self.cluster_get_data.setEnabled(True)
 			self.cluster_off.setEnabled(True)
 			self.cluster_sync.setEnabled(True)
+			self.config_cluster.setEnabled(True)
 
 		else:
 			self.cluster_clean.setEnabled(False)
@@ -150,6 +145,7 @@ class ribbon_cluster(QToolBar):
 			self.cluster_get_data.setEnabled(False)
 			self.cluster_off.setEnabled(False)
 			self.cluster_sync.setEnabled(False)
+			self.config_cluster.setEnabled(False)
 
 	def setEnabled(self,val):
 		print("")
@@ -160,4 +156,9 @@ class ribbon_cluster(QToolBar):
 
 	def callback_cluster_copy_src(self, widget, data=None):
 		self.myserver.copy_src_to_cluster()
-		
+
+	def callback_configure_cluster(self):
+		from cluster_config_window import cluster_config_window
+		self.win=cluster_config_window(self)
+		self.win.show()
+

@@ -58,7 +58,7 @@ class gl_color:
 		else:
 			glEnable(GL_LIGHTING)
 
-	def set_color(self,obj,r_override=None,g_override=None,b_override=None):
+	def cal_color(self,obj,r_override=None,g_override=None,b_override=None):
 		r=obj.r
 		g=obj.g
 		b=obj.b
@@ -79,7 +79,7 @@ class gl_color:
 			alpha=alpha
 
 		if self.false_color==True:
-			glColor3f(obj.r_false,obj.g_false,obj.b_false)
+			return obj.r_false,obj.g_false,obj.b_false
 		else:
 			if r_override!=None:
 				r=r_override
@@ -91,17 +91,17 @@ class gl_color:
 				b=b_override
 
 			if alpha==-1:
-				col = [r, g, b, 1.0]
-				glMaterialfv(GL_FRONT, GL_DIFFUSE, col)
+				 return r, g, b, 1.0
 			else:
-				col = [r, g, b, alpha]
-				glMaterialfv(GL_FRONT, GL_DIFFUSE, col)
+				return r, g, b, alpha
 
-	def clear_color(self):
-		self.color_list=[]
+	def set_color(self,obj,r_override=None,g_override=None,b_override=None):
 
+		if self.false_color==True:
+			r,g,b= self.cal_color(obj,r_override=r_override,g_override=g_override,b_override=b_override)
+			glColor3f(r,g,b)
+		else:
+			r,g,b,alpha= self.cal_color(obj,r_override=r_override,g_override=g_override,b_override=b_override)
+			glColor4f(r,g,b,alpha)
 
-	def print_color(self):
-		for i in range(0,len(self.color_list)):
-			print(self.color_list[i])
 

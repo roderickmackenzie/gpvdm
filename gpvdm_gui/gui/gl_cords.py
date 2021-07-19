@@ -62,12 +62,10 @@ class gl_cords():
 		quad=gluNewQuadric()
 
 
-		col = [0.7,0.7,0.7, 1.0]
-		glMaterialfv(GL_FRONT, GL_DIFFUSE, col)
-
 		glPushMatrix()
 		glTranslatef(start_x,start_y,start_z)
 		self.render_text (leng+0.2,0.0,0.0, "x")
+		glColor4f(0.7,0.7,0.7, 1.0)
 		quad=gluNewQuadric()
 		glRotatef(90, 0.0, 1.0, 0.0)
 		gluCylinder(quad, width, width, leng, 10, 1)
@@ -80,6 +78,7 @@ class gl_cords():
 		glPushMatrix()
 		glTranslatef(start_x,start_y,start_z)
 		self.render_text (0.0,-leng-0.4,0.0, "y")
+		glColor4f(0.7,0.7,0.7, 1.0)
 		quad=gluNewQuadric()
 		#glTranslatef(0.0,0.0,0.0)
 		glRotatef(270, -1.0, 0.0, 0.0)
@@ -93,6 +92,7 @@ class gl_cords():
 		glPushMatrix()
 		glTranslatef(start_x,start_y,start_z)
 		self.render_text (-0.0,0.0,leng+0.2, "z")
+		glColor4f(0.7,0.7,0.7, 1.0)
 		quad=gluNewQuadric()
 		glRotatef(0, 0.0, 1.0, 0.0)
 		gluCylinder(quad, width, width, leng, 10, 1)

@@ -78,8 +78,18 @@ class gpvdm_select(QWidget):
 			self.setText(file_name)
 
 	def setText(self,text):
+		blocked=False
+		if self.signalsBlocked()==True:
+			blocked=True
+
+		if blocked==True:
+			self.edit.blockSignals(True)
+
 		self.edit.setText(text)
-	
+
+		if blocked==True:
+			self.edit.blockSignals(False)
+
 	def text(self):
 		return self.edit.text()
 		

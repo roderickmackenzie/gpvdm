@@ -46,17 +46,16 @@ from gui_util import yes_no_dlg
 import traceback
 import sys
 
-from code_ctrl import enable_betafeatures
-
 from report_error import report_error
 from lock import get_email
+from gpvdm_local import gpvdm_local
 
 def error_han(type, value, tback):
 	print("error=",value,tback,"rod")
 	if value==KeyboardInterrupt:
 		print("hello")
 
-	if enable_betafeatures()==False:
+	if gpvdm_local().gui_config.enable_betafeatures==False:
 
 		#formatted_lines = traceback.format_exc().splitlines()
 		long_trace=traceback.format_exception(type, value, tback)

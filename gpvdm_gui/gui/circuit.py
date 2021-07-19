@@ -53,29 +53,20 @@ class circuit(QWidget):
 	def update(self,object):
 		self.darea.queue_draw()
 
-	def __init__(self,index,base_file_name="pulse",token="#pulse_sim_mode"):
+	def __init__(self,data):
 		QWidget.__init__(self)
-
+		self.data=data
 		vbox=QVBoxLayout()
 
-
-		self.index=index
 
 		toolbar=QToolBar()
 		toolbar.setIconSize(QSize(48, 48))
 
 
-		self.load_type=tb_pulse_load_type(self.index,base_file_name=base_file_name,token=token)
-		#self.load_type.connect("changed", self.draw_callback)
+		self.load_type=tb_pulse_load_type(data.config)
 
 		toolbar.addWidget(self.load_type)
 		vbox.addWidget(toolbar)
-
-		self.diode = QPixmap(os.path.join(get_image_file_path(),"diode.png"))
-		self.ideal_diode = QPixmap(os.path.join(get_image_file_path(),"ideal_diode.png"))
-		self.load = QPixmap(os.path.join(get_image_file_path(),"load.png"))
-		self.ideal_load = QPixmap(os.path.join(get_image_file_path(),"ideal_load.png"))
-		self.voc = QPixmap(os.path.join(get_image_file_path(),"voc.png"))
 
 		self.darea = QWidget()
 
@@ -86,60 +77,58 @@ class circuit(QWidget):
 		self.diagram.editable=False
 
 		vbox.addWidget(self.diagram)
-		#vbox.addWidget(self.darea)
 
 		
 		self.setLayout(vbox)
-		#self.load_type.changed.connect(self.repaint)
 		self.load_type.changed.connect(self.update)
 		self.update()
 
 	def update(self):
 		self.diagram.clear()
 		if self.load_type.sim_mode.currentText()=="load":
-			self.diagram.add_object(1,1,1,2,"diode")
+			self.diagram.add_object0(1,1,1,2,"diode")
 
-			self.diagram.add_object(1,1,2,1,"wire")
-			self.diagram.add_object(1,2,2,2,"wire")
+			self.diagram.add_object0(1,1,2,1,"wire")
+			self.diagram.add_object0(1,2,2,2,"wire")
 
-			self.diagram.add_object(2,1,2,2,"capacitor")
-			self.diagram.add_object(2,1,3,1,"wire")
-			self.diagram.add_object(2,2,3,2,"wire")
+			self.diagram.add_object0(2,1,2,2,"capacitor")
+			self.diagram.add_object0(2,1,3,1,"wire")
+			self.diagram.add_object0(2,2,3,2,"wire")
 
-			self.diagram.add_object(3,1,3,2,"resistor")
-			self.diagram.add_object(3,1,4,1,"resistor")
-			self.diagram.add_object(3,2,4,2,"wire")
+			self.diagram.add_object0(3,1,3,2,"resistor")
+			self.diagram.add_object0(3,1,4,1,"resistor")
+			self.diagram.add_object0(3,2,4,2,"wire")
 
-			self.diagram.add_object(4,1,5,1,"resistor")
-			self.diagram.add_object(5,1,5,2,"vsource")
+			self.diagram.add_object0(4,1,5,1,"resistor")
+			self.diagram.add_object0(5,1,5,2,"vsource")
 
-			self.diagram.add_object(4,2,5,2,"wire")
+			self.diagram.add_object0(4,2,5,2,"wire")
 
 		elif self.load_type.sim_mode.currentText()=="ideal_diode_ideal_load":
 
-			self.diagram.add_object(1,1,1,2,"diode")
+			self.diagram.add_object0(1,1,1,2,"diode")
 
-			self.diagram.add_object(1,1,2,1,"wire")
-			self.diagram.add_object(1,2,2,2,"wire")
+			self.diagram.add_object0(1,1,2,1,"wire")
+			self.diagram.add_object0(1,2,2,2,"wire")
 
-			self.diagram.add_object(2,1,3,1,"wire")
-			self.diagram.add_object(2,2,3,2,"wire")
+			self.diagram.add_object0(2,1,3,1,"wire")
+			self.diagram.add_object0(2,2,3,2,"wire")
 
-			self.diagram.add_object(3,1,3,2,"vsource")
+			self.diagram.add_object0(3,1,3,2,"vsource")
 
 		else:
-			self.diagram.add_object(1,1,1,2,"diode")
+			self.diagram.add_object0(1,1,1,2,"diode")
 
-			self.diagram.add_object(1,1,2,1,"wire")
-			self.diagram.add_object(1,2,2,2,"wire")
+			self.diagram.add_object0(1,1,2,1,"wire")
+			self.diagram.add_object0(1,2,2,2,"wire")
 
-			self.diagram.add_object(2,1,2,2,"capacitor")
-			self.diagram.add_object(2,1,3,1,"wire")
-			self.diagram.add_object(2,2,3,2,"wire")
+			self.diagram.add_object0(2,1,2,2,"capacitor")
+			self.diagram.add_object0(2,1,3,1,"wire")
+			self.diagram.add_object0(2,2,3,2,"wire")
 
-			self.diagram.add_object(3,1,3,2,"resistor")
-			self.diagram.add_object(3,1,4,1,"resistor")
-			self.diagram.add_object(3,2,4,2,"wire")
+			self.diagram.add_object0(3,1,3,2,"resistor")
+			self.diagram.add_object0(3,1,4,1,"resistor")
+			self.diagram.add_object0(3,2,4,2,"wire")
 
 		self.diagram.repaint()
 

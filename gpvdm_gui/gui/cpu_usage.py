@@ -137,7 +137,8 @@ class cpu_usage(QWidget):
 			qp.setPen(QColor(0,0,255))
 
 			dx=self.load[i].wait*w/100.0
-			qp.drawRect(w, h-dy*i, -dx, dy)
+			if dx<=w:
+				qp.drawRect(w, h-dy*i, -dx, dy)
 			
 			
 

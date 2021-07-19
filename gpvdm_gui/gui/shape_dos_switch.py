@@ -32,72 +32,11 @@ from PyQt5.QtWidgets import QWidget
 from PyQt5.QtGui import QPainter,QFont,QColor,QPen
 
 from PyQt5.QtCore import pyqtSignal
-from epitaxy import get_epi
-from newton_solver import newton_solver_get_type
+from generic_switch import generic_switch
 
-class shape_dos_switch(QWidget):
-
-	changed = pyqtSignal()
+class shape_dos_switch(generic_switch):
 
 	def __init__(self):      
-		super(shape_dos_switch, self).__init__()
-		self.setMaximumSize(200,20)
-		self.value = "none"
-
-	def get_value(self):
-		return self.value
-
-	def set_value(self, value):
-
-		self.value = value
+		generic_switch.__init__(self,state0="Active",state1="Passive",state0_value=True,state1_value=False)
 
 
-	def paintEvent(self, e):
-		qp = QPainter()
-		qp.begin(self)
-		self.drawWidget(qp)
-		qp.end()
-
-
-	def drawWidget(self, qp):
-		font = QFont('Sans', 11, QFont.Normal)
-		qp.setFont(font)
-
-		pen = QPen(QColor(20, 20, 20), 1, Qt.SolidLine)
-		
-		qp.setPen(pen)
-		qp.setBrush(Qt.NoBrush)
-
-		if self.value=="none":
-			qp.setBrush(QColor(180,180,180))
-			qp.drawRoundedRect(0, 0.0, 140.0,22.0,5.0,5.0)			
-			qp.setBrush(QColor(230,230,230))
-			qp.drawRoundedRect(2, 2, 30,18.0,5.0,5.0)
-			qp.drawText(40, 17, _("Passive"))
-		else:
-			qp.setBrush(QColor(95,163,235))
-			qp.drawRoundedRect(0, 0.0, 140.0,22.0,5.0,5.0)			
-			qp.setBrush(QColor(230,230,230))
-			qp.drawRoundedRect(105, 2, 30,18.0,5.0,5.0)
-			qp.drawText(2, 17, _("Active"))
-
-	def mouseReleaseEvent(self, QMouseEvent):
-		epi=get_epi()
-
-		if QMouseEvent.x()<160:
-			if self.value== "none":
-				if newton_solver_get_type()=="newton_simple":
-					self.value=epi.add_new_electrical_to_shape(self.shape_file)
-				else:
-					self.value=epi.add_new_dos_to_shape(self.shape_file)
-				
-			else:
-				if newton_solver_get_type()=="newton_simple":
-					self.value=epi.del_electrical_shape(self.shape_file)
-					self.value="none"
-				else:
-					self.value=epi.del_dos_shape(self.shape_file)
-					self.value="none"
-
-			self.repaint()
-			self.changed.emit()

@@ -46,8 +46,6 @@ from QWidgetSavePos import QWidgetSavePos
 
 from ribbon_shape_import import ribbon_shape_import
 
-from import_data import import_data
-
 from open_save_dlg import open_as_filter
 
 from shutil import copyfile
@@ -59,7 +57,6 @@ from PyQt5.QtCore import pyqtSignal
 from PIL import Image, ImageFilter,ImageOps 
 from PIL.ImageQt import ImageQt
 from inp import inp
-from inp_dialog import inp_dialog
 from str2bool import str2bool
 
 from PyQt5.QtWidgets import QApplication
@@ -94,23 +91,6 @@ class image_discretizer(QWidget):
 
 		self.load_image()
 
-	def m2px_x(self,x):
-		width, height = self.im.size
-		ret=width*(x/self.len_x)
-		if ret>=width:
-			return width-1
-		return int(ret)
-
-	def m2px_z(self,z):
-		width, height = self.im.size
-
-		ret=height*(z/self.len_z)
-
-		if ret>=height:
-			return height-1
-
-		return int(ret)
-
 	def build_mesh(self):
 		width, height = self.im.size
 
@@ -130,42 +110,6 @@ class image_discretizer(QWidget):
 		self.build_mesh()
 		self.repaint()
 
-	def save_mesh(self):
-		d=dat_file()
-		d.title="title Ray trace triange file"
-		d.type="poly"
-		d.x_label="Position"
-		d.z_label="Position"
-		d.data_label="Position"
-		d.x_units="m"
-		d.z_units="m"
-		d.data_units="m"
-		d.r=1.0
-		d.g=0.0
-		d.b=0.0
-
-		d.x_len=3
-		d.y_len=len(self.triangles)
-
-		d.data=[]
-
-		for t in self.triangles:
-			d.data.append(t)
-
-		d.save(os.path.join(self.path,"shape.inp"))
-
-		self.changed.emit()
-
-	def get_color(self,x,z):
-		colors = self.im.getpixel((self.m2px_x(x),self.m2px_z(z)))
-		c=(colors[0]+colors[1]+colors[2])/3.0
-		if c<self.y_min:
-			self.y_min=c
-
-		if c>self.y_max:
-			self.y_max=c
-
-		return c
 
 	def load_image(self):
 		if os.path.isfile(self.image_in)==False:
@@ -178,18 +122,9 @@ class image_discretizer(QWidget):
 
 		f=inp()
 		f.load(os.path.join(self.path,"shape_import.inp"))
-		self.gaussian_blur=int(f.get_token("#shape_import_blur"))
 		self.y_norm=str2bool(f.get_token("#shape_import_y_norm"))
 		self.z_norm=str2bool(f.get_token("#shape_import_z_norm"))
-		self.blur_enable=str2bool(f.get_token("#shape_import_blur_enabled"))
 		self.y_norm_percent=int(f.get_token("#shape_import_y_norm_percent"))
-		self.rotate=int(f.get_token("#shape_import_rotate"))
-
-		if self.blur_enable==True:
-			img = img.filter(ImageFilter.GaussianBlur(radius = self.gaussian_blur))
-
-		if self.rotate!=0:
-			img=img.rotate(360-self.rotate)
 
 		if self.z_norm==True:
 			img2 = img.resize((1, 1))
@@ -209,9 +144,6 @@ class image_discretizer(QWidget):
 					c=(color[0]+color[1]+color[2])/3
 					img.putpixel((x,z),(int(c+delta),int(c+delta),int(c+delta)))
 
-				#print(x_avg)
-
-			#print("avg color>>",c)
 
 		if self.y_norm==True:
 			print(self.y_norm_percent,img.mode)

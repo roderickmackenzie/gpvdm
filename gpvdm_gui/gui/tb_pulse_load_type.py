@@ -26,11 +26,6 @@
 #
 
 import os
-from inp import inp_update_token_value
-from inp import inp_get_token_value
-from inp import inp_load_file
-from cal_path import get_inp_file_path
-
 
 #qt
 from PyQt5.QtWidgets import QMainWindow, QTextEdit, QAction, QApplication
@@ -38,17 +33,14 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import QSize, Qt 
 from PyQt5.QtWidgets import QWidget,QSizePolicy,QHBoxLayout,QPushButton,QDialog,QFileDialog,QToolBar,QLabel,QComboBox
 from PyQt5.QtCore import pyqtSignal
-
-from cal_path import get_sim_path
+from gpvdm_json import gpvdm_data
 
 class tb_pulse_load_type(QWidget):
 
 	changed = pyqtSignal()
 
-	def __init__(self,index,base_file_name="pulse",token="#pulse_sim_mode"):
-		self.index=index
-		self.token=token
-		self.base_file_name=base_file_name
+	def __init__(self,config_class):
+		self.config_class=config_class
 		QWidget.__init__(self)
 
 
@@ -57,7 +49,6 @@ class tb_pulse_load_type(QWidget):
 		label.setText(_("Load type")+":")
 		layout.addWidget(label)
 
-		self.file_name=os.path.join(get_sim_path(),self.base_file_name+str(self.index)+".inp")
 		self.sim_mode = QComboBox(self)
 		self.sim_mode.setEditable(True)
 
@@ -71,11 +62,11 @@ class tb_pulse_load_type(QWidget):
 		self.sim_mode.addItem("ideal_diode_ideal_load")
 
 
-		token=inp_get_token_value(self.file_name, token)
+		mode=self.config_class.load_type
 
 		all_items  = [self.sim_mode.itemText(i) for i in range(self.sim_mode.count())]
 		for i in range(0,len(all_items)):
-		    if all_items[i] == token:
+		    if all_items[i] == mode:
 		        self.sim_mode.setCurrentIndex(i)
 
 		self.sim_mode.currentIndexChanged.connect(self.call_back_sim_mode_changed)
@@ -83,7 +74,7 @@ class tb_pulse_load_type(QWidget):
 
 	def call_back_sim_mode_changed(self):
 		mode=self.sim_mode.currentText()
-		#print("write to:",self.file_name)
-		inp_update_token_value(self.file_name, self.token, mode)
+		self.config_class.load_type=mode
+		gpvdm_data().save()
 		self.changed.emit()
 

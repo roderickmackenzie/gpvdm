@@ -56,6 +56,14 @@ class ribbon_materials(ribbon_base):
 		toolbar.setToolButtonStyle( Qt.ToolButtonTextUnderIcon)
 		toolbar.setIconSize(QSize(42, 42))
 
+		self.import_data= QAction_lock("import", _("From file"), self,"ribbon_materials_import")
+		toolbar.addAction(self.import_data)
+
+		self.equation= QAction_lock("vars", _("From\nEquation"), self,"ribbon_materials_vars")
+		toolbar.addAction(self.equation)
+
+		toolbar.addSeparator()
+
 		self.cost = QAction(icon_get("cost"), _("Cost"), self)
 		self.cost.setStatusTip(_("Cost of material"))
 		#self.cost.triggered.connect(self.callback_cost)
@@ -67,6 +75,11 @@ class ribbon_materials(ribbon_base):
 		self.tb_ref= QAction(icon_get("ref"), wrap_text(_("Insert reference information"),8), self)
 		toolbar.addAction(self.tb_ref)
 
+		toolbar.addSeparator()
+
+		self.tb_save = QAction_lock("export_image", _("Export\nimage"), self,"ribbon_materials_export_image")
+		toolbar.addAction(self.tb_save)
+
 		spacer = QWidget()
 		spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 		toolbar.addWidget(spacer)
@@ -76,41 +89,12 @@ class ribbon_materials(ribbon_base):
 
 		return toolbar
 
-	def import_toolbar(self):
-		toolbar = QToolBar()
-		toolbar.setToolButtonStyle( Qt.ToolButtonTextUnderIcon)
-		toolbar.setIconSize(QSize(42, 42))
-
-		self.import_data= QAction_lock("import", _("From file"), self,"ribbon_materials_import")
-		toolbar.addAction(self.import_data)
-
-		self.equation= QAction_lock("vars", _("From\nEquation"), self,"ribbon_materials_vars")
-		toolbar.addAction(self.equation)
-
-
-		return toolbar
-
-	def export_toolbar(self):
-		toolbar = QToolBar()
-		toolbar.setToolButtonStyle( Qt.ToolButtonTextUnderIcon)
-		toolbar.setIconSize(QSize(42, 42))
-
-		self.tb_save = QAction_lock("export_image", _("Export\nimage"), self,"ribbon_materials_export_image")
-		toolbar.addAction(self.tb_save)
-
-
 		return toolbar
 	def __init__(self):
 		ribbon_base.__init__(self)
 
 		w=self.main_toolbar()
 		self.addTab(w,_("File"))
-
-		w=self.import_toolbar()
-		self.addTab(w,_("Import data"))
-
-		w=self.export_toolbar()
-		self.addTab(w,_("Export data"))
 
 		self.setCurrentIndex(0)
 

@@ -28,17 +28,14 @@
 import os
 from win_lin import running_on_linux
 from threading import Thread
-from ver import ver_core
 import platform
 from gpvdm_http import get_data_from_web
 import hashlib
 from sim_warnings import sim_warnings
-from code_ctrl import enable_webupdates
 import i18n
 from i18n import get_full_language
 
 _ = i18n.language.gettext
-from ver import ver
 
 #qt
 from PyQt5.QtCore import QSize, Qt
@@ -78,7 +75,6 @@ class check_sim_exists(QWidget):
 
 	def start_thread(self):
 		p = Thread(target=self.foo, args=(10,))
-		#multiprocessing.Process(target=self.foo, name="Foo", args=(10,))
 		p.daemon = True
 		p.start()
 

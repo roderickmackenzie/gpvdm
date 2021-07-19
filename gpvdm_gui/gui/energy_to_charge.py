@@ -22,7 +22,7 @@
 # 
 
 
-## @package gpvdm_select
+## @package energy_to_charge
 #  A widget for the tab widget which allows the user to select files.
 #
 
@@ -30,26 +30,20 @@
 import os
 
 #qt
-from PyQt5.QtWidgets import QMainWindow,QLabel, QFrame,QTextEdit, QAction,QApplication,QTableWidgetItem,QComboBox, QMessageBox, QDialog, QDialogButtonBox, QFileDialog
-from PyQt5.QtWidgets import QGraphicsScene,QListWidgetItem,QListView,QLineEdit,QWidget,QHBoxLayout,QPushButton
-from PyQt5.QtWidgets import QFileDialog
-from PyQt5.uic import loadUi
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtCore import QSize, Qt, QTimer
-from PyQt5.QtCore import QPersistentModelIndex
+from PyQt5.QtWidgets import QMainWindow,QLabel, QTextEdit, QTableWidgetItem,QComboBox, QMessageBox
+from PyQt5.QtWidgets import QLineEdit,QWidget,QHBoxLayout,QPushButton
+from PyQt5.QtCore import QSize, Qt
 from QComboBoxLang import QComboBoxLang
-from PyQt5.QtGui import QIcon
-
 
 #cal_path
-from cal_path import get_ui_path
 from PyQt5.QtCore import pyqtSignal
 
 from epitaxy import get_epi
-from inp import inp
 from dos_io import gen_fermi_from_np
 from dos_io import gen_np_from_fermi
 import decimal
+
+from gpvdm_json import gpvdm_data
 
 import i18n
 _ = i18n.language.gettext
@@ -57,12 +51,9 @@ _ = i18n.language.gettext
 
 class energy_to_charge(QWidget):
 
-	changed = pyqtSignal()
 
 	def __init__(self):
 		QWidget.__init__(self)
-		self.position="top"
-		self.charge_type="electron"
 		self.hbox=QHBoxLayout()
 		self.edit_m3=QLineEdit()
 		self.edit_m3.setMaximumWidth( 60 )
@@ -76,15 +67,11 @@ class energy_to_charge(QWidget):
 		self.label_eV.setStyleSheet("QLabel { border: 0px; padding: 0px; }");
 		self.label_eV.setMaximumWidth( 20 )
 
-		#self.button=QPushButton()
-		#self.button.setFixedSize(25, 25)
-		#self.button.setText("...")
 		self.hbox.addWidget(self.edit_m3,Qt.AlignLeft)
 		self.hbox.addWidget(self.label_m3,Qt.AlignLeft)
 		self.hbox.addWidget(self.edit_eV,Qt.AlignLeft)
 		self.hbox.addWidget(self.label_eV,Qt.AlignLeft)
 		self.hbox.setSpacing(0)
-		#self.hbox.addWidget(self.button)
 
 		self.edit_m3.textChanged.connect(self.callback_m3_changed)
 		self.edit_eV.textChanged.connect(self.callback_eV_changed)
@@ -92,62 +79,107 @@ class energy_to_charge(QWidget):
 		self.hbox.setContentsMargins(0, 0, 0, 0)
 		self.edit_m3.setStyleSheet("QLineEdit { border: none }");
 
-		#self.button.clicked.connect(self.callback_button_click)
-
 		self.setLayout(self.hbox)
 
 	def cal_ev(self):
-		for l in get_epi().layers:
-			file_name=l.dos_file+".inp"
-			if file_name.startswith("dos"):
-				f=inp()
-				f.load(file_name)
-				if self.charge_type=="electron":
-					eV=gen_fermi_from_np(float(self.edit_m3.text()),float(f.get_token("#Nc")),300.0)
-				else:
-					eV=gen_fermi_from_np(float(self.edit_m3.text()),float(f.get_token("#Nv")),300.0)
+		self.find_layer_and_contact()
+		if self.contact.charge_type=="electron":
+			eV=gen_fermi_from_np(float(self.edit_m3.text()),self.layer.shape_dos.Nc,300.0)
+		else:
+			eV=gen_fermi_from_np(float(self.edit_m3.text()),self.layer.shape_dos.Nv,300.0)
 		return eV
 
 	def cal_m3(self):
-		for l in get_epi().layers:
-			file_name=l.dos_file+".inp"
-			if file_name.startswith("dos"):
-				f=inp()
-				f.load(file_name)
-				if self.charge_type=="electron":
-					n=gen_np_from_fermi(float(self.edit_eV.text()),float(f.get_token("#Nc")),300.0)
-				else:
-					n=gen_np_from_fermi(float(self.edit_eV.text()),float(f.get_token("#Nv")),300.0)
+		self.find_layer_and_contact()
+		try:
+			Ef=float(self.edit_eV.text())
+		except:
+			return False
+
+		if self.contact.charge_type=="electron":
+			n=gen_np_from_fermi(Ef,self.layer.shape_dos.Nc,300.0)
+		else:
+			n=gen_np_from_fermi(Ef,self.layer.shape_dos.Nv,300.0)
 		return n
 
 
 	
 
+	def edit_m3_update(self,n):
+		try:
+			val=float(n)
+		except:
+			return
+		text='%.2e' % val
+		text=str(decimal.Decimal(text).normalize()).lower().replace('+', '')
+		self.edit_m3.setText(text)
+
+		#self.edit_m3.setText('%.0e' % n)
+
+	def edit_eV_update(self,ev):
+		try:
+			val=float(ev)
+		except:
+			return
+
+		self.edit_eV.setText('%.2f' % val)
+
 	def callback_eV_changed(self):
 		n=self.cal_m3()
+		if n==False:
+			return
 		self.edit_m3.blockSignals(True)
-		self.edit_m3.setText('%.0e' % n)
+		self.edit_m3_update(n)
 		self.edit_m3.blockSignals(False)
-
-		self.changed.emit()
+		self.contact.np=float(n)
+		gpvdm_data().save()
 
 	def callback_m3_changed(self):
 		try:
 			ev=self.cal_ev()
 			self.edit_eV.blockSignals(True)
-			self.edit_eV.setText('%.2f' % ev)
+			self.edit_eV_update(ev)
 			self.edit_eV.blockSignals(False)
+			self.contact.np=float(self.edit_m3.text())
 		except:
 			pass
-		self.changed.emit()
+		gpvdm_data().save()
 
-	def setText(self,text):
-		val=float(text)
-		text='%.2e' % val
-		text=str(decimal.Decimal(text).normalize()).lower().replace('+', '')
-		self.edit_m3.setText(text)
-		#self.edit_eV.setText(text)
+	def find_layer_and_contact(self):
+		self.layer=None
+		self.contact=None
+		for c in get_epi().contacts.segments:
+			if self.uid==c.id:
+				if c.position=="top":
+					for l in get_epi().layers:
+						if l.layer_type=="active":
+							self.layer=l
+							self.contact=c
+							break
+				elif c.position=="bottom":
+					n=len(get_epi().layers)-1
+					while(n>=0):
+						l=get_epi().layers[n]
+						if l.layer_type=="active":
+							self.layer=l
+							self.contact=c
+							break
+						n=n-1
+
+	def updateValue(self,uid):
+		self.uid=uid
+		self.update()
+
+	def update(self):
+		self.find_layer_and_contact()
+		self.edit_m3.blockSignals(True)
+		self.edit_m3_update(self.contact.np)
+		self.edit_m3.blockSignals(False)
+		ev=self.cal_ev()
+		self.edit_eV.blockSignals(True)
+		self.edit_eV_update(ev)
+		self.edit_eV.blockSignals(False)
 
 	def text(self):
-		return self.edit_m3.text()
+		return self.uid
 		

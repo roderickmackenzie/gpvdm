@@ -40,11 +40,10 @@ from plot_widget import plot_widget
 from spectral2 import spectral2
 from dat_file import dat_file
 from cal_path import get_spectra_path
-from inp import inp_update_token_value
-from inp import inp_get_token_value
 
-from code_ctrl import am_i_rod
-
+from gpvdm_json import gpvdm_data
+from gpvdm_local import gpvdm_local
+ 
 class spectral2_gui(QWidget):
 
 
@@ -116,7 +115,7 @@ class spectral2_gui(QWidget):
 		self.no2_layout.addWidget(self.no2_label)
 		self.no2_layout.addWidget(self.no2_edit)
 		self.no2_widget.setLayout(self.no2_layout)
-		if am_i_rod()==True:
+		if gpvdm_local().gui_config.enable_betafeatures==True:
 			date_vbox.addWidget(self.no2_widget)
 
 		date_widget.setLayout(date_vbox)
@@ -126,15 +125,12 @@ class spectral2_gui(QWidget):
 
 		self.setLayout(top_hbox)
 
-		#inp_get_token_value("spectral2.inp","#spectral2_day")
-		#inp_get_token_value("spectral2.inp","#spectral2_hour")
-		#inp_get_token_value("spectral2.inp","#spectral2_minute")
-
-		self.water_edit.setText(inp_get_token_value("spectral2.inp","#spectral2_water"))
-		self.aod_edit.setText(inp_get_token_value("spectral2.inp","#spectral2_aod"))
-		self.preasure_edit.setText(inp_get_token_value("spectral2.inp","#spectral2_preasure"))
-		self.lat_edit.setText(inp_get_token_value("spectral2.inp","#spectral2_lat"))
-		self.no2_edit.setText(inp_get_token_value("spectral2.inp","#spectral2_no2"))
+		data=gpvdm_data()
+		self.water_edit.setText(str(data.spectral2.spectral2_water))
+		self.aod_edit.setText(str(data.spectral2.spectral2_aod))
+		self.preasure_edit.setText(str(data.spectral2.spectral2_preasure))
+		self.lat_edit.setText(str(data.spectral2.spectral2_lat))
+		self.no2_edit.setText(str(data.spectral2.spectral2_no2))
 
 
 		self.calculate()
@@ -148,17 +144,18 @@ class spectral2_gui(QWidget):
 		day=self.cal.selectedDate().dayOfYear()
 		hour=self.time.time().hour()
 		minute=self.time.time().minute()
+		data=gpvdm_data()
+		data.spectral2.spectral2_day=int(day)
+		data.spectral2.spectral2_hour=int(hour)
+		data.spectral2.spectral2_minute=int(minute)
+		
+		data.spectral2.spectral2_lat=int(self.lat_edit.text())
 
-		inp_update_token_value("spectral2.inp","#spectral2_day",str(day))
-		inp_update_token_value("spectral2.inp","#spectral2_hour",str(hour))
-		inp_update_token_value("spectral2.inp","#spectral2_minute",str(minute))
-
-		inp_update_token_value("spectral2.inp","#spectral2_lat",self.lat_edit.text())
-		inp_update_token_value("spectral2.inp","#spectral2_aod",self.aod_edit.text())
-		inp_update_token_value("spectral2.inp","#spectral2_preasure",self.preasure_edit.text())
-		inp_update_token_value("spectral2.inp","#spectral2_water",self.water_edit.text())
-		inp_update_token_value("spectral2.inp","#spectral2_no2",self.no2_edit.text())
-
+		data.spectral2.spectral2_aod=float(self.aod_edit.text())
+		data.spectral2.spectral2_preasure=float(self.preasure_edit.text())
+		data.spectral2.spectral2_water=float(self.water_edit.text())
+		data.spectral2.spectral2_no2=float(self.no2_edit.text())
+		data.save()
 
 		s=spectral2()
 		s.calc()
@@ -174,6 +171,6 @@ class spectral2_gui(QWidget):
 
 		self.plot.data.append(s.Is)
 
-		self.plot.norm_data()
+		#self.plot.norm_data()
 		self.plot.do_plot()
 

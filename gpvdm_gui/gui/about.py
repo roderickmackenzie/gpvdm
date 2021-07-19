@@ -24,10 +24,8 @@
 
 
 import os
-from ver import ver
-from notice import notice
+from const_ver import const_ver
 from cal_path import get_image_file_path
-from cal_path import get_ui_path
 from cal_path import get_materials_path
 from cal_path import get_html_path
 import sys
@@ -38,11 +36,9 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import QSize
 from PyQt5.QtGui import QIcon
 
-from materials_io import find_materials
-from bibtex import bibtex
 from icon_lib import icon_get
 
-from cal_path import get_materials_path, get_default_material_path, get_device_lib_path, get_bin_path, get_plugins_path, get_exe_path, get_exe_command, get_exe_name
+from cal_path import get_device_lib_path, get_bin_path, get_plugins_path, get_exe_path, get_exe_command, get_exe_name
 from lock import get_lock
 
 class about_dlg(QDialog):
@@ -58,7 +54,7 @@ class about_dlg(QDialog):
 		self.image=QLabel()
 		self.written_by=QLabel(_("Written by Roderick MacKenzie 2012-2019, published under the GPL V2.0 license."))
 		self.written_by.setWordWrap(True)
-		self.ver=QLabel(_("Version ")+ver())
+		self.ver=QLabel(_("Version ")+const_ver())
 		pixmap = QPixmap(os.path.join(get_image_file_path(),"image.jpg"))
 		self.image.setPixmap(pixmap)
 		self.left_vbox.addWidget(self.gpvdm)
@@ -104,31 +100,21 @@ class about_dlg(QDialog):
 		self.translations=QTextBrowser()
 		text=""
 
-		text=text+"<big><b>Translations of gpvdm:</b></big>"
-		text=text+"<center>"
+		text=text+"Translations of gpvdm:"
+		text=text+"<br>"
+		text=text+"<br>"
+		text=text+"<b>Greek</b>: Dimitris Tsikritzis"
 		text=text+"<br>"
 		text=text+"<b>Chinese</b>: Liu Di (刘迪) and Zhao Chenyao (赵辰尧)"
 		text=text+"<br>"
-		text=text+"<br>"
-		text=text+"<b>French</b>: Alexis Prel"
-		text=text+"<br>"
-		text=text+"<br>"
-		text=text+"<b>Russian</b>: Timofey Golubev (Тимофей Голубев)"
+		text=text+"<b>Portuguese</b>: Luciano Azevedo Neves"
 		text=text+"<br>"
 		text=text+"<br>"
-		text=text+"<b>Your language</b>: Translator needed!"
-		text=text+"</center>"
-		text=text+"<br>"
-		text=text+"<br>"
-		text=text+"<big>Would you like gpvdm translated into your language?</big>"
-		text=text+"<br>"
-		text=text+"<big>Would you like your name in the credits of gpvdm?</big>"
-		text=text+"<br>"
-		text=text+"<br>"
+		text=text+"Help translate gpvdm into your language.."
 		text=text+"If so then please consider joining the gpvdm translation effort.  This is somthing you can put on your CV and it\'s a way to make sure that speakers of your language have access to high quality scientific tools for simulating solar cells."
 
 		self.translations.setText(text)
-		#self.right.addTab(self.translations,_("Translations"))
+		self.right.addTab(self.translations,_("Translations"))
 
 
 
@@ -171,34 +157,9 @@ class about_dlg(QDialog):
 		self.setLayout(self.main_vbox)
 		self.show()
 
-
-		#QDialog.__init__(self)
-
-		#self.materials.setIconSize(QSize(32,32))
-		#self.materials.setViewMode(QListView.ListMode)
-		#self.materials.setSpacing(8)
-		#self.materials.setWordWrap(True)
-		#gridsize=self.materials.size()
-		#gridsize.setWidth(80)
-		#gridsize.setHeight(40)
-
-		#self.materials.setGridSize(gridsize)
 		self.mat_icon = icon_get("organic_material")
-		#self.fill_store()
 
 	def callback_close(self):
 		self.close()
 		
-	def fill_store(self):
-		self.materials.clear()
-		all_files=find_materials()
-		for fl in all_files:
-			b=bibtex()
-			if b.load(os.path.join(get_materials_path(),fl,"mat.bib"))!=False:
-				text=b.get_text(html=False)
-				if text!="":
-					itm = QListWidgetItem(os.path.basename(fl)+" "+text)
-					itm.setIcon(self.mat_icon)
-					itm.setToolTip(text)
-					self.materials.addItem(itm)
 

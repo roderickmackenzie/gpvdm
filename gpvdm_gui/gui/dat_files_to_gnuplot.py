@@ -50,6 +50,11 @@ def dat_file_to_gnuplot_header(dat_file):
 		ret.append("#set logscale y")
 		ret.append("#set format y \"%2.0t{/Symbol \\264}10^{%L}\"")
 
+	if dat_file.logy==True:
+		ret.append("set logscale x")
+	else:
+		ret.append("#set logscale x")
+
 	return ret
 
 def dat_files_to_gnuplot(out_dir,data):
@@ -66,7 +71,7 @@ def dat_files_to_gnuplot(out_dir,data):
 
 	plotfile=[]
 	plotfile.append("set term postscript eps enhanced color solid \"Helvetica\" 25")
-	plotfile.extend(dat_file_to_gnuplot_header(data[i]))
+	plotfile.extend(dat_file_to_gnuplot_header(data[0]))
 
 	plotfile.append("plot \\")
 
@@ -76,7 +81,7 @@ def dat_files_to_gnuplot(out_dir,data):
 		file_path=os.path.join("data",str(i)+".txt")
 		file_path=d.file_name
 		line="'"+file_path+"' using ($1):($2) with lp title '"+d.key_text+"'"
-		print(i,len(data))
+		#print(i,len(data))
 		if i<len(data)-1:
 			line=line+",\\"
 
@@ -85,9 +90,12 @@ def dat_files_to_gnuplot(out_dir,data):
 	inp_save_lines_to_file(os.path.join(out_dir,"plot.plot"),plotfile)
 
 def dat_files_to_gnuplot_files(out_dir,data):
-	os.mkdir(out_dir)
+	if os.path.isdir(out_dir)==False:
+		os.mkdir(out_dir)
 	data_dir=os.path.join(out_dir,"data")
-	os.mkdir(data_dir)
+
+	if os.path.isdir(data_dir)==False:
+		os.mkdir(data_dir)
 
 	makefile=[]
 	makefile.append("main:")
@@ -106,7 +114,7 @@ def dat_files_to_gnuplot_files(out_dir,data):
 		d=data[i]
 		d.save_as_txt(os.path.join(data_dir,str(i)+".txt"))
 		file_path=os.path.join("data",str(i)+".txt")
-		file_path=d.file_name
+		#file_path=d.file_name
 		line="plot '"+file_path+"' using ($1):($2) with lp title '"+d.key_text+"'"
 
 		plotfile.append(line)

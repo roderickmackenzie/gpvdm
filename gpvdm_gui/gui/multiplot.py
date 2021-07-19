@@ -62,7 +62,11 @@ class multiplot:
 
 	def __init__(self,gnuplot=False,exp_data=""):
 		self.sims=[]
-		self.exp_data=exp_data
+		if type(exp_data)==str:
+			self.exp_data=[exp_data]
+		else:
+			self.exp_data=exp_data
+
 		self.gnuplot=gnuplot
 
 	def find_files(self,path):
@@ -119,10 +123,10 @@ class multiplot:
 						title=os.path.dirname(subtract_paths(self.path,full_path_name))
 						found_files.append("\'"+full_path_name+"' using ($1):($2) with l lw 3 title '"+title+"',\\")
 
-				if self.exp_data=="":
-					found_files[-1]=found_files[-1][:-1]
-				else:
-					found_files.append("\'"+self.exp_data+"' using ($1):($2) with p title '"+"Experimental"+"'")
+				for exp_file in self.exp_data:
+					found_files.append("\'"+exp_file+"' using ($1):($2) with p title '"+os.path.basename(exp_file)+"',\\")
+
+				found_files[-1]=found_files[-1][:-1]
 
 				out_file=os.path.join(path,cur_file)
 				out_file=os.path.splitext(out_file)[0]+".plot"

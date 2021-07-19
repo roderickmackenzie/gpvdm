@@ -29,22 +29,12 @@ import sys
 import os
 from cal_path import get_icon_path
 from win_lin import running_on_linux
-from inp import inp_get_token_value
-from str2bool import str2bool
-from inp import inp_load_file
-from cal_path import get_inp_file_path
 from cal_path import get_image_file_path
-from inp import inp
+from cal_path import gpvdm_paths
+from gpvdm_local import gpvdm_local
 
 try:
-	from PyQt5.QtWidgets import QMainWindow, QTextEdit, QAction,QApplication,QTableWidgetItem,QComboBox, QMessageBox, QDialog, QDialogButtonBox, QFileDialog
-	from PyQt5.QtWidgets import QGraphicsScene,QListWidgetItem,QListView,QLineEdit,QWidget,QHBoxLayout,QPushButton
-	from PyQt5.QtWidgets import QFileDialog
-	from PyQt5.uic import loadUi
-	from PyQt5.QtGui import QPixmap
-	from PyQt5.QtCore import QSize, Qt, QTimer
-	from PyQt5.QtCore import QPersistentModelIndex
-	from QComboBoxLang import QComboBoxLang
+	from PyQt5.QtCore import QSize, Qt
 	from PyQt5.QtGui import QPainter,QIcon
 except:
 	pass
@@ -67,51 +57,37 @@ class icon_data_base:
 		self.load()
 
 	def load(self):
-		config=inp()
-		config.load(os.path.join(get_inp_file_path(),"config.inp"))
-		use_theme=config.get_token("#gui_use_icon_theme")
-		if use_theme!=False:
-			use_theme=str2bool(use_theme)
-		else:
-			use_theme=False
+		data=gpvdm_local()
+		use_theme=data.gui_config.gui_use_icon_theme
 
 		path_16=os.path.join(get_image_file_path(),"16x16")
 		path_32=os.path.join(get_image_file_path(),"32x32")
 		path_64=os.path.join(get_image_file_path(),"64x64")
 
 		for f in os.listdir(path_32):
-			my_icon=icon()
-			my_icon.name.append(f.split(".")[0])
-			my_icon.file_name=f.split(".")[0]		#no ext
-			found=False
-			if running_on_linux()==True and use_theme==True:
-				image=QIcon()
-				if image.hasThemeIcon(my_icon.name[0])==True:
-					my_icon.icon16x16=image.fromTheme(my_icon.name[0])
-					my_icon.icon32x32=image.fromTheme(my_icon.name[0])
-					my_icon.icon64x64=image.fromTheme(my_icon.name[0])
-			if found==False:
-				my_icon.icon16x16=QIcon(os.path.join(path_16,my_icon.file_name+".png"))
-				my_icon.icon32x32=QIcon(os.path.join(path_32,my_icon.file_name+".png"))
-				my_icon.icon64x64=QIcon(os.path.join(path_64,my_icon.file_name+".png"))
+			if f.endswith("png"):
+				my_icon=icon()
+				my_icon.name.append(f.split(".")[0])
+				my_icon.file_name=f.split(".")[0]		#no ext
+				found=False
+				if running_on_linux()==True and use_theme==True:
+					image=QIcon()
+					if image.hasThemeIcon(my_icon.name[0])==True:
+						my_icon.icon16x16=image.fromTheme(my_icon.name[0])
+						my_icon.icon32x32=image.fromTheme(my_icon.name[0])
+						my_icon.icon64x64=image.fromTheme(my_icon.name[0])
+						found=True
+				if found==False:
+					my_icon.icon16x16=QIcon(os.path.join(path_16,my_icon.file_name+".png"))
+					my_icon.icon32x32=QIcon(os.path.join(path_32,my_icon.file_name+".png"))
+					my_icon.icon64x64=QIcon(os.path.join(path_64,my_icon.file_name+".png"))
 
-			self.db.append(my_icon)
+				self.db.append(my_icon)
 
-		f=inp()
-		f.load(os.path.join(get_inp_file_path(),"icons.inp"),archive="base.gpvdm")
-		if f.lines==False:
-			f.load(os.path.join(get_inp_file_path(),"icons.inp"),archive="sim.gpvdm")
-
-		f.reset()
-		while(1):
-			token,val=f.get_next_token_and_val()
-
-			if token=="#end" or token==False:
-				break
-
+		for line in data.icon_lib.var_list:
 			for i in range(0,len(self.db)):
-				if val == self.db[i].file_name:
-					self.db[i].name.append(token[1:])
+				if line[1] == self.db[i].file_name:
+					self.db[i].name.append(line[0])
 
 
 	def dump(self):
@@ -135,6 +111,9 @@ def icon_init_db():
 	global icon_db
 	icon_db=icon_data_base()
 
+def icon_get_db():
+	global icon_db
+	return icon_db
 
 def icon_get(token,size=-1,sub_icon=None):
 	global icon_db

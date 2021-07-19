@@ -42,7 +42,7 @@ from PyQt5.QtGui import QIcon
 
 
 #cal_path
-from cal_path import get_bib_path
+from cal_path import gpvdm_paths
 from PyQt5.QtCore import pyqtSignal
 
 from epitaxy import get_epi
@@ -64,13 +64,13 @@ class cite_me(QLabel):
 			self.setWordWrap(True)
 			self.setMinimumWidth(350)
 			bib=bibtex()
-			bib.load(os.path.join(get_bib_path(),"cite.bib"))
+			bib.load(os.path.join(gpvdm_paths.get_bib_path(),"cite.bib"))
 
 			number=sum(ord(c) for c in get_lock().get_uid()) %10
 
 
 			if number<len(bib.refs):
-				text=bib.refs[number].short_cite()
+				text=bib.refs[number].bib_short_cite()
 				self.setText("<b>Please cite,</b> "+text+" when using gpvdm in your work.  And any 2 other papers listed <a href=\"https://scholar.google.co.uk/citations?user=jgQqfLsAAAAJ&hl=en\">here.</a>")
 		except:
 			pass

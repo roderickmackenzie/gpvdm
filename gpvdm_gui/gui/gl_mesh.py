@@ -49,14 +49,15 @@ from gl_base_object import gl_base_object
 from gl_scale import scale_get_xmul
 from gl_scale import scale_get_ymul
 from gl_scale import scale_get_zmul
-
+from gpvdm_json import gpvdm_data
 class gl_mesh():
 	def draw_mesh(self):
 		x=[]
 		y=[]
 		z=[]
+		data=gpvdm_data()
 		epi=get_epi()
-		device_start=epi.get_device_start()
+		device_start=epi.get_device_start(data)
 		mesh=get_mesh()
 
 		y,temp=mesh.y.calculate_points()
@@ -75,8 +76,9 @@ class gl_mesh():
 		x=[]
 		y=[]
 		z=[]
+		data=gpvdm_data()
 		epi=get_epi()
-		device_start=epi.get_device_start()
+		device_start=epi.get_device_start(data)
 		mesh=get_mesh()
 
 		y,temp=mesh.y.calculate_points()

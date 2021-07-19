@@ -48,87 +48,147 @@ try:
 except:
 	pass
 
-
+def clamp(val):
+	if val>1.0:
+		val=1.0
+	return val
 
 class gl_graph():
 
 	def __init__(self):
 		self.frac_max=1.0
 		self.frac_min=0.0
+		self.graph_data=[]
 
 	def draw_graph(self):
+
+		for data in self.graph_data:
+			if data.valid_data==True:
+				if data.type=="3d":
+					if self.view.render_plot==True:
+						self.draw_graph_3d(data)
+				elif data.type=="poly":
+					self.draw_graph_rays(data)
+
+	def draw_graph_rays(self,data):
+		if data.plotted==True:
+			return
+
+		for t in data.data:
+			z=gl_scale.project_m2screen_z(t.xyz0.z)
+			dz=gl_scale.project_m2screen_z(t.xyz1.z)-gl_scale.project_m2screen_z(t.xyz0.z)
+
+			x=gl_scale.project_m2screen_x(t.xyz0.x)
+			dx=gl_scale.project_m2screen_x(t.xyz1.x)-gl_scale.project_m2screen_x(t.xyz0.x)
+
+			y=gl_scale.project_m2screen_y(t.xyz0.y)
+			dy=gl_scale.project_m2screen_y(t.xyz1.y)-gl_scale.project_m2screen_y(t.xyz0.y)
+
+			self.gl_array_lines.append([x, 			y, 			z])
+			self.gl_array_colors.append([data.r,data.g,data.b,1.0])
+			self.gl_array_lines.append([x+dx, 			y+dy, 			z+dz])
+			self.gl_array_colors.append([data.r,data.g,data.b,1.0])
+		data.plotted=True
+
+	def draw_graph_3d(self,data):
 		z=0
-		max_y_pos=int(len(self.graph_data.y_scale)*self.frac_max)
-		min_y_pos=int(len(self.graph_data.y_scale)*self.frac_min)
+		max_y_pos=int(len(data.y_scale)*self.frac_max)
+		min_y_pos=int(len(data.y_scale)*self.frac_min)
+		#print(max_y_pos,min_y_pos)
+
 		if min_y_pos<0:
 			min_y_pos=0
 
-		if max_y_pos>=len(self.graph_data.y_scale):
-			max_y_pos=len(self.graph_data.y_scale)-1
+		if max_y_pos>=len(data.y_scale):
+			max_y_pos=len(data.y_scale)-1
 
 		if min_y_pos>=max_y_pos:
 			min_y_pos=max_y_pos-1
 
 		#print(min_y_pos,max_y_pos)
-		#for z in range(0,len(self.graph_data.z_scale)):
-		my_max,my_min=dat_file_max_min(self.graph_data)
+		#for z in range(0,len(data.z_scale)):
+		my_max,my_min=dat_file_max_min(data)
+		my_max=my_max*0.7
 
-		if len(self.graph_data.z_scale)==1:
+		if len(data.z_scale)==1:
 			zi_list=[0]
 		else:
-			zi_list=[0,len(self.graph_data.z_scale)-1]
+			zi_list=[0,len(data.z_scale)-1]
 
 		glBegin(GL_QUADS)
 
-		if len(self.graph_data.z_scale)>1:
-			dz=self.graph_data.z_scale[1]-self.graph_data.z_scale[0]
+		if len(data.z_scale)>1:
+			dz=data.z_scale[1]-data.z_scale[0]
 		else:
 			dz=0.0
 
-		dx=self.graph_data.x_scale[1]-self.graph_data.x_scale[0]
-		dy=self.graph_data.y_scale[1]-self.graph_data.y_scale[0]
-
+		dx=data.x_scale[1]-data.x_scale[0]
+		dy=data.y_scale[1]-data.y_scale[0]
+		#for yi in range(0,len(data.y_scale)):
+		#	print(data.y_scale[yi])
+		#print("")
 		#front,back
+		zi=0
+		yi=0
 		for zi in zi_list:
-			for xi in range(0,len(self.graph_data.x_scale)):
-				for yi in range(min_y_pos,max_y_pos):
-					x0=gl_scale.project_m2screen_x(self.graph_data.x_scale[xi])
-					y0=gl_scale.project_m2screen_y(self.graph_data.y_scale[yi])
-					z0=gl_scale.project_m2screen_z(self.graph_data.z_scale[zi])
-					x1=gl_scale.project_m2screen_x(self.graph_data.x_scale[xi]+dx)
-					y1=gl_scale.project_m2screen_y(self.graph_data.y_scale[yi]+dy)
-					z1=gl_scale.project_m2screen_z(self.graph_data.z_scale[zi])
-					if self.graph_data.data[zi][xi][yi]!=0.0:
-						r,g,b=val_to_rgb((self.graph_data.data[zi][xi][yi]-my_min)/(my_max-my_min),grey=True)
+			#for xi in range(0,len(data.x_scale)):
+			if len(zi_list)>1:
+				z0=gl_scale.project_m2screen_z(data.z_scale[zi])
+				z1=gl_scale.project_m2screen_z(data.z_scale[zi])
+			else:
+				z0=gl_scale.project_m2screen_z(data.z_scale[0])
+				z1=gl_scale.project_m2screen_z(data.z_scale[0])
+				z0=z0+z0*0.1
+				z1=z1+z1*0.1
 
-						#glColor4f(r,g,b, 1.0)
-						col = [r, g, b, 1.0]
-						glMaterialfv(GL_FRONT, GL_DIFFUSE, col)
+			for yi in range(0,len(data.y_scale)-1):
+				for xi in range(0,len(data.x_scale)-1):
+					x0=gl_scale.project_m2screen_x(data.x_scale[xi])
+					y0=gl_scale.project_m2screen_y(data.y_scale[yi])
+					x1=gl_scale.project_m2screen_x(data.x_scale[xi+1])
+					y1=gl_scale.project_m2screen_y(data.y_scale[yi+1])
 
-						glVertex3f(x0, y0, z0)
-						glVertex3f(x1, y0, z0)
-						glVertex3f(x1, y1, z0)
-						glVertex3f(x0, y1, z0) 
+					if data.r==None:
+						d0=data.data[zi][xi][yi]
+						d1=data.data[zi][xi][yi+1]
+						r,g,b=val_to_rgb(((d0+d1)/2.0-my_min)/(my_max-my_min),grey=True)
+					else:
+						r=clamp(data.r*(data.data[zi][xi][yi]-my_min)/(my_max-my_min))
+						g=clamp(data.g*(data.data[zi][xi][yi]-my_min)/(my_max-my_min))
+						b=clamp(data.b*(data.data[zi][xi][yi]-my_min)/(my_max-my_min))
 
-		if len(self.graph_data.z_scale)==1:
+					glColor4f(r,g,b, 1.0)
+
+					#print(data.x_scale[xi],data.y_scale[yi])
+					glVertex3f(x0, y0, z0)
+					glVertex3f(x1, y0, z0)
+					glVertex3f(x1, y1, z0)
+					glVertex3f(x0, y1, z0)
+
+
+		if len(data.z_scale)==1:
 			glEnd()
+			#print("exit here")
 			return
  
 		#left,right
-		for xi in [0, len(self.graph_data.x_scale)-1]:
-			for zi in range(0,len(self.graph_data.z_scale)):
+		for xi in [0, len(data.x_scale)-1]:
+			for zi in range(0,len(data.z_scale)):
 				for yi in range(min_y_pos,max_y_pos):
-					x0=gl_scale.project_m2screen_x(self.graph_data.x_scale[xi])
-					y0=gl_scale.project_m2screen_y(self.graph_data.y_scale[yi])
-					z0=gl_scale.project_m2screen_z(self.graph_data.z_scale[zi])
-					x1=gl_scale.project_m2screen_x(self.graph_data.x_scale[xi])
-					y1=gl_scale.project_m2screen_y(self.graph_data.y_scale[yi]+dy)
-					z1=gl_scale.project_m2screen_z(self.graph_data.z_scale[zi]+dz)
-					r,g,b=val_to_rgb((self.graph_data.data[zi][xi][yi]-my_min)/(my_max-my_min),grey=True)
+					x0=gl_scale.project_m2screen_x(data.x_scale[xi])
+					y0=gl_scale.project_m2screen_y(data.y_scale[yi])
+					z0=gl_scale.project_m2screen_z(data.z_scale[zi])
+					x1=gl_scale.project_m2screen_x(data.x_scale[xi])
+					y1=gl_scale.project_m2screen_y(data.y_scale[yi]+dy)
+					z1=gl_scale.project_m2screen_z(data.z_scale[zi]+dz)
+					if data.r==None:
+						r,g,b=val_to_rgb((data.data[zi][xi][yi]-my_min)/(my_max-my_min),grey=True)
+					else:
+						r=clamp(data.r*(data.data[zi][xi][yi]-my_min)/(my_max-my_min))
+						g=clamp(data.g*(data.data[zi][xi][yi]-my_min)/(my_max-my_min))
+						b=clamp(data.b*(data.data[zi][xi][yi]-my_min)/(my_max-my_min))
 
-					#glColor4f(r,g,b, 1.0)
-					col = [r, g, b, 1.0]
-					glMaterialfv(GL_FRONT, GL_DIFFUSE, col)
+					glColor4f(r,g,b, 1.0)
 
 					glVertex3f(x0, y0, z0)
 					glVertex3f(x0, y1, z0)
@@ -138,20 +198,22 @@ class gl_graph():
 
 		#top,bottom
 		for yi in [min_y_pos,max_y_pos-1]:
-			for zi in range(0,len(self.graph_data.z_scale)):
-				for xi in range(0,len(self.graph_data.x_scale)):
-					x0=gl_scale.project_m2screen_x(self.graph_data.x_scale[xi])
-					y0=gl_scale.project_m2screen_y(self.graph_data.y_scale[yi])
-					z0=gl_scale.project_m2screen_z(self.graph_data.z_scale[zi])
-					x1=gl_scale.project_m2screen_x(self.graph_data.x_scale[xi]+dx)
-					y1=gl_scale.project_m2screen_y(self.graph_data.y_scale[yi])
-					z1=gl_scale.project_m2screen_z(self.graph_data.z_scale[zi]+dz)
+			for zi in range(0,len(data.z_scale)):
+				for xi in range(0,len(data.x_scale)):
+					x0=gl_scale.project_m2screen_x(data.x_scale[xi])
+					y0=gl_scale.project_m2screen_y(data.y_scale[yi])
+					z0=gl_scale.project_m2screen_z(data.z_scale[zi])
+					x1=gl_scale.project_m2screen_x(data.x_scale[xi]+dx)
+					y1=gl_scale.project_m2screen_y(data.y_scale[yi])
+					z1=gl_scale.project_m2screen_z(data.z_scale[zi]+dz)
+					if data.r==None:
+						r,g,b=val_to_rgb((data.data[zi][xi][yi]-my_min)/(my_max-my_min),grey=True)
+					else:
+						r=clamp(data.r*(data.data[zi][xi][yi]-my_min)/(my_max-my_min))
+						g=clamp(data.g*(data.data[zi][xi][yi]-my_min)/(my_max-my_min))
+						b=clamp(data.b*(data.data[zi][xi][yi]-my_min)/(my_max-my_min))
 
-					r,g,b=val_to_rgb((self.graph_data.data[zi][xi][yi]-my_min)/(my_max-my_min),grey=True)
-
-					#glColor4f(r,g,b, 1.0)
-					col = [r, g, b, 1.0]
-					glMaterialfv(GL_FRONT, GL_DIFFUSE, col)
+					glColor4f(r,g,b, 1.0)
 
 					glVertex3f(x0, y0, z0)
 					glVertex3f(x1, y0, z0)

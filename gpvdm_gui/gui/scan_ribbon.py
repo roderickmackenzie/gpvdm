@@ -28,11 +28,6 @@
 
 import os
 
-from dump_io import dump_io
-from tb_item_sim_mode import tb_item_sim_mode
-from tb_item_sun import tb_item_sun
-
-from code_ctrl import enable_betafeatures
 from cal_path import get_css_path
 
 #qt
@@ -48,7 +43,7 @@ from about import about_dlg
 
 from util import wrap_text
 
-from code_ctrl import enable_betafeatures
+from gpvdm_local import gpvdm_local
 
 from ribbon_base import ribbon_base
 from play import play
@@ -162,11 +157,11 @@ class scan_ribbon(ribbon_base):
 
 
 		w=self.advanced()
-		if enable_betafeatures()==True:
+		if gpvdm_local().gui_config.enable_betafeatures==True:
 			self.addTab(w,_("Advanced"))
 
 		w=self.ml()
-		if enable_betafeatures()==True:
+		if gpvdm_local().gui_config.enable_betafeatures==True:
 			self.addTab(w,_("ML"))
 
 		sheet=self.readStyleSheet(os.path.join(get_css_path(),"style.css"))

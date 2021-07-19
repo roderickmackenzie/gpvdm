@@ -28,13 +28,6 @@
 import os
 from gui_util import dlg_get_text
 import webbrowser
-from code_ctrl import enable_betafeatures
-from inp import inp_update_token_value
-from util_zip import zip_lsdir
-from inp import inp
-from inp import inp_copy_file
-from inp import inp_remove_file
-from util import strextract_interger
 from global_objects import global_object_get
 from icon_lib import icon_get
 from global_objects import global_object_register
@@ -47,24 +40,27 @@ from PyQt5.QtWidgets import QWidget,QVBoxLayout,QToolBar,QSizePolicy,QAction,QTa
 from PyQt5.QtGui import QPainter,QIcon
 
 #window
-from experiment_tab import experiment_tab
+from time_domain_experiment_tab import time_domain_experiment_tab
+from fxexperiment_tab import fxexperiment_tab
+from cvexperiment_tab import cvexperiment_tab
+from jvexperiment_tab import jvexperiment_tab
+from plexperiment_tab import plexperiment_tab
+from cluster_tab import cluster_tab
+
 from QHTabBar import QHTabBar
 from gui_util import yes_no_dlg
 from PyQt5.QtCore import pyqtSignal
 from util import wrap_text
 from QWidgetSavePos import QWidgetSavePos
-from cal_path import get_sim_path
-
-from inp import inp_get_token_value
-from experiment_util import experiment_new_filename
-
 from css import css_apply
 
 from progress_class import progress_class
 from process_events import process_events
 
-from timedomain_ribbon import timedomain_ribbon
-
+from ribbon_experiment import ribbon_experiment
+from gpvdm_json import gpvdm_data
+import copy
+from global_objects import global_object_run
 
 class experiment(QWidgetSavePos):
 
@@ -78,28 +74,13 @@ class experiment(QWidgetSavePos):
 		webbrowser.open('http://www.gpvdm.com/man/index.html')
 
 
-	def callback_add_page(self,file_name):
-		self.add_page(file_name)
-		self.changed.emit()
-
 	def callback_save(self):
 		tab = self.notebook.currentWidget()
 		tab.image_save()
 
-	def callback_changed(self):
-		self.changed.emit()
-
 
 	def remove_invalid(self,input_name):
 		return input_name.replace (" ", "_")
-
-	def callback_laser_start_time(self):
-		tab = self.notebook.currentWidget()
-		tab.tmesh.callback_laser()
-
-	def callback_start_time(self):
-		tab = self.notebook.currentWidget()
-		tab.tmesh.callback_start_time()
 
 
 	def load_tabs(self):
@@ -109,84 +90,145 @@ class experiment(QWidgetSavePos):
 		progress_window.start()
 
 		process_events()
+		i=0
+		data=self.get_json_obj()
+		for sim in data.segments:
+			tab=eval(self.name_of_tab_class+"(sim)")
+			#tab=time_domain_experiment_tab(sim)
+			tab.uid=sim.id
+			self.notebook.addTab(tab,sim.english_name)
 
-		file_list=zip_lsdir(os.path.join(get_sim_path(),"sim.gpvdm"))
-		files=[]
-		for i in range(0,len(file_list)):
-			if file_list[i].startswith("pulse") and file_list[i].endswith(".inp"):
-				name=inp_get_token_value(file_list[i], "#sim_menu_name")
-				files.append([name,file_list[i]])
-
-		files.sort()
-
-		for i in range(0,len(files)):
-			self.add_page(files[i][1])
-
-			progress_window.set_fraction(float(i)/float(len(files)))
-			progress_window.set_text(_("Loading")+" "+files[i][0])
+			progress_window.set_fraction(float(i)/float(len(data.segments)))
+			progress_window.set_text(_("Loading")+" "+sim.english_name)
 			process_events()
+			i=i+1
 
 		progress_window.stop()
+		self.update_interface()
 
 	def clear_pages(self):
 		self.notebook.clear()
 
-	def add_page(self,filename):
-		name=inp_get_token_value(filename, "#sim_menu_name")
-		tab=experiment_tab(int(filename[5:-4]))
-		self.notebook.addTab(tab,name.split("@")[0])
-
-	def switch_page(self):
-		tab = self.notebook.currentWidget()
-		self.ribbon.tb_lasers.update("pulse"+str(tab.tmesh.index)+".inp")
-
-
-	def __init__(self):
-		QWidgetSavePos.__init__(self,"experiment")
+	def __init__(self,window_save_name="time_domain_experiment", window_title=_("Time domain experiment window"),name_of_tab_class="time_domain_experiment_tab",json_search_path=None,icon="icon"):
+		QWidgetSavePos.__init__(self,window_save_name)
 		self.main_vbox = QVBoxLayout()
-
-
+		self.json_search_path=json_search_path
+		self.name_of_tab_class=name_of_tab_class
 		self.setMinimumSize(1200, 700)
-		self.setWindowTitle(_("Time domain experiment window")+" (https://www.gpvdm.com)")
-		self.setWindowIcon(icon_get("icon"))
+		self.setWindowTitle(window_title+" (https://www.gpvdm.com)")
+		self.setWindowIcon(icon_get(icon))
 
-		self.ribbon=timedomain_ribbon()
+		self.ribbon=ribbon_experiment()
 
-		self.ribbon.tb_save.triggered.connect(self.callback_save)
+		#self.ribbon.tb_save.triggered.connect(self.callback_save)
 
-		self.ribbon.order_widget.changed.connect(self.callback_changed)
-		self.ribbon.order_widget.added.connect(self.callback_add_page)
+		#self.ribbon.tb_laser_start_time.triggered.connect(self.callback_laser_start_time)
 
-		self.ribbon.tb_laser_start_time.triggered.connect(self.callback_laser_start_time)
+		#self.ribbon.tb_start.triggered.connect(self.callback_start_time)
 
-		self.ribbon.tb_start.triggered.connect(self.callback_start_time)
-
+		self.ribbon.tb_clone.triggered.connect(self.callback_clone_page)
+		self.ribbon.tb_rename.triggered.connect(self.callback_rename_page)
+		self.ribbon.tb_delete.triggered.connect(self.callback_delete_page)
+		self.ribbon.tb_new.triggered.connect(self.callback_add_page)
 
 		self.main_vbox.addWidget(self.ribbon)
 
 
 		self.notebook = QTabWidget()
 		css_apply(self.notebook ,"style_h.css")
-
-		self.notebook.setTabBar(QHTabBar())
+		self.tab_bar=QHTabBar()
+		self.notebook.setTabBar(self.tab_bar)
 		self.notebook.setTabPosition(QTabWidget.West)
 		self.notebook.setMovable(True)
-		self.ribbon.order_widget.notebook_pointer=self.notebook
 
 		self.ribbon.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
 		self.notebook.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
-		self.load_tabs()
-
 		self.main_vbox.addWidget(self.notebook)
-
 
 		self.status_bar=QStatusBar()
 		self.main_vbox.addWidget(self.status_bar)
 
-
 		self.setLayout(self.main_vbox)
 
-		self.notebook.currentChanged.connect(self.switch_page)
-		self.switch_page()
+		self.load_tabs()
+
+		self.notebook.currentChanged.connect(self.update_interface)
+
+
+	def callback_rename_page(self):
+		tab = self.notebook.currentWidget()
+		data=gpvdm_data()
+		new_sim_name=dlg_get_text( _("Rename the experiment:"), tab.data.english_name,"rename.png")
+
+		new_sim_name=new_sim_name.ret
+
+		if new_sim_name!=None:
+			
+			tab.data.english_name=new_sim_name
+			self.notebook.setTabText(self.notebook.currentIndex(), new_sim_name)
+			data.save()
+			global_object_run("ribbon_sim_mode_update")
+
+	def callback_clone_page(self):
+		tab = self.notebook.currentWidget()
+		data=gpvdm_data()
+		new_sim_name=dlg_get_text( _("Clone the experiment:"), tab.data.english_name+"_new","clone.png")
+
+		new_sim_name=new_sim_name.ret
+
+		if new_sim_name!=None:
+			
+			a=copy.deepcopy(tab.data)
+			a.english_name=new_sim_name
+			data=self.get_json_obj()
+			data.segments.append(a)
+			tab=eval(self.name_of_tab_class+"(data.segments[-1])")
+			#tab=time_domain_experiment_tab(data.segments[-1])
+			self.notebook.addTab(tab,new_sim_name)
+			data.save()
+			global_object_run("ribbon_sim_mode_update")
+
+	def callback_delete_page(self):
+		data=self.get_json_obj()
+		if len(data.segments)>1:
+			tab = self.notebook.currentWidget()
+			obj=data.find_object_by_id(tab.uid)
+			response=yes_no_dlg(self,_("Are you sure you want to delete the experiment: ")+tab.data.english_name)
+			if response == True:
+				index=self.notebook.currentIndex()
+				data.segments.remove(obj)
+				self.notebook.removeTab(index)
+				gpvdm_data().save()
+				global_object_run("ribbon_sim_mode_update")
+
+	def callback_add_page(self):
+		tab = self.notebook.currentWidget()
+		data=gpvdm_data()
+		new_sim_name=dlg_get_text( _("Make a new experiment:"), tab.data.english_name+"_new","document-new.png")
+
+		new_sim_name=new_sim_name.ret
+
+		if new_sim_name!=None:
+			
+			a=copy.deepcopy(tab.data)
+			a.english_name=new_sim_name
+			data=self.get_json_obj()
+			data.segments.append(a)
+			tab=eval(self.name_of_tab_class+"(data.segments[-1])")
+			#tab=time_domain_experiment_tab(data.segments[-1])
+			self.notebook.addTab(tab,new_sim_name)
+			data.save()
+			global_object_run("ribbon_sim_mode_update")
+
+	def update_interface(self):
+		data=self.get_json_obj()
+		tab = self.notebook.currentWidget()
+		self.status_bar.showMessage(tab.data.english_name+", segment"+str(data.segments.index(tab.data)))
+		self.tab_bar.obj_search_path=self.json_search_path
+		self.tab_bar.obj_id=tab.uid
+
+
+	def get_json_obj(self):
+		return eval(self.json_search_path)
 

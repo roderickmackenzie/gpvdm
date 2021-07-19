@@ -31,11 +31,10 @@ import os
 from plot_io import get_plot_file_info
 
 #qt
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QIcon, QColor, QPixmap
 from PyQt5.QtCore import QSize, Qt, QTimer
 from PyQt5.uic import loadUi
 from PyQt5.QtWidgets import QColorDialog,QGraphicsScene,QListWidgetItem,QListView,QLineEdit,QWidget,QHBoxLayout,QPushButton,QLineEdit
-from PyQt5.QtGui import QPixmap
 
 #cal_path
 from cal_path import get_ui_path
@@ -52,11 +51,12 @@ class QColorPicker(QWidget):
 
 	changed = pyqtSignal()
 	
-	def __init__(self,r,g,b):
+	def __init__(self,r,g,b,alpha):
 		QWidget.__init__(self)
 		self.r=r
 		self.g=g
 		self.b=b
+		self.alpha=alpha
 		self.hbox=QHBoxLayout()
 		self.edit=QLineEdit()
 		self.button=QPushButton()
@@ -78,12 +78,17 @@ class QColorPicker(QWidget):
 		self.edit.setStyleSheet("QLineEdit { border: none;  background-color: rgb(%d,%d,%d)  }" % rgb);
 		
 	def callback_button_click(self):
-		col = QColorDialog.getColor(Qt.white, self, options=QColorDialog.DontUseNativeDialog)
+		col = QColorDialog()
+		col.setCurrentColor(QColor(int(self.r*255),int(self.g*255),int(self.b*255)))
+		#col.setCurrentColor(Qt.red)
+		ret=col.getColor(Qt.white, self, options=QColorDialog.DontUseNativeDialog and QColorDialog.DontUseNativeDialog)
+		#col.setOption(QColorDialog::ShowAlphaChannel)
 		#col.setOption(QColorDialog.DontUseNativeDialog)
-		if col.isValid():
-			self.r=col.red()/255
-			self.g=col.green()/255
-			self.b=col.blue()/255
+		if ret.isValid():
+			self.r=ret.red()/255
+			self.g=ret.green()/255
+			self.b=ret.blue()/255
+			#self.alpha=col.alpha()/255
 			self.update_color()
 			self.changed.emit()
 

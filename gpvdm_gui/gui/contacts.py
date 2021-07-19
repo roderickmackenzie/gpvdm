@@ -51,21 +51,20 @@ from error_dlg import error_dlg
 from global_objects import global_object_run
 
 from QComboBoxLang import QComboBoxLang
-from QComboBoxShape import QComboBoxShape
 
 from QWidgetSavePos import QWidgetSavePos
 
 from contacts_boundary import contacts_boundary
 from gpvdm_tab import gpvdm_tab
 
-from file_watch import get_watch
+#from file_watch import get_watch
 
 from mesh import get_mesh
 from energy_to_charge import energy_to_charge
 
 from gpvdm_select_material import gpvdm_select_material
 from gpvdm_applied_voltage import gpvdm_applied_voltage
-from newton_solver import newton_solver_get_type
+from gpvdm_json import gpvdm_data
 
 class contacts_window(QWidgetSavePos):
 
@@ -85,37 +84,37 @@ class contacts_window(QWidgetSavePos):
 				float(self.tab.get_value(i, 4))
 				float(self.tab.get_value(i, 5))
 				#float(self.tab.get_value(i, 6))
-				float(self.tab.get_value(i, 7))
+				#float(self.tab.get_value(i, 7))
 			except:
 				return False
 
-		if self.tab.rowCount()!=len(self.contacts.contacts):
+		if self.tab.rowCount()!=len(self.contacts.segments):
 			print("don't match")
 			return False
 
 		for i in range(0,self.tab.rowCount()):
-			self.contacts.contacts[i].name=self.tab.get_value(i, 0)
-			self.contacts.contacts[i].position=self.tab.get_value(i, 1)
-			self.contacts.contacts[i].applied_voltage_type=self.tab.get_value(i, 2).split(":")[0]
-			self.contacts.contacts[i].applied_voltage=self.tab.get_value(i, 2).split(":")[1]
+			self.contacts.segments[i].shape_name=self.tab.get_value(i, 0)
+			self.contacts.segments[i].position=self.tab.get_value(i, 1)
+			self.contacts.segments[i].applied_voltage_type=self.tab.get_value(i, 2).split(":")[0]
+			self.contacts.segments[i].applied_voltage=self.tab.get_value(i, 2).split(":")[1]
 			#print(self.tab.get_value(i, 2))
 
-			if self.contacts.contacts[i].position=="top" or self.contacts.contacts[i].position=="bottom":
-				self.contacts.contacts[i].x0=float(self.tab.get_value(i, 3))
-				self.contacts.contacts[i].dx=float(self.tab.get_value(i, 4))
+			if self.contacts.segments[i].position=="top" or self.contacts.segments[i].position=="bottom":
+				self.contacts.segments[i].x0=float(self.tab.get_value(i, 3))
+				self.contacts.segments[i].dx=float(self.tab.get_value(i, 4))
 			else:
-				self.contacts.contacts[i].y0=float(self.tab.get_value(i, 3))
-				self.contacts.contacts[i].dy=float(self.tab.get_value(i, 4))
+				self.contacts.segments[i].y0=float(self.tab.get_value(i, 3))
+				self.contacts.segments[i].dy=float(self.tab.get_value(i, 4))
 
-			self.contacts.contacts[i].contact_resistance_sq=self.tab.get_value(i, 5)
-			self.contacts.contacts[i].shunt_resistance_sq=self.tab.get_value(i, 6)
-			self.contacts.contacts[i].np=float(self.tab.get_value(i, 7))
-			self.contacts.contacts[i].charge_type=self.tab.get_value(i, 8)
+			self.contacts.segments[i].contact_resistance_sq=self.tab.get_value(i, 5)
+			self.contacts.segments[i].shunt_resistance_sq=self.tab.get_value(i, 6)
+			#self.contacts.segments[i].np=float(self.tab.get_value(i, 7))
+			self.contacts.segments[i].charge_type=self.tab.get_value(i, 8)
 
 
-			self.contacts.contacts[i].ve0=self.tab.get_value(i, 9)
-			self.contacts.contacts[i].vh0=self.tab.get_value(i, 10)
-			self.contacts.contacts[i].physical_model=self.tab.get_value(i, 11)
+			self.contacts.segments[i].ve0=self.tab.get_value(i, 9)
+			self.contacts.segments[i].vh0=self.tab.get_value(i, 10)
+			self.contacts.segments[i].physical_model=self.tab.get_value(i, 11)
 
 		return True
 
@@ -127,17 +126,17 @@ class contacts_window(QWidgetSavePos):
 		self.tab.move_up()
 		self.save()
 
-	def set_row(self,pos,name,position,applied_voltage_type, applied_voltage, start, width, contact_resistance_sq, shunt_resistance_sq, np, charge_type,ve0,vh0,type,id):
+	def set_row(self,pos,name,position,applied_voltage_type, applied_voltage, start, width, contact_resistance_sq, shunt_resistance_sq, contact_id, charge_type,ve0,vh0,type,id):
 		self.tab.blockSignals(True)
 
 		self.tab.set_value(pos,0,name)
 		self.tab.set_value(pos,1,position.lower())
-		self.tab.set_value(pos,2,applied_voltage_type+":"+applied_voltage)
+		self.tab.set_value(pos,2,str(applied_voltage_type)+":"+str(applied_voltage))
 		self.tab.set_value(pos,3,start)
 		self.tab.set_value(pos,4,width)
 		self.tab.set_value(pos,5,contact_resistance_sq)
 		self.tab.set_value(pos,6,shunt_resistance_sq)
-		self.tab.set_value(pos,7,np)
+		self.tab.set_value(pos,7,contact_id)
 		self.tab.set_value(pos,8, charge_type.lower())
 		self.tab.set_value(pos,9,ve0)
 		self.tab.set_value(pos,10,vh0)
@@ -183,7 +182,6 @@ class contacts_window(QWidgetSavePos):
 		energy_to_charge_box=energy_to_charge()
 		self.tab.setCellWidget(pos,7, energy_to_charge_box)
 		self.tab.setColumnWidth(7, 150)
-		energy_to_charge_box.changed.connect(self.save)
 
 		#self.tab.setItem(pos,7,QTableWidgetItem(""))		
 
@@ -213,13 +211,11 @@ class contacts_window(QWidgetSavePos):
 		return pos
 
 	def on_add_clicked(self, button):
-
+		data=gpvdm_data()
 		pos=self.add_row()
-
-		new_shape_file=self.epi.gen_new_electrical_file("shape")
-		c=self.contacts.insert(pos,new_shape_file)
-
-		self.set_row(pos,c.name,c.position,c.applied_voltage_type,c.applied_voltage,str(c.x0),str(c.dx),str(c.contact_resistance_sq),c.shunt_resistance_sq,str(c.np),str(c.charge_type),str(c.ve0),str(c.vh0),str(c.physical_model),c.id)
+		c=self.contacts.insert(pos)
+		data.save()
+		self.set_row(pos,c.shape_name,c.position,c.applied_voltage_type,c.applied_voltage,str(c.x0),str(c.dx),str(c.contact_resistance_sq),c.shunt_resistance_sq,str(c.id),str(c.charge_type),str(c.ve0),str(c.vh0),str(c.physical_model),c.id)
 		#print(pos,len(self.contacts))
 		self.save_and_redraw()
 
@@ -235,6 +231,7 @@ class contacts_window(QWidgetSavePos):
 		self.save_and_redraw()
 
 	def show_hide_cols(self):
+		data=gpvdm_data()
 		schottky=False
 		for i in range(0,self.tab.rowCount()):
 			if self.tab.get_value(i, 11)=="schottky":
@@ -248,7 +245,7 @@ class contacts_window(QWidgetSavePos):
 			self.tab.setColumnHidden(9,True)
 			self.tab.setColumnHidden(10,True)
 
-		if newton_solver_get_type()=="newton_simple":
+		if data.electrical_solver.solver_type=="circuit":
 			self.tab.setColumnHidden(7,True)
 			self.tab.setColumnHidden(8,True)
 			self.tab.setColumnHidden(11,True)
@@ -258,20 +255,18 @@ class contacts_window(QWidgetSavePos):
 			self.tab.setColumnHidden(11,False)
 
 	def save_and_redraw(self):
-		#print("save and redraw called")
 		self.save()
 		self.changed.emit()
 		global_object_run("gl_force_redraw")
 
 	def save(self):
-		print("save now")
 		if self.update_contact_db()==True:
 			for i in range(0,self.tab.rowCount()):
-				self.tab.cellWidget(i,7).position=self.tab.get_value(i, 1)
-				self.tab.cellWidget(i,7).charge_type=self.tab.get_value(i, 8)
+				self.tab.cellWidget(i,7).update()
 
 			self.show_hide_cols()
-			self.contacts.save()
+			data=gpvdm_data()
+			data.save()
 
 
 	def callback_help(self):
@@ -282,9 +277,17 @@ class contacts_window(QWidgetSavePos):
 
 	def update(self):
 		i=0
-		for c in self.contacts:
-			self.set_row(i,str(c.name),c.position,c.applied_voltage_type, c.applied_voltage, str(c.start), str(c.width), str(c.np), str(c.charge_type), c.type,c.id)
+		for c in self.contacts.segments:
+			if c.position=="top" or c.position=="bottom":
+				start=str(c.x0)
+				width=str(c.dx)
+			else:
+				start=str(c.y0)
+				width=str(c.dy)
+			self.set_row(i,str(c.shape_name),c.position,c.applied_voltage_type,c.applied_voltage,start,width,str(c.contact_resistance_sq),c.shunt_resistance_sq,str(c.id),str(c.charge_type),str(c.ve0),str(c.vh0),str(c.physical_model),c.id )
+
 			i=i+1
+
 		self.show_hide_cols()
 
 	def hide_cols(self,val):
@@ -301,29 +304,16 @@ class contacts_window(QWidgetSavePos):
 		self.tab.setColumnHidden(6,True)
 
 		self.tab.horizontalHeader().setFixedHeight(60)
-		self.contacts.load()
+		#self.contacts.load()
 
-		if get_mesh().get_zpoints()!=1 or get_mesh().get_xpoints()!=1: 
+		if get_mesh().z.get_points()!=1 or get_mesh().x.get_points()!=1: 
 			self.hide_cols(False)
 		else:
 			self.hide_cols(True)
 
-		#contacts_print()
-		i=0
-		for c in self.contacts.contacts:
+		for c in self.contacts.segments:
 			self.add_row()
-			if c.position=="top" or c.position=="bottom":
-				start=str(c.x0)
-				width=str(c.dx)
-			else:
-				start=str(c.y0)
-				width=str(c.dy)
-
-			self.set_row(i,str(c.name),c.position,c.applied_voltage_type,c.applied_voltage,start,width,str(c.contact_resistance_sq),c.shunt_resistance_sq,str(c.np),str(c.charge_type),str(c.ve0),str(c.vh0),str(c.physical_model),c.id )
-
-			i=i+1
-
-		self.show_hide_cols()
+		self.update()
 
 	def __init__(self):
 		QWidgetSavePos.__init__(self,"contacts")
@@ -340,20 +330,11 @@ class contacts_window(QWidgetSavePos):
 		self.toolbar=QToolBar()
 		self.toolbar.setIconSize(QSize(48, 48))
 
-		#add = QAction(icon_get("list-add"),  _("Add contact"), self)
-
-		#toolbar.addAction(add)
-
-		#remove = QAction(icon_get("list-remove"),  _("Remove contacts"), self)
-
-		#toolbar.addAction(remove)
-
-
 		self.main_vbox.addWidget(self.toolbar)
 
 		self.tab = gpvdm_tab(toolbar=self.toolbar)
 		self.tab.resizeColumnsToContents()
-
+		self.tab.segments=get_epi().contacts.segments
 		self.tab.tb_add.triggered.connect(self.on_add_clicked)
 		self.tab.user_remove_rows.connect(self.on_remove_clicked)
 		self.tab.tb_down.triggered.connect(self.on_move_down)
@@ -362,10 +343,6 @@ class contacts_window(QWidgetSavePos):
 		spacer = QWidget()
 		spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 		self.toolbar.addWidget(spacer)
-
-		#self.charge_density = QAction(icon_get("preferences-system"), _("Charge density"), self)
-		#self.charge_density.triggered.connect(self.callback_contacts_boundary)
-		#toolbar.addAction(self.charge_density)
 
 		self.help = QAction(icon_get("help"), _("Help"), self)
 		self.help.setStatusTip(_("Close"))
@@ -387,7 +364,7 @@ class contacts_window(QWidgetSavePos):
 
 		self.setLayout(self.main_vbox)
 
-
+		gpvdm_data().add_call_back(self.update)
 
 		#get_contactsio().changed.connect(self.update)
 

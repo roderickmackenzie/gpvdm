@@ -25,15 +25,40 @@
 #  Helper functinons for text manipulation.
 #
 
+def insert_tab(lines,n):
+	build=""
+	for i in range(0,n):
+		build=build+"\t"
+	for i in range(0,len(lines)):
+		lines[i]=build+lines[i]
 
+def is_number(data_in):
+	try:
+		float(data_in)
+		return True
+	except ValueError:
+		return False
+
+	return False
+	if type(data_in)==str:
+		if len(data_in)>0:
+			s=data_in
+			s=re.sub(' ','',s)
+			s=re.sub("\+",'',s)
+			s=re.sub('-','',s)
+			s=re.sub('\t','',s)
+	
+			if len(s)>0:
+				if s[0].isdigit()==True:
+					return True
+				else:
+					return False
+
+	return False
 
 def gkt_title_to_gnu_plot_title(in_string):
 	out_string=in_string.replace("<sub>","_{")
 	out_string=out_string.replace("</sub>","}")
-	return out_string
-
-def str_to_latex(in_string):
-	out_string=in_string.replace("_","\\_")
 	return out_string
 
 

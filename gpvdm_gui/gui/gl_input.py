@@ -185,7 +185,7 @@ class gl_input():
 				if obj!=None:
 					epi=get_epi()
 					#print(obj.id[0])
-					if epi.find_shape_by_id(obj.id[0])!=None:
+					if epi.find_object_by_id(obj.id[0])!=None:
 						#self.update()
 						self.menu_layer(event)
 					elif gl_obj_id_starts_with(obj.id,"mesh")==True:

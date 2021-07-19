@@ -26,7 +26,6 @@
 #
 
 import os
-from tab import tab_class
 from icon_lib import icon_get
 
 #qt
@@ -44,25 +43,19 @@ from css import css_apply
 from global_objects import global_object_run
 from epitaxy import get_epi
 from util import wrap_text
-from inp import inp_copy_file
 
 from shape import shape
 from cal_path import get_sim_path
-from inp import inp_ls_seq_files
-from inp import inp_remove_file
 
 from gui_util import dlg_get_text
 from error_dlg import error_dlg
 from gui_util import yes_no_dlg
-from cal_path import get_default_material_path
-from mesh import get_mesh
 from tick_cross import tick_cross
-from inp import inp
 from str2bool import str2bool
 from global_objects import global_object_run
-
-articles = []
-mesh_articles = []
+from json_viewer import json_viewer
+from gpvdm_json import gpvdm_data
+import copy
 
 class object_editor(QWidgetSavePos):
 
@@ -137,128 +130,126 @@ class object_editor(QWidgetSavePos):
 		if type(ids)==str:
 			ids=[ids]
 
-		print(ids[0])
 		self.layer_index=self.epi.find_layer_by_id(ids[0])
 
 		for id in ids:
-			s=self.epi.find_shape_by_id(id)
-			my_tab=tab_class(s.file_name+".inp")
+			s=self.epi.find_object_by_id(id)
+			my_tab=json_viewer()
+			my_tab.populate(s)
+
 			my_tab.changed.connect(self.callback_edit)
+
 			if i==0:
-				name=_("Layer: ")+s.name
+				name=_("Layer: ")+s.shape_name
 			else:
-				name=s.name
+				name=s.shape_name
 
 			self.notebook.addTab(my_tab,name)	
 			i=i+1
 
 	def callback_edit(self):
+		data=gpvdm_data()
 		tab = self.notebook.currentWidget()
-		s=self.epi.find_shape_by_file_name(tab.file_name)
-		s.do_load()
+		data.save()
 		global_object_run("gl_force_redraw")
 
 	def callback_enable_disable(self):
+		data=gpvdm_data()
 		tab = self.notebook.currentWidget()
 		if tab!=None:
 			tab.setEnabled(self.enable.enabled)
-			s=self.epi.find_shape_by_file_name(tab.file_name)
-			if s!=None:
-				tab.tab.f.replace("#shape_enabled",str(self.enable.enabled))
-				s.shape_enabled=self.enable.enabled
-				s.save()
-				global_object_run("gl_force_redraw")
-			#f=inp()
-			#if f.load(tab.file_name)!=False:
-			#	f.replace("#shape_enabled",str(self.enable.enabled))
-			#	f.save()
+			s=tab.template_widget
+			s.shape_enabled=self.enable.enabled
+			print("save")
+			data.save()
+			global_object_run("gl_force_redraw")
 			
 
 	def changed_click(self):
 		tab = self.notebook.currentWidget()
 		if tab!=None:
-			s=self.epi.find_shape_by_file_name(tab.file_name)
-			if s!=None:
-				tab.setEnabled(s.shape_enabled)
-				self.enable.setState(s.shape_enabled)
-				self.status_bar.showMessage(tab.file_name)
+			s=tab.template_widget
+			tab.setEnabled(s.shape_enabled)
+			self.enable.setState(s.shape_enabled)
+			self.status_bar.showMessage(s.shape_name)
 
 			if self.notebook.currentIndex()==0:
 				self.tb_delete.setEnabled(False)
+				self.tb_clone.setEnabled(False)
 			else:
 				self.tb_delete.setEnabled(True)
+				self.tb_clone.setEnabled(True)
 
 	def callback_add_shape(self):
+		data=gpvdm_data()
 		layer=get_epi().layers[self.layer_index]
-		s=get_epi().new_shape_file(layer)
+		s=shape()
+		s.dx=layer.dx/2.0
+		s.dy=layer.dy/2.0
+		s.dz=layer.dz/2.0
 		layer.shapes.append(s)
-		new_filename=s.file_name+".inp"
-		get_epi().save()
-
-		my_tab=tab_class(new_filename)
-		self.notebook.addTab(my_tab,s.name)
+		my_tab=json_viewer()
+		my_tab.populate(s)
+		my_tab.changed.connect(self.callback_edit)
+		self.notebook.addTab(my_tab,s.shape_name)
 		my_tab.changed.connect(self.callback_edit)
 		global_object_run("gl_force_redraw")
+		data.save()
 
 	def callback_rename_shape(self):
+		data=gpvdm_data()
 		tab = self.notebook.currentWidget()
-		s=self.epi.find_shape_by_file_name(tab.file_name)
 
-		new_sim_name=dlg_get_text( "Rename the shape:", s.name,"rename.png")
+		new_sim_name=dlg_get_text( "Rename the shape:", tab.template_widget.shape_name,"rename.png")
 
 		new_sim_name=new_sim_name.ret
 
 		if new_sim_name!=None:
-			s.name=new_sim_name
-			s.save()
+			tab.template_widget.shape_name=new_sim_name
 			index=self.notebook.currentIndex() 
 			self.notebook.setTabText(index, new_sim_name)
+			data.save()
+
+
+
 
 	def callback_clone_shape(self):
 		tab = self.notebook.currentWidget()
-		s=self.epi.find_shape_by_file_name(tab.file_name)
-		name=s.name+"_new"
+		name=tab.template_widget.shape_name+"_new"
 
 		new_sim_name=dlg_get_text( "Clone the shape:", name,"clone.png")
 		new_sim_name=new_sim_name.ret
 
 		if new_sim_name!=None:
-			old_name=os.path.join(get_sim_path(),tab.file_name)
-			new_name=get_epi().new_electrical_file("shape")
-			my_shape=shape()
-			my_shape.load(old_name)
-			my_shape.name=new_sim_name
-			my_shape.x0=my_shape.x0-my_shape.dx
-			my_shape.shape_electrical=get_epi().gen_new_electrical_file("electrical")
-			my_shape.file_name=new_name
-			my_shape.save()
-
-			get_epi().layers[self.layer_index].shapes.append(my_shape)
-			get_epi().save()
-
-			my_tab=tab_class(my_shape.file_name+".inp")
-			self.notebook.addTab(my_tab,my_shape.name)
-			my_tab.changed.connect(self.callback_edit)
-			global_object_run("gl_force_redraw")
+			for s in get_epi().layers[self.layer_index].shapes:
+				if s.shape_name==tab.template_widget.shape_name:
+					my_shape=copy.deepcopy(s)
+					my_shape.shape_name=new_sim_name
+					my_shape.update_random_ids()
+					get_epi().layers[self.layer_index].shapes.append(my_shape)
+					
+					my_tab=json_viewer()
+					my_tab.populate(my_shape)
+					self.notebook.addTab(my_tab,my_shape.shape_name)
+					my_tab.changed.connect(self.callback_edit)
+					global_object_run("gl_force_redraw")
 
 	def callback_delete_shape(self):
+		data=gpvdm_data()
 		tab = self.notebook.currentWidget()
-		s=self.epi.find_shape_by_file_name(tab.file_name)
-		name=s.name
+		name=tab.template_widget.shape_name
 		
-		response=yes_no_dlg(self,"Do you really want to delete the file: "+name)
+		response=yes_no_dlg(self,"Do you really want to the shape: "+name)
 
 		if response == True:
-			inp_remove_file(os.path.join(get_sim_path(),tab.file_name))
 
 			index=self.notebook.currentIndex() 
 			self.notebook.removeTab(index)
 
 			for i in range(0,len(get_epi().layers[self.layer_index].shapes)):
-				if get_epi().layers[self.layer_index].shapes[i].file_name+".inp"==tab.file_name:
+				if get_epi().layers[self.layer_index].shapes[i].shape_name==tab.template_widget.shape_name:
 					get_epi().layers[self.layer_index].shapes.pop(i)
-					get_epi().clean_unused_files()
-					get_epi().save()
+					data.save()
 					break
 
 		global_object_run("gl_force_redraw")

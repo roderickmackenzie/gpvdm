@@ -33,8 +33,9 @@ import shutil
 import re
 import hashlib
 import glob
-
+from inp import inp
 from inp import inp_get_token_value
+import json
 
 def get_dir_type(path):
 
@@ -42,6 +43,17 @@ def get_dir_type(path):
 		return "file"
 
 	if os.path.isdir(path)==True:
+		file_name=os.path.join(path,"data.json")
+		f=inp()
+		try:
+			if f.load(file_name)!=False:
+				json_data="\n".join(f.lines)
+				decode=json.loads(json_data)
+				return decode['item_type']
+		except:
+			pass
+
+
 		if os.path.isfile(os.path.join(path,"snapshots.inp"))==True:
 			return "snapshots"
 
@@ -53,15 +65,7 @@ def get_dir_type(path):
 
 		mat_file=os.path.join(path,"mat.inp")
 		token=inp_get_token_value(os.path.join(path,"mat.inp"), "#gpvdm_file_type")
-		if token=="mat":
-			return "material"
-		elif token=="spectra":
-			return "spectra"
-		elif token=="shape":
-			return "shape"
-		elif token=="emission":
-			return "emission"
-		elif token=="backup_main":
+		if token=="backup_main":
 			return "backup_main"
 		elif token=="backup":
 			return "backup"
@@ -69,5 +73,6 @@ def get_dir_type(path):
 			return "cache"
 		elif token=="multi_plot_dir":
 			return "multi_plot_dir"
-		else:
-			return "dir"
+
+
+		return "dir"

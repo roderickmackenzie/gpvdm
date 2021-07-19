@@ -53,6 +53,7 @@ from gl_base_object import gl_base_object
 
 class gl_draw_circuit():
 	def draw_circuit(self):
+		return
 		for c in self.graph_data.data:
 			a=gl_base_object()
 			a.id=["electrical_mesh"]

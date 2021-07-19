@@ -133,10 +133,13 @@ class plot_window(QWidget):
 			self.plot.enable_draw_light_source=False
 			self.plot.enable_draw_rays=False
 			self.plot.view.render_photons=False
+			self.plot.view.optical_mode=False
+
 			if data_type=="zxy-d":
 				self.plot.plot_graph=True
 				self.plot.graph_data.load(input_files[0])
-				
+				if self.plot.graph_data.title!="":
+					self.setWindowTitle(self.plot.graph_data.title)
 
 				self.dissection.slider_y_min.sliderMoved.connect(self.update_dissection_y_min)
 				self.dissection.slider_y_max.sliderMoved.connect(self.update_dissection_y_max)
@@ -175,6 +178,7 @@ class plot_window(QWidget):
 			self.setWindowIcon(icon_get("shape"))
 
 			self.plot=glWidget(self)
+			self.plot.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 			self.main_vbox.addWidget(self.plot)
 
 

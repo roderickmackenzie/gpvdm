@@ -41,7 +41,6 @@ from PyQt5.QtWidgets import QWidget,QSizePolicy,QHBoxLayout,QPushButton,QDialog,
 import i18n
 _ = i18n.language.gettext
 
-from workbook import gen_workbook
 from util import set_file_ext
 from cal_path import get_sim_path
 
@@ -74,20 +73,3 @@ def dlg_export(parent):
 		elif dialog.selectedNameFilter()==_("pdf file")+" (*.pdf)" or dialog.selectedNameFilter()==_("jpg image")+" (*.jpg)" or dialog.selectedNameFilter()==_("tex file")+" (*.tex)":
 			export_as(file_name)
 
-def dlg_export_xls(parent):
-
-	dialog = QFileDialog(parent)
-	dialog.setWindowTitle(_("Export to xls file"))
-	dialog.setAcceptMode(QFileDialog.AcceptSave)
-	types=[]
-	types.append(_("Excel file")+" (*.xlsx)")
-
-	dialog.setNameFilters(types)
-	dialog.setFileMode(QFileDialog.ExistingFile)
-	dialog.setAcceptMode(QFileDialog.AcceptSave)
-
-	if dialog.exec_() == QDialog.Accepted:
-		file_name = dialog.selectedFiles()[0]
-		#print(dialog.selectedNameFilter())
-		if dialog.selectedNameFilter()==_("Excel file")+" (*.xlsx)":
-			gen_workbook(get_sim_path(),set_file_ext(file_name,".xlsx"))

@@ -64,32 +64,6 @@ def find_fit_log(out_file,path):
 	text_file.write(string)
 	text_file.close()
 
-def find_fit_speed_log(out_file,path):
-	pattern='fitlog_time_speed.dat'
-	fitlog = []
-	for root, dirs, files in os.walk(path):
-		for name in files:
-			if fnmatch.fnmatch(name, pattern):
-				fitlog.append(os.path.join(root, name))
-
-	pattern='fitlog_time_speed.dat'
-	fitlog_time_speed = []
-	for root, dirs, files in os.walk(path):
-		for name in files:
-			if fnmatch.fnmatch(name, pattern):
-				fitlog_time_speed.append(os.path.join(root, name))
-
-	string="plot "
-	for my_file in fitlog:
-		 string=string+"'"+my_file+"' using ($1/60/60):($2) with lp,"
-
-	#for my_file in fitlog_time_speed:
-		# string=string+"'"+my_file+"' using ($2) axis x1y2 with lp,"
-
-	string = string[:-1]
-	text_file = open(out_file, "w")
-	text_file.write(string)
-	text_file.close()
 
 def return_file_list(result,start_dir,file_name):
 	#print(start_dir, file_name)
@@ -105,49 +79,17 @@ def return_file_list(result,start_dir,file_name):
 
 
 
-def find_fits():
-	pattern='plot_file.dat'
-	path='./'
-	result = []
+
+def find_shapshots(path):
+	out=[]
 	for root, dirs, files in os.walk(path):
 		for name in files:
-			if fnmatch.fnmatch(name, pattern):
-				result.append(os.path.join(root, name))
-	files=result
-	string="plot \\"
+			if name.endswith("json.dat")==True:
+				sub_snapshot_dir=os.path.dirname(os.path.join(root, name))
+				snapshot_dir=os.path.dirname(sub_snapshot_dir)
+				if os.path.basename(snapshot_dir)=="snapshots":
+					if snapshot_dir not in out:
+						out.append(snapshot_dir)
 
-	for my_file in files:
-		f = open(my_file)
-		lines = f.readlines()
-		f.close()
-
-		for i in range(0, len(lines)):
-			string=string+'\n'+lines[i].rstrip()
-	string = string[:-2]
-
-	text_file = open("./plot/fit.plot", "w")
-	text_file.write(string)
-	text_file.close()
-
-def find_fit_error():
-	#path='./'
-	#result = []
-	string="plot \\\n"
-	i=0
-	for name in glob.glob('error_*exp*.dat'):
-		i=i+1
-		string=string+"'"+name+"' with lp lt "+str(i)+",\\\n"
-
-	i=0
-	for name in glob.glob('error_*sim*.dat'):
-		i=i+1
-		string=string+"'"+name+"' with lp lt "+str(i)+",\\\n"
-
-	string = string[:-3]
-
-	text_file = open("./plot/fit_errors.plot", "w")
-	text_file.write(string)
-	text_file.close()
-
-
-
+	print(out)
+	return out

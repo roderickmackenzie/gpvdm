@@ -47,12 +47,8 @@ from inp import inp
 from cal_path import get_sim_path
 from QWidgetSavePos import QWidgetSavePos
 
-from dump_select import dump_select
-
 from css import css_apply
-
-articles = []
-mesh_articles = []
+from gpvdm_json import gpvdm_data
 
 class class_config_window(QWidgetSavePos):
 
@@ -62,10 +58,9 @@ class class_config_window(QWidgetSavePos):
 		self.changed.emit()
 		global_object_run("ribbon_configure_dump_refresh")
 
-	def __init__(self,title=_("Configure"),icon="preferences-system"):
+	def __init__(self,files,description,title=_("Configure"),icon="preferences-system",data=gpvdm_data()):
 		QWidgetSavePos.__init__(self,"config_window")
-		self.files=[]
-		self.description=[]
+		self.data=data
 		self.toolbar=QToolBar()
 		self.toolbar.setToolButtonStyle( Qt.ToolButtonTextUnderIcon)
 		self.toolbar.setIconSize(QSize(48, 48))
@@ -75,17 +70,11 @@ class class_config_window(QWidgetSavePos):
 
 		self.setWindowTitle(title+" (https://www.gpvdm.com)")
 
-	def init(self):
-
-
 		self.main_vbox = QVBoxLayout()
-
-
 
 		spacer = QWidget()
 		spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 		self.toolbar.addWidget(spacer)
-
 
 		self.undo = QAction(icon_get("help"), _("Help"), self)
 		self.undo.setStatusTip(_("Help"))
@@ -102,17 +91,11 @@ class class_config_window(QWidgetSavePos):
 
 		self.main_vbox.addWidget(self.notebook)
 
-		for i in range(0,len(self.files)):
-			file_name=os.path.join(get_sim_path(),self.files[i])
-			if inp().isfile(file_name)==True:
-				tab=tab_class(file_name)
-				self.notebook.addTab(tab,self.description[i])
-				if os.path.basename(file_name)=="dump.inp":
-					tab.changed.connect(self.callback_tab_changed)
-
-					self.detailed_file_select=dump_select()
-					self.notebook.addTab(self.detailed_file_select,_("Detailed dump control"))
-
+		if (len(files)>0):
+			for i in range(0,len(files)):
+				file_name=files[i]
+				tab=tab_class(file_name,data=self.data)
+				self.notebook.addTab(tab,description[i])
 
 		self.setLayout(self.main_vbox)
 

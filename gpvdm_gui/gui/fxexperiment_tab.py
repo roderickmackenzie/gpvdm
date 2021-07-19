@@ -27,72 +27,55 @@
 
 import os
 from numpy import *
-from inp import inp_load_file
-from inp import inp_search_token_value
-from fxmesh import tab_fxmesh
+from fxexperiment_mesh_tab import fxexperiment_mesh_tab
 from circuit import circuit
-from inp import inp_update_token_value
 
 import i18n
 _ = i18n.language.gettext
 
 #qt
 from PyQt5.QtCore import QSize, Qt 
-from PyQt5.QtWidgets import QWidget,QVBoxLayout,QToolBar,QSizePolicy,QAction,QTabWidget,QTabWidget
+from PyQt5.QtWidgets import QWidget,QTabWidget,QTabWidget
 from PyQt5.QtGui import QPainter,QIcon
-from inp import inp_update_token_value
-from inp import inp_get_token_value
 
 from tab import tab_class
-from cal_path import get_sim_path
-from inp import inp
+from css import css_apply
+from gpvdm_json import gpvdm_data
 
 class fxexperiment_tab(QTabWidget):
 
 	def update(self):
 		self.fxmesh.update()
 
-	def save_image(self):
-		tab = self.currentWidget()
-		tab.save_image()
-	
-	def init(self,index):
+	def image_save(self):
+		self.fxmesh.image_save()
+
+	def __init__(self,data):
 		QTabWidget.__init__(self)
+		css_apply(self ,"tab_default.css")
+		self.data=data
 
-		self.index=index
+		self.setMovable(True)
 
-
-		lines=[]
-		self.file_name=os.path.join(get_sim_path(),"is"+str(self.index)+".inp")
-		lines=inp_load_file(self.file_name)
-		if lines!=False:
-			self.tab_name=inp_search_token_value(lines, "#sim_menu_name")
-		else:
-			self.tab_name=""
-
-		self.tmesh = tab_fxmesh(self.index)
+		#self.tmesh = tab_time_mesh(self.data)
+		#self.addTab(self.tmesh,_("time mesh"))
+		self.tmesh = fxexperiment_mesh_tab(self.data.id)
 		self.addTab(self.tmesh,_("Frequency mesh"))
-		#if inp().isfile("diagram.inp")==False:
-		self.circuit=circuit(self.index,base_file_name="is_fxdomain_data",token="#fxdomain_sim_mode")
-		self.addTab(self.circuit,_("Circuit"))
 
-		widget=tab_class(self.file_name)
-		self.addTab(widget,_("Simulation"))
+		self.config_tab=tab_class(self.data.config)
+		self.addTab(self.config_tab,_("Configure"))
 
-		self.fx_domain_file_name=os.path.join(get_sim_path(),"is_fxdomain_data"+str(self.index)+".inp")
-		widget=tab_class(self.fx_domain_file_name)
-		self.addTab(widget,_("FX domain simulation"))
-
-	def set_tab_caption(self,name):
-		mytext=name
-		if len(mytext)<10:
-			for i in range(len(mytext),10):
-				mytext=mytext+" "
-		self.label.set_text(mytext)
+		if gpvdm_data().electrical_solver.solver_type!="circuit":
+			self.circuit=circuit(self.data)
+			self.addTab(self.circuit,_("Circuit"))
+			self.circuit.load_type.changed.connect(self.config_tab.tab.hide_show_widgets)
 
 	def rename(self,tab_name):
-		self.tab_name=tab_name+"@"+self.tab_name.split("@")[1]
-		inp_update_token_value(self.file_name, "#sim_menu_name", self.tab_name)
+		self.data.english_name=tab_name
+		gpvdm_data().save()
+
+
+
 
 
 

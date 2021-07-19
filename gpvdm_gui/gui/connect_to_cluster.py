@@ -52,10 +52,10 @@ from str2bool import str2bool
 from gui_util import dlg_get_text
 
 from tab import tab_class
-from inp import inp_find_active_file
 from cal_path import get_sim_path
 
 from server import server_get
+from gpvdm_local import gpvdm_local
 
 class connect_to_cluster(QDialog):
 
@@ -67,14 +67,15 @@ class connect_to_cluster(QDialog):
 
 	def __init__(self):
 		QDialog.__init__(self)
+		data=gpvdm_local()
 		self.main_vbox=QVBoxLayout()
 		self.setFixedSize(600,450) 
 		self.setWindowTitle(_("Connect to cluster")+" (https://www.gpvdm.com)")
 		self.setWindowIcon(icon_get("si"))
-		#self.title=QLabel("<big><b>"+_("Which type of device would you like to simulate?")+"</b></big>")
 
-		active_file=inp_find_active_file(os.path.join(get_sim_path(),"cluster"))
-		self.viewer=tab_class(active_file)
+		active_cluster_config=data.cluster.find_enabled_segment()
+
+		self.viewer=tab_class(active_cluster_config.config)
 
 		self.main_vbox.addWidget(self.viewer)
 

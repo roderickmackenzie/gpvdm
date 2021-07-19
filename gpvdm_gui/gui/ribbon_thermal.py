@@ -30,11 +30,6 @@
 import os
 from icon_lib import icon_get
 
-from dump_io import dump_io
-from tb_item_sim_mode import tb_item_sim_mode
-from tb_item_sun import tb_item_sun
-
-from code_ctrl import enable_betafeatures
 from cal_path import get_css_path
 
 #qt
@@ -44,28 +39,21 @@ from PyQt5.QtCore import QSize, Qt,QFile,QIODevice
 from PyQt5.QtWidgets import QWidget,QSizePolicy,QVBoxLayout,QHBoxLayout,QPushButton,QDialog,QFileDialog,QToolBar,QMessageBox, QLineEdit, QToolButton
 from PyQt5.QtWidgets import QTabWidget
 
-from emesh import tab_electrical_mesh
-
 from help import help_window
 
 from gui_util import dlg_get_text
-from inp import inp_get_token_value
-from inp import inp_update_token_value
 
 from QAction_lock import QAction_lock
 from thermal_isothermal_button import thermal_isothermal_button
 from config_window import class_config_window
 
-from inp import inp
-from str2bool import str2bool
-from cal_path import get_sim_path
+from gpvdm_json import gpvdm_data
+from ribbon_page import ribbon_page
 
-class ribbon_thermal(QToolBar):
+class ribbon_thermal(ribbon_page):
 	def __init__(self):
-		QToolBar.__init__(self)
-		self.setToolButtonStyle( Qt.ToolButtonTextUnderIcon)
-		self.setIconSize(QSize(42, 42))
-
+		ribbon_page.__init__(self)
+		self.enabled=False
 		self.thermal_isothermal_button=thermal_isothermal_button(self)
 		self.thermal_isothermal_button.triggered.connect(self.callback_thermal_isothermal_button)
 		self.addAction(self.thermal_isothermal_button)
@@ -77,7 +65,7 @@ class ribbon_thermal(QToolBar):
 		self.addAction(self.temperature)
 		self.addSeparator()
 
-		self.boundary = QAction_lock("boundary", _("boundary\nConditions"), self,"ribbon_thermal_boundary")
+		self.boundary = QAction_lock("boundary", _("Boundary\nConditions"), self,"ribbon_thermal_boundary")
 		self.boundary.clicked.connect(self.callback_boundary)
 		self.addAction(self.boundary)
 
@@ -88,92 +76,123 @@ class ribbon_thermal(QToolBar):
 		self.addSeparator()
 
 		self.joule_heating = QAction_lock("joule_heating", _("Joule\nHeating"), self,"ribbon_thermal_joule")
-		self.joule_heating.clicked.connect(self.callback_joule_heating)
+		self.joule_heating.clicked.connect(self.callback_heating_click)
 		self.joule_heating.setCheckable(True)
 		self.addAction(self.joule_heating)
 
+		self.parasitic_heating = QAction_lock("parasitic_heating", _("Parasitic\nHeating"), self,"ribbon_thermal_joule")
+		self.parasitic_heating.clicked.connect(self.callback_heating_click)
+		self.parasitic_heating.setCheckable(True)
+		self.addAction(self.parasitic_heating)
+
 		self.optical_heating = QAction_lock("optical_heating", _("Optical\nHeating"), self,"ribbon_thermal_optical")
-		self.optical_heating.clicked.connect(self.callback_optical_heating)
+		self.optical_heating.clicked.connect(self.callback_heating_click)
 		self.optical_heating.setCheckable(True)
 		self.addAction(self.optical_heating)
 
 		self.recombination_heating = QAction_lock("recombination_heating", _("Recombination\nheating"), self,"ribbon_thermal_recombination")
-		self.recombination_heating.clicked.connect(self.callback_recombination_heating)
+		self.recombination_heating.clicked.connect(self.callback_heating_click)
 		self.recombination_heating.setCheckable(True)
 		self.addAction(self.recombination_heating)
 
-	def callback_joule_heating(self):
-		f=inp()
-		f.load(os.path.join(get_sim_path(),"thermal.inp"))
-		f.replace("#joule_heating",str(self.joule_heating.isChecked()))
-		f.replace("#optical_heating",str(self.optical_heating.isChecked()))
-		f.replace("#recombination_heating",str(self.recombination_heating.isChecked()))
-		f.save()
+		self.thermal_parameters = QAction_lock("thermal_kappa", _("Thermal\nparameters"), self,"ribbon_thermal_parameters")
+		self.thermal_parameters.clicked.connect(self.callback_thermal_parameters)
+		self.addAction(self.thermal_parameters)
 
-	def callback_recombination_heating(self):
-		pass
 
-	def callback_optical_heating(self):
-		pass
+	def callback_thermal_parameters(self):
+		help_window().help_set_help(["thermal_kappa.png",_("<big><b>Thermal parameters</b></big>\nUse this window to change the thermal parameters of each layer.")])
+
+		from thermal_main import thermal_main
+		self.thermal_editor=thermal_main()
+		self.thermal_editor.show()
+
+	def callback_heating_click(self):
+		data=gpvdm_data()
+		data.thermal.joule_heating=self.joule_heating.isChecked()
+		data.thermal.parasitic_heating=self.parasitic_heating.isChecked()
+		data.thermal.optical_heating=self.optical_heating.isChecked()
+		data.thermal.recombination_heating=self.recombination_heating.isChecked()
+		data.save()
 
 	def callback_thermal_isothermal_button(self):
 		self.update()
 
 	def callback_thermal(self):
-		f=inp().load("thermal_boundary.inp")
-		temp=f.get_token("#Ty0")
-		new_temp=dlg_get_text( _("Enter the new temperature"), temp,"thermal.png")
+		data=gpvdm_data()
+		
+		temp=data.thermal_boundary.Ty0
+
+		new_temp=dlg_get_text( _("Enter the new temperature"), str(temp),"thermal.png")
 		if new_temp.ret!=None:
-			f.set_token("#Ty0",new_temp.ret)
-			f.set_token("#Ty1",new_temp.ret)
-			f.set_token("#Tx0",new_temp.ret)
-			f.set_token("#Tx1",new_temp.ret)
-			f.set_token("#Tz0",new_temp.ret)
-			f.set_token("#Tz1",new_temp.ret)
-			f.save()
+			new_temp=float(new_temp.ret)
+			data.thermal_boundary.Ty0=new_temp
+			data.thermal_boundary.Ty1=new_temp
+			data.thermal_boundary.Tx0=new_temp
+			data.thermal_boundary.Tx1=new_temp
+			data.thermal_boundary.Tz0=new_temp
+			data.thermal_boundary.Tz1=new_temp
+
+			for l in data.epi.layers:
+				l.shape_dos.Tstart=new_temp
+				l.shape_dos.Tstop=new_temp+5.0
+				for s in l.shapes:
+					s.shape_dos.Tstart=new_temp
+					s.shape_dos.Tstop=new_temp+5.0
+
+			data.save()
 
 	def update(self):
-		self.thermal_isothermal_button.refresh()
-		if 	self.thermal_isothermal_button.thermal==False:
-			self.temperature.setEnabled(True)
+		if self.enabled==True:
+			data=gpvdm_data()
+			self.thermal_isothermal_button.refresh()
+			if 	self.thermal_isothermal_button.thermal==False:
+				self.temperature.setEnabled(True)
+				self.boundary.setEnabled(False)
+				self.configure.setEnabled(False)
+				self.joule_heating.setEnabled(False)
+				self.parasitic_heating.setEnabled(False)
+				self.optical_heating.setEnabled(False)
+				self.recombination_heating.setEnabled(False)
+				self.thermal_isothermal_button.setEnabled(True)
+				self.thermal_parameters.setEnabled(False)
+			else:
+				self.temperature.setEnabled(False)
+				self.boundary.setEnabled(True)
+				self.configure.setEnabled(True)
+				self.joule_heating.setEnabled(True)
+				self.parasitic_heating.setEnabled(True)
+				self.optical_heating.setEnabled(True)
+				self.recombination_heating.setEnabled(True)
+				self.thermal_isothermal_button.setEnabled(True)
+				self.thermal_parameters.setEnabled(True)
+
+			self.joule_heating.setChecked(data.thermal.joule_heating)
+			self.parasitic_heating.setChecked(data.thermal.parasitic_heating)
+			self.optical_heating.setChecked(data.thermal.optical_heating)
+			self.recombination_heating.setChecked(data.thermal.recombination_heating)
+		else:
+			self.temperature.setEnabled(False)
 			self.boundary.setEnabled(False)
 			self.configure.setEnabled(False)
 			self.joule_heating.setEnabled(False)
+			self.parasitic_heating.setEnabled(False)
 			self.optical_heating.setEnabled(False)
 			self.recombination_heating.setEnabled(False)
-		else:
-			self.temperature.setEnabled(False)
-			self.boundary.setEnabled(True)
-			self.configure.setEnabled(True)
-			self.joule_heating.setEnabled(True)
-			self.optical_heating.setEnabled(True)
-			self.recombination_heating.setEnabled(True)
-
-		f=inp()
-		f.load(os.path.join(get_sim_path(),"thermal.inp"))
-		self.joule_heating.setChecked(str2bool(f.get_token("#joule_heating")))
-		self.optical_heating.setChecked(str2bool(f.get_token("#optical_heating")))
-		self.recombination_heating.setChecked(str2bool(f.get_token("#recombination_heating")))
+			self.thermal_isothermal_button.setEnabled(False)
+			self.thermal_parameters.setEnabled(False)
 
 	def setEnabled(self,val):
-		self.temperature.setEnabled(val)
-		self.boundary.setEnabled(val)
-		self.configure.setEnabled(val)
-		self.joule_heating.setEnabled(val)
-		self.optical_heating.setEnabled(val)
-		self.recombination_heating.setEnabled(val)
+		self.enabled=val
+		self.update()
 
 	def callback_boundary(self):
-		self.config_window=class_config_window(title=_("Thermal boundary conditions"),icon="thermal")
-		self.config_window.files=["thermal_boundary.inp"]
-		self.config_window.description=[_("Thermal boundary conditions")]
-		self.config_window.init()
+		data=gpvdm_data()
+		self.config_window=class_config_window([data.thermal_boundary],[_("Thermal boundary conditions")],title=_("Thermal boundary conditions"),icon="thermal")
 		self.config_window.show()
 
 	def callback_configure(self):
-		self.config_window=class_config_window(title=_("Configure thermal model"),icon="thermal")
-		self.config_window.files=["thermal.inp"]
-		self.config_window.description=[_("Configure")]
-		self.config_window.init()
+		data=gpvdm_data()
+		self.config_window=class_config_window([data.thermal],[_("Configure")],title=_("Configure thermal model"),icon="thermal")
 		self.config_window.show()
 

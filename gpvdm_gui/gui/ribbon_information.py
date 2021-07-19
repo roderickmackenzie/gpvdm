@@ -30,11 +30,6 @@
 import os
 from icon_lib import icon_get
 
-from dump_io import dump_io
-from tb_item_sim_mode import tb_item_sim_mode
-from tb_item_sun import tb_item_sun
-
-from code_ctrl import enable_betafeatures
 from cal_path import get_css_path
 
 #qt
@@ -53,19 +48,13 @@ from cal_path import get_sim_path
 from util import wrap_text
 
 from bibtex import bibtex
+from ribbon_page import ribbon_page
 
-class ribbon_information(QToolBar):
+class ribbon_information(ribbon_page):
 	def __init__(self):
-		QToolBar.__init__(self)
+		ribbon_page.__init__(self)
 		self.setToolButtonStyle( Qt.ToolButtonTextUnderIcon)
 		self.setIconSize(QSize(42, 42))
-
-
-
-
-		#self.license = QAction(icon_get("license"), _("License")+"\n"	, self)
-		#self.license.triggered.connect(self.callback_license)
-		#self.addAction(self.license)
 
 		self.ref = QAction(icon_get("ref"), _("How to\ncite"), self)
 		self.ref.triggered.connect(self.callback_ref)
@@ -75,6 +64,9 @@ class ribbon_information(QToolBar):
 		self.hints.triggered.connect(self.callback_help)
 		self.addAction(self.hints)
 
+		self.hints = QAction(icon_get("internet-chat"), _("Interface\nLanguage"), self)
+		self.hints.triggered.connect(self.callback_language)
+		self.addAction(self.hints)
 
 		#self.about = QAction(icon_get("help"), _("About")+"\n", self)
 		#self.addAction(self.about)
@@ -148,4 +140,14 @@ class ribbon_information(QToolBar):
 
 	def callback_help(self, widget, data=None):
 		help_window().toggle_visible()
+			
 
+	def callback_language(self):
+		from config_window import class_config_window
+		from tab_lang import language_tab_class
+		self.config_window=class_config_window([],[])
+		lang_tab=language_tab_class()
+		self.config_window.notebook.addTab(lang_tab,_("Language"))
+		self.config_window.show()
+
+		return

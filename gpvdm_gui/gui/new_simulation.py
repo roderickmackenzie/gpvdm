@@ -48,9 +48,6 @@ from cal_path import get_exe_path
 
 from help import help_window
 
-from inp import inp_load_file
-from inp import inp_get_token_value_from_list
-from inp import inp_get_token_value
 from inp import inp_update_token_value
 
 from str2bool import str2bool
@@ -58,13 +55,11 @@ from gui_util import dlg_get_text
 
 from gpvdm_viewer import gpvdm_viewer
 
-from bugs import bugs_add_action
-from bugs import bugs_clear
 
 from disk_speed import disk_test
 from util import peek_data
 from inp_encrypt import decrypt_file
-from cal_path import get_tmp_path
+from cal_path import gpvdm_paths
 
 class simulation():
 	name=""
@@ -83,7 +78,7 @@ class new_simulation(QDialog):
 
 		if len(self.viewer.selectedItems())>0:
 			device_lib_sim_file=self.viewer.file_path
-			decrypted_file=os.path.join(get_tmp_path(),"tmp.gpvdm")
+			decrypted_file=os.path.join(gpvdm_paths.get_tmp_path(),"tmp.gpvdm")
 			if peek_data(device_lib_sim_file).startswith(b"gpvdmenc")==True:
 				pw_dlg=dlg_get_text( _("password:"), "","gnome-dialog-password")
 				if decrypt_file(decrypted_file,device_lib_sim_file,pw_dlg.ret)==False:
@@ -109,30 +104,10 @@ class new_simulation(QDialog):
 				self.ret_path=file_path
 
 				os.chdir(self.ret_path)
-				bugs_clear()
-				bugs_add_action(os.path.basename(self.viewer.file_path))
 				gpvdm_clone(os.getcwd(),copy_dirs=True)
 				import_archive(device_lib_sim_file,os.path.join(os.getcwd(),"sim.gpvdm"),False)
 
-				disk_speed=disk_test(file_path)
-
-				inp_update_token_value(os.path.join(file_path,"dump.inp"), "#dump_optics_verbose", "false")
-				inp_update_token_value(os.path.join(file_path,"dump.inp"), "#dump_print_newtonerror", "false")
-
-				if disk_speed<15000:
-					inp_update_token_value(os.path.join(file_path,"dump.inp"), "#newton_dump", "false")
-					inp_update_token_value(os.path.join(file_path,"dump.inp"), "#dump_energy_slice_switch", "false")
-					inp_update_token_value(os.path.join(file_path,"dump.inp"), "#dump_write_converge", "false")
-					inp_update_token_value(os.path.join(file_path,"dump.inp"), "#dump_first_guess", "false")
-
-				if disk_speed<10000:
-					inp_update_token_value(os.path.join(file_path,"dump.inp"), "#dump_workbook", "false")
-					inp_update_token_value(os.path.join(file_path,"dump.inp"), "#dump_file_access_log", "false")
-					inp_update_token_value(os.path.join(file_path,"dump.inp"), "#dump_write_out_band_structure", "false")
-					inp_update_token_value(os.path.join(file_path,"dump.inp"), "#dump_1d_slices", "false")
-
-				if disk_speed<1000:
-					inp_update_token_value(os.path.join(file_path,"dump.inp"), "#dump_log_level", "screen")
+				#disk_speed=disk_test(file_path)
 
 
 				self.close()

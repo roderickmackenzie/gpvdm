@@ -50,37 +50,34 @@ _ = i18n.language.gettext
 import functools
 from error_dlg import error_dlg
 
-from file_watch import get_watch
-from inp_viewer import inp_viewer
-from inp import inp
+from json_viewer import json_viewer
+from gpvdm_json import gpvdm_data
 
 class tab_class(QWidget,tab_base):
 
 	changed = pyqtSignal()
 
-	def __init__(self,file_name):
+	def __init__(self,file_name_or_class,data=gpvdm_data(),db_json_file=None,db_json_sub_path=None):
 		QWidget.__init__(self)
 		self.editable=True
 		self.icon_file=""
+		self.data=data
 		self.widget_list=[]
 		self.scroll=QScrollArea()
 		self.main_box_widget=QWidget()
 		self.vbox=QVBoxLayout()
 		self.hbox=QHBoxLayout()
 		self.hbox.setAlignment(Qt.AlignTop)
-		self.file_name=file_name
+		self.file_name=file_name_or_class
 
-		self.tab=inp_viewer()
-		self.tab.file_name=file_name
+		if type(file_name_or_class)==str:
+			print("This is no longer supported")
+		else:
+			self.tab=json_viewer(db_json_file=db_json_file,db_json_sub_path=db_json_sub_path)
+			self.tab.populate(file_name_or_class)
+
 		self.vbox.addWidget(self.tab)
 
-		self.f=inp()
-		self.f.load(self.file_name)
-
-		#if self.lines==False:
-		#	error_dlg(self,_("File not found.")+" "+filename)
-		#	return
-		self.tab.populate(self.f.lines)
 
 		spacer = QWidget()
 		spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
@@ -102,7 +99,7 @@ class tab_class(QWidget,tab_base):
 			spacer2 = QWidget()
 			spacer2.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding)
 			self.icon_widget_vbox.addWidget(spacer2)
-		
+
 			self.hbox.addWidget(self.icon_widget)
 
 		self.hbox.addWidget(self.scroll)
@@ -111,15 +108,12 @@ class tab_class(QWidget,tab_base):
 
 		self.tab.changed.connect(self.callback_edit)
 
-		get_watch().add_call_back(self.file_name,self.update)
-
 	def update():
-		self.f.load(self.filename)
 		self.tab.update_lines(self,self.f.lines)
 
 	def callback_edit(self):
-		self.f.lines=self.tab.f.lines
-		self.f.save()
+		self.data.save()
+
 		self.changed.emit()
 
 	def help(self):

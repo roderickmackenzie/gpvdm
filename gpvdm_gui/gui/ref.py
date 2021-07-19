@@ -34,31 +34,20 @@ from PyQt5.QtCore import QSize, Qt
 from PyQt5.QtWidgets import QWidget,QVBoxLayout,QHBoxLayout,QToolBar,QSizePolicy,QAction,QTabWidget,QTableWidget,QAbstractItemView,QPushButton
 from PyQt5.QtGui import QPainter,QIcon
 
-from window_list import resize_window_to_be_sane
-
 #windows
-from cal_path import get_ui_path
-
-from gpvdm_select import gpvdm_select
 
 from inp import inp
-from inp import inp_get_token_array
-from inp_util import inp_check_ver
-from inp import inp_new_file
-from inp import inp_add_token
-from inp import inp_load_file
-from inp import inp_save_lines_to_file
-from inp import inp_get_token_value_from_list
-from inp_viewer import inp_viewer
+from tab import tab_class
 
 import webbrowser
 
 from bibtex import bibtex
 
 from QWidgetSavePos import QWidgetSavePos
+from QWidgetSavePos import resize_window_to_be_sane
 
 class ref_window(QWidgetSavePos):
-	def __init__(self,bib_file,token):
+	def __init__(self,bib_file,token,show_toolbar=True):
 		"""Pass this the file name of the file you want referenced."""
 		QWidgetSavePos.__init__(self,"ref_window")
 		resize_window_to_be_sane(self,0.5,0.5)
@@ -82,10 +71,8 @@ class ref_window(QWidgetSavePos):
 		self.tb_help.triggered.connect(self.callback_help)
 		self.toolbar.addAction(self.tb_help)
 
-		self.vbox.addWidget(self.toolbar)
-		self.tab=inp_viewer()
-		self.tab.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-		self.vbox.addWidget(self.tab)
+		if show_toolbar==True:
+			self.vbox.addWidget(self.toolbar)
 
 
 		self.button_widget=QWidget()
@@ -96,11 +83,7 @@ class ref_window(QWidgetSavePos):
 		spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 		self.button_hbox.addWidget(spacer)
 
-		self.button_close=QPushButton(_("Save"))
-		self.button_close.clicked.connect(self.callback_save)
-		self.button_hbox.addWidget(self.button_close)
-		self.vbox.addWidget(self.button_widget)
-		self.setLayout(self.vbox)
+
 		self.b=bibtex()
 		self.b.load(self.bib_file)
 		self.item=self.b.get_ref(self.token)
@@ -108,19 +91,14 @@ class ref_window(QWidgetSavePos):
 			self.item=self.b.new()
 			self.item.token=token
 
-		lines=[]
-		for var in self.item.vars:
-			lines.append("#ref_"+var)
-			lines.append(getattr(self.item, var))
-		lines.append("#end")
-		self.tab.populate(lines)
+		self.tab=tab_class(self.item,data=self.item)
+		#self.item.bib_dump()
+		self.tab.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+		self.vbox.addWidget(self.tab)
 
-	def callback_save(self):
-		for var in self.item.vars:
-			setattr(self.item,var,self.tab.get_token("#ref_"+var))
-		#print(self.tab.get_token("#ref_author"))
-		self.b.save(self.bib_file)
-		self.close()
+		self.vbox.addWidget(self.button_widget)
+		self.setLayout(self.vbox)
+
 
 	def callback_help(self):
 		webbrowser.open('http://www.gpvdm.com/man/index.html')

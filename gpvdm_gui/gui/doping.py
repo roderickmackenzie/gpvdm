@@ -30,18 +30,11 @@ from numpy import *
 import webbrowser
 from icon_lib import icon_get
 
-#inp
-from inp import inp_update_token_value
-from inp import inp_load_file
-from inp import inp_search_token_value
-
 import i18n
 _ = i18n.language.gettext
 
 #epitaxy
 from epitaxy import epitaxy_get_layers
-from epitaxy import epitaxy_get_dos_file
-from epitaxy import epitaxy_get_dy
 
 #qt
 from PyQt5.QtCore import QSize, Qt 
@@ -61,30 +54,34 @@ from cal_path import get_sim_path
 from mesh import get_mesh
 
 from epitaxy import epitaxy_get_epi
-from epitaxy import epitaxy_get_layer
 from error_dlg import error_dlg
 
-from file_watch import get_watch
+#from file_watch import get_watch
 from gpvdm_tab import gpvdm_tab
 from epitaxy import get_epi
+from gpvdm_json import gpvdm_data
 
 class doping_window(QWidgetSavePos):
 	lines=[]
 
 
 	def save_data(self):
-		print("save")
-		pos=-1
+		data=gpvdm_data()
+		epi=data.epi
+		start=0
+		for l in epi.layers:
+			if l.layer_type=="active":
+				break
+			start=start+1
+
 		for i in range(0,self.tab.rowCount()):
-			pos=self.epi.get_next_dos_layer(pos)
-			dos_file=epitaxy_get_dos_file(pos)+".inp"
-			file_name=os.path.join(get_sim_path(),dos_file)
+			epi.layers[i+start].shape_dos.doping_start=float(self.tab.item(i, 2).text())
+			epi.layers[i+start].shape_dos.doping_stop=float(self.tab.item(i, 3).text())
 
-			inp_update_token_value(file_name, "#doping_start", self.tab.item(i, 2).text())
-			inp_update_token_value(file_name, "#doping_stop", self.tab.item(i, 3).text())
+			epi.layers[i+start].shape_dos.ion_density=float(self.tab.item(i, 4).text())
+			epi.layers[i+start].shape_dos.ion_mobility=float(self.tab.item(i, 5).text())
 
-			inp_update_token_value(file_name, "#ion_density", self.tab.item(i, 4).text())
-			inp_update_token_value(file_name, "#ion_mobility", self.tab.item(i, 5).text())
+		data.save()
 
 	def update(self):
 		self.build_mesh()
@@ -134,49 +131,42 @@ class doping_window(QWidgetSavePos):
 		layers=epitaxy_get_layers()
 
 		row=0
-		for i in range(0,layers):
-			dos_file=epitaxy_get_dos_file(i)
-			if dos_file.startswith("dos")==True:
+		data=gpvdm_data()
+		epi=data.epi
+		for l in epi.layers:
+			if l.layer_type=="active":
 				row=row+1
 		self.tab.setRowCount(row)
-
 		row=0
-		for i in range(0,layers):
-			dos_file=epitaxy_get_dos_file(i)
-			e=epitaxy_get_layer(i)
-			dy=e.dy
-			if dos_file.startswith("dos")==True:
-				lines=[]
-				print("loading",dos_file)
-				file_name=os.path.join(get_sim_path(),dos_file+".inp")
-				lines=inp_load_file(file_name)
-				if lines!=False:
-					doping_start=float(inp_search_token_value(lines, "#doping_start"))
-					doping_stop=float(inp_search_token_value(lines, "#doping_stop"))
+		for l in epi.layers:
+			dy=l.dy
+			if l.layer_type=="active":
 
-					ion_density=float(inp_search_token_value(lines, "#ion_density"))
-					ion_mobility=float(inp_search_token_value(lines, "#ion_mobility"))
+				doping_start=l.shape_dos.doping_start
+				doping_stop=l.shape_dos.doping_stop
 
-					item = QTableWidgetItem(e.name)
-					item.setFlags(item.flags() ^ Qt.ItemIsEnabled)
-					self.tab.setItem(row,0,item)
+				ion_density=l.shape_dos.ion_density
+				ion_mobility=l.shape_dos.ion_mobility
 
-					item = QTableWidgetItem(str(dy))
-					item.setFlags(item.flags() ^ Qt.ItemIsEnabled)
-					self.tab.setItem(row,1,item)
+				item = QTableWidgetItem(l.shape_name)
+				item.setFlags(item.flags() ^ Qt.ItemIsEnabled)
+				self.tab.setItem(row,0,item)
 
-					item = QTableWidgetItem(str(doping_start))
-					self.tab.setItem(row,2,item)
+				item = QTableWidgetItem(str(dy))
+				item.setFlags(item.flags() ^ Qt.ItemIsEnabled)
+				self.tab.setItem(row,1,item)
 
-					item = QTableWidgetItem(str(doping_stop))
-					self.tab.setItem(row,3,item)
+				item = QTableWidgetItem(str(doping_start))
+				self.tab.setItem(row,2,item)
 
-					item = QTableWidgetItem(str(ion_density))
-					self.tab.setItem(row,4,item)
+				item = QTableWidgetItem(str(doping_stop))
+				self.tab.setItem(row,3,item)
 
-					item = QTableWidgetItem(str(ion_mobility))
-					self.tab.setItem(row,5,item)
+				item = QTableWidgetItem(str(ion_density))
+				self.tab.setItem(row,4,item)
 
+				item = QTableWidgetItem(str(ion_mobility))
+				self.tab.setItem(row,5,item)
 				row=row+1
 
 		self.tab.blockSignals(False)
@@ -184,10 +174,10 @@ class doping_window(QWidgetSavePos):
 		return
 
 	def project(self,col0,col1):
+		data=gpvdm_data()
 		mesh=get_mesh().y
 		x,y =	mesh.calculate_points()
-		lay=mesh.mesh_cal_epi_layers(self.epi)
-		device_start=self.epi.get_device_start()
+		device_start=self.epi.get_device_start(data)
 		line=0
 		layer=self.epi.get_next_dos_layer(-1)
 
@@ -293,13 +283,5 @@ class doping_window(QWidgetSavePos):
 		self.draw_graph()
 
 		self.setLayout(self.main_vbox)
-
-		layers=epitaxy_get_layers()
-		for i in range(0,layers):
-			dos_file=epitaxy_get_dos_file(i)+".inp"
-			if dos_file.startswith("dos")==True:
-				get_watch().add_call_back(dos_file,self.load)
-
-		return
 
 

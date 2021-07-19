@@ -26,9 +26,6 @@
 #
 
 import os
-from inp import inp_load_file
-from inp import inp_search_token_value
-from inp import inp_update_token_value
 from tab import tab_class
 from fit_patch import fit_patch
 import shutil
@@ -49,121 +46,71 @@ from open_save_dlg import save_as_filter
 from cal_path import get_sim_path
 from str2bool import str2bool
 
-from matlab_editor import matlab_editor
-
-from import_data import import_data
+from import_data_json import import_data_json
 
 from css import css_apply
-from order_widget import extract_number_from_file_name
 from inp import inp
-
-mesh_articles = []
+from util import strextract_interger
+from gpvdm_json import gpvdm_data
 
 class fit_tab(QTabWidget):
 
-	def set_enable(self,state):
-		f=inp()
-		f.load(self.get_file_name())
-		f.replace("#enabled",state)
-		f.save()
-		
+	def update(self,force=False):
+		data=gpvdm_data()
+		data_obj=data.fits.fits.find_object_by_id(self.uid)
+		self.config_tab.tab.template_widget=data_obj.config
+		self.config_tab.tab.update_values()
 
-	def is_enabled(self):
-		f=inp()
-		f.load(self.get_file_name())
-		return str2bool(f.get_token("#enabled"))
+		if data_obj.config.enabled==True or force==True:
+			self.tmesh_real.update()
+			self.tmesh.update()
 
-	def get_file_name(self):
-		return os.path.join(get_sim_path(),"fit"+str(self.index)+".inp")
-
-	def update(self):
-		lines=inp_load_file(self.get_file_name())
-		if lines!=False:
-			enabled=str2bool(inp_search_token_value(lines, "#enabled"))
-			if enabled==True:
-				self.tmesh_real.update()
-				self.tmesh.update()
-
-	def __init__(self,file_name):
+	def __init__(self,uid):
+		self.uid=uid
 		QTabWidget.__init__(self)
-		self.file_name=file_name
+
+		data=gpvdm_data()
+		data_obj=data.fits.fits.find_object_by_id(self.uid)
+
 		css_apply(self,"tab_default.css")
-		lines=[]
-		self.index=int(extract_number_from_file_name(file_name))
-		lines=inp_load_file(os.path.join(get_sim_path(),"fit"+str(self.index)+".inp"))
-		if lines!=False:
-			self.tab_name=inp_search_token_value(lines, "#fit_name")
-		else:
-			self.tab_name=""
 
 		#self.setTabsClosable(True)
 		#self.setMovable(True)
 
-		self.tmesh_real = fit_window_plot_real(self.index)
+		self.tmesh_real = fit_window_plot_real(data_obj)
 		self.addTab(self.tmesh_real,_("Experimental data"))
 
-		self.tmesh = fit_window_plot(self.index)
+		self.tmesh = fit_window_plot(os.path.join(get_sim_path(),"sim",data_obj.config.fit_name))
 		self.addTab(self.tmesh,_("Delta=Experiment - Simulation"))
 
-		config=tab_class(os.path.join(get_sim_path(),"fit"+str(self.index)+".inp"))
-		self.addTab(config,_("Configure fit"))
+		self.config_tab=tab_class(data_obj.config)
+		self.addTab(self.config_tab,_("Configure fit"))
 
-		self.fit_patch = fit_patch(self.index)
+		self.fit_patch = fit_patch(data_obj.fit_patch)
 		self.addTab(self.fit_patch, _("Fit patch"))
 
-		self.matlab_editor = matlab_editor(self.index)
-		self.addTab(self.matlab_editor, _("MATLAB code"))
-		
-	def init(self,index):
-		return
-
 	def import_data(self):
-		target=os.path.join(get_sim_path(),"fit_data"+str(self.index)+".inp")
-		config=os.path.join(get_sim_path(),"fit_import_config"+str(self.index)+".inp")
-		self.im=import_data(target,config)
+		data=gpvdm_data()
+		data_obj=data.fits.fits.find_object_by_id(self.uid)
+
+		self.im=import_data_json(data_obj.import_config,export_path=get_sim_path())
 		self.im.run()
-		self.update()
+		self.update(force=True)
 
 	def get_tab_text(self):
-		enabled=self.is_enabled()
-		if enabled==True:
-			enabled="(\u2705)"
+		data=gpvdm_data()
+		data_obj=data.fits.fits.find_object_by_id(self.uid)
+		if data_obj.config.enabled==True:
+			tick_cross="(\u2705)"
 		else:
-			enabled="(\u274C)"
+			tick_cross="(\u274C)"
 
-		return self.tab_name+" "+enabled
+		return data_obj.config.fit_name+" "+str(tick_cross)
 
 	def rename(self,tab_name):
+		data=gpvdm_data()
+		data_obj=data.fits.fits.find_object_by_id(self.uid)
 		tab = self.currentWidget()
-
-		inp_update_token_value(os.path.join(get_sim_path(),"fit"+str(self.index)+".inp"), "#fit_name", self.tab_name)
-
-	def callback_export_image(self):
-		tab = self.currentWidget()
-		if (type(tab) != fit_window_plot_real) and (type(tab) != fit_window_plot):
-			return
-
-		tab.plot.callback_save_image()
-
-	def callback_export_csv(self):
-		tab = self.currentWidget()
-		if (type(tab) != fit_window_plot_real) and (type(tab) != fit_window_plot):
-			return
-
-		tab.plot.callback_save_csv()
-
-	def callback_export_xls(self):
-		tab = self.currentWidget()
-		if (type(tab) != fit_window_plot_real) and (type(tab) != fit_window_plot):
-			return
-
-		tab.plot.callback_save_xls()
-
-	def callback_export_gnuplot(self):
-		tab = self.currentWidget()
-		if (type(tab) != fit_window_plot_real) and (type(tab) != fit_window_plot):
-			return
-
-		tab.plot.callback_save_gnuplot()
-
+		data_obj.config.fit_name=tab_name
+		data.save()
 

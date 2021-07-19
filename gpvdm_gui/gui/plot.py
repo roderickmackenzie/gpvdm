@@ -31,11 +31,10 @@
 import os
 #import shutil
 from token_lib import tokens
-#from util import pango_to_gnuplot
 from plot_io import plot_load_info
 
 def check_info_file(search_string):
-	files=["dos0.inp","dos1.inp","photokit_ri.dat","photokit_real.dat","photokit_imag.dat","jv_psun_voc.dat","jv_voc_nt.dat","jv_voc_pt.dat","jv_psun_nf_nt.dat","jv_psun_pf_pt.dat","jv_psun_np_tot.dat","sim_info.dat","light.inp","points.dat","stark.inp"]
+	files=["dos0.inp","dos1.inp","photokit_ri.dat","photokit_real.dat","photokit_imag.dat","jv_psun_voc.dat","jv_voc_nt.dat","jv_voc_pt.dat","jv_psun_nf_nt.dat","jv_psun_pf_pt.dat","jv_psun_np_tot.dat","sim_info.dat","points.dat","stark.inp"]
 	if files.count(search_string)> 0:
 		return True
 	else:

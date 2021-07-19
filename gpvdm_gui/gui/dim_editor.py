@@ -27,20 +27,11 @@
 
 import os
 from str2bool import str2bool
-from inp import inp_search_token_value
 from icon_lib import icon_get
 from gpvdm_open import gpvdm_open
 from cal_path import get_materials_path
 from global_objects import global_object_get
 from help import help_window
-
-#inp
-from inp import inp
-from inp import inp_copy_file
-from inp import inp_update_token_value
-from inp import inp_load_file
-from inp import inp_lsdir
-from inp import inp_remove_file
 
 #windows
 from gui_util import yes_no_dlg
@@ -67,14 +58,12 @@ _ = i18n.language.gettext
 
 from gpvdm_select import gpvdm_select
 
-from code_ctrl import enable_betafeatures
 from cal_path import get_sim_path
 from cal_path import get_default_material_path
 from QWidgetSavePos import QWidgetSavePos
 
-from epitaxy_mesh_update import epitaxy_mesh_update
-
 from mesh import get_mesh
+from gpvdm_json import gpvdm_data
 
 class dim_editor(QWidgetSavePos):
 
@@ -112,7 +101,7 @@ class dim_editor(QWidgetSavePos):
 		self.widget0_hbox.addWidget(self.widget0_label)
 
 		self.widget0_edit=QLineEdit()
-		self.widget0_edit.setText(str(get_mesh().get_xlen()))
+		self.widget0_edit.setText(str(get_mesh().x.get_len()))
 		self.widget0_edit.textChanged.connect(self.apply)
 		self.widget0_hbox.addWidget(self.widget0_edit)
 		self.widget0_label=QLabel("m")
@@ -126,7 +115,7 @@ class dim_editor(QWidgetSavePos):
 		self.widget1_label=QLabel("z size")
 		self.widget1_hbox.addWidget(self.widget1_label)
 		self.widget1_edit=QLineEdit()
-		self.widget1_edit.setText(str(get_mesh().get_zlen()))
+		self.widget1_edit.setText(str(get_mesh().z.get_len()))
 		self.widget1_edit.textChanged.connect(self.apply)
 		self.widget1_hbox.addWidget(self.widget1_edit)
 		self.widget1_label=QLabel("m")
@@ -143,13 +132,14 @@ class dim_editor(QWidgetSavePos):
 
 
 	def apply(self):
+		data=gpvdm_data()
 		try:
 			val=float(self.widget0_edit.text())
 			if val<=0:
 				return
 		except:
 			return
-		get_mesh().set_xlen(val)
+		get_mesh().x.set_len(val)
 
 		try:
 			val=float(self.widget1_edit.text())
@@ -159,10 +149,9 @@ class dim_editor(QWidgetSavePos):
 		except:
 			return
 
-		get_mesh().set_zlen(val)
+		get_mesh().z.set_len(val)
 
-		get_mesh().x.save()
-		get_mesh().z.save()
+		data.save()
 
 		global_object_run("mesh_update")
 		global_object_run("gl_force_redraw")

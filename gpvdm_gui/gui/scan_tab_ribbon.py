@@ -28,11 +28,6 @@
 
 import os
 
-from dump_io import dump_io
-from tb_item_sim_mode import tb_item_sim_mode
-from tb_item_sun import tb_item_sun
-
-from code_ctrl import enable_betafeatures
 from cal_path import get_css_path
 
 #qt
@@ -47,8 +42,6 @@ from icon_lib import icon_get
 from about import about_dlg
 
 from util import wrap_text
-
-from code_ctrl import enable_betafeatures
 
 from ribbon_base import ribbon_base
 from play import play

@@ -27,17 +27,30 @@
 
 import os
 from inp import inp
-from inp import inp_save_lines_to_file
+from json_base import json_base
 
-class bib_item:
+class bib_item(json_base):
 	def __init__(self):
+		json_base.__init__(self,"bibtex")
 		self.type=""
 		self.token=""
-		self.vars=["author","title","url","journal","volume","number","pages","year","DOI","publisher","address","booktitle","isbn","unformatted"]
-		for var in self.vars:
-			setattr(self, var, "")
+		self.var_list=[]
+		self.var_list.append(["author",""])
+		self.var_list.append(["title",""])
+		self.var_list.append(["journal",""])
+		self.var_list.append(["volume",""])
+		self.var_list.append(["number",""])
+		self.var_list.append(["pages",""])
+		self.var_list.append(["year",""])
+		self.var_list.append(["DOI",""])
+		self.var_list.append(["publisher",""])
+		self.var_list.append(["address",""])
+		self.var_list.append(["booktitle",""])
+		self.var_list.append(["isbn",""])
+		self.var_list.append(["unformatted",""])
+		self.var_list_build()
 
-	def short_cite(self):
+	def bib_short_cite(self):
 		build=""
 		if self.title!="":
 			build=build+self.title+", "
@@ -58,7 +71,7 @@ class bib_item:
 
 		return build
 
-	def decode(self,lines):
+	def bib_decode(self,lines):
 		l=lines[0][1:]
 		if l[-1]==",":
 			l=lines[0][:-1]
@@ -112,14 +125,12 @@ class bib_item:
 						
 		new_lines=[]
 
-		#self.dump()
 
-	def __str__(self):
+	def bib_get_as_str(self):
 		build="@"+self.type+"{"+self.token+",\n"
 
-		for var in self.vars:
+		for var, orig_val in self.var_list:
 			val=getattr(self, var)
-			#print(var)
 			if val!="" and val!=False:
 				build=build+" "+var+" = \""+val+"\",\n"
 
@@ -127,8 +138,8 @@ class bib_item:
 		build=build+"\n}"
 		return build
 
-	def dump(self):
-		print(str(self))
+	def bib_dump(self):
+		print(self.bib_get_as_str())
 
 	def get_text(self,html=True):
 		text=""
@@ -151,6 +162,8 @@ class bibtex:
 		self.refs=[]
 
 	def load(self,file_name):
+		self.file_name=file_name
+
 		f=inp()
 		if f.load(file_name)==False:
 			return False
@@ -174,30 +187,34 @@ class bibtex:
 			if bracket==0:
 				if within==True:
 					item=bib_item()
-					item.decode(ref_lines)
-					#for l in ref_lines:
-					#	print(">",l)
-					#item.dump()
+					item.save=self.save
+					item.bib_decode(ref_lines)
 					self.refs.append(item)
+
 				within=False
 		return True
 
 	def new(self):
 		item=bib_item()
 		item.type="article"
+		item.save=self.save
 		self.refs.append(item)
 		return self.refs[-1]
 
 	def dump(self):
 		for r in self.refs:
-			print(str(r))
+			print(r.bib_get_as_str())
 
-	def save(self,file_name):
+	def save(self):
+		self.save_as(self.file_name)
+
+	def save_as(self,file_name):
 		lines=[]
 		for r in self.refs:
-			lines.append(str(r)+"\n")
-
-		inp_save_lines_to_file(file_name,lines)
+			lines.append(r.bib_get_as_str()+"\n")
+		f=inp()
+		f.lines=lines
+		f.save_as(file_name)
 
 	def get_text(self,html=True):
 		out=""

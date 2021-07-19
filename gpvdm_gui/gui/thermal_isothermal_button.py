@@ -21,8 +21,8 @@
 #
 # 
 
-## @package dump_io
-#  Toolbar icon to turn on and off dumping.
+## @package thermal_isothermal_button
+#  Select thermal/isothermal simulation
 #
 
 import os
@@ -36,7 +36,7 @@ from PyQt5.QtWidgets import QWidget,QSizePolicy,QHBoxLayout,QPushButton,QDialog,
 from icon_lib import icon_get
 from str2bool import str2bool
 from help import help_window
-from inp import inp
+from gpvdm_json import gpvdm_data
 
 from cal_path import get_sim_path
 import sys
@@ -44,18 +44,14 @@ import sys
 class thermal_isothermal_button(QAction):
 
 	def set_state(self,val):
-		f=inp()
-		f.load(os.path.join(get_sim_path(),"thermal.inp"))
-		f.replace("#thermal",str(val))
-		f.save()
+		data=gpvdm_data()
+		data.thermal.thermal=val
+		data.save()
 
 	def update_ui(self,update_help):
 		self.blockSignals(True)
-		f=inp()
-		f.load(os.path.join(get_sim_path(),"thermal.inp"))
-		v=f.get_token("#thermal")
-		self.thermal=str2bool(v)
-		#print(self.thermal)
+		data=gpvdm_data()
+		self.thermal=str2bool(data.thermal.thermal)
 
 		if self.thermal==True:
 			self.setIcon(icon_get("thermal-on"))

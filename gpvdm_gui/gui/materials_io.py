@@ -33,11 +33,12 @@ from cal_path import get_materials_path
 from cal_path import get_base_material_path
 from dir_decode import get_dir_type
 from inp import inp
-
+from json_material_db_item import json_material_db_item
+ 
 def archive_materials(path):
 	for root, dirs, files in os.walk(path):
 		for file in files:
-			if file.endswith("mat.inp"):
+			if file.endswith("data.json"):
 				mat_file=os.path.join(root, file)
 				mat_dir=os.path.dirname(mat_file)
 				zip_file=mat_dir+".zip"
@@ -59,26 +60,23 @@ def archive_materials(path):
 
 
 def materials_delete_from_vendor(vendor):
-	materials=find_materials(mat_path=get_base_material_path(),from_src=vendor)
+	materials=find_db_items(mat_path=get_base_material_path(),from_src=vendor)
 	for m in materials:
 		path=os.path.join(get_base_material_path(),m)
 		print("delete",path)
 		shutil.rmtree(path)
 
-def find_materials(mat_path=get_materials_path(),file_type="material",from_src=None):
+def find_db_items(mat_path=get_materials_path(),file_type="material",from_src=None):
 	ret=[]
 
 	for root, dirs, files in os.walk(mat_path):
-		#for file in files:
-		#path=os.path.join(root, file)
-		#print(root)
 		if get_dir_type(root)==file_type:
 			
 			add=True
 			if from_src!=None:
-				f=inp()
-				f.load(os.path.join(root,"mat.inp"))
-				if f.get_token("#mat_src")!=from_src:
+				a=json_material_db_item()
+				f.load(os.path.join(root,"data.json"))
+				if f.mat_src!=from_src:
 					add=False
 
 			if add==True:

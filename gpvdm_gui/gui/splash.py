@@ -27,7 +27,7 @@
 
 import os
 import glob
-from ver import version
+from const_ver import const_ver
 from notice import notice
 import random
 from random import randint
@@ -90,7 +90,7 @@ class splash_window(QWidget):
 		self.gpvdm.move(80,40)
 
 
-		self.li.setText(notice()+"\n"+version())
+		self.li.setText(notice()+"\n"+const_ver())
 		self.view.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 		self.view.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 		window_h=self.height()

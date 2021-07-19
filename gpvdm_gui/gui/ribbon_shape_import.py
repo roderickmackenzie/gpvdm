@@ -29,11 +29,6 @@
 
 import os
 
-from dump_io import dump_io
-from tb_item_sim_mode import tb_item_sim_mode
-from tb_item_sun import tb_item_sun
-
-from code_ctrl import enable_betafeatures
 from cal_path import get_css_path
 
 #qt
@@ -43,16 +38,10 @@ from PyQt5.QtCore import QSize, Qt,QFile,QIODevice
 from PyQt5.QtWidgets import QWidget,QSizePolicy,QVBoxLayout,QHBoxLayout,QPushButton,QDialog,QFileDialog,QToolBar, QToolButton,QMenu
 from PyQt5.QtWidgets import QTabWidget
 
-from info import sim_info
-from win_lin import desktop_open
-
 #windows
 from scan import scan_class 
 from help import help_window
 
-
-from global_objects import global_object_run
-from util import isfiletype
 from icon_lib import icon_get
 
 from cal_path import get_sim_path
@@ -81,37 +70,7 @@ class ribbon_shape_import(ribbon_base):
 		self.tb_script= QAction_lock("script", wrap_text(_("Generate\nImage"),2), self,"ribbon_shape_script")
 		toolbar.addAction(self.tb_script)
 
-		##########################
-		self.tb_honeycomb= QAction_lock("honeycomb", wrap_text(_("Generate\nHoneycomb"),2), self,"ribbon_shape_honeycomb")
 
-		self.tb_honeycomb_menu = QMenu(self)
-		self.tb_honeycomb.setMenu(self.tb_honeycomb_menu)
-
-		self.tb_honeycomb_menu_edit=QAction(_("Edit"), self)
-		self.tb_honeycomb_menu.addAction(self.tb_honeycomb_menu_edit)
-
-		toolbar.addAction(self.tb_honeycomb)
-		##########################
-		self.tb_gaus= QAction_lock("gauss", wrap_text(_("Generate\nGaussian"),2), self,"ribbon_shape_gaus")
-
-		self.tb_gaus_menu = QMenu(self)
-		self.tb_gaus.setMenu(self.tb_gaus_menu)
-
-		self.tb_gaus_menu_edit=QAction(_("Edit"), self)
-		self.tb_gaus_menu.addAction(self.tb_gaus_menu_edit)
-
-		toolbar.addAction(self.tb_gaus)
-		##########################
-
-		self.tb_boundary= QAction_lock("boundary", wrap_text(_("Boundary"),2), self,"ribbon_shape_boundary")
-
-		#self.tb_boundary_menu = QMenu(self)
-		#self.tb_boundary.setMenu(self.tb_boundary_menu)
-
-		#self.tb_boundary_menu_edit=QAction(_("Edit"), self)
-		#self.tb_boundary_menu.addAction(self.tb_boundary_menu_edit)
-
-		toolbar.addAction(self.tb_boundary)
 		##########################
 
 		spacer = QWidget()
@@ -192,8 +151,38 @@ class ribbon_shape_import(ribbon_base):
 
 		#rotate
 		self.tb_rotate= QAction_lock("rotate_right", wrap_text(_("Rotate"),2), self,"ribbon_rotate_right")
-
 		toolbar.addAction(self.tb_rotate)
+
+
+		##########################
+		self.tb_honeycomb= QAction_lock("honeycomb", wrap_text(_("Generate\nHoneycomb"),2), self,"ribbon_shape_honeycomb")
+
+		self.tb_honeycomb_menu = QMenu(self)
+		self.tb_honeycomb.setMenu(self.tb_honeycomb_menu)
+
+		self.tb_honeycomb_menu_edit=QAction(_("Edit"), self)
+		self.tb_honeycomb_menu.addAction(self.tb_honeycomb_menu_edit)
+
+		toolbar.addAction(self.tb_honeycomb)
+		##########################
+		self.tb_gaus= QAction_lock("gauss", wrap_text(_("Generate\nGaussian"),2), self,"ribbon_shape_gaus")
+
+		self.tb_gaus_menu = QMenu(self)
+		self.tb_gaus.setMenu(self.tb_gaus_menu)
+
+		self.tb_gaus_menu_edit=QAction(_("Edit"), self)
+		self.tb_gaus_menu.addAction(self.tb_gaus_menu_edit)
+
+		toolbar.addAction(self.tb_gaus)
+		##########################
+
+		self.tb_boundary= QAction_lock("boundary", wrap_text(_("Boundary"),2), self,"ribbon_shape_boundary")
+
+		toolbar.addAction(self.tb_boundary)
+
+		###########3
+		self.tb_configure= QAction_lock("cog", wrap_text(_("Configure"),2), self,"ribbon_configure")
+		toolbar.addAction(self.tb_configure)
 
 
 		return toolbar
@@ -204,10 +193,10 @@ class ribbon_shape_import(ribbon_base):
 		self.addTab(w,_("File"))
 
 		w=self.image_toolbar()
-		self.addTab(w,_("Image"))
+		self.addTab(w,_("2D Image"))
 
 		w=self.mesh_toolbar()
-		self.addTab(w,_("Mesh"))
+		self.addTab(w,_("3D Mesh"))
 
 		sheet=self.readStyleSheet(os.path.join(get_css_path(),"style.css"))
 		if sheet!=None:

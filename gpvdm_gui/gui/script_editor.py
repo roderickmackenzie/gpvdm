@@ -31,7 +31,6 @@ import os
 import sys
 import importlib
 
-from code_ctrl import enable_betafeatures
 from cal_path import get_css_path
 
 #qt
@@ -45,22 +44,11 @@ import sys
 from PyQt5.QtGui import QPainter,QColor
 from icon_lib import icon_get
 
-from about import about_dlg
-
-from util import wrap_text
-from ribbon_base import ribbon_base
-from play import play
-from QAction_lock import QAction_lock
-from inp import inp_get_token_value
-from inp import inp_update_token_value
-from cal_path import get_sim_path
-
 from PyQt5.QtCore import QFile, QRegExp, Qt
 from PyQt5.QtGui import QFont, QSyntaxHighlighter, QTextCharFormat
 from code_editor import code_editor
 
 from inp import inp_load_file
-from inp import inp_save
 from gpvdm_api import gpvdm_api
 import imp
 from PyQt5.QtCore import pyqtSignal
@@ -152,7 +140,7 @@ class Highlighter(QSyntaxHighlighter):
 
 class script_editor(code_editor):
 	status_changed = pyqtSignal()
-
+	save_signal = pyqtSignal()
 	def __init__(self,):
 		code_editor.__init__(self)
 		font = QFont()
@@ -182,11 +170,16 @@ class script_editor(code_editor):
 		self.setPlainText("\n".join(lines))
 		self.blockSignals(False)
 
+	def setText(self,text):
+		self.blockSignals(True)
+		self.setPlainText(text)
+		self.blockSignals(False)
+
+	def getText(self):
+		return self.toPlainText()
+
 	def save(self):
-		text=self.toPlainText().split("\n")
-		inp_save(self.file_name,text)
-		self.not_saved=False
-		self.status_changed.emit()
+		self.save_signal.emit()
 
 	def run(self):
 		print("Running:",self.file_name)
@@ -196,11 +189,4 @@ class script_editor(code_editor):
 		api.path=os.path.dirname(self.file_name)
 		a=mod.gpvdm_plugin(api)
 		del mod
-		#sys.path.insert(1, os.path.dirname(self.file_name))
-		#import_name=os.path.splitext(os.path.basename(self.file_name))[0]
-		#module=__import__(import_name)
-		#importlib.reload(module)
-		#module.run()
-		#del module
-		#os.system("python3 "+self.file_name)
 

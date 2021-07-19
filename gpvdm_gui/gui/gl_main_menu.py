@@ -45,7 +45,6 @@ except:
 
 import io
 from PyQt5.QtCore import QTimer, Qt
-from inp import inp_update_token_value
 from cal_path import get_sim_path
 from PyQt5.QtWidgets import QDialog, QFontDialog, QColorDialog
 from dat_file_math import dat_file_max_min
@@ -99,6 +98,10 @@ class gl_main_menu():
 		self.menu_view_text.triggered.connect(self.menu_toggle_view)
 		self.menu_view_text.setCheckable(True)
 
+		self.menu_view_plot=view.addAction(_("Show plot"))
+		self.menu_view_plot.triggered.connect(self.menu_toggle_view)
+		self.menu_view_plot.setCheckable(True)
+
 		action=view.addAction(_("Ray tracing mesh"))
 		action.triggered.connect(self.menu_toggle_view)
 
@@ -111,10 +114,6 @@ class gl_main_menu():
 		action=view.addAction(_("Stars"))
 		action.triggered.connect(self.menu_stars)
 
-		plot=self.main_menu.addMenu(_("Plot"))
-
-		action=plot.addAction(_("Open"))
-		action.triggered.connect(self.menu_plot_open)
 
 
 		edit=self.main_menu.addMenu(_("Edit"))
@@ -129,6 +128,7 @@ class gl_main_menu():
 		self.main_menu.exec_(event.globalPos())
 
 	def callback_copy(self):
+		self.render()
 		QApplication.clipboard().setImage(self.grabFrameBuffer())
 
 	def save_image_as(self):
@@ -155,6 +155,8 @@ class gl_main_menu():
 		self.view.draw_device=self.menu_view_draw_device.isChecked()
 		self.view.optical_mode=self.menu_view_optical_mode.isChecked()
 		self.view.text=self.menu_view_text.isChecked()
+		self.view.render_plot=self.menu_view_plot.isChecked()
+
 
 		if text==_("Ray tracing mesh"):
 			self.enable_draw_ray_mesh= not self.enable_draw_ray_mesh
@@ -183,17 +185,6 @@ class gl_main_menu():
 
 		self.force_redraw()
 
-	def menu_plot_open(self):
-		from gpvdm_open import gpvdm_open
-		dialog=gpvdm_open(get_sim_path(),show_inp_files=False,act_as_browser=False)
-		ret=dialog.exec_()
-		if ret==QDialog.Accepted:
-			self.graph_path=dialog.get_filename()
-			if self.graph_data.load(self.graph_path)==True:
-				#print(self.graph_path)
-				self.graph_data.data_max,self.graph_data.data_min=dat_file_max_min(self.graph_data)
-				#print(self.graph_z_max,self.graph_z_min)
-
 	def menu_update(self):
 		self.menu_view_draw_electrical_mesh.setChecked(self.draw_electrical_mesh)
 		self.menu_view_draw_device_cut_through.setChecked(self.draw_device_cut_through)
@@ -202,4 +193,4 @@ class gl_main_menu():
 		self.menu_view_draw_device.setChecked(self.view.draw_device)
 		self.menu_view_optical_mode.setChecked(self.view.optical_mode)
 		self.menu_view_text.setChecked(self.view.text)
-
+		self.menu_view_plot.setChecked(self.view.render_plot)

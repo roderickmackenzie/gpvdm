@@ -28,20 +28,12 @@
 import math
 from layer_widget import layer_widget
 import os
-from cal_path import get_materials_path
-from inp import inp_search_token_value
 from str2bool import str2bool
 from tab_base import tab_base
 from help import help_window
-from epitaxy import epitaxy_get_pl_file
-from epitaxy import epitaxy_get_name
-from win_lin import running_on_linux
-from code_ctrl import enable_webupdates
 
 from PyQt5.QtWidgets import QWidget,QHBoxLayout,QSplitter
 from PyQt5.QtCore import Qt
-
-from ribbon_device import ribbon_device
 
 import i18n
 _ = i18n.language.gettext

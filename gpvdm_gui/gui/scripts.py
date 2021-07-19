@@ -27,8 +27,6 @@
 
 
 import os
-from inp import inp_update_token_value
-from inp import inp_get_token_value
 from icon_lib import icon_get
 import zipfile
 import glob
@@ -48,7 +46,6 @@ from PyQt5.QtWidgets import QWidget,QHBoxLayout,QVBoxLayout,QToolBar,QSizePolicy
 from PyQt5.QtGui import QIcon
 
 #windows
-from band_graph import band_graph
 from plot_widget import plot_widget
 from error_dlg import error_dlg
 
@@ -67,6 +64,7 @@ from inp import inp_lsdir
 from gui_util import dlg_get_text
 from cal_path import get_scripts_path
 from os import listdir
+from inp import inp_save
 
 from gpvdm_api import gpvdm_api
 
@@ -97,6 +95,7 @@ class scripts(QWidgetSavePos):
 		self.ribbon.help.triggered.connect(self.callback_help)
 
 		self.ribbon.tb_save.clicked.connect(self.callback_save)
+
 		self.ribbon.tb_new.clicked.connect(self.callback_add_page)
 		#self.ribbon.tb_rename.clicked.connect(self.callback_rename_page)
 
@@ -118,6 +117,7 @@ class scripts(QWidgetSavePos):
 				a.api_callback=self.api_callback
 				a.load(file_name)
 				a.status_changed.connect(self.callback_tab_changed)
+				a.save_signal.connect(self.callback_save)
 				self.notebook.addTab(a,f)
 				added=added+1
 		if added==0:
@@ -127,6 +127,7 @@ class scripts(QWidgetSavePos):
 			a.api_callback=self.api_callback
 			a.load(file_name)
 			a.status_changed.connect(self.callback_tab_changed)
+			a.save_signal.connect(self.callback_save)
 			self.notebook.addTab(a,"example.py")
 
 		self.notebook.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
@@ -161,6 +162,7 @@ class scripts(QWidgetSavePos):
 			a=script_editor()
 			a.load(name)
 			a.status_changed.connect(self.callback_tab_changed)
+			a.save_signal.connect(self.callback_save)
 			self.notebook.addTab(a,os.path.basename(name))
 
 	def callback_tab_changed(self):
@@ -181,22 +183,12 @@ class scripts(QWidgetSavePos):
 
 	def callback_save(self):
 		tab = self.notebook.currentWidget()
-		tab.save()
+		text=tab.toPlainText().split("\n")
+		tab.not_saved=False
+		inp_save(tab.file_name,text)
+		self.callback_tab_changed()
 
-	def optics_sim_finished(self):
-		inp_update_token_value("dump.inp", "#dump_optics",self.dump_optics)
-		inp_update_token_value("dump.inp", "#dump_optics_verbose",self.dump_optics_verbose)
-		self.force_redraw()
 
-	def force_redraw(self):
-
-		self.fig_gen_rate.draw_graph()
-
-		for i in range(0,len(self.plot_widgets)):
-			self.plot_widgets[i].update()
-			
-		self.ribbon.update()
-		
 	def callback_run(self):
 		tab = self.notebook.currentWidget()
 		tab.run()

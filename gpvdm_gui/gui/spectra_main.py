@@ -46,13 +46,11 @@ from QWidgetSavePos import QWidgetSavePos
 
 from ribbon_spectra import ribbon_spectra
 
-from import_data import import_data
+from import_data_json import import_data_json
+from json_spectra_db_item import json_spectra_db_item
 
 from ref import ref_window
 from bibtex import bibtex
-
-articles = []
-mesh_articles = []
 
 class spectra_main(QWidgetSavePos):
 
@@ -75,9 +73,7 @@ class spectra_main(QWidgetSavePos):
 		self.ref_window.show()
 
 	def callback_import(self):
-		output_file=os.path.join(self.path,"spectra.inp")
-		config_file=os.path.join(self.path,"spectra_import.inp")
-		self.im=import_data(output_file,config_file,multi_files=True)
+		self.im=import_data_json(self.data.spectra_import,export_path=self.path)
 		self.im.run()
 		self.update()
 
@@ -109,9 +105,10 @@ class spectra_main(QWidgetSavePos):
 
 		self.main_vbox.addWidget(self.notebook)
 
-
-		files=["mat.inp"]
-		description=[_("Parameters")]
+		mat_file=os.path.join(self.path,"data.json")
+		self.data=json_spectra_db_item()
+		self.data.load(mat_file)
+		self.data.spectra_import.data_file="spectra.inp"
 
 
 		fname=os.path.join(self.path,"spectra.inp")
@@ -122,9 +119,8 @@ class spectra_main(QWidgetSavePos):
 		self.alpha.do_plot()
 		self.notebook.addTab(self.alpha,_("Absorption"))
 
-		for i in range(0,len(files)):
-			tab=tab_class(os.path.join(self.path,files[i]))
-			self.notebook.addTab(tab,description[i])
+		tab=tab_class(self.data)
+		self.notebook.addTab(tab,_("Basic"))
 
 
 		self.setLayout(self.main_vbox)

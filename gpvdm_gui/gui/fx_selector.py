@@ -26,8 +26,6 @@
 #
 
 import os
-from inp import inp_update_token_value
-from inp import inp_get_token_value
 import zipfile
 import glob
 from tab import tab_class

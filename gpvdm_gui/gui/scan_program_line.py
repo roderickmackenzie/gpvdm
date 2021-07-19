@@ -31,8 +31,6 @@ import random
 
 class scan_program_line:
 	def __init__(self):
-		self.file=None
-		self.token=None
 		self.human_name=None
 		self.values=None
 		self.opp=None

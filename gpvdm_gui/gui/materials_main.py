@@ -51,11 +51,9 @@ from QWidgetSavePos import QWidgetSavePos
 from plot_widget import plot_widget
 
 from ribbon_materials import ribbon_materials
-from import_data import import_data
+from import_data_json import import_data_json
 from equation_editor import equation_editor
-
-articles = []
-mesh_articles = []
+from json_material_db_item import json_material_db_item
 
 class materials_main(QWidgetSavePos):
 
@@ -144,16 +142,22 @@ class materials_main(QWidgetSavePos):
 
 		self.notebook.addTab(self.n,_("Refractive index"))
 
+		mat_file=os.path.join(self.path,"data.json")
+		self.data=json_material_db_item()
+		self.data.load(mat_file)
+		self.data.n_import.data_file="n.gmat"
+		self.data.alpha_import.data_file="alpha.gmat"
 
-		files=["dos.inp","pl.inp","mat.inp"]
-		description=[_("Electrical parameters"),_("Luminescence"),_("Basic")]
+		tab=tab_class(self.data,data=self.data)
+		self.notebook.addTab(tab,_("Basic"))
+
+		tab=tab_class(self.data.electrical_constants,data=self.data)
+		self.notebook.addTab(tab,_("Electrical parameters"))
+
+		tab=tab_class(self.data.thermal_constants,data=self.data)
+		self.notebook.addTab(tab,_("Thermal parameters"))
 
 
-		for i in range(0,len(files)):
-			full_path=os.path.join(self.path,files[i])
-			if os.path.isfile(full_path)==True:
-				tab=tab_class(os.path.join(self.path,files[i]))
-				self.notebook.addTab(tab,description[i])
 		self.setLayout(self.main_vbox)
 		
 		self.notebook.currentChanged.connect(self.changed_click)
@@ -195,30 +199,12 @@ class materials_main(QWidgetSavePos):
 	def import_data(self):
 		file_name=None
 		if self.notebook.tabText(self.notebook.currentIndex()).strip()==_("Absorption"):
-			file_name="alpha.gmat"
-
-		if self.notebook.tabText(self.notebook.currentIndex()).strip()==_("Refractive index"):
-			file_name="n.gmat"
-
-		if file_name!=None:
-			output_file=os.path.join(self.path,file_name)
-			config_file=os.path.join(self.path,file_name+"import.inp")
-			self.im=import_data(output_file,config_file)
+			self.im=import_data_json(self.data.alpha_import,export_path=self.path)
 			self.im.run()
 			self.update()
 
-	def import_ref(self):
-		file_name=None
-		if self.notebook.tabText(self.notebook.currentIndex()).strip()==_("Absorption"):
-			file_name="alpha.gmat"
-
 		if self.notebook.tabText(self.notebook.currentIndex()).strip()==_("Refractive index"):
-			file_name="n.gmat"
-
-		if file_name!=None:
-			output_file=os.path.join(self.path,file_name)
-			config_file=os.path.join(self.path,file_name+"import.inp")
-			self.im=import_data(output_file,config_file)
+			self.im=import_data_json(self.data.n_import,export_path=self.path)
 			self.im.run()
 			self.update()
 
@@ -235,6 +221,7 @@ class materials_main(QWidgetSavePos):
 			token="n"
 
 		if token!=None:
+			#print("path=",os.path.join(self.path,"mat.bib"))
 			self.ref_window=ref_window(os.path.join(self.path,"mat.bib"),token)
 			self.ref_window.show()
 

@@ -45,16 +45,13 @@ from ref import ref_window
 
 from gpvdm_open import gpvdm_open
 
-
 from QWidgetSavePos import QWidgetSavePos
 from plot_widget import plot_widget
 
 from ribbon_emission_db import ribbon_emission_db
-from import_data import import_data
+from import_data_json import import_data_json
 from equation_editor import equation_editor
-
-articles = []
-mesh_articles = []
+from json_emission_db_item import json_emission_db_item
 
 class emission_main(QWidgetSavePos):
 
@@ -106,15 +103,14 @@ class emission_main(QWidgetSavePos):
 		self.notebook.addTab(self.emission,_("Emission"))
 
 
-		files=["mat.inp"]
-		description=[_("Basic")]
+		mat_file=os.path.join(self.path,"data.json")
+		self.data=json_emission_db_item()
+		self.data.load(mat_file)
+		self.data.emission_import.data_file="spectra.inp"
 
+		tab=tab_class(self.data,data=self.data)
+		self.notebook.addTab(tab,_("Basic"))
 
-		for i in range(0,len(files)):
-			full_path=os.path.join(self.path,files[i])
-			if os.path.isfile(full_path)==True:
-				tab=tab_class(os.path.join(self.path,files[i]))
-				self.notebook.addTab(tab,description[i])
 		self.setLayout(self.main_vbox)
 		
 		self.notebook.currentChanged.connect(self.changed_click)
@@ -143,20 +139,7 @@ class emission_main(QWidgetSavePos):
 		self.equation_editor.show()
 
 	def import_data(self):
-		file_name="spectra.inp"
-
-		output_file=os.path.join(self.path,file_name)
-		config_file=os.path.join(self.path,file_name+"import.inp")
-		self.im=import_data(output_file,config_file)
-		self.im.run()
-		self.update()
-
-	def import_ref(self):
-		file_name="spectra.inp"
-
-		output_file=os.path.join(self.path,file_name)
-		config_file=os.path.join(self.path,file_name+"import.inp")
-		self.im=import_data(output_file,config_file)
+		self.im=import_data_json(self.data.emission_import,export_path=self.path)
 		self.im.run()
 		self.update()
 

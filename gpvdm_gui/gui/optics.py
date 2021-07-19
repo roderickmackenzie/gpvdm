@@ -27,8 +27,6 @@
 
 
 import os
-from inp import inp_update_token_value
-from inp import inp_get_token_value
 from plot_gen import plot_gen
 from icon_lib import icon_get
 import zipfile
@@ -48,7 +46,8 @@ from PyQt5.QtWidgets import QWidget,QHBoxLayout,QVBoxLayout,QToolBar,QSizePolicy
 from PyQt5.QtGui import QIcon
 
 #windows
-from band_graph import band_graph
+from band_graph2 import band_graph2
+
 from plot_widget import plot_widget
 from error_dlg import error_dlg
 
@@ -63,6 +62,8 @@ from optics_ribbon import optics_ribbon
 
 from css import css_apply
 from gui_util import yes_no_dlg
+from gpvdm_json import gpvdm_data
+from optics_sources_tab import optics_sources_tab
 
 class class_optical(QWidgetSavePos):
 
@@ -94,11 +95,7 @@ class class_optical(QWidgetSavePos):
 
 		self.ribbon.optics.run.start_sim.connect(self.callback_run)
 
-		self.ribbon.optics.fx_box.cb.currentIndexChanged.connect(self.mode_changed)
-
 		self.ribbon.optics.help.triggered.connect(self.callback_help)
-
-		self.ribbon.tb_save.clicked.connect(self.callback_save)
 
 		self.ribbon.optics.configwindow.triggered.connect(self.callback_configwindow)
 
@@ -126,22 +123,14 @@ class class_optical(QWidgetSavePos):
 			#self.plot_widgets[i].show()
 			self.notebook.addTab(self.plot_widgets[i],plot_labels[i])
 
-		self.fig_photon_density = band_graph()
-		self.fig_photon_density.set_data_file("light_1d_photons_tot_norm.dat")
-		self.notebook.addTab(self.fig_photon_density,_("Photon density"))
-
-		#self.fig_photon_abs = band_graph()
-		#self.fig_photon_abs.set_data_file("light_1d_photons_tot_abs_norm.dat")
-		#self.notebook.addTab(self.fig_photon_abs,_("Photon absorbed"))
-
-		self.fig_gen_rate = band_graph()
+		self.fig_gen_rate = band_graph2()
 		self.fig_gen_rate.set_data_file("light_1d_Gn.dat")
 		self.notebook.addTab(self.fig_gen_rate,_("Generation rate"))
 
 
+		self.light_sources = optics_sources_tab()
+		self.notebook.addTab(self.light_sources,_("Light sources"))
 
-		self.fig_photon_density.draw_graph()
-		#self.fig_photon_abs.draw_graph()
 		self.fig_gen_rate.draw_graph()
 		self.progress_window.stop()
 
@@ -159,8 +148,9 @@ class class_optical(QWidgetSavePos):
 				self.close()
 
 	def callback_configwindow(self):
-		widget=tab_class(os.path.join(get_sim_path(),"light.inp"))
-		widget.show()
+		data=gpvdm_data()
+		self.configure_widget=tab_class(data.light)
+		self.configure_widget.show()
 
 	def callback_save(self):
 		tab = self.notebook.currentWidget()
@@ -180,69 +170,36 @@ class class_optical(QWidgetSavePos):
 		event.accept()
 
 	def optics_sim_finished(self):
-		inp_update_token_value("dump.inp", "#dump_optics",self.dump_optics)
-		inp_update_token_value("dump.inp", "#dump_optics_verbose",self.dump_optics_verbose)
+		data=gpvdm_data()
+		data.light.dump_verbosity=self.dump_verbosity
+		data.save()
 		self.force_redraw()
 
 	def force_redraw(self):
-
-		#self.fig_photon_density.my_figure.clf()
-		self.fig_photon_density.draw_graph()
-		#self.fig_photon_density.canvas.draw()
-
-		#self.fig_photon_abs.my_figure.clf()
-		#self.fig_photon_abs.draw_graph()
-		#self.fig_photon_abs.canvas.draw()
-
-		#self.fig_gen_rate.my_figure.clf()
 		self.fig_gen_rate.draw_graph()
-		#self.fig_gen_rate.canvas.draw()
 
-
+		#print("redraw optics3")
 		for i in range(0,len(self.plot_widgets)):
 			self.plot_widgets[i].update()
-			
+		#print("redraw optics4")			
 		self.ribbon.update()
 		
-	def callback_run(self):
-		self.my_server=server_get()
-		self.dump_optics=inp_get_token_value("dump.inp", "#dump_optics")
-		self.dump_optics_verbose=inp_get_token_value("dump.inp", "#dump_optics_verbose")
+		self.light_sources.update()
 
-		inp_update_token_value("dump.inp", "#dump_optics","true")
-		inp_update_token_value("dump.inp", "#dump_optics_verbose","true")
-		#pwd=os.getcwd()
-		#os.chdir(get_sim_path())
-		#cmd = get_exe_command()+' --simmode opticalmodel@optics'
-		#print(cmd)
-		#ret= os.system(cmd)
-		#os.chdir(pwd)
+		#print("redraw optics5")
+		
+	def callback_run(self):
+		data=gpvdm_data()
+		self.my_server=server_get()
+		self.dump_verbosity=data.light.dump_verbosity
+
+		data.light.dump_verbosity=1
+		data.save()
+
 		self.my_server.clear_cache()
 		self.my_server.add_job(get_sim_path(),"--simmode opticalmodel@optics")
 		self.my_server.sim_finished.connect(self.optics_sim_finished)
 		self.my_server.start()
-
-		
-		#inp_update_token_value("dump.inp", "#dump_optics","true")
-		#inp_update_token_value("dump.inp", "#dump_optics_verbose","true")
-		
-
-	def mode_changed(self):
-		cb_text=self.ribbon.optics.fx_box.get_text()
-		if cb_text=="all":
-			self.fig_photon_density.set_data_file("light_1d_photons_tot_norm.dat")
-			self.fig_photon_density.draw_graph()
-			#self.fig_photon_abs.set_data_file("light_1d_photons_tot_abs_norm.dat")
-			#self.fig_photon_abs.draw_graph()
-		else:
-			self.fig_photon_density.set_data_file("light_1d_"+cb_text+"_photons_norm.dat")
-			self.fig_photon_density.draw_graph()
-
-			#self.fig_photon_abs.set_data_file("light_1d_"+cb_text+"_photons_abs.dat")
-			#self.fig_photon_abs.draw_graph()
-
-		#self.force_redraw()
-		#self.update()
 
 
 	def callback_help(self, widget, data=None):

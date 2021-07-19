@@ -36,18 +36,10 @@ from util import pygtk_to_latex_subscript
 
 import glob
 from cal_path import get_sim_path
-
-def to_exp(data):
-	ret=data
-	if (ret.count('e')!=0):
-		data=float(ret)
-		ret="%1.1e" % data
-		a,b=ret.split('e')
-		ret=a+"\\e{"+b+"}"
-	return ret
+from util_latex import latex
 
 
-def export_as(output):
+def export_as(output):	#This needs rewriting using util_latex and inp.inp_to_latex but no time now
 	tex=True
 	dollar="$"
 	col=" & "
@@ -73,54 +65,9 @@ def export_as(output):
 
 		f_list=glob.iglob(os.path.join("./", "dos*.inp"))
 		for in_file in f_list:
-                         files.append(in_file)
+			files.append(in_file)
 		print(files)
-		if tex==True:
-			line=line+"\\begin{table}[H]\n"
-			line=line+"\\begin{center}\n"
-			line=line+"  \\begin{tabular}{lll}\n"
-			line=line+"  \\hline\n"
 
-		line=line+"  Parameter"+col+"label"+col+"unit "+eol+"\n"
-
-		if tex==True:
-			line=line+"  \\hline\n"
-
-
-		dos_lines=[]
-		for i in range(0,len(files)):
-			lines=[]
-			lines=inp_load_file(files[i])
-			dos_lines.append(lines)
-
-		t=tokens()
-		for i in range(0,len(dos_lines[0]),2):
-			my_token=t.find(dos_lines[0][i])
-
-			if my_token!=False:
-				number=""
-				if my_token.number_type=="e":
-					for ii in range(0,len(files)):
-
-						if len(files)>0:
-							sub="_{"+str(ii)+"}"
-						else:
-							sub=""
-
-						if dos_lines[0][i+1]!=dos_lines[ii][i+1] or ii==0:
-							if tex==True:
-								number=to_exp(dos_lines[ii][i+1])
-							else:
-								number=dos_lines[ii][i+1]
-
-							line=line+my_token.info+sub+col+dollar+number+dollar+col+dollar+pygtk_to_latex_subscript(my_token.units)+dollar+eol+"\n"
-		if tex==True:
-			line=line+"  \\hline\n"
-			line=line+"\\end{tabular}\n"
-			line=line+"\\end{center}\n"
-			line=line+"\\caption{Density of states}\n"
-			line=line+"\\end{table}\n"
-			line=line+"\n"
 
 		files=["./device.inp","./ray.inp","./device_epitaxy.inp", "./stark.inp", "./materials/redf/fit.inp", "./materials/redf/patch.inp"]
 		names=["Device","Ray","Device Epitaxy","Stark","Fit redf","Fit patch"]
@@ -155,7 +102,7 @@ def export_as(output):
 								if tex==True:
 									#print lines
 									#print lines[i]
-									number=to_exp(dos_lines[ii][i+1])
+									number=latex.number_to_latex(dos_lines[ii][i+1])
 								else:
 									number=dos_lines[ii][i+1]
 								line=line+my_token.info+col+dollar+number+dollar+col+dollar+pygtk_to_latex_subscript(my_token.units)+dollar+eol+"\n"

@@ -30,11 +30,6 @@
 import os
 from icon_lib import icon_get
 
-from dump_io import dump_io
-from tb_item_sim_mode import tb_item_sim_mode
-from tb_item_sun import tb_item_sun
-
-from code_ctrl import enable_betafeatures
 from cal_path import get_css_path
 
 #qt
@@ -43,39 +38,21 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import QSize, Qt,QFile,QIODevice
 from PyQt5.QtWidgets import QWidget,QSizePolicy,QVBoxLayout,QHBoxLayout,QPushButton,QDialog,QFileDialog,QToolBar,QMessageBox, QLineEdit, QToolButton
 from PyQt5.QtWidgets import QTabWidget
-
-from doping import doping_window
-from contacts import contacts_window
-from cal_path import get_materials_path
-from gpvdm_open import gpvdm_open
-
 from help import help_window
-from materials_main import materials_main
 
-from parasitic import parasitic
-from cal_path import get_spectra_path
-
-from spectra_main import spectra_main
-from layer_widget import layer_widget
 from dim_editor import dim_editor
 
-from dos_main import dos_main
 from global_objects import global_object_register
 from pl_main import pl_main
 from QAction_lock import QAction_lock
-from file_watch import get_watch
-
-from cal_path import get_sim_path
-from inp import inp
+from fx_selector import fx_selector
+from gpvdm_json import gpvdm_data
 
 class ribbon_device(QToolBar):
 	def __init__(self):
 		QToolBar.__init__(self)
-		self.doping_window=None
 		self.cost_window=None
-		self.parasitic=None
 		self.contacts_window=None
-		self.parasitic_window=None
 		self.layer_editor=None
 		self.dim_editor=None
 		self.electrical_editor=None
@@ -94,14 +71,6 @@ class ribbon_device(QToolBar):
 		self.contacts = QAction_lock("contact", _("Contacts"), self,"ribbon_device_contacts")
 		self.contacts.clicked.connect(self.callback_contacts)
 		self.addAction(self.contacts)
-		
-		self.doping = QAction_lock("doping", _("Doping/\nIons"), self,"ribbon_device_doping")
-		self.doping.clicked.connect(self.callback_doping)
-		self.addAction(self.doping)
-
-		self.parasitic = QAction_lock("parasitic", _("Parasitic\n components"), self,"ribbon_device_parasitic")
-		self.parasitic.clicked.connect(self.callback_parasitic)
-		self.addAction(self.parasitic)
 
 		self.tb_electrical_editor = QAction_lock("electrical", _("Electrical\nparameters"), self,"ribbon_device_electrical")
 		self.tb_electrical_editor.clicked.connect(self.callback_electrical_editor)
@@ -115,35 +84,31 @@ class ribbon_device(QToolBar):
 		self.tb_dimension_editor.clicked.connect(self.callback_dimension_editor)
 		self.addAction(self.tb_dimension_editor)
 
-		get_watch().add_call_back("diagram.inp",self.callback_circuit_diagram)
 		self.callback_circuit_diagram()
 
+
+
+		self.fx_box=fx_selector()
+		self.fx_box.update()
+
+
+
 	def callback_circuit_diagram(self):
-		f=inp()
-		f.load(os.path.join(get_sim_path(),"math.inp"))
-		solver_name=f.get_token("#newton_name")
-		if inp().isfile(os.path.join(get_sim_path(),"diagram.inp"))==True and solver_name=="newton_simple":
+		data=gpvdm_data()
+
+		if data.circuit.enabled==True and data.electrical_solver.solver_type=="circuit":
 			self.tb_electrical_editor.setEnabled(False)
 		else:
 			self.tb_electrical_editor.setEnabled(True)
-
 
 	def update(self):
 		if self.cost_window!=None:
 			del self.cost_window
 			self.cost_window=None
 			
-		if self.doping_window!=None:
-			del self.doping_window
-			self.doping_window=None
-
 		if self.contacts_window!=None:
 			del self.contacts_window
 			self.contacts_window=None
-
-		if self.parasitic_window!=None:
-			del self.parasitic_window
-			self.parasitic_window=None
 
 		if self.layer_editor!=None:
 			del self.layer_editor
@@ -158,29 +123,16 @@ class ribbon_device(QToolBar):
 			self.electrical_editor=None
 
 	def setEnabled(self,val):
-		self.doping.setEnabled(val)
 		self.cost.setEnabled(val)
 		self.contacts.setEnabled(val)
-		self.parasitic.setEnabled(val)
 		self.tb_electrical_editor.setEnabled(val)
-		
-	def callback_doping(self):
-		help_window().help_set_help(["doping.png",_("<big><b>Doping window</b></big>\nUse this window to add doping to the simulation")])
 
-		if self.doping_window==None:
-			self.doping_window=doping_window()
-
-		if self.doping_window.isVisible()==True:
-			self.doping_window.hide()
-		else:
-			self.doping_window.show()
 		
-	def callback_contacts(self):
-		
-		
+	def callback_contacts(self):		
 		help_window().help_set_help(["contact.png",_("<big><b>Contacts window</b></big>\nUse this window to change the layout of the contacts on the device")])
 
 		if self.contacts_window==None:
+			from contacts import contacts_window
 			self.contacts_window=contacts_window()
 			
 		if self.contacts_window.isVisible()==True:
@@ -189,21 +141,11 @@ class ribbon_device(QToolBar):
 			self.contacts_window.show()
 
 
-	def callback_parasitic(self):
-		help_window().help_set_help(["parasitic.png",_("<big><b>Parasitic components</b></big>\nUse this window to edit the shunt and series resistance.")])
-
-		if self.parasitic_window==None:
-			self.parasitic_window=parasitic()
-
-		if self.parasitic_window.isVisible()==True:
-			self.parasitic_window.hide()
-		else:
-			self.parasitic_window.show()
-
 	def callback_layer_editor(self):
 		help_window().help_set_help(["layers.png",_("<big><b>Device layers</b></big>\nUse this window to configure the structure of the device.")])
 
 		if self.layer_editor==None:
+			from layer_widget import layer_widget
 			self.layer_editor=layer_widget()
 
 		if self.layer_editor.isVisible()==True:
@@ -229,6 +171,7 @@ class ribbon_device(QToolBar):
 		if self.electrical_editor!=None:
 			del self.electrical_editor
 
+		from dos_main import dos_main
 		self.electrical_editor=dos_main()
 		self.electrical_editor.show()
 

@@ -28,9 +28,7 @@
 import os
 import shutil
 import webbrowser
-from code_ctrl import enable_betafeatures
 from util_zip import zip_lsdir
-from util import strextract_interger
 from global_objects import global_object_get
 from icon_lib import icon_get
 
@@ -41,11 +39,6 @@ from help import help_window
 import i18n
 _ = i18n.language.gettext
 
-#inp
-from inp import inp
-from inp import inp_copy_file
-from inp import inp_remove_file
-from inp import inp_update_token_value
 from fit_configure_window import fit_configure_window
 
 #qt
@@ -55,24 +48,20 @@ from PyQt5.QtGui import QPainter,QIcon,QCursor
 
 #windows
 from gui_util import yes_no_dlg
-
 from fit_tab import fit_tab
 from QHTabBar import QHTabBar
-
 from gui_util import dlg_get_text
-
 from fit_progress import fit_progress
-from inp import inp_get_token_value
 from str2bool import str2bool
-
 from util import wrap_text
 from cal_path import get_sim_path
 from QWidgetSavePos import QWidgetSavePos
-
 from css import css_apply
-from cal_path import get_inp_file_path
-
 from fit_ribbon import fit_ribbon
+from gpvdm_json import gpvdm_data
+import copy
+from shutil import copyfile
+from global_objects import global_object_run
 
 class fit_window(QWidgetSavePos):
 
@@ -82,6 +71,7 @@ class fit_window(QWidgetSavePos):
 			tab.update()
 
 		self.fit_progress.update()
+		global_object_run("clear_terminal")
 
 	def callback_configure(self):
 		if self.fit_configure_window==None:
@@ -96,9 +86,9 @@ class fit_window(QWidgetSavePos):
 	def callback_help(self):
 		webbrowser.open('https://www.gpvdm.com/man/index.html')
 
-	def callback_add_page(self,file_name):
-		new_tab=fit_tab(file_name)
-		self.notebook.addTab(new_tab,new_tab.get_tab_text())
+	#def callback_add_page(self,file_name):
+	#	new_tab=fit_tab(file_name)
+	#	self.notebook.addTab(new_tab,new_tab.get_tab_text())
 
 	def remove_invalid(self,input_name):
 		return input_name.replace (" ", "_")
@@ -111,60 +101,73 @@ class fit_window(QWidgetSavePos):
 		print("add code")
 		#self.toggle_tab_visible(data)
 
-	def load_tabs(self):
+	def get_new_data_file(self):
+		files=[]
+		data=gpvdm_data()
+		for d in data.fits.fits.segments:
+			files.append(d.import_config.data_file)
+		#print(files)
+		for i in range(0,100):
+			name="fit_data"+str(i)+".inp"
+			if name not in files:
+				return  name
+		return False
 
-		self.ribbon.order_widget.load_tabs()
-		self.fit_progress=fit_progress()
-		self.notebook.addTab(self.fit_progress,"Fit progress")
+	def load_tabs(self):
+		data=gpvdm_data()
+		for fit in data.fits.fits.segments:
+			if fit.import_config.data_file=="none":
+				fit.import_config.data_file=self.get_new_data_file()
+			new_tab=fit_tab(fit.id)
+			self.notebook.addTab(new_tab,new_tab.get_tab_text())
+
 
 
 	def callback_one_fit(self):
 		my_server=server_get()
 		my_server.clear_cache()
+		my_server.set_fit_update_function(self.update)
 		my_server.add_job(get_sim_path(),"--1fit")
 		my_server.start()
 
 	def callback_do_fit(self):
 		my_server=server_get()
 		my_server.clear_cache()
+		my_server.set_fit_update_function(self.update)
 		my_server.add_job(get_sim_path(),"--fit")
 		my_server.start()
 
 	def callback_enable(self):
+		data=gpvdm_data()
 		tab = self.notebook.currentWidget()
-		tab.set_enable(self.ribbon.enable.enabled)
+		data_obj=data.fits.fits.find_object_by_id(tab.uid)
+		data_obj.config.enabled=self.ribbon.enable.enabled
 		index=self.notebook.currentIndex()
 		self.notebook.setTabText(index, tab.get_tab_text())
+		data.save()
 
-	def changed_click(self):
+	def update_interface(self):
 		tab = self.notebook.currentWidget()
+		data=gpvdm_data()
+
 		if type(tab)==fit_tab:
-			self.ribbon.enable.setState(tab.is_enabled())
+			data_obj=data.fits.fits.find_object_by_id(tab.uid)
+			self.status_bar.showMessage(data_obj.config.fit_name+","+data_obj.import_config.data_file)
+			self.ribbon.enable.setState(data_obj.config.enabled)
 			self.ribbon.enable.setEnabled(True)
 			self.ribbon.import_data.setEnabled(True)
+			self.tab_bar.obj_search_path="gpvdm_data().fits.fits"
+			self.tab_bar.obj_id=data_obj.id
 
 		if type(tab)==fit_progress:
 			self.ribbon.enable.setEnabled(False)
 			self.ribbon.import_data.setEnabled(False)
 
-	def callback_export_image(self):
-		tab = self.notebook.currentWidget()
-		tab.callback_export_image()
-
-	def callback_export_csv(self):
-		tab = self.notebook.currentWidget()
-		tab.callback_export_csv()
-
-	def callback_export_xls(self):
-		tab = self.notebook.currentWidget()
-		tab.callback_export_xls()
-
-	def callback_export_gnuplot(self):
-		tab = self.notebook.currentWidget()
-		tab.callback_export_gnuplot()
 
 	def __init__(self,name):
 		QWidgetSavePos.__init__(self,name)
+		data=gpvdm_data()
+		#self.data=data.fits
 		self.main_vbox = QVBoxLayout()
 
 		#self.setFixedSize(900, 700)
@@ -175,13 +178,12 @@ class fit_window(QWidgetSavePos):
 		toolbar.setIconSize(QSize(48, 48))
 		toolbar.setToolButtonStyle( Qt.ToolButtonTextUnderIcon)
 
-
+		self.tab_bar=QHTabBar()
 
 		self.main_vbox.addWidget(toolbar)
 
 		self.ribbon=fit_ribbon()
 
-		self.ribbon.order_widget.added.connect(self.callback_add_page)
 		self.ribbon.help.triggered.connect(self.callback_help)
 		self.ribbon.play.start_sim.connect(self.callback_do_fit)
 
@@ -190,35 +192,40 @@ class fit_window(QWidgetSavePos):
 		self.ribbon.import_data.triggered.connect(self.callback_import)
 		self.ribbon.tb_configure.triggered.connect(self.callback_configure)
 
-		self.ribbon.tb_export_as_jpg.clicked.connect(self.callback_export_image)
+		self.ribbon.tb_rename.triggered.connect(self.callback_rename_page)
+		self.tab_bar.rename.connect(self.callback_rename_page)
+		self.ribbon.tb_delete.triggered.connect(self.callback_delete_page)
+		self.tab_bar.delete.connect(self.callback_delete_page)
+		self.ribbon.tb_clone.triggered.connect(self.callback_clone_page)
+		self.ribbon.tb_new.triggered.connect(self.callback_add_page)
 
-		self.ribbon.tb_export_as_csv.clicked.connect(self.callback_export_csv)
-
-		self.ribbon.tb_export_as_xls.clicked.connect(self.callback_export_xls)
-
-		self.ribbon.tb_export_as_gnuplot.clicked.connect(self.callback_export_gnuplot)
-
+		self.ribbon.tb_refresh.triggered.connect(self.update)
 		self.main_vbox.addWidget(self.ribbon)
 
 		self.notebook = QTabWidget()
-		self.ribbon.order_widget.notebook_pointer=self.notebook
+		self.h_notebook = QTabWidget()
 
 		self.ribbon.enable.changed.connect(self.callback_enable)
 		self.ribbon.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
 		self.notebook.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
 		css_apply(self.notebook,"style_h.css")
-		self.notebook.setTabBar(QHTabBar())
+
+		#tab_bar.menu_click.connect(self.menu_click)
+		self.notebook.setTabBar(self.tab_bar)
 		self.notebook.setTabPosition(QTabWidget.West)
 
 
 		self.notebook.setMovable(True)
+		self.h_notebook.addTab(self.notebook,_("Data sets"))
 
-		self.notebook.currentChanged.connect(self.changed_click)
+		self.fit_progress=fit_progress()
+		self.h_notebook.addTab(self.fit_progress,"Fit progress")
 
 		self.load_tabs()
 
-		self.main_vbox.addWidget(self.notebook)
+
+		self.main_vbox.addWidget(self.h_notebook)
 
 		self.status_bar=QStatusBar()
 		self.main_vbox.addWidget(self.status_bar)
@@ -226,8 +233,103 @@ class fit_window(QWidgetSavePos):
 		self.setLayout(self.main_vbox)
 
 		self.fit_configure_window=None
+		self.update_interface()
+		self.notebook.currentChanged.connect(self.update_interface)
+
+		gpvdm_data().add_call_back(self.update)
+		self.destroyed.connect(self.doSomeDestruction)
+
+		#self.tab_bar.menu_click.connect(self.callback_tab_bar_menu_click)
 
 
+		self.tab_bar.paste.connect(self.do_paste)
+		self.tab_bar.tabMoved.connect(self.callback_tab_moved)
 
+	def callback_tab_moved(self,from_pos,to_pos):
+		data=gpvdm_data()
+		data.fits.fits.segments.insert(to_pos, data.fits.fits.segments.pop(from_pos))
+		data.save()
+		#print("tab")
+
+	def do_paste(self):
+		data=gpvdm_data()
+		tab = self.notebook.currentWidget()
+		data_obj=data.fits.fits.find_object_by_id(tab.uid)
+		a=copy.deepcopy(data_obj)
+		a.load_from_json(self.tab_bar.paste_data)
+		a.import_config.data_file=self.get_new_data_file()
+		a.update_random_ids()
+		data.fits.fits.segments.append(a)
+		tab=fit_tab(data.fits.fits.segments[-1].id)
+		self.notebook.addTab(tab,data_obj.config.fit_name)
+
+	def doSomeDestruction(self):
+		gpvdm_data().remove_call_back(self.update)
+
+
+	def callback_rename_page(self):
+		tab = self.notebook.currentWidget()
+		data=gpvdm_data()
+		data_obj=data.fits.fits.find_object_by_id(tab.uid)
+		new_sim_name=dlg_get_text( _("Rename the fit:"), data_obj.config.fit_name,"rename.png")
+
+		new_sim_name=new_sim_name.ret
+
+		if new_sim_name!=None:
+			
+			data_obj.config.fit_name=new_sim_name
+			self.notebook.setTabText(self.notebook.currentIndex(), new_sim_name)
+			data.save()
+
+	def callback_clone_page(self):
+		tab = self.notebook.currentWidget()
+		data=gpvdm_data()
+		data_obj=data.fits.fits.find_object_by_id(tab.uid)
+		new_sim_name=dlg_get_text( _("Clone the experiment:"), data_obj.config.fit_name+"_new","clone.png")
+
+		new_sim_name=new_sim_name.ret
+
+		if new_sim_name!=None:
+			
+			a=copy.deepcopy(data_obj)
+			a.config.fit_name=new_sim_name
+			a.id=a.random_id()
+			#print(a.import_config.data_file)
+			a.import_config.data_file=self.get_new_data_file()
+			copyfile(os.path.join(get_sim_path(),data_obj.import_config.data_file),os.path.join(get_sim_path(),a.import_config.data_file))
+			data.fits.fits.segments.append(a)
+			tab=fit_tab(a.id)
+			self.notebook.addTab(tab,new_sim_name)
+			data.save()
+
+	def callback_delete_page(self):
+		data=gpvdm_data()
+		if len(data.fits.fits.segments)>1:
+			tab = self.notebook.currentWidget()
+			print(tab.uid)
+			data_obj=data.fits.fits.find_object_by_id(tab.uid)
+			response=yes_no_dlg(self,_("Are you sure you want to delete the experiment: ")+data_obj.config.fit_name)
+			if response == True:
+				index=self.notebook.currentIndex()
+				data.fits.fits.segments.remove(data_obj)
+				self.notebook.removeTab(index)
+				data.save()
+
+	def callback_add_page(self):
+		tab = self.notebook.currentWidget()
+		data=gpvdm_data()
+		data_obj=data.fits.fits.find_object_by_id(tab.uid)
+		new_sim_name=dlg_get_text( _("Make a new fit:"), data_obj.config.fit_name+"_new","document-new.png")
+
+		new_sim_name=new_sim_name.ret
+
+		if new_sim_name!=None:
+			a=copy.deepcopy(data_obj)
+			a.config.fit_name=new_sim_name
+			a.import_config.data_file=self.get_new_data_file()
+			data.fits.fits.segments.append(a)
+			tab=fit_tab(data.fits.fits.segments[-1].id)
+			self.notebook.addTab(tab,new_sim_name)
+			data.save()
 
 

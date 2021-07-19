@@ -30,13 +30,8 @@ import os
 from token_lib import tokens
 from undo import undo_list_class
 from tab_base import tab_base
-from str2bool import str2bool
-from inp import inp_update_token_value
-from inp import inp_get_token_value
 from util import latex_to_html
 from cal_path import get_share_path
-from gtkswitch import gtkswitch
-from leftright import leftright
 from help import help_window
 from cal_path import get_user_settings_dir
 
@@ -48,6 +43,7 @@ _ = i18n.language.gettext
 
 import functools
 from error_dlg import error_dlg
+from gpvdm_local import gpvdm_local
 
 class language_tab_class(QWidget,tab_base):
 
@@ -58,7 +54,6 @@ class language_tab_class(QWidget,tab_base):
 		self.tab=QHBoxLayout()
 		widget=QWidget()
 		widget.setLayout(self.tab)
-		self.file_path=os.path.join(get_user_settings_dir(),"lang.inp")
 
 		title_label=QLabel()
 		title_label.setWordWrap(True)
@@ -96,8 +91,8 @@ class language_tab_class(QWidget,tab_base):
 
 		for i in range(0,len(langs)):
 			self.lang_box.addItem(langs[i])
-
-		token=inp_get_token_value(self.file_path, "#lang")
+		local=gpvdm_local()
+		token=local.international.lang
 		all_items  = [self.lang_box.itemText(i) for i in range(self.lang_box.count())]
 		for i in range(0,len(all_items)):
 			if all_items[i] == token:
@@ -106,8 +101,9 @@ class language_tab_class(QWidget,tab_base):
 		self.lang_box.currentIndexChanged.connect(self.callback_edit)
 
 	def callback_edit(self):
-		print("updating lang file",self.file_path)
-		inp_update_token_value(self.file_path, "#lang", self.lang_box.itemText(self.lang_box.currentIndex()))
+		local=gpvdm_local()
+		local.international.lang=self.lang_box.itemText(self.lang_box.currentIndex())
+		local.save()
 		error_dlg(self,"Please restart gpvdm for the changes to take effect.")
 
 	def help(self):

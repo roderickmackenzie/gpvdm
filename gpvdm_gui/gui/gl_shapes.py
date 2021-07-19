@@ -92,6 +92,8 @@ class gl_shapes:
 
 	def paint_from_array(self,o):
 		self.set_color(o)
+		#glMaterialfv(GL_FRONT, GL_SPECULAR, 0.5);
+		#glMaterialf(GL_FRONT, GL_SHININESS, 128)
 
 		glPushMatrix()
 		glTranslatef(o.xyz.x,o.xyz.y,o.xyz.z)
@@ -175,7 +177,7 @@ class gl_shapes:
 				o.b=0.0
 
 			if t.points==3:
-				self.set_color(o,r_override=o.r*0.5+o.r*0.5*n, g_override=o.g*0.5+o.g*0.5*n, b_override=o.b*0.5+o.b*0.5*n)
+				self.set_color(o,r_override=o.r*0.1+o.r*0.9*n, g_override=o.g*0.1+o.g*0.9*n, b_override=o.b*0.1+o.b*0.9*n)
 				#if colored==True:
 				#	ratio=(t.xyz1.y-min_y)/(max_y-min_y)
 				#	r,g,b=val_to_rgb(ratio)

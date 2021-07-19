@@ -35,145 +35,86 @@ from cal_path import get_sim_path
 from shape import shape
 
 from gui_enable import gui_get
-
+from json_base import json_base
 
 class contact(shape):
 	def __init__(self):
 		super().__init__()
-		self.name=""
-		self.position=""
-		self.applied_voltage_type="constant"
-		self.applied_voltage="-2.0"
-		self.contact_resistance_sq=0.0
-		self.shunt_resistance_sq=0.0
-		self.np=1e20
-		self.charge_type="electron"
-		self.physical_model="ohmic"
+		self.var_list.append(["position","top"])
+		self.var_list.append(["applied_voltage_type","constant"])
+		self.var_list.append(["applied_voltage",-2.0])
+		self.var_list.append(["contact_resistance_sq",0.0])
+		self.var_list.append(["shunt_resistance_sq",0.0])
+		self.var_list.append(["np",1e20])
+		self.var_list.append(["charge_type","electron"])
+		self.var_list.append(["physical_model","ohmic"])
+		self.var_list.append(["ve0",1e5])
+		self.var_list.append(["vh0",1e5])
+		self.var_list_build()
+		self.latex_banned=["all"]
+		self.latex_allowed=["np"]
 
-		#contacts_dump()
-class contacts_io():
+class contacts_io(json_base):
 
 	def __init__(self):
-		self.contacts=[]
-
-	#def init_watch(self):
-	#	if gui_get()==True:
-	#		get_watch().add_call_back("contacts.inp",self.em)
+		self.this_is_the_contact_class=None
+		json_base.__init__(self,"contacts",segment_class=True)
 
 	def em(self):
 		self.load()
 		self.changed.emit()
 
-	def load(self):
-		self.contacts=[]
+	def load_json(self,json):
+		self.segments=[]
 
-		pos=0
-		contact_file=inp()
-		if contact_file.load(os.path.join(get_sim_path(),"contacts.inp"))!=False:
-			contact_file.to_sections(start="#contact_position")
+		ncontacts=json['ncontacts']
+		for n in range(0,ncontacts):
+			contact_name="contact"+str(n)
+			c=contact()
+			c.decode_from_json(json[contact_name])
 
-			for s in contact_file.sections:
-				c=contact()
-
-				c.position=s.contact_position
-
-				c.applied_voltage_type=s.contact_applied_voltage_type
-
-				c.applied_voltage=s.contact_applied_voltage
-
-				c.np=s.contact_charge_density
-
-				c.charge_type=s.contact_charge_type
-
-				c.contact_resistance_sq=s.contact_resistance_sq
-
-				c.shunt_resistance_sq=s.shunt_resistance_sq
-
-				c.physical_model=s.physical_model
-
-				c.ve0=s.contact_ve
-				c.vh0=s.contact_vh
-
-				c.shape_dos="none"
-				c.load(s.contact_shape_file_name)
-				#print(c.shape_enabled,c.name,s.contact_shape_file_name)
-				self.contacts.append(c)
+			self.segments.append(c)
 
 	def print():
-		for s in self.contacts:
+		for s in self.segments:
 			print(s.x0, s.dx,s.depth,s.contact_applied_voltage,s.contact_applied_voltage_type)
 
 	def clear():
-		self.contacts=[]
-
-
-	def gen_file(self):
-		lines=[]
-		lines.append("#sections")
-		lines.append(str(len(self.contacts)))
-		i=0
-		for s in self.contacts:
-			lines.append("#contact_position"+str(i))
-			lines.append(str(s.position))
-			lines.append("#contact_applied_voltage_type"+str(i))
-			lines.append(str(s.applied_voltage_type))
-			lines.append("#contact_applied_voltage"+str(i))
-			lines.append(str(s.applied_voltage))
-			lines.append("#contact_charge_density"+str(i))
-			lines.append(str(s.np))
-			lines.append("#contact_charge_type"+str(i))
-			lines.append(str(s.charge_type))
-			lines.append("#contact_shape_file_name"+str(i))
-			lines.append(s.file_name)
-			lines.append("#contact_resistance_sq"+str(i))
-			lines.append(str(s.contact_resistance_sq))
-			lines.append("#shunt_resistance_sq"+str(i))
-			lines.append(str(s.shunt_resistance_sq))
-			lines.append("#physical_model"+str(i))
-			lines.append(s.physical_model)
-			lines.append("#contact_ve"+str(i))
-			lines.append(str(s.ve0))
-			lines.append("#contact_vh"+str(i))
-			lines.append(str(s.vh0))
-			i=i+1
-
-		lines.append("#ver")
-		lines.append("1.3")
-		lines.append("#end")
-
-		return lines
-
-
-	def dump(self):
-		lines=self.gen_file()
-		for s in lines:
-			print(s)
-
-
-	def save(self):
-		lines=self.gen_file()
-		inp_save(os.path.join(get_sim_path(),"contacts.inp"),lines)
-
-		for c in self.contacts:
-			c.save()
+		self.segments=[]
 
 	def remove_by_id(self,ids):
 		if type(ids)==str:
 			ids=[ids]
 
-		for c in self.contacts[:]:
+		for c in self.segments[:]:
 			if c.id in ids:
-				self.contacts.remove(c)
+				self.segments.remove(c)
 
 	def get_layers_with_contacts(self):
 		layers=[]
-		for c in self.contacts:
+		for c in self.segments:
 			if c.position not in layers:
 				layers.append(c.position)
 
 		return layers
 
-	def insert(self,pos,shape_file_name):
+	def gen_json(self):
+		out=[]
+		n=0
+		out.append("\"contacts\": {")
+		out.append("\"ncontacts\":"+str(len(self.segments))+",")
+		for c in self.segments:
+			c.include_name=False
+			gen=c.gen_json()
+			gen[0]="\"contact"+str(n)+"\": {"
+			gen[len(gen)-1]="},"
+			out.extend(gen)
+			n=n+1
+		out[len(out)-1]="}"
+		out.append("}")
+		return out
+
+	def insert(self,pos):
 		s=contact()
 		s.position="top"
 		s._applied_voltage="ground"
@@ -184,10 +125,8 @@ class contacts_io():
 		s.ve0=1e7
 		s.vh0=1e7
 		s.charge_type="electron"
-		s.load(shape_file_name)
 		s.name="new_contact"
 		s.type="box"
-		s.shape_dos="none"
-		self.contacts.insert(pos,s)
-		return self.contacts[pos]
+		self.segments.insert(pos,s)
+		return self.segments[pos]
 

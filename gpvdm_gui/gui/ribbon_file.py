@@ -30,11 +30,6 @@
 import os
 from icon_lib import icon_get
 
-from dump_io import dump_io
-from tb_item_sim_mode import tb_item_sim_mode
-from tb_item_sun import tb_item_sun
-
-from code_ctrl import enable_betafeatures
 from cal_path import get_css_path
 
 #qt
@@ -60,14 +55,12 @@ from gui_util import dlg_get_text
 from backup import backup
 from scripts import scripts
 from cite_me import cite_me
+from ribbon_page import ribbon_page
 
-class ribbon_file(QToolBar):
+class ribbon_file(ribbon_page):
 	used_files_click= pyqtSignal(str)
 	def __init__(self):
-		QToolBar.__init__(self)
-
-		self.setToolButtonStyle( Qt.ToolButtonTextUnderIcon)
-		self.setIconSize(QSize(42, 42))
+		ribbon_page.__init__(self)
 		
 		self.home_new = QAction_lock("document-new", _("New simulation").replace(" ","\n"), self,"main_new")
 		#self.home_new.setText(_("New\nsimulation"))
@@ -89,12 +82,6 @@ class ribbon_file(QToolBar):
 		self.home_backup.clicked.connect(self.callback_home_backup)
 		self.addAction(self.home_backup)
 
-		self.home_export_xls = QAction_lock("export_xls", _("Export\nto Excel"), self,"main_export_xls")
-		#self.home_export_xls = QAction(icon_get("export_xls"), _("Export\nto Excel"), self)
-		self.addAction(self.home_export_xls)
-
-		self.home_export_xls.clicked.connect(self.callback_export_xls)
-
 		self.tb_script_editor = QAction_lock("script", _("Script\nEditor"), self,"script_editor")
 		self.tb_script_editor.clicked.connect(self.callback_script)
 		self.addAction(self.tb_script_editor)
@@ -105,11 +92,6 @@ class ribbon_file(QToolBar):
 
 		self.cite_me=cite_me()
 		self.addWidget(self.cite_me)
-
-		if get_lock().is_trial()==True and get_lock().is_registered()==True:
-			self.home_cart = QAction(icon_get("upgrade"), _("Upgrade to\ngpvdm professional."), self)
-			self.home_cart.triggered.connect(self.callback_buy)
-			self.addAction(self.home_cart)
 
 		self.home_help = QAction(icon_get("internet-web-browser"), _("Help"), self)
 		self.addAction(self.home_help)
@@ -127,25 +109,17 @@ class ribbon_file(QToolBar):
 		action = self.sender()
 		self.used_files_click.emit(action.text())
 
-	def callback_buy(self):
-		webbrowser.open("https://www.gpvdm.com/buy.html")
-
 	def update(self):
 		self.populate_used_file_menu()
 
-	def callback_export_xls(self):
-		from dlg_export import dlg_export_xls
-		dlg_export_xls(self)
 
 	def setEnabled(self,val,do_all=False):
 		self.home_new.setEnabled(val)
 		self.home_open.setEnabled(val)
 		self.home_backup.setEnabled(val)
-		self.home_export_xls.setEnabled(val)
 
 	def setEnabled_other(self,val):
 		self.home_backup.setEnabled(val)
-		self.home_export_xls.setEnabled(val)
 		self.tb_script_editor.setEnabled(val)
 
 	def on_new_backup(self):

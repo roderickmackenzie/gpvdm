@@ -32,7 +32,6 @@ from PyQt5.QtWidgets import QTextEdit
 from QComboBoxLang import QComboBoxLang
 from QColorPicker import QColorPicker
 from QComboBoxNewtonSelect import QComboBoxNewtonSelect
-from QComboBoxShape import QComboBoxShape
 
 from PyQt5.QtCore import QTimer
 

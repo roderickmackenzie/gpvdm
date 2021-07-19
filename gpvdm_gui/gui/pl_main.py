@@ -27,10 +27,8 @@
 
 
 from tab_base import tab_base
-from epitaxy import epitaxy_get_dos_files
 from tab import tab_class
 from epitaxy import epitaxy_get_layers
-from epitaxy import epitaxy_get_pl_file
 from global_objects import global_object_register
 from epitaxy import epitaxy_get_name
 
@@ -46,6 +44,7 @@ from QHTabBar import QHTabBar
 from icon_lib import icon_get
 
 from css import css_apply
+from gpvdm_json import gpvdm_data
 
 class pl_main(QWidget):
 
@@ -93,16 +92,14 @@ class pl_main(QWidget):
 
 	def update(self):
 		self.notebook.clear()
+		epi=gpvdm_data().epi
 
-		files=epitaxy_get_dos_files()
-		for i in range(0,epitaxy_get_layers()):
-			pl_file=epitaxy_get_pl_file(i)
-			if pl_file.startswith("pl")==True:
-				widget	= QWidget()
- 
-				name=_("Luminescence of ")+epitaxy_get_name(i)
+		for l in epi.layers:
+			if l.layer_type=="active":
 
-				widget=tab_class(pl_file+".inp")
+				name=_("Luminescence of ")+l.shape_name
+
+				widget=tab_class(l.shape_pl)
 
 				self.notebook.addTab(widget,name)
 

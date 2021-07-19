@@ -27,8 +27,6 @@
 
 
 import os
-from inp import inp_search_token_value
-from inp import inp_update_token_value
 from fit_patch import fit_patch
 import shutil
 
@@ -45,7 +43,6 @@ from open_save_dlg import save_as_filter
 from plot_widget import plot_widget
 
 from cal_path import get_sim_path
-mesh_articles = []
 
 class fit_progress(QTabWidget):
 
@@ -53,13 +50,16 @@ class fit_progress(QTabWidget):
 		for widget in self.plot_widgets:
 			widget.reload()
 			widget.do_plot()
+	
+	def update_for_fit(self):
+		self.update()
 
 	def __init__(self):
 		QTabWidget.__init__(self)
 
 		self.setMovable(True)
 		self.plot_widgets=[]
-		for file_name in ["fitlog.dat","fitlog_time_error.dat","fitlog_time_odes.dat"]:
+		for file_name in ["fitlog.dat"]:	#,"fitlog_time_error.dat","fitlog_time_odes.dat"
 			f_name=os.path.join(get_sim_path(),file_name)
 			self.plot_widgets.append(plot_widget(enable_toolbar=False))
 			self.plot_widgets[-1].set_labels([os.path.basename(f_name)])

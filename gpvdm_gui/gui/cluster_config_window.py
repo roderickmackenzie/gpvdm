@@ -55,7 +55,6 @@ from QWidgetSavePos import QWidgetSavePos
 
 from css import css_apply
 
-from cluster_config_ribbon import cluster_config_ribbon
 from cal_path import get_cluster_path
 
 import i18n
@@ -63,64 +62,85 @@ _ = i18n.language.gettext
 
 import random
 
-class cluster_config_window(QWidgetSavePos):
+from experiment import experiment
+from gpvdm_local import gpvdm_local
+from gpvdm_json import gpvdm_data
 
-	def generate_keys(self):
-		tab = self.notebook.currentWidget()
-		file_name=tab.file_name
+class cluster_config_window(experiment):
 
-		iv = random.getrandbits(128)
-		iv="%032x" % iv
-		inp_update_token_value(os.path.join(get_sim_path(),"cluster","crypto.inp"),"#iv",iv)
-		inp_update_token_value(os.path.join(get_sim_path(),file_name),"#iv",iv)
 
-		key = random.getrandbits(128)
-		key="%032x" % key
-		inp_update_token_value(os.path.join(get_sim_path(),"cluster","crypto.inp"),"#key",key)
-		inp_update_token_value(os.path.join(get_sim_path(),file_name),"#key",key)
-
-		tab.update()
-
-	def __init__(self,parent):
-		QWidgetSavePos.__init__(self,"cluster_window")
-		self.ribbon=cluster_config_ribbon()
-		self.ribbon.install.triggered.connect(self.install_to_cluster)
-		self.ribbon.boot.triggered.connect(self.boot_cluster)
-		self.ribbon.generate_keys.triggered.connect(self.generate_keys)
-
-		self.ribbon.stop.triggered.connect(self.kill_cluster)
-		self.ribbon.remove.triggered.connect(self.remove_from_cluster)
-
-		self.setFixedSize(900, 600)
-		self.setWindowIcon(icon_get("preferences-system"))
-
-		self.setWindowTitle(_("Configure")+" (https://www.gpvdm.com)") 
+	def __init__(self,data=None):
+		data=gpvdm_local()
 		
+		experiment.__init__(self,window_save_name="cluster_window", window_title=_("Configure")+" (https://www.gpvdm.com)",name_of_tab_class="cluster_tab",json_search_path="gpvdm_data().cluster",icon="preferences-system")
 
-		self.main_vbox = QVBoxLayout()
+		self.ribbon.addTab(self.cluser_ribbon_ssh(),_("SSH"))
 
+		self.tb_install.triggered.connect(self.install_to_cluster)
+
+		self.tb_boot.triggered.connect(self.boot_cluster)
+		self.tb_generate_keys.triggered.connect(self.generate_keys)
+
+		self.tb_stop.triggered.connect(self.kill_cluster)
+		self.tb_remove.triggered.connect(self.remove_from_cluster)
+
+		self.notebook.currentChanged.connect(self.switch_page)
+		self.switch_page()
+
+
+	def cluser_ribbon_ssh(self):
+		toolbar = QToolBar()
+		toolbar.setToolButtonStyle( Qt.ToolButtonTextUnderIcon)
+		toolbar.setIconSize(QSize(42, 42))
+
+
+		self.tb_generate_keys = QAction(icon_get("gnome-dialog-password"), _("Generate keys"), self)
+		self.tb_generate_keys.setStatusTip(_("Generate keys"))
+		toolbar.addAction(self.tb_generate_keys)
+
+		self.tb_install = QAction(icon_get("install-to-cluster"), _("Install to cluster"), self)
+		self.tb_install.setStatusTip(_("Install to cluster"))
+		toolbar.addAction(self.tb_install)
+
+		self.tb_boot = QAction(icon_get("run-cluster"), _("Boot cluster"), self)
+		self.tb_boot.setStatusTip(_("Boot cluster"))
+		toolbar.addAction(self.tb_boot)
+
+		self.tb_stop = QAction(icon_get("stop-cluster"), _("Stop cluster"), self)
+		self.tb_stop.setStatusTip(_("Stop cluster"))
+		toolbar.addAction(self.tb_stop)
+
+		self.tb_remove = QAction(icon_get("remove-from-cluster"), _("Remove from cluster"), self)
+		self.tb_remove.setStatusTip(_("Remove from cluster"))
+		toolbar.addAction(self.tb_remove)
 
 		spacer = QWidget()
 		spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+		toolbar.addWidget(spacer)
 
+		self.tb_home_help = QAction(icon_get("internet-web-browser"), _("Help"), self)
+		toolbar.addAction(self.tb_home_help)
 
-		self.main_vbox.addWidget(self.ribbon)
+		return toolbar
 
+	def switch_page(self):
+		tab = self.notebook.currentWidget()
+		#self.tb_lasers.update(tab.data)
 
-		self.notebook = QTabWidget()
-		css_apply(self.notebook,"tab_default.css")
-		self.notebook.setMovable(True)
+	def generate_keys(self):
+		data=gpvdm_local()
 
-		self.main_vbox.addWidget(self.notebook)
+		tab = self.notebook.currentWidget()
 
-		self.ribbon.order_widget.added.connect(self.callback_add_page)
+		iv = random.getrandbits(128)
+		iv="%032x" % iv
+		tab.data.config.cluster_iv=iv
 
-		self.ribbon.order_widget.notebook_pointer=self.notebook
-		self.ribbon.order_widget.show_enable()
-		self.ribbon.order_widget.load_tabs()
-
-		self.setLayout(self.main_vbox)
-
+		key = random.getrandbits(128)
+		key="%032x" % key
+		tab.data.config.cluster_key=key
+		tab.tab.tab.update_values()
+		data.save()
 
 	def get_config(self):
 		tab = self.notebook.currentWidget()
@@ -178,12 +198,5 @@ class cluster_config_window(QWidgetSavePos):
 	def callback_help(self,widget):
 		webbrowser.open('http://www.gpvdm.com/man/index.html')
 
-	def callback_add_page(self,new_filename):
-		self.add_page(new_filename)
-
-	def add_page(self,file_name):
-		name=inp_get_token_value(file_name, "#tab_name")
-		tab=tab_class(file_name)
-		self.notebook.addTab(tab,name)
 
 

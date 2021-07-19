@@ -29,9 +29,6 @@
 
 import os
 
-from dump_io import dump_io
-
-from code_ctrl import enable_betafeatures
 from cal_path import get_css_path
 
 #qt

@@ -28,59 +28,15 @@
 
 
 import os
-
-from PyQt5.QtWidgets import QMessageBox, QDialog
-from PyQt5.QtWidgets import QLineEdit,QWidget,QHBoxLayout,QPushButton
-from PyQt5.QtCore import pyqtSignal
-
-#cal_path
-from cal_path import subtract_paths
 from cal_path import get_emission_path
+from gpvdm_select_from_db import gpvdm_select_from_db
 
 import i18n
 _ = i18n.language.gettext
 
 
-class gpvdm_select_emission(QWidget):
-
-	changed = pyqtSignal()
+class gpvdm_select_emission(gpvdm_select_from_db):
 
 	def __init__(self,file_box=True):
-		QWidget.__init__(self)
-		self.hbox=QHBoxLayout()
-		self.edit=QLineEdit()
-		self.button=QPushButton()
-		self.button.setFixedSize(25, 25)
-		self.button.setText("...")
-
-		if file_box==True:
-			self.hbox.addWidget(self.button)
-
-		self.hbox.addWidget(self.edit)
-
-		self.hbox.setContentsMargins(0, 0, 0, 0)
-		self.edit.setStyleSheet("QLineEdit { border: none }");
-
-
-		self.button.clicked.connect(self.callback_button_click)
-
-		self.setLayout(self.hbox)
-
-	def callback_button_click(self):
-		from gpvdm_open import gpvdm_open
-		dialog=gpvdm_open(get_emission_path(),act_as_browser=False)
-
-		ret=dialog.exec_()
-		if ret==QDialog.Accepted:
-			file_name=dialog.get_filename()
-			rel_path=subtract_paths(get_emission_path(),file_name)
-			rel_path=rel_path.replace("\\", "/")
-			self.setText(rel_path)
-			self.changed.emit()
-
-	def setText(self,text):
-		self.edit.setText(text)
-	
-	def text(self):
-		return self.edit.text()
+		gpvdm_select_from_db.__init__(self,get_emission_path(),file_box=file_box)
 		

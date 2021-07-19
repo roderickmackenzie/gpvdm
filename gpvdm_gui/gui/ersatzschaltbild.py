@@ -28,6 +28,7 @@
 
 import os
 import math
+from PyQt5.QtWidgets import QMenu
 from PyQt5.QtCore import QSize, Qt , QPoint, QRect
 from PyQt5.QtWidgets import QWidget, QDialog
 from PyQt5.QtGui import QPainter,QFont,QColor,QPen,QPolygon
@@ -44,8 +45,10 @@ from gui_util import dlg_get_text
 from cal_path import get_sim_path
 from gui_util import yes_no_dlg
 
-from inp_dialog import inp_dialog
-from component import component
+from json_dialog import json_dialog
+from json_circuit import json_component
+from gpvdm_json import gpvdm_data
+from json_base import json_base
 
 class draw_object():
 	def __init__(self):
@@ -77,10 +80,10 @@ class ersatzschaltbild(QWidget):
 		self.editable=True
 
 		self.selected="diode"
-		self.file_name=os.path.join(get_sim_path(),"diagram.inp")
 		#self.setMouseTracking(True)
 		self.init()
-		self.hover=component()
+		self.hover=json_component()
+		self.menu_build()
 
 	def objects_push(self):
 		self.origonal_objects=[]
@@ -147,15 +150,14 @@ class ersatzschaltbild(QWidget):
 					qp.drawPoint(x+self.shift_x, yy+self.shift_y)
 
 
-		pen = QPen(QColor(0, 0, 0), 4, Qt.SolidLine)
-		qp.setPen(pen)
 
-		#draw_objects=
-		#draw_objects.append(self.hover)
+
+
 		for o in self.objects:
 			#qp.drawLine(o.x0*self.dx, o.y0*self.dx, o.x1*self.dx, o.y1*self.dx)
 			#qp.drawEllipse(QRect(o.x0*self.dx, o.y0*self.dx,10,10));
-
+			pen = QPen(QColor(0, 0, 0), 4, Qt.SolidLine)
+			qp.setPen(pen)
 			for draw_obj in o.lines:
 				if draw_obj.type=="l":
 					x0=o.x0*self.dx+draw_obj.v0.x
@@ -171,61 +173,27 @@ class ersatzschaltbild(QWidget):
 				elif draw_obj.type=="t":
 					qp.drawText(o.x0*self.dx+draw_obj.v0.x+self.shift_x, o.y0*self.dy+draw_obj.v0.y+self.shift_y, draw_obj.text)
 
-		pen = QPen(QColor(0, 0, 255), 1, Qt.SolidLine)
-		qp.setPen(pen)
+			pen = QPen(QColor(0, 0, 255), 1, Qt.SolidLine)
+			qp.setPen(pen)
 
-		if inp().isfile(self.file_name)==True:
-			for o in self.objects:
-				if o.name=="resistor":
-					qp.drawText(o.x0*self.dx+self.shift_x, o.y0*self.dy+self.shift_y+self.dy/2, to_ohm(int(o.R)))
-				elif o.name=="diode":
-					qp.drawText(o.x0*self.dx+self.shift_x, o.y0*self.dy+self.shift_y+self.dy/2, "nid="+str(o.nid))
-					qp.drawText(o.x0*self.dx+self.shift_x, o.y0*self.dy+self.shift_y+(self.dy/2)*1.4, "J0={:.0e}".format(o.J0))
-				elif o.name=="capacitor":
-					qp.drawText(o.x0*self.dx+self.shift_x, o.y0*self.dy+self.shift_y+self.dy/2, "{:.0e} F".format(o.C))
+			if o.name=="resistor":
+				qp.drawText(o.x0*self.dx, o.y0*self.dy, str(o.R))
+			
+
 
 
 	def save(self):
-		f=inp()
-		component=0
+		data=gpvdm_data()
+		data.circuit.circuit_diagram.segments=[]
 		for o in self.objects:
-			f.lines.append("#component_"+str(component))
-			f.lines.append(o.name)
-			f.lines.append("#x0_"+str(component))
-			f.lines.append(str(o.x0))
-			f.lines.append("#y0_"+str(component))
-			f.lines.append(str(o.y0))
-			f.lines.append("#x1_"+str(component))
-			f.lines.append(str(o.x1))
-			f.lines.append("#y1_"+str(component))
-			f.lines.append(str(o.y1))
-			f.lines.append("#R_"+str(component))
-			f.lines.append(str(o.R))
-			f.lines.append("#C_"+str(component))
-			f.lines.append(str(o.C))
-			f.lines.append("#L_"+str(component))
-			f.lines.append(str(o.L))
-			f.lines.append("#nid_"+str(component))
-			f.lines.append(str(o.nid))
-			f.lines.append("#J0_"+str(component))
-			f.lines.append(str(o.J0))
-			component=component+1
-		f.lines.append("#end")
-		f.save_as(self.file_name)
+			data.circuit.circuit_diagram.segments.append(o)
+		data.save()
 
 	def load(self):
 		self.objects=[]
-		f=inp()
-		f.load(os.path.join(get_sim_path(),"diagram.inp"))
-		f.to_sections(start="#component")
-		for s in f.sections:
-			n=self.add_object(int(s.x0),int(s.y0),int(s.x1),int(s.y1),s.component)
-			self.objects[n].R=float(s.R)
-			self.objects[n].C=float(s.C)
-			self.objects[n].L=float(s.L)
-			self.objects[n].nid=float(s.nid)
-			self.objects[n].J0=float(s.J0)
-
+		data=gpvdm_data()
+		for s in data.circuit.circuit_diagram.segments:
+			self.add_object(s)
 
 		self.repaint()
 
@@ -287,24 +255,25 @@ class ersatzschaltbild(QWidget):
 				lines[i].v1=lines[i].v1.rotate(degrees)
 				lines[i].v1.y=lines[i].v1.y+add_y
 
-	#def calculate(self):
-	#	for o in self.objects:
 			
-	def add_object(self,x0,y0,x1,y1,file_name):
-		c=component()
-		c.name=file_name
-		c.x0=x0
-		c.y0=y0
-		c.x1=x1
-		c.y1=y1
-		c.lines=self.load_component(c)
-
-			#print(">>>>",c.get_direction())
-
-
-		self.objects.append(c)
+	def add_object(self,component):
+		component.lines=self.load_component(component)
+		self.objects.append(component)
 
 		return len(self.objects)-1
+
+	def add_object0(self,x0,y0,x1,y1,name):
+		component=json_component()
+		component.x0=x0
+		component.y0=y0
+		component.x1=x1
+		component.y1=y1
+		component.name=name
+		component.lines=self.load_component(component)
+		self.objects.append(component)
+
+		return len(self.objects)-1
+
 
 	def find_click_points(self,event):
 		xmin_list=[]
@@ -372,15 +341,19 @@ class ersatzschaltbild(QWidget):
 
 		if self.editable==False:
 			return
+		data=gpvdm_data()
 
-		if inp().isfile(self.file_name)==False:
+		if data.circuit.enabled==False:
 			result=yes_no_dlg(self,_("Are you sure you want to edit the circuit directly?  The circuit will no longer automaticly be updated as you change the layer structure, and the electrical parameters editor will be disabled.  Use can use the reset function in the circuit diagram editor to resore this functionality"))
 			if result == False:
 				return
+			else:
+				data.circuit.enabled=True
+				data.save()
 
 		if event.button() == Qt.LeftButton:
 			x0,y0,x1,y1,direction=self.find_click_points(event)
-			c=component()
+			c=json_component()
 			c.x0=x0
 			c.y0=y0
 			c.x1=x1
@@ -400,32 +373,42 @@ class ersatzschaltbild(QWidget):
 
 					self.objects.append(c)
 				else:
+					self.a=json_dialog(_("Component editor")+" "+str(index))
+
 					if self.objects[index].name=="resistor":
-						self.a=inp_dialog()
-						ret=self.a.run(["#resistance",str(self.objects[index].R),"#end"])
+						data=json_base("dlg")
+						data.var_list.append(["com_R",self.objects[index].R])
+						data.var_list_build()
+						ret=self.a.run(data)
 						if ret==QDialog.Accepted:
-							self.objects[index].R=float(self.a.tab.f.get_token("#resistance"))
+							self.objects[index].R=data.com_R
 					elif self.objects[index].name=="capacitor":
-						self.a=inp_dialog()
-						ret=self.a.run(["#capacitance",str(self.objects[index].C),"#end"])
+						data=json_base("dlg")
+						data.var_list.append(["com_C",self.objects[index].C])
+						data.var_list_build()
+						ret=self.a.run(data)
 						if ret==QDialog.Accepted:
-							self.objects[index].C=float(self.a.tab.f.get_token("#capacitance"))
+							self.objects[index].C=data.com_C
 					elif self.objects[index].name=="inductor":
-						self.a=inp_dialog()
-						ret=self.a.run(["#inductance",str(self.objects[index].L),"#end"])
+						data=json_base("dlg")
+						data.var_list.append(["com_L",self.objects[index].L])
+						data.var_list_build()
+						ret=self.a.run(data)
 						if ret==QDialog.Accepted:
-							self.objects[index].L=float(self.a.tab.f.get_token("#inductance"))
+							self.objects[index].L=data.com_L
 					elif self.objects[index].name=="diode":
-						self.a=inp_dialog()
-						ret=self.a.run(["#J0",str(self.objects[index].J0),"#nid",str(self.objects[index].nid),"#end"])
+						data=json_base("dlg")
+						data.var_list.append(["com_nid",self.objects[index].nid])
+						data.var_list.append(["com_I0",self.objects[index].I0])
+						data.var_list.append(["com_layer",self.objects[index].layer])
+						data.var_list.append(["Dphotoneff",self.objects[index].Dphotoneff])
+						data.var_list_build()
+						ret=self.a.run(data)
 						if ret==QDialog.Accepted:
-							self.objects[index].nid=float(self.a.tab.f.get_token("#nid"))
-							self.objects[index].J0=float(self.a.tab.f.get_token("#J0"))
-
-
-					#if new_sim_name!=None:
-
-
+							self.objects[index].nid=data.com_nid
+							self.objects[index].I0=data.com_I0
+							self.objects[index].layer=data.com_layer
+							self.objects[index].Dphotoneff=data.Dphotoneff
 			self.repaint()
 			self.save()
 
@@ -433,14 +416,36 @@ class ersatzschaltbild(QWidget):
             #do what you want here
 			print("Right Button Clicked")
 
-	#def mouseMoveEvent(self, event):
-	#	if event.buttons() == Qt.NoButton:
-	#		x0,y0,x1,y1,direction=self.find_click_points(event)
-	#		if self.hover.x0!=x0 or self.hover.y0!=y0 or self.hover.x1!=x1 or self.hover.y1!=y1:
-	#			self.hover.x0=x0
-	#			self.hover.y0=y0
-	#			self.hover.x1=x1
-	#			self.hover.y1=y1
-	#			self.hover.name=self.selected
-	#			self.hover.lines=self.load_component(self.hover)
-	#			self.repaint()
+	def menu_build(self):
+		self.main_menu = QMenu(self)
+
+		export=self.main_menu.addMenu(_("Circuit diagram"))
+
+		self.menu_circuit_from_epitaxy=export.addAction(_("Use epitaxy as base"))
+		self.menu_circuit_from_epitaxy.triggered.connect(self.callback_toggle_diagram_src)
+		self.menu_circuit_from_epitaxy.setCheckable(True)
+
+		self.menu_circuit_freehand=export.addAction(_("Free hand drawing"))
+		self.menu_circuit_freehand.triggered.connect(self.callback_toggle_diagram_src)
+		self.menu_circuit_freehand.setCheckable(True)
+		self.menu_update()
+
+	def menu_update(self):
+		data=gpvdm_data()
+		if data.circuit.enabled==True:
+			self.menu_circuit_from_epitaxy.setChecked(False)
+			self.menu_circuit_freehand.setChecked(True)
+		else:
+			self.menu_circuit_from_epitaxy.setChecked(True)
+			self.menu_circuit_freehand.setChecked(False)
+
+	def contextMenuEvent(self,event):
+		self.main_menu.exec_(event.globalPos())
+
+	def callback_toggle_diagram_src(self):
+		data=gpvdm_data()
+		data.circuit.enabled=not data.circuit.enabled
+		self.menu_update()
+		data.save()
+
+

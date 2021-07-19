@@ -29,7 +29,6 @@
 import os
 
 
-from code_ctrl import enable_betafeatures
 from cal_path import get_css_path
 
 #qt
@@ -38,11 +37,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import QSize, Qt
 from PyQt5.QtWidgets import QWidget,QSizePolicy,QVBoxLayout,QHBoxLayout,QToolBar, QLineEdit, QToolButton
 
-from order_widget import order_widget
-
-
 from icon_lib import icon_get
-
 
 from util import wrap_text
 
@@ -59,57 +54,46 @@ class fit_ribbon(ribbon_base):
 		toolbar.setToolButtonStyle( Qt.ToolButtonTextUnderIcon)
 		toolbar.setIconSize(QSize(42, 42))
 
-		self.order_widget=order_widget()
-		self.order_widget.new_text=_("New experiment")
-		self.order_widget.delete_text=_("Delete experiment")
-		self.order_widget.clone_text=_("Clone experiment")
-		self.order_widget.rename_text=_("Rename experiment")
-		self.order_widget.new_dlg_text=_("New experiment name:")
-		self.order_widget.base_file_name=["fit","fit_data","fit_patch","fit_math"]
-		self.order_widget.new_tab_name=_("fit ")
-		self.order_widget.clone_dlg_text=_("Clone the current experiment to a new experiment called:")
-		self.order_widget.rename_dlg_text=_("Rename the experiment to be called:")
-		self.order_widget.delete_dlg_text=_("Should I remove the experiment file ")
-		self.order_widget.name_token="#fit_name"
-		self.order_widget.init()
+		self.tb_new = QAction(icon_get("document-new"), wrap_text(_("New experiment"),2), self)
+		toolbar.addAction(self.tb_new)
 
-		toolbar.addWidget(self.order_widget)
+		######## Box widget
+		self.box_widget=QWidget()
+		self.box=QVBoxLayout()
+		self.box.setSpacing(0)
+		self.box.setContentsMargins(0, 0, 0, 0)
+		self.box_widget.setLayout(self.box)
+		self.box_tb0=QToolBar()
+		self.box_tb0.setIconSize(QSize(32, 32))
+		self.box.addWidget(self.box_tb0)
+		self.box_tb1=QToolBar()
+		self.box_tb1.setIconSize(QSize(32, 32))
+		self.box.addWidget(self.box_tb1)
+		
+
+		self.tb_delete = QAction(icon_get("edit-delete"), wrap_text(_("Delete experiment"),3), self)
+		self.box_tb0.addAction(self.tb_delete)
+
+		self.tb_refresh = QAction(icon_get("view-refresh"), wrap_text(_("Refresh"),3), self)
+		self.box_tb0.addAction(self.tb_refresh)
+
+		self.tb_clone = QAction(icon_get("clone"), wrap_text(_("Clone experiment"),3), self)
+		self.box_tb1.addAction(self.tb_clone)
+
+
+		self.tb_rename = QAction(icon_get("rename"), wrap_text(_("Rename experiment"),3), self)
+		self.box_tb1.addAction(self.tb_rename )
+
+		#self.tb_notes = QAction(icon_get("text-x-generic"), wrap_text(_("Notes"),3), self)
+		#toolbar.addAction(self.tb_notes)
+
+		toolbar.addWidget(self.box_widget)
+
 
 		toolbar.addSeparator()
 
 		self.import_data= QAction(icon_get("import"), wrap_text(_("Import experimental data"),8), self)
 		toolbar.addAction(self.import_data)
-
-		toolbar.addSeparator()
-
-		self.enable=tick_cross(enable_text=_("Fit this\ndata set"),disable_text=_("Dont' fit this\ndata set"))
-		toolbar.addAction(self.enable)
-
-		return toolbar
-
-	def export(self):
-		self.export_toolbar = QToolBar()
-		self.export_toolbar.setToolButtonStyle( Qt.ToolButtonTextUnderIcon)
-		self.export_toolbar.setIconSize(QSize(42, 42))
-
-		self.tb_export_as_jpg = QAction_lock("export_image", _("Export\nimage"), self,"fit_export_image")
-		self.export_toolbar.addAction(self.tb_export_as_jpg)
-
-		self.tb_export_as_csv = QAction_lock("export_csv", _("Export\ncsv"), self,"fit_export_csv")
-		self.export_toolbar.addAction(self.tb_export_as_csv)
-
-		self.tb_export_as_xls = QAction_lock("export_xls", _("Export\nxls"), self,"fit_export_xls")
-		#self.export_toolbar.addAction(self.tb_export_as_xls)
-
-		self.tb_export_as_gnuplot = QAction_lock("export_gnuplot", _("Export\ngnuplot"), self,"fit_export_gnuplot")
-		self.export_toolbar.addAction(self.tb_export_as_gnuplot)
-
-		return self.export_toolbar
-
-	def run(self):
-		toolbar = QToolBar()
-		toolbar.setToolButtonStyle( Qt.ToolButtonTextUnderIcon)
-		toolbar.setIconSize(QSize(42, 42))
 
 		toolbar.addSeparator()
 
@@ -124,9 +108,12 @@ class fit_ribbon(ribbon_base):
 		toolbar.addAction(self.play_one)
 		
 		self.play= play(self,"fit_ribbon_run",play_icon="forward",run_text=wrap_text(_("Run fit"),2))
-
 		toolbar.addAction(self.play)
 
+		toolbar.addSeparator()
+
+		self.enable=tick_cross(enable_text=_("Fit this\ndata set"),disable_text=_("Dont' fit this\ndata set"))
+		toolbar.addAction(self.enable)
 
 		spacer = QWidget()
 		spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
@@ -138,6 +125,8 @@ class fit_ribbon(ribbon_base):
 		toolbar.addAction(self.help)
 
 		return toolbar
+
+
 
 	def update(self):
 		print("update")
@@ -155,11 +144,8 @@ class fit_ribbon(ribbon_base):
 		w=self.file()
 		self.addTab(w,_("Experimental data"))
 		
-		w=self.run()
-		self.addTab(w,_("Run"))
-
-		w=self.export()
-		self.addTab(w,_("Export"))
+		#w=self.run()
+		#self.addTab(w,_("Run"))
 
 		sheet=self.readStyleSheet(os.path.join(get_css_path(),"style.css"))
 		if sheet!=None:

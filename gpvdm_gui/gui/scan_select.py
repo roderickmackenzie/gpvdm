@@ -31,6 +31,7 @@ import i18n
 _ = i18n.language.gettext
 
 #qt
+import json
 from PyQt5.QtCore import QSize, Qt 
 from PyQt5.QtWidgets import QWidget,QVBoxLayout,QToolBar,QSizePolicy,QAction,QTabWidget,QTableWidget,QAbstractItemView, QTreeWidget, QPushButton, QHBoxLayout, QTreeWidgetItem
 from PyQt5.QtGui import QPainter,QIcon
@@ -38,7 +39,9 @@ from PyQt5.QtGui import QFont
 
 from icon_lib import icon_get
 from error_dlg import error_dlg
-from scan_human_labels import get_scan_human_labels
+from gpvdm_json import gpvdm_data
+from token_lib import tokens
+from scan_human_labels import get_json_path_from_human_path
 
 class select_param(QWidget):
 
@@ -47,12 +50,11 @@ class select_param(QWidget):
 
 	def __init__(self,treeview):
 		QWidget.__init__(self)
+		self.my_token_lib=tokens()
 		self.dest_treeview=treeview
-		self.setFixedSize(500,700)
-		self.file_name_tab_pos=0
-		self.token_tab_pos=1
-		self.path_tab_pos=2
-			
+		self.setMinimumSize(700,700)
+		self.human_path_col=0
+		self.json_path_col=-1
 		self.main_vbox=QVBoxLayout()
 		self.save_function=None
 		
@@ -62,7 +64,6 @@ class select_param(QWidget):
 
 
 		self.tab = QTreeWidget()
-		self.scan_human_labels=get_scan_human_labels()
 		#self.tab.setHeaderItem("Scan items")
 
 		self.font = QFont()
@@ -95,41 +96,40 @@ class select_param(QWidget):
 		okButton.clicked.connect(self.tree_apply_click) 
 		cancelButton.clicked.connect(self.close)
 
-		#self.tab.itemSelectionChanged.connect(self.tree_apply_click)
 		self.tab.header().close() 
 		self.update()
 
+	def json_decode(self,dic,path,pointer):
+		for key in dic:
+			item=path+"/"+key
 
+			name=str(key)
+			#try to decode it
+			token=self.my_token_lib.find_json(str(key))
+			if token!=False:
+				name=token.info
 
-	def make_entry(self,root,text):
-		depth=0
-		pointer=root
-		for depth in range(0,len(text)):
-			found=False
-			for i in range(0,pointer.childCount()):
-				if pointer.child(i).text(0)==text[depth]:
-					found=True
-					pointer=pointer.child(i)
-					break
-			if found==False:
-				pointer=QTreeWidgetItem(pointer, [text[depth]])
-				
+			#see if it is a shape with a name
+			try:
+				name=dic[key]['shape_name']
+			except:
+				pass
+
+			pointer_next=QTreeWidgetItem(pointer, [name])
+
+			if type(dic[key])==dict:
+				self.json_decode(dic[key],item,pointer_next)
 
 
 	def update(self):
 		self.tab.clear()
-		self.scan_human_labels.populate_from_files()
 		root = QTreeWidgetItem(self.tab, [_("Simulation parameters")])
 		root.setExpanded(True)
-		param_list=self.scan_human_labels.list
-		i=0
-		for item in range(0, len(param_list)):
-			div_str=param_list[item].human_label.replace("\\", "/")
-			div_str=div_str.split("/")
-			piter=None
-			self.make_entry(root,div_str)
-
-	 
+		data=gpvdm_data()
+		lines=data.gen_json()
+		lines="\n".join(lines)
+		decode=json.loads(lines)
+		self.json_decode(decode,"",root)
 
 	def on_destroy(self):
 		self.hide()
@@ -149,21 +149,21 @@ class select_param(QWidget):
 
 		ret="/".join(reversed(path))
 		ret=ret.split('/', 1)[-1]
-		ret=ret.replace("/", os.path.sep)
 		return ret
 	
 	def tree_apply_click(self):
+		if self.dest_treeview==None:
+			return
+		
 		index = self.dest_treeview.selectionModel().selectedRows()
 		if len(index)>0:
-			#print("row=",index[0].row(),len(index))
 			pos=index[0].row()
 			path=self.cal_path()
-			file_name=self.scan_human_labels.get_file_from_human_label(path)
-			token=self.scan_human_labels.get_token_from_human_label(path)
+			self.dest_treeview.set_value(pos,self.human_path_col,path)
 
-			self.dest_treeview.set_value(pos,self.file_name_tab_pos,file_name)
-			self.dest_treeview.set_value(pos,self.token_tab_pos,token)
-			self.dest_treeview.set_value(pos,self.path_tab_pos,path)
+			if self.json_path_col!=-1:
+				data=gpvdm_data()
+				self.dest_treeview.set_value(pos,self.json_path_col,get_json_path_from_human_path(data,path))
 
 			if self.save_function!=None:
 				self.save_function()

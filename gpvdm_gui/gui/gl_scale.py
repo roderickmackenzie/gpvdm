@@ -152,8 +152,8 @@ def set_m2screen():
 	mesh_max=30
 
 	epi=get_epi()
-	x_len= get_mesh().get_xlen()
-	z_len= get_mesh().get_zlen() 
+	x_len= get_mesh().x.get_len()
+	z_len= get_mesh().z.get_len() 
 
 	z_mul=scale(z_len)
 	x_mul=scale(x_len)
@@ -179,8 +179,8 @@ def set_m2screen():
 
 	y_mul=device_y/epi.ylen()
 
-	device_x=get_mesh().get_xlen()*x_mul
-	device_z=get_mesh().get_zlen()*z_mul
+	device_x=get_mesh().x.get_len()*x_mul
+	device_z=get_mesh().z.get_len()*z_mul
 
 	x_start=-device_x/2.0
 	z_start=-device_z/2.0
@@ -238,7 +238,6 @@ def scale_trianges_m2screen(triangles):
 		t0.xyz2.x=t.xyz2.x*x_mul
 		t0.xyz2.y=-t.xyz2.y*y_mul
 		t0.xyz2.z=t.xyz2.z*z_mul
-
 		ret.append(t0)
 
 	return ret

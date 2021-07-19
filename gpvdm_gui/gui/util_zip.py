@@ -239,7 +239,6 @@ def zip_remove_file(zip_file_name,target,act_only_on_archive=False):
 def write_lines_to_archive(archive_path,file_name,lines,mode="l",dest="archive"):
 
 	file_path=os.path.join(os.path.dirname(archive_path),file_name)
-
 	if os.path.isfile(file_path)==True or os.path.isfile(archive_path)==False or dest=="file":
 		zip_remove_file(archive_path,file_name)
 

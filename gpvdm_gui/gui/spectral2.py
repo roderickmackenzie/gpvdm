@@ -34,7 +34,7 @@ from math import *
 from dat_file import dat_file
 from cal_path import get_atmosphere_path
 from zenith import zenith
-from inp import inp_get_token_value
+from gpvdm_json import gpvdm_data
 
 class spectral2():
 	def __init__(self):
@@ -49,16 +49,17 @@ class spectral2():
 		self.W= 1.42	#precip water
 		self.No2_un=0.0
 
-		self.lat=float(inp_get_token_value("spectral2.inp","#spectral2_lat"))		#51 london
+		data=gpvdm_data()
+		self.lat=data.spectral2.spectral2_lat
 
-		self.day=float(inp_get_token_value("spectral2.inp","#spectral2_day"))		#80 winter equinox
-		self.hour=int(inp_get_token_value("spectral2.inp","#spectral2_hour"))
-		self.min=int(inp_get_token_value("spectral2.inp","#spectral2_minute"))
+		self.day=data.spectral2.spectral2_day		#80 winter equinox
+		self.hour=data.spectral2.spectral2_hour
+		self.min=data.spectral2.spectral2_minute
 
-		self.P=float(inp_get_token_value("spectral2.inp","#spectral2_preasure"))		#Preasure 1bar
-		self.aod=float(inp_get_token_value("spectral2.inp","#spectral2_aod"))	#AOD
-		self.W=float(inp_get_token_value("spectral2.inp","#spectral2_water"))	#precip water
-		self.No2_un=float(inp_get_token_value("spectral2.inp","#spectral2_no2"))
+		self.P=data.spectral2.spectral2_preasure
+		self.aod=data.spectral2.spectral2_aod
+		self.W=data.spectral2.spectral2_water	#precip water
+		self.No2_un=data.spectral2.spectral2_no2
 
 		file_name = os.path.join(get_atmosphere_path(), "SPECTRAL2", "etr.inp")
 		self.etr=dat_file()

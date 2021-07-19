@@ -48,15 +48,6 @@ def peek_data(file_name):
 		pass
 	return b"none"
 
-def is_numbered_file(file_name,filter):
-	if file_name.startswith(filter) and file_name.endswith(".inp"):
-		try:
-			mid=file_name[len(filter):-4]
-			n=int(mid)
-			return True
-		except:
-			False
-
 def set_file_ext(file_name,ext):
 	if ext[0]!=".":
 		ext="."+ext
@@ -108,14 +99,6 @@ def isfiletype(file_name,ext_in):
 	return False
 
 
-
-def get_cache_path(path):
-	m = hashlib.md5()
-	m.update(path)
-	cache_file=m.hexdigest()
-	cache_path = os.path.expanduser("~")+"/cache/"+cache_file
-	return cache_path
-
 def copy_scan_dir(new_dir,old_dir):
 	print("trying to copy",old_dir,new_dir)
 	if not os.path.exists(new_dir):
@@ -140,42 +123,6 @@ def gpvdm_delete_file(path):
 		except IOError:
 			print("Could not delete the file:", path)
 
-def numbers_to_latex(data):
-	out=""
-	number=False
-	open_ten=False
-	for i in range(0,len(data)):
-		if str.isdigit(data[i])==True and number==False:
-			out=out+""#$
-			number=True
-
-		if number==True:
-			add=data[i]
-
-			if number==True:
-				if data[i]=="e":
-					add="\\times10^{"
-					open_ten=True
-				if str.isdigit(data[i])==True:
-					add=data[i]
-				else:
-					if data[i]!="e" and data[i]!="-" and data[i]!="+" and data[i]!=".":
-						number=False
-						add=""+data[i] #$
-						if open_ten==True:
-							add="}"+data[i] #$
-							open_ten=False
-			out=out+add
-		else:
-			out=out+data[i]
-	if open_ten==True:
-		out=out+"}"#$
-		number=False
-
-	if number==True:
-		out=out+"" #$
-
-	return out
 
 def pygtk_to_latex_subscript(in_string):
 	out_string=in_string.replace("<sub>","_{")
@@ -188,33 +135,6 @@ def latex_to_html(in_string):
 	out=re.compile(r"_\{([^\]]*?)\}").sub("<sub>\\1</sub>", in_string)
 	out=re.compile(r"\^\{([^\]]*?)\}").sub("<sup>\\1</sup>", out)
 	return out
-
-def lines_to_xyz(x,y,z,lines):
-	for i in range(0, len(lines)):
-		lines[i]=re.sub(' +',' ',lines[i])
-		lines[i]=re.sub('\t',' ',lines[i])
-		lines[i]=lines[i].rstrip()
-		sline=lines[i].split(" ")
-		if len(sline)==2:
-			if (lines[i][0]!="#"):
-				x.append(float(sline[0]))
-				y.append(float(sline[1]))
-				z.append("")
-		if len(sline)==3:
-			if (lines[i][0]!="#"):
-				x.append(float(sline[0]))
-				y.append(float(sline[1]))
-				z.append(sline[2])
-
-def read_xyz_data(x,y,z,file_name):
-	found,lines=zip_get_data_file(file_name)
-	if found==True:
-		lines_to_xyz(x,y,z,lines)
-		#print("here z=,",z,x,file_name)
-		return True
-	else:
-		return False
-
 
 
 def time_with_units(time):
@@ -276,11 +196,6 @@ def distance_with_units(distance):
 	return mul,ret
 
 
-def pango_to_gnuplot(data):
-#	one=""
-	data.replace("<sub>", "_{")
-	data.replace("</sub>", "}")
-
 def gpvdm_copy_src(new_dir):
 	pwd=os.getcwd()
 	file_list=glob.glob(os.path.join(pwd,"*"))
@@ -311,7 +226,7 @@ def strextract_interger(val):
 			build=build+val[i]
 
 	if len(build)==0:
-		return -1
+		return False
 	else:
 		return int(build)
 

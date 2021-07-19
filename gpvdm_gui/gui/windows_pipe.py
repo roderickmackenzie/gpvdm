@@ -50,9 +50,10 @@ class win_pipe(QWidget):
 			#print "going to read"
 			try:
 				res,data = win32file.ReadFile(p, 4096)
-				#print res,data
+				#print(res,data)
 				if res != winerror.ERROR_MORE_DATA:
 					data=data.decode("utf-8") 
+					#print("decode",res,data)
 					self.new_data.emit(data)
 				else:
 					print("no more data")

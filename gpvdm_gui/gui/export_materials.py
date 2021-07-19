@@ -25,11 +25,8 @@
 #  Export the materials database to a zip file.
 #
 
-#import sys
 import os
-#import glob
 import zipfile
-#from util_zip import archive_add_file
 from progress_class import progress_class
 from process_events import process_events
 from cal_path import remove_cwdfrompath
@@ -44,7 +41,7 @@ def export_materials(target):
 	progress_window.show()
 	progress_window.start()
 	process_events()
-	mat_files=["alpha_eq.inp","alpha.gmat","cost.xlsx","dos.inp","fit.inp","mat.inp","n_eq.inp","n.gmat","pl.inp"]
+	mat_files=["alpha.gmat","cost.xlsx","dos.inp","fit.inp","data.json","n.gmat","pl.inp"]
 	for path, dirs, files in os.walk(os.path.join(os.getcwd(),"materials")):
 		for file_name in files:
 			if file_name in mat_files:

@@ -58,11 +58,14 @@ class ribbon_complex_dos(ribbon_base):
 		#self.tb_ref= QAction(icon_get("ref"), wrap_text(_("Insert reference information"),8), self)
 		#self.main_toolbar.addAction(self.tb_ref)
 
-		self.tb_save = QAction(icon_get("document-save-as"), _("Save image"), self)
-		self.main_toolbar.addAction(self.tb_save)
-
 		self.tb_trap_depth = QAction(icon_get("electrical"), _("Max\ntrap depth"), self)
 		self.main_toolbar.addAction(self.tb_trap_depth)
+
+		self.tb_fermi_min_max = QAction(icon_get("fermi"), _("Min\nFermi level"), self)
+		self.main_toolbar.addAction(self.tb_fermi_min_max)
+
+		self.tb_thermal = QAction(icon_get("thermal"), _("Temperature\nrange"), self)
+		self.main_toolbar.addAction(self.tb_thermal)
 
 		#self.import_data= QAction(icon_get("import"), _("Import data"), self)
 		#self.main_toolbar.addAction(self.import_data)

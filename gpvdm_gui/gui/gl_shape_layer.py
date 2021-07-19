@@ -74,7 +74,6 @@ class shape_layer():
 			a.xyz.y=gl_scale.project_m2screen_y(pos.y+s.dy)
 
 		a.xyz.z=gl_scale.project_m2screen_z(pos.z)
-		#print(">>>>>>",project_m2screen_z(0))
 
 		a.dxyz.x=s.dx*scale_get_xmul()
 		a.dxyz.y=s.dy*scale_get_ymul()
@@ -82,9 +81,9 @@ class shape_layer():
 		if s.shape_flip_y==False:
 			a.dxyz.y=a.dxyz.y*-1.0
 
-		a.r=s.r
-		a.g=s.g
-		a.b=s.b
+		a.r=s.color_r
+		a.g=s.color_g
+		a.b=s.color_b
 
 		a.alpha=1.0
 		if len(s.shapes)>0:
@@ -96,6 +95,7 @@ class shape_layer():
 		v.x=s.dx
 		v.y=s.dy
 		v.z=s.dz
+
 		#resize the shape to the mesh
 		if s.triangles!=None:
 			a.triangles=triangles_mul_vec(s.triangles.data,v)
@@ -117,8 +117,8 @@ class shape_layer():
 		pos.x=epi_layer.x0
 		pos.y=epi_layer.y0
 		pos.z=epi_layer.z0
-		epi_layer.dx=get_mesh().get_xlen()
-		epi_layer.dz=get_mesh().get_zlen()
+		epi_layer.dx=get_mesh().x.get_len()
+		epi_layer.dz=get_mesh().z.get_len()
 
 		a.origonal_object=True
 		self.shape_to_screen(a,pos,epi_layer)

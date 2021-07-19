@@ -40,13 +40,83 @@ import functools
 from cpu_usage import cpu_usage
 from win_lin import running_on_linux
 from hpc import hpc_class
-from code_ctrl import enable_betafeatures
 from global_objects import global_object_register
 from jobs import jobs_view
 from server import server_get
 
 from css import css_apply
 from cal_path import multiplatform_exe_command
+import shlex
+import subprocess
+import time
+from PyQt5.QtCore import pyqtSignal
+from threading import Thread
+from gpvdm_local import gpvdm_local
+
+class QProcess2(QWidget):
+	readyRead = pyqtSignal()
+	def __init__(self):
+		QWidget.__init__(self)
+		self.running=False
+		self.path=None
+		self.data=bytearray()
+		self.read_pos=0
+
+	def rod(self,command):
+		rc=None
+		self.data=bytes()
+		self.read_pos=0
+		#print(shlex.split(command))
+		process = subprocess.Popen(shlex.split(command), stdout=subprocess.PIPE, stderr=subprocess.PIPE,cwd=self.path)
+		while True:
+			output = process.stdout.readline()
+			#print(len(output),rc,output)
+			if len(output) == 0:
+				if rc is not None:
+					print("break 1")
+					break
+			if output:
+				#print(type(output),type(self.data))
+				self.data=self.data + output
+				self.readyRead.emit()
+				#print(">>",output.strip())
+
+			#print(command)
+			rc = process.poll()
+			time.sleep(0.001)
+
+		
+		print("1thread quit",len(self.data),self.read_pos)
+		while True:
+			print(len(self.data),self.read_pos)
+			if len(self.data)==self.read_pos:
+				break
+			time.sleep(0.01)
+
+		print("2thread quit",len(self.data),self.read_pos)
+		self.running=False
+		print(self.data)
+
+	def start(self,command):
+		th = Thread(target=self.rod, args=(command,))
+		th.daemon = False
+		th.start()
+
+	def state(self):
+		if self.running==True:
+			return QProcess.Running
+		else:
+			return QProcess.NotRunning
+
+	def setWorkingDirectory(self,path):
+		self.path=path
+		
+	def readAll(self):
+		stop=len(self.data)
+		start=self.read_pos
+		ret=self.data[start:stop]
+		self.read_pos=self.read_pos+(stop-start) 
+		return ret
 
 class output_box(QTextEdit):
 	def __init__(self,device_type):
@@ -108,6 +178,7 @@ class tab_terminal(QWidget,tab_base):
 
 		self.terminals[i].add_text(data)
 
+
 	def list_cpu_state(self):
 		for i in range(0,self.cpus):
 			if self.process[i].state()==QProcess.NotRunning:
@@ -128,6 +199,7 @@ class tab_terminal(QWidget,tab_base):
 				self.process[i].setWorkingDirectory(path)
 
 				command=multiplatform_exe_command(command)
+				#os.system(command)
 				self.process[i].start(command)
 				return True
 
@@ -157,7 +229,9 @@ class tab_terminal(QWidget,tab_base):
 		for i in range(0,self.cpus):
 			term=output_box("local_cpu")
 
+			#proc=QProcess2()
 			proc=QProcess(self)
+
 			proc.readyRead.connect(functools.partial(self.dataReady,i))
 			self.process.append(proc)
 			self.terminals.append(term)
@@ -171,11 +245,12 @@ class tab_terminal(QWidget,tab_base):
 		#self.jview.load_data(self.myserver.cluster_jobs)
 		self.tab.addTab(self.jview,"Jobs list")
 
-		if enable_betafeatures()==True:
+		if gpvdm_local().gui_config.enable_betafeatures==True:
 			self.cluster=hpc_class()
 			self.tab.addTab(self.cluster,_("Nodes"))
 			global_object_register("cluster_tab",self.cluster)
 
+		global_object_register("clear_terminal",self.clear)
 
 		self.my_server.new_message.connect(self.data_from_cluster)
 

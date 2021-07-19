@@ -29,9 +29,6 @@
 
 import os
 
-from dump_io import dump_io
-
-from code_ctrl import enable_betafeatures
 from cal_path import get_css_path
 
 #qt
@@ -45,18 +42,15 @@ from icon_lib import icon_get
 
 from about import about_dlg
 
-from tb_spectrum import tb_spectrum
-
 from util import wrap_text
 from ribbon_base import ribbon_base
 from play import play
 from QAction_lock import QAction_lock
-from inp import inp_get_token_value
-from inp import inp_update_token_value
 from cal_path import get_sim_path
-from cat_dir import cat_dir
 import webbrowser
 from gpvdm_open import gpvdm_open
+from inp import inp
+from cal_path import gpvdm_paths
 
 class mode_button(QAction_lock):
 	def __init__(self,image,text,s,name):
@@ -93,9 +87,13 @@ class script_ribbon(ribbon_base):
 		spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 		toolbar.addWidget(spacer)
 
-		self.hashtag = QAction(icon_get("hash_dic"), _("Hashtag\ndictionary"), self)
+		self.hashtag = QAction(icon_get("json_python"), _("Data\nexplorer"), self)
 		toolbar.addAction(self.hashtag)
 		self.hashtag.triggered.connect(self.callback_hashtag_dict)
+
+		self.hashtag = QAction(icon_get("json_file"), _("View raw\njson"), self)
+		toolbar.addAction(self.hashtag)
+		self.hashtag.triggered.connect(self.callback_view_json)
 
 		self.help = QAction(icon_get("help"), _("Help"), self)
 		toolbar.addAction(self.help)
@@ -132,6 +130,13 @@ class script_ribbon(ribbon_base):
 			self.setStyleSheet(sheet)
 
 	def callback_hashtag_dict(self):
-		cat_dir()
-		webbrowser.open(os.path.join(get_sim_path(),"index.html"))
+		from window_json_viewer import window_json_viewer
+		self.w=window_json_viewer()
+		self.w.show()
+
+	def callback_view_json(self):
+		f=inp()
+		f.load(os.path.join(get_sim_path(),"json.inp"))
+		f.save_as(os.path.join(gpvdm_paths.get_tmp_path(),"json.json"),dest="file")
+		webbrowser.open(os.path.join(gpvdm_paths.get_tmp_path(),"json.json"))
 

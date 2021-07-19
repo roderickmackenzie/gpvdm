@@ -63,29 +63,7 @@ class gl_lib_ray():
 		b=0.0
 		if self.ray_data.load(ray_file)==True:
 			self.gl_objects_remove_regex("ray_trace_results")
-			for t in self.ray_data.data:
-				z=gl_scale.project_m2screen_z(t.xyz0.z)
-				dz=gl_scale.project_m2screen_z(t.xyz1.z)-gl_scale.project_m2screen_z(t.xyz0.z)
-
-				x=gl_scale.project_m2screen_x(t.xyz0.x)
-				dx=gl_scale.project_m2screen_x(t.xyz1.x)-gl_scale.project_m2screen_x(t.xyz0.x)
-
-				y=gl_scale.project_m2screen_y(t.xyz0.y)
-				dy=gl_scale.project_m2screen_y(t.xyz1.y)-gl_scale.project_m2screen_y(t.xyz0.y)
-
-				a=gl_base_object()
-				a.id=["ray_trace_results"]
-				a.type="ray"
-				a.x=x
-				a.y=y
-				a.z=z
-				a.dx=dx
-				a.dy=dy
-				a.dz=dz
-				a.r=self.ray_data.r
-				a.g=self.ray_data.g
-				a.b=self.ray_data.b
-				self.gl_objects_add(a)
+			self.draw_graph_rays(self.ray_data)
 
 	def draw_ray_mesh(self):
 		r=1.0

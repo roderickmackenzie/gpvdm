@@ -29,25 +29,13 @@
 import os
 import random
 
-#inp files
-from inp import inp_load_file
-from inp import inp_get_next_token_array
-from inp import inp
-from inp import inp_update_token_value
-
 #tabs
 from tab_main import tab_main
 from tab import tab_class
 
-#util
-from win_lin import running_on_linux
-
 #paths
-from cal_path import get_bin_path
 from cal_path import get_exe_args
 from cal_path import get_html_path
-
-from code_ctrl import enable_webbrowser
 from cal_path import get_exe_command
 
 #qt
@@ -56,10 +44,6 @@ from PyQt5.QtWidgets import QTabWidget,QWidget
 #window
 from tab_terminal import tab_terminal
 
-if enable_webbrowser()==True:
-	from information_webkit import information
-else:
-	from information_noweb import information
 
 from help import help_window
 
@@ -72,10 +56,16 @@ from cal_path import get_sim_path
 from tab_view import tab_view
 
 from css import css_apply
-from inp import inp
 from circuit_editor import circuit_editor
 from display_mesh import display_mesh
 from mesh import get_mesh
+from gpvdm_json import gpvdm_data
+from gpvdm_local import gpvdm_local
+
+if gpvdm_local().gui_config.enable_webbrowser==True:
+	from information_webkit import information
+else:
+	from information_noweb import information
 
 class gpvdm_notebook(QTabWidget):
 	item_factory=None
@@ -89,6 +79,8 @@ class gpvdm_notebook(QTabWidget):
 		self.currentChanged.connect(self.changed_click)
 		global_object_register("notebook_goto_page",self.goto_page)
 		self.state_loaded=False
+		self.display_mesh=None
+
 
 
 	def update(self):
@@ -134,6 +126,7 @@ class gpvdm_notebook(QTabWidget):
 				info_files.append(files[i])
 		file_name=random.choice(info_files)
 
+
 		browser=information(file_name)
 
 		self.addTab(browser,_("Information"))
@@ -154,14 +147,7 @@ class gpvdm_notebook(QTabWidget):
 			self.tab_main=tab_main()
 			self.addTab(self.tab_main,_("Device structure"))
 
-			mesh=get_mesh()
-			if mesh.y.circuit_model==True:# or mesh.x.tot_points!=1 or mesh.z.tot_points!=1:
-				self.display_mesh=display_mesh()
-
-				if mesh.y.circuit_model==True:
-					self.addTab(self.display_mesh,_("Circuit diagram"))
-				else:
-					self.addTab(self.display_mesh,_("Electrical mesh"))
+			self.update_circuit_window()
 
 			self.update_display_function=self.tab_main.update
 			#self.tab_main.three_d.display.force_redraw()
@@ -181,6 +167,24 @@ class gpvdm_notebook(QTabWidget):
 			self.add_info_page()
 			self.goto_page(_("Information"))
 			self.state_loaded=False
+
+	def update_circuit_window(self):
+		data=gpvdm_data()
+		mesh=get_mesh()
+		next_tab=None
+		if data.electrical_solver.solver_type=="circuit":
+			if  mesh.x.get_points()==1 and mesh.z.get_points()==1:
+				next_tab=circuit_editor()
+			else:
+				next_tab=display_mesh()
+
+		if self.display_mesh!=next_tab:
+			if self.display_mesh!=None:
+				index=self.indexOf(self.display_mesh)
+				self.removeTab(index)
+			self.display_mesh=next_tab
+			if self.display_mesh!=None:
+				self.insertTab(1,self.display_mesh,_("Circuit diagram"))
 
 	def is_loaded(self):
 		return self.state_loaded

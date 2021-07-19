@@ -27,13 +27,6 @@
 #
 
 
-#inp
-from inp import inp_update_token_value
-from inp import inp_get_token_value
-from inp import inp_load_file
-from inp import inp_lsdir
-from inp import inp_search_token_value
-
 import i18n
 _ = i18n.language.gettext
 
@@ -41,34 +34,25 @@ _ = i18n.language.gettext
 from PyQt5.QtWidgets import  QTextEdit
 from PyQt5.QtCore import QSize, Qt 
 from PyQt5.QtWidgets import QWidget,QVBoxLayout,QLabel,QComboBox
-
+from gpvdm_json import gpvdm_data
 
 class tb_lasers(QWidget):
 
-	def update(self,config_file):
-		self.config_file=config_file
+	def update(self,data):
+		self.data=data
 		self.sim_mode.blockSignals(True)
 		self.sim_mode.clear()
-		lines=[]
 
-		files=inp_lsdir("sim.gpvdm")
-		if files!=False:
-			for i in range(0,len(files)):
-				if files[i].endswith(".inp"):
-					lines=inp_load_file(files[i])
-					value=inp_search_token_value(lines, "#laser_name")
-					if value!=False:
-						value=value.rstrip()
-						self.sim_mode.addItem(value)
+		for laser in gpvdm_data().lasers.segments:
+			value=laser.english_name.rstrip()
+			self.sim_mode.addItem(value)
 
-			token=inp_get_token_value(self.config_file, "#pump_laser")
+		all_items  = [self.sim_mode.itemText(i) for i in range(self.sim_mode.count())]
 
-			all_items  = [self.sim_mode.itemText(i) for i in range(self.sim_mode.count())]
-
-			for i in range(0,len(all_items)):
-				if all_items[i] == token:
-					self.sim_mode.setCurrentIndex(i)
-					found=True
+		for i in range(0,len(all_items)):
+			if all_items[i] == self.data.config.pump_laser:
+				self.sim_mode.setCurrentIndex(i)
+				found=True
 
 		self.sim_mode.blockSignals(False)
 
@@ -93,6 +77,6 @@ class tb_lasers(QWidget):
 
 	def call_back_sim_mode_changed(self):
 		mode=self.sim_mode.currentText()
-		inp_update_token_value(self.config_file, "#pump_laser", mode)
-
+		self.data.config.pump_laser=mode
+		json_data().save()
 

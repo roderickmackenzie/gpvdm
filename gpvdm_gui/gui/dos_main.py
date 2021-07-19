@@ -47,7 +47,9 @@ from css import css_apply
 from inp import inp
 
 from cal_path import get_sim_path
-from newton_solver import newton_solver_get_type
+
+from gpvdm_json import gpvdm_data
+import webbrowser
 
 class dos_main(QWidget,tab_base):
 
@@ -69,7 +71,6 @@ class dos_main(QWidget,tab_base):
 
 		toolbar.addWidget(spacer)
 
-
 		self.help = QAction(icon_get("help"), _("Help"), self)
 		self.help.setStatusTip(_("Help"))
 		self.help.triggered.connect(self.callback_help)
@@ -81,56 +82,62 @@ class dos_main(QWidget,tab_base):
 
 		css_apply(self,"tab_default.css")
 
-
 		self.main_vbox.addWidget(self.notebook)
 		self.setLayout(self.main_vbox)
 
-		#self.notebook.setTabsClosable(True)
-		#self.notebook.setMovable(True)
-		#self.notebook.setTabBar(QHTabBar())
-		#self.notebook.setTabPosition(QTabWidget.West)
-
 		global_object_register("dos_update",self.update)
 		self.status_bar=QStatusBar()
-		self.notebook.currentChanged.connect(self.changed_click)
+		#self.notebook.currentChanged.connect(self.changed_click)
 
 		self.main_vbox.addWidget(self.status_bar)	
 		self.update()
 
+		gpvdm_data().add_call_back(self.update_values)
+		self.destroyed.connect(self.doSomeDestruction)
+
+	def doSomeDestruction(self):
+		gpvdm_data().remove_call_back(self.update_values)
+
+	def update_values(self):
+		epi=get_epi()
+		for i in range(0,self.notebook.count()):
+			w=self.notebook.widget(i)
+			w.tab.template_widget=epi.find_object_by_id(w.tab.template_widget.id)
+			w.tab.update_values()
+
 	def update(self):
 		self.notebook.clear()
-		fulle_sim=True
-		sim_type=newton_solver_get_type()
-		if sim_type=="newton_simple":
-			fulle_sim=False
-		epi=get_epi()
-		for l in epi.layers:
-			if fulle_sim==True:
-				if l.dos_file.startswith("dos")==True:
+		data=gpvdm_data()
+		print(">>>>>>>>>",len(data.epi.layers))
+		for l in data.epi.layers:
+			if data.electrical_solver.solver_type!="circuit":
+				print(l.layer_type,l.shape_name,l.shape_dos.enabled)
+				if l.shape_dos.enabled==True and l.shape_enabled==True:
 					
-						name="DoS of "+l.name
-						print(l.dos_file)
-						widget=tab_class(l.dos_file+".inp")
+						name="DoS of "+l.shape_name
+						#print(l.shape_dos)
+						widget=tab_class(l.shape_dos)
 						self.notebook.addTab(widget,name)
 
 						for s in l.shapes:
-							if s.shape_dos!="none":
-								name="DoS of "+s.name
-								widget=tab_class(s.shape_dos+".inp")
+							#print(s.shape_name,s.shape_dos.enabled)
+							if s.shape_dos.enabled==True and s.shape_enabled==True:
+								name="DoS of "+s.shape_name
+								widget=tab_class(s.shape_dos)
+								widget.tab.json_human_path=""
 								self.notebook.addTab(widget,name)
-								#tab.append(s.shape_dos+".inp")
 			else:
-				name="Electrical "+l.name
-				print(l.shape_electrical)
-				widget=tab_class(l.shape_electrical+".inp")
+				if l.layer_type=="active":# or l.layer_type=="contact":
+					name="Electrical "+l.shape_name
+					widget=tab_class(l.shape_electrical)
 
-				self.notebook.addTab(widget,name)
+					self.notebook.addTab(widget,name)
 
 	def help(self):
 		help_window().help_set_help(["tab.png","<big><b>Density of States</b></big>\nThis tab contains the electrical model parameters, such as mobility, tail slope energy, and band gap."])
-	def changed_click(self):
-		tab = self.notebook.currentWidget()
-		self.status_bar.showMessage(tab.file_name)
+	#def changed_click(self):
+	#	tab = self.notebook.currentWidget()
+	#	self.status_bar.showMessage(tab.file_name)
 
 	def callback_help(self,widget):
 		webbrowser.open('http://www.gpvdm.com/man/index.html')

@@ -33,6 +33,7 @@ from win_lin import running_on_linux
 from gui_enable import gui_get
 from os.path import expanduser
 from str2bool import str2bool
+import json
 
 root_materials_path=None
 plugins_path=None
@@ -45,7 +46,6 @@ image_path=None
 css_path=None
 flag_path=None
 lang_path=None
-inp_file_path=None
 src_path=None
 spectra_base_path=None
 sim_path=None
@@ -237,7 +237,6 @@ def calculate_paths():
 	global flag_path	
 	global plugins_path
 	global lang_path
-	global inp_file_path
 	global src_path
 	global ui_path
 	global spectra_base_path
@@ -271,7 +270,6 @@ def calculate_paths():
 	flag_path=search_known_paths("flags",[""],"gb.png",True)
 	lang_path=search_known_paths("lang",[""],None,False)
 	exe_command=search_known_paths("gpvdm_core",["",".exe",".o"],None,True)
-	inp_file_path=os.path.dirname(search_known_paths("base",[".gpvdm"],None,True))
 
 	src_path=os.path.dirname(search_known_paths("Makefile",[".am"],None,True))
 	ui_path=search_known_paths("ui",[""],None,False)
@@ -285,7 +283,7 @@ def calculate_paths():
 	fonts_path=search_known_paths("fonts",[""],"LiberationSans-Regular.ttf",True)
 	video_path=search_known_paths("video",[""],"welcome.wmv",True)
 	components_path=search_known_paths("components",[""],"resistor.inp",True)
-	inp_template_path=search_known_paths("inp_template",[""],"epitaxy.inp",True)
+	inp_template_path=search_known_paths("inp_template",[""],"server.inp",True)
 
 def get_license_path():
 	return get_exe_path()
@@ -316,39 +314,33 @@ def get_spectra_path():
 def get_scripts_path():
 	return os.path.join(get_user_settings_dir(),"scripts")
 
+
 def get_user_settings_dir():
 	global use_gpvdm_local
 	if use_gpvdm_local==None:
 		use_gpvdm_local=True
-		file_path=os.path.join(os.getcwd(),"config.inp")
+
+		file_path=os.path.join(os.getcwd(),"json.inp")
 
 		if os.path.isfile(file_path):
 			f=open(file_path, mode='r')
-			read_lines = f.read().split()
+			read_lines = f.read()
 			f.close()
-			for i in range(0,len(read_lines)):
-				read_lines[i]=read_lines[i].rstrip()
-			for i in range(0,len(read_lines)):
-				if read_lines[i]=="#use_gpvdm_local":
-					use_gpvdm_local=str2bool(read_lines[i+1])
-					break
+
+			data=json.loads(read_lines)
+			try:
+				use_gpvdm_local=str2bool(data["sim"]["use_gpvdm_local"])
+			except:
+				pass
 
 	if use_gpvdm_local==True:
 		ret=os.path.join(get_home_path(),"gpvdm_local")
-
 		if os.path.isdir(ret)==False:
 			os.makedirs(ret)
 	else:
 		return os.getcwd()
 	return ret
 
-def get_tmp_path():
-	ret=os.path.join(get_user_settings_dir(),"tmp")
-
-	if os.path.isdir(ret)==False:
-		os.makedirs(ret)
-
-	return ret
 
 def get_web_cache_path():
 	ret=os.path.join(get_user_settings_dir(),"web_cache")
@@ -370,9 +362,6 @@ def get_html_path():
 	global html_path
 	return html_path
 
-def get_bib_path():
-	global bib_path
-	return bib_path
 
 def get_fonts_path():
 	global fonts_path
@@ -383,9 +372,6 @@ def get_materials_path():
 
 def get_emission_path():
 	return os.path.join(get_user_settings_dir(),"emission")
-
-def get_shape_path():
-	return os.path.join(get_user_settings_dir(),"shape")
 
 def get_user_data_path():
 	ret=os.path.join(get_user_settings_dir(),"user_data")
@@ -448,9 +434,6 @@ def get_components_path():
 	global components_path
 	return components_path
 
-def get_inp_file_path():
-	global inp_file_path
-	return inp_file_path
 
 def get_image_file_path():
 	global image_path
@@ -479,6 +462,25 @@ class gpvdm_paths:
 	def get_shape_template_path():
 		global inp_template_path
 		return os.path.join(inp_template_path,"shape")
+
+	def get_shape_path():
+		return os.path.join(get_user_settings_dir(),"shape")
+
+	def get_bib_path():
+		global bib_path
+		return bib_path
+
+	def get_tmp_path():
+		ret=os.path.join(get_user_settings_dir(),"tmp")
+
+		if os.path.isdir(ret)==False:
+			os.makedirs(ret)
+
+		return ret
+
+	def get_use_gpvdm_local():
+		global use_gpvdm_local
+		return use_gpvdm_local
 
 def get_flag_file_path():
 	global flag_path
@@ -572,7 +574,7 @@ def find_light_source(path=None):
 		spectra_path=path
 
 	for dirpath, dirnames, filenames in os.walk(spectra_path):
-		for filename in [f for f in filenames if f=="mat.inp"]:
+		for filename in [f for f in filenames if f=="data.json"]:
 			path=os.path.join(dirpath, filename)
 			path=os.path.dirname(path)
 			s=os.path.relpath(path, spectra_path)
@@ -582,8 +584,6 @@ def find_light_source(path=None):
 
 	return ret
 
-def print_paths():
-	print("get_inp_file_path:",get_inp_file_path())
 
 def multiplatform_exe_command(command):
 	if running_on_linux()==False:

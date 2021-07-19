@@ -106,6 +106,16 @@ def triangles_remove_below(data,val):
 			ret.append(data[i])
 	return ret
 
+def triangles_rotate_y(data,ang):
+	ret=[]
+	if len(data)==0:
+		return None
+
+	for i in range(0,len(data)):
+		ret.append(data[i].rotate_y(ang))
+
+	return ret
+
 def triangles_div_vec(data,vec):
 	if len(data)==0:
 		return None

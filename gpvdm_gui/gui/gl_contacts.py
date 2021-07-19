@@ -84,13 +84,13 @@ class gl_contacts():
 		top_contact_layer=epi.get_top_contact_layer()
 		btm_contact_layer=epi.get_btm_contact_layer()
 
-		for c in epi.contacts.contacts:
+		for c in epi.contacts.segments:
 			if c.shape_enabled==True:
 				a=gl_base_object()
 				a.id=[c.id]
 
 				if c.position=="left":
-					if len(x_mesh.points)>1:
+					if x_mesh.get_points()>1:
 						sticking_out_bit=0.2
 						a.type="solid_and_mesh"
 						a.xyz.x=gl_scale.project_m2screen_x(0)-sticking_out_bit
@@ -100,14 +100,14 @@ class gl_contacts():
 						a.dxyz.y=scale_get_ymul()*c.dy
 						a.dxyz.z=scale_get_device_z()
 
-						a.r=c.r
-						a.g=c.g
-						a.b=c.b
-						a.alpha=1.0
+						a.r=c.color_r
+						a.g=c.color_g
+						a.b=c.color_b
+						a.coloralpha=1.0
 						my_vec=vec()
 						my_vec.x=sticking_out_bit/scale_get_xmul()#+c.ingress
 						my_vec.y=c.dy
-						my_vec.z=get_mesh().get_zlen()
+						my_vec.z=get_mesh().z.get_len()
 
 						if c.triangles!=None:
 							a.triangles=triangles_flip_in_box(c.triangles.data)
@@ -120,15 +120,15 @@ class gl_contacts():
 					if top_contact_layer!=-1:
 						#if epi.layers[0].name!="air":
 						box=vec()
-						if len(x_mesh.points)==1 and len(z_mesh.points)==1:
+						if x_mesh.get_points()==1 and z_mesh.get_points()==1:
 							xstart=0
-							box.x=get_mesh().get_xlen()
+							box.x=get_mesh().x.get_len()
 						else:
 							xstart=c.x0
 							box.x=c.dx
 
 						box.y=epi.layers[0].dy#+c.ingress
-						box.z=get_mesh().get_zlen()
+						box.z=get_mesh().z.get_len()
 
 						if self.draw_device_cut_through==False:
 							a.type="solid_and_mesh"
@@ -149,10 +149,10 @@ class gl_contacts():
 						if c.shape_flip_y==False:
 							a.dxyz.y=a.dxyz.y*-1.0
 
-						a.r=c.r
-						a.g=c.g
-						a.b=c.b
-						a.alpha=1.0
+						a.r=c.color_r
+						a.g=c.color_g
+						a.b=c.color_b
+						a.color_alpha=1.0
 
 						if c.triangles!=None:
 							a.triangles=triangles_mul_vec(c.triangles.data,box)
@@ -164,16 +164,16 @@ class gl_contacts():
 
 				elif c.position=="bottom":
 					if btm_contact_layer!=-1:
-						if len(x_mesh.points)==1 and len(z_mesh.points)==1:
+						if x_mesh.get_points()==1 and z_mesh.get_points()==1:
 
 							xstart=0
-							box.x=get_mesh().get_xlen()
+							box.x=get_mesh().x.get_len()
 						else:
 							xstart=c.x0
 							box.x=c.dx
 
 						box.y=epi.layers[len(epi.layers)-1].dy#+c.ingress 
-						box.z=get_mesh().get_zlen()
+						box.z=get_mesh().z.get_len()
 
 						a.type="solid_and_mesh"
 
@@ -189,20 +189,20 @@ class gl_contacts():
 						a.dxyz.y=-box.y*scale_get_ymul()
 						a.dxyz.z=scale_get_device_z()
 
-						a.r=epi.layers[len(epi.layers)-1].r
-						a.g=epi.layers[len(epi.layers)-1].g
-						a.b=epi.layers[len(epi.layers)-1].b
+						a.r=epi.layers[len(epi.layers)-1].color_r
+						a.g=epi.layers[len(epi.layers)-1].color_g
+						a.b=epi.layers[len(epi.layers)-1].color_b
 
 						a.alpha=1.0
 						my_vec=vec()
 						my_vec.x=c.dx
 						my_vec.y=epi.layers[len(epi.layers)-1].dy
-						my_vec.z=get_mesh().get_zlen()
+						my_vec.z=get_mesh().z.get_len()
 
-						a.r=c.r
-						a.g=c.g
-						a.b=c.b
-						a.alpha=1.0
+						a.r=c.color_r
+						a.g=c.color_g
+						a.b=c.color_b
+						a.color_alpha=1.0
 
 						a.triangles=triangles_flip_in_box(c.triangles.data)
 						a.triangles=triangles_mul_vec(a.triangles,box)

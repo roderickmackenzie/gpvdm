@@ -48,6 +48,8 @@ from str2bool import str2bool
 
 import hashlib
 from util_zip import archive_get_file_time
+from util_text import is_number
+import json
 
 enable_encrypt=False
 try:
@@ -56,7 +58,8 @@ try:
 except:
 	pass
 
-class inp():
+
+class inp:
 
 	def __init__(self,file_path=None):
 		self.lines=[]
@@ -65,6 +68,17 @@ class inp():
 
 		if file_path!=None:
 			self.set_file_name(file_path)
+		self.json=None
+
+	def tab(self):
+		begin=""
+		for i in range(0, len(self.lines)):
+			self.lines[i]=begin+self.lines[i].lstrip()
+			if self.lines[i].count("{")>0:
+				begin=begin+"\t"
+			if self.lines[i].count("}")>0:
+				if len(begin)>0:
+					begin=begin[:-1]
 
 	def __str__(self):
 		if self.lines==False:
@@ -110,6 +124,19 @@ class inp():
 			return False
 
 		return self
+
+	def load_json(self,file_path,archive="sim.gpvdm"):
+		if self.load(file_path,archive=archive)==False:
+			return False
+
+		if self.lines!=False:
+			lines="\n".join(self.lines)
+			self.json=json.loads(lines)
+
+		return self.json
+
+	def sync_json_to_lines(self):
+		self.lines=json.dumps(self.json).split("\n")
 
 	def isfile(self,file_path,archive="sim.gpvdm"):
 		file_name=default_to_sim_path(file_path)
@@ -202,8 +229,9 @@ class inp():
 		"""Get the value of a token from a list"""
 		for i in range(0, len(self.lines)):
 			if self.lines[i]==token:
-				return self.lines[i+1]
-
+				if i+1<len(self.lines):
+					return self.lines[i+1]
+				return False
 		return False
 
 	def reset(self):
@@ -286,7 +314,37 @@ class inp():
 	def save(self,mode="l",dest="archive"):
 		"""Write save lines to a file"""
 		ret= write_lines_to_archive(self.zip_file_path,self.file_name,self.lines,mode=mode,dest=dest)
+		#self.lines_to_json()
 		return ret
+
+	def lines_to_json(self,section):
+		out=[]
+		out.append("{\""+section+"\":"+" {")
+		build=[]
+		token=""
+		for l in self.lines:
+			if l.startswith("#")==True:
+				if len(build)>0:	# "id": "file",
+					if is_number(build[0])==True:
+						quote=""
+					else:
+						quote="\""
+					out.append("\t\""+token+"\":"+quote+str(build[0])+quote+",")
+					build=[]
+				token=l[1:]
+			else:
+				build.append(l)
+
+		if out[-1].endswith(","):
+			out[-1]=out[-1][:-1]
+
+		out.append("}")
+		out.append("}")
+		#f=open("json.json",'w')
+		#f.write(out)
+		#f.close()
+		#print(out)
+		return out
 
 	def append(self,data):
 		self.lines.append(data)
@@ -297,7 +355,7 @@ class inp():
 		self.zip_file_path=os.path.join(os.path.dirname(full_path),archive)
 		self.file_name=os.path.basename(full_path)
 
-		return self.save()
+		return self.save(dest=dest)
 
 	def delete(self):
 		zip_remove_file(self.zip_file_path,self.file_name)
@@ -396,78 +454,11 @@ class inp():
 
 
 
-callbacks=[]
-class callback_data():
-	def __init__(self):
-		self.file_name=""
-		self.call_back=""
-		self.id=""
-		self.call_back_fn=None
-
-	def __eq__(self,other):
-		if self.file_name==other.file_name and self.id==other.id:
-			return True
-		return False
-
-
-def inp_callbacks_clear():
-	global callbacks
-	callbacks=[]
-
-def inp_callback_add_write_hook(file_name,call_back_fn,id):
-	global callbacks
-	a=callback_data()
-	a.file_name=file_name
-	a.call_back=call_back_fn
-	a.id=id
-	#print("add hook",a.file_name)
-	#for i in range(0,len(callbacks)):
-	#	print(callbacks[i].file_name,callbacks[i].call_back_fn)
-	for i in range(0,len(callbacks)):
-		c=callbacks[i]
-		if c==a:
-			if c.call_back_fn!=call_back_fn:
-				callbacks[i].call_back_fn=call_back_fn
-				inp_dump_hooks()
-				return
-
-	callbacks.append(a)
-	inp_dump_hooks()
-
-def inp_callback_check_hook(file_name,id):
-	print("inp_callback_check_hook",id)
-	global callbacks
-	inp_dump_hooks()
-	for c in callbacks:
-		#print("check>>",c.file_name,file_name)
-		if c.file_name==file_name and c.id!=id:
-			#print("call")
-			inp_dump_hooks()
-			c.call_back()
-
-def inp_dump_hooks():
-	print("inp_dump_hooks")
-	global callbacks
-	for c in callbacks:
-		print("inp_dump_hooks>>",c.file_name,c.id)
-
 def inp_issequential_file(file_name,root):
 	if file_name.startswith(root) and file_name.endswith(".inp"):
 		number=file_name[len(root):-4]
 		if number.isdigit()==True:
 			return True
-	return False
-
-def inp_find_active_file(file_path):
-	"""if you are looking for /path/to/file/cluster0.inp it will expect /path/to/file/cluster"""
-	path=os.path.dirname(file_path)
-	root=os.path.basename(file_path)
-	files=zip_lsdir(os.path.join(path,"sim.gpvdm"))
-	for f in files:
-		if inp_issequential_file(f,root)==True:
-			ret=str2bool(inp_get_token_value(os.path.join(path,f), "#tab_enabled"))
-			if ret==True:
-				return f
 	return False
 
 
@@ -476,22 +467,6 @@ def inp_find_active_file(file_path):
 def inp_lsdir(file_name):
 	full_path=default_to_sim_path(file_name)
 	return zip_lsdir(full_path)
-
-def inp_ls_seq_files(path,root):
-	ret=[]
-	files=inp_lsdir(path)
-
-	for f in files:
-		if inp_issequential_file(f,root)==True:
-			ret.append(f)
-
-	return ret
-
-def inp_dir_listing(file_name):
-	full_path=default_to_sim_path(file_name)
-	files=zip_lsdir(full_path)
-	for f in files:
-		print(f)
 
 def inp_remove_file(file_name,archive="sim.gpvdm"):
 	"""Remove a file from an archive"""
@@ -524,155 +499,9 @@ def inp_replace_token_value(lines,token,replace):
 
 	return replaced
 
-def inp_replace_token_array(lines,token,replace):
-	"""replace the value of a token array in a list"""
-	new_list=[]
-	pos=0
-	for i in range(0, len(lines)):
-		new_list.append(lines[i])
-		if lines[i]==token:
-			pos=i+1
-			new_list.extend(replace)
-			break
-
-	new_pos=0
-	for i in range(pos, len(lines)):
-		if len(lines[i])>0:
-			if lines[i][0]=="#":
-				new_pos=i
-				break
-
-	for i in range(new_pos, len(lines)):
-		new_list.append(lines[i])
-	
-	return new_list
-
-
-def inp_add_token(lines,token,value):
-	a=[]
-	a.append(token)
-	a.append(value)
-	ret=a + lines
-	return ret
-
-
-
-def inp_update_token_array(file_path, token, replace):
-	lines=[]
-	base_name=os.path.basename(file_path)
-	path=os.path.dirname(file_path)
-
-	zip_file_name=os.path.join(path,"sim.gpvdm")
-
-	lines=read_lines_from_archive(zip_file_name,os.path.basename(file_path))
-
-	lines=inp_replace_token_array(lines,token,replace)
-
-	write_lines_to_archive(zip_file_name,base_name,lines)
-
-def inp_delete_token(file_path, token, archive="sim.gpvdm",id=""):
-	lines=[]
-	lines_out=[]
-
-	lines=inp_load_file(file_path,archive=archive)
-	if lines==False:
-		return False
-
-	count=2
-	for l in lines:
-		if l==token:
-			count=0
-
-		if count>1:
-			lines_out.append(l)
-
-		count=count+1
-		
-	inp_save(file_path,lines_out,archive=archive,id=id)
-
-	return True
-
-def inp_insert_token(file_path, token_to_insert_after, token, value, archive="sim.gpvdm",id=""):
-	lines=[]
-	lines_out=[]
-
-	lines=inp_load_file(file_path,archive=archive)
-	if lines==False:
-		return False
-	if token_to_insert_after==False:
-		new_lines=[]
-		new_lines.append(token)
-		new_lines.append(value)
-		new_lines.extend(lines)
-		lines_out=new_lines
-		#print(lines_out)
-	else:
-		count=3
-		for l in lines:
-
-			lines_out.append(l)
-
-			if l==token_to_insert_after:
-				count=0
-
-			if count==1:
-				lines_out.append(token)
-				lines_out.append(value)
-
-			count=count+1
-	
-	#print(lines_out)	
-	inp_save(file_path,lines_out,archive=archive,id=id)
-
-	return True
-
-def inp_insert_duplicate(dest_file_path, dest_token, src_file_path, src_token, archive="sim.gpvdm",id=""):
-	lines=[]
-	lines_dest=[]
-
-	lines_src=inp_load_file(src_file_path,archive=archive)
-	if lines_src==False:
-		return False
-
-	lines_dest=inp_load_file(dest_file_path,archive=archive)
-	if lines_dest==False:
-		return False
-
-	val=inp_get_token_value_from_list(lines_src, src_token)
-	if val==None or val==False:
-		return False
-	
-	ret=inp_replace_token_value(lines_dest,dest_token,val)
-	if ret==False or val==False:
-		return False
-
-	#print(lines_dest)	
-	inp_save(dest_file_path,lines_dest,archive=archive,id=id)
-
-	return True
 
 def inp_update_token_value(file_path, token, replace,archive="sim.gpvdm",id=""):
 	lines=[]
-
-	if token=="#Ty0":
-		inp_update_token_value("thermal.inp", "#Ty1", replace,archive)
-
-		inp_update_token_value("thermal.inp", "#Tx0", replace,archive)
-		inp_update_token_value("thermal.inp", "#Tx1", replace,archive)
-
-		inp_update_token_value("thermal.inp", "#Tz0", replace,archive)
-		inp_update_token_value("thermal.inp", "#Tz1", replace,archive)
-
-		files=inp_lsdir(os.path.join(os.path.dirname(file_path),"sim.gpvdm"))
-		for i in range(0,len(files)):
-			if files[i].startswith("dos") and files[i].endswith(".inp"):
-
-				inp_update_token_value(files[i], "#Tstart", replace,archive)
-				try:
-					upper_temp=str(float(replace)+5)
-				except:
-					upper_temp="300.0"
-				inp_update_token_value(files[i], "#Tstop", upper_temp,archive)
 
 	lines=inp_load_file(file_path,archive=archive)
 	if lines==False:
@@ -713,8 +542,8 @@ def search_zip_file(file_name,archive):
 
 	#now try back one level
 	#Using path /a/b/c/mat.inp look in /a/b/sim.gpvdm for the sim file
-	if os.path.isfile(zip_file_path)==False:
-		zip_file_path=os.path.join(os.path.dirname(os.path.dirname(file_name)),archive)
+	#if os.path.isfile(zip_file_path)==False:
+	#	zip_file_path=os.path.join(os.path.dirname(os.path.dirname(file_name)),archive)
 
 	return zip_file_path
 
@@ -744,9 +573,6 @@ def inp_save(file_path,lines,archive="sim.gpvdm",id=""):
 
 	ret= write_lines_to_archive(archive_path,file_name,lines)
 
-	if id!="":
-		inp_callback_check_hook(file_path,id)
-
 	return ret
 
 def inp_save_lines_to_file(file_path,lines):
@@ -765,41 +591,6 @@ def inp_save_lines_to_file(file_path,lines):
 
 	return True
 
-def inp_new_file():
-	"""Make a new input file"""
-	ret=[]
-	ret.append("#ver")
-	ret.append("1.0")
-	ret.append("#end")
-	return ret
-
-
-
-def inp_search_token_array(lines, token):
-	"""Get an array of data assosiated with a token"""
-	ret=[]
-	for i in range(0, len(lines)):
-		if lines[i]==token:
-			pos=i+1
-			for ii in range(pos,len(lines)):
-				if len(lines[ii])>0:
-					if lines[ii][0]=="#":
-						return ret
-				
-				ret.append(lines[ii])
-			return ret
-	return False
-
-def inp_get_token_array(file_path, token):
-	"""Get an array of data assosiated with a token"""
-	lines=[]
-	ret=[]
-	lines=inp_load_file(file_path)
-
-	ret=inp_search_token_array(lines, token)
-
-	return ret
-
 def inp_get_token_value_from_list(lines, token):
 	"""Get the value of a token from a list - don't use this one any more"""
 	for i in range(0, len(lines)):
@@ -815,11 +606,9 @@ def inp_search_token_value(lines, token):
 
 	return False
 
-def inp_get_token_value(file_path, token,archive="sim.gpvdm",search_active_file=False):
+def inp_get_token_value(file_path, token,archive="sim.gpvdm"):
 	"""Get the value of a token from a file"""
 
-	if search_active_file==True:
-		file_path=inp_find_active_file(file_path)
 
 	lines=[]
 	lines=inp_load_file(file_path,archive=archive)
@@ -832,39 +621,3 @@ def inp_get_token_value(file_path, token,archive="sim.gpvdm",search_active_file=
 
 	return None
 
-def inp_sum_items(lines,token):
-	my_sum=0.0
-	for i in range(0, len(lines)):
-		if lines[i].startswith(token)==True:
-			my_sum=my_sum+float(lines[i+1])
-
-	return my_sum
-
-
-def inp_get_file_ver(archive,file_name):
-	lines=[]
-	lines=read_lines_from_archive(archive,file_name)
-
-	if lines!=False:
-		ver=inp_search_token_value(lines, "#ver")
-	else:
-		return ""
-
-	return ver
-
-def inp_get_next_token_array(lines,start):
-	"""Get the next token"""
-	ret=[]
-	if start>=len(lines):
-		return None,start
-
-	for i in range(start,len(lines)):
-		if i!=start:
-			if len(lines[i])>0:
-				if lines[i][0]=="#":
-					break
-
-		ret.append(lines[i])
-			
-
-	return ret,i

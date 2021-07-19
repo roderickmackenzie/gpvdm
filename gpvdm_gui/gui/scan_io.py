@@ -315,71 +315,10 @@ def scan_clean_nested_simulation(root_simulation,nest_simulation):
 
 
 	return
-#def clean_simulation(parent_window,dir_to_clean):
-#	files_to_delete=[]
-#	listing=os.listdir(dir_to_clean)
-
-#	for i in range(0,len(listing)):
-#		if os.path.isdir(listing[i])==True:
-#			files_to_delete.append(listing[i])
-	
-	#simulation_dirs=scan_list_simulations(dir_to_clean)
-
-	#sims_we_should_have=tree_load_flat_list(dir_to_clean)
-	#for i in range(0,len(simulation_dirs)):
-		#if sims_we_should_have.count(simulation_dirs[i])==0:
-			#files_to_delete.append(simulation_dirs[i])
-		#else:
-			#listing=os.listdir(simulation_dirs[i])
-
-			#for ii in range(0,len(listing)):
-				#delete=True
-				#path=os.path.join(simulation_dirs[i],listing[ii])
-				#if path.endswith(".inp"):
-					#delete=False
-
-				#if path.endswith("exp"):
-					#delete=False
-
-				#if path.endswith("materials"):
-					#delete=False
-
-				#if path.endswith(".gpvdm"):
-					#delete=False
-
-				#elif path.endswith(".gpvdm"):
-					#delete=False
-
-				#elif path.endswith("fitlog_time_error.dat"):
-					#delete=False
-
-				#elif path.endswith("fitlog_time_speed.dat"):
-					#delete=False
-
-				#elif path.endswith("fitlog_time_odes.dat"):
-					#delete=False
-
-				#elif path.endswith("fitlog.dat"):
-					#delete=False
-
-				#elif path.endswith("fitlog_speed.dat"):
-					#delete=False
-
-				#elif path.endswith("fiterror.dat"):
-					#delete=False
-
-				#if delete==True:
-					##print("delete",path)
-					#files_to_delete.append(path)
-
-	#scan_ask_to_delete(parent_window,files_to_delete)
-
 
 def scan_clean_unconverged(parent,dir_to_clean):
 		dirs_to_del=[]
 		dirs_to_del=scan_list_unconverged_simulations(dir_to_clean)
-
-		#print(dirs_to_del,dir_to_clean)
 
 		scan_ask_to_delete(parent,dirs_to_del)
 
@@ -456,8 +395,8 @@ class scan_io:
 
 		for i in range(0, mylen):
 			item=scan_program_line()
-			item.file=f.lines[pos]
-			item.token=f.lines[pos+1]
+			#item.file=f.lines[pos]
+			#item.token=f.lines[pos+1]
 			item.human_name=f.lines[pos+2]
 			item.values=f.lines[pos+3]
 			item.opp=f.lines[pos+4]
@@ -475,8 +414,8 @@ class scan_io:
 		f.lines.append(str(len(self.program_list)))
 		for item in self.program_list:
 			#print(i)
-			f.lines.append(item.file)
-			f.lines.append(item.token)
+			f.lines.append("notused")
+			f.lines.append("notused")
 			f.lines.append(item.human_name)
 			f.lines.append(item.values)
 			f.lines.append(item.opp)
@@ -514,10 +453,12 @@ class scan_io:
 
 	def apply_constants_to_dir(self,folder):
 		leaf=scan_tree_leaf()
+		leaf.json_load(os.path.join(folder,"json.inp"))
 		leaf.directory=folder
 		leaf.program_list=self.program_list
 		leaf.apply_constants()
 		leaf.apply_python_scripts()
+		leaf.json_save()
 
 	def run(self,run_simulation=True,generate_simulations=True,args=""):
 		f=inp()

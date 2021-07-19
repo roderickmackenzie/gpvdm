@@ -28,7 +28,6 @@
 import os
 import shutil
 #import glob
-from cal_path import get_inp_file_path
 from util_zip import zip_lsdir
 from util_zip import read_lines_from_archive
 from util_zip import write_lines_to_archive
@@ -37,18 +36,17 @@ from shutil import copyfile
 from inp import inp_search_token_value
 from cal_path import get_base_material_path
 from cp_gasses import copy_gasses
-from materials_io import find_materials
 from cal_path import find_light_source
 from cal_path import get_spectra_path
 from cal_path import get_base_spectra_path
 from win_lin import running_on_linux
+from cal_path import gpvdm_paths
 
 def gpvdm_clone(path,src_archive="",copy_dirs=False,dest="archive"):
-	#print("Cloning from",get_inp_file_path())
 
 	if src_archive=="":
-		src_dir=get_inp_file_path()
-		src_archive=os.path.join(src_dir,"base.gpvdm")
+		src_dir=gpvdm_paths.get_inp_template_path()
+		src_archive=os.path.join(src_dir,"sim.gpvdm")
 		
 	dest_archive=os.path.join(path,"sim.gpvdm")
 	files=zip_lsdir(src_archive)
@@ -80,7 +78,7 @@ def clone_spectra(dest_spectra_dir,src_spectra_dir):
 	if os.path.isdir(dest_spectra_dir)==False:
 		os.makedirs(dest_spectra_dir)
 
-	for copy_file in ["spectra_gen.inp","spectra.inp","mat.inp","spectra_eq.inp"]:
+	for copy_file in ["spectra.inp","data.json"]:
 		src_spectra_file=os.path.join(src_spectra_dir,copy_file)
 		if os.path.isfile(src_spectra_file)==True:
 			copyfile(src_spectra_file,os.path.join(dest_spectra_dir,copy_file))

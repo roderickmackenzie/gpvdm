@@ -28,14 +28,13 @@
 import os
 #from numpy import *
 from cal_path import get_image_file_path
-from util import read_xyz_data
 
 import i18n
 _ = i18n.language.gettext
 
 #qt
 from PyQt5.QtCore import QSize, Qt 
-from PyQt5.QtWidgets import QWidget,QVBoxLayout,QToolBar,QSizePolicy,QAction,QTabWidget,QMenuBar,QStatusBar, QMenu, QTableWidget, QAbstractItemView
+from PyQt5.QtWidgets import QWidget,QVBoxLayout,QToolBar,QSizePolicy,QAction,QTabWidget,QMenuBar,QStatusBar, QMenu, QTableWidget, QAbstractItemView, QLabel
 from PyQt5.QtGui import QPainter,QIcon,QCursor
 
 #matplotlib
@@ -47,7 +46,6 @@ from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as Navigatio
 
 from open_save_dlg import open_as_filter
 
-mesh_articles = []
 
 from icon_lib import icon_get
 from cal_path import get_sim_path
@@ -55,60 +53,42 @@ from cal_path import get_sim_path
 from plot_widget import plot_widget
 
 class fit_window_plot_real(QWidget):
-	lines=[]
-	edit_list=[]
-
-	line_number=[]
-	save_file_name=""
-
-	file_name=""
-	name=""
-	visible=1
 
 	def update(self):
 		self.draw_graph()
 
 	def draw_graph(self):
 
-		plot_labels="Experimental data"
-		data_file=os.path.join(get_sim_path(),"fit_data"+str(self.index)+".inp")
+		plot_labels=["Experimental"]
+		data_files=[os.path.join(get_sim_path(),self.data.import_config.data_file)]
 
-		self.plot.load_data([data_file])
-		self.plot.set_labels([plot_labels])
+		sim_data_file=os.path.join(get_sim_path(),"sim",self.data.config.fit_name,self.data.config.sim_data)	#[:-4]+".best"
 
+		if os.path.isfile(sim_data_file)==True:
+			plot_labels.append("Simulated")
+			data_files.append(sim_data_file)
+
+
+		self.plot.load_data(data_files)
+		self.plot.set_labels(plot_labels)
+		self.label.setText(_("Data imported from: ")+self.data.import_config.import_file_path+" col:"+str(self.data.import_config.import_x_spin)+" "+str(self.data.import_config.import_data_spin))
 		self.plot.do_plot()
 
 
-	def export_image(self):
-		self.plot.callback_save_image()
-
-	def export_csv(self):
-		self.plot.callback_save_csv()
-
-	def export_xls(self):
-		self.plot.callback_save_xls()
-
-	def export_gnuplot(self):
-		self.plot.callback_save_gnuplot()
-
-	def __init__(self,index):
+	def __init__(self,data):
 		QWidget.__init__(self)
 
-		self.index=index
+		self.data=data
 		self.fig = Figure(figsize=(5,4), dpi=100)
 		self.ax1=None
 		self.show_key=True
 		
 		self.hbox=QVBoxLayout()
-		self.edit_list=[]
-		self.line_number=[]
 
-		self.list=[]
-
+		self.label=QLabel()
 		self.plot=plot_widget(enable_toolbar=False)
-
 		self.draw_graph()
 
 		self.hbox.addWidget(self.plot)
-
+		self.hbox.addWidget(self.label)
 		self.setLayout(self.hbox)

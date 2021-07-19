@@ -58,6 +58,9 @@ class ribbon_spectra(ribbon_base):
 		self.main_toolbar.setToolButtonStyle( Qt.ToolButtonTextUnderIcon)
 		self.main_toolbar.setIconSize(QSize(42, 42))
 
+		self.import_data= QAction_lock("import", _("From\nFile"), self,"ribbon_spectra_import")
+		self.main_toolbar.addAction(self.import_data)
+
 		self.tb_ref= QAction(icon_get("ref"), wrap_text(_("Insert reference information"),8), self)
 		self.main_toolbar.addAction(self.tb_ref)
 
@@ -75,25 +78,12 @@ class ribbon_spectra(ribbon_base):
 
 		return self.main_toolbar
 
-	def import_toolbar(self):
-		self.main_toolbar = QToolBar()
-		self.main_toolbar.setToolButtonStyle( Qt.ToolButtonTextUnderIcon)
-		self.main_toolbar.setIconSize(QSize(42, 42))
-
-		self.import_data= QAction_lock("import", _("From\nFile"), self,"ribbon_spectra_import")
-		self.main_toolbar.addAction(self.import_data)
-
-
-		return self.main_toolbar
 
 	def __init__(self):
 		ribbon_base.__init__(self)
 
 		w=self.main_toolbar()
 		self.addTab(w,_("File"))
-
-		w=self.import_toolbar()
-		self.addTab(w,_("Import data"))
 
 		sheet=self.readStyleSheet(os.path.join(get_css_path(),"style.css"))
 		if sheet!=None:

@@ -32,9 +32,6 @@ from cal_path import get_sim_path
 from util_zip import archive_add_file
 from util_zip import zip_remove_file
 from inp import inp_update_token_value
-from inp import inp_delete_token
-from inp import inp_insert_token
-from inp import inp_insert_duplicate
 from inp import inp_get_token_value
 from inp import inp_load_file
 from inp import inp_save
@@ -55,26 +52,6 @@ class col:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
-def device_lib_mul_shunt_by_area():
-	archives=find_device_libs()
-
-	for archive_file in archives:
-		print(archive_file)
-		f=inp()
-		f.load(os.path.join(archive_file,"mesh_x.inp"))
-		x=float(f.get_token("#mesh_layer_length0"))
-
-		f=inp()
-		f.load(os.path.join(archive_file,"mesh_z.inp"))
-		z=float(f.get_token("#mesh_layer_length0"))
-
-		f=inp()
-		f.load(os.path.join(archive_file,"parasitic.inp"))
-		R=float(f.get_token("#Rshunt"))
-		f.replace("#Rshunt",str(round(R*x*z,2)))
-		f.save()
-		print(f)
-		print(R*x*z)
 
 def device_lib_check(file_to_check=""):
 	from import_archive import get_file_info
@@ -121,12 +98,7 @@ def device_lib_check(file_to_check=""):
 						print(response)
 						if response == "yes":
 							archive_copy_file(archive_file,file_name,src_archive,file_name)
-#					elif response == "no":
-#						return "no"
-#					elif response == "cancel":
-#						return "cancel"
-					#
-			#break
+
 
 def find_device_libs():
 	out=[]
@@ -166,46 +138,6 @@ def device_lib_token_change(file_name,token,value):
 			f.replace(token,value)
 			f.save()
 
-def device_lib_token_rename(file_name,old_token,new_token):
-	archives=find_device_libs()
-	for arch in archives:
-		sim_file_name=os.path.join(arch,file_name)
-		f=inp().load(sim_file_name)
-		if f!=False:
-			print(sim_file_name)
-			f.replace_token_name(old_token,new_token)	
-			f.save()
-
-
-def device_lib_token_delete(file_name,token):
-	archives=find_device_libs()
-	for i in range(0,len(archives)):
-		sim_file_name=os.path.join(os.path.dirname(archives[i]),file_name)
-		archive=os.path.basename(archives[i])
-		print(sim_file_name,archive)
-		inp_delete_token(sim_file_name, token, archive=archives[i])
-
-def device_lib_token_delete_if_eq(file_name,token,value):
-	archives=find_device_libs()
-	for i in range(0,len(archives)):
-		sim_file_name=os.path.join(os.path.dirname(archives[i]),file_name)
-		archive=os.path.basename(archives[i])
-		f=inp()
-		f.load(sim_file_name, archive=archives[i])
-		
-		file_value=inp_get_token_value(sim_file_name, token,archive=archives[i])
-		if value==f.get_token(token):
-			f.delete_token(token,times=1)
-			f.save()
-
-def device_lib_token_insert(file_name,token_to_insert_after,token,value):
-	archives=find_device_libs()
-	for i in range(0,len(archives)):
-		sim_file_name=os.path.join(os.path.dirname(archives[i]),file_name)
-		archive=os.path.basename(archives[i])
-		print(sim_file_name,archive)
-		inp_insert_token(sim_file_name, token_to_insert_after, token, value, archive=archives[i])
-
 def device_lib_token_token_set_if_eq(file_name,token,test_value,new_value):
 	archives=find_device_libs()
 	for arch in archives:
@@ -218,86 +150,35 @@ def device_lib_token_token_set_if_eq(file_name,token,test_value,new_value):
 				f.replace(token,new_value)
 				f.save()
 
-def device_lib_epitaxy_force_shapes():
-	archives=find_device_libs()
-	for arch in archives:
-		f=inp().load(os.path.join(arch,"epitaxy.inp"))
-		for i in range(0,len(f.lines)):
-			if f.lines[i].startswith("#layer_base_shape"):
-				if f.lines[i+1]=="none":
-					new_shape_file=f.next_sequential_file("shape")
-					print(arch,"oh",new_shape_file,f.lines[i])
-					f.lines[i+1]=new_shape_file[:-4]
-					f.save()
-					archive_copy_file(arch,new_shape_file,os.path.join(get_sim_path(),"sim.gpvdm"),"shape0.inp")
 
-def device_lib_set_color():
-	archives=find_device_libs()
-	for arch in archives:
-		files=zip_lsdir(arch)
-		for file_name in files:
-			if file_name.startswith("shape")==True:
-				f=inp().load(os.path.join(arch,file_name))
-				f.replace("#red_green_blue",["0.0","0.8","0.0"])
-				print(f.lines)
-				f.save()
-def device_lib_epitaxy_token_to_shape(epitaxy_token,shape_token):
-	archives=find_device_libs()
-	for arch in archives:
-		f=inp().load(os.path.join(arch,"epitaxy.inp"))
-		for i in range(0,len(f.lines)):
-			if f.lines[i].startswith(epitaxy_token):
-				post_fix=f.lines[i][len(epitaxy_token):]
-				shape_file_token="#layer_base_shape"+post_fix
-				shape_file=f.get_token(shape_file_token)
-				val=f.lines[i+1]
-				sf=inp().load(os.path.join(arch,shape_file+".inp"))
-				sf.replace(shape_token,val)
-				sf.save()
-				#print(sf)
-				#print(val,shape_file)
-
-def device_lib_token_insert_top(file_name,token,value):
-	archives=find_device_libs()
-	for i in range(0,len(archives)):
-		sim_file_name=os.path.join(os.path.dirname(archives[i]),file_name)
-		archive=os.path.basename(archives[i])
-		print(sim_file_name,archive)
-		inp_insert_token(sim_file_name, False, token, value, archive=archives[i])
-
-def device_lib_token_duplicate(dest_file, dest_token, src_file, src_token):
-	archives=find_device_libs()
-	for i in range(0,len(archives)):
-		path_to_src_file=os.path.join(os.path.dirname(archives[i]),src_file)
-		path_to_dest_file=os.path.join(os.path.dirname(archives[i]),dest_file)
-
-		archive=os.path.basename(archives[i])
-		print(path_to_src_file,path_to_dest_file)
-		inp_insert_duplicate(path_to_dest_file, dest_token, path_to_src_file, src_token,archive=archives[i])
-
-def device_lib_token_repair(dest_file, dest_token_after, src_file, src_token):
+def device_lib_token_repair():
 	archives=find_device_libs()
 
 	src_archives=[]
-	for root, dirs, files in os.walk("/home/rod/t/gpvdm5.3/device_lib/"):
+	for root, dirs, files in os.walk("./device_lib/"):
 		for name in files:
 			if name.endswith(".gpvdm")==True:
 				src_archives.append(os.path.join(root, name))
 
 
-	print(src_archives)
-
 	for i in range(0,len(archives)):
-		path_to_src_file=os.path.join(os.path.dirname(src_archives[i]),src_file)
-		path_to_dest_file=os.path.join(os.path.dirname(archives[i]),dest_file)
+		path_to_epitaxy=os.path.join(archives[i],"epitaxy.inp")
+		print(path_to_epitaxy)
+		f=inp()
+		f.load(path_to_epitaxy)
+		f.to_sections(start="#layer_type")
 
-		print(src_archives[i],archives[i])
-
-		archive_src=os.path.basename(src_archives[i])
-		archive=os.path.basename(archives[i])
-		value=inp_get_token_value(src_file, src_token,archive=src_archives[i])
-		if value!=None:
-			inp_insert_token(dest_file, dest_token_after, src_token, value, archive=archives[i])
+		for s in f.sections:
+			shape=inp()
+			shape.load(os.path.join(archives[i],s.layer_base_shape+".inp"))
+			dos_file=s.layer_dos_file
+			if dos_file.startswith("dos")==False:
+				dos_file="none"
+			shape.replace("#shape_dos",dos_file)
+			shape.replace("#shape_homo_file",s.layer_homo)
+			shape.replace("#shape_lumo_file",s.layer_lumo)
+			shape.replace("#shape_pl_file",s.layer_pl_file)
+			shape.save()
 
 
 def device_lib_fix_ver(file_name, ver ):
@@ -321,5 +202,4 @@ def device_lib_fix_ver(file_name, ver ):
 					lines.append("#end")
 			print(lines)
 			inp_save(src_file,lines,archive=archives[i])
-
 

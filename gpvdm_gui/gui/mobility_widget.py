@@ -45,10 +45,6 @@ from PyQt5.QtGui import QIcon
 from cal_path import get_ui_path
 from PyQt5.QtCore import pyqtSignal
 
-from epitaxy import get_epi
-from inp import inp
-from dos_io import gen_fermi_from_np
-from dos_io import gen_np_from_fermi
 import decimal
 
 import i18n
@@ -156,14 +152,14 @@ class mobility_widget(QWidget):
 		self.changed.emit()
 
 	def from_si(self,value):
-		return value
+		return str(value)
 		s=1.0/float(value)		#Ohms-1 m-1
 		s=s/100					#Ohms-1 cm-1
 		ret=("%.2e" % s).replace("e+0","e")
 		return ret
 
 	def to_si(self,value):
-		return value
+		return str(value)
 		s=float(value)*100			#Ohms-1 cm-1
 		s=1.0/s						#Ohms m
 		return "%.2e" % s

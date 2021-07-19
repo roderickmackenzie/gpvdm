@@ -29,11 +29,8 @@
 
 import os
 
-from dump_io import dump_io
-from tb_item_sim_mode import tb_item_sim_mode
-from tb_item_sun import tb_item_sun
+from gpvdm_local import gpvdm_local
 
-from code_ctrl import enable_betafeatures
 from cal_path import get_css_path
 
 #qt
@@ -46,7 +43,7 @@ from PyQt5.QtWidgets import QTabWidget
 #from ribbon_device import ribbon_device
 from ribbon_database import ribbon_database
 from ribbon_simulations import ribbon_simulations
-from ribbon_configure import ribbon_configure
+from ribbon_electrical import ribbon_electrical
 from ribbon_information import ribbon_information
 from ribbon_home import ribbon_home
 from ribbon_sim_mode import ribbon_sim_mode
@@ -72,7 +69,6 @@ from help import help_window
 from lock import get_email
 from lock import get_lock
 from ribbon_thermal import ribbon_thermal
-from ribbon_electrical import ribbon_electrical
 
 class QLabel_click(QLabel):
 	clicked=pyqtSignal()
@@ -89,7 +85,7 @@ class ribbon(ribbon_base):
 		#self.device.update()
 		self.database.update()
 		self.simulations.update()
-		self.configure.update()
+		self.electrical.update()
 		self.information.update()
 		self.home.update()
 		self.ribbon_sim_mode.update()
@@ -149,8 +145,8 @@ class ribbon(ribbon_base):
 		self.addTab(self.simulations,_("Simulation Editors"))
 		self.simulations.experiments_changed.connect(self.ribbon_sim_mode.update)
 
-		self.configure=ribbon_configure()
-		self.addTab(self.configure,_("Configure"))
+		self.electrical=ribbon_electrical()
+		self.addTab(self.electrical,_("Electrical"))
 
 		#self.device=ribbon_device()
 		#self.addTab(self.device,_("Device"))
@@ -164,7 +160,7 @@ class ribbon(ribbon_base):
 		self.database=ribbon_database()
 		self.addTab(self.database,_("Databases"))
 
-		if enable_betafeatures()==True:
+		if gpvdm_local().gui_config.enable_betafeatures==True:
 			self.tb_cluster=ribbon_cluster()
 			self.addTab(self.tb_cluster,_("Cluster"))
 
@@ -173,7 +169,8 @@ class ribbon(ribbon_base):
 
 		#self.setStyleSheet("QWidget {	background-color:cyan; }") 
 		css_apply(self,"style.css")
-		
+		#self.setStyleSheet("background-color: rgb(255,0,0); margin:5px; border:1px solid rgb(0, 255, 0); ")
+		#self.setStyleSheet(" margin: 0px;  padding:0px; border:0px; background-color: rgb(255,0,0); border:1px solid rgb(0, 255, 0);")
 		self.currentChanged.connect(self.changed_click)
 
 	def callback_cluster_connect(self):

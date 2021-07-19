@@ -40,35 +40,30 @@ from PyQt5.QtCore import QSize, Qt
 from PyQt5.QtWidgets import QWidget,QVBoxLayout,QToolBar,QSizePolicy,QAction,QTabWidget,QTableWidget,QAbstractItemView, QMenuBar,QTableWidgetItem
 from PyQt5.QtGui import QPainter,QIcon
 
-from inp import inp_save_lines_to_file
-from inp import inp_load_file
-
 from gpvdm_select import gpvdm_select
 
 from cal_path import get_sim_path
 from gpvdm_tab import gpvdm_tab
+from json_fit import json_fit_patch_line
+from gpvdm_json import gpvdm_data
 
 class fit_patch(QWidget):
 
-	def insert_row(self,i,file_name,token,path,value):
+	def insert_row(self,i,var,val,json_var):
 		self.tab.blockSignals(True)
 		self.tab.insertRow(i)
 
-		item = QTableWidgetItem(file_name)
-		self.tab.setItem(i,0,item)
+		self.item = gpvdm_select()
+		self.item.setText(var)
+		self.item.button.clicked.connect(self.callback_show_list)
+		self.tab.setCellWidget(i,0,self.item)
 
-		item = QTableWidgetItem(token)
+		item = QTableWidgetItem(val)
 		self.tab.setItem(i,1,item)
 
+		item = QTableWidgetItem(json_var)
+		self.tab.setItem(i,2,item)
 
-		self.item = gpvdm_select()
-		self.item.setText(path)
-		self.item.button.clicked.connect(self.callback_show_list)
-
-		self.tab.setCellWidget(i,2,self.item)
-
-		item = QTableWidgetItem(value)
-		self.tab.setItem(i,3,item)
 		self.tab.blockSignals(False)
 
 	def callback_show_list(self):
@@ -76,7 +71,7 @@ class fit_patch(QWidget):
 		self.select_param_window.show()
 		
 	def callback_add_item(self):
-		self.insert_row(self.tab.rowCount(),"File","token","path",_("value"))
+		self.insert_row(self.tab.rowCount(),"Variable","value",_("JSON Variable"))
 		self.save_combo()
 
 	def callback_delete_item(self):
@@ -84,16 +79,16 @@ class fit_patch(QWidget):
 		self.save_combo()
 
 	def save_combo(self):
-		lines=[]
+		data=gpvdm_data()
+		self.data.segments=[]
 		for i in range(0,self.tab.rowCount()):
-			lines.append(str(self.tab.get_value(i, 1)))
-			lines.append(str(self.tab.get_value(i, 0)))
-			lines.append(str(self.tab.get_value(i, 2)))
-			lines.append(str(self.tab.get_value(i, 3)))
+			a=json_fit_patch_line()
+			a.human_path=self.tab.get_value(i, 0)
+			a.val=self.tab.get_value(i, 1)
+			a.json_path=self.tab.get_value(i, 2)
+			self.data.segments.append(a)
 
-		lines.append("#end")
-		#print("save as",self.file_name)
-		inp_save_lines_to_file(self.file_name,lines)
+		data.save()
 
 
 	def tab_changed(self):
@@ -101,80 +96,45 @@ class fit_patch(QWidget):
 		
 
 	def create_model(self):
-		lines=[]
 		self.tab.clear()
-		self.tab.setColumnCount(4)
+		self.tab.setColumnCount(3)
 		self.tab.setSelectionBehavior(QAbstractItemView.SelectRows)
-		self.tab.setHorizontalHeaderLabels([_("File"), _("Token"), _("Path"), _("Values")])
-		self.tab.setColumnWidth(2, 300)
-		self.file_name=os.path.join(get_sim_path(),"fit_patch"+str(self.index)+".inp")
+		self.tab.setHorizontalHeaderLabels([_("Variable"), _("Value"), _("JSON Variable")])
+		self.tab.setColumnWidth(0, 300)
+		self.tab.setColumnWidth(2, 20)
 
-		lines=inp_load_file(self.file_name)
-		if lines!=False:
+		pos=0
+		for s in self.data.segments:
+			self.insert_row(pos,s.human_path,s.val,s.json_path)
+			print(s.human_path,s.val,s.json_path)
+			pos=pos+1
 
-			pos=0
-			mylen=len(lines)
-			while(1):
-				t=lines[pos]
-				if t=="#end":
-					break
-				pos=pos+1
-
-				f=lines[pos]
-				if f=="#end":
-					break
-				pos=pos+1
-
-				path=lines[pos]
-				if f=="#end":
-					break
-				pos=pos+1
-				
-				v=lines[pos]
-				if v=="#end":
-					break
-				pos=pos+1
-
-				self.insert_row(self.tab.rowCount(),f,t,path,v)
-
-				if pos>mylen:
-					break
-
-	def __init__(self,index):
+	def __init__(self,data):
 		QWidget.__init__(self)
+		self.data=data
 
-
-		self.index=index
-		
 		self.vbox=QVBoxLayout()
 
 		toolbar=QToolBar()
 		toolbar.setIconSize(QSize(32, 32))
 
-		self.tb_save = QAction(icon_get("list-add"), _("Add"), self)
-		self.tb_save.triggered.connect(self.callback_add_item)
-		toolbar.addAction(self.tb_save)
-
-		self.tb_save = QAction(icon_get("list-remove"), _("Minus"), self)
-		self.tb_save.triggered.connect(self.callback_delete_item)
-		toolbar.addAction(self.tb_save)
-
-		self.tb_down = QAction(icon_get("go-down"), _("Move down"), self)
-		self.tb_down.triggered.connect(self.callback_move_down)
-		toolbar.addAction(self.tb_down)
-
-		self.tb_up = QAction(icon_get("go-up"), _("Move up"), self)
-		self.tb_up.triggered.connect(self.callback_move_up)
-		toolbar.addAction(self.tb_up)
-	
 		self.vbox.addWidget(toolbar)
 
-		self.tab = gpvdm_tab()
+		self.tab = gpvdm_tab(toolbar=toolbar)
+
+		self.tab.tb_add.triggered.connect(self.callback_add_item)
+		self.tab.user_remove_rows.connect(self.callback_delete_item)
+		self.tab.tb_down.triggered.connect(self.callback_move_down)
+		self.tab.tb_up.triggered.connect(self.callback_move_up)
+
+
 		self.tab.resizeColumnsToContents()
 
 		self.tab.verticalHeader().setVisible(False)
 
 		self.select_param_window=select_param(self.tab)
+		self.select_param_window.human_path_col=0
+		self.select_param_window.json_path_col=2
 		self.select_param_window.set_save_function(self.save_combo)
 
 		self.create_model()

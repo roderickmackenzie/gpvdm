@@ -59,30 +59,28 @@ _ = i18n.language.gettext
 
 from gpvdm_select_material import gpvdm_select_material
 
-from code_ctrl import enable_betafeatures
 from cal_path import get_sim_path
 from QWidgetSavePos import QWidgetSavePos
-
-from epitaxy_mesh_update import epitaxy_mesh_update
 from epitaxy import get_epi
 
 from error_dlg import error_dlg
 from inp import inp
 from cal_path import get_sim_path
+from gpvdm_json import gpvdm_data
 
 class generation_rate_editor(QWidgetSavePos):
 
 	def cell_changed(self, y,x):
+		data=gpvdm_data()
 		epi=get_epi()
 
-		if x==1:
-			epi.layers[y].Gnp=float(self.tab.get_value(y,x))
-#			try:
-				
-#			except:
-#				error_dlg(self,_("You have entered a non numeric value."))
-		self.save_model()
-		
+		y=0
+		for l in epi.layers:
+			l.Gnp=float(self.tab.get_value(y,1))
+			y=y+1
+
+		data.save()
+
 	def __init__(self):
 		QWidgetSavePos.__init__(self,"generation_rate_editor")
 
@@ -103,6 +101,7 @@ class generation_rate_editor(QWidgetSavePos):
 		self.setLayout(self.main_vbox)
 
 	def create_model(self):
+		epi=get_epi()
 		self.tab.blockSignals(True)
 		self.tab.clear()
 		self.tab.setColumnCount(2)
@@ -112,18 +111,9 @@ class generation_rate_editor(QWidgetSavePos):
 		self.tab.setColumnWidth(1, 250)
 		self.tab.setRowCount(epitaxy_get_layers())
 
-		data=inp()
-		data.load(os.path.join(get_sim_path(),"light_gnp.inp"))
-		data.to_sections(start="#layer_Gnp")
-		epi=get_epi()
 		i=0
 		for l in epi.layers:
-			if i<len(data.sections):
-				Gnp=float(data.sections[i].layer_Gnp)
-				l.Gnp=data.sections[i].layer_Gnp
-			else:
-				Gnp=0
-			self.add_row(i,l.name,Gnp)
+			self.add_row(i,l.shape_name,l.Gnp)
 			i=i+1
 
 		self.tab.blockSignals(False)
@@ -140,15 +130,4 @@ class generation_rate_editor(QWidgetSavePos):
 
 		self.tab.blockSignals(False)
 
-	def save_model(self):
-		i=0
-		data=inp()
-		epi=get_epi()
-		for l in epi.layers:
-			data.lines.append("#layer_Gnp"+str(i))
-			data.lines.append(str(l.Gnp))
-			i=i+1
-
-		data.lines.append("#end")
-		data.save_as(os.path.join(get_sim_path(),"light_gnp.inp"))
 

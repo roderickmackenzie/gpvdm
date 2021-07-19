@@ -44,8 +44,6 @@ from QWidgetSavePos import QWidgetSavePos
 
 from help import help_window
 
-from code_ctrl import enable_betafeatures
-
 from dos_main import dos_main
 
 articles = []

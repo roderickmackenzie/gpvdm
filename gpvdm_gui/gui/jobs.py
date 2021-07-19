@@ -24,8 +24,6 @@
 
 
 import os
-from search import find_fit_log
-from search import find_fit_speed_log
 from inp import inp_search_token_value
 from status_icon import status_icon_stop
 
@@ -42,6 +40,7 @@ from PyQt5.QtWidgets import QWidget
 from server import server_get
 
 from gpvdm_tab import gpvdm_tab
+import time
 
 ## @package jobs
 #  A jobs viewer widget.
@@ -80,7 +79,8 @@ class jobs_view(QWidget):
 
 
 		for job in self.myserver.jobs:
-			self.tab.add([job.name,job.path,job.ip,job.start,job.stop,str(job.cpus),str(job.status)])
+			start_time=time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(job.start_time))
+			self.tab.add([job.name,job.path,job.ip,start_time,job.stop,str(job.cpus),str(job.status)])
 
 
 

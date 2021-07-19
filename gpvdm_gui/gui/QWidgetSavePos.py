@@ -28,24 +28,73 @@
 
 from PyQt5.QtWidgets import QWidget
 
-from window_list import wpos_update
-from window_list import wpos_dump
-from window_list import wpos_save
-from window_list import wpos_set_window
+from gpvdm_local import gpvdm_local
+from gpvdm_local import json_save_window
+from PyQt5.QtWidgets import QWidget, QDesktopWidget
+
+def resize_window_to_be_sane(window,x,y):
+	shape=QDesktopWidget().screenGeometry()
+	w=shape.width()*x
+	h=shape.height()*y
+	window.resize(w,h)
 
 class QWidgetSavePos(QWidget):
 
 	def closeEvent(self, event):
-		wpos_save()
 		event.accept()
 		
 	def moveEvent(self,event):
-		wpos_update(self,self.window_name)
-		#wpos_dump()
+		data=gpvdm_local()
+		x=self.x()
+		y=self.y()
+		for seg in data.windows.segments:
+			if seg.name==self.window_name:
+				seg.x=x
+				seg.y=y
+				data.save()
+				break
+
 		event.accept()
 
 	def __init__(self,window_name):
 		QWidget.__init__(self)
 		self.window_name=window_name
-		wpos_set_window(self,self.window_name)
 
+		data=gpvdm_local()
+		found=False
+
+		shape=QDesktopWidget()#.screenGeometry()
+
+		desktop_w=shape.width()
+		desktop_h=shape.height()
+
+		w=self.width()
+		h=self.height()
+		sain_x=desktop_w/2-w/2
+		sain_y=desktop_h/2-h/2
+
+		for seg in data.windows.segments:
+			print(seg.name,window_name)
+			if seg.name==window_name:
+
+				x=int(seg.x)
+				y=int(seg.y)
+				if (x+w>desktop_w) or x<0:
+					x=sain_x
+					print("Reset with",x,desktop_w)
+				if (y+h>desktop_h) or y<0:
+					y=sain_y
+					print("Reset height",y)
+				self.move(x,y)
+				print("moving to",x,y)
+				found=True
+				break
+
+		if found==False:
+			a=json_save_window()
+			a.name=window_name
+			a.x=sain_x
+			a.y=sain_y
+			self.move(a.x,a.y)
+			data.windows.segments.append(a)
+			data.save()

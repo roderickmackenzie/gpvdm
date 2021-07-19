@@ -55,6 +55,7 @@ from gui_util import yes_no_dlg
 from inp import inp_get_token_value
 from inp import inp_load_file
 from inp import inp_get_token_value_from_list
+from inp import inp
 
 from util import isfiletype
 from win_lin import desktop_open
@@ -67,9 +68,8 @@ from util_zip import zip_lsdir
 from util_zip import read_lines_from_archive
 
 import webbrowser
-from info import sim_info
+from window_json_ro_viewer import window_json_ro_viewer
 
-from cal_path import get_inp_file_path
 import psutil
 
 from icon_lib import icon_get
@@ -81,11 +81,14 @@ from cal_path import get_downloads_path
 from cal_path import get_sim_path
 
 from config_window import class_config_window
-from cluster_config_window import cluster_config_window
 from win_lin import running_on_linux
 from util_zip import archive_compress
 from util_zip import archive_decompress
 from dir_decode import get_dir_type
+
+from progress_class import progress_class
+from process_events import process_events
+import shutil
 
 COL_PATH = 0
 COL_PIXBUF = 1
@@ -101,7 +104,9 @@ from multiplot import multiplot
 from scans_io import scans_io
 import operator
 from scan_io import scan_io
-
+from gpvdm_json import gpvdm_data
+from search import find_shapshots
+from gpvdm_viewer_new import gpvdm_viewer_new
 class file_store():
 	def __init__(self):
 		self.file_name=""
@@ -112,7 +117,7 @@ class file_store():
 		self.isdir=False
 		self.allow_navigation=False
 
-class gpvdm_viewer(QListWidget):
+class gpvdm_viewer(QListWidget,gpvdm_viewer_new):
 
 	accept = pyqtSignal()
 	reject = pyqtSignal()
@@ -154,6 +159,7 @@ class gpvdm_viewer(QListWidget):
 
 	def __init__(self,path,show_inp_files=True,open_own_files=True):
 		QWidget.__init__(self)
+		gpvdm_viewer_new.__init__(self)
 		self.setAcceptDrops(True)
 		self.setDragEnabled(True)
 		self.setDragDropMode(QAbstractItemView.DragDrop)
@@ -205,7 +211,7 @@ class gpvdm_viewer(QListWidget):
 	def set_enable_menu(self,data):
 		self.enable_menu=data
 
-	def set_grid_view(self):
+	def set_grid_view(self,height=90):
 		self.setIconSize(QSize(64,64))
 		self.setViewMode(QListView.IconMode)
 		self.setSpacing(8)
@@ -213,7 +219,7 @@ class gpvdm_viewer(QListWidget):
 		self.setTextElideMode ( Qt.ElideNone)
 		gridsize=self.size()
 		gridsize.setWidth(100)
-		gridsize.setHeight(90)
+		gridsize.setHeight(height)
 		self.setGridSize(gridsize)
 
 	def set_list_view(self):
@@ -233,21 +239,29 @@ class gpvdm_viewer(QListWidget):
 		if self.enable_menu==False:
 			return
 		menu = QMenu(self)
-		newmaterialAction=False
-		newspectraAction=False
 		unpack_action=False
 		pack_action=False
 
-		newdirAction = menu.addAction(_("New directory"))
-		if self.menu_new_material_enabled==True:
-			newmaterialAction = menu.addAction(_("New material"))
+		menu_new = menu.addMenu(_("New"))
 
-		if self.menu_new_spectra_enabled==True:
-			newspectraAction = menu.addAction(_("New spectra"))
+		newdirAction = menu_new.addAction(icon_get("folder"),_("New directory"))
+		menu_new.addSeparator()
+		menu_new_material = menu_new.addAction(icon_get("organic_material"),_("New material"))
+		menu_new_material.triggered.connect(self.new_material)
+
+		menu_new_sepctra = menu_new.addAction(icon_get("spectra_file"),_("New spectra"))
+		menu_new_sepctra.triggered.connect(self.new_spectra)
+
+		menu_new_emission = menu_new.addAction(icon_get("emission"),_("PL/EL spectra"))
+		menu_new_emission.triggered.connect(self.new_emission)
+
+		menu_new_shape = menu_new.addAction(icon_get("shape"),_("New shape"))
+		menu_new_shape.triggered.connect(self.new_shape)
 
 		deleteAction = menu.addAction(_("Delete file"))
 		renameAction = menu.addAction(_("Rename"))
 		cloneAction = menu.addAction(_("Copy"))
+		cleanAction = menu.addAction(_("Clean"))
 		renameAction.setEnabled(False)
 		deleteAction.setEnabled(False)
 		cloneAction.setEnabled(False)
@@ -286,6 +300,8 @@ class gpvdm_viewer(QListWidget):
 			self.clone()
 		elif action == renameAction:
 			self.rename()
+		elif action == cleanAction:
+			self.clean()
 
 		self.fill_store()
 
@@ -301,7 +317,12 @@ class gpvdm_viewer(QListWidget):
 				if scans.clone(new_sim_name,old_name)==False:
 					error_dlg(self,_("The file name already exists"))
 		else:
-			print(clone)
+			new_sim_name=dlg_get_text( _("Clone the file to be called:"), old_name+"_new","clone.png")
+			new_sim_name=new_sim_name.ret
+
+			if new_sim_name!=None:
+				if os.path.isdir(os.path.join(self.path,new_sim_name))==False:
+					shutil.copytree(os.path.join(self.path,old_name), os.path.join(self.path,new_sim_name))
 
 		self.fill_store()
 
@@ -326,6 +347,34 @@ class gpvdm_viewer(QListWidget):
 				old_name=os.path.join(self.path,old_name)
 				#print(old_name, new_name)
 				os.rename(old_name, new_name)
+
+	def clean(self):
+		progress_window=progress_class()
+		progress_window.show()
+		progress_window.start()
+
+		process_events()
+
+		print("searching")
+		files=find_shapshots(self.path)
+		if len(files)<20:
+			disp="\n".join(files)
+		else:
+			disp="\n".join(files[:20])+"..."
+
+		ret=yes_no_dlg(self,_("Are you sure you want to delete the files ?")+"\n\n"+disp)
+		if ret==True:
+			i=0
+			for f in files:
+				progress_window.set_fraction(float(i)/float(len(files)))
+				progress_window.set_text("Deleting: "+f)
+				process_events()
+
+				gpvdm_delete_file(f)
+
+				i=i+1
+
+		progress_window.stop()
 
 	def delete(self):
 		files=""
@@ -415,30 +464,18 @@ class gpvdm_viewer(QListWidget):
 				itm.icon="drive-harddisk"
 				itm.display_name=name
 				ret.append(itm)
+
+		elif self.path=="/gpvdmroot/icons/":
+			from icon_lib import icon_get_db
+			ilib=icon_get_db()
+			for item in ilib.db:
+				itm=file_store()
+				itm.file_name=item.name[0]
+				itm.icon=item.name[0]
+				itm.display_name=item.name[0]
+				ret.append(itm)
+
 		elif self.path=="/gpvdmroot/gpvdm_configure":
-			itm=file_store()
-			itm.file_name="gpvdm_cluster_config"
-			itm.icon="server"
-			itm.display_name=_("Cluster")
-			ret.append(itm)
-
-			itm=file_store()
-			itm.file_name="gpvdm_language_config"
-			itm.icon="internet-chat"
-			itm.display_name=_("Language")
-			ret.append(itm)
-
-			itm=file_store()
-			itm.file_name="gpvdm_solver_config"
-			itm.icon="accessories-calculator"
-			itm.display_name=_("Solver")
-			ret.append(itm)
-
-			#itm=file_store()
-			#itm.file_name="gpvdm_led_config"
-			#itm.icon="oled"
-			#itm.display_name=_("LED")
-			#ret.append(itm)
 
 			itm=file_store()
 			itm.file_name="gpvdm_dump_config"
@@ -452,28 +489,6 @@ class gpvdm_viewer(QListWidget):
 			itm.display_name=_("GUI configuration")
 			ret.append(itm)
 
-			itm=file_store()
-			itm.file_name="gpvdm_server_config"
-			itm.icon="cpu"
-			itm.display_name=_("Server")
-			ret.append(itm)
-
-
-			itm=file_store()
-			itm.file_name="gpvdm_cache"
-			itm.icon="cache"
-			itm.display_name=_("Cache")
-			ret.append(itm)
-		elif self.path.startswith(os.path.join(get_sim_path(),"parameters"))==True:
-			from scan_human_labels import get_scan_human_labels
-			s=get_scan_human_labels()
-			s.ls_dir("/")
-
-			itm=file_store()
-			itm.file_name="star"
-			itm.icon="star"
-			itm.display_name=_("Cache")
-			ret.append(itm)
 		else:
 			files=os.listdir(self.path)
 			for f in files:
@@ -486,13 +501,6 @@ class gpvdm_viewer(QListWidget):
 
 			#print(get_sim_path(),self.path)
 			if get_sim_path()==self.path:
-				itm=file_store()
-				itm.file_name="parameters"
-				itm.type="parameter_dir"
-				itm.icon="star"
-				itm.display_name=_("parameters")
-				ret.append(itm)
-
 				scan=scans_io(get_sim_path())
 				scans=scan.get_scans()
 				for s in scans:
@@ -521,6 +529,8 @@ class gpvdm_viewer(QListWidget):
 		#all_files.sort()
 		if path.endswith("dynamic")==True:
 			self.set_list_view()
+		elif path.endswith("device_lib")==True:
+			self.set_grid_view(height=120)
 		else:
 			self.set_grid_view()
 
@@ -535,6 +545,8 @@ class gpvdm_viewer(QListWidget):
 					itm.icon="shape"
 				elif itm.type=="snapshots":
 					itm.icon="cover_flow"
+					if itm.file_name=="optical_snapshots":
+						itm.icon="optics2"
 				elif itm.type=="light":
 					itm.icon="optics2"
 				elif itm.type=="material":
@@ -580,10 +592,12 @@ class gpvdm_viewer(QListWidget):
 						itm.icon="vector"
 					elif text.startswith(b"#"):
 						itm.icon="dat_file"
+					elif text.startswith(b"{"):
+						itm.icon="json_file"
 					else:
 						itm.hidden=True
 
-				if (ext==".chk"):
+				elif (ext==".chk"):
 					itm.hidden=True
 
 				elif (ext==".inp"):
@@ -604,14 +618,12 @@ class gpvdm_viewer(QListWidget):
 						itm.hidden=True
 						itm.icon="sim_lock"
 					else:
-						lines=[]
-						lines=inp_load_file("info.inp",archive=file_name)
-						if lines!=False:
-
-							itm.display_name=inp_get_token_value_from_list(lines, "#info_name")
-							icon_name=inp_get_token_value_from_list(lines, "#info_icon")
+						f=inp()
+						if f.load_json("json.inp",archive=file_name)!=False:
+							itm.display_name=f.json['english_name']
+							icon_name=f.json['icon']
 							itm.icon=icon_name
-							itm.hidden=str2bool(inp_get_token_value_from_list(lines, "#info_hidden"))
+							itm.hidden=False
 
 							a=zip_lsdir(file_name,sub_dir="fs/") #,zf=None,sub_dir=None
 							if len(a)!=0:
@@ -668,10 +680,13 @@ class gpvdm_viewer(QListWidget):
 			
 			if self.file_list[i].hidden==True and self.show_hidden==False:
 				draw=False
-			
+
 			if draw==True:
 				itm = QListWidgetItem( self.file_list[i].display_name )
 				a=icon_get(self.file_list[i].icon)
+				if a==False:
+					print("icon not found",self.file_list[i].icon)
+					a=icon_get("dat_file")
 				itm.setIcon(a)
 
 				#if self.file_list[i].display_name=="data.xlsx":
@@ -685,6 +700,7 @@ class gpvdm_viewer(QListWidget):
 				return self.file_list[i]
 
 	def on_item_activated(self,item):
+		data=gpvdm_data()
 		text=item.text()
 		if text=="..":
 			if self.path==self.root_dir:
@@ -730,61 +746,14 @@ class gpvdm_viewer(QListWidget):
 			self.fill_store()
 			return			
 		elif decode.file_name.startswith("mount_point")==True:
-			point=decode.split("::::")
+			point=decode.file_name.split("::::")
 			self.set_path(point[1])
 			self.fill_store()
 			return
-		elif decode=="gpvdm_cluster_config":
-			self.win=cluster_config_window(self)
-			self.win.show()
-			return
-		elif decode.file_name=="gpvdm_language_config":
-			self.config_window=class_config_window()
-
-			from tab_lang import language_tab_class
-
-			self.config_window.files=[ ]
-			self.config_window.description=[]
-			self.config_window.init()
-			lang_tab=language_tab_class()
-			self.config_window.notebook.addTab(lang_tab,_("Language"))
-			self.config_window.show()
-
-			return
-		elif decode.file_name=="gpvdm_solver_config":
-			self.config_window=class_config_window()
-			self.config_window.files=["math.inp"]
-			self.config_window.description=[_("Solver configuration")]
-			self.config_window.init()
-			self.config_window.show()
-
-			return
-
 		elif decode.file_name=="gpvdm_dump_config":
-			self.config_window=class_config_window()
-			self.config_window.files=["dump.inp"]
-			self.config_window.description=[_("Output files")]
-			self.config_window.init()
+			self.config_window=class_config_window([data.dump],[_("Output files")])
 			self.config_window.show()
 			return
-		elif decode.file_name=="gpvdm_gui_config":
-			self.config_window=class_config_window()
-			self.config_window.files=["config.inp"]
-			self.config_window.description=[_("GUI configuration"),]
-			self.config_window.init()
-			self.config_window.show()
-			return
-		elif decode.file_name=="gpvdm_server_config":
-			self.config_window=class_config_window()
-			self.config_window.files=["server.inp"]
-			self.config_window.description=[_("Server configuration")]
-			self.config_window.init()
-			self.config_window.show()
-			return
-		elif decode.file_name=="gpvdm_cache":
-			from cache import cache
-			self.c=cache()
-			self.c.show()
 		elif decode.type=="scan_dir":
 			from scan_tab import scan_vbox
 			#print(full_path) 
@@ -831,8 +800,10 @@ class gpvdm_viewer(QListWidget):
 				from cmp_class import cmp_class
 
 				help_window().help_set_help(["plot_time.png",_("<big><b>Examine the results in time domain</b></big><br> After you have run a simulation in time domain, if is often nice to be able to step through the simulation and look at the results.  This is what this window does.  Use the slider bar to move through the simulation.  When you are simulating a JV curve, the slider sill step through voltage points rather than time points.")])
-
-				self.snapshot_window.append(cmp_class(full_path))
+				widget_mode="matplotlib"
+				if text=="optical_snapshots":
+					widget_mode="band_graph"
+				self.snapshot_window.append(cmp_class(full_path,widget_mode=widget_mode))
 				self.snapshot_window[-1].show()
 				#print("snapshots!!")
 				return
@@ -847,7 +818,7 @@ class gpvdm_viewer(QListWidget):
 			if dir_type=="file":
 				self.file_path=full_path
 				if os.path.basename(full_path)=="sim_info.dat":
-					self.sim_info_window=sim_info(full_path)
+					self.sim_info_window=window_json_ro_viewer(full_path)
 					self.sim_info_window.show()
 					return
 

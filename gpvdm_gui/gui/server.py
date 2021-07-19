@@ -30,7 +30,6 @@ import os
 
 from str2bool import str2bool
 
-from inp import inp_get_token_value
 import threading
 import multiprocessing
 import time
@@ -45,11 +44,7 @@ from progress_class import progress_class
 
 from cal_path import get_exe_command
 from sim_warnings import sim_warnings
-from inp import inp_search_token_value
 from stat import *
-from encrypt import encrypt
-from encrypt import decrypt
-from encrypt import encrypt_load
 import i18n
 _ = i18n.language.gettext
 from cluster import cluster
@@ -84,256 +79,29 @@ my_server=False
 from datetime import datetime
 from gui_hooks import tx_to_core
 from lock import get_lock
+from gpvdm_json import gpvdm_data
 
-class node:
-	ip=""
-	load=""
-	cpus=""
-
-class job:
-	name=""
-	path=""
-	ip=""
-	args=""
-	start=""
-	stop=""
-	cpus=1
-	status=0
-	full_command=""	#debug only
-
-class base_server():
-	def __init__(self):
-		self.running=False
-		self.progress_window=progress_class()
-		self.stop_work=False
-		self.update_cpu_number()
-		self.clear_jobs()
-		self.callback=None
-
-	def clear_jobs(self):
-		self.jobs=[]
-		self.jobs_running=0
-		self.jobs_run=0
-		self.finished_jobs=[]
-		self.start_time=0
-		self.jobs_per_second=0
-		self.pipe_to_null=True
-
-	def base_server_init(self,sim_dir):
-		self.sim_dir=sim_dir
-
-	def update_cpu_number(self):
-		self.cpus=multiprocessing.cpu_count()
-		if self.cpus>4:
-			self.cpus=self.cpus-2
-
-		data=inp()
-		if data==False:
-			return
-
-		data.load(os.path.join(get_sim_path(),"server.inp"))
-		max=data.get_token("#max_gpvdm_instances")
-
-		if max=="false" or max=="False" or max== "none":
-			return
-
-		if max!=False:
-			max=int(max)
-			self.cpus=max
-
-	def add_job(self,path,arg):
-		j=job()
-		j.path=path
-		j.args=arg
-		j.status=0
-		j.name="job"+str(len(self.jobs))
-		self.jobs.append(j)
-
-	def run_now(self):
-		self.exe_command(get_sim_path(),get_exe_command(),background=False)
-
-	def check_warnings(self):
-		message=""
-		problem_found=False
-		#print(len(self.jobs))
-
-		for i in range(0,len(self.jobs)):
-			log_file=os.path.join(self.jobs[i].path,"log.dat")
-			if os.path.isfile(log_file):
-				f = open(log_file, "r")
-				lines = f.readlines()
-				f.close()
-				found=""
-				for l in range(0, len(lines)):
-					lines[l]=lines[l].rstrip()
-					if lines[l].startswith("error:") or lines[l].startswith("warning:"):
-						#print("whoo",lines[l])
-						found=found+lines[l]+"\n"
-						problem_found=True
-				if len(found)!=0:
-					message=message+self.jobs[i].path+":\n"+found+"\n"
-				else:
-					message=message+self.jobs[i].path+":OK\n\n"
-		if problem_found==False:
-			message=""
-
-		return message
-
-	def print_jobs(self):
-		print("server job list:")
-		for i in range(0, len(self.jobs)):
-			print("job",i,self.jobs[i].path,self.jobs[i].args,self.jobs[i].status,self.jobs[i].start,self.jobs[i].stop)	#,self.jobs[i].full_command
-		print("jobs running=",self.jobs_running,"jobs run=",self.jobs_run,"cpus=",self.cpus)
-
-
-	def exe_command(self,path,command,background=True):
-		cmd="cd "+path+";"
-		cmd=cmd+command
-		if self.pipe_to_null==True:
-			cmd=cmd+" >/dev/null "
-			if background==True:
-				cmd=cmd+" &"
-
-		cmd=cmd+"\n"
-		#print(cmd)
-		os.system(cmd)
-
-	def base_server_process_jobs(self):
-		path=True
-		while(path!=False):
-			#self.print_jobs()
-			path,command=self.base_server_get_next_job_to_run(lock_file=True)
-			if path!=False:
-				self.exe_command(path,command)
-				if len(self.jobs)>1:
-					jobs_per_second="%.2f" % self.jobs_per_second
-					self.progress_window.set_text(_("Running job ")+path+" jobs/s="+jobs_per_second)
-					self.progress_window.set_fraction(float(self.jobs_run)/float(len(self.jobs)))
-
-			else:
-				return
-
-	def remove_lock_files(self):
-		ls=os.listdir(self.sim_dir)
-		#print(">>>>>>",self.sim_dir,ls)
-		for i in range(0, len(ls)):
-			if ls[i][:4]=="lock" and ls[i][-4:]==".dat":
-				del_file=os.path.join(self.sim_dir,ls[i])
-				#print("delete file:",del_file)
-				os.remove(del_file)
-
-	def simple_run(self):
-		self.start_time=time.time()
-		self.stop_work=False
-		self.remove_lock_files()
-				
-		self.base_server_process_jobs()
-
-		while(1):
-			ls=os.listdir(self.sim_dir)
-			#print(self.sim_dir,ls)
-			for i in range(0, len(ls)):
-				if ls[i][:4]=="lock" and ls[i][-4:]==".dat":
-					lock_file=ls[i]
-					os.remove(os.path.join(self.sim_dir,lock_file))
-					#os.rename(os.path.join(self.sim_dir,lock_file),os.path.join("./old",lock_file))
-					#self.jobs_run=self.jobs_run+1
-					#self.jobs_running=self.jobs_running-1
-					job=int(lock_file[4:-4])
-					self.base_job_finished(job)
-			self.base_server_process_jobs()
-			time.sleep(0.1)
-
-			if self.jobs_run==len(self.jobs):
-				self.remove_lock_files()
-				break
-
-	def base_job_finished(self,job):
-		if self.jobs[job].status!=1:
-			print("This job never ran!!!",self.jobs[job].status)
-			asdsadasd
-		self.jobs[job].status=2
-		self.jobs[job].stop=str(datetime.now())
-		self.jobs_run=self.jobs_run+1
-		self.jobs_running=self.jobs_running-1
-		self.jobs_per_second=self.jobs_run/(time.time()-self.start_time)
-
-		if self.jobs_running==0:
-			if self.callback!=None:
-				self.callback()
-			self.callback=None
-
-		self.progress_window.set_fraction(float(self.jobs_run)/float(len(self.jobs)))
-
-	def base_server_set_callback(self,callback):
-		self.callback=callback
-
-	def base_server_get_next_job_to_run(self,lock_file=False):
-		if (len(self.jobs)==0):
-			return False,False
-
-		for i in range(0, len(self.jobs)):
-			if (self.jobs_running<self.cpus):
-				if self.jobs[i].status==0:
-					self.jobs[i].status=1
-					self.jobs[i].start=str(datetime.now())
-					self.jobs[i].ip=socket.gethostbyname(socket.gethostname())
-					#for r in range(0,len(self.jobs)):
-					#	print(self.jobs[i],self.args[i])
-					
-					self.jobs_running=self.jobs_running+1
-
-					if lock_file==True:
-						command_lock=" --lockfile "+os.path.join(self.sim_dir,"lock"+str(i)+".dat")
-					else:
-						command_lock=" --lock "+"lock"+str(i)
-
-					full_command=get_exe_command()+command_lock+" "+self.jobs[i].args+" "+get_exe_args()
-					self.jobs[i].full_command=full_command
-					return self.jobs[i].path,full_command
-
-		return False,False
-
-
-	def killall(self):
-		self.stop_work=True
-		if self.cluster==True:
-			self.cluster_killall()
-		#else:
-		tx_to_core("terminate")
-		#	if running_on_linux()==True:
-		#		cmd = 'killall '+get_exe_name()
-		#		os.system(cmd)
-		#		print(cmd)
-		#	else:
-		#		cmd="taskkill /im "+get_exe_name()
-		#		print(cmd)
-		#		os.system(cmd)
-
-		self.gui_sim_stop()
+from server_base import server_base
 
 if gui_get()==True:
-	class server(QWidget,base_server,cluster):
+	class server(QWidget,server_base,cluster):
 		
 		sim_finished = pyqtSignal()
 		sim_started = pyqtSignal()
 
 		def __init__(self):
 			QWidget.__init__(self)
-			base_server.__init__(self)
+			server_base.__init__(self)
 			self.display=False
 			self.fit_update=None
-			self.excel_workbook_gen_error=False
 			status_icon_init()
 			self.gui_update_time= time.time()
 			self.timer=QTimer()
 
 		def init(self,sim_dir):
-			self.base_server_init(sim_dir)
+			self.server_base_init(sim_dir)
 
 			self.cluster_init()
-			#self.cluster=str2bool(inp_get_token_value("server.inp","#cluster"))
-
 
 
 		def set_terminal(self,terminal):
@@ -400,7 +168,7 @@ if gui_get()==True:
 			
 			path=True
 			while(path!=False):
-				path,command=self.base_server_get_next_job_to_run()
+				path,command=self.server_base_get_next_job_to_run()
 				self.jobs_update.emit()
 				if path!=False:
 					if self.terminal.run(path,command)==True:
@@ -440,14 +208,15 @@ if gui_get()==True:
 			self.timer.start(100)
 
 		def callback_dbus(self,data_in):
+			#print("server_in",data_in)
 			if data_in.startswith("hex"):
 				data_in=data_in[3:]
 				data=codecs.decode(data_in, 'hex')
 				data=data.decode('ascii')
-				#print("!!!!!!!!!!!!!!!!! ",data)
+				#print("Decoded ",data)
 				if data.startswith("lock"):
 					if len(self.jobs)==0:
-						print(_("I did not think I was running any jobs"),data)
+						#print(_("I did not think I was running any jobs"),data)
 						self.stop()
 					else:
 						if self.finished_jobs.count(data)==0:

@@ -36,6 +36,7 @@ from epitaxy import get_epi
 from gl_scale import set_m2screen
 from gl_scale import scale_get_xmul
 from gl_scale import scale_get_zmul
+import os
 
 class view_point():
 	def __init__(self):
@@ -48,34 +49,38 @@ class view_point():
 		self.render_grid=True
 		self.render_photons=True
 		self.render_text=True
+		self.render_plot=True
 		self.draw_device=True
 		self.optical_mode=True
 		self.text=True
 		self.bg_color=[0.0,0.0,0.0]
 		self.stars_distance=60
+		self.reset_shift_max_angles()
+
+	def reset_shift_max_angles(self):
+		self.max_angle_shift=4.0
 
 	def shift(self,target):
 		stop=False
 		move=0.0
-		max_angle_shift=4.0
 		max_xy_shift=0.2
 		delta=(target.xRot-self.xRot)
-		if fabs(delta)>max_angle_shift:
-			delta=max_angle_shift*delta/fabs(delta)
+		if fabs(delta)>self.max_angle_shift:
+			delta=self.max_angle_shift*delta/fabs(delta)
 
 		self.xRot=self.xRot+delta
 		move=move+fabs(delta)
 
 		delta=(target.yRot-self.yRot)
-		if fabs(delta)>max_angle_shift:
-			delta=max_angle_shift*delta/fabs(delta)
+		if fabs(delta)>self.max_angle_shift:
+			delta=self.max_angle_shift*delta/fabs(delta)
 
 		self.yRot=self.yRot+delta
 		move=move+fabs(delta)
 
 		delta=(target.zRot-self.zRot)
-		if fabs(delta)>max_angle_shift:
-			delta=max_angle_shift*delta/fabs(delta)
+		if fabs(delta)>self.max_angle_shift:
+			delta=self.max_angle_shift*delta/fabs(delta)
 
 		self.zRot=self.zRot+delta
 		move=move+fabs(delta)
@@ -116,10 +121,30 @@ class view_point():
 
 
 class gl_move_view():
-	def hello(self):
-		print("hello")
 
-	def xy(self):
+	def __init__(self):
+		self.view=view_point()
+		self.view.xRot =-25.0
+		self.view.yRot =1.0
+		self.view.zRot =0.0
+		self.view.x_pos=0.0
+		self.view.y_pos=0.
+		self.view.zoom=16.0
+
+		self.viewtarget=view_point()
+		#self.viewtarget.set_value(self.view)
+		self.viewtarget.xRot=0.0
+		self.viewtarget.yRot=0.0
+		self.viewtarget.zRot=0.0
+		self.viewtarget.x_pos=-2.0
+		self.viewtarget.y_pos=-1.7
+		self.viewtarget.zoom=-8.0
+
+		self.timer_save_files=False
+		self.timer_save_files_number=0
+		self.timer_end_callback=None
+
+	def view_move_to_xy(self):
 		self.viewtarget.xRot=-7
 		self.viewtarget.yRot=0.0
 		self.viewtarget.zRot=0.0
@@ -130,7 +155,7 @@ class gl_move_view():
 		self.timer.timeout.connect(self.ftimer_target)
 		self.timer.start(25)
 
-	def yz(self):
+	def view_move_to_yz(self):
 		self.viewtarget.xRot=-7
 		self.viewtarget.yRot=90
 		self.viewtarget.zRot=0.0
@@ -141,7 +166,7 @@ class gl_move_view():
 		self.timer.timeout.connect(self.ftimer_target)
 		self.timer.start(25)
 
-	def xz(self):
+	def view_move_to_xz(self):
 		self.viewtarget.xRot=-90.0
 		self.viewtarget.yRot=90.0
 		self.viewtarget.zRot=0.0
@@ -170,8 +195,20 @@ class gl_move_view():
 		stop=self.view.shift(self.viewtarget)
 		
 		self.update()
+		if self.timer_save_files==True:
+			if os.path.isdir("flyby")==False:
+				os.mkdir("flyby")
+
+			self.grabFrameBuffer().save(os.path.join("flyby",str(self.timer_save_files_number)+".jpg"))
+			self.timer_save_files_number=self.timer_save_files_number+1
+
 		if stop==True:
 			self.timer.stop()
+			if self.timer_end_callback!=None:
+				self.timer_end_callback()
+			self.timer_save_files=False
+			self.timer_save_files_number=0
+			
 
 	def fzoom_timer(self):
 		self.view.zoom =self.view.zoom+4.0
@@ -184,23 +221,7 @@ class gl_move_view():
 		self.timer.timeout.connect(self.my_timer)
 		self.timer.start(50)
 
-	def __init__(self):
-		self.view=view_point()
-		self.view.xRot =-25.0
-		self.view.yRot =1.0
-		self.view.zRot =0.0
-		self.view.x_pos=0.0
-		self.view.y_pos=0.
-		self.view.zoom=16.0
 
-		self.viewtarget=view_point()
-		#self.viewtarget.set_value(self.view)
-		self.viewtarget.xRot=0.0
-		self.viewtarget.yRot=0.0
-		self.viewtarget.zRot=0.0
-		self.viewtarget.x_pos=-2.0
-		self.viewtarget.y_pos=-1.7
-		self.viewtarget.zoom=-8.0
 
 	def update_real_to_gl_mul(self):
 		set_m2screen()

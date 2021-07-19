@@ -30,14 +30,9 @@ import glob
 import random
 from random import randint
 
-from inp import inp_update_token_value
-from inp import inp_get_token_array
 from inp import inp
 
 from str2bool import str2bool
-from util import get_cache_path
-from cal_path import get_materials_path
-from scan_human_labels import get_scan_human_labels
 from clone import gpvdm_clone
 
 #windows
@@ -53,6 +48,10 @@ import math
 from util_zip import zip_lsdir
 
 from scan_program_line import scan_program_line
+from scan_human_labels import get_json_from_human_path
+from scan_human_labels import set_json_from_human_path
+
+import json
 
 def random_log(in_start,in_stop):
 	start=math.log10(in_start)
@@ -68,43 +67,31 @@ def random_log(in_start,in_stop):
 class scan_tree_leaf:
 
 	def __init__(self):
-		self.scan_human_labels=get_scan_human_labels()
-		#self.scan_human_labels.dump()
 		self.directory=None
 		self.program_list=[]
+		self.json=None
+		self.f=inp()
+
+	def json_load(self,file_path):
+		self.json=self.f.load_json(file_path)
+
+	def json_save(self):
+		self.f.lines=json.dumps(self.json, sort_keys=False, indent=4).split("\n")
+		self.f.save()
 
 	def duplicate_params(self):
 		
 		for program_line in self.program_list:
-			#print(program_list[i])
 			if program_line.values=="duplicate":
-				#print(">>>",program_line.opp,"<<",program_line.values)
-				f=self.scan_human_labels.get_file_from_human_label(program_line.opp)
-				src_token=self.scan_human_labels.get_token_from_human_label(program_line.opp)
-
-				src_file=os.path.join(self.directory,f)
-	
-				in_file=inp()
-				in_file.load(src_file)
-				src_value=in_file.get_token(src_token)
-
-				inp_update_token_value(os.path.join(self.directory,program_line.file), program_line.token, src_value)
+				src_value=get_json_from_human_path(self.json,program_line.opp)
+				set_json_from_human_path(self.json,program_line.human_name,src_value)
 
 		return True
 
 	def apply_constants(self):
 		for program_line in self.program_list:
 			if program_line.opp=="constant":
-				if program_line.file.endswith("*"):
-					search_file=program_line.file[:-1]
-					file_list=zip_lsdir(os.path.join(self.directory,"sim.gpvdm"))
-					#print(self.directory,file_list)
-					for f in file_list:
-						if f.startswith(search_file)==True:
-							inp_update_token_value(os.path.join(self.directory,f), program_line.token, program_line.values)
-							#print(">>> edited",f)
-				else:
-					inp_update_token_value(os.path.join(self.directory,program_line.file), program_line.token, program_line.values)
+				set_json_from_human_path(self.json,program_line.human_name,program_line.values)
 
 		return True
 
@@ -115,11 +102,13 @@ class scan_tree_leaf:
 				ret=""
 				command=program_line.values
 				ret=eval(command)
-				file_path=os.path.join(self.directory,program_line.file)
+				#file_path=os.path.join(self.directory,program_line.file)
 				#print("EXEC=",command,">",ret,"<")
-				error_status=inp_update_token_value(file_path, program_line.token, ret)
-				if error_status==False:
-					return False
+				#print(self.json,program_line.human_name,ret)
+				error_status=set_json_from_human_path(self.json,program_line.human_name,ret)
+
+				#if error_status==False:
+				#	return False
 
 		return True
 
@@ -174,13 +163,11 @@ def tree_gen_flat_list(dir_to_search,level=0):
 	return found_dirs
 
 
-def build_scan_tree(program_list):
-	tree_items=[[],[],[]]	#file,token,values,opp
+def decode_scan_list(program_list):
+	tree_items=[[],[]]	#json_token_path,values
 	for program_line in program_list:
-		#print(i,program_line.file,program_line.token,program_line.values,line.opp)
 		if program_line.opp=="scan":
-			tree_items[0].append(program_line.file)
-			tree_items[1].append(program_line.token)
+			tree_items[0].append(program_line.human_name)
 			values=program_line.values
 			#This expands a [ start stop step ] command.
 			if len(values)>0:
@@ -198,7 +185,7 @@ def build_scan_tree(program_list):
 							pos=pos+c
 						values=values[0:len(values)-1]
 
-			tree_items[2].append(values)
+			tree_items[1].append(values)
 
 	return tree_items
 
@@ -221,10 +208,9 @@ def tree_gen(output_dir,flat_simulation_list,program_list,base_dir):
 		tree_gen_random_files(output_dir,flat_simulation_list,program_list,base_dir)
 		return
 
-	tree_items=build_scan_tree(program_list)			#tree_items[3].append(program_line.opp)
+	tree_items=decode_scan_list(program_list)
 
 	ret=tree(flat_simulation_list,program_list,tree_items,base_dir,0,output_dir,"","")
-
 	return ret
 
 
@@ -247,7 +233,7 @@ def tree_gen_random_files(sim_path,flat_simulation_list,program_list,base_dir):
 
 	process_events()
 
-	print("length",length)
+	#print("length",length)
 
 	for i in range(0,length):
 		rand=codecs.encode(os.urandom(int(16 / 2)), 'hex').decode()
@@ -263,7 +249,8 @@ def tree_gen_random_files(sim_path,flat_simulation_list,program_list,base_dir):
 			t=scan_tree_leaf()
 			t.program_list=program_list
 			t.directory=cur_dir
-			
+			t.json_load(os.path.join(cur_dir,"json.inp"))
+
 			if t.apply_constants()==False:
 				return False
 
@@ -273,6 +260,7 @@ def tree_gen_random_files(sim_path,flat_simulation_list,program_list,base_dir):
 
 			t.duplicate_params()
 			#tree_apply_duplicate(cur_dir,program_list)
+			t.json_save()
 			
 			archive_compress(os.path.join(cur_dir,"sim.gpvdm"))
 
@@ -285,14 +273,11 @@ def tree_gen_random_files(sim_path,flat_simulation_list,program_list,base_dir):
 	progress_window.stop()
 
 def tree(flat_simulation_list,program_list,tree_items,base_dir,level,path,var_to_change,value_to_change):
-	#print(level,tree_items)
-	values=tree_items[2][level]
+
+	values=tree_items[1][level]
 	values=values.split()
 
 	if tree_items[0][level]=="notknown":
-		return False
-
-	if tree_items[1][level]=="notknown":
 		return False
 
 	pass_var_to_change=var_to_change+" "+str(level)
@@ -321,7 +306,11 @@ def tree(flat_simulation_list,program_list,tree_items,base_dir,level,path,var_to
 				t=scan_tree_leaf()
 				t.program_list=program_list
 				t.directory=cur_dir
+				t.json_load(os.path.join(cur_dir,"json.inp"))
 
+				#print(t.json)
+				#print(program_line.human_name)
+				#
 				if t.apply_constants()==False:
 					return False
 
@@ -329,16 +318,11 @@ def tree(flat_simulation_list,program_list,tree_items,base_dir,level,path,var_to
 					return False
 
 				for i in range(0, len(pos)):
-					file_path=os.path.join(cur_dir,tree_items[0][int(pos[i])])
-					inp_update_token_value(file_path, tree_items[1][int(pos[i])], new_values[i])
-					#print("updating", file_path, tree_items[1][int(pos[i])], new_values[i])
-
+					set_json_from_human_path(t.json,tree_items[0][int(pos[i])],new_values[i])
 
 				t.duplicate_params()
+				t.json_save()
 
-				#tree_apply_duplicate(cur_dir,program_list)
-
-				inp_update_token_value(os.path.join(cur_dir,"dump.inp"), "#plot", "0")
 
 		if level==0:
 			f = open(os.path.join(cur_dir,'scan.inp'),'w')

@@ -44,31 +44,30 @@ from triangle import vec
 from gl_scale import scale_get_device_y
 from gl_scale import scale_get_device_x
 from gl_scale import scale_get_device_z
+from gpvdm_json import gpvdm_data
 
 class gl_photons():
 
-	def draw_photons(self,x0,z0):
-		if self.false_color==True:
-			return
-
+	def draw_photon_sheet(self,source,x0,z0):
 		up_photons=False
 		device_top=scale_get_device_y()
-		if self.light_illuminate_from=="bottom":
+		dx=scale_get_device_x()
+
+		if source.light_iluminate_from=="y1":
 			y=-1.5
 			up_photons=True
 		else:
 			y=device_top+0.5
 
-		dx=scale_get_device_x()
-
-		if self.suns!=0:
-			if self.suns<=0.01:
+		suns=self.suns*source.light_multiplyer
+		if suns!=0:
+			if suns<=0.01:
 				den=dx/5
-			elif self.suns<=0.1:
+			elif suns<=0.1:
 				den=dx/8
-			elif self.suns<=1.0:
+			elif suns<=1.0:
 				den=dx/10
-			elif self.suns<=10.0:
+			elif suns<=10.0:
 				den=dx/20
 			else:
 				den=dx/25
@@ -79,6 +78,20 @@ class gl_photons():
 			for i in range(0,len(x)):
 				for ii in range(0,len(z)):
 					self.draw_photon(x[i],y,z[ii],up_photons,0.0,1.0,0.0)
+
+	def draw_photons(self,x0,z0):
+		if self.false_color==True:
+			return
+
+		for source in gpvdm_data().light.light_source_obj_y0.light_spectra.segments:
+			source.light_iluminate_from="y0"
+			self.draw_photon_sheet(source,x0,z0)
+			break
+
+		for source in gpvdm_data().light.light_source_obj_y1.light_spectra.segments:
+			source.light_iluminate_from="y1"
+			self.draw_photon_sheet(source,x0,z0)
+			break
 
 		if self.emission==True and self.ray_model==False:
 			den=1.2

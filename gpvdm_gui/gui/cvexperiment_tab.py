@@ -21,17 +21,11 @@
 #
 # 
 
-## @package fxexperiment_tab
-#  fx experiment tab widget
+## @package cv_experiment_tab
+#  cv experiment tab widget
 #
 
 import os
-from numpy import *
-from inp import inp_load_file
-from inp import inp_search_token_value
-from fxmesh import tab_fxmesh
-from inp import inp_update_token_value
-
 import i18n
 _ = i18n.language.gettext
 
@@ -39,55 +33,31 @@ _ = i18n.language.gettext
 from PyQt5.QtCore import QSize, Qt 
 from PyQt5.QtWidgets import QWidget,QVBoxLayout,QToolBar,QSizePolicy,QAction,QTabWidget,QTabWidget
 from PyQt5.QtGui import QPainter,QIcon
-from inp import inp_update_token_value
-from inp import inp_get_token_value
-
 from tab import tab_class
-from cal_path import get_sim_path
+from css import css_apply
 
 class cvexperiment_tab(QTabWidget):
 
 	def update(self):
 		self.fxmesh.update()
 
-	def save_image(self):
-		tab = self.currentWidget()
-		tab.save_image()
-	
+	def image_save(self):
+		self.fxmesh.image_save()
 
-	def init(self,index):
+	def __init__(self,data):
 		QTabWidget.__init__(self)
+		css_apply(self ,"tab_default.css")
+		self.data=data
 
-		self.index=index
+		self.setMovable(True)
 
-		lines=[]
-		self.file_name=os.path.join(get_sim_path(),"cv"+str(self.index)+".inp")
-		lines=inp_load_file(self.file_name)
-		if lines!=False:
-			self.tab_name=inp_search_token_value(lines, "#sim_menu_name")
-		else:
-			self.tab_name=""
-
-		widget=tab_class(self.file_name)
-		self.addTab(widget,_("CV Configure"))
-
-
-		file_name=os.path.join(get_sim_path(),"cv_fxdomain_data"+str(self.index)+".inp")
-		widget=tab_class(file_name)
-		self.addTab(widget,_("FX domain simulation"))
-
-		self.file_name=os.path.join(get_sim_path(),"cv"+str(self.index)+".inp")
-
-	def set_tab_caption(self,name):
-		mytext=name
-		if len(mytext)<10:
-			for i in range(len(mytext),10):
-				mytext=mytext+" "
-		self.label.set_text(mytext)
+		tab=tab_class(self.data.config)
+		self.addTab(tab,_("Configure"))
 
 	def rename(self,tab_name):
-		self.tab_name=tab_name+"@"+self.tab_name.split("@")[1]
-		inp_update_token_value(self.file_name, "#sim_menu_name", self.tab_name)
+		self.data.english_name=tab_name
+		gpvdm_data().save()
+
 
 
 

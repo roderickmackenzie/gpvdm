@@ -38,17 +38,12 @@ import webbrowser
 
 #windows
 from tab import tab_class
-from tab_lang import language_tab_class
-from duplicate import duplicate
-from fit_vars import fit_vars
-#from constraints import constraints
+
 from PyQt5.QtCore import pyqtSignal
 
 from cal_path import get_sim_path
 from QWidgetSavePos import QWidgetSavePos
-
-articles = []
-mesh_articles = []
+from gpvdm_json import gpvdm_data
 
 class fit_configure_window(QWidgetSavePos):
 
@@ -58,7 +53,12 @@ class fit_configure_window(QWidgetSavePos):
 		self.changed.emit()
 
 	def __init__(self,name):
+		from fit_duplicate import fit_duplicate
+		from fit_vars import fit_vars
+		from fit_rules import fit_rules
+
 		QWidgetSavePos.__init__(self,name)
+		
 		self.setMinimumSize(900, 600)
 		self.setWindowIcon(icon_get("preferences-system"))
 
@@ -90,22 +90,20 @@ class fit_configure_window(QWidgetSavePos):
 
 		self.main_vbox.addWidget(self.notebook)
 
-		files=[os.path.join(get_sim_path(),"fit.inp")]
-		description=[_("Configure minimizer")]
+		data=gpvdm_data()
 
-		for i in range(0,len(files)):
-			tab=tab_class(files[i])
-			self.notebook.addTab(tab,description[i])
+		tab=tab_class(data.fits.fit_config)
+		self.notebook.addTab(tab,_("Configure minimizer"))
 
-		self.duplicate_window=duplicate()
+		self.duplicate_window=fit_duplicate()
 		self.notebook.addTab(self.duplicate_window,_("Duplicate window"))
 
 		self.fit_vars_window=fit_vars()
 		self.notebook.addTab(self.fit_vars_window,_("Fit variable window"))
 
-		#self.constraints_window=constraints()
-		#self.notebook.addTab(self.constraints_window,_("Fit constraints"))
-		
+		self.fit_rules_window=fit_rules()
+		self.notebook.addTab(self.fit_rules_window,_("Fit rules"))
+	
 		self.setLayout(self.main_vbox)
 
 

@@ -42,6 +42,8 @@ from help import help_window
 from QWidgetSavePos import QWidgetSavePos
 from css import css_apply
 
+from gpvdm_json import gpvdm_data
+
 import i18n
 _ = i18n.language.gettext
 
@@ -82,14 +84,15 @@ class qe_window(QWidgetSavePos):
 
 		self.main_vbox.addWidget(self.notebook)
 
+		data=gpvdm_data()
+		if len(data.eqe.segments)>0:
+			files=[data.eqe.segments[0]]
+			description=[_("EQE")]
 
-		files=["eqe.inp"]
-		description=[_("EQE")]
 
-
-		for i in range(0,len(files)):
-			tab=tab_class(files[i])
-			self.notebook.addTab(tab,description[i])
+			for i in range(0,len(files)):
+				tab=tab_class(files[i])
+				self.notebook.addTab(tab,description[i])
 
 
 		self.setLayout(self.main_vbox)

@@ -44,7 +44,7 @@ from mesh import get_mesh
 from gl_scale import scale_get_xmul
 from gl_scale import scale_get_ymul
 from gl_scale import scale_get_zmul
-from inp import inp
+import numpy as np
 
 class gl_objects():
 
@@ -53,7 +53,15 @@ class gl_objects():
 
 	def gl_objects_clear(self):
 		self.objects=[]
-	
+		self.gl_array_lines=[]
+		self.gl_array_lines_float32=[]
+
+		self.gl_array_colors=[]
+		self.gl_array_colors_float32=[]
+
+		for data in self.graph_data:
+			data.plotted=False
+
 	def gl_object_deselect_all(self):
 		for o in self.objects:
 			o.selected=False
@@ -131,7 +139,6 @@ class gl_objects():
 		my_object.r_false=my_object.r_false/255
 		my_object.g_false=my_object.g_false/255
 		my_object.b_false=my_object.b_false/255
-
 		self.objects.append(my_object)
 
 	def gl_objects_dump(self):
@@ -165,7 +172,7 @@ class gl_objects():
 				s=None
 
 				if len(obj.id)>0:
-					s=epi.find_shape_by_id(obj.id[0])
+					s=epi.find_object_by_id(obj.id[0])
 
 					if type(s)==shape:
 
@@ -174,7 +181,7 @@ class gl_objects():
 						y_start=epi.get_layer_start(nl)
 						y_stop=epi.get_layer_end(nl)
 
-						x_stop=get_mesh().get_xlen()
+						x_stop=get_mesh().x.get_len()
 
 						if x_min_new_m<0:
 							move_x=False
@@ -194,7 +201,7 @@ class gl_objects():
 		if move_y==True:
 			for obj in self.objects:
 				if obj.selected==True:
-					s=epi.find_shape_by_id(obj.id[0])
+					s=epi.find_object_by_id(obj.id[0])
 					if type(s)==shape:
 						obj.xyz.y=obj.xyz.y+dy
 						s.y0=gl_scale.project_screen_y_to_m(obj.xyz.y)
@@ -202,7 +209,7 @@ class gl_objects():
 		if move_x==True:
 			for obj in self.objects:
 				if obj.selected==True:
-					s=epi.find_shape_by_id(obj.id[0])
+					s=epi.find_object_by_id(obj.id[0])
 					if type(s)==shape:
 						obj.xyz.x=obj.xyz.x+dx
 
@@ -215,7 +222,7 @@ class gl_objects():
 		for obj in self.objects:
 			if obj.selected==True:
 				if len(obj.id)>0:
-					s=epi.find_shape_by_id(obj.id[0])
+					s=epi.find_object_by_id(obj.id[0])
 					if type(s)==shape:
 						s.save()
 
@@ -231,7 +238,7 @@ class gl_objects():
 	def gl_objects_find(self,in_id):
 		count=0
 		for i in range(0,len(self.objects)):
-			for id in self.objects[i].id: 	
+			for id in self.objects[i].id: 
 				if id==in_id:
 					return self.objects[i]
 
@@ -258,6 +265,7 @@ class gl_objects():
 				obj.selected=True
 
 	def gl_objects_render(self):
+		#print("----")
 		#self.gl_objects_dump()
 		#print(len(self.objects))
 		for o in self.objects:
@@ -317,10 +325,26 @@ class gl_objects():
 				#print(sel.dxyz.z,sel.dxyz.x,sel.dxyz.y)
 				#print(sel.text)
 				self.gl_render_box_lines(sel)
-
+				#print("!!!!!!!!!!")
 			#if o.text!="":
 				#print(o.type,o.xyz.y)
 				#self.gl_render_text(o)
+
+
+		if len(self.gl_array_lines_float32)==0:
+			self.gl_array_lines_float32=np.array(self.gl_array_lines, dtype='float32')
+			#print(self.gl_array_colors)
+			self.gl_array_colors_float32=np.array(self.gl_array_colors, dtype='float32')
+			#print(self.gl_array_colors)
+
+		if len(self.gl_array_lines_float32)>0:
+			glLineWidth(2)
+			glEnableClientState(GL_VERTEX_ARRAY)
+			glVertexPointer(3, GL_FLOAT, 0, self.gl_array_lines_float32)
+
+			glEnableClientState(GL_COLOR_ARRAY)
+			glColorPointer(4, GL_FLOAT, 0, self.gl_array_colors_float32)
+			glDrawArrays(GL_LINES, 0, len(self.gl_array_lines))
 
 		#self.gl_objects_save("out.dat")
 		#self.gl_objects_load("out.dat")

@@ -50,11 +50,9 @@ class tick_cross(QAction):
 		if self.enabled==True:
 			self.setIcon(icon_get("tick"))
 			self.setText(self.enable_text)
-			self.enabled=True
 		else:
 			self.setIcon(icon_get("cross"))
 			self.setText(self.disable_text)
-			self.enabled=False
 		
 
 	def do_emit(self):

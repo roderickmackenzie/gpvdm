@@ -54,11 +54,6 @@ from open_save_dlg import save_as_filter
 
 from error_dlg import error_dlg
 
-from tb_item_mat_file import tb_item_mat_file
-
-from import_data import import_data
-from fit_poly import fit_poly
-
 #window
 
 from help import help_window

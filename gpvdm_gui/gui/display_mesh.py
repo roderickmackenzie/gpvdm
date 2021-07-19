@@ -27,12 +27,6 @@
 
 import os
 
-#inp
-from inp import inp_get_token_value
-
-#path
-from cal_path import get_materials_path
-
 from gl import glWidget
 #qt
 from PyQt5.QtWidgets import QMainWindow, QTextEdit, QAction, QApplication
@@ -53,13 +47,10 @@ from global_objects import global_object_register
 from global_objects import global_object_run
 
 from mesh import get_mesh
-from circuit_editor import circuit_editor
-from epitaxy import get_epi
-from inp import inp
-from gl import glWidget
 from gl_scale import gl_scale
 from dat_file import dat_file
 from server import server_get
+from gpvdm_json import gpvdm_data
 
 class display_mesh(QWidget):
 
@@ -71,31 +62,10 @@ class display_mesh(QWidget):
 		self.hbox=QVBoxLayout()
 		self.data=dat_file()
 		self.my_server=server_get()
+		data=gpvdm_data()
 		mesh=get_mesh()
-		if mesh.y.circuit_model==True and mesh.x.tot_points==1 and mesh.z.tot_points==1:
-			self.display=circuit_editor()
 
-			epi=get_epi()
-			pos=3
-			self.display.ersatzschaltbild.add_object(pos,3,pos+1,3,"bat")
-			pos=pos+1
-
-			for l in epi.layers:
-				f=inp()
-				f.load(os.path.join(get_sim_path(),l.shape_electrical+".inp"))
-				component=f.get_token("#electrical_component")
-				if component=="resistance":
-					self.display.ersatzschaltbild.add_object(pos,3,pos+1,3,"resistor")
-				if component=="diode":
-					self.display.ersatzschaltbild.add_object(pos,3,pos+1,3,"diode")
-
-				pos=pos+1
-			self.display.ersatzschaltbild.add_object(pos,3,pos+1,3,"ground")
-			self.display.ersatzschaltbild.objects_push()
-
-			if inp().isfile(os.path.join(get_sim_path(),"diagram.inp"))==True:
-				self.display.ersatzschaltbild.load()
-		else:
+		if data.electrical_solver.solver_type=="circuit":
 			toolbar=QToolBar()
 			toolbar.setIconSize(QSize(42, 42))
 
@@ -171,7 +141,7 @@ class display_mesh(QWidget):
 		except:
 			pass
 
-		self.my_server.add_job(get_sim_path(),"--simmode circuit_mesh@mesh_gen")
+		self.my_server.add_job(get_sim_path(),"--simmode circuit_mesh@mesh_gen_electrical")
 		self.my_server.sim_finished.connect(self.refresh_display)
 		self.my_server.print_jobs()
 		self.my_server.start()

@@ -36,21 +36,12 @@ from PyQt5.QtWidgets import QWidget,QSizePolicy,QHBoxLayout,QPushButton,QDialog,
 
 from icon_lib import icon_get
 from str2bool import str2bool
-from help import help_window
-from inp import inp_update_token_value
-from inp import inp_get_token_value
 
-from cal_path import get_sim_path
 from util import wrap_text
 
 from server import server_get
-from lock import get_lock
 
 from QAction_lock import QAction_lock
-
-dump_fast=0
-dump_slow=1
-dump_custom=2
 
 class play(QAction_lock):
 

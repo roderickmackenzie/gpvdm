@@ -26,14 +26,6 @@
 #
 
 import os
-from inp import inp_load_file
-from inp import inp_search_token_value
-from tmesh import tab_time_mesh
-from circuit import circuit
-from inp import inp_update_token_value
-from tab import tab_class
-
-
 import i18n
 _ = i18n.language.gettext
 
@@ -41,47 +33,29 @@ _ = i18n.language.gettext
 from PyQt5.QtCore import QSize, Qt 
 from PyQt5.QtWidgets import QWidget,QVBoxLayout,QToolBar,QSizePolicy,QAction,QTabWidget,QTabWidget
 from PyQt5.QtGui import QPainter,QIcon
-from cal_path import get_sim_path
+from tab import tab_class
 from css import css_apply
 
 class jvexperiment_tab(QTabWidget):
 
 	def update(self):
-		self.tmesh.update()
+		self.fxmesh.update()
 
 	def image_save(self):
-		self.tmesh.image_save()
+		self.fxmesh.image_save()
 
-	def __init__(self,file_name):
+	def __init__(self,data):
 		QTabWidget.__init__(self)
-		css_apply(self,"tab_default.css")
-
-		lines=[]
-		self.file_name=os.path.join(get_sim_path(),file_name)
-		lines=inp_load_file(self.file_name)
-		if lines!=False:
-			self.tab_name=inp_search_token_value(lines, "#sim_menu_name")
-		else:
-			self.tab_name=""
-
+		css_apply(self ,"tab_default.css")
+		self.data=data
 
 		self.setMovable(True)
 
-
-
-		tab=tab_class(self.file_name)
+		tab=tab_class(self.data.config)
 		self.addTab(tab,_("Configure"))
 
-
-	def set_tab_caption(self,name):
-		mytext=name
-		if len(mytext)<10:
-			for i in range(len(mytext),10):
-				mytext=mytext+" "
-		self.label.set_text(mytext)
-
 	def rename(self,tab_name):
-		self.tab_name=tab_name+"@"+self.tab_name.split("@")[1]
-		inp_update_token_value(self.file_name, "#sim_menu_name", self.tab_name)
+		self.data.english_name=tab_name
+		gpvdm_data().save()
 
 

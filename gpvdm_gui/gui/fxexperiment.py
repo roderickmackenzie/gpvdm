@@ -32,15 +32,10 @@ from inp import inp_update_token_value
 from fxexperiment_tab import fxexperiment_tab
 from util_zip import zip_lsdir
 from inp import inp
-from inp import inp_copy_file
-from inp import inp_remove_file
-from inp import inp_get_token_value
 
-from util import strextract_interger
 from global_objects import global_object_get
 from icon_lib import icon_get
 from global_objects import global_object_register
-from code_ctrl import enable_betafeatures
 from gui_util import yes_no_dlg
 
 import i18n
@@ -59,118 +54,26 @@ from util import wrap_text
 
 from cal_path import get_sim_path
 from QWidgetSavePos import QWidgetSavePos
-from experiment_util import experiment_new_filename
-from fx_ribbon import fx_ribbon
 
 from progress_class import progress_class
 from process_events import process_events
-from global_objects import global_object_run
+from experiment import experiment
 
-from util import is_numbered_file
+class fxexperiment(experiment):
 
-class fxexperiment(QWidgetSavePos):
-
-	changed = pyqtSignal()
-
-	def callback_help(self):
-		webbrowser.open("https://www.gpvdm.com/man/index.html")
-
-	def callback_add_page(self,file_name):
-		self.add_page(file_name)
-		global_object_run("ribbon_sim_mode_update")
-		self.changed.emit()
-
-
-	def callback_tab_changed(self):
-		return
-
-	def load_tabs(self):
-		progress_window=progress_class()
-		progress_window.show()
-		progress_window.start()
-
-		process_events()
-
-		file_list=zip_lsdir(os.path.join(get_sim_path(),"sim.gpvdm"))
-		files=[]
-		for i in range(0,len(file_list)):
-			if is_numbered_file(file_list[i],"is"):
-				name=inp_get_token_value(file_list[i], "#sim_menu_name")
-				files.append([name,file_list[i]])
-
-		files.sort()
-
-		for i in range(0,len(files)):
-			self.add_page(files[i][1])
-
-			progress_window.set_fraction(float(i)/float(len(files)))
-			progress_window.set_text(_("Loading")+" "+files[i][0])
-			process_events()
-
-		progress_window.stop()
-
-	def clear_pages(self):
-		self.notebook.clear()
-
-	def add_page(self,filename):
-		name=inp_get_token_value(filename, "#sim_menu_name")
-		tab=fxexperiment_tab()
-		print(filename[2:-4],filename)
-		tab.init(int(filename[2:-4]))
-		self.notebook.addTab(tab,name.split("@")[0])
-
-	def callback_mode_changed(self):
-		return
-		#tab = self.notebook.currentWidget()
-		#tab.update_mode(self.ribbon.mode.mode.currentText())
-
-	def callback_save(self):
-		tab = self.notebook.currentWidget()
-		tab.save_image()
 
 	def __init__(self):
-		QWidgetSavePos.__init__(self,"fxexperiment")
-		self.setMinimumSize(1200, 700)
+		experiment.__init__(self,window_save_name="fx_domain_experiment", window_title=_("Frequency domain experiment window"),name_of_tab_class="fxexperiment_tab",json_search_path="gpvdm_data().fx_domain")
 
-		self.main_vbox = QVBoxLayout()
+		#w=self.ribbon_simulation()
+		#self.ribbon.addTab(w,_("Simulation"))
 
-		self.setWindowTitle(_("Frequency domain experiment editor")+" https://www.gpvdm.com")
-		self.setWindowIcon(icon_get("spectrum"))
-
-
-		spacer = QWidget()
-		spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-
-		self.ribbon=fx_ribbon()
-
-		self.ribbon.tb_save.triggered.connect(self.callback_save)
-
-		self.ribbon.order_widget.changed.connect(self.callback_changed)
-		self.ribbon.order_widget.added.connect(self.callback_add_page)
-
-		self.main_vbox.addWidget(self.ribbon)
-
-		self.notebook = QTabWidget()
-		self.notebook.setTabBar(QHTabBar())
-
-		self.notebook.setTabPosition(QTabWidget.West)
-		self.notebook.setMovable(True)
-		self.notebook.currentChanged.connect(self.callback_tab_changed)
-
-		self.ribbon.order_widget.notebook_pointer=self.notebook
-
-		self.load_tabs()
-
-		self.main_vbox.addWidget(self.notebook)
+		self.notebook.currentChanged.connect(self.switch_page)
+		self.switch_page()
 
 
-		self.status_bar=QStatusBar()
-		self.main_vbox.addWidget(self.status_bar)
 
-
-		self.setLayout(self.main_vbox)
-
-	def callback_changed(self):
-		global_object_run("ribbon_sim_mode_update")
-		self.changed.emit()
+	def switch_page(self):
+		tab = self.notebook.currentWidget()
+		#self.tb_lasers.update(tab.data)
 

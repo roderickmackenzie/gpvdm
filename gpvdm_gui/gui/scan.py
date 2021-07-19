@@ -57,12 +57,10 @@ from QWidgetSavePos import QWidgetSavePos
 from scan_ribbon import scan_ribbon
 from css import css_apply
 from error_dlg import error_dlg
-from scan_human_labels import scan_human_labels
 from gpvdm_viewer import gpvdm_viewer
 from scans_io import scans_io
 from scan_io import scan_io
 from server import server_get
-from scan_human_labels import get_scan_human_labels
 
 class scan_class(QWidgetSavePos):
 
@@ -280,11 +278,8 @@ class scan_class(QWidgetSavePos):
 		self.main_vbox.addWidget(self.status_bar)		
 
 		
-		get_scan_human_labels().populate_from_files()
 		self.setLayout(self.main_vbox)
-		#print(">>>>>>>>>>>>>>>>>>>>>")
-		#get_scan_human_labels().dump()
-		#asdsd
+
 
 	def callback_plot(self):
 		tab = self.notebook.currentWidget()

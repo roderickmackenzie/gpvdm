@@ -93,6 +93,14 @@ class vec():
 		a.z=0.0
 		return a
 
+	def rotate_y(self,theta):		#rotate around the y axis
+		theta_rad=(theta/360.0)*2*3.14159
+		a=vec()
+		a.x = self.x*cos(theta_rad) + self.z*sin(theta_rad)
+		a.y = self.y
+		a.z = self.z*cos(theta_rad) - self.x*sin(theta_rad)
+		return a
+
 	def cpy(self,data):
 		self.x=data.x
 		self.y=data.y
@@ -100,6 +108,14 @@ class vec():
 
 
 class triangle():
+
+	def rotate_y(self,ang):
+		a=triangle()
+		a.xyz0=self.xyz0.rotate_y(ang)
+		a.xyz1=self.xyz1.rotate_y(ang)
+		a.xyz2=self.xyz2.rotate_y(ang)
+		return a
+
 	def __init__(self):
 		self.xyz0=vec()
 		self.xyz1=vec()

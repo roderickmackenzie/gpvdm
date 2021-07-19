@@ -114,8 +114,8 @@ class gl_text():
 			return
 		#qobj = gluNewQuadric()
 		#gluQuadricTexture(qobj, GL_TRUE)
-		col = [1.0, 1.0, 1.0, 1.0]
-		glMaterialfv(GL_FRONT, GL_DIFFUSE, col)
+
+		glColor4f(1.0, 1.0, 1.0, 1.0)
 
 		glEnable(GL_BLEND)
 		glEnable(GL_TEXTURE_2D)

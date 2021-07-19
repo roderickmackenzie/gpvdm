@@ -30,9 +30,6 @@
 import os
 from icon_lib import icon_get
 
-from dump_io import dump_io
-from tb_item_sim_mode import tb_item_sim_mode
-
 from cal_path import get_css_path
 
 #qt
@@ -43,20 +40,13 @@ from PyQt5.QtWidgets import QWidget,QVBoxLayout,QHBoxLayout,QToolBar, QToolButto
 from help import help_window
 
 #experiments
-from experiment import experiment
-from fxexperiment import fxexperiment
 from sunsvoc import sunsvoc
 from sunsjsc import sunsjsc
 
 from ray_trace_editor import ray_trace_editor
 
 from qe import qe_window
-from measure import measure
 from cost import cost
-
-from jvexperiment import jvexperiment
-from plexperiment import plexperiment
-from cv_editor import cv_editor
 
 from util import wrap_text
 from fdtd import fdtd
@@ -64,12 +54,15 @@ from global_objects import global_object_run
 from PyQt5.QtCore import pyqtSignal
 from QAction_lock import QAction_lock
 from cal_path import gpvdm_paths
+from lock import get_lock
+from gpvdm_json import gpvdm_data
+from ribbon_page import ribbon_page
 
-class ribbon_simulations(QToolBar):
+class ribbon_simulations(ribbon_page):
 	experiments_changed = pyqtSignal()
 
 	def __init__(self):
-		QToolBar.__init__(self)
+		ribbon_page.__init__(self)
 
 		self.jvexperiment_window=None
 		self.experiment_window=None
@@ -78,18 +71,16 @@ class ribbon_simulations(QToolBar):
 
 		self.sunsvocexperiment_window=None
 		self.sunsjsc_experiment_window=None
+		self.ce_experiment_window=None
 
 		self.qe_window=None
-		self.measure_window=None
 		self.solar_spectrum_window=None
 		self.cost_window=None
 		self.ray_trace_window=None
 		self.fdtd_window=None
 
 		self.plexperiment_window=None
-
-		self.setToolButtonStyle( Qt.ToolButtonTextUnderIcon)
-		self.setIconSize(QSize(42, 42))
+		self.spm_window=None
 
 		self.jv = QAction_lock("jv", _("Steady state\nsimulation editor"), self,"ribbon_simulations_jv")
 		self.jv.clicked.connect(self.callback_jv_window)
@@ -98,28 +89,35 @@ class ribbon_simulations(QToolBar):
 
 		self.time = QAction_lock("time", _("Time domain\nsimulation editor."), self,"ribbon_simulations_time")
 		self.time.clicked.connect(self.callback_edit_experiment_window)
-		if gpvdm_paths.is_plugin("pulse")==True:
+		if gpvdm_paths.is_plugin("time_domain")==True:
 			self.addAction(self.time )
 
 		self.fx = QAction_lock("spectrum", _("Frequency domain\nsimulation editor"), self,"ribbon_simulations_spectrum")
 		self.fx.clicked.connect(self.callback_fxexperiment_window)
-		if gpvdm_paths.is_plugin("is")==True:
+		if gpvdm_paths.is_plugin("fx_domain")==True:
 			self.addAction(self.fx)
 
 		self.capacitance_voltage = QAction_lock("cv", _("Capacitance voltage\nsimulation editor"), self,"ribbon_capacitance_voltage")
 		self.capacitance_voltage.clicked.connect(self.callback_capacitance_voltage)
 		if gpvdm_paths.is_plugin("cv")==True:
-			self.addAction(self.capacitance_voltage)
+			if get_lock().is_gpvdm_next()==True:
+				self.addAction(self.capacitance_voltage)
 
-		self.sunsvoc = QAction_lock("sunsvoc", _("Suns Voc\nsimulation editor"), self,"ribbon_simulations_sunsvoc")
+		self.sunsvoc = QAction_lock("sunsvoc", _("Suns Voc\neditor"), self,"ribbon_simulations_sunsvoc")
 		self.sunsvoc.clicked.connect(self.callback_sunsvoc_window)
-		if gpvdm_paths.is_plugin("sun_voc")==True:
+		if gpvdm_paths.is_plugin("suns_voc")==True:
 			self.addAction(self.sunsvoc)
 
 		self.sunsjsc = QAction_lock("sunsjsc", _("Suns Jsc\neditor"), self,"ribbon_simulations_sunsjsc")
 		self.sunsjsc.clicked.connect(self.callback_sunsjsc_window)
 		if gpvdm_paths.is_plugin("suns_jsc")==True:
 			self.addAction(self.sunsjsc)
+
+		self.ce = QAction_lock("ce", _("CE\neditor"), self,"ribbon_simulations_ce")
+		self.ce.clicked.connect(self.callback_ce_window)
+		if gpvdm_paths.is_plugin("ce")==True:
+			self.addAction(self.ce)
+
 
 		self.ray_trace = QAction_lock("ray", wrap_text(_("Ray tracing\neditor"),8), self,"ribbon_simulations_ray")
 		self.ray_trace.clicked.connect(self.callback_ray_tracing_window)
@@ -135,24 +133,25 @@ class ribbon_simulations(QToolBar):
 		self.qe.clicked.connect(self.callback_qe_window)
 		if gpvdm_paths.is_plugin("eqe")==True:
 			self.addAction(self.qe)
+
 		#self.qe.setVisible(False)
 
 		self.addSeparator()
-		#self.mode=tb_item_sim_mode()
-		#self.addWidget(self.mode)
-		#self.addSeparator()
 
 		self.fdtd = QAction_lock("fdtd", _("FDTD\nSimulation"), self,"ribbon_simulations_fdtd")
 		self.fdtd.clicked.connect(self.callback_fdtd)
 		self.addAction(self.fdtd)
 
-		self.measure = QAction_lock("measure", _("Measure"), self,"ribbon_simulations_measure")
-		self.measure.clicked.connect(self.callback_configure_measure)
-		self.addAction(self.measure)
-
 		self.tb_cost = QAction_lock("cost", _("Calculate\nthe cost"), self,"ribbon_simulations_cost")
 		self.tb_cost.clicked.connect(self.callback_cost)
 		self.addAction(self.tb_cost)
+
+		self.addSeparator()
+
+		self.spm = QAction_lock("spm", _("scanning probe\nmicroscopy"), self,"ribbon_simulations_spm")
+		self.spm.clicked.connect(self.callback_spm_window)
+		if gpvdm_paths.is_plugin("spm")==True:
+			self.addAction(self.spm)
 
 	def callback_experiments_changed(self):
 		self.experiments_changed.emit()
@@ -161,10 +160,6 @@ class ribbon_simulations(QToolBar):
 		if self.qe_window!=None:
 			del self.qe_window
 			self.qe_window=None
-
-		if self.jvexperiment_window!=None:
-			del self.jvexperiment_window
-			self.jvexperiment_window=None
 
 		if self.experiment_window!=None:
 			del self.experiment_window
@@ -186,12 +181,18 @@ class ribbon_simulations(QToolBar):
 			del self.cost_window
 			self.cost_window=None
 
+		if self.spm_window!=None:
+			del self.spm_window
+			self.spm_window=None
+
+		if self.jvexperiment_window!=None:
+			del self.jvexperiment_window
+			self.jvexperiment_window=None
 
 		#self.mode.update()
 
 	def setEnabled(self,val):
 
-		self.jv.setEnabled(val)
 		self.time.setEnabled(val)
 		self.fx.setEnabled(val)
 		self.capacitance_voltage.setEnabled(val)
@@ -201,15 +202,17 @@ class ribbon_simulations(QToolBar):
 		self.tb_cost.setEnabled(val)
 		self.sunsvoc.setEnabled(val)
 		self.sunsjsc.setEnabled(val)
-		self.measure.setEnabled(val)
+		self.ce.setEnabled(val)
 		self.fdtd.setEnabled(val)
 		self.ray_trace.setEnabled(val)
 		self.pl.setEnabled(val)
+		self.spm.setEnabled(val)
+		self.jv.setEnabled(val)
 
 	def callback_edit_experiment_window(self):
-
+		from time_domain_experiment import time_domain_experiment
 		if self.experiment_window==None:
-			self.experiment_window=experiment()
+			self.experiment_window=time_domain_experiment()
 			self.experiment_window.changed.connect(self.callback_experiments_changed)
 			
 		help_window().help_set_help(["time.png",_("<big><b>The time mesh editor</b></big><br> To do time domain simulations one must define how voltage the light vary as a function of time.  This can be done in this window.  Also use this window to define the simulation length and time step.")])
@@ -219,10 +222,10 @@ class ribbon_simulations(QToolBar):
 			self.experiment_window.show()
  
 	def callback_fxexperiment_window(self):
-
+		from fxexperiment import fxexperiment
 		if self.fxexperiment_window==None:
 			self.fxexperiment_window=fxexperiment()
-			
+
 		help_window().help_set_help(["spectrum.png",_("<big><b>Frequency domain mesh editor</b></big><br> Some times it is useful to do frequency domain simulations such as when simulating impedance spectroscopy.  This window will allow you to choose which frequencies will be simulated.")])
 		if self.fxexperiment_window.isVisible()==True:
 			self.fxexperiment_window.hide()
@@ -230,9 +233,9 @@ class ribbon_simulations(QToolBar):
 			self.fxexperiment_window.show()
 		
 	def callback_capacitance_voltage(self):
-
+		from cv_experiment import cv_experiment
 		if self.capacitance_voltage_window==None:
-			self.capacitance_voltage_window=cv_editor()
+			self.capacitance_voltage_window=cv_experiment()
 			
 		help_window().help_set_help(["cv.png",_("<big><b>Capacitance voltage editor</b></big><br> Use this editor to change serup capacitance voltage simulation.")])
 		if self.capacitance_voltage_window.isVisible()==True:
@@ -240,34 +243,22 @@ class ribbon_simulations(QToolBar):
 		else:
 			self.capacitance_voltage_window.show()
 
-	def callback_configure_measure(self):
 
-		if self.measure_window==None:
-			self.measure_window=measure()
+	def callback_spm_window(self):
+		from spm_experiment import spm_experiment
+		if self.spm_window==None:
+			self.spm_window=spm_experiment()
 
-		help_window().help_set_help(["measure.png",_("<big><b>Measure window</b></big><br>Use this window to set up measurement points.  If for example you want to extract the value of current density from jv.dat at 0.2 Volts, set a measurement point for jv.dat to 0.2 V.  This will work with any file")])
-		if self.measure_window.isVisible()==True:
-			self.measure_window.hide()
+		help_window().help_set_help(["spm.png",_("<big><b>Scanning probe microscopy</b></big><br> Use this window to configure the scanning probe microscopy simulations.")])
+		if self.spm_window.isVisible()==True:
+			self.spm_window.hide()
 		else:
-			self.measure_window.show()
-			
-
-	def callback_jv_window(self):
-
-		if self.jvexperiment_window==None:
-			self.jvexperiment_window=jvexperiment()
-			#self.experiment_window.changed.connect(self.callback_experiments_changed)
-
-		help_window().help_set_help(["jv.png",_("<big><b>JV simulation editor</b></big><br> Use this window to configure the Suns Voc simulations.")])
-		if self.jvexperiment_window.isVisible()==True:
-			self.jvexperiment_window.hide()
-		else:
-			self.jvexperiment_window.show()
+			self.spm_window.show()
 
 	def callback_pl_window(self):
-
+		from pl_experiment import pl_experiment
 		if self.plexperiment_window==None:
-			self.plexperiment_window=plexperiment()
+			self.plexperiment_window=pl_experiment()
 			#self.experiment_window.changed.connect(self.callback_experiments_changed)
 
 		help_window().help_set_help(["pl.png",_("<big><b>PL simulation editor</b></big><br> Use this window to configure the steady state photoluminescence simulation."),"youtube",_("<big><b><a href=\"https://www.youtube.com/watch?v=pgaJg6dErP4\">Watch the youtube video</a></b></big><br>Watch the video on simulating PL using gpvdm")])
@@ -297,6 +288,17 @@ class ribbon_simulations(QToolBar):
 			self.sunsjsc_experiment_window.hide()
 		else:
 			self.sunsjsc_experiment_window.show()
+
+	def callback_ce_window(self):
+		from window_ce import window_ce
+		if self.ce_experiment_window==None:
+			self.ce_experiment_window=window_ce()
+
+		help_window().help_set_help(["ce.png",_("<big><b>Charge Extraction editor</b></big><br> This performs charge extraction experiments in time domain, accounting for recombination losses.  If you don’t mind about accounting for recombination losses on extraction just run a JV curve or a Suns-Voc simulation and use the charge.dat file.")])
+		if self.ce_experiment_window.isVisible()==True:
+			self.ce_experiment_window.hide()
+		else:
+			self.ce_experiment_window.show()
 
 	def callback_ray_tracing_window(self):
 
@@ -343,3 +345,16 @@ class ribbon_simulations(QToolBar):
 			self.cost_window.hide()
 		else:
 			self.cost_window.show()
+
+
+	def callback_jv_window(self):
+		from jv_experiment import jv_experiment
+		if self.jvexperiment_window==None:
+			self.jvexperiment_window=jv_experiment()
+			#self.experiment_window.changed.connect(self.callback_experiments_changed)
+
+		help_window().help_set_help(["jv.png",_("<big><b>JV simulation editor</b></big><br> Use this window to configure the Suns Voc simulations.")])
+		if self.jvexperiment_window.isVisible()==True:
+			self.jvexperiment_window.hide()
+		else:
+			self.jvexperiment_window.show()

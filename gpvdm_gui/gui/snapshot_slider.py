@@ -196,7 +196,7 @@ class snapshot_slider(QWidget):
 			for name in os.listdir(path):
 				full_path=os.path.join(path, name)
 				if os.path.isfile(full_path):
-					if name!="snapshot_info.dat":
+					if name!="data.json":
 						all_files.append(name)
 
 		all_files.sort()

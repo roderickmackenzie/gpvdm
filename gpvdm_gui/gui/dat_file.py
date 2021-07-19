@@ -35,9 +35,9 @@ from inp import inp_load_file
 from str2bool import str2bool
 from triangle import triangle
 from quiver import quiver
-from component import component
+from json_circuit import json_component
 from gl_base_object import gl_base_object
-
+from util_text import is_number
 
 #search first 40 lines for dims
 def dat_file_load_info(output,lines):
@@ -146,21 +146,24 @@ def guess_dim(lines):
 		temp=re.sub("\r","",temp)
 
 		if len(temp)>0:
-			if is_number(temp)==True:
 				s=temp.split()
 				l=len(s)
+
 				if l>0:
 					if len(s[l-1])>0:
 						if s[l-1][0]=="#":
 							l=l-1
 				if l==1:
-					print("I can't do this file type yet")
-					return False,False,False
+					if is_number(s[0])==True:
+						print("I can't do this file type yet",s,l)
+						return False,False,False
 				if l==2:
-					y=y+1
+					if is_number(s[0])==True and is_number(s[1])==True:
+						y=y+1
 				if l==3:
-					print("I can't do this file type yet")
-					return False,False,False
+					if is_number(s[0])==True and is_number(s[1])==True and is_number(s[2])==True:
+						print("I can't do this file type yet",s,l)
+						return False,False,False
 	return 1,y,1
 
 def col_name_to_pos(lines,col,known_col_sep):
@@ -177,22 +180,7 @@ def col_name_to_pos(lines,col,known_col_sep):
 
 	return False
 
-def is_number(data_in):
-	if type(data_in)==str:
-		if len(data_in)>0:
-			s=data_in
-			s=re.sub(' ','',s)
-			s=re.sub("\+",'',s)
-			s=re.sub('-','',s)
-			s=re.sub('\t','',s)
-	
-			if len(s)>0:
-				if s[0].isdigit()==True:
-					return True
-				else:
-					return False
 
-	return False
 
 
 def decode_line(line,known_col_sep=None):
@@ -370,7 +358,7 @@ class dat_file():
 		self.z_units=""
 		self.data_units=""
 		self.plot_type=""		#wireframe/heat etc...
-
+		self.plotted=False
 		self.r=None
 		self.g=None
 		self.b=None
@@ -429,8 +417,11 @@ class dat_file():
 
 	def import_data(self,file_name,x_col=0,y_col=1,skip_lines=0,known_col_sep=None):
 		"""This is an import filter for xy data"""
+		if self.have_i_loaded_this(file_name)==True:
+			return True
 
 		lines=[]
+		print("1")
 		lines=inp_load_file(file_name)
 		if lines==False:
 			return False
@@ -443,6 +434,7 @@ class dat_file():
 
 		lines=lines[skip_lines:]
 
+		print("2")
 
 		self.x_scale=[]
 		self.y_scale=[]
@@ -480,6 +472,7 @@ class dat_file():
 		self.y_len=len(self.data[0][0])
 		self.z_len=1
 
+		print("3")
 		return True
 
 	def rgb(self):
@@ -718,6 +711,7 @@ class dat_file():
 					self.data.append(build)
 				build=[]
 
+		self.valid_data=True
 		return True
 
 	def cal_min_max(self):
@@ -765,13 +759,7 @@ class dat_file():
 		self.valid_data=True
 		return True
 
-	def load(self,file_name,guess=True):
-		self.file_name=file_name
-
-		if file_name==None:
-			self.valid_data=False
-			return False
-
+	def have_i_loaded_this(self,file_name):
 		if os.path.isfile(file_name)==True:
 			age=os.path.getmtime(file_name)
 
@@ -781,6 +769,18 @@ class dat_file():
 			else:
 				self.new_read=True
 				self.file_age=age
+
+		return False
+
+	def load(self,file_name,guess=True):
+		self.file_name=file_name
+
+		if file_name==None:
+			self.valid_data=False
+			return False
+
+		if self.have_i_loaded_this(file_name)==True:
+			return True
 
 		found,lines=zip_get_data_file(file_name)
 		if found==False:
@@ -793,6 +793,7 @@ class dat_file():
 		self.data=[]
 
 		if dat_file_load_info(self,lines)==False:
+			#print("no dims")
 			if guess==True:
 				self.x_len, self.y_len, self.z_len = guess_dim(lines)
 			else:
@@ -873,6 +874,7 @@ class dat_file():
 						a2=0.0
 
 					elif l==2:
+						#print(s,self.z_len,self.x_len,self.y_len)
 						line_found=True
 						if self.type=="rgb":
 							r=float(int(s[1][0:2], 16)/255)

@@ -26,7 +26,6 @@
 #
 
 import os
-from inp import inp_get_token_value
 from plot import check_info_file
 from plot_gen import plot_gen
 from dat_file import dat_file
@@ -38,7 +37,6 @@ from scan_plot import scan_gen_plot_data
 from server import server_find_simulations_to_run
 
 from gpvdm_open import gpvdm_open
-from cal_path import get_exe_command
 from icon_lib import icon_get
 
 from str2bool import str2bool
@@ -55,8 +53,6 @@ from scan_io import scan_io
 from scan_tree import tree_gen
 from scan_tree import tree_load_flat_list
 from scan_tree import tree_save_flat_list
-
-from scan_human_labels import get_scan_human_labels
 
 
 #qt
@@ -76,11 +72,10 @@ _ = i18n.language.gettext
 
 from gpvdm_select import gpvdm_select
 from help import help_window
-from code_ctrl import enable_betafeatures
 
 from cal_path import get_sim_path
 
-from scan_ml import scan_ml
+#from scan_ml import scan_ml
 
 from progress_class import progress_class
 from process_events import process_events
@@ -122,7 +117,7 @@ class scan_vbox(QWidget):
 	def add_line(self,data):
 		help_window().help_set_help(["list-add.png",_("<big><b>The scan window</b></big><br> Now using the drop down menu in the prameter to change 'column', select the device parameter you wish to vary, an example may be dos0/Electron Mobility. Now enter the values you would like it to scan oveer in the  'Values', an example could be '1e-3 1e-4 1e-5 1e-6'.  And hit the double arrorw to run the simulation.")])
 
-		self.insert_row(self.tab.rowCount(),data[0],data[1],data[2],data[3],data[4])
+		self.insert_row(self.tab.rowCount(),data[0],data[1],data[2])
 		
 		self.rebuild_op_type_widgets()
 		
@@ -130,7 +125,7 @@ class scan_vbox(QWidget):
 
 
 	def callback_add_item(self, widget, data=None):
-		self.add_line(["File","token",_("Select parameter"), "0.0 0.0", "scan",True])
+		self.add_line([_("Select parameter"), "0.0 0.0", "scan",True])
 
 
 	def callback_copy_item(self):
@@ -145,15 +140,8 @@ class scan_vbox(QWidget):
 		cb = QApplication.clipboard()
 		text=cb.text()
 		lines=text.rstrip().split(';')
-		#print("text=",lines)
 		self.tab.add(lines)
 		self.save_combo()
-#		row=self.tab.selectionModel().selectedRows()
-#		if len(row)>0:
-#			row=row[0].row()
-#			if len(lines)>=4:
-#				for i in range(0,len(lines)):
-#					self.tab.set_value(row,i,lines[i])
 
 	def callback_show_list(self):
 		self.select_param_window.set_save_function(self.save_combo)
@@ -166,9 +154,7 @@ class scan_vbox(QWidget):
 
 	def plot_results(self,data_file):
 		data_file.key_units=self.get_units()
-		#print("scanning",self.scan_io.scan_dir)
 		plot_files, plot_labels, config_file = scan_gen_plot_data(data_file,self.scan_io.scan_dir)
-		#print("rod>>>>",plot_files, plot_labels)
 		plot_gen(plot_files,plot_labels,config_file)
 
 		self.last_plot_data=data_file
@@ -176,10 +162,11 @@ class scan_vbox(QWidget):
 
 	def get_units(self):
 		token=""
+		return ""
 		for i in range(0,self.tab.rowCount()):
-			if self.tab.get_value(i,4)=="scan":
+			if self.tab.get_value(i,2)=="scan":
 				for ii in range(0,len(self.param_list)):
-					if self.tab.get_value(i,2)==self.param_list[ii].human_label:
+					if self.tab.get_value(i,0)==self.param_list[ii].human_label:
 						token=self.param_list[ii].token
 				break
 		if token!="":
@@ -209,8 +196,9 @@ class scan_vbox(QWidget):
 		scan_import_from_hpc(self.scan_io.scan_dir)
 
 	def scan_tab_ml_build_vector(self):
-		scan=scan_ml(self.scan_io.scan_dir)
-		scan.build_vector()
+		pass
+		#scan=scan_ml(self.scan_io.scan_dir)
+		#scan.build_vector()
 
 	def plot_fits(self):
 		scan_plot_fits(self.scan_io.scan_dir)
@@ -263,9 +251,6 @@ class scan_vbox(QWidget):
 				self.snapshot_window.show()
 				return
 
-			#dialog.destroy()
-			#print cur_dir=os.getcwd()
-			#print full_file_name
 			file_name=os.path.basename(full_file_name)
 
 			plot_data=dat_file()
@@ -298,91 +283,62 @@ class scan_vbox(QWidget):
 
 		for i in range(0,self.tab.rowCount()):
 			item=scan_program_line()
-			item.file=self.tab.get_value(i,0)
-			item.token=self.tab.get_value(i,1)
-			item.human_name=self.tab.get_value(i,2)
-			item.values=self.tab.get_value(i,3)
-			item.opp=self.tab.get_value(i,4)
+			item.human_name=self.tab.get_value(i,0)
+			item.values=self.tab.get_value(i,1)
+			item.opp=self.tab.get_value(i,2)
 			self.scan_io.program_list.append(item)
 
 		self.scan_io.save()
 
-	def tab_changed(self):
+	def cell_changed(self, y,x):
+		print(x,y)
 		self.rebuild_op_type_widgets()
 		self.save_combo()
 
-	def combo_duplicate_changed(self):
-		#print("combo changed")
-		for i in range(0,self.tab.rowCount()):
-			found=False
-			value=self.tab.get_value(i,4)
+	def callback_combo_changed(self):
+		combobox = self.sender()
+		ix = self.tab.indexAt(combobox.pos())
+		y=ix.row()
+		value=self.tab.get_value(y,2)
+		if value == "constant":
+			self.tab.set_value(y,1,"0.0")
 
-			if value == "none":
-				found=True
+		elif value == "scan":
+			self.tab.set_value(y,1,"1e-5 1e-6 1e-7 1e-8")
 
-			if value == "constant":
-				found=True
-				if self.tab.get_value(i,3)=="duplicate":
-					self.tab.set_value(i,3,"0.0")
-	
-			if value == "scan":
-				found=True
-				if self.tab.get_value(i,3)=="duplicate":
-					self.tab.set_value(i,3,"0.0 0.0 0.0")
+		elif value == "python_code":
+			self.tab.set_value(y,1,"python code")
 
-			if value == "python_code":
-				found=True
-				if self.tab.get_value(i,3)=="duplicate":
-					self.tab.set_value(i,3,"0.0")
-
-			if value == "random_file_name":
-				found=True
-				self.tab.set_value(i,0,"not needed")
-				self.tab.set_value(i,1,"not needed")
-				self.tab.set_value(i,2,"not needed")
-				if self.tab.get_value(i,3)=="duplicate":
-					self.tab.set_value(i,3,"10")
-
-			if found==False:
-				self.tab.set_value(i,3,"duplicate")
+		elif value == "random_file_name":
+			self.tab.set_value(y,0,"not needed")
+			self.tab.set_value(y,1,"10")
+		else:
+			self.tab.set_value(y,1,"duplicate")
 
 		self.save_combo()
 
-	def toggled_cb( self, cell, path, model ):
-		model[path][3] = not model[path][3]
-		#print(model[path][2],model[path][3])
-		self.save_combo()
-		return
-
-	def insert_row(self,i,v0,v1,v2,v3,v4):
+	def insert_row(self,i,v0,v1,v2):
 		self.tab.blockSignals(True)
 		self.tab.insertRow(i)
 
-		item = QTableWidgetItem(v0)
-		self.tab.setItem(i,0,item)
+		self.item = gpvdm_select()
+		self.item.setText(v0)
+		self.item.button.clicked.connect(self.callback_show_list)
+
+		self.tab.setCellWidget(i,0,self.item)
 
 		item = QTableWidgetItem(v1)
 		self.tab.setItem(i,1,item)
 
-
-		self.item = gpvdm_select()
-		self.item.setText(v2)
-		self.item.button.clicked.connect(self.callback_show_list)
-
-		self.tab.setCellWidget(i,2,self.item)
-
-		item = QTableWidgetItem(v3)
-		self.tab.setItem(i,3,item)
-
-		item = QTableWidgetItem(v4)
-		self.tab.setItem(i,4,item)
+		item = QTableWidgetItem(v2)
+		self.tab.setItem(i,2,item)
 		self.tab.blockSignals(False)
 
 	def load(self):
 		self.tab.blockSignals(True)
 		self.tab.clear()
 		self.tab.setRowCount(0)
-		self.tab.setHorizontalHeaderLabels([_("File"), _("Token"), _("Parameter to change"), _("Values"), _("Opperation")])
+		self.tab.setHorizontalHeaderLabels([ _("Parameter to change"), _("Values"), _("Opperation")])
 		self.tab.blockSignals(False)
 
 		self.status_bar.showMessage(self.scan_io.scan_dir+"("+os.path.basename(self.scan_io.config_file)+")")
@@ -390,14 +346,13 @@ class scan_vbox(QWidget):
 		self.scan_io.load(self.scan_io.config_file)
 		for i in range(0,len(self.scan_io.program_list)):
 			l=self.scan_io.program_list[i]
-			self.insert_row(i,l.file,l.token,l.human_name,l.values,l.opp)
+			self.insert_row(i,l.human_name,l.values,l.opp)
 
 		self.rebuild_op_type_widgets()
 
 
 	def contextMenuEvent(self, event):
 		self.popMenu.popup(QCursor.pos())
-
 
 	def rebuild_op_type_widgets(self):
 		self.tab.blockSignals(True)
@@ -409,27 +364,20 @@ class scan_vbox(QWidget):
 		items.append("none")
 
 		for i in range(0,self.tab.rowCount()):
-			items.append(str(self.tab.get_value(i,2)))
+			items.append(str(self.tab.get_value(i,0)))
 
 		for i in range(0,self.tab.rowCount()):
-			save_value=self.tab.get_value(i,4)
+			save_value=self.tab.get_value(i,2)
 			
 			combobox = QComboBox()
 			for a in items:
 				combobox.addItem(a)
 
-			self.tab.setCellWidget(i,4, combobox)
+			self.tab.setCellWidget(i,2, combobox)
 			
-			self.tab.set_value(i,4,save_value)
-			combobox.currentIndexChanged.connect(self.combo_duplicate_changed)
+			self.tab.set_value(i,2,save_value)
+			combobox.currentIndexChanged.connect(self.callback_combo_changed)
 		self.tab.blockSignals(False)
-
-	def set_tab_caption(self,name):
-		mytext=name
-		if len(mytext)<10:
-			for i in range(len(mytext),10):
-				mytext=mytext+" "
-		self.tab_label.set_text(mytext)
 
 
 	def callback_run_simulation(self):
@@ -478,41 +426,31 @@ class scan_vbox(QWidget):
 		self.tokens=tokens()
 		self.myserver=server_get()
 		self.status_bar=QStatusBar()
-		self.param_list=get_scan_human_labels().list
 		#self.tab_label=tab_label
 
 		self.scan_io=scan_io()
 		self.scan_io.parent_window=self
-		#self.scan_io.set_path(self.scan_io.scan_dir)
 		self.scan_io.load(scan_file)
 		self.scan_io.make_dir()
 
 		toolbar=QToolBar()
-		toolbar.setIconSize(QSize(32, 32))
-
-		self.tb_add = QAction(icon_get("list-add"), _("Add parameter to scan"), self)
-		self.tb_add.triggered.connect(self.callback_add_item)
-		toolbar.addAction(self.tb_add)
-
-		self.tb_minus = QAction(icon_get("list-remove"), _("Delete item"), self)
-		self.tb_minus.triggered.connect(self.callback_delete_item)
-		toolbar.addAction(self.tb_minus)
-
-		self.tb_down = QAction(icon_get("go-down"), _("Move down"), self)
-		self.tb_down.triggered.connect(self.callback_move_down)
-		toolbar.addAction(self.tb_down)
-
-		self.tb_up = QAction(icon_get("go-up"), _("Move up"), self)
-		self.tb_up.triggered.connect(self.callback_move_up)
-		toolbar.addAction(self.tb_up)
 		
+
+		self.scan_tab_vbox.addWidget(toolbar)
+
+		self.tab = gpvdm_tab(toolbar=toolbar)
+
 		self.tb_command = QAction(icon_get("utilities-terminal"), _("Insert python command"), self)
 		self.tb_command.triggered.connect(self.callback_insert_command)
 		toolbar.addAction(self.tb_command)
 
-		self.scan_tab_vbox.addWidget(toolbar)
+		self.tab.tb_add.triggered.connect(self.callback_add_item)
 
-		self.tab = gpvdm_tab()
+		self.tab.user_remove_rows.connect(self.callback_delete_item)
+
+		self.tab.tb_down.triggered.connect(self.callback_move_down)
+
+		self.tab.tb_up.triggered.connect(self.callback_move_up)
 
 		css_apply(self.notebook,"tab_default.css")
 		self.notebook.setMovable(True)
@@ -522,59 +460,20 @@ class scan_vbox(QWidget):
 
 
 		
-		self.tab.setColumnCount(5)
-		#if enable_betafeatures()==False:
-		#	self.tab.setColumnHidden(0, True)
-		#	self.tab.setColumnHidden(1, True)
+		self.tab.setColumnCount(3)
 
 		self.tab.setSelectionBehavior(QAbstractItemView.SelectRows)
+		self.tab.setColumnWidth(0, 300)
+		self.tab.setColumnWidth(1, 300)
 		self.tab.setColumnWidth(2, 300)
-		self.tab.setColumnWidth(3, 300)
-		self.tab.setColumnWidth(4, 300)
 		self.load()
 
-		self.tab.cellChanged.connect(self.tab_changed)
-
+		self.tab.cellChanged.connect(self.cell_changed)
+		
 		self.scan_tab_vbox.addWidget(self.tab)
 
-		self.notebook.popMenu = QMenu(self)
-
-		#self.mp_show_list=QAction(_("Select parameter to scan"), self)
-		#self.mp_show_list.triggered.connect(self.callback_show_list)
-		#self.popMenu.addAction(self.mp_show_list)
-
-		self.notebook.popMenu.addSeparator()
-
-		self.mp_delete=QAction(_("Delete item"), self)
-		self.mp_delete.triggered.connect(self.callback_delete_item)
-		self.notebook.popMenu.addAction(self.mp_delete)
-
-		self.mp_copy=QAction(_("Copy"), self)
-		self.mp_copy.triggered.connect(self.callback_copy_item)
-		self.notebook.popMenu.addAction(self.mp_copy)
-
-		self.mp_paste=QAction(_("Paste"), self)
-		self.mp_paste.triggered.connect(self.callback_paste_item)
-		self.notebook.popMenu.addAction(self.mp_paste)
-
-		self.notebook.popMenu.addSeparator()
-
-		self.mp_add=QAction(_("Add item"), self)
-		self.mp_add.triggered.connect(self.callback_add_item)
-		self.notebook.popMenu.addAction(self.mp_add)
-
-		self.mp_down=QAction(_("Move down"), self)
-		self.mp_down.triggered.connect(self.callback_move_down)
-		self.notebook.popMenu.addAction(self.mp_down)
-
-		self.mp_down=QAction(_("Move down"), self)
-		self.mp_down.triggered.connect(self.callback_move_down)
-		self.notebook.popMenu.addAction(self.mp_down)
-
-		self.notebook.popMenu.addSeparator()
-		self.notebook.setMinimumSize(700,500)
-		
-		
+		self.notebook.setMinimumSize(1000,500)
+				
 		self.program_widget=QWidget()
 		self.program_widget.setLayout(self.scan_tab_vbox)
 		self.notebook.addTab(self.program_widget,"Commands")

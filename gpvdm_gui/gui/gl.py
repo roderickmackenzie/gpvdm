@@ -45,10 +45,6 @@ from PyQt5.QtWidgets import QWidget, QHBoxLayout, QMenu, QColorDialog, QAction
 
 import os
 
-#inp
-from inp import inp_load_file
-from inp import inp_search_token_value
-
 #path
 from cal_path import get_materials_path
 from cal_path import get_sim_path
@@ -67,7 +63,6 @@ from PyQt5.QtGui import QPainterPath,QPolygonF
 from PyQt5.QtCore import QRectF,QPoint
 
 import numpy as np
-from inp import inp_get_token_value
 from str2bool import str2bool
 
 import random
@@ -78,7 +73,6 @@ import glob
 
 from global_objects import global_object_register
 
-from inp import inp_search_token_array
 from math import fabs
 
 from gl_fallback import gl_fallback
@@ -130,8 +124,7 @@ from gl_list import gl_objects
 from gl_scale import scale_screen_x2m
 from gl_scale import scale_screen_y2m
 
-from inp import inp_update_token_value
-from file_watch import get_watch
+#from file_watch import get_watch
 from gl_input import gl_input
 
 from gl_text import gl_text
@@ -147,6 +140,8 @@ from gl_render_obj import gl_render_obj
 from gl_photons import gl_photons
 from gl_scale import gl_scale
 from PyQt5.QtCore import pyqtSignal
+from gpvdm_json import gpvdm_data
+from gl_toolbar import gl_toolbar
 
 class open_gl_light:
 	def __init__(self):
@@ -154,14 +149,14 @@ class open_gl_light:
 		self.number=GL_LIGHT0
 
 if open_gl_ok==True:		
-	class glWidget(QGLWidget,shape_layer, gl_lib_ray,gl_objects, gl_text,gl_move_view,gl_mesh,gl_layer_editor,gl_cords,gl_base_widget,gl_main_menu,gl_input, gl_contacts, gl_draw_light_profile, gl_graph, gl_draw_circuit, gl_color, gl_shapes, gl_render_obj, gl_photons):
+	class glWidget(QGLWidget,shape_layer, gl_lib_ray,gl_objects, gl_text,gl_move_view,gl_mesh,gl_layer_editor,gl_cords,gl_base_widget,gl_main_menu,gl_input, gl_contacts, gl_draw_light_profile, gl_graph, gl_draw_circuit, gl_color, gl_shapes, gl_render_obj, gl_photons, gl_toolbar):
 
 
 		text_output = pyqtSignal(str)
 
 		def __init__(self, parent):
 			QGLWidget.__init__(self, parent)
-			gl_move_view.__init__(self)
+
 			gl_base_widget.__init__(self)
 			gl_objects.__init__(self)
 			gl_lib_ray.__init__(self)
@@ -170,7 +165,8 @@ if open_gl_ok==True:
 			gl_render_obj.__init__(self)
 			gl_input.__init__(self)
 			gl_graph.__init__(self)
-
+			gl_toolbar.__init__(self)
+			gl_move_view.__init__(self)
 			self.lit=True
 			self.setAutoBufferSwap(False)
 
@@ -188,16 +184,34 @@ if open_gl_ok==True:
 
 			l=open_gl_light()
 			l.xyz=[0, -5, 10, 1.0]
-			l.number=GL_LIGHT1
+			l.number=GL_LIGHT2
 			self.lights.append(l)
+
+			l=open_gl_light()
+			l.xyz=[-10, -5, 0, 1.0]
+			l.number=GL_LIGHT3
+			self.lights.append(l)
+
+			l=open_gl_light()
+			l.xyz=[10, -5, 0, 1.0]
+			l.number=GL_LIGHT4
+			self.lights.append(l)
+
+
+			#l=open_gl_light()
+			#l.xyz=[-10, 5, 0, 1.0]
+			#l.number=GL_LIGHT5
+			#self.lights.append(l)
+
+			#l=open_gl_light()
+			#l.xyz=[10, 5, 0, 1.0]
+			#l.number=GL_LIGHT6
+			#self.lights.append(l)
 
 			self.failed=True
 			self.graph_path=None
 			self.scene_built=False
 			#view pos
-
-			self.graph_data=dat_file()
-
 
 			self.tab_active_layers=True
 			self.dy_layer_offset=0.05
@@ -222,7 +236,13 @@ if open_gl_ok==True:
 			self.enable_light_profile=True
 			self.build_main_menu()
 			self.pre_built_scene=None
+			self.open_gl_working=True
 
+			self.gl_array_lines=[]
+			self.gl_array_lines_float32=[]
+
+			self.gl_array_colors=[]
+			self.gl_array_colors_float32=[]
 
 		#def bix_axis(self):
 		#	for xx in range(0,10):
@@ -252,8 +272,8 @@ if open_gl_ok==True:
 				obj.z0=0.0
 				obj.x0=0.0
 				obj.y0=epi.get_layer_start(l)
-
-				name=obj.name
+				#print(obj.shape_name,epi.get_layer_start(l))
+				name=obj.shape_name
 				display_name=name
 				#alpha=obj.alpha
 				#if len(obj.shapes)>0:
@@ -266,25 +286,28 @@ if open_gl_ok==True:
 				if l==btm_contact_layer:
 					contact_layer=True
 				#print(">>>>",l,contact_layer,contact_layers)
+#				print(obj.shape_name)
 				if contact_layer==False:
 					self.shape_layer(obj)			
 
-				if obj.dos_file.startswith("dos")==True:
-					o=gl_base_object()
-					o.xyz.x=x+scale_get_device_x()+0.1
-					o.xyz.y=y
-					o.xyz.z=z
+				if obj.layer_type=="active":
+					if self.view.render_text==True:
+						o=gl_base_object()
+						o.xyz.x=x+scale_get_device_x()+0.1
+						o.xyz.y=y
+						o.xyz.z=z
 
-					o.dxyz.x=0.1
-					o.dxyz.y=y_len
+						o.dxyz.x=0.1
+						o.dxyz.y=y_len
 
-					o.r=0.0
-					o.g=0.0
-					o.b=1.0
+						o.r=0.0
+						o.g=0.0
+						o.b=1.0
 
-					o.type="plane"
-					display_name=display_name+" ("+_("active")+")"
-					self.gl_objects_add(o)
+						o.type="plane"
+
+						display_name=display_name+" ("+_("active")+")"
+						self.gl_objects_add(o)
 
 				if self.view.render_text==True:
 					if self.view.zoom<40:
@@ -310,13 +333,13 @@ if open_gl_ok==True:
 
 
 		def render(self):
+			data=gpvdm_data()
 			self.update_real_to_gl_mul()
 
 			x=gl_scale.project_m2screen_x(0)
 			y=0.0#project_m2screen_y(0)
 			z=gl_scale.project_m2screen_z(0)
 			#print(">>>>>>22",project_m2screen_z(0))
-			self.clear_color()
 			glClearColor(self.view.bg_color[0], self.view.bg_color[1], self.view.bg_color[2], 0.5)
 
 
@@ -326,21 +349,10 @@ if open_gl_ok==True:
 
 
 			self.emission=False
-			self.ray_model=False
-			
-			lines=inp_load_file(os.path.join(get_sim_path(),"ray.inp"))
-
-			if lines!=False:
-				self.ray_model=val=str2bool(inp_search_token_value(lines, "#ray_auto_run"))
+			self.ray_model=data.ray.segments[0].config.ray_auto_run
 
 			lines=[]
 			epi=get_epi()
-			for i in range(0,len(epi.layers)):
-				if epi.layers[i].dos_file!="none":
-					lines=inp_load_file(os.path.join(get_sim_path(),epi.layers[i].dos_file+".inp"))
-					if lines!=False and len(lines)!=0:
-						if str2bool(lines[3])==True:
-							self.emission=True
 					
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 			glLoadIdentity()
@@ -375,8 +387,6 @@ if open_gl_ok==True:
 			if self.plot_graph==True:
 				self.draw_graph()
 
-			#for l in self.lights:
-			#	box(l.xyz[0],l.xyz[1],l.xyz[2],0.5,0.5,0.5,1.0,0,0,0.5)
 
 			if self.view.render_photons==True:
 				self.draw_photons(x,z)
@@ -416,17 +426,17 @@ if open_gl_ok==True:
 		def load_data(self):
 			lines=[]
 
-			val=inp_get_token_value(os.path.join(get_sim_path(),"light.inp"), "#Psun")
-			self.dump_energy_slice_xpos=int(inp_get_token_value(os.path.join(get_sim_path(),"dump.inp"), "#dump_energy_slice_xpos"))
-			self.dump_energy_slice_ypos=int(inp_get_token_value(os.path.join(get_sim_path(),"dump.inp"), "#dump_energy_slice_ypos"))
-			self.dump_energy_slice_zpos=int(inp_get_token_value(os.path.join(get_sim_path(),"dump.inp"), "#dump_energy_slice_zpos"))
-			self.light_illuminate_from=inp_get_token_value(os.path.join(get_sim_path(),"light.inp"), "#light_illuminate_from")
-			self.dump_1d_slice_xpos=int(inp_get_token_value(os.path.join(get_sim_path(),"dump.inp"), "#dump_1d_slice_xpos"))
-			self.dump_1d_slice_zpos=int(inp_get_token_value(os.path.join(get_sim_path(),"dump.inp"), "#dump_1d_slice_zpos"))
+			data=gpvdm_data()
+			self.dump_energy_slice_xpos=int(data.dump.dump_energy_slice_xpos)
+			self.dump_energy_slice_ypos=int(data.dump.dump_energy_slice_ypos)
+			self.dump_energy_slice_zpos=int(data.dump.dump_energy_slice_zpos)
+			self.light_illuminate_from=data.light.light_illuminate_from
+			self.dump_1d_slice_xpos=int(data.dump.dump_1d_slice_xpos)
+			self.dump_1d_slice_zpos=int(data.dump.dump_1d_slice_zpos)
 
-			self.dump_verbose_electrical_solver_results=str2bool(inp_get_token_value(os.path.join(get_sim_path(),"dump.inp"), "#dump_verbose_electrical_solver_results"))
+			self.dump_verbose_electrical_solver_results=str2bool(data.dump.dump_verbose_electrical_solver_results)
 			try:
-				self.suns=float(val)
+				self.suns=float(data.light.Psun)
 			except:
 				self.suns=0.0
 
@@ -434,7 +444,7 @@ if open_gl_ok==True:
 			#self.x_mesh=get_mesh().x
 			#self.z_mesh=get_mesh().z
 
-			self.x_len=get_mesh().get_xlen()
+			self.x_len=get_mesh().x.get_len()
 			if os.path.isdir(os.path.join(os.path.join(get_sim_path(),"ray_trace")))==True:
 				self.view.render_photons=False
 
@@ -444,7 +454,7 @@ if open_gl_ok==True:
 			self.gl_objects_clear()
 			self.menu_update()
 			self.text_clear_lib()
-
+			data=gpvdm_data()
 			x=gl_scale.project_m2screen_x(0)
 			z=gl_scale.project_m2screen_z(0)
 
@@ -453,34 +463,31 @@ if open_gl_ok==True:
 
 			if self.enable_draw_light_source==True:
 
-				lines=inp_load_file(os.path.join(get_sim_path(),"ray.inp"))
+				point_x=float(data.ray.segments[0].config.ray_xsrc)
+				point_y=float(data.ray.segments[0].config.ray_ysrc)
+				if point_x==-1.0:
+					point_x=0.0
+					point_y=0.0
+				else:
+					point_x=gl_scale.project_m2screen_x(point_x)
+					point_y=gl_scale.project_m2screen_y(point_y)
 
-				if lines!=False:
-					point_x=float(inp_search_token_value(lines, "#ray_xsrc"))
-					point_y=float(inp_search_token_value(lines, "#ray_ysrc"))
-					if point_x==-1.0:
-						point_x=0.0
-						point_y=0.0
-					else:
-						point_x=gl_scale.project_m2screen_x(point_x)
-						point_y=gl_scale.project_m2screen_y(point_y)
+				a=gl_base_object()
+				a.id=["ray_src"]
+				a.type="box"
+				a.xyz.x=point_x
+				a.xyz.y=point_y
+				a.xyz.z=0.0
+				a.dxyz.dx=0.2
+				a.dxyz.dy=0.2
+				a.dxyz.dz=0.2
+				a.r=0.0
+				a.g=0.0
+				a.b=1.0
 
-					a=gl_base_object()
-					a.id=["ray_src"]
-					a.type="box"
-					a.xyz.x=point_x
-					a.xyz.y=point_y
-					a.xyz.z=0.0
-					a.dxyz.dx=0.2
-					a.dxyz.dy=0.2
-					a.dxyz.dz=0.2
-					a.r=0.0
-					a.g=0.0
-					a.b=1.0
-
-					a.moveable=True
-					a.selectable=True
-					self.gl_objects_add(a)
+				a.moveable=True
+				a.selectable=True
+				self.gl_objects_add(a)
 
 			if self.draw_electrical_mesh==True:
 				self.draw_mesh()
@@ -489,8 +496,8 @@ if open_gl_ok==True:
 				self.draw_device2(x,z)
 				self.draw_contacts()
 
-			if self.plot_circuit==True:
-				self.draw_circuit()
+			#if self.plot_circuit==True:
+			#	self.draw_circuit()
 
 			if self.enable_light_profile==True:
 				self.draw_light_profile()
@@ -503,6 +510,23 @@ if open_gl_ok==True:
 				o.b=0.5
 				o.type="grid"
 				self.gl_objects_add(o)
+
+			if 1==0:
+				for l in self.lights:
+					a=gl_base_object()
+					a.id=["rod"]
+					a.type="box"
+					a.xyz.x=l.xyz[0]
+					a.xyz.y=l.xyz[1]
+					a.xyz.z=l.xyz[2]
+					a.dxyz.x=0.4
+					a.dxyz.y=0.4
+					a.dxyz.z=0.4
+					a.alpha=0.5
+					a.r=1.0
+					a.g=0.0
+					a.b=0.0
+					self.gl_objects_add(a)
 
 			if self.pre_built_scene!=None:
 				self.gl_objects_load(self.pre_built_scene)
@@ -551,8 +575,10 @@ if open_gl_ok==True:
 			glEnable(GL_DEPTH_TEST)
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE);	#GL_ONE_MINUS_SRC_ALPHA
 			glEnable(GL_BLEND);
+			glEnableClientState(GL_VERTEX_ARRAY)
 			glShadeModel(GL_SMOOTH)
-
+			glColorMaterial(GL_FRONT, GL_DIFFUSE)		#This means we can set the color of a material using glColor and not glMaterialfv
+			glEnable(GL_COLOR_MATERIAL)							#This means we can set the color of a material using glColor and not glMaterialfv
 
 
 				#lightZeroPosition = [0, 0, -10, 1.0]
@@ -607,7 +633,8 @@ if open_gl_ok==True:
 
 			self.failed=False
 			global_object_register("gl_force_redraw",self.force_redraw)
-			get_watch().add_call_back("light.inp",self.force_redraw)
+			global_object_register("gl_do_draw",self.do_draw)
+			#get_watch().add_call_back("light.inp",self.force_redraw)
 			get_epi().add_callback(self.force_redraw)
 			#get_watch().add_call_back("shape[0-9]+.inp",self.force_redraw)
 			#get_epi().changed.connect(self.boom)
@@ -624,6 +651,7 @@ else:
 			gl_fallback.__init__(self)
 			self.view=view_point()
 			self.failed=True
+			self.open_gl_working=False
 
 		def reset(self):
 			pass

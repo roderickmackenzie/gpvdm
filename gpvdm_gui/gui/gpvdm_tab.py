@@ -35,7 +35,6 @@ from PyQt5.QtGui import QCursor
 from PyQt5.QtCore import pyqtSignal
 
 from QComboBoxLang import QComboBoxLang
-from QComboBoxShape import QComboBoxShape
 from icon_lib import icon_get
 
 from gpvdm_select import gpvdm_select
@@ -112,13 +111,16 @@ class gpvdm_tab(QTableWidget):
 		lines=text.rstrip().split()
 		item=self.selectedIndexes()[0]
 		y=item.row()
-		x_start=item.column()
-
+		#x_start=item.column()
+		
 		for l in lines:
 			if (y==self.rowCount()):
 				self.insertRow(y)
+			x=0
+			for s in l.split(";"):
 
-			self.set_value(y,x_start,l)
+				self.set_value(y,x,s)
+				x=x+1
 			y=y+1
 
 		self.blockSignals(False)
@@ -135,17 +137,13 @@ class gpvdm_tab(QTableWidget):
 			self.cellWidget(y, x).blockSignals(True)
 			self.cellWidget(y, x).setValue_using_english(value)
 			self.cellWidget(y, x).blockSignals(False)
-		elif type(self.cellWidget(y, x))==QComboBoxShape:
-			self.cellWidget(y, x).blockSignals(True)
-			self.cellWidget(y, x).setValue(value)
-			self.cellWidget(y, x).blockSignals(False)
 		elif type(self.cellWidget(y,x))==gpvdm_select:
 			self.cellWidget(y, x).blockSignals(True)
 			self.cellWidget(y, x).setText(value)
 			self.cellWidget(y, x).blockSignals(False)
 		elif type(self.cellWidget(y,x))==energy_to_charge:
 			self.cellWidget(y, x).blockSignals(True)
-			self.cellWidget(y, x).setText(value)
+			self.cellWidget(y, x).updateValue(value)
 			self.cellWidget(y, x).blockSignals(False)
 		elif type(self.cellWidget(y,x))==gpvdm_select_material:
 			self.cellWidget(y, x).blockSignals(True)
@@ -216,8 +214,6 @@ class gpvdm_tab(QTableWidget):
 			return self.cellWidget(y, x).text()
 		elif type(self.cellWidget(y,x))==gpvdm_applied_voltage:
 			return self.cellWidget(y, x).text()
-		elif type(self.cellWidget(y, x))==QComboBoxShape:
-			return self.cellWidget(y, x).currentText()
 		else:
 			return self.item(y, x).text()
 

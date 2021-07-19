@@ -58,6 +58,8 @@ class gl_base_object():
 		self.allow_cut_view=True
 		self.triangles=[]
 		self.points=[]
+		self.gl_array=None	#remove
+		self.gl_array_done=False
 		self.text=""
 		self.texture=None
 

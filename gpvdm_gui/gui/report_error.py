@@ -28,17 +28,14 @@
 import os
 from win_lin import running_on_linux
 from threading import Thread
-from ver import ver_core
-from ver import ver_subver
 
 import platform
 from gpvdm_http import get_data_from_web
 import hashlib
 from sim_warnings import sim_warnings
-from code_ctrl import enable_webupdates
 import i18n
 _ = i18n.language.gettext
-from ver import ver
+from const_ver import const_ver
 
 #qt
 from PyQt5.QtCore import QSize, Qt

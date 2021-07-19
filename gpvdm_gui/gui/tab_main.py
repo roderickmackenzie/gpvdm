@@ -28,14 +28,11 @@
 import math
 from layer_widget import layer_widget
 import os
-from cal_path import get_materials_path
-from inp import inp_search_token_value
 from str2bool import str2bool
 from tab_base import tab_base
 from help import help_window
 from display import display_widget
 from win_lin import running_on_linux
-from code_ctrl import enable_webupdates
 
 
 from PyQt5.QtWidgets import QWidget,QHBoxLayout,QSplitter
@@ -60,11 +57,16 @@ class tab_main(QWidget,tab_base):
 		self.three_d=display_widget()
 		#self.three_d.show()
 
-		self.frame=ribbon_device()
+		self.ribbon=ribbon_device()
+		self.ribbon.addWidget(self.three_d.display.toolbar0)
+		self.ribbon.addWidget(self.three_d.display.toolbar1)
+		self.ribbon.addWidget(self.ribbon.fx_box)
+		self.ribbon.fx_box.cb.currentIndexChanged.connect(self.three_d.fx_box_changed)
 
-		
-		mainLayout.addWidget(self.frame)
-		self.frame.setMinimumSize(100, 0)
+		self.three_d.fx_box=self.ribbon.fx_box
+
+		mainLayout.addWidget(self.ribbon)
+		self.ribbon.setMinimumSize(100, 0)
 		mainLayout.addWidget(self.three_d)
 		mainLayout.setStretchFactor ( 1, 1 )
 

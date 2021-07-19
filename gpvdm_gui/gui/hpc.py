@@ -28,9 +28,6 @@
 
 import os
 from icon_lib import icon_get
-from search import find_fit_log
-from search import find_fit_speed_log
-from inp import inp_search_token_value
 from status_icon import status_icon_stop
 
 #qt

@@ -32,64 +32,11 @@ from PyQt5.QtWidgets import QWidget
 from PyQt5.QtGui import QPainter,QFont,QColor,QPen
 
 from PyQt5.QtCore import pyqtSignal
-
-class gtkswitch(QWidget):
-
-	changed = pyqtSignal()
+from generic_switch import generic_switch 
+class gtkswitch(generic_switch):
 
 	def __init__(self):      
-		super(gtkswitch, self).__init__()
-		self.setMaximumSize(85,30)
-		self.initUI()
-
-	def initUI(self):
-
-		#self.setMinimumSize(1, 30)
-		self.value = False
-
-	def get_value(self):
-		if self.value==True:
-			return "true"
-		else:
-			return "false"
-
-	def set_value(self, value):
-
-		self.value = value
+		generic_switch.__init__(self,state0="On",state1="Off",state0_value=True,state1_value=False)
 
 
-	def paintEvent(self, e):
-		qp = QPainter()
-		qp.begin(self)
-		self.drawWidget(qp)
-		qp.end()
 
-
-	def drawWidget(self, qp):
-		font = QFont('Sans', 11, QFont.Normal)
-		qp.setFont(font)
-
-		pen = QPen(QColor(20, 20, 20), 1, Qt.SolidLine)
-		
-		qp.setPen(pen)
-		qp.setBrush(Qt.NoBrush)
-
-		if self.value==True:
-			qp.setBrush(QColor(95,163,235))
-			qp.drawRoundedRect(0, 0.0, 80.0,22.0,5.0,5.0)
-			qp.setBrush(QColor(230,230,230))
-			qp.drawRoundedRect(40, 2, 38,18.0,5.0,5.0)
-
-			qp.drawText(8, 17, _("ON"))
-		else:
-			qp.setBrush(QColor(180,180,180))
-			qp.drawRoundedRect(0, 0.0, 80.0,22.0,5.0,5.0)			
-			qp.setBrush(QColor(230,230,230))
-			qp.drawRoundedRect(2, 2, 38,18.0,5.0,5.0)
-			qp.drawText(44, 17, _("OFF"))
-
-	def mouseReleaseEvent(self, QMouseEvent):
-		if QMouseEvent.x()<80:
-			self.value= not self.value
-			self.repaint()
-			self.changed.emit()

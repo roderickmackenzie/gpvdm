@@ -57,10 +57,13 @@ class fit_window_plot(QWidget):
 
 	def draw_graph(self):
 
-		error_sim=os.path.join(get_sim_path(),"fit_error_sim"+str(self.index)+".dat")
-		error_exp=os.path.join(get_sim_path(),"fit_error_exp"+str(self.index)+".dat")
-		delta=os.path.join(get_sim_path(),"fit_error_delta"+str(self.index)+".dat")
+		error_sim=os.path.join(self.path,"fit_error_sim.dat")
+		error_exp=os.path.join(self.path,"fit_error_exp.dat")
+		print("update",error_sim,error_exp)
+		delta=os.path.join(self.path,"fit_error_delta.dat")
 		self.plot.load_data([error_sim,error_exp,delta])
+		if (len(self.plot.y1_y2)>=2):
+			self.plot.y1_y2[2]="y2"
 		self.plot.set_labels(["Simulation","Experiment","Delta"])
 
 		self.plot.do_plot()
@@ -77,10 +80,10 @@ class fit_window_plot(QWidget):
 	def export_gnuplot(self):
 		self.plot.callback_save_gnuplot()
 
-	def __init__(self,index):
+	def __init__(self,path):
 		QWidget.__init__(self)
 		self.vbox=QVBoxLayout()
-		self.index=index
+		self.path=path
 
 		self.plot=plot_widget(enable_toolbar=False)
 		self.vbox.addWidget(self.plot)

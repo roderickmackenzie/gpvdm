@@ -28,12 +28,7 @@
 
 
 import os
-
-from dump_io import dump_io
-from tb_item_sim_mode import tb_item_sim_mode
 from tb_item_sun import tb_item_sun
-
-from cal_path import get_css_path
 
 #qt
 from PyQt5.QtWidgets import QTextEdit, QAction
@@ -41,8 +36,7 @@ from PyQt5.QtCore import QSize, Qt,QFile,QIODevice
 from PyQt5.QtWidgets import QWidget,QSizePolicy,QVBoxLayout,QHBoxLayout,QToolBar, QToolButton,QDialog
 
 from plot_gen import plot_gen
-from info import sim_info
-from win_lin import desktop_open
+from window_json_ro_viewer import window_json_ro_viewer
 
 #windows
 from scan import scan_class
@@ -60,30 +54,25 @@ from cal_path import get_sim_path
 from inp import inp
 from play import play
 from util import wrap_text
-from optics import class_optical
 
 import webbrowser
 from global_objects import global_object_register
 
 from lock import get_lock
 from QAction_lock import QAction_lock
+from ribbon_page import ribbon_page
 
-class ribbon_home(QToolBar):
-
-	def callback_buy(self):
-		webbrowser.open("https://www.gpvdm.com/buy.html")
+class ribbon_home(ribbon_page):
 
 	def __init__(self):
-		QToolBar.__init__(self)
+		ribbon_page.__init__(self)
 		self.myserver=server_get()
-
-		self.setToolButtonStyle( Qt.ToolButtonTextUnderIcon)
-		self.setIconSize(QSize(42, 42))
 
 		self.scan_window=None
 		self.fit_window=None
-		self.optics_window=False
-
+		self.optics_window=None
+		self.simulation_notes_window=None
+		self.server_config_window=None
 		self.undo = QAction(icon_get("edit-undo"), _("Undo"), self)
 		self.addAction(self.undo)
 
@@ -123,6 +112,8 @@ class ribbon_home(QToolBar):
 		self.optics.clicked.connect(self.callback_optics_sim)
 		self.addAction(self.optics)
 
+
+
 		self.sun=tb_item_sun()
 		#self.sun.changed.connect(self.callback_sun)
 		self.addWidget(self.sun)
@@ -131,10 +122,13 @@ class ribbon_home(QToolBar):
 		spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 		self.addWidget(spacer)
 
-		if get_lock().is_trial()==True and get_lock().is_registered()==True:
-			self.home_cart = QAction(icon_get("upgrade"), _("Upgrade to\ngpvdm professional."), self)
-			self.home_cart.triggered.connect(self.callback_buy)
-			self.addAction(self.home_cart)
+		self.server_config = QAction_lock("cpu", _("Simulation\nHardware"), self,"server_config")
+		self.server_config.clicked.connect(self.callback_server_config)
+		self.addAction(self.server_config)
+
+		self.simulation_notes = QAction_lock("text-x-generic", _("Simulation\nNotes"), self,"ribbon_home_notes")
+		self.simulation_notes.clicked.connect(self.callback_simulation_notes)
+		self.addAction(self.simulation_notes)
 
 		self.help = QAction(icon_get("internet-web-browser"), _("Help"), self)
 		self.addAction(self.help)
@@ -152,12 +146,14 @@ class ribbon_home(QToolBar):
 		if self.fit_window!=None:
 			del self.fit_window
 			self.fit_window=None
+
+		if self.optics_window!=None:
+			del self.optics_window
+			self.optics_window=None
+
 		self.sun.update()
 
-		if inp().isfile(os.path.join(get_sim_path(),"fit.inp"))==True:
-			self.fit.setVisible(True)
-		else:
-			self.fit.setVisible(False)
+		self.fit.setVisible(True)
 
 	def setEnabled(self,val):
 		self.undo.setEnabled(val)
@@ -167,9 +163,9 @@ class ribbon_home(QToolBar):
 		self.plot.setEnabled(val)
 		self.sun.setEnabled(val)
 		self.help.setEnabled(val)
-		if inp().isfile(os.path.join(get_sim_path(),"fit.inp"))==True:
-			self.fit.setEnabled(val)
+		self.fit.setEnabled(val)
 		self.optics.setEnabled(val)
+		self.server_config.setEnabled(val)
 
 	def callback_plot_select(self):
 		help_window().help_set_help(["dat_file.png",_("<big>Select a file to plot</big><br>Single clicking shows you the content of the file")])
@@ -181,7 +177,7 @@ class ribbon_home(QToolBar):
 			file_name=dialog.get_filename()
 
 			if os.path.basename(dialog.get_filename())=="sim_info.dat":
-				self.sim_info_window=sim_info(dialog.get_filename())
+				self.sim_info_window=window_json_ro_viewer(dialog.get_filename())
 				self.sim_info_window.show()
 				return
 
@@ -209,7 +205,6 @@ class ribbon_home(QToolBar):
 	def callback_run_fit(self, widget):
 		if self.fit_window==None:
 			self.fit_window=fit_window("fit")
-			server_get().set_fit_update_function(self.fit_window.update)
 
 		help_window().help_set_help(["fit.png",_("<big><b>Fit window</b></big><br> Use this window to fit the simulation to experimental data.  Gpvdm uses advanced and optimized fitting algorithms to fit the model to your experimental data, so that material parameters such as mobilities and recombination rates can be extracted."),"youtube",_("<big><b><a href=\"https://www.youtube.com/watch?v=61umU4hrsqk\">Watch the tutorial video 1</b></big><br>Fitting gpvdm to experimental data to extract mobility and recombination rate parameters."),"youtube",_("<big><b><a href=\"https://www.youtube.com/watch?v=_cm3Cb3kzUg\">Watch the tutorial video 2</b></big><br>Fitting gpvdm to large area solar cells")])
 		if self.fit_window.isVisible()==True:
@@ -221,7 +216,8 @@ class ribbon_home(QToolBar):
 		help_window().help_set_help(["optics.png",_("<big><b>The optical simulation window</b></big><br>Use this window to perform optical simulations.  Click on the play button to run a simulation."),"media-playback-start",_("Click on the play button to run an optical simulation.  The results will be displayed in the tabs to the right."),"youtube",_("<big><b><a href=\"https://www.youtube.com/watch?v=A_3meKTBuWk\">Tutorial video</b></big><br>Designing optical filters and reflective coatings.")])
 
 
-		if self.optics_window==False:
+		if self.optics_window==None:
+			from optics import class_optical
 			self.optics_window=class_optical()
 			#self.notebook.changed.connect(self.optics_window.update)
 
@@ -231,4 +227,32 @@ class ribbon_home(QToolBar):
 			global_object_register("optics_force_redraw",self.optics_window.force_redraw)
 			self.optics_window.ribbon.update()
 			self.optics_window.show()
+
+	def callback_simulation_notes(self, widget, data=None):
+		help_window().help_set_help(["si.png",_("<big><b>Record notes about the simulation here</b></big><br>Use this window to make notes about the simulation.")])
+
+
+		if self.simulation_notes_window==None:
+			from window_simulation_notes import window_simulation_notes
+			self.simulation_notes_window=window_simulation_notes()
+			#self.notebook.changed.connect(self.optics_window.update)
+
+		if self.simulation_notes_window.isVisible()==True:
+			self.simulation_notes_window.hide()
+		else:
+			self.simulation_notes_window.show()
+
+	def callback_server_config(self):
+		help_window().help_set_help(["cpu.png",_("<big><b>Simulation hardware</b></big><br>Use this window to change how the model uses the computer's hardware.")])
+
+
+		if self.server_config_window==None:
+			from server_config import server_config
+			self.server_config_window=server_config()
+			#self.notebook.changed.connect(self.optics_window.update)
+
+		if self.server_config_window.isVisible()==True:
+			self.server_config_window.hide()
+		else:
+			self.server_config_window.show()
 

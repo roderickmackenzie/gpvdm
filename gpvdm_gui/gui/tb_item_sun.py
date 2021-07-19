@@ -28,11 +28,6 @@
 
 #inp
 import os
-from inp import inp_update_token_value
-from inp import inp_get_token_value
-
-#from global_objects import global_object_get
-#from global_objects import global_isobject
 
 import i18n
 _ = i18n.language.gettext
@@ -44,7 +39,8 @@ from PyQt5.QtCore import QSize, Qt
 from PyQt5.QtWidgets import QWidget,QSizePolicy,QVBoxLayout,QPushButton,QDialog,QFileDialog,QToolBar,QLabel,QComboBox
 from PyQt5.QtCore import pyqtSignal
 
-from cal_path import get_sim_path
+from gpvdm_json import gpvdm_data
+from global_objects import global_object_run
 
 class tb_item_sun(QWidget):
 
@@ -52,15 +48,19 @@ class tb_item_sun(QWidget):
 	
 	def call_back_light_changed(self):
 		light_power=self.light.currentText()
-		inp_update_token_value(os.path.join(get_sim_path(),"light.inp"), "#Psun", light_power,id="tb_item_sun")
+		data=gpvdm_data()
+		data.light.Psun=light_power
+		data.save()
+		global_object_run("gl_force_redraw")
 		self.changed.emit()
 
 	def update(self):
 		self.light.blockSignals(True)
 		self.light.clear()
 		sun_values=["0.0","0.01","0.1","1.0","10"]
+		data=gpvdm_data()
 
-		token=inp_get_token_value(os.path.join(get_sim_path(),"light.inp"), "#Psun")
+		token=str(data.light.Psun)
 		if sun_values.count(token)==0:
 			sun_values.append(token)
 

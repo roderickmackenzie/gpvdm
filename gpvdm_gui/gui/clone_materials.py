@@ -31,7 +31,7 @@ import shutil
 from shutil import copyfile
 from cal_path import get_base_material_path
 from cal_path import subtract_paths
-from materials_io import find_materials
+from materials_io import find_db_items
 from progress_class import progress_class
 from process_events import process_events
 from win_lin import running_on_linux
@@ -44,15 +44,12 @@ def clone_material(dest_material_dir,src_material_dir):
 			return False
 
 	files=os.listdir(src_material_dir)
-	all_files=["alpha.gmat","dos.inp","shape.inp","fit.inp","homo.inp","lumo.inp","mat.inp","n.gmat","pl.inp","n_gen.gmat","alpha_gen.gmat"]
+	all_files=["alpha.gmat","fit.inp","n.gmat"]
 	all_files.append("spectra.inp")
 	all_files.append("shape.inp")
 	all_files.append("shape_import.inp")
-	all_files.append("gauss.inp")
-	all_files.append("honeycomb.inp")
+	all_files.append("data.json")
 	all_files.append("image.png")
-
-
 
 	for i in range(0,len(files)):
 		if files[i] in all_files:
@@ -72,7 +69,7 @@ def clone_materials(dest,src_dir,file_type):
 		if os.path.isdir(dest)==False:
 			os.makedirs(dest)
 
-		files=find_materials(mat_path=src_dir,file_type=file_type)
+		files=find_db_items(mat_path=src_dir,file_type=file_type)
 		for i in range(0,len(files)):
 
 			src_file=os.path.join(src_dir,files[i])

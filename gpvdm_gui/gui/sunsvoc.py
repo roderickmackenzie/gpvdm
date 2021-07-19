@@ -41,8 +41,7 @@ from help import help_window
 from QWidgetSavePos import QWidgetSavePos
 from css import css_apply
 
-articles = []
-mesh_articles = []
+from gpvdm_json import gpvdm_data
 
 class sunsvoc(QWidgetSavePos):
 
@@ -91,14 +90,15 @@ class sunsvoc(QWidgetSavePos):
 
 		self.main_vbox.addWidget(self.notebook)
 
+		data=gpvdm_data()
+		if len(data.suns_voc.segments)>0:
+			files=[data.suns_voc.segments[0]]
+			description=[_("Suns v.s. Voc")]
 
-		files=["sun_voc.inp"]
-		description=[_("Suns v.s. Voc")]
 
-
-		for i in range(0,len(files)):
-			tab=tab_class(files[i])
-			self.notebook.addTab(tab,description[i])
+			for i in range(0,len(files)):
+				tab=tab_class(files[i])
+				self.notebook.addTab(tab,description[i])
 
 
 		self.setLayout(self.main_vbox)

@@ -44,11 +44,6 @@ import matplotlib.pyplot as plt
 from matplotlib.pyplot import colorbar
 from matplotlib.colors import LogNorm
 
-from util import numbers_to_latex
-from util import pygtk_to_latex_subscript
-from util import fx_with_units
-from util import time_with_units
-
 #qt
 from PyQt5.QtCore import QSize, Qt 
 from PyQt5.QtWidgets import QWidget,QVBoxLayout,QToolBar,QSizePolicy,QAction,QTabWidget,QTableWidget,QAbstractItemView, QMenuBar,QApplication
@@ -72,18 +67,21 @@ from dlg_get_multi_text import dlg_get_multi_text
 
 from mpl_toolkits.mplot3d import Axes3D
 
-from colors import get_color
-from colors import get_color_black
-from colors import get_marker
-
 from dat_file import dat_file_print
 from plot_ribbon import plot_ribbon
 from lock import get_lock
 from dat_files_to_gnuplot import dat_files_to_gnuplot_files
+from dat_files_to_gnuplot import dat_files_to_gnuplot
 
 from dat_files_to_csv import dat_files_to_csv
+from util_latex import latex
 
-class plot_widget(QWidget):
+from plot_widget_menu import plot_widget_menu
+from plot_widget_matplotlib import plot_widget_matplotlib
+from band_graph2 import band_graph2
+
+class plot_widget(plot_widget_menu,plot_widget_matplotlib):
+
 
 	def keyPressEvent(self, event):
 		keyname=event.key()
@@ -148,6 +146,16 @@ class plot_widget(QWidget):
 
 			self.fig.canvas.draw()
 
+	def contextMenuEvent(self,event):
+		if self.open_gl_enabled==True:
+			try:
+				event.reject()
+			except:
+				pass
+			#self.gl_plot.main_menu.exec_(event.globalPos())
+		else:
+			self.main_menu.exec_(event.globalPos())
+
 	def callback_do_clip(self):
 		buf = io.BytesIO()
 		self.fig.savefig(buf)
@@ -204,308 +212,54 @@ class plot_widget(QWidget):
 				self.ax[0].set_zticklabels(zticks_txt)
 		self.done_log=True
 
-	def setup_axis(self):
-		this_plot=[]
-		for d in self.data:
-			this_plot.append(os.path.basename(d.file_name))
 
-		if (this_plot==self.last_plot)==False:
-			#print("redoooo!!!!!!!!!!!!!")
-			self.fig.clf()
-			self.fig.subplots_adjust(bottom=0.2)
-			self.fig.subplots_adjust(bottom=0.2)
-			self.fig.subplots_adjust(left=0.1)
-			self.fig.subplots_adjust(hspace = .001)
-
-			self.ax=[]
-
-			if self.plot_type=="linegraph":
-				for i in range(0,len(self.data)):
-					self.ax.append(self.fig.add_subplot(111,facecolor='white'))
-
-			elif self.plot_type=="rgb":
-				for i in range(0,len(self.data)):
-					self.ax.append(self.fig.add_subplot(111,facecolor='white'))
-			elif self.plot_type=="wireframe":
-				self.ax=[self.fig.add_subplot(111,facecolor='white' ,projection='3d')]
-			elif self.plot_type=="heat":
-				for i in range(0,len(self.data)):
-					self.ax.append(self.fig.add_subplot(111,facecolor='white'))
-			elif self.plot_type=="3d":
-				for i in range(0,len(self.data)):
-					self.ax.append(self.fig.add_subplot(111,facecolor='white' ,projection='3d'))
-			elif self.plot_type=="quiver":
-				for i in range(0,len(self.data)):
-					self.ax.append(self.fig.add_subplot(111,facecolor='white' ,projection='3d'))
-		else:
-			if self.plot_type=="3d":
-				for a in self.ax:
-					for c in a.collections:
-						c.remove()
-			elif self.plot_type=="linegraph":
-				for a in self.ax:
-					a.clear()
-			elif self.plot_type=="heat":
-				for a in self.ax:
-					a.clear()
-				if self.cb!=None:
-					self.cb.remove()
-					self.cb=None
-			else:
-				for a in self.ax:
-					a.clear()
-
-		self.last_plot=[]
-		for d in self.data:
-			self.last_plot.append(os.path.basename(d.file_name))
 
 	def do_plot(self):
-		if len(self.data)==0:
-			return
-		
-		if self.data[0].valid_data==False:
-			return
-
-		key_text=[]
-
-		self.plot_type=""
-
-		#print(self.data[0].x_len,self.data[0].z_len,self.data[0].data)
-		if self.data[0].type=="rgb":
-			self.plot_type="rgb"
-		elif self.data[0].type=="quiver":
-			self.plot_type="quiver"
+		if self.open_gl_enabled==True:
+			self.gl_plot.graph_data=self.data
+			self.gl_plot.force_redraw()
+			#print("update 3d")
+			#self.matplotlib_do_plot()
 		else:
-			if self.data[0].x_len==1 and self.data[0].z_len==1:
-				self.plot_type="linegraph"
-			elif self.data[0].x_len>1 and self.data[0].y_len>1 and self.data[0].z_len==1:
-				if self.data[0].type=="3d":
-					self.plot_type="wireframe"
-				if self.data[0].type=="heat":
-					self.plot_type="heat"
-			elif self.data[0].x_len>1 and self.data[0].y_len>1 and self.data[0].z_len>1:
-				print("ohhh full 3D")
-				self.plot_type="3d"
+			if self.widget_mode=="band_graph" or self.widget_mode=="gpvdm_graph":
+				self.canvas.set_data_file(self.input_files[0])
+				self.canvas.draw_graph()
 			else:
-				print(_("I don't know how to process this type of file!"),self.data[0].x_len, self.data[0].y_len,self.data[0].z_len)
-				return
+				self.matplotlib_do_plot()
+			
 
-		self.setup_axis()
-
-
-		all_plots=[]
-		files=[]
-		my_max=1.0
-
-		if self.plot_type=="linegraph":		#This is for the 1D graph case
-			self.ax[0].set_xlabel(self.data[0].y_label+" ("+str(self.data[0].y_units)+")")
-			self.ax[0].set_ylabel(self.data[0].data_label+" ("+self.data[0].data_units+")")
-	
-			for i in range(0,len(self.data)):
-				if self.data[0].logy==True:
-					self.ax[i].set_xscale("log")
-
-				if self.data[0].logdata==True:
-					self.ax[i].set_yscale("log")
-
-				if self.data[i].data_min!=None:
-					self.ax[i].set_ylim([self.data[i].data_min,self.data[i].data_max])
-
-				if self.data[i].rgb()!=None:
-					col="#"+self.data[i].rgb()
-				else:
-					col=get_color(i)
-				cur_plot, = self.ax[i].plot(self.data[i].y_scale,self.data[i].data[0][0], linewidth=3 ,alpha=1.0,color=col,marker=get_marker(i))
-				#print(self.data[i].y_scale,self.data[i].data[0][0])
-				if self.data[i].key_text!="":
-					key_text.append("$"+numbers_to_latex(str(self.data[i].key_text))+ " "+pygtk_to_latex_subscript(self.data[0].key_units) +"$")
-
-				all_plots.append(cur_plot)
-				
-				if len(self.data[i].labels)!=0:
-					#we only want this many data labels or it gets crowded
-					max_points=12
-					n_points=range(0,len(self.data[i].y_scale))
-					if len(n_points)>max_points:
-						step=int(len(n_points)/max_points)
-						n_points=[]
-						pos=0
-						while(len(n_points)<max_points):
-							n_points.append(pos)
-							pos=pos+step
-
-					for ii in n_points:
-						label_text=self.data[i].labels[ii]
-						self.ax[i].annotate(label_text,xy = (self.data[i].y_scale[ii], self.data[i].data[0][0][ii]), xytext = (-20, 20),textcoords = 'offset points', ha = 'right', va = 'bottom',bbox = dict(boxstyle = 'round,pad=0.5', fc = 'yellow', alpha = 0.5),arrowprops = dict(arrowstyle = '->', connectionstyle = 'arc3,rad=0'))
-
-
-				#print(self.data[i].labels)
-		elif self.plot_type=="wireframe":
-
-			self.ax[0].set_xlabel('\n'+self.data[0].x_label+'\n ('+self.data[0].x_units+")")
-			self.ax[0].set_ylabel('\n'+self.data[0].y_label+'\n ('+self.data[0].y_units+")")
-			self.ax[0].set_zlabel('\n'+self.data[0].data_label+'\n ('+self.data[0].data_units+")")
-
-			self.log_3d_workaround()
-
-			if self.force_data_max==False:
-				my_max,my_min=dat_file_max_min(self.data[0])
-				for i in range(0,len(self.data)):
-					my_max,my_min=dat_file_max_min(self.data[i],cur_min=my_min,cur_max=my_max)
-			else:
-				my_max=self.force_data_max
-				my_min=self.force_data_min
-
-			self.ax[0].set_zlim(my_min, my_max)
-
-			for i in range(0,len(self.data)):
-
-				if self.data[i].logx==True:
-					self.ax[i].set_xscale("log")
-
-				if self.data[i].logy==True:
-					self.ax[i].set_yscale("log")
-
-				#if self.data[i].key_text!="":
-				key="$"+numbers_to_latex(str(self.data[i].key_text))+ " "+pygtk_to_latex_subscript(self.data[0].key_units) +"$"
-
-				X, Y = meshgrid( self.data[i].y_scale,self.data[i].x_scale)
-				Z = self.data[i].data[0]
-
-				# Plot the surface
-				col=get_color(i)
-				#print(self.data[i].plot_type,"here")
-				if self.data[i].plot_type=="wireframe" or self.data[i].plot_type=="":
-					im=self.ax[0].plot_wireframe( Y,X, array(Z),color=col, label=key, clip_on=True)
-				elif self.data[i].plot_type=="contour":
-					im=self.ax[0].contourf( Y,X, array(Z),color=col)
-				elif self.data[i].plot_type=="heat":
-					my_max,my_min=dat_file_max_min(self.data[0])
-					im=self.ax[0].plot_surface(Y,X, array(Z), linewidth=0, vmin=my_min, vmax=my_max,cmap="hot", antialiased=False)
-
-				self.ax[0].legend()
-				#im=self.ax[0].contourf( Y,X, Z,color=col)
-
-#cset = ax.contourf(X, Y, Z, zdir='y', offset=40, cmap=cm.coolwarm)
-		elif self.plot_type=="heat":
-			self.ax[0].set_xlabel(self.data[0].y_label+" ("+self.data[0].y_units+")")
-			self.ax[0].set_ylabel(self.data[0].x_label+" ("+self.data[0].x_units+")")
-			my_max,my_min=dat_file_max_min(self.data[0])
-			for i in range(0,len(self.data)):
-				if self.data[i].logdata==True:
-					if my_min==0:
-						my_min=1.0
-					im=self.ax[0].pcolor(self.data[i].y_scale,self.data[i].x_scale,self.data[i].data[0], norm=LogNorm(vmin=my_min, vmax=my_max), vmin=my_min, vmax=my_max,cmap="gnuplot")
-				else:
-					im=self.ax[0].pcolor(self.data[i].y_scale,self.data[i].x_scale,self.data[i].data[0], vmin=my_min, vmax=my_max,cmap="gnuplot")
-
-				self.cb=self.fig.colorbar(im)
-
-		elif self.plot_type=="3d":
-			self.ax[0].set_xlabel(self.data[0].x_label+" ("+self.data[0].x_units+")")
-			self.ax[0].set_ylabel(self.data[0].y_label+" ("+self.data[0].y_units+")")
-			i=0
-			y_scale=self.data[i].y_scale
-			x_scale=self.data[i].x_scale
-			X, Y = meshgrid( y_scale,x_scale)		#self.data[i].y_scale,self.data[i].x_scale
-			Z = self.data[i].data[0]
-			col=get_color(i)
-			my_max,my_min=dat_file_max_min(self.data[0])
-		elif self.plot_type=="rgb":
-			self.ax[0].set_xlabel(self.data[0].y_label+" ("+str(self.data[0].y_units)+")")
-			self.ax[0].set_ylabel(self.data[0].data_label+" ("+self.data[0].data_units+")")
-			self.ax[0].imshow(self.data[0].data[0])		#
-			#,extent=[self.data[0].y_scale[0],self.data[0].y_scale[-1],0,20]
-		elif self.plot_type=="quiver":
-			self.ax[0].set_xlabel(self.data[0].x_label+" ("+self.data[0].x_units+")")
-			self.ax[0].set_ylabel(self.data[0].y_label+" ("+self.data[0].y_units+")")
-			self.ax[0].set_zlabel(self.data[0].z_label+" ("+self.data[0].z_units+")")
-			X=[]
-			Y=[]
-			Z=[]
-			U=[]
-			V=[]
-			W=[]
-			mag=[]
-			for d in self.data[0].data:
-				X.append(d.x)
-				Y.append(d.y)
-				Z.append(d.z)
-				U.append(d.dx)
-				V.append(d.dy)
-				W.append(d.dz)
-				mag.append(d.mag)
-
-			c=plt.cm.hsv(mag)
-
-			mag=[]
-			for d in self.data[0].data:
-
-				mag.append(2.0)
-
-			self.ax[0].quiver(X, Y, Z, U, V, W,colors=c,linewidths=mag)
-			self.ax[0].set_xlim([0, self.data[0].xmax])
-			self.ax[0].set_ylim([0, self.data[0].ymax])
-			self.ax[0].set_zlim([0, self.data[0].zmax])
-
-
-		#setup the key
-		if self.data[0].legend_pos=="No key":
-			self.ax[i].legend_ = None
+	def save_image(self,file_name):
+		if self.open_gl_enabled==False:
+			self.fig.savefig(file_name)
 		else:
-			if len(files)<40:
-				self.fig.legend(all_plots, key_text, self.data[0].legend_pos)
-
-		if get_lock().is_trial()==True:
-			x=0.25
-			y=0.25
-			#while(x<1.0):
-			#	y=0
-			#	while(y<1.0):
-			self.fig.text(x, y, 'gpvdm trial', fontsize=20, color='gray', ha='right', va='bottom', alpha=self.watermark_alpha)
-
-			#		y=y+0.1
-			#	x=x+0.25
-
-		if self.hide_title==False:
-			title=self.data[0].title
-			if self.data[0].time!=-1.0 and self.data[0].Vexternal!=-1.0:
-				mul,unit=time_with_units(self.data[0].time)
-				title=title+" V="+str(self.data[0].Vexternal)+" "+_("time")+"="+str(self.data[0].time*mul)+" "+unit
-
-			self.fig.suptitle(title)
-
-			self.setWindowTitle(title+" - www.gpvdm.com")
-
-		self.fig.canvas.draw()
-
-
-	def save_image(self):
-		self.callback_save_image()
+			self.gl_plot.grabFrameBuffer().save(file_name)
 
 	def callback_save_image(self):
 		file_name=save_as_image(self)
 		if file_name != None:
-			self.fig.savefig(file_name)
+			self.save_image(file_name)
 
 	def callback_save_csv(self):
 		file_name=save_as_filter(self,"*.csv")
 		if file_name != None:
 			dat_files_to_csv(file_name,self.data)
 
+	def callback_save_xlsx(self):
+		from dat_files_to_excel import dat_files_to_excel
+		file_name=save_as_filter(self,"*.xlsx")
+		if file_name != None:
+			dat_files_to_excel(file_name,self.data)
+
 	def callback_save_txt(self):
 		file_name=save_as_filter(self,"*.txt")
 		if file_name != None:
 			self.data[0].save_as_txt(file_name)
 
-	def callback_save_xls(self):
-		return
-
 	def callback_save_gnuplot(self):
 		file_name=save_as_filter(self,"gnuplot (*.)")
 		if file_name != None:
-			#dat_files_to_gnuplot(file_name,self.data)
-			dat_files_to_gnuplot_files(file_name,self.data)
+			dat_files_to_gnuplot(file_name,self.data)
+			#dat_files_to_gnuplot_files(file_name,self.data)
 
 	def set_labels(self,labels):
 		if len(self.data)!=len(labels):
@@ -533,11 +287,12 @@ class plot_widget(QWidget):
 			dat=dat_file()
 			ret=dat.load(self.input_files[i])
 			if ret!=False:
-				dat.chop_y(0,-3)
+				#dat.chop_y(0,-3)
 				self.data.append(dat)
+				self.y1_y2.append("y1")
 
-
-		self.norm_data()
+		if self.open_gl_enabled==False:
+			self.matplotlib_norm_data()
 
 	def load_data(self,input_files):
 		self.lx=None
@@ -549,49 +304,6 @@ class plot_widget(QWidget):
 			return
 
 		self.reload()
-
-
-
-	def norm_data(self):
-		if len(self.data)>0:
-			if self.data[0].type=="rgb" or self.data[0].type=="quiver":
-				return
-
-			if self.zero_frame_enable==True:
-				if len(self.data)>1:
-					for i in range(1,len(self.data)):
-						dat_file_sub(self.data[i],self.data[0])
-					
-					dat_file_sub(self.data[0],self.data[0])
-			for i in range(0,len(self.data)):
-				for x in range(0,self.data[i].x_len):
-					self.data[i].x_scale[x]=self.data[i].x_scale[x]*self.data[i].x_mul
-
-				for y in range(0,self.data[i].y_len):
-					self.data[i].y_scale[y]=self.data[i].y_scale[y]*self.data[i].y_mul
-
-				for z in range(0,self.data[i].z_len):
-					self.data[i].z_scale[z]=self.data[i].z_scale[z]*self.data[i].z_mul
-
-				for x in range(0,self.data[i].x_len):
-					for y in range(0,self.data[i].y_len):
-						for z in range(0,self.data[i].z_len):
-							self.data[i].data[z][x][y]=self.data[i].data[z][x][y]*self.data[i].data_mul
-
-			if self.data[0].invert_y==True:
-				for i in range(0,len(self.data)):
-					dat_file_mul(self.data[i],-1)
-
-			if self.data[0].subtract_first_point==True:
-				val=self.data[0].data[0][0][0]
-				for i in range(0,len(self.data)):
-					dat_file_sub_float(self.data[i],val)
-
-
-			if self.data[0].add_min==True:
-				my_max,my_min=dat_file_max_min(self.data[0])
-				for i in range(0,len(self.data)):
-					dat_file_sub_float(self.data[i],my_min)
 
 
 
@@ -640,7 +352,7 @@ class plot_widget(QWidget):
 	def callback_norm_to_peak_of_all_data(self):
 		if len(self.data)>0:
 			self.data[0].norm_to_peak_of_all_data=not self.data[0].norm_to_peak_of_all_data
-			self.norm_data()
+			self.matplotlib_norm_data()
 			self.do_plot()
 
 	def callback_toggle_log_scale_y(self):
@@ -684,39 +396,86 @@ class plot_widget(QWidget):
 	def callback_toggle_invert_y(self):
 		if len(self.data)>0:
 			self.data[0].invert_y=not self.data[0].invert_y
-			self.norm_data()
+			self.matplotlib_norm_data()
 			self.do_plot()
 
 	def callback_toggle_subtract_first_point(self):
 		if len(self.data)>0:
 			self.data[0].subtract_first_point=not self.data[0].subtract_first_point
-			self.norm_data()
+			self.matplotlib_norm_data()
 			self.do_plot()
 
 	def callback_toggle_add_min(self):
 		if len(self.data)>0:
 			self.data[0].add_min=not self.data[0].add_min
-			self.norm_data()
+			self.matplotlib_norm_data()
 			self.do_plot()
 
 	def update(self):
 		self.load_data(self.input_files)
 		self.do_plot()
 
-	def callback_refresh(self):
-		self.update()
+	def build_toolbar(self,enable_3d):
+		ribbon=plot_ribbon()
+		ribbon.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
 
-	def __init__(self,enable_toolbar=True):
+		#self.ribbon.tb_export_as_jpg.triggered.connect(self.save_image)
+
+		if enable_3d==True:
+			self.tb_3d_mode = QAction(icon_get("vector"), _("3D\nMode"), self)
+			self.tb_3d_mode.setCheckable(True)
+			self.tb_3d_mode.triggered.connect(self.callback_3d_mode)
+			ribbon.plot_toolbar.addAction(self.tb_3d_mode)
+
+		if self.widget_mode=="matplotlib":
+			self.matplotlib_nav_bar=NavigationToolbar(self.canvas,self)
+			actions = self.matplotlib_nav_bar.findChildren(QAction)
+			for a in actions:
+				if a.text() == 'Save':
+					self.matplotlib_nav_bar.removeAction(a)
+					break
+
+			self.matplotlib_nav_bar.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
+			self.matplotlib_nav_bar.setIconSize(QSize(42, 42))
+			ribbon.plot_toolbar.addWidget(self.matplotlib_nav_bar)
+
+
+
+			self.fig.canvas.mpl_connect('motion_notify_event', self.mouse_move)
+
+			ribbon.tb_color_black.triggered.connect(self.callback_black)
+			ribbon.tb_color_rainbow.triggered.connect(self.callback_rainbow)
+
+			ribbon.tb_scale_autoscale.triggered.connect(self.callback_autoscale_y)
+			ribbon.tb_scale_log_y.triggered.connect(self.callback_toggle_log_scale_y)
+			ribbon.tb_scale_log_x.triggered.connect(self.callback_toggle_log_scale_x)
+
+			#new way to do math
+			for o in ribbon.math_opps:
+				o[0].triggered.connect(lambda: self.callback_math_opp(o[1]))
+
+			#old way to do math
+			ribbon.math_norm_to_peak_of_all_data.triggered.connect(self.callback_norm_to_peak_of_all_data)
+			ribbon.math_heat_map.triggered.connect(self.callback_set_heat_map)
+			ribbon.math_heat_map_edit.triggered.connect(self.callback_heat_map_edit)
+			ribbon.math_subtract_first_point.triggered.connect(self.callback_toggle_subtract_first_point)
+			ribbon.math_add_min_point.triggered.connect(self.callback_toggle_add_min)
+			ribbon.math_invert_y_axis.triggered.connect(self.callback_toggle_invert_y)
+
+		return ribbon
+	#modes="matplotlib","gpvdm_graph", "band_graph"
+
+	def __init__(self,enable_toolbar=True,enable_3d=True,widget_mode="matplotlib"):
 		QWidget.__init__(self)
-
-		self.watermark_alpha=0.05
+		self.setFocusPolicy(Qt.StrongFocus)
 		self.data=[]
 		self.input_files=[]
-		self.hide_title=False
+		self.show_title=True
+		self.show_key=True
 		self.force_data_max=False
 		self.force_data_min=False
 		self.fix_scales=False
-
+		self.y1_y2=[]
 		self.setWindowIcon(icon_get("plot"))
 
 		self.ax=[]
@@ -724,7 +483,19 @@ class plot_widget(QWidget):
 
 		self.main_vbox = QVBoxLayout()
 		self.fig = Figure(figsize=(2.5,2), dpi=100)
-		self.canvas = FigureCanvas(self.fig)
+
+		self.widget_mode=widget_mode
+		if self.widget_mode=="band_graph":
+			self.canvas = band_graph2()
+		elif self.widget_mode=="gpvdm_graph":
+			from gpvdm_graph import gpvdm_graph 
+			self.canvas=gpvdm_graph()
+		else:
+			self.canvas = FigureCanvas(self.fig)
+			self.canvas.figure.patch.set_facecolor("white")
+
+		self.open_gl_enabled=False
+		self.gl_plot=None
 
 		self.zero_frame_enable=False
 		self.zero_frame_list=[]
@@ -732,67 +503,44 @@ class plot_widget(QWidget):
 		self.cb=None
 
 		if enable_toolbar==True:
-			self.plot_ribbon=plot_ribbon()
-			self.plot_ribbon.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
-
-			self.plot_ribbon.tb_export_as_jpg.clicked.connect(self.callback_save_image)
-			self.plot_ribbon.tb_export_as_csv.clicked.connect(self.callback_save_csv)
-			self.plot_ribbon.tb_export_as_txt.clicked.connect(self.callback_save_txt)
-			self.plot_ribbon.tb_export_as_gnuplot.clicked.connect(self.callback_save_gnuplot)
-
-			self.plot_ribbon.tb_copy.clicked.connect(self.callback_do_clip)
-
-			#self.plot_ribbon.tb_export_as_jpg.triggered.connect(self.save_image)
-
-
-			self.tb_refresh = QAction(icon_get("view-refresh"), _("Refresh graph"), self)
-			self.tb_refresh .triggered.connect(self.callback_refresh)
-			self.plot_ribbon.plot_toolbar.addAction(self.tb_refresh )
-
-
-
-			nav_bar=NavigationToolbar(self.canvas,self)
-			actions = nav_bar.findChildren(QAction)
-			for a in actions:
-				if a.text() == 'Save':
-					nav_bar.removeAction(a)
-					break
-
-			nav_bar.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
-			nav_bar.setIconSize(QSize(42, 42))
-			self.plot_ribbon.plot_toolbar.addWidget(nav_bar)
-
-			self.fig.canvas.mpl_connect('motion_notify_event', self.mouse_move)
-
-			self.plot_ribbon.tb_color_black.triggered.connect(self.callback_black)
-			self.plot_ribbon.tb_color_rainbow.triggered.connect(self.callback_rainbow)
-
-			self.plot_ribbon.tb_scale_autoscale.triggered.connect(self.callback_autoscale_y)
-			self.plot_ribbon.tb_scale_log_y.triggered.connect(self.callback_toggle_log_scale_y)
-			self.plot_ribbon.tb_scale_log_x.triggered.connect(self.callback_toggle_log_scale_x)
-
-			#new way to do math
-			for o in self.plot_ribbon.math_opps:
-				o[0].triggered.connect(lambda: self.callback_math_opp(o[1]))
-
-			#old way to do math
-			self.plot_ribbon.math_norm_to_peak_of_all_data.triggered.connect(self.callback_norm_to_peak_of_all_data)
-			self.plot_ribbon.math_heat_map.triggered.connect(self.callback_set_heat_map)
-			self.plot_ribbon.math_heat_map_edit.triggered.connect(self.callback_heat_map_edit)
-			self.plot_ribbon.math_subtract_first_point.triggered.connect(self.callback_toggle_subtract_first_point)
-			self.plot_ribbon.math_add_min_point.triggered.connect(self.callback_toggle_add_min)
-			self.plot_ribbon.math_invert_y_axis.triggered.connect(self.callback_toggle_invert_y)
-
-
+			self.plot_ribbon=self.build_toolbar(enable_3d)
 			self.main_vbox.addWidget(self.plot_ribbon)
 
 
-		self.canvas.figure.patch.set_facecolor("white")
-		self.canvas.setMinimumSize(800, 350)
+		#self.canvas.setMinimumSize(800, 350)
 		self.canvas.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 		self.main_vbox.addWidget(self.canvas)
 
 		self.setLayout(self.main_vbox)
+		self.menu_build()
 
 
+	def callback_3d_mode(self):
+		self.open_gl_enabled=self.tb_3d_mode.isChecked()
+		if self.open_gl_enabled==True:
+			self.canvas.setVisible(False)
 
+			if self.gl_plot==None:
+				from gl import glWidget
+				self.gl_plot=glWidget(self)
+				self.gl_plot.draw_electrical_mesh=False
+				self.gl_plot.view.draw_device=True
+				self.gl_plot.enable_draw_ray_mesh=True
+				self.gl_plot.enable_draw_light_source=False
+				self.gl_plot.enable_draw_rays=False
+				self.gl_plot.scene_built=True
+				self.gl_plot.plot_graph=True
+				self.main_vbox.insertWidget(1,self.gl_plot)
+				self.plot_ribbon.plot_toolbar.addWidget(self.gl_plot.toolbar1)
+				#self.plot_ribbon.plot_toolbar.removeAction(self.matplotlib_nav_bar)
+				#self.self.tb_3d_mode.setVisible(False)
+
+			self.gl_plot.setVisible(True)
+			self.gl_plot.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+			#self.gl_plot.setMinimumSize(800, 350)
+			self.gl_plot.setMinimumSize(948, 572)
+
+		else:
+			self.gl_plot.setVisible(False)
+			self.canvas.setVisible(True)
+			#self.matplotlib_nav_bar.setVisible(True)

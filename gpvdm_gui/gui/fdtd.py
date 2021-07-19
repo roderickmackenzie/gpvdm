@@ -40,6 +40,7 @@ import webbrowser
 from help import help_window
 from QWidgetSavePos import QWidgetSavePos
 from css import css_apply
+from gpvdm_json import gpvdm_data
 
 articles = []
 mesh_articles = []
@@ -82,13 +83,15 @@ class fdtd(QWidgetSavePos):
 		self.main_vbox.addWidget(self.notebook)
 
 
-		files=["fdtd.inp"]
-		description=[_("FDTD")]
+		data=gpvdm_data()
+		if len(data.fdtd.segments)>0:
+			files=[data.fdtd.segments[0]]
+			description=[_("FDTD")]
 
 
-		for i in range(0,len(files)):
-			tab=tab_class(files[i])
-			self.notebook.addTab(tab,description[i])
+			for i in range(0,len(files)):
+				tab=tab_class(files[i])
+				self.notebook.addTab(tab,description[i])
 
 
 		self.setLayout(self.main_vbox)

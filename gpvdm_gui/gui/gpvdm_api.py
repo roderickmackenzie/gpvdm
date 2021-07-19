@@ -38,13 +38,11 @@ from cal_path import set_sim_path
 calculate_paths_init()
 calculate_paths()
 
-from server import base_server
+from server import server_base
 from server import server_get
 from cal_path import get_sim_path
 from progress_class import progress_class
 from spectral2 import spectral2
-from inp import inp_update_token_value
-from inp import inp_get_token_value
 from inp import inp
 
 #scan
@@ -54,16 +52,19 @@ from scans_io import scans_io
 
 from cal_path import get_exe_command
 from scan_tree import tree_load_flat_list
+from scan_tree import random_log
 from gui_enable import set_gui
-from scan_ml import scan_ml
+from ml_vectors import ml_vectors
 from scan_io import scan_archive
 from multiplot import multiplot
 from multiplot_from_tokens import multiplot_from_tokens
 from PIL import Image, ImageFilter,ImageOps
 from epitaxy import get_epi
-from scan_human_labels import get_scan_human_labels
 import codecs
-from inp_template import inp_template_numeric_cpy
+from gpvdm_json import gpvdm_data
+from inp import inp_get_token_value
+from math import log10
+import random
 
 class api_scan():
 
@@ -103,7 +104,7 @@ class api_scan():
 		print(commands)
 		
 		
-		self.server.base_server_init(watch_dir)
+		self.server.server_base_init(watch_dir)
 
 		for i in range(0, len(commands)):
 			self.server.add_job(commands[i],"")
@@ -113,8 +114,8 @@ class api_scan():
 
 	def build_ml_vectors(self,path):
 		set_gui(False)
-		scan=scan_ml(path)
-		scan.build_vector()
+		scan=ml_vectors()
+		scan.build_vector(path)
 
 	def archive(self,path):
 		scan_archive(path)
@@ -122,20 +123,16 @@ class api_scan():
 class gpvdm_api():
 	def __init__(self,verbose=True):
 		self.save_dir=os.getcwd()
-		self.server=base_server()
+		self.server=server_base()
 		if verbose==True:
 			self.server.pipe_to_null=False
 		else:
 			self.server.pipe_to_null=True
 
-		#self.server.base_server_init(get_sim_path())
+		#self.server.server_base_init(get_sim_path())
 		if server_get()!=False:
 			self.server=server_get()
 			self.server.clear_cache()
-
-		self.epi=get_epi()
-		if self.epi.loaded==False:
-			self.epi.load(os.getcwd())
 
 		self.scan=api_scan(self.server)
 		#image ops
@@ -144,27 +141,28 @@ class gpvdm_api():
 		self.ImageOps=ImageOps
 		self.path=""
 		self.callback=None
-		self.get_scan_human_labels=get_scan_human_labels()
-		self.get_scan_human_labels.clear()
-		self.get_scan_human_labels.populate_from_known_tokens()
-		self.get_scan_human_labels.populate_from_files()
-		#self.get_scan_human_labels.dump()
 
 	def run(self,callback=None):
 		if callback!=None:
-			self.server.base_server_set_callback(callback)
+			self.server.server_base_set_callback(callback)
 		self.server.start()
 
-	def add_job(self,path=""):
+	def add_job(self,path="",args=""):
 		if path=="":
 			path=get_sim_path()
 		else:
 			path=os.path.join(get_sim_path(),path)
 		print("add path>",path)
-		self.server.add_job(path,"")
+		self.server.add_job(path,args)
 
 	def random_file_name(self):
 		return codecs.encode(os.urandom(int(16 / 2)), 'hex').decode()
+
+	def random_log(self,min,max):
+		return float(random_log(min,max))
+
+	def random(self,min,max):
+		return random.uniform(min, max)
 
 	def set_sim_path(self,path):
 		set_sim_path(path)
@@ -179,36 +177,74 @@ class gpvdm_api():
 
 		self.save_dir=path
 
+	def get(self,file_name,token):
+		return inp_get_token_value(file_name,token)
+
 	def save(self,dest,src):
 		copyfile(src, os.path.join(self.save_dir,dest))
 
-	def edit(self,file_name,token,value):
-		inp_update_token_value(file_name,token,value)
-
-	def get(self,file_name,token):
-		return inp_get_token_value(file_name,token)
+	def json_load(self,file_name):
+		a=gpvdm_data()
+		a.load(file_name)
+		return a
 
 	def mkdir(self,file_name):
 		if os.path.isdir(file_name)==False:
 			os.makedirs(file_name)
 
-	def clone(self,file_name):
-		output_dir=file_name
+	def clone(self,output_dir,input_dir):
 		if os.path.isdir(output_dir)==False:
-			os.mkdir(output_dir)
-		for f in os.listdir(get_sim_path()):
+			os.makedirs(output_dir)
+		for f in os.listdir(input_dir):
 			if f.endswith(".inp") or f.endswith(".gpvdm"):
-				copyfile(os.path.join(get_sim_path(),f), os.path.join(output_dir,f))
+				copyfile(os.path.join(input_dir,f), os.path.join(output_dir,f))
 
 	def build_multiplot(self,path,gnuplot=False,exp_data=""):
 		a=multiplot(gnuplot=gnuplot,exp_data=exp_data)
 		a.find_files(os.path.join(get_sim_path(),path))
 		a.save()
 
+	def clean_dir(self,path):
+		for f in os.listdir(path):
+			full_path=os.path.join(path,f)
+			if f.startswith("fit_data")==True:
+				if f.endswith(".inp")==True:
+					os.unlink(full_path)
+
 	def graph_from_tokens(self,output_file,path,file0,token0,file1,token1):
 		output_file=os.path.join(get_sim_path(),path,output_file)
 		plot=multiplot_from_tokens()
-		print("here")
+
+	def log_range(self,start,stop,steps):
+		lout=[]
+		l_start=log10(start)
+		l_stop=log10(stop)
+		dl=(l_stop-l_start)/steps
+		pos=l_start
+		for i in range(0,steps+1):
+			lout.append(pow(10,pos))
+			pos=pos+dl
+
+		return lout
+
+	def load_snapshots(self,path):
+		dirs=[]
+		for root, dirs, files in os.walk(path):
+			for name in files:
+				if name.endswith("json.dat")==True:
+					dirs.append(os.path.dirname(os.path.join(root, name)))
+					
+		print(dirs)
+
+	def range(self,start,stop,steps):
+		lout=[]
+		dl=(stop-start)/steps
+		pos=start
+		for i in range(0,steps+1):
+			lout.append(pos)
+			pos=pos+dl
+
+		return lout
 
 	def find_simulations(self,path):
 		ret=[]
@@ -219,23 +255,7 @@ class gpvdm_api():
 					ret.append(os.path.dirname(full_name))
 		return ret
 
-	def shape_name_to_file_name(self,path,search_name):
-		f=inp()
-		f.set_file_name(os.path.join(path,"sim.gpvdm"))
-		files=f.lsdir()
-		for fname in files:
-			if fname.startswith("shape")==True and fname.endswith(".inp")==True:
-				data=inp()
-				data.load(os.path.join(path,fname))
-				name=data.get_token("#shape_name")
-				if name==search_name:
-					return fname
-
-		return None
 
 	def get_sim_path(self):
 		return get_sim_path()
-
-	def template_numeric_cpy(self,dest_path,dest_number,template_name):
-		inp_template_numeric_cpy(dest_path,dest_number,template_name)
 

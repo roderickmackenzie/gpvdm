@@ -31,63 +31,55 @@ from tb_pulse_load_type import tb_pulse_load_type
 
 #qt
 from PyQt5.QtCore import QSize, Qt 
-from PyQt5.QtWidgets import QWidget,QVBoxLayout,QToolBar,QSizePolicy,QAction,QTabWidget,QMenuBar,QStatusBar
+from PyQt5.QtWidgets import QWidget,QVBoxLayout,QHBoxLayout,QToolBar,QSizePolicy,QAction,QTabWidget,QMenuBar,QStatusBar
 from PyQt5.QtGui import QPainter,QIcon,QPixmap
 from ersatzschaltbild import ersatzschaltbild
 from icon_lib import icon_get
 import functools
 from gui_util import yes_no_dlg
 from inp import inp
+from epitaxy import get_epi
+from cal_path import get_sim_path
+from json_circuit import json_component
+from gpvdm_json import gpvdm_data
 
-class tool_item():
-	def __init__(self,icon,name):
-		self.icon=icon
+class tool_item(QAction):
+	def __init__(self,icon_name,name,s):
+		self.icon=icon_name
 		self.name=name
+		QAction.__init__(self,icon_get(icon_name), name,s)
+		self.setCheckable(True)
 
 class circuit_editor(QWidget):
 
 	def __init__(self):
 		QWidget.__init__(self)
 
-		vbox=QVBoxLayout()
+		vbox=QHBoxLayout()
 
 		self.toolbar=QToolBar()
+		self.toolbar.setOrientation(Qt.Vertical)
 		self.toolbar.setIconSize(QSize(48, 48))
 
-		items=[]
-		items.append(tool_item("resistor", _("Resistor")))
-		items.append(tool_item("capacitor", _("Capacitor")))
-		items.append(tool_item("diode", _("Diode")))
-		items.append(tool_item("wire", _("Wire")))
-		items.append(tool_item("ground", _("Ground")))
-		items.append("sep")
-		items.append(tool_item("pointer", _("Pointer")))
-		items.append(tool_item("clean", _("Clean")))
-		items.append(tool_item("edit-undo", _("Restore to origonal")))
+		self.buttons=[]
+		self.buttons.append(tool_item("resistor", _("Resistor"),self))
+		#self.buttons.append(tool_item("capacitor", _("Capacitor"),self))
+		self.buttons.append(tool_item("diode", _("Diode"),self))
+		self.buttons.append(tool_item("wire", _("Wire"),self))
+		self.buttons.append(tool_item("ground", _("Ground"),self))
+		self.buttons.append(tool_item("bat", _("Voltage source"),self))
+		self.buttons.append("sep")
+		self.buttons.append(tool_item("pointer", _("Pointer"),self))
+		self.buttons.append(tool_item("clean", _("Clean"),self))
 
+		self.buttons[1].setChecked(True)
 
-		for item in items:
+		for item in self.buttons:
 			if item=="sep":
 				self.toolbar.addSeparator()
 			else:
-				tool=QAction(icon_get(item.icon), item.name, self)
-				self.toolbar.addAction(tool)
-				tool.triggered.connect(functools.partial(self.callback_click,item.icon))
-
-		#self.cap=QAction(icon_get("capacitor"), _("Capacitor"), self)
-		#self.toolbar.addAction(self.cap)
-
-		#self.wire=QAction(icon_get("wire"), _("Wire"), self)
-		#self.toolbar.addAction(self.wire)
-
-		#self.diode=QAction(icon_get("diode"), _("Diode"), self)
-		#self.toolbar.addAction(self.diode)
-
-		#self.pointer=QAction(icon_get("pointer"), _("Pointer"), self)
-		#self.toolbar.addAction(self.pointer)
-
-		#self.ground=QAction(icon_get("ground"), _("Ground"), self)
-		#self.toolbar.addAction(self.ground)
+				self.toolbar.addAction(item)
+				item.triggered.connect(functools.partial(self.callback_click,item))
 
 		vbox.addWidget(self.toolbar)
 
@@ -100,17 +92,69 @@ class circuit_editor(QWidget):
 
 		self.setLayout(vbox)
 		#self.setMinimumSize(800, 800)
+		self.build_from_epi()
 
-	def callback_click(self,component):
-		if component=="edit-undo":
-			result=yes_no_dlg(self,_("Do you really which to reset the circuit to the default?"))
-			if result == True:
-				f=inp()
-				f.set_file_name("diagram.inp")
-				f.delete()
-				self.ersatzschaltbild.objects_pop()
-				self.ersatzschaltbild.repaint()
-			return
+		gpvdm_data().add_call_back(self.ersatzschaltbild.load)
+		self.destroyed.connect(self.doSomeDestruction)
 
-		self.ersatzschaltbild.selected=component
+	def doSomeDestruction(self):
+		gpvdm_data().remove_call_back(self.ersatzschaltbild.load)
+
+	def build_from_epi(self):
+			data=gpvdm_data()
+			if data.circuit.enabled==False:
+				epi=get_epi()
+				pos=3
+
+				a=json_component()
+				a.x0=pos
+				a.y0=3
+				a.x1=pos+1
+				a.y1=3
+				a.name="bat"
+				self.ersatzschaltbild.add_object(a)
+
+				pos=pos+1
+				
+				for l in epi.layers:
+					if l.layer_type=="active":# or l.layer_type=="contact":
+						component=l.shape_electrical.electrical_component
+						if component=="resistance":
+							a=json_component()
+							a.x0=pos
+							a.y0=3
+							a.x1=pos+1
+							a.y1=3
+							a.name="resistor"
+							self.ersatzschaltbild.add_object(a)
+						if component=="diode":
+							a=json_component()
+							a.x0=pos
+							a.y0=3
+							a.x1=pos+1
+							a.y1=3
+							a.name="diode"
+							self.ersatzschaltbild.add_object(a)
+						pos=pos+1
+
+				a=json_component()
+				a.x0=pos
+				a.y0=3
+				a.x1=pos+1
+				a.y1=3
+				a.name="ground"
+				self.ersatzschaltbild.add_object(a)
+
+				self.ersatzschaltbild.objects_push()
+			else:
+				self.ersatzschaltbild.load()
+
+	def callback_click(self,widget):
+		for item in self.buttons:
+			if item!="sep":
+				item.setChecked(False)
+
+		widget.setChecked(True)
+
+		self.ersatzschaltbild.selected=widget.icon
 

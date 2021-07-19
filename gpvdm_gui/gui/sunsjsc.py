@@ -40,7 +40,8 @@ import webbrowser
 from help import help_window
 from QWidgetSavePos import QWidgetSavePos
 from css import css_apply
-
+from gpvdm_json import gpvdm_data
+ 
 articles = []
 mesh_articles = []
 
@@ -81,14 +82,16 @@ class sunsjsc(QWidgetSavePos):
 
 		self.main_vbox.addWidget(self.notebook)
 
+		data=gpvdm_data()
 
-		files=["suns_jsc.inp"]
-		description=[_("Suns v.s. Jsc")]
+		if len(data.suns_voc.segments)>0:
+			files=[data.suns_jsc.segments[0]]
+			description=[_("Suns v.s. Jsc")]
 
 
-		for i in range(0,len(files)):
-			tab=tab_class(files[i])
-			self.notebook.addTab(tab,description[i])
+			for i in range(0,len(files)):
+				tab=tab_class(files[i])
+				self.notebook.addTab(tab,description[i])
 
 
 		self.setLayout(self.main_vbox)

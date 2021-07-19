@@ -29,9 +29,7 @@ import sys
 import os
 from cal_path import get_icon_path
 from win_lin import running_on_linux
-from inp import inp_get_token_value
 from str2bool import str2bool
-from inp import inp_load_file
 from cal_path import get_sim_path
 
 def tx_to_core(data):

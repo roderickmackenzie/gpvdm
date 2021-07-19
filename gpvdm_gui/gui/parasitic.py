@@ -41,9 +41,8 @@ import webbrowser
 from QWidgetSavePos import QWidgetSavePos
 from help import help_window
 from cal_path import get_sim_path
+from gpvdm_json import gpvdm_data
 
-articles = []
-mesh_articles = []
 
 class parasitic(QWidgetSavePos):
 
@@ -82,19 +81,30 @@ class parasitic(QWidgetSavePos):
 
 		self.main_vbox.addWidget(self.notebook)
 
-
-		files=["parasitic.inp"]
+		data=gpvdm_data()
+		files=[data.parasitic]
 		description=[_("Parasitic components")]
 
 
 		for i in range(0,len(files)):
-			tab=tab_class(os.path.join(get_sim_path(),files[i]))
+			tab=tab_class(files[i])
 			self.notebook.addTab(tab,description[i])
 
 
 		self.setLayout(self.main_vbox)
 		
+		gpvdm_data().add_call_back(self.update_values)
+		self.destroyed.connect(self.doSomeDestruction)
 
+	def doSomeDestruction(self):
+		gpvdm_data().remove_call_back(self.update_values)
 
+	def update_values(self):
+		data=gpvdm_data()
+		for i in range(0,self.notebook.count()):
+			w=self.notebook.widget(i)
+			print(data.parasitic)
+			w.tab.template_widget=data.parasitic
+			w.tab.update_values()
 
 

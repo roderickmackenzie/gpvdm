@@ -32,7 +32,6 @@ import urllib.parse
 
 from inp import inp_save
 from inp import inp_search_token_value
-from inp import inp_replace_token_value
 from inp import inp_load_file
 from inp import inp
 from str2bool import str2bool
@@ -43,12 +42,8 @@ if running_on_linux()==False:
 
 import platform
 
-from ver import ver
-from ver import ver_ctrl
-
 from cal_path import get_user_settings_dir
 from cal_path import get_exe_path
-from cal_path import get_tmp_path
 from cal_path import multiplatform_exe_command
 import getpass
 
@@ -102,7 +97,10 @@ class lock():
 	def is_trial(self):
 		return False
 
-	
+	def is_gpvdm_next(self):
+		if os.path.isfile(os.path.join(get_user_settings_dir(),"settings2.inp"))==True:
+			return True
+		return False
 
 my_lock=lock()
 

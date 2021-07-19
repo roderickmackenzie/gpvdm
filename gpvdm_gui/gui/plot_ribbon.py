@@ -29,11 +29,6 @@
 
 import os
 
-from dump_io import dump_io
-from tb_item_sim_mode import tb_item_sim_mode
-from tb_item_sun import tb_item_sun
-
-from code_ctrl import enable_betafeatures
 from cal_path import get_css_path
 
 #qt
@@ -52,7 +47,19 @@ from ribbon_base import ribbon_base
 from QAction_lock import QAction_lock
 
 class plot_ribbon(ribbon_base):
-		
+
+	def video(self):
+		tb_video = QToolBar()
+		tb_video.setToolButtonStyle( Qt.ToolButtonTextUnderIcon)
+		tb_video.setIconSize(QSize(42, 42))
+		self.tb_save_video = QAction(icon_get("video"), _("Save\nvideo"), self)
+		tb_video.addAction(self.tb_save_video)
+
+		self.tb_storyboard = QAction(icon_get("storyboard"), _("Storyboard\nto clipboard"), self)
+		tb_video.addAction(self.tb_storyboard)
+
+		return tb_video
+	
 	def plot(self):
 		self.plot_toolbar = QToolBar()
 		self.plot_toolbar.setToolButtonStyle( Qt.ToolButtonTextUnderIcon)
@@ -60,27 +67,6 @@ class plot_ribbon(ribbon_base):
 
 		return self.plot_toolbar
 
-	def export(self):
-		self.file_toolbar = QToolBar()
-		self.file_toolbar.setToolButtonStyle( Qt.ToolButtonTextUnderIcon)
-		self.file_toolbar.setIconSize(QSize(42, 42))
-
-		self.tb_export_as_jpg = QAction_lock("export_image", _("Export\nimage"), self,"plot_export_image")
-		self.file_toolbar.addAction(self.tb_export_as_jpg)
-
-		self.tb_export_as_csv = QAction_lock("export_csv", _("Export\ncsv"), self,"plot_export_csv")
-		self.file_toolbar.addAction(self.tb_export_as_csv)
-
-		self.tb_export_as_txt = QAction_lock("export_xls", _("Export\nxls"), self,"plot_export_xls")
-		self.file_toolbar.addAction(self.tb_export_as_txt)
-
-		self.tb_export_as_gnuplot = QAction_lock("export_gnuplot", _("Export\ngnuplot"), self,"plot_export_gnuplot")
-		self.file_toolbar.addAction(self.tb_export_as_gnuplot)
-
-		self.tb_copy = QAction_lock("edit-copy", _("Copy to\nclipboard"), self,"plot_copy_to_clipboard")
-		self.file_toolbar.addAction(self.tb_copy)
-
-		return self.file_toolbar
 
 	def color(self):
 		toolbar = QToolBar()
@@ -153,12 +139,10 @@ class plot_ribbon(ribbon_base):
 		#self.setMaximumHeight(130)
 		#self.setStyleSheet("QWidget {	background-color:cyan; }")
 
+		self.tb_video=self.video()
 
 		w=self.plot()
 		self.addTab(w,_("Plot"))
-
-		self.export_ribbon=self.export()
-		self.addTab(self.export_ribbon,_("Export data"))
 
 		w=self.color()
 		self.addTab(w,_("Color"))

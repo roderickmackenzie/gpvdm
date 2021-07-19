@@ -40,9 +40,8 @@ import webbrowser
 from help import help_window
 from QWidgetSavePos import QWidgetSavePos
 from css import css_apply
+from gpvdm_json import gpvdm_data
 
-articles = []
-mesh_articles = []
 
 class ray_trace_editor(QWidgetSavePos):
 
@@ -81,9 +80,10 @@ class ray_trace_editor(QWidgetSavePos):
 
 		self.main_vbox.addWidget(self.notebook)
 
-
-		files=["ray.inp","view_point.inp"]
-		description=[_("Ray trace"),_("Observer viewpoint")]
+		data=gpvdm_data()
+		if len(data.ray.segments)>0:
+			files=[data.ray.segments[0].config,data.ray.segments[0].viewpoint]
+			description=[_("Ray trace"),_("Observer viewpoint")]
 
 
 		for i in range(0,len(files)):
