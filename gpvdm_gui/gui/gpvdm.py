@@ -527,20 +527,31 @@ class gpvdm_main_window(QMainWindow):
 		self.enable_disable_buttons()
 
 		if gpvdm_paths.get_use_gpvdm_local()==True:
+			coppied=False
 			if os.path.isdir(get_materials_path())==False:
 				clone_materials(get_materials_path(), get_base_material_path(),"material")
-
+				coppied=True
 			if os.path.isdir(get_emission_path())==False:
 				clone_materials(get_emission_path(), get_base_emission_path(),"emission")
+				coppied=True
 
 			if os.path.isdir(gpvdm_paths.get_shape_path())==False:
 				clone_materials(gpvdm_paths.get_shape_path(), get_base_shape_path(),"shape")
+				coppied=True
 
 			if os.path.isdir(get_scripts_path())==False:
 				shutil.copytree(get_base_scripts_path(), get_scripts_path() ,symlinks=True)
+				coppied=True
 
 			if os.path.isdir(get_spectra_path())==False:
 				clone_spectras(get_spectra_path())
+				coppied=True
+
+			#coppied=True
+			if coppied==True:
+				from video import video
+				self.v=video()
+				self.v.show()
 
 		check_lib_in_bash_rc()
 
