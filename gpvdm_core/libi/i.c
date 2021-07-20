@@ -41,6 +41,7 @@
 */
 #define _FILE_OFFSET_BITS 64
 #define _LARGEFILE_SOURCE
+#include <enabled_libs.h>
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
@@ -337,7 +338,7 @@ for (i=0;i<in->len;i++)
 return pos;
 }
 
-/**Perform log10 on data in math_xy
+/**Perform log10 on data in math_xy and keep the sign
 @param in input math_xy
 */
 void inter_log_y_m(struct math_xy* in)
@@ -349,7 +350,7 @@ for (i=0;i<in->len;i++)
 {
 	mull=1.0;
 	if (in->data[i]<0.0) mull= -1.0;
-	in->data[i]=log10(sqrt(in->data[i]*in->data[i]))*mull;
+	in->data[i]=log10(fabs(in->data[i]))*mull;
 }
 }
 
@@ -361,7 +362,7 @@ void inter_log_y(struct math_xy* in)
 int i;
 for (i=0;i<in->len;i++)
 {
-	in->data[i]=log10(sqrt(in->data[i]*in->data[i]));
+	in->data[i]=log10(fabs(in->data[i]));
 }
 }
 /**Perform log10 on x axis in math_xy
@@ -946,44 +947,7 @@ int inter_search_pos(struct math_xy* in,long double x)
 return search(in->x,in->len,x);
 }
 
-long double inter_get_raw(long double *x,long double *data,int len,long double pos)
-{
-long double x0;
-long double x1;
-long double y0;
-long double y1;
 
-long double ret;
-int i=0;
-
-if (pos<x[0])
-{
-
-return 0.0;
-}
-
-
-if (pos>=x[len-1])
-{
-	i=len-1;
-	x0=x[i-1];
-	x1=x[i];
-
-	y0=data[i-1];
-	y1=data[i];
-
-}else
-{
-	i=search(x,len,pos);
-	x0=x[i];
-	x1=x[i+1];
-
-	y0=data[i];
-	y1=data[i+1];
-}
-ret=y0+((y1-y0)/(x1-x0))*(pos-x0);
-return ret;
-}
 
 /**Get interpolated data from a data set
 @param in The structure holding the data

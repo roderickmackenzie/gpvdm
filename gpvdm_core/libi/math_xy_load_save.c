@@ -84,9 +84,9 @@ if (inp_load(sim,&data,name)!=0)
 
 
 inter_init(sim,in);
-
-char *line=inp_get_string(sim,&data);
-while(line!=NULL)
+char line[4000];
+int ret_val=inp_get_string(sim,line,&data);
+while(ret_val==0)
 {
 	//
 	//unused_pchar=gpvdm_fgets(temp, 1000, file);
@@ -96,7 +96,7 @@ while(line!=NULL)
 
 		inter_append(in,x,y);
 	}
-	line=inp_get_string(sim,&data);
+	ret_val=inp_get_string(sim,line,&data);
 }
 
 inp_free(sim,&data);

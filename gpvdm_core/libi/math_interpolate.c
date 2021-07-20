@@ -41,6 +41,7 @@
 */
 #define _FILE_OFFSET_BITS 64
 #define _LARGEFILE_SOURCE
+#include <enabled_libs.h>
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
@@ -60,76 +61,119 @@ static int unused __attribute__((unused));
 static char* unused_pchar __attribute__((unused));
 
 
-long double inter_get_diff(struct math_xy* delta,struct math_xy* one,struct math_xy* two,struct math_xy* mull,long double window_left)
+long double inter_get_raw(long double *x,long double *data,int len,long double pos)
 {
-	int i;
-	int points_max=400;
-	long double error=0.0;
-	long double start;
-	long double stop;
+long double x0;
+long double x1;
+long double y0;
+long double y1;
 
-	inter_malloc(delta,points_max);
-	delta->len=points_max;
+long double ret;
+int i=0;
 
-	if ((two->len<=0)||(one->len<=0))
-	{
-		return -1.0;
-	}
-
-	start=one->x[0];
-	if (two->x[0]>start)
-	{
-		start=two->x[0];
-	}
-
-	stop=one->x[one->len-1];
-	if (two->x[two->len-1]<stop)
-	{
-		stop=two->x[two->len-1];
-	}
-
-	//printf("%Le %Le\n",one->x[0],two->x[0]);
-	//printf("%Le %Le\n",one->x[one->len-1],two->x[two->len-1]);
-	long double dx=(stop-start)/(long double)points_max;
-	long double pos=start;
-	long double etemp=0.0;
-	long double exp;
-	long double sim;
-	long double mul;
-	for (i=0;i<points_max;i++)
-	{
-		exp=inter_get_noend(one,pos);
-		sim=inter_get_noend(two,pos);
-		mul=inter_get_noend(mull,pos);
-		etemp=fabs(exp-sim)*mul;
-		//printf("%Le %Le %Le %Le\n",exp,sim,mul,etemp);
-		delta->x[i]=pos;
-		if (delta->x[i]<window_left)
-		{
-			etemp=0.0;
-		}
-		delta->data[i]=etemp;
-		error+=etemp;
-		pos+=dx;
-	}
-
-return error/((long double)points_max);
-}
-
-long double math_xy_get_delta(struct math_xy* one,struct math_xy* two)
+if (pos<x[0])
 {
 
-int x;
-long double sum=0.0;
-for (x=0;x<one->len;x++)
-{
-	sum+=fabsl(one->data[x]-two->data[x]);
-}
-
-sum/=(long double)one->len;
-
-return sum;
+return 0.0;
 }
 
 
+if (pos>=x[len-1])
+{
+	i=len-1;
+	x0=x[i-1];
+	x1=x[i];
 
+	y0=data[i-1];
+	y1=data[i];
+
+}else
+{
+	i=search(x,len,pos);
+	x0=x[i];
+	x1=x[i+1];
+
+	y0=data[i];
+	y1=data[i+1];
+}
+ret=y0+((y1-y0)/(x1-x0))*(pos-x0);
+return ret;
+}
+
+float math_interpolate_raw_float(long double *x,float *data,int len,long double pos)
+{
+long double x0;
+long double x1;
+float y0;
+float y1;
+
+float ret;
+int i=0;
+
+if (pos<x[0])
+{
+
+	return 0.0;
+}
+
+
+if (pos>=x[len-1])
+{
+	i=len-1;
+	x0=x[i-1];
+	x1=x[i];
+
+	y0=data[i-1];
+	y1=data[i];
+
+}else
+{
+	i=search(x,len,pos);
+	x0=x[i];
+	x1=x[i+1];
+
+	y0=data[i];
+	y1=data[i+1];
+}
+ret=y0+((y1-y0)/(x1-x0))*(pos-x0);
+return ret;
+}
+
+float math_interpolate_raw_double(long double *x,double *data,int len,long double pos)
+{
+long double x0;
+long double x1;
+double y0;
+double y1;
+
+double ret;
+int i=0;
+
+if (pos<x[0])
+{
+
+	return 0.0;
+}
+
+
+if (pos>=x[len-1])
+{
+	i=len-1;
+	x0=x[i-1];
+	x1=x[i];
+
+	y0=data[i-1];
+	y1=data[i];
+
+}else
+{
+	i=search(x,len,pos);
+	x0=x[i];
+	x1=x[i+1];
+
+	y0=data[i];
+	y1=data[i+1];
+}
+ret=y0+((y1-y0)/(x1-x0))*(pos-x0);
+return ret;
+}
