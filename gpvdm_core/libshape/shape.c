@@ -50,6 +50,8 @@
 #include <log.h>
 #include <component_fun.h>
 #include <enabled_libs.h>
+#include <dos.h>
+#include <heat_fun.h>
 
 int shape_in_shape(struct simulation *sim,struct shape *s,long double z,long double x,long double y)
 {
@@ -89,7 +91,7 @@ int nx=0;
 return -1;
 }
 
-int shape_get_index(struct simulation *sim,struct epitaxy *in,long double x,long double y,long double z)
+/*int shape_get_index(struct simulation *sim,struct epitaxy *in,long double x,long double y,long double z)
 {
 	int i=0;
 	int l=0;
@@ -108,7 +110,7 @@ int shape_get_index(struct simulation *sim,struct epitaxy *in,long double x,long
 	}
 	return -1;
 
-}
+}*/
 
 void shape_free(struct simulation *sim,struct shape *s)
 {
@@ -119,14 +121,18 @@ void shape_free(struct simulation *sim,struct shape *s)
 	}
 
 	triangles_free((&(s->tri)));
+
+	dos_free(&(s->dosn));
+	dos_free(&(s->dosp));
+	heat_material_free(&(s->heat));
 }
 
 
 void shape_init(struct simulation *sim,struct shape *s)
 {
 	s->enabled=-1;
+	s->rotate_y=0.0;
 
-	s->dos_index=-1;
 	s->dz=0.0;
 	s->dx=0.0;
 	s->dy=0.0;
@@ -151,13 +157,52 @@ void shape_init(struct simulation *sim,struct shape *s)
 	s->flip_y=FALSE;
 	s->flip_x=FALSE;
 
-	triangles_init((&(s->tri)));
+	s->Gnp=0.0;
 
-	component_init(sim,&(s->com));
+	triangles_init((&(s->tri)));
+	#ifdef libcircuit_enabled
+		component_init(sim,&(s->com));
+	#endif
+
+	dos_init(&(s->dosn));
+	dos_init(&(s->dosp));
+	heat_material_init(&(s->heat));
+
+	s->color_r=0.5;
+	s->color_g=0.5;
+	s->color_b=0.5;
+}
+
+void shape_cpy(struct simulation *sim,struct shape *out,struct shape *in)
+{
+	//Not sure why this is not fully populated
+	out->rotate_y=in->rotate_y;
+
+	dos_cpy(&(out->dosn),&(in->dosn));
+	dos_cpy(&(out->dosp),&(in->dosp));
+	heat_material_cpy(&(out->heat),&(in->heat));
+	strcpy(out->dos_file,in->dos_file);
+	out->Gnp=in->Gnp;
+
+
+	out->color_r=in->color_r;
+	out->color_g=in->color_g;
+	out->color_b=in->color_b;
 }
 
 void shape_load_materials(struct simulation *sim,struct shape *s)
 {
+/*	struct triangles tri;
+	triangle_load_from_file(sim,(&tri),"/home/rod/gpvdm_local/shape/selen/shape.inp");
+	struct dat_file buf;
+	buffer_init(&buf);
+	buffer_malloc(&buf);
+	triangles_to_dat_file(&buf,(&tri));
+	buffer_dump_path(sim,"","rod_test.dat",&buf);
+	buffer_free(&buf);
+	printf("wait2 %s\n",s->name);
+	getchar();*/
+
 	char file_path[PATH_MAX];
 
 	if (strcmp(s->optical_material,"none")!=0)
@@ -180,98 +225,27 @@ void shape_load_materials(struct simulation *sim,struct shape *s)
 		inter_load(sim,&(s->n),file_path);
 		inter_sort(&(s->n));
 
+	}else
+	{
+		ewe(sim,"No optical material defined for object: %s",s->name);
 	}
+
 
 	if (strcmp(s->shape_type,"none")!=0)
 	{
 
 		join_path(3,file_path,get_shape_path(sim),s->shape_type,"shape.inp");
+		if (isfile(file_path)!=0)
+		{
+			printf("Could not load: %s",file_path);
+			join_path(3,file_path,get_shape_path(sim),"box","shape.inp");
+		}
 		triangle_load_from_file(sim,(&s->tri),file_path);
+		triangles_rotate_y((&s->tri),(s->rotate_y/360.0)*2.0*M_PI);
 	}
 
 
 }
 
-struct shape *shape_load_file(struct simulation *sim,struct epitaxy *in,struct shape *s, char *file_name,long double y_pos)
-{
-	int enabled;
-	char full_file_name[PATH_MAX];
-
-	sprintf(full_file_name,"%s.inp",file_name);
-
-	printf_log(sim,"Loading shape file: %s\n",full_file_name);
-
-	struct inp_file inp;
-	inp_init(sim,&inp);
-
-	if (inp_load(sim,&inp,full_file_name)==0)
-	{
-		s->enabled=inp_search_english(sim,&inp,"#shape_enabled");
-
-		s->dos_index=-1;
-
-		inp_search_gdouble(sim,&inp,&(s->dx),"#shape_dx");
-		inp_search_gdouble(sim,&inp,&(s->dy),"#shape_dy");
-		inp_search_gdouble(sim,&inp,&(s->dz),"#shape_dz");
-
-		inp_search_gdouble(sim,&inp,&(s->dx_padding),"#shape_padding_dx");
-		inp_search_gdouble(sim,&inp,&(s->dy_padding),"#shape_padding_dy");
-		inp_search_gdouble(sim,&inp,&(s->dz_padding),"#shape_padding_dz");
-
-
-		inp_search_int(sim,&inp,&(s->nx),"#shape_nx");
-		inp_search_int(sim,&inp,&(s->ny),"#shape_ny");
-		inp_search_int(sim,&inp,&(s->nz),"#shape_nz");
-
-		inp_search_string(sim,&inp,s->name,"#shape_name");
-		inp_search_string(sim,&inp,s->shape_type,"#shape_type");
-
-		inp_search_string(sim,&inp,s->optical_material,"#shape_optical_material");
-		assert_platform_path(s->optical_material);
-
-		inp_search_string(sim,&inp,s->dos_file,"#shape_dos");
-		inp_search_string(sim,&inp,s->electrical_file,"#shape_electrical");
-
-		#ifdef libcircuit_enabled
-			if (s->enabled==TRUE)
-			{
-				component_load_electrical_file(sim,&(s->com),s->electrical_file);
-			}
-		#endif
-
-		inp_search_gdouble(sim,&inp,&(s->x0),"#shape_x0");
-		inp_search_gdouble(sim,&inp,&(s->z0),"#shape_z0");
-		inp_search_gdouble(sim,&inp,&(s->y0),"#shape_y0");
-
-		s->flip_y=inp_search_english(sim,&inp,"#shape_flip_y");
-		s->flip_x=inp_search_english(sim,&inp,"#shape_flip_x");
-
-		if (s->flip_y==FALSE)
-		{
-			s->y0=y_pos+s->y0;
-		}else
-		{
-			s->y0=y_pos-s->y0;
-		}
-
-		if (s->enabled==TRUE)
-		{
-			if (strcmp(s->dos_file,"none")!=0)
-			{
-				s->dos_index=in->electrical_layers;
-				epitaxy_load_dos_files(sim,in, s->dos_file,"none","none");
-			}
-
-			shape_load_materials(sim,s);
-
-		}
-		inp_free(sim,&inp);
-	}else
-	{
-		ewe(sim,"file %s not found\n",full_file_name);
-	}
-
-return s;
-}
 
 

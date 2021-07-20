@@ -1,5 +1,5 @@
 inc=-I../include/
-OBJS=shape.o
+OBJS=shape.o shape_load.o
 
 COMPILE_FLAG=@COMPILE_FLAG@
 LINK_FLAG=@LINK_FLAG@
