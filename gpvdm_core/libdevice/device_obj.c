@@ -69,6 +69,7 @@ static char* unused_pchar __attribute__((unused));
 
 void device_obj_dump(struct simulation *sim,struct device *dev)
 {
+	return;
 	struct dimensions *dim=&(dev->ns.dim);
 	struct dat_file buf;
 
@@ -92,7 +93,13 @@ void device_obj_dump(struct simulation *sim,struct device *dev)
 
 void device_build_obj_pointer_array(struct simulation *sim,struct device *dev)
 {
+	if (dev->electrical_simulation_enabled==FALSE)
+	{
+		return;
+	}
+
 	printf_log(sim,"Device: Building pointer array\n");
+
 	int x=0;
 	int y=0;
 	int z=0;
@@ -127,7 +134,7 @@ void device_build_obj_pointer_array(struct simulation *sim,struct device *dev)
 					ewe(sim,"No object\n");
 					getchar();
 				}
-
+				//printf("%d %d %s\n",z,x,obj->name);
 				dev->obj_zx_layer[z][x][l]=obj;
 				//printf("%s\n",obj->name);
 			}
@@ -167,7 +174,7 @@ void device_build_obj_pointer_array(struct simulation *sim,struct device *dev)
 				}
 
 				dev->obj_zxy[z][x][y]=obj;
-
+				//printf("%d %d %s\n",x,y,obj->name);
 			}
 
 			//getchar();

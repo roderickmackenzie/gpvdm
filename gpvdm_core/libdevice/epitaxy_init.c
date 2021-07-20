@@ -64,7 +64,6 @@ void epi_layer_init(struct simulation *sim,struct epi_layer *layer)
 
 	layer->nshape=-1;
 	layer->width=-1;
-	strcpy(layer->pl_file,"none");
 	layer->pl_use_experimental_emission_spectra=-1;
 	layer->pl_experimental_emission_efficiency=-1;
 	layer->pl_enabled=-1;
@@ -84,19 +83,22 @@ void epi_layer_init(struct simulation *sim,struct epi_layer *layer)
 
 	layer->electrical_layer=-1;
 
-	strcpy(layer->dos_file,"none");
+	//strcpy(layer->dos_file,"none");
 	layer->layer_type=-1;
-	strcpy(layer->interface_file,"none");
 	layer->interface_type=0;
 	layer->interface_R=0.0;
+
+	layer->interface_left_doping_enabled=-1;
+	layer->interface_left_doping=0.0;
+
+	layer->interface_right_doping_enabled=-1;
+	layer->interface_right_doping=0.0;
 
 	layer->rgb[0]=-1;
 	layer->rgb[1]=-1;
 	layer->rgb[2]=-1;
 
 	layer->G_percent=-1;
-
-	layer->Gnp=-1;
 
 	layer->solve_optical_problem=-1;
 	layer->solve_thermal_problem=-1;
@@ -112,25 +114,14 @@ void epitaxy_init(struct simulation *sim,struct epitaxy *epi)
 	epi->layers=-1;
 	epi->device_start=-1;
 	epi->device_stop=-1;
-	epi->electrical_layers=-1;
 
 	//electrical layres including shapes
 
 
 	for (l=0;l<layer_max;l++)
 	{
-		strcpy(epi->lumo_file[l],"");
-		strcpy(epi->homo_file[l],"");
-		strcpy(epi->shape_file[l],"");
+		//strcpy(epi->shape_file[l],"");
 		epi_layer_init(sim,&(epi->layer[l]));
-	}
-
-	for (l=0;l<10;l++)
-	{
-		//printf("here\n");
-		//getchar();
-		dos_init(&(epi->dosn[l]));
-		dos_init(&(epi->dosp[l]));
 	}
 
 }

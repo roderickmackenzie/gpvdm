@@ -68,7 +68,7 @@ void device_get_memory(struct simulation *sim,struct device *in)
 
 	in->obj=malloc(sizeof(struct object)*1000);
 
-	if (dim->ylen==0)
+	if (in->electrical_simulation_enabled==FALSE)
 	{
 		return;
 	}
@@ -102,10 +102,13 @@ void device_get_memory(struct simulation *sim,struct device *in)
 		malloc_zy_int(dim,&(in->n_contact_x1));
 
 	//Contact fermi levels
+	if (in->drift_diffision_simulations_enabled==TRUE)
+	{
 		malloc_zx_gdouble(dim,&(in->Fi0_y0));
 		malloc_zx_gdouble(dim,&(in->Fi0_y1));
 		malloc_zy_long_double(dim,&(in->Fi0_x0));
 		malloc_zy_long_double(dim,&(in->Fi0_x1));
+	}
 
 	//Charge densities on surfaces even away from contacts
 		malloc_zx_gdouble(dim,&(in->electrons_y0));
@@ -121,15 +124,21 @@ void device_get_memory(struct simulation *sim,struct device *in)
 		malloc_zy_long_double(dim,&(in->holes_x1));
 
 	//Built in potentials
+
 	malloc_zx_gdouble(dim,&(in->V_y0));
 	malloc_zx_gdouble(dim,&(in->V_y1));
 	malloc_zy_long_double(dim,&(in->V_x0));
 	malloc_zy_long_double(dim,&(in->V_x1));
 
 	//Ions
-	malloc_zxy_gdouble(dim,&(in->Nad));
-	malloc_zxy_gdouble(dim,&(in->Nion));
-	malloc_zxy_gdouble(dim,&(in->Nion_last));
+	if (in->drift_diffision_simulations_enabled==TRUE)
+	{
+		malloc_zxy_gdouble(dim,&(in->Nad));
+		malloc_zxy_gdouble(dim,&(in->Nion));
+		malloc_zxy_gdouble(dim,&(in->dNion));
+		malloc_zxy_gdouble(dim,&(in->dNiondphi));
+		malloc_zxy_gdouble(dim,&(in->Nion_last));
+	}
 
 	//Generation
 	malloc_zxy_gdouble(dim,&(in->G));
@@ -137,6 +146,8 @@ void device_get_memory(struct simulation *sim,struct device *in)
 	malloc_zxy_gdouble(dim,&(in->Gp));
 
 	//Free charges
+	if (in->drift_diffision_simulations_enabled==TRUE)
+	{
 		malloc_zxy_gdouble(dim,&(in->n));
 		malloc_zxy_gdouble(dim,&(in->p));
 		malloc_zxy_gdouble(dim,&(in->dn));
@@ -176,17 +187,25 @@ void device_get_memory(struct simulation *sim,struct device *in)
 
 		malloc_zxy_gdouble(dim,&(in->t));
 		malloc_zxy_gdouble(dim,&(in->tp));
+		malloc_zxy_gdouble(dim,&(in->t_ion));
 
+	}
 	//Fermi levels
+	if (in->drift_diffision_simulations_enabled==TRUE)
+	{
 		malloc_zxy_gdouble(dim,&(in->Fi));
-
+	}
 	//Bands
+	if (in->drift_diffision_simulations_enabled==TRUE)
+	{
 		malloc_zxy_gdouble(dim,&(in->Eg));
 		malloc_zxy_gdouble(dim,&(in->Xi));
 		malloc_zxy_gdouble(dim,&(in->Ev));
 		malloc_zxy_gdouble(dim,&(in->Ec));
-
+	}
 	//Recombination
+	if (in->drift_diffision_simulations_enabled==TRUE)
+	{
 		malloc_zxy_gdouble(dim,&(in->Rfree));
 
 		malloc_zxy_gdouble(dim,&(in->Rn));
@@ -198,19 +217,26 @@ void device_get_memory(struct simulation *sim,struct device *in)
 		malloc_zxy_gdouble(dim,&(in->Rnet));
 
 		malloc_zxy_gdouble(dim,&(in->B));
-
+	}
 	//Interfaces
+	if (in->drift_diffision_simulations_enabled==TRUE)
+	{
 		malloc_zxy_int(dim,&(in->interface_type));
 		malloc_zxy_gdouble(dim,&in->interface_B);
+		malloc_zxy_gdouble(dim,&in->interface_Bt);
 		malloc_zxy_gdouble(dim,&in->interface_R);
-
+	}
 	//Rates
+	if (in->drift_diffision_simulations_enabled==TRUE)
+	{
 		malloc_zxy_gdouble(dim,&(in->nrelax));
 		malloc_zxy_gdouble(dim,&(in->ntrap_to_p));
 		malloc_zxy_gdouble(dim,&(in->prelax));
 		malloc_zxy_gdouble(dim,&(in->ptrap_to_n));
-
+	}
 	//Mobility
+	if (in->drift_diffision_simulations_enabled==TRUE)
+	{
 		malloc_zxy_gdouble(dim,&(in->mun_z));
 		malloc_zxy_gdouble(dim,&(in->mun_x));
 		malloc_zxy_gdouble(dim,&(in->mun_y));
@@ -220,12 +246,12 @@ void device_get_memory(struct simulation *sim,struct device *in)
 		malloc_zxy_gdouble(dim,&(in->mup_y));
 
 		malloc_zxy_gdouble(dim,&(in->muion));
-
+	}
 	//Electrostatics
-	malloc_zxy_gdouble(dim,&(in->epsilonr));
-	malloc_zxy_gdouble(dim,&(in->epsilonr_e0));
+		malloc_zxy_gdouble(dim,&(in->epsilonr));
+		malloc_zxy_gdouble(dim,&(in->epsilonr_e0));
 
-	malloc_zxy_gdouble(dim,&(in->phi_save));
+		malloc_zxy_gdouble(dim,&(in->phi_save));
 
 	//Temperature
 		malloc_zxy_gdouble(dim,&(in->Tl));
@@ -251,18 +277,20 @@ void device_get_memory(struct simulation *sim,struct device *in)
 		malloc_zxy_gdouble(dim,&(in->Jn_x));
 		malloc_zxy_gdouble(dim,&(in->Jp_x));
 
-		malloc_zxy_gdouble(dim,&(in->Jn_drift));
-		malloc_zxy_gdouble(dim,&(in->Jn_diffusion));
+		if (in->drift_diffision_simulations_enabled==TRUE)
+		{
+			malloc_zxy_gdouble(dim,&(in->Jn_drift));
+			malloc_zxy_gdouble(dim,&(in->Jn_diffusion));
 
-		malloc_zxy_gdouble(dim,&(in->Jn_x_drift));
-		malloc_zxy_gdouble(dim,&(in->Jn_x_diffusion));
+			malloc_zxy_gdouble(dim,&(in->Jn_x_drift));
+			malloc_zxy_gdouble(dim,&(in->Jn_x_diffusion));
 
-		malloc_zxy_gdouble(dim,&(in->Jp_drift));
-		malloc_zxy_gdouble(dim,&(in->Jp_diffusion));
+			malloc_zxy_gdouble(dim,&(in->Jp_drift));
+			malloc_zxy_gdouble(dim,&(in->Jp_diffusion));
 
-		malloc_zxy_gdouble(dim,&(in->Jp_x_drift));
-		malloc_zxy_gdouble(dim,&(in->Jp_x_diffusion));
-
+			malloc_zxy_gdouble(dim,&(in->Jp_x_drift));
+			malloc_zxy_gdouble(dim,&(in->Jp_x_diffusion));
+		}
 	//Applied voltages
 		malloc_zx_gdouble(dim,&(in->Vapplied_y0));
 		malloc_zx_gdouble(dim,&(in->Vapplied_y1));
@@ -281,7 +309,6 @@ void device_get_memory(struct simulation *sim,struct device *in)
 		malloc_zxy_gdouble(dim,&(in->Photon_gen));
 
 	//Device layout
-		malloc_zxy_int(dim,&(in->imat));
 		malloc_zxy_int(dim,&(in->imat_epitaxy));
 		malloc_zxy_int(dim,&(in->mask));
 
@@ -301,18 +328,23 @@ void device_get_memory(struct simulation *sim,struct device *in)
 		//none
 
 	//Traps 3d n
+	if (in->drift_diffision_simulations_enabled==TRUE)
+	{
 		malloc_zxy_gdouble(dim,&(in->nt_all));
 		malloc_zxy_gdouble(dim,&(in->tt));
 
 		malloc_zxy_gdouble(dim,&(in->nt_save));
 		malloc_zxy_gdouble(dim,&(in->pt_save));
-
+	}
 	//Traps 3d p
+	if (in->drift_diffision_simulations_enabled==TRUE)
+	{
 		malloc_zxy_gdouble(dim,&(in->pt_all));
 		malloc_zxy_gdouble(dim,&(in->tpt));
 
 		malloc_zxy_gdouble(dim,&(in->ntequlib));
 		malloc_zxy_gdouble(dim,&(in->ptequlib));
+	}
 
 	//Traps 4d n
 		//in memory.c
@@ -339,7 +371,7 @@ void device_get_memory(struct simulation *sim,struct device *in)
 		//none
 
 	//Newton solver internal memory
-		//none
+		matrix_solver_memory_load_dll(sim,&(in->msm));
 
 	//meshing
 		//none
@@ -380,6 +412,7 @@ void device_get_memory(struct simulation *sim,struct device *in)
 	//Objects
 		malloc_zxy_p_object(dim, &(in->obj_zxy));
 		malloc_zx_layer_p_object(&(in->dim_epitaxy), &(in->obj_zx_layer));
+
 	//Time mesh
 		//none
 
@@ -401,8 +434,23 @@ void device_get_memory(struct simulation *sim,struct device *in)
 	#ifdef libcircuit_enabled
 		circuit_alloc_nodes_and_links(sim,&(in->cir));
 	#endif
-
-
+		//free_zxy_p_object(dim, &(in->obj_zxy));
+		//free_zx_layer_p_object(&(in->dim_epitaxy), &(in->obj_zx_layer));
 
 }
 
+void device_to_dim(struct simulation *sim,struct dimensions *dim,struct device *dev)
+{
+	struct newton_state *ns=(&dev->ns);
+	struct json_obj *json_perovskite;
+	dim->zlen=dev->mesh_data.meshdata_z.tot_points;
+	dim->xlen=dev->mesh_data.meshdata_x.tot_points;
+	dim->ylen=dev->mesh_data.meshdata_y.tot_points;
+	json_perovskite=json_obj_find(&(dev->config.obj), "perovskite");
+	if (json_perovskite==NULL)
+	{
+		ewe(sim,"Perovskite object not found\n");
+	}
+	json_get_english(sim, json_perovskite, &(ns->Nion_enabled),"perovskite_enabled");
+	printf("here %d\n",ns->Nion_enabled);
+}

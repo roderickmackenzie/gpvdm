@@ -59,15 +59,15 @@ void epi_layer_cpy(struct simulation *sim,struct epi_layer *out,struct epi_layer
 	out->y_stop=in->y_stop;
 
 	//we are no doing shapes
-	shape_init(sim,&(out->s));
+	shape_cpy(sim,&(out->s),&(in->s));
+
 	for (i=0;i<10;i++)
 	{
-		shape_init(sim,&(out->shapes[i]));
+		shape_cpy(sim,&(out->shapes[i]),&(in->shapes[i]));
 	}
 
 	out->nshape=in->nshape;
 	out->width=in->width;
-	strcpy(out->pl_file,in->pl_file);
 	out->pl_use_experimental_emission_spectra=in->pl_use_experimental_emission_spectra;
 	out->pl_experimental_emission_efficiency=in->pl_experimental_emission_efficiency;
 	out->pl_enabled=in->pl_enabled;
@@ -86,12 +86,17 @@ void epi_layer_cpy(struct simulation *sim,struct epi_layer *out,struct epi_layer
 
 	out->electrical_layer=in->electrical_layer;
 
-	strcpy(out->dos_file,in->dos_file);
+	//strcpy(out->dos_file,in->dos_file);
 	out->layer_type=in->layer_type;
 
-	strcpy(out->interface_file,in->interface_file);
 	out->interface_type=in->interface_type;
 	out->interface_R=in->interface_R;
+
+	out->interface_left_doping_enabled=in->interface_left_doping_enabled;
+	out->interface_left_doping=in->interface_left_doping;
+
+	out->interface_right_doping_enabled=in->interface_right_doping_enabled;
+	out->interface_right_doping=in->interface_right_doping;
 
 	out->rgb[0]=in->rgb[0];
 	out->rgb[1]=in->rgb[1];
@@ -99,7 +104,6 @@ void epi_layer_cpy(struct simulation *sim,struct epi_layer *out,struct epi_layer
 
 	out->G_percent=in->G_percent;
 
-	out->Gnp=in->Gnp;
 
 	out->solve_optical_problem=in->solve_optical_problem;
 	out->solve_thermal_problem=in->solve_thermal_problem;
@@ -115,24 +119,14 @@ void epitaxy_cpy(struct simulation *sim,struct epitaxy *out,struct epitaxy *in)
 	out->layers=in->layers;
 	out->device_start=in->device_start;
 	out->device_stop=in->device_stop;
-	out->electrical_layers=in->electrical_layers;
 
 	//electrical layres including shapes
 
 
 	for (l=0;l<layer_max;l++)
 	{
-		strcpy(out->lumo_file[l],in->lumo_file[l]);
-		strcpy(out->homo_file[l],in->homo_file[l]);
-		strcpy(out->shape_file[l],in->shape_file[l]);
+		//strcpy(out->shape_file[l],in->shape_file[l]);
 		epi_layer_cpy(sim,&(out->layer[l]),&(in->layer[l]));
-	}
-
-
-	for (l=0;l<out->electrical_layers;l++)
-	{
-		dos_cpy(&(out->dosn[l]),&(in->dosn[l]));
-		dos_cpy(&(out->dosp[l]),&(in->dosp[l]));
 	}
 
 

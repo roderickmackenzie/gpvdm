@@ -50,6 +50,7 @@
 #include <epitaxy.h>
 #include <dat_file.h>
 #include <triangles.h>
+#include <device_fun.h>
 
 /** @file device_world_stats.c
 	@brief Dump stats about each object in the world
@@ -73,6 +74,11 @@ void device_objects_free(struct simulation *sim,struct device *dev)
 void device_world_stats(struct simulation *sim,struct device *dev)
 {
 
+	if (sim->fitting!=FIT_NOT_FITTING)
+	{
+		return;
+	}
+
 	FILE *out;
 	int o=0;
 	double Rq=0.0;
@@ -82,7 +88,7 @@ void device_world_stats(struct simulation *sim,struct device *dev)
 	struct vec min;
 	struct vec max;
 
-	out=fopena(get_output_path(sim),"object_stats.dat","w");
+	out=fopena(get_output_path(dev),"object_stats.json","w");
 	for (o=0;o<dev->objects;o++)
 	{
 		obj=&(dev->obj[o]);

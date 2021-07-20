@@ -107,17 +107,17 @@ void device_cpy(struct simulation *sim,struct device *out,struct device *in)
 		cpy_zy_long_double(dim, &(out->Fi0_x1),&(in->Fi0_x1));
 
 	//Charge densities on surfaces even away from contacts
-		cpy_zx_long_double(dim,&(in->electrons_y0),&(in->electrons_y0));
-		cpy_zx_long_double(dim,&(in->holes_y0),&(in->holes_y0));
+		cpy_zx_long_double(dim,&(out->electrons_y0),&(in->electrons_y0));
+		cpy_zx_long_double(dim,&(out->holes_y0),&(in->holes_y0));
 
-		cpy_zx_long_double(dim,&(in->electrons_y1),&(in->electrons_y1));
-		cpy_zx_long_double(dim,&(in->holes_y1),&(in->holes_y1));
+		cpy_zx_long_double(dim,&(out->electrons_y1),&(in->electrons_y1));
+		cpy_zx_long_double(dim,&(out->holes_y1),&(in->holes_y1));
 
-		cpy_zy_long_double(dim,&(in->electrons_x0),&(in->electrons_x0));
-		cpy_zy_long_double(dim,&(in->holes_x0),&(in->holes_x0));
+		cpy_zy_long_double(dim,&(out->electrons_x0),&(in->electrons_x0));
+		cpy_zy_long_double(dim,&(out->holes_x0),&(in->holes_x0));
 
-		cpy_zy_long_double(dim,&(in->electrons_x1),&(in->electrons_x1));
-		cpy_zy_long_double(dim,&(in->holes_x1),&(in->holes_x1));
+		cpy_zy_long_double(dim,&(out->electrons_x1),&(in->electrons_x1));
+		cpy_zy_long_double(dim,&(out->holes_x1),&(in->holes_x1));
 
 
 	//Built in potentials
@@ -129,6 +129,8 @@ void device_cpy(struct simulation *sim,struct device *out,struct device *in)
 	//Ions
 		cpy_zxy_long_double(dim, &(out->Nad), &(in->Nad));
 		cpy_zxy_long_double(dim, &(out->Nion), &(in->Nion));
+		cpy_zxy_long_double(dim, &(out->dNion), &(in->dNion));
+		cpy_zxy_long_double(dim, &(out->dNiondphi), &(in->dNiondphi));
 		cpy_zxy_long_double(dim, &(out->Nion_last), &(in->Nion_last));
 
 	//Generation
@@ -174,6 +176,7 @@ void device_cpy(struct simulation *sim,struct device *out,struct device *in)
 
 		cpy_zxy_long_double(dim, &(out->t), &(in->t));
 		cpy_zxy_long_double(dim, &(out->tp), &(in->tp));
+		cpy_zxy_long_double(dim, &(out->t_ion), &(in->t_ion));
 
 	//Fermi levels
 		cpy_zxy_long_double(dim, &(out->Fi), &(in->Fi));
@@ -200,8 +203,10 @@ void device_cpy(struct simulation *sim,struct device *out,struct device *in)
 
 	//Interfaces
 		out->interfaces_n=in->interfaces_n;
+		out->interfaces_n_srh=in->interfaces_n_srh;
 		cpy_zxy_int(dim,&(out->interface_type),&(in->interface_type));
 		cpy_zxy_long_double(dim, &(out->interface_B), &(in->interface_B));
+		cpy_zxy_long_double(dim, &(out->interface_Bt), &(in->interface_Bt));
 		cpy_zxy_long_double(dim, &(out->interface_R), &(in->interface_R));
 
 	//Rates
@@ -271,7 +276,6 @@ void device_cpy(struct simulation *sim,struct device *out,struct device *in)
 		cpy_zy_long_double(dim, &(out->Vapplied_x1),&(in->Vapplied_x1));
 
 		out->Vbi= in->Vbi;
-		out->vbi= in->vbi;
 
 	//Passivation
 		cpy_zx_int(dim, &(out->passivate_y0),&(in->passivate_y0));
@@ -284,7 +288,6 @@ void device_cpy(struct simulation *sim,struct device *out,struct device *in)
 		cpy_zxy_long_double(dim, &(out->Photon_gen), &(in->Photon_gen));
 
 	//Device layout
-		cpy_zxy_int(dim,&(out->imat),&(in->imat));
 		cpy_zxy_int(dim,&(out->imat_epitaxy),&(in->imat_epitaxy));
 		cpy_zxy_int(dim,&(out->mask),&(in->mask));
 
@@ -373,11 +376,7 @@ void device_cpy(struct simulation *sim,struct device *out,struct device *in)
 		out->electrical_error0= in->electrical_error0;
 
 		out->math_enable_pos_solver= in->math_enable_pos_solver;
-		out->posclamp= in->posclamp;
-		out->pos_max_ittr= in->pos_max_ittr;
 
-		strcpy(out->solver_name,in->solver_name);
-		strcpy(out->complex_solver_name,in->complex_solver_name);
 		strcpy(out->newton_name,in->newton_name);
 
 		out->kl_in_newton=in->kl_in_newton;
@@ -394,23 +393,24 @@ void device_cpy(struct simulation *sim,struct device *out,struct device *in)
 		out->newton_last_ittr=in->newton_last_ittr;
 
 	//Arrays used by newton solver
-		out->newton_dntrap=NULL;
-		out->newton_dntrapdntrap=NULL;
-		out->newton_dntrapdn=NULL;
-		out->newton_dntrapdp=NULL;
-		out->newton_dJdtrapn=NULL;
-		out->newton_dJpdtrapn=NULL;
+		cpy_1d_alloc((void**)&(out->newton_dntrap), (void**)&(in->newton_dntrap), dim->srh_bands, sizeof(long double));
+		cpy_1d_alloc((void**)&(out->newton_dntrapdntrap), (void**)&(in->newton_dntrapdntrap), dim->srh_bands, sizeof(long double));
+		cpy_1d_alloc((void**)&(out->newton_dntrapdn), (void**)&(in->newton_dntrapdn), dim->srh_bands, sizeof(long double));
+		cpy_1d_alloc((void**)&(out->newton_dntrapdp), (void**)&(in->newton_dntrapdp), dim->srh_bands, sizeof(long double));
+		cpy_1d_alloc((void**)&(out->newton_dJdtrapn), (void**)&(in->newton_dJdtrapn), dim->srh_bands, sizeof(long double));
+		cpy_1d_alloc((void**)&(out->newton_dJpdtrapn), (void**)&(in->newton_dJpdtrapn), dim->srh_bands, sizeof(long double));
 
-		out->newton_dptrapdp=NULL;
-		out->newton_dptrapdptrap=NULL;
-		out->newton_dptrap=NULL;
-		out->newton_dptrapdn=NULL;
-		out->newton_dJpdtrapp=NULL;
-		out->newton_dJdtrapp=NULL;
-		out->newton_dphidntrap=NULL;
-		out->newton_dphidptrap=NULL;
-		out->newton_ntlast=NULL;
-		out->newton_ptlast=NULL;
+		cpy_1d_alloc((void**)&(out->newton_dptrapdp), (void**)&(in->newton_dptrapdp), dim->srh_bands, sizeof(long double));
+		cpy_1d_alloc((void**)&(out->newton_dptrapdptrap), (void**)&(in->newton_dptrapdptrap), dim->srh_bands, sizeof(long double));
+		cpy_1d_alloc((void**)&(out->newton_dptrap), (void**)&(in->newton_dptrap), dim->srh_bands, sizeof(long double));
+		cpy_1d_alloc((void**)&(out->newton_dptrapdn), (void**)&(in->newton_dptrapdn), dim->srh_bands, sizeof(long double));
+		cpy_1d_alloc((void**)&(out->newton_dJpdtrapp), (void**)&(in->newton_dJpdtrapp), dim->srh_bands, sizeof(long double));
+		cpy_1d_alloc((void**)&(out->newton_dJpdtrapp_interface_right), (void**)&(in->newton_dJpdtrapp_interface_right), dim->srh_bands, sizeof(long double));
+		cpy_1d_alloc((void**)&(out->newton_dJdtrapp), (void**)&(in->newton_dJdtrapp), dim->srh_bands, sizeof(long double));
+		cpy_1d_alloc((void**)&(out->newton_dphidntrap), (void**)&(in->newton_dphidntrap), dim->srh_bands, sizeof(long double));
+		cpy_1d_alloc((void**)&(out->newton_dphidptrap), (void**)&(in->newton_dphidptrap), dim->srh_bands, sizeof(long double));
+		cpy_1d_alloc((void**)&(out->newton_ntlast), (void**)&(in->newton_ntlast), dim->srh_bands, sizeof(long double));
+		cpy_1d_alloc((void**)&(out->newton_ptlast), (void**)&(in->newton_ptlast), dim->srh_bands, sizeof(long double));
 
 	//Electrical components
 		out->Rshunt= in->Rshunt;
@@ -420,6 +420,7 @@ void device_cpy(struct simulation *sim,struct device *out,struct device *in)
 		out->C= in->C;
 		out->Rshort= in->Rshort;
 		out->other_layers= in->other_layers;
+		out->contact_charge= in->contact_charge;
 
 	//Dump contorl
 		out->dump_energy_slice_xpos=in->dump_energy_slice_xpos;
@@ -457,9 +458,12 @@ void device_cpy(struct simulation *sim,struct device *out,struct device *in)
 		out->dd_conv=in->dd_conv;
 		out->high_voltage_limit=in->high_voltage_limit;
 		out->stoppoint= in->stoppoint;
-
+		out->drift_diffision_simulations_enabled=in->drift_diffision_simulations_enabled;
+		out->electrical_simulation_enabled=in->electrical_simulation_enabled;
 	//Matrix
+		//printf("I'm doing the matrix copy!!\n");
 		matrix_cpy(sim,&(out->mx),&(in->mx));
+		//printf("I'm doing the matrix copy!! %p\n",out->mx.Ti);
 
 	//mesh data	-- as long as we don't remesh we don't need to copy this 
 		mesh_obj_init(&(out->mesh_data));
@@ -476,6 +480,8 @@ void device_cpy(struct simulation *sim,struct device *out,struct device *in)
 		strcpy(out->simmode,in->simmode);
 
 	//Newton states
+		//struct newton_state *ns=&(in->ns);
+
 		newton_state_cpy(&(out->ns),&(in->ns));
 		newton_state_cpy(&(out->ns_save),&(in->ns_save));
 
@@ -491,9 +497,6 @@ void device_cpy(struct simulation *sim,struct device *out,struct device *in)
 		out->pl_intensity_tot= in->pl_intensity_tot;
 		out->pl_use_experimental_emission_spectra=in->pl_use_experimental_emission_spectra;
 
-	//Test
-		out->test_param=in->test_param;
-
 	//thermal
 		#ifdef libheat_enabled
 			heat_cpy(sim,&(out->thermal), &(in->thermal));
@@ -501,7 +504,7 @@ void device_cpy(struct simulation *sim,struct device *out,struct device *in)
 
 	//Preovskite
 		#ifdef libperovskite_enabled
-			perovskite_init(sim,out);		//We are not going to copy this
+			perovskite_cpy(sim,&(out->mobileion),&(in->mobileion));
 		#endif
 
 	//Circuit
@@ -533,6 +536,7 @@ void device_cpy(struct simulation *sim,struct device *out,struct device *in)
 		time_mesh_cpy(&(out->tm),&(in->tm));
 
 	//solver cache
+		strcpy(out->solver_type,in->solver_type);
 		device_cache_cpy(&(out->cache),&(in->cache));
 
 	//fxdomain
@@ -540,8 +544,26 @@ void device_cpy(struct simulation *sim,struct device *out,struct device *in)
 			fxdomain_cpy(sim,&(out->fxdomain_config),&(in->fxdomain_config));
 		#endif
 
-	matrix_init(&(out->mx));		//??
+	//matrix solver memroy
+		matrix_solver_memory_init(&(out->msm));
+		matrix_solver_memory_load_dll(sim,&(out->msm));
 
+	//json
+		json_cpy(sim,&(out->config),&(in->config));
+
+	//temp vars
+		out->glob_wanted=in->glob_wanted;
+
+	//paths
+		strcpy(out->input_path,in->input_path);
+		strcpy(out->output_path,in->output_path);
+
+	//Newton solver dll
+		out->dll_solve_cur=in->dll_solve_cur;
+		out->dll_solver_realloc=in->dll_solver_realloc;
+		out->dll_solver_free_memory=in->dll_solver_free_memory;
+		out->dll_solver_handle=in->dll_solver_handle;
+		out->solver_verbosity=in->solver_verbosity;
 }
 
 

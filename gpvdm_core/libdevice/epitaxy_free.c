@@ -71,11 +71,6 @@ void epitaxy_free(struct simulation *sim,struct epitaxy *epi)
 
 	}
 
-	for (l=0;l<epi->electrical_layers;l++)
-	{
-		dos_free(&(epi->dosn[l]));
-		dos_free(&(epi->dosp[l]));
-	}
 
 }
 

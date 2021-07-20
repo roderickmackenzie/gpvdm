@@ -61,13 +61,16 @@
 #include <epitaxy.h>
 #include <light_fun.h>
 #include <enabled_libs.h>
+#include <lock.h>
 
 static int unused __attribute__((unused));
 static char* unused_pchar __attribute__((unused));
 
 void device_init(struct simulation *sim,struct device *dev)
 {
+	char cwd[PATH_MAX];
 
+		dev->sim_number=-1;
 	//Dimensions
 		dev->xlen= -1.0;
 		dev->ylen= -1.0;
@@ -123,6 +126,8 @@ void device_init(struct simulation *sim,struct device *dev)
 	//Ions
 		dev->Nad= NULL;
 		dev->Nion= NULL;
+		dev->dNion= NULL;
+		dev->dNiondphi= NULL;
 		dev->Nion_last= NULL;
 
 	//Generation
@@ -154,6 +159,9 @@ void device_init(struct simulation *sim,struct device *dev)
 		dev->nlast= NULL;
 		dev->plast= NULL;
 
+		dev->wn= NULL;
+		dev->wp= NULL;
+
 		dev->n_orig= NULL;
 		dev->p_orig= NULL;
 
@@ -165,6 +173,7 @@ void device_init(struct simulation *sim,struct device *dev)
 
 		dev->t= NULL;
 		dev->tp= NULL;
+		dev->t_ion= NULL;
 
 	//Fermi levels
 		dev->Fi= NULL;
@@ -191,8 +200,10 @@ void device_init(struct simulation *sim,struct device *dev)
 
 	//Interfaces
 		dev->interfaces_n=0;
+		dev->interfaces_n_srh=0;
 		dev->interface_type=NULL;
 		dev->interface_B=NULL;
+		dev->interface_Bt=NULL;
 		dev->interface_R=NULL;
 
 	//Rates
@@ -261,7 +272,6 @@ void device_init(struct simulation *sim,struct device *dev)
 		dev->Vapplied_x1=NULL;
 
 		dev->Vbi= -1.0;
-		dev->vbi= -1.0;
 
 	//Passivation
 		dev->passivate_y0 = NULL;
@@ -273,7 +283,6 @@ void device_init(struct simulation *sim,struct device *dev)
 		dev->Photon_gen=NULL;
 
 	//Device layout
-		dev->imat= NULL;
 		dev->imat_epitaxy= NULL;
 		dev->mask= NULL;
 
@@ -364,11 +373,7 @@ void device_init(struct simulation *sim,struct device *dev)
 		dev->electrical_error0= -1.0;
 
 		dev->math_enable_pos_solver= -1.0;
-		dev->posclamp= -1.0;
-		dev->pos_max_ittr= -1;
 
-		strcpy(dev->solver_name,"");
-		strcpy(dev->complex_solver_name,"");
 		strcpy(dev->newton_name,"");
 
 		dev->kl_in_newton=-1;
@@ -397,6 +402,7 @@ void device_init(struct simulation *sim,struct device *dev)
 		dev->newton_dptrap=NULL;
 		dev->newton_dptrapdn=NULL;
 		dev->newton_dJpdtrapp=NULL;
+		dev->newton_dJpdtrapp_interface_right=NULL;
 		dev->newton_dJdtrapp=NULL;
 		dev->newton_dphidntrap=NULL;
 		dev->newton_dphidptrap=NULL;
@@ -411,6 +417,7 @@ void device_init(struct simulation *sim,struct device *dev)
 		dev->C= -1.0;
 		dev->Rshort= -1.0;
 		dev->other_layers= -1.0;
+		dev->contact_charge= -1.0;
 
 	//Dump control
 		dev->dump_energy_slice_xpos= -1;
@@ -447,7 +454,8 @@ void device_init(struct simulation *sim,struct device *dev)
 		dev->dd_conv=-1;
 		dev->high_voltage_limit=-1;
 		dev->stoppoint= -1;
-
+		dev->drift_diffision_simulations_enabled=TRUE;
+		dev->electrical_simulation_enabled=TRUE;
 	//Matrix
 		matrix_init(&(dev->mx));
 
@@ -478,9 +486,6 @@ void device_init(struct simulation *sim,struct device *dev)
 		dev->pl_intensity= -1.0;
 		dev->pl_intensity_tot= -1.0;
 		dev->pl_use_experimental_emission_spectra=-1;
-
-	//Test
-		dev->test_param=-1.0;
 
 	//thermal
 		#ifdef libheat_enabled
@@ -521,6 +526,7 @@ void device_init(struct simulation *sim,struct device *dev)
 		time_mesh_init(&(dev->tm));
 
 	//device cache
+		strcpy(dev->solver_type,"none");
 		device_cache_init(&(dev->cache));
 
 	//fxdomain
@@ -529,6 +535,36 @@ void device_init(struct simulation *sim,struct device *dev)
 		#endif
 	//matrix solver memory
 		matrix_solver_memory_init(&(dev->msm));
+
+	//json
+		json_init(&(dev->config));
+
+	//temp vars
+		dev->glob_wanted=0.0;
+
+	//temp vars
+		if (getcwd(cwd,PATH_MAX)==NULL)
+		{
+			ewe(sim,"cwd returned NULL\n");
+		}
+
+		strcpy(dev->input_path,cwd);
+		strcpy(dev->output_path,cwd);
+
+	//Newton solver dll
+		dev->dll_solve_cur=NULL;
+		dev->dll_solver_realloc=NULL;
+		dev->dll_solver_free_memory=NULL;
+		dev->dll_solver_handle=NULL;
+		dev->solver_verbosity=-1;
 }
 
+void stop_if_not_registered_and_gpvdm_next(struct simulation *sim)
+{
+	return;
+}
 
+int lock_feature_enabled(struct simulation *sim)
+{
+	return -1;
+}

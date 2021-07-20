@@ -47,48 +47,34 @@
 #include <contacts.h>
 #include <component.h>
 #include <component_fun.h>
+#include <lock.h>
 
-void epitaxy_load_interface_file(struct simulation *sim, struct epi_layer *layer)
+void epitaxy_load_interface_file(struct simulation *sim, struct epi_layer *layer,struct json_obj *interface_json)
 {
 	struct inp_file inp;
 	char full_path[PATH_MAX];
 	char temp_path[PATH_MAX];
 	char temp[100];
-	if (strcmp(layer->interface_file,"none")!=0)
+
+	if (interface_json==NULL)
 	{
-		strcpy(temp_path,layer->interface_file);
+		ewe(sim,"interface file does not exist\n");
+	}
 
-		strcat(temp_path,".inp");
-		join_path(2, full_path, get_input_path(sim), temp_path);
-		if (inp_isfile(sim,full_path)!=0)
-		{
-			ewe(sim,"The interface file %s does not exist",full_path);
-		}
+	json_get_english(sim,interface_json, &(layer->interface_type),"interface_model");
 
-		inp_init(sim,&inp);
+	json_get_long_double(sim,interface_json, &(layer->interface_R),"interface_eh_tau");
 
-		inp_load(sim,&inp,full_path);
-		inp_check(sim,&inp,1.0);
-
-		inp_search_string(sim,&inp,temp,"#interface_model");
-		layer->interface_type=english_to_bin(sim,temp);
-
-		//printf("%d\n",layer->interface_type);
-		//getchar();
-		inp_search_gdouble(sim,&inp,&(layer->interface_R),"#interface_eh_tau");
-		if (layer->interface_type==INTERFACE_NONE)
-		{
-			layer->interface_R=0.0;
-		}
-
-		inp_free(sim,&inp);
-
-	}else
+	if (layer->interface_type==INTERFACE_NONE)
 	{
-		strcpy(layer->interface_file,"none");
-		layer->interface_type=INTERFACE_NONE;
 		layer->interface_R=0.0;
 	}
+
+	json_get_english(sim,interface_json, &(layer->interface_left_doping_enabled),"interface_left_doping_enabled");
+	json_get_long_double(sim,interface_json, &(layer->interface_left_doping),"interface_left_doping");
+
+	json_get_english(sim,interface_json, &(layer->interface_right_doping_enabled),"interface_right_doping_enabled");
+	json_get_long_double(sim,interface_json, &(layer->interface_right_doping),"interface_right_doping");
 
 }
 
@@ -99,9 +85,16 @@ int y=0;
 int z=0;
 int l0=0;
 int l1=0;
+
+if (dev->drift_diffision_simulations_enabled==FALSE)
+{
+	return;
+}
+
 struct dimensions *dim=&(dev->ns.dim);
 struct epitaxy *epi=&(dev->my_epitaxy);
 dev->interfaces_n=0;
+dev->interfaces_n_srh=0;
 
 	if (dim->ylen==0)
 	{
@@ -120,16 +113,27 @@ dev->interfaces_n=0;
 
 				if (l0!=l1)
 				{
-					if (epi->layer[l0].interface_type==INTERFACE_RECOMBINATION)
+					dev->interface_B[z][x][y]=0.0;
+					dev->interface_Bt[z][x][y]=0.0;
+
+					if (epi->layer[l0].interface_type!=INTERFACE_NONE)
 					{
-						dev->interface_B[z][x][y]=epi->layer[l0].interface_R;
-						dev->interface_type[z][x][y]=epi->layer[l0].interface_type;
-						dev->interfaces_n++;
-					}else
-					{
-						dev->interface_B[z][x][y]=0.0;
-						dev->interface_type[z][x][y]=INTERFACE_NONE;
+
+						if (epi->layer[l0].interface_type==INTERFACE_RECOMBINATION)
+						{
+							dev->interface_B[z][x][y]=epi->layer[l0].interface_R;
+							dev->interfaces_n++;
+						}else
+						if (epi->layer[l0].interface_type==INTERFACE_RECOMBINATION_SRH)
+						{
+							dev->interface_Bt[z][x][y]=epi->layer[l0].interface_R;
+							dev->interfaces_n_srh++;
+						}
+
+
 					}
+
+					dev->interface_type[z][x][y]=epi->layer[l0].interface_type;
 
 				}
 			}

@@ -33,75 +33,50 @@
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
 
-#include <stdio.h>
-#include <ray.h>
-#include <ray_fun.h>
-#include <gpvdm_const.h>
-#include <math.h>
-#include <stdlib.h>
-#include <cal_path.h>
-#include <log.h>
-#include <device.h>
-#include <inp.h>
-#include <util.h>
-#include <triangles.h>
-#include <memory.h>
-#include <epitaxy_struct.h>
-#include <epitaxy.h>
-#include <dat_file.h>
 
-/** @file scene_dump.c
-	@brief Dump the scene to file
+/** @file device_paths.c
+	@brief Input output paths for device.
 */
 
+#define _FILE_OFFSET_BITS 64
+#define _LARGEFILE_SOURCE
+#include <stdio.h>
+#include <stdlib.h>
+#include <device.h>
+#include <string.h>
+#include <dump.h>
+#include <mesh.h>
+#include <ray_fun.h>
+#include <newton_tricks.h>
+#include <memory.h>
+#include <circuit.h>
+#include <shape.h>
+#include <lang.h>
+#include <util.h>
+#include <heat_fun.h>
+#include <device_fun.h>
+#include <enabled_libs.h>
 
-void device_dump_world_to_file(struct simulation *sim,struct device *dev,char *file_name)
+static int unused __attribute__((unused));
+static char* unused_pchar __attribute__((unused));
+
+char *get_input_path(struct device *dev)
 {
-	int i;
+return dev->input_path;
+}
 
-	char temp[200];
+char *get_output_path(struct device *dev)
+{
+return dev->output_path;
+}
 
-	//printf("file dump\n");
-	struct dat_file buf;
-	buffer_init(&buf);
+void set_output_path(struct device *dev,char *in)
+{
+strcpy(dev->output_path,in);
+}
 
-	buffer_malloc(&buf);
-	buf.y_mul=1.0;
-	buf.x_mul=1e9;
-	strcpy(buf.title,"Ray trace triange file");
-	strcpy(buf.type,"poly");
-	strcpy(buf.y_label,"Position");
-	strcpy(buf.x_label,"Position");
-	strcpy(buf.data_label,"Position");
-
-	strcpy(buf.y_units,"m");
-	strcpy(buf.x_units,"m");
-	strcpy(buf.data_units,"m");
-	buf.logscale_x=0;
-	buf.logscale_y=0;
-	buf.x=1;
-	buf.y=dev->triangles;
-	buf.z=1;
-	buffer_add_info(sim,&buf);
-	struct object *obj;
-	struct triangle *tri;
-
-
-	int o=0;
-	for (o=0;o<dev->objects;o++)
-	{
-		obj=&(dev->obj[o]);
-
-		sprintf(temp,"#name %s\n",obj->name);
-		buffer_add_string(&buf,temp);
-
-		triangles_to_dat_file(&buf,&(obj->tri));
-		//printf("wait %s\n",obj->name);
-		//getchar();
-	}
-
-	buffer_dump_path(sim,"",file_name,&buf);
-	buffer_free(&buf);
-
+void set_input_path(struct device *dev,char *in)
+{
+strcpy(dev->input_path,in);
 }
 

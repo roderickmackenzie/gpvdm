@@ -49,60 +49,66 @@
 #include <triangle.h>
 
 
-void epitaxy_shapes_load(struct simulation *sim,struct epitaxy *in)
+void epitaxy_shapes_load(struct simulation *sim,struct epitaxy *in, struct json_obj *obj_epi)
 {
 	int l=0;
-	int ii=0;
-	char build[100];
-	strcpy(build,"");
-	int pos=0;
+	int ns;
 	int len=0;
 	struct shape *s;
 	long double y_pos=0.0;
+	int shape_max=0;
+	int nshape=0;
+
+	char layer_id[100];
+	char shape_id[100];
+	struct json_obj *obj_layer;
+	struct json_obj *obj_shape;
 
 	for (l=0;l<in->layers;l++)
 	{
-		//printf("%d\n",l);
-		//getchar();
-		in->layer[l].nshape=0;
-		if (strcmp(in->shape_file[l],"none")!=0)
+		sprintf(layer_id,"layer%d",l);
+		obj_layer=json_obj_find(obj_epi, layer_id);
+
+		if (obj_layer==NULL)
 		{
-			len=strlen(in->shape_file[l])+1;
-			for (ii=0;ii<len;ii++)
+			ewe(sim,"Object %s not found\n",layer_id);
+		}
+
+
+		json_get_int(sim,obj_layer, &(shape_max),"layer_shapes");
+		nshape=0;
+		for (ns=0;ns<shape_max;ns++)
+		{
+			//if (shape_load_file(sim,in,&(in->layer[l].shapes[in->layer[l].nshape]),build,0.0)==TRUE)
+			sprintf(shape_id,"shape%d",ns);
+			obj_shape=json_obj_find(obj_layer, shape_id);
+
+			if (obj_shape==NULL)
 			{
-				if ((in->shape_file[l][ii]==',')||(ii==len-1))
+				ewe(sim,"Object %s not found\n",shape_id);
+			}
+
+			if (shape_load_from_json(sim,in,&(in->layer[l].shapes[ns]), obj_shape ,0.0)==TRUE)
+			{
+				s=&(in->layer[l].shapes[ns]);
+				s->epi_index=l;
+				if (s->flip_y==FALSE)
 				{
-
-					s=shape_load_file(sim,in,&(in->layer[l].shapes[in->layer[l].nshape]),build,0.0);
-					s->epi_index=l;
-					if (s->flip_y==FALSE)
-					{
-						s->y0=in->layer[l].y_start+s->y0;		//Starting from zero
-					}else
-					{
-						s->y0=in->layer[l].y_stop-s->y0;		//Starting from top of layer
-					}
-
-					if (s!=NULL)
-					{
-						in->layer[l].nshape++;
-
-
-						s->epi_index=l;
-					}
-
-					build[0]=0;
-					pos=0;
+					s->y0=in->layer[l].y_start+s->y0;		//Starting from zero
 				}else
 				{
-					build[pos]=in->shape_file[l][ii];
-					build[pos+1]=0;
-					pos++;
+					s->y0=in->layer[l].y_stop-s->y0;		//Starting from top of layer
 				}
 
-
+				if (s!=NULL)
+				{
+					s->epi_index=l;
+				}
+				nshape++;
 			}
+
 		}
+		in->layer[l].nshape=nshape;
 
 	}
 

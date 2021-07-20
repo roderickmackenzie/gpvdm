@@ -107,15 +107,15 @@ void device_calculate_joule_heat(struct simulation *sim,struct device *dev)
 
 					}else
 					{
-						Ecr=dev->Ec[z][x][y];
-						Evr=dev->Ev[z][x][y];
-						yr=dim->ymesh[y];
+						Ecr=dev->Ec[z][x][y+1];
+						Evr=dev->Ev[z][x][y+1];
+						yr=dim->ymesh[y+1];
 					}
 
 					dh=yr-yl;
 					Jn=dev->Jn[z][x][y];
 					Jp=dev->Jp[z][x][y];
-
+					//printf("%Le %Le %Le %Le\n",Jn,Ecr,Ecl,dh);
 					H_joule_e=(Ecr-Ecl)*Jn/dh;
 					H_joule_h=(Evr-Evl)*Jp/dh;
 
@@ -165,7 +165,7 @@ void device_calculate_recombination_heat(struct simulation *sim,struct device *d
 			{
 				if (thermal->recombination_heating==TRUE)
 				{
-					dev->H_recombination[z][x][y]=dev->Eg[z][x][y]*(dev->Rn_srh[z][x][y]+dev->Rp_srh[z][x][y]+dev->Rfree[z][x][y])*Q;
+					dev->H_recombination[z][x][y]=dev->Eg[z][x][y]*(dev->Rn_srh[z][x][y]+dev->Rp_srh[z][x][y]+dev->Rfree[z][x][y])*Qe;
 				}else
 				{
 					dev->H_recombination[z][x][y]=0.0;

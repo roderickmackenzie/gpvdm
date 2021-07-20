@@ -128,6 +128,8 @@ void device_free(struct simulation *sim,struct device *dev)
 	//Ions
 		free_zxy_gdouble(dim,&dev->Nad);
 		free_zxy_gdouble(dim,&dev->Nion);
+		free_zxy_gdouble(dim,&dev->dNion);
+		free_zxy_gdouble(dim,&dev->dNiondphi);
 		free_zxy_gdouble(dim,&dev->Nion_last);
 
 	//Generation
@@ -170,6 +172,7 @@ void device_free(struct simulation *sim,struct device *dev)
 
 		free_zxy_gdouble(dim,&dev->t);
 		free_zxy_gdouble(dim,&dev->tp);
+		free_zxy_gdouble(dim,&dev->t_ion);
 
 		free_zxy_gdouble(dim,&dev->wn);
 		free_zxy_gdouble(dim,&dev->wp);
@@ -200,6 +203,7 @@ void device_free(struct simulation *sim,struct device *dev)
 	//Interfaces
 		free_zxy_int(dim,&(dev->interface_type));
 		free_zxy_gdouble(dim,&dev->interface_B);
+		free_zxy_gdouble(dim,&dev->interface_Bt);
 		free_zxy_gdouble(dim,&dev->interface_R);
 
 	//Rates
@@ -277,8 +281,11 @@ void device_free(struct simulation *sim,struct device *dev)
 	//Emission
 		free_zxy_gdouble(dim,&dev->Photon_gen);
 
+	//objects
+		free_zxy_p_object(dim, &(dev->obj_zxy));
+		free_zx_layer_p_object(&(dev->dim_epitaxy), &(dev->obj_zx_layer));
+
 	//Device layout
-		free_zxy_int(dim,&(dev->imat));
 		free_zxy_int(dim,&(dev->imat_epitaxy));
 
 		free_zxy_int(dim,&(dev->mask));
@@ -359,7 +366,25 @@ void device_free(struct simulation *sim,struct device *dev)
 		//none
 
 	//Arrays used by newton solver
-		//none
+		free_1d((void **)&dev->newton_dntrap, sizeof(long double ));
+		free_1d((void **)&dev->newton_dntrapdntrap, sizeof(long double ));
+		free_1d((void **)&dev->newton_dntrapdn, sizeof(long double ));
+		free_1d((void **)&dev->newton_dntrapdp, sizeof(long double ));
+		free_1d((void **)&dev->newton_dJdtrapn, sizeof(long double ));
+		free_1d((void **)&dev->newton_dJpdtrapn, sizeof(long double ));
+		free_1d((void **)&dev->newton_dphidntrap, sizeof(long double ));
+		free_1d((void **)&dev->newton_dptrapdp, sizeof(long double ));
+		free_1d((void **)&dev->newton_dptrapdptrap, sizeof(long double ));
+		free_1d((void **)&dev->newton_dptrap, sizeof(long double ));
+		free_1d((void **)&dev->newton_dptrapdn, sizeof(long double ));
+		free_1d((void **)&dev->newton_dJpdtrapp, sizeof(long double ));
+		free_1d((void **)&dev->newton_dJdtrapp, sizeof(long double ));
+
+		free_1d((void **)&dev->newton_dJpdtrapp_interface_right, sizeof(long double ));
+		free_1d((void **)&dev->newton_dphidptrap, sizeof(long double ));
+		free_1d((void **)&dev->newton_ntlast, sizeof(long double ));
+		free_1d((void **)&dev->newton_ptlast, sizeof(long double ));
+
 
 	//Electrical components
 		//none
@@ -423,9 +448,7 @@ void device_free(struct simulation *sim,struct device *dev)
 	//Contacts
 		contacts_free(sim,dev);
 
-	//objects
-		free_zxy_p_object(dim, &(dev->obj_zxy));
-		free_zx_layer_p_object(&(dev->dim_epitaxy), &(dev->obj_zx_layer));
+
 
 		device_objects_free(sim,dev);
 	//Time mesh
@@ -440,7 +463,7 @@ void device_free(struct simulation *sim,struct device *dev)
 		#endif
 
 	//matrix solver memory
-		matrix_solver_memory_free(&(dev->msm));
+		matrix_solver_memory_free(sim,&(dev->msm));
 	///////////
 
 
@@ -451,7 +474,8 @@ void device_free(struct simulation *sim,struct device *dev)
 	//dim_free(&(dev->dim_max));
 	//Free epitaxy
 
-
+	//json
+		json_free(&(dev->config));
 
 }
 

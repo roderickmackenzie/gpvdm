@@ -49,7 +49,7 @@
 #include <epitaxy_struct.h>
 #include <epitaxy.h>
 #include <device_fun.h>
-
+#include <enabled_libs.h>
 
 
 /** @file device_build_scene.c
@@ -91,7 +91,10 @@ void device_build_scene(struct simulation *sim,struct device *dev)
 	strcpy(s->shape_type,"box");
 	strcpy(s->name,"big_box");
 	strcpy(s->optical_material,"generic/air");
-	strcpy(s->com.component,"none");
+
+	#ifdef libcircuit_enabled
+		strcpy(s->com.component,"none");
+	#endif
 
 	s->z0=0.0;
 	s->x0=-dx;
@@ -118,13 +121,14 @@ void device_build_scene(struct simulation *sim,struct device *dev)
 	{
 		add_layer=TRUE;
 		layer=&(epi->layer[l]);
+		s=&(layer->s);
 
-		if (strcmp(layer->s.name,"air")==0)
+		if (s->enabled==FALSE)
 		{
 			add_layer=FALSE;			
 		}
 
-		//printf("%d\n",layer->layer_type);
+		//printf("%d %d %s\n",l,layer->layer_type,layer->s.optical_material);
 		//getchar();
 		if (layer->layer_type==LAYER_CONTACT)
 		{
@@ -199,14 +203,14 @@ void device_build_scene(struct simulation *sim,struct device *dev)
 			
 			}
 		}
-			
+
+
 		if (add_layer==TRUE)
 		{
 			//obj=add_box(dev,0.0,layer->y_start,0.0,xlen,fabs(layer->width),zlen,RAY_OBJECT);
 			//obj->epi_layer=l;
 			//obj->s=&(layer->s);
 			//strcpy(obj->name,layer->s.name);layer->s.name
-			s=&(layer->s);
 			s->x0=0.0;
 			s->dx=xlen;
 			s->dz=zlen;
@@ -222,6 +226,8 @@ void device_build_scene(struct simulation *sim,struct device *dev)
 			{
 				s->y0=layer->y_stop;		//Starting from top of layer
 			}
+			//printf("name= %s %s %d %d %d\n",s->name,s->shape_type,add_layer,l,s->enabled);
+			//getchar();
 			device_add_shape_to_world(sim,dev,s);
 		}
 	}
@@ -249,7 +255,7 @@ void device_build_scene(struct simulation *sim,struct device *dev)
 		for (i=0;i<epi->layer[l].nshape;i++)
 		{
 			s=&epi->layer[l].shapes[i];
-			s->x0=0.0;
+			//s->x0=0.0;
 			s->epi_index=l;
 			device_add_shape_to_world(sim,dev,s);
 		}
