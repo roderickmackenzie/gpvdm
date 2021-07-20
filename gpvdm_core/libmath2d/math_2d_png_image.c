@@ -41,6 +41,7 @@
 */
 #define _FILE_OFFSET_BITS 64
 #define _LARGEFILE_SOURCE
+#include <enabled_libs.h>
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
@@ -127,6 +128,7 @@ void math_2d_png_load(struct simulation *sim,struct png_image *image,char* file_
 
     fclose(fp);
 	png_destroy_read_struct(&(image->png_ptr), &(image->info_ptr), png_infopp_NULL);
+
 }
 
 
@@ -148,6 +150,7 @@ void math_2d_png_import(struct simulation *sim,struct math_2d *data,struct png_i
 		rgba=4;
 	}
 
+	printf("here %d %d\n",image->width, image->height);
 	math_2d_malloc(data, image->width, image->height);
 
     for (y=0; y< image->height; y++)
