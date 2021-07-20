@@ -147,10 +147,13 @@ void dim_light_cpy(struct dim_light *out,struct dim_light *in)
 	out->dl=in->dl;
 
 	dim_light_malloc(out);
-	memcpy(out->x, in->x, in->xlen * sizeof(long double));
-	memcpy(out->y, in->y, in->ylen * sizeof(long double));
-	memcpy(out->z, in->z, in->zlen * sizeof(long double));
-	memcpy(out->l, in->l, in->llen * sizeof(long double));
+	if (in->x!=NULL)
+	{
+		memcpy(out->x, in->x, in->xlen * sizeof(long double));
+		memcpy(out->y, in->y, in->ylen * sizeof(long double));
+		memcpy(out->z, in->z, in->zlen * sizeof(long double));
+		memcpy(out->l, in->l, in->llen * sizeof(long double));
+	}
 }
 
 void dim_light_malloc_xyzl(struct dim_light *dim,char xyzl)
@@ -158,23 +161,35 @@ void dim_light_malloc_xyzl(struct dim_light *dim,char xyzl)
 
 	if (xyzl=='x')
 	{
-		dim->x = (long double *) malloc(dim->xlen * sizeof(long double));
-		memset(dim->x, 0, dim->xlen * sizeof(long double));
+		if (dim->xlen>0)
+		{
+			dim->x = (long double *) malloc(dim->xlen * sizeof(long double));
+			memset(dim->x, 0, dim->xlen * sizeof(long double));
+		}
 	}else
 	if (xyzl=='y')
 	{
-		dim->y = (long double *) malloc(dim->ylen * sizeof(long double));
-		memset(dim->y, 0, dim->ylen * sizeof(long double));
+		if (dim->ylen>0)
+		{
+			dim->y = (long double *) malloc(dim->ylen * sizeof(long double));
+			memset(dim->y, 0, dim->ylen * sizeof(long double));
+		}
 	}else
 	if (xyzl=='z')
 	{
-		dim->z = (long double *) malloc(dim->zlen * sizeof(long double));
-		memset(dim->z, 0, dim->zlen * sizeof(long double));
+		if (dim->zlen>0)
+		{
+			dim->z = (long double *) malloc(dim->zlen * sizeof(long double));
+			memset(dim->z, 0, dim->zlen * sizeof(long double));
+		}
 	}else
 	if (xyzl=='l')
 	{
-		dim->l = (long double *) malloc(dim->llen * sizeof(long double));
-		memset(dim->l, 0, dim->llen * sizeof(long double));
+		if (dim->llen>0)
+		{
+			dim->l = (long double *) malloc(dim->llen * sizeof(long double));
+			memset(dim->l, 0, dim->llen * sizeof(long double));
+		}
 	}
 
 

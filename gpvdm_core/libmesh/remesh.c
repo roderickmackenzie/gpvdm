@@ -139,6 +139,24 @@ void remesh_shrink(struct simulation *sim,struct device *in)
 
 void remesh_expand_array_band(gdouble **y,int band,struct device *in)
 {
+	int i;
+	int pos;
+	gdouble *temp=(gdouble*)malloc(sizeof(gdouble)*in->ylen);
+	for (i=0;i<in->ylen;i++)
+	{
+		temp[i]=y[i][band];
+	}
+
+	for (i=0;i<my_mesh.len;i++)
+	{
+
+		pos=in->ylen*(my_mesh.x[i]/in->ylen);
+		if (pos>=in->ylen) pos=in->ylen-1;
+
+		y[i][band]=temp[pos];
+	}
+
+	free(temp);
 }
 
 

@@ -42,7 +42,6 @@
 #include <lang.h>
 #include <exp.h>
 #include "sim.h"
-#include "inp.h"
 #include <cal_path.h>
 #include <contacts.h>
 #include <log.h>
@@ -51,6 +50,7 @@
 #include <time_mesh.h>
 #include <memory.h>
 #include <enabled_libs.h>
+#include <json.h>
 
 #define TM_BUFFER_MAX_LEN 2000
 
@@ -84,36 +84,40 @@ fclose(out);
 
 }
 
-void time_load_mesh(struct simulation *sim,struct device *in,int number)
+void time_load_mesh(struct simulation *sim,struct device *in,struct json_obj *json_pulse)
 {
 
 int i;
-struct time_mesh *tm=&(in->tm);
-struct inp_file inp;
-char mesh_file[200];
-gdouble start_time=0.0;
-gdouble fs_laser_time=0.0;
-int segments=0;
-gdouble read_len=0.0;
-gdouble dt=0.0;
-gdouble v_start=0.0;
-gdouble v_stop=0.0;
-gdouble mul=0.0;
-gdouble read_sun=0.0;
-gdouble read_laser=0.0;
-gdouble laser_pulse_width=0.0;
-gdouble time=0.0;
 int ii=0;
-gdouble end_time=0;
+struct time_mesh *tm=&(in->tm);
+char temp[200];
+long double start_time=0.0;
+long double fs_laser_time=0.0;
+int segments=0;
+long double read_len=0.0;
+long double dt=0.0;
+long double v_start=0.0;
+long double v_stop=0.0;
+long double mul=0.0;
+long double laser_start=0.0;
+long double laser_stop=0.0;
+long double sun_start=0.0;
+long double sun_stop=0.0;
+long double laser_pulse_width=0.0;
+long double time=0.0;
+long double end_time=0;
 int fired=FALSE;
-gdouble v=0.0;
-gdouble dv=0.0;
+long double v=0.0;
+long double sun=0.0;
+long double dv=0.0;
+long double laser=0.0;
+long double dlaser=0.0;
+long double dsun=0.0;
+int round=0;
 
-malloc_1d((void **)&(tm->tm_time_mesh), TM_BUFFER_MAX_LEN, sizeof(long double));
-malloc_1d((void **)&(tm->tm_sun), TM_BUFFER_MAX_LEN, sizeof(long double));
-malloc_1d((void **)&(tm->tm_voltage), TM_BUFFER_MAX_LEN, sizeof(long double));
-malloc_1d((void **)&(tm->tm_laser), TM_BUFFER_MAX_LEN, sizeof(long double));
-malloc_1d((void **)&(tm->tm_fs_laser), TM_BUFFER_MAX_LEN, sizeof(long double));
+struct json_obj *json_config;
+struct json_obj *json_mesh;
+struct json_obj *json_mesh_seg;
 
 tm->tm_mesh_pos=0;
 
@@ -122,82 +126,97 @@ if (in->mylight.pulse_width==-1)
 	ewe(sim,_("You must load the optical plugin before making the time mesh"));
 }else
 {
-laser_pulse_width=in->mylight.pulse_width;
+	laser_pulse_width=in->mylight.pulse_width;
 }
 
-sprintf(mesh_file,"time_mesh_config%d.inp",number);
+json_config=json_obj_find(json_pulse, "config");
 
-inp_init(sim,&inp);
-inp_load_from_path(sim,&inp,get_input_path(sim),mesh_file);
-inp_check(sim,&inp,1.1);
+json_get_long_double(sim,json_config,&start_time,"start_time");
+json_get_long_double(sim,json_config,&fs_laser_time,"fs_laser_time");
 
-inp_reset_read(sim,&inp);
+json_mesh=json_obj_find(json_pulse, "mesh");
 
-inp_get_string(sim,&inp);
-sscanf(inp_get_string(sim,&inp),"%Le",&start_time);
+json_get_int(sim,json_mesh,&segments,"segments");
 
-inp_get_string(sim,&inp);
-sscanf(inp_get_string(sim,&inp),"%Le",&fs_laser_time);
-
-inp_get_string(sim,&inp);
-sscanf(inp_get_string(sim,&inp),"%d",&segments);
-time=start_time;
-
-
-for (i=0;i<segments;i++)
+for (round=0;round<2;round++)
 {
-	inp_get_string(sim,&inp);
-	sscanf(inp_get_string(sim,&inp),"%Le",&read_len);
+	fired=FALSE;
+	ii=0;
+	time=start_time;
 
-	inp_get_string(sim,&inp);
-	sscanf(inp_get_string(sim,&inp),"%Le",&dt);
 
-	inp_get_string(sim,&inp);
-	sscanf(inp_get_string(sim,&inp),"%Le",&v_start);
-
-	inp_get_string(sim,&inp);
-	sscanf(inp_get_string(sim,&inp),"%Le",&v_stop);
-
-	inp_get_string(sim,&inp);
-	sscanf(inp_get_string(sim,&inp),"%Le",&mul);
-
-	inp_get_string(sim,&inp);
-	sscanf(inp_get_string(sim,&inp),"%Le",&read_sun);
-
-	inp_get_string(sim,&inp);
-	sscanf(inp_get_string(sim,&inp),"%Le",&read_laser);
-
-	if ((dt!=0.0)&&(mul!=0.0))
+	for (i=0;i<segments;i++)
 	{
-		v=v_start;
-		end_time=time+read_len;
 
-
-		while(time<end_time)
+		sprintf(temp,"segment%d",i);
+		json_mesh_seg=json_obj_find(json_mesh, temp);
+		if (json_mesh_seg==NULL)
 		{
-			dv=(v_stop-v_start)*dt/read_len;
-			tm->tm_time_mesh[ii]=time;
-
-			tm->tm_laser[ii]=read_laser;
-			tm->tm_sun[ii]=read_sun+light_get_sun(&(in->mylight));
-			tm->tm_voltage[ii]=v;
-			tm->tm_fs_laser[ii]=0.0;
-			time=time+dt;
-			v=v+dv;
-
-
-			if (fired==FALSE)
-			{
-				if ((time>fs_laser_time)&&(fs_laser_time!= -1.0))
-				{
-					fired=TRUE;
-					tm->tm_fs_laser[ii]=laser_pulse_width/dt;
-				}
-			}
-
-			ii++;
-			dt=dt*mul;
+			ewe(sim,"segment not found\n");
 		}
+		json_get_long_double(sim,json_mesh_seg,&read_len,"len");
+		json_get_long_double(sim,json_mesh_seg,&dt,"dt");
+		json_get_long_double(sim,json_mesh_seg,&v_start,"voltage_start");
+		json_get_long_double(sim,json_mesh_seg,&v_stop,"voltage_stop");
+		json_get_long_double(sim,json_mesh_seg,&mul,"mul");
+		json_get_long_double(sim,json_mesh_seg,&sun_start,"sun_start");
+		json_get_long_double(sim,json_mesh_seg,&sun_stop,"sun_stop");
+		json_get_long_double(sim,json_mesh_seg,&laser_start,"laser_start");
+		json_get_long_double(sim,json_mesh_seg,&laser_stop,"laser_stop");
+
+
+
+		if ((dt!=0.0)&&(mul!=0.0))
+		{
+			v=v_start;
+			laser=laser_start;
+			sun=sun_start;
+			end_time=time+read_len;
+
+
+			while(time<end_time)
+			{
+				dv=(v_stop-v_start)*dt/read_len;
+				dlaser=(laser_stop-laser_start)*dt/read_len;
+				dsun=(sun_stop-sun_start)*dt/read_len;
+				if (round==1)
+				{
+					tm->tm_time_mesh[ii]=time;
+
+					tm->tm_laser[ii]=laser;
+					tm->tm_sun[ii]=sun;//+light_get_sun(&(in->mylight));
+					tm->tm_voltage[ii]=v;
+					tm->tm_fs_laser[ii]=0.0;
+				}
+				time=time+dt;
+				v=v+dv;
+				laser=laser+dlaser;
+				sun=sun+dsun;
+				if (fired==FALSE)
+				{
+					if ((time>fs_laser_time)&&(fs_laser_time!= -1.0))
+					{
+						fired=TRUE;
+						if (round==1)
+						{
+							tm->tm_fs_laser[ii]=laser_pulse_width/dt;
+						}
+					}
+				}
+
+				ii++;
+				dt=dt*mul;
+			}
+		}
+	}
+
+	if (round==0)
+	{
+		malloc_1d((void **)&(tm->tm_time_mesh), ii, sizeof(long double));
+		malloc_1d((void **)&(tm->tm_sun), ii, sizeof(long double));
+		malloc_1d((void **)&(tm->tm_voltage), ii, sizeof(long double));
+		malloc_1d((void **)&(tm->tm_laser), ii, sizeof(long double));
+		malloc_1d((void **)&(tm->tm_fs_laser), ii, sizeof(long double));
 	}
 }
 
@@ -207,7 +226,6 @@ tm->tm_mesh_len=ii;
 in->time=tm->tm_time_mesh[0];
 in->dt=tm->tm_time_mesh[1]-tm->tm_time_mesh[0];
 
-inp_free(sim,&inp);
 
 tm->tm_use_mesh=TRUE;
 
@@ -229,6 +247,7 @@ int y;
 int z;
 int band;
 struct dimensions *dim=&in->ns.dim;
+struct newton_state *ns=&(in->ns);
 
 for (z=0;z<dim->zlen;z++)
 {
@@ -236,15 +255,21 @@ for (z=0;z<dim->zlen;z++)
 	{
 		for (y=0;y<dim->ylen;y++)
 		{
-			in->nlast[z][x][y]=in->n[z][x][y];
-			in->plast[z][x][y]=in->p[z][x][y];
-
-			in->Nion_last[z][x][y]=in->Nion[z][x][y];
-
-			for (band=0;band<dim->srh_bands;band++)
+			if (in->drift_diffision_simulations_enabled==TRUE)
 			{
-				in->ntlast[z][x][y][band]=in->nt[z][x][y][band];
-				in->ptlast[z][x][y][band]=in->pt[z][x][y][band];
+				in->nlast[z][x][y]=in->n[z][x][y];
+				in->plast[z][x][y]=in->p[z][x][y];
+
+				if (ns->Nion_enabled==TRUE)
+				{
+					in->Nion_last[z][x][y]=in->Nion[z][x][y];
+				}
+
+				for (band=0;band<dim->srh_bands;band++)
+				{
+					in->ntlast[z][x][y][band]=in->nt[z][x][y][band];
+					in->ptlast[z][x][y][band]=in->pt[z][x][y][band];
+				}
 			}
 		}
 	}

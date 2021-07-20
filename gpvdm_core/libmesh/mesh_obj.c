@@ -39,7 +39,6 @@
 
 #include "device.h"
 #include "mesh.h"
-#include "inp.h"
 #include "util.h"
 #include "gpvdm_const.h"
 #include "hard_limit.h"
@@ -47,7 +46,7 @@
 #include <cal_path.h>
 #include <lang.h>
 #include <shape.h>
-
+#include <json.h>
 
 void mesh_obj_cpy(struct simulation *sim,struct mesh_obj *out,struct mesh_obj *in)
 {
@@ -71,11 +70,42 @@ void mesh_obj_init(struct mesh_obj *in)
 }
 
 
-void mesh_obj_load(struct simulation *sim,struct mesh_obj *mesh)
+void mesh_obj_load(struct simulation *sim,struct mesh_obj *mesh,struct json_obj *json_mesh)
 {
-	mesh_load_file(sim,&(mesh->meshdata_z),"mesh_z.inp");
-	mesh_load_file(sim,&(mesh->meshdata_x),"mesh_x.inp");
-	mesh_load_file(sim,&(mesh->meshdata_y),"mesh_y.inp");
+	struct json_obj *json_mesh_xyz;
+	struct json_obj *json_mesh_config;
+	json_mesh_xyz=json_obj_find(json_mesh, "mesh_z");
+	if (json_mesh_xyz==NULL)
+	{
+		ewe(sim,"Mesh z not found\n");
+	}
+	mesh_load_file(sim,&(mesh->meshdata_z),json_mesh_xyz);
+
+	json_mesh_xyz=json_obj_find(json_mesh, "mesh_x");
+	if (json_mesh_xyz==NULL)
+	{
+		ewe(sim,"Mesh x not found\n");
+	}
+	mesh_load_file(sim,&(mesh->meshdata_x),json_mesh_xyz);
+
+	json_mesh_xyz=json_obj_find(json_mesh, "mesh_y");
+	if (json_mesh_xyz==NULL)
+	{
+		ewe(sim,"Mesh y not found\n");
+	}
+	mesh_load_file(sim,&(mesh->meshdata_y),json_mesh_xyz);
+
+
+	json_mesh_config=json_obj_find(json_mesh, "config");
+	if (json_mesh_config==NULL)
+	{
+		ewe(sim,"Mesh y not found\n");
+	}
+
+	json_get_english(sim, json_mesh_config, &(mesh->meshdata_z.remesh),"remesh_z");
+	json_get_english(sim, json_mesh_config, &(mesh->meshdata_x.remesh),"remesh_x");
+	json_get_english(sim, json_mesh_config, &(mesh->meshdata_y.remesh),"remesh_y");
+
 }
 
 void mesh_obj_apply_srh_contacts(struct simulation *sim,struct mesh_obj *mesh,struct device *dev)
