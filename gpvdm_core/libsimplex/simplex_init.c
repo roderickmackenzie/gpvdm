@@ -54,13 +54,14 @@ void multimin_init(struct multimin *data)
 	data->p=NULL;
 	data->center=NULL;
 	data->y=NULL;
-	data->fn=NULL;
 	data->x=NULL;
 	data->s=NULL;
 	data->error=0.0;
 	data->error_delta=1.0;
 	data->error_last=1.0;
-
+	data->fn=NULL;
+	data->p0=NULL;
+	data->p1=NULL;
 }
 
 void multimin_malloc(struct multimin *data)
@@ -122,7 +123,7 @@ void multimin_init_simplex(struct multimin *data)
 	for (s=0;s<data->nsimplex;s++)
 	{
 
-			data->y[s]=data->fn(data->p[s],data->ndim);
+			data->y[s]=data->fn((void *)data,data->p[s]);
 	}
 
 	for (d=0;d<data->ndim;d++)

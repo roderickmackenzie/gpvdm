@@ -62,12 +62,12 @@ double step=0.0;
 
 data->ptry[0]=data->x[0];
 
-e0=data->fn(data->ptry,data->ndim);
+e0=data->fn((void *)data,data->ptry);
 getchar();
 
 step=0.1;
 data->ptry[0]=data->x[0]+step;
-e1=data->fn(data->ptry,data->ndim);
+e1=data->fn((void *)data,data->ptry);
 getchar();
 
 deriv=(e1-e0)/step;
@@ -78,7 +78,7 @@ data->ptry[0]+=step;
 	do
 	{
 		e0=e1;
-		e1=data->fn(data->ptry,data->ndim);
+		e1=data->fn((void *)data,data->ptry);
 		getchar();
 
 		deriv=(e1-e0)/step;

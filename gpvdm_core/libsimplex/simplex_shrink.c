@@ -59,7 +59,7 @@ int d=0;
 				data->p[s][d]=0.5*(data->p[s][d]-data->p[data->i_lo][d]);
 			}
 
-			data->y[s]=(data->fn)(data->p[s],data->ndim);
+			data->y[s]=(data->fn)((void *)data,data->p[s]);
 		}
 	}
 

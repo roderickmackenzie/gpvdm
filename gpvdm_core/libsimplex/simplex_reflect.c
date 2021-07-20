@@ -54,7 +54,7 @@ double reflect(struct multimin *data,double mul)
 		data->ptry[d]=data->center[d]+mul*(data->center[d]-data->p[data->i_hi0][d]);
 	}
 
-	data->ytry=data->fn(data->ptry,data->ndim);				//Evaluate the function at the trial point.
+	data->ytry=data->fn((void *)data,data->ptry);				//Evaluate the function at the trial point.
 
 	return data->ytry;
 }
