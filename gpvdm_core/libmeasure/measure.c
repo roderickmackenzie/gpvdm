@@ -64,7 +64,7 @@ struct probe_config config;
 static struct math_xy spectrum_first;
 static int first=FALSE;
 
-void measure_file(struct simulation *sim,char *file_name)
+void measure_file(struct simulation *sim,char *output_path,char *input_path,char *file_name)
 {
 	int i;
 	int vector;
@@ -74,7 +74,7 @@ void measure_file(struct simulation *sim,char *file_name)
 	char data_path[400];
 	long double position;
 	char output_token[400];
-	char temp[400];
+	char temp[4000];
 	char sim_name[400];
 
 	char math[400];
@@ -92,7 +92,7 @@ void measure_file(struct simulation *sim,char *file_name)
 	int ret=0;
 	strcpy(vec_str,"");
 
-	join_path(2, file,get_input_path(sim),file_name);
+	join_path(2, file,input_path,file_name);
 
 	inp_init(sim,&inp);
 
@@ -106,11 +106,12 @@ void measure_file(struct simulation *sim,char *file_name)
 	struct math_xy data;
 	inter_init(sim,&data);
 
-	inp_get_string(sim,&inp);	//name
-	strcpy(sim_name,inp_get_string(sim,&inp));	//
+	inp_get_string(sim,sim_name,&inp);	//name
+	inp_get_string(sim,sim_name,&inp);	//
 
-	inp_get_string(sim,&inp);	//enable
-	strcpy(temp,inp_get_string(sim,&inp));
+	inp_get_string(sim,temp,&inp);	//enable
+	inp_get_string(sim,temp,&inp);
+
 	enable=english_to_bin(sim,temp);
 
 	if (enable==FALSE)
@@ -119,8 +120,8 @@ void measure_file(struct simulation *sim,char *file_name)
 		return;
 	}
 
-	inp_get_string(sim,&inp);	//compile to vector
-	strcpy(temp,inp_get_string(sim,&inp));
+	inp_get_string(sim,temp,&inp);	//compile to vector
+	inp_get_string(sim,temp,&inp);
 	vector=english_to_bin(sim,temp);
 
 	sprintf_ret=snprintf(output_file,400,"measure_%s.dat",sim_name);
@@ -133,26 +134,27 @@ void measure_file(struct simulation *sim,char *file_name)
 	{
 		write=FALSE;
 
-		strcpy(temp,inp_get_string(sim,&inp));	//file token
+		inp_get_string(sim,temp,&inp);	//file token
 		if (strcmp(temp,"#ver")==0)
 		{
 			break;
 		}
 
-		strcpy(file_name,inp_get_string(sim,&inp));		//file
+		inp_get_string(sim,file_name,&inp);
 
-		inp_get_string(sim,&inp);	//position token
-		strcpy(input_position,inp_get_string(sim,&inp));
 
-		inp_get_string(sim,&inp);	//output
+		inp_get_string(sim,temp,&inp);	//position token
+		inp_get_string(sim,input_position,&inp);
 
-		strcpy(output_token,inp_get_string(sim,&inp));	//output token
+		inp_get_string(sim,temp,&inp);	//output
+
+		inp_get_string(sim,output_token,&inp);	//output token
 		//printf("%s %Lf %s\n",file_name,position,output_token);
 
-		join_path(2,data_path,get_output_path(sim),file_name);
+		join_path(2,data_path,output_path,file_name);
 
-		inp_get_string(sim,&inp);
-		strcpy(math,inp_get_string(sim,&inp));	//output token
+		inp_get_string(sim,temp,&inp);
+		inp_get_string(sim,math,&inp);	//output token
 
 		if (strcmp_begin(input_position,"#")==0)
 		{
@@ -203,7 +205,7 @@ void measure_file(struct simulation *sim,char *file_name)
 		{
 			if (out==NULL)
 			{
-					out=fopena(get_output_path(sim),output_file,"w");
+					out=fopena(output_path,output_file,"w");
 			}
 
 			if (vector==FALSE)
@@ -239,11 +241,11 @@ void measure_file(struct simulation *sim,char *file_name)
 }
 
 
-void measure(struct simulation *sim)
+void measure(struct simulation *sim, char *output_path,char *input_path)
 {
 int i=0;
 struct list a;
-inp_listdir(sim,get_input_path(sim),&a);
+inp_listdir(sim,input_path,&a);
 
 
 	for (i=0;i<a.len;i++)
@@ -252,7 +254,7 @@ inp_listdir(sim,get_input_path(sim),&a);
 		{
 			if ((cmpstr_min(a.names[i],"measure")==0)&&(strcmp_end(a.names[i],".inp")==0))
 			{
-				measure_file(sim,a.names[i]);
+				measure_file(sim,output_path,input_path,a.names[i]);
 			}
 		}
 	}

@@ -44,11 +44,6 @@
 #include "contacts.h"
 #include <memory.h>
 
-static gdouble n_count=0.0;
-static gdouble p_count=0.0;
-static gdouble rn_count=0.0;
-static gdouble rp_count=0.0;
-
 /**
 * @brief Average position of electron and holes (not updated)
 */
@@ -99,56 +94,6 @@ if (psum!=0.0)
 
 }
 
-/**
-* @brief Get the change in charge density (not updated)
-*/
-gdouble get_charge_change(struct device *in)
-{
-
-gdouble diff=0.0;
-gdouble n=0.0;
-gdouble p=0.0;
-
-int x=0;
-int y=0;
-int z=0;
-
-int band=0;
-struct dimensions *dim=&(in->ns.dim);
-
-if (in->go_time==TRUE)
-{
-
-	for (z=0;z<dim->zlen;z++)
-	{
-		for (x=0;x<dim->xlen;x++)
-		{
-			for (y=0;y<dim->ylen;y++)
-			{
-				n=0.0;
-				p=0.0;
-
-				for (band=0;band<dim->srh_bands;band++)
-				{
-					n+=in->ntlast[z][x][y][band];
-					p+=in->ptlast[z][x][y][band];
-				}
-
-				n+=in->nlast[z][x][y];
-				p+=in->plast[z][x][y];
-
-				diff+=fabs(in->p[z][x][y]+in->pt_all[z][x][y]-in->n[z][x][y]-in->nt_all[z][x][y]+n-p);
-			}
-		}
-	}
-
-	diff/=(n+p);
-	diff*=100.0;
-}
-
-return diff;
-}
-
 
 /**
 * @brief Get the average recombination density
@@ -163,19 +108,7 @@ return ret;
 }
 
 
-/**
-* @brief Get the average recombination density
-*/
-gdouble get_avg_recom(struct device *in)
-{
-long double ret=0.0;
 
-ret=three_d_avg(in, in->ptrap_to_n);
-ret+=three_d_avg(in, in->ntrap_to_p);
-ret+=three_d_avg(in, in->Rfree);
-
-return ret;
-}
 
 /**
 * @brief Get the average electron relaxation rate
@@ -199,113 +132,6 @@ long double ret=0.0;
 ret=three_d_avg(in, in->prelax);
 
 return ret;
-}
-
-
-/**
-* @brief Free electron recombination rate
-* Note this calculates the real free electron recombination rate
-* not the removal of electrons from the band
-*/
-gdouble get_avg_recom_n(struct device *in)
-{
-long double ret=0.0;
-
-ret=three_d_avg(in, in->ptrap_to_n);
-
-return ret;
-}
-
-/**
-* @brief Free hole recombination rate
-* Note this calculates the real free hole recombination rate
-* not the removal of holes from the band
-*/
-gdouble get_avg_recom_p(struct device *in)
-{
-long double ret=0.0;
-
-ret=three_d_avg(in, in->ntrap_to_p);
-
-return ret;
-}
-
-/**
-* @brief Removal of electrons from the band
-*/
-gdouble get_avg_Rn(struct device *in)
-{
-long double ret=0.0;
-
-ret=three_d_avg(in, in->Rn);
-
-return ret;
-}
-
-/**
-* @brief Removal of holes from the band
-*/
-gdouble get_avg_Rp(struct device *in)
-{
-long double ret=0.0;
-
-ret=three_d_avg(in, in->Rp);
-
-return ret;
-}
-
-/**
-* @brief Calculation of k the recombination prefactor
-*/
-gdouble get_avg_k(struct device *in)
-{
-gdouble n=(get_extracted_n(in)*get_extracted_p(in));
-gdouble R=(get_avg_recom_n(in)+get_avg_recom_p(in))/2.0;
-gdouble k=R/n;
-return k;
-}
-
-/**
-* @brief Carrier count (depreshated)
-*/
-gdouble carrier_count_get_n(struct device *in)
-{
-return n_count;
-}
-
-/**
-* @brief Carrier count (depreshated)
-*/
-gdouble carrier_count_get_p(struct device *in)
-{
-return p_count;
-}
-
-/**
-* @brief Carrier count (depreshated)
-*/
-gdouble  carrier_count_get_rn(struct device *in)
-{
-return rn_count;
-}
-
-/**
-* @brief Carrier count (depreshated)
-*/
-gdouble carrier_count_get_rp(struct device *in)
-{
-return rp_count;
-}
-
-/**
-* @brief Carrier count (depreshated)
-*/
-void carrier_count_reset(struct device *in)
-{
-	n_count=0.0;
-	p_count=0.0;
-	rn_count=0.0;
-	rp_count=0.0;
 }
 
 
@@ -342,7 +168,7 @@ for (z=0;z<dim->zlen;z++)
 	}
 }
 
-return Rtot*Q;
+return Rtot*Qe;
 }
 
 
@@ -458,116 +284,6 @@ ret*=in->flip_current;
 return ret;
 }
 
-/**
-* @brief Carrier count (depreshated)
-*/
-void carrier_count_add(struct device *in)
-{
-int x=0;
-int y=0;
-int z=0;
-struct newton_state *ns=&in->ns;
-struct dimensions *dim=&in->ns.dim;
-
-gdouble locat_n_tot=0.0;
-gdouble locat_p_tot=0.0;
-
-for (z=0;z<dim->zlen;z++)
-{
-	for (x=0;x<dim->xlen;x++)
-	{
-		n_count+=(in->Jn[z][x][0]+in->Jn[z][x][dim->ylen-1])*in->dt/Q;
-		p_count+=(in->Jp[z][x][0]+in->Jp[z][x][dim->ylen-1])*in->dt/Q;
-	}
-}
-
-gdouble dx=dim->ymesh[1]-dim->ymesh[0];
-for (z=0;z<dim->zlen;z++)
-{
-	for (x=0;x<dim->xlen;x++)
-	{
-		for (y=0;y<dim->ylen;y++)
-		{
-			locat_n_tot+=in->Rfree[z][x][y]*dx;
-			locat_p_tot+=in->Rfree[z][x][y]*dx;
-		}
-	}
-}
-rn_count+=locat_n_tot*in->dt;
-rp_count+=locat_p_tot*in->dt;
-
-}
-
-/**
-* @brief Calculate extracted np
-*/
-gdouble get_extracted_np(struct device *in)
-{
-return (get_extracted_n(in)+get_extracted_p(in))/2.0;
-}
-
-/**
-* @brief Calculate extracted n from a save point
-*/
-gdouble get_extracted_n(struct device *in)
-{
-long double ret=0.0;
-
-long double n=0.0;
-long double nf_save=0.0;
-
-long double nt_all=0.0;
-long double nt_save=0.0;
-
-n=three_d_avg(in, in->n);
-nf_save=three_d_avg(in, in->nf_save);
-
-nt_all=three_d_avg(in, in->n);
-nt_save=three_d_avg(in, in->nf_save);
-
-ret=n-nf_save +nt_all-nt_save;
-
-return ret;
-}
-
-/**
-* @brief Get the total number of charge carriers in the device.
-*/
-gdouble get_total_np(struct device *in)
-{
-long double ret=0.0;
-long double n=0.0;
-long double p=0.0;
-long double nt_all=0.0;
-long double pt_all=0.0;
-
-n=three_d_avg(in, in->n);
-p=three_d_avg(in, in->p);
-
-nt_all=three_d_avg(in, in->n);
-pt_all=three_d_avg(in, in->n);
-
-ret=n+p+nt_all+pt_all;
-
-ret/=2.0;
-return ret;
-}
-
-/**
-* @brief Get the number of extracted holes
-*/
-gdouble get_extracted_p(struct device *in)
-{
-long double sum_p=0.0;
-
-sum_p=three_d_avg(in, in->p);
-sum_p-=three_d_avg(in, in->pf_save);
-
-sum_p+=three_d_avg(in, in->pt_all);
-sum_p-=three_d_avg(in, in->pt_save);
-
-return sum_p;
-}
 
 /**
 * @brief Calculate the maximum possible Jsc value from the generation rate.
@@ -592,23 +308,10 @@ for (z=0;z<dim->zlen;z++)
 	}
 }
 
-return -Q*tot;
+return -Qe*tot;
 }
 
-gdouble get_background_charge(struct device *in)
-{
-long double sum=0.0;
 
-sum=three_d_avg(in, in->nf_save);
-sum+=three_d_avg(in, in->nt_save);
-
-sum+=three_d_avg(in, in->pf_save);
-sum+=three_d_avg(in, in->pt_save);
-
-sum/=2.0;
-
-return sum;
-}
 
 /**
 * @brief Calculate the value of k
@@ -666,6 +369,12 @@ long double sum=0.0;
 long double ret=0.0;
 struct dimensions *dim=&in->ns.dim;
 long double count=0.0;
+
+if (in->mun_y==NULL)
+{
+	return 0.0;
+}
+
 	for (z = 0; z < dim->zlen; z++)
 	{
 		for (x = 0; x < dim->xlen; x++)
@@ -694,6 +403,11 @@ int z=0;
 long double sum=0.0;
 long double ret=0.0;
 
+if (in->mun_y==NULL)
+{
+	return 0.0;
+}
+
 struct dimensions *dim=&in->ns.dim;
 
 	for (z = 0; z < dim->zlen; z++)
@@ -713,140 +427,9 @@ ret=sum/(in->zlen*in->xlen*in->ylen);
 return ret;
 }
 
-/**
-* @brief Calculate average charge density in the device.
-*/
-gdouble get_np_tot(struct device *in)
-{
-long double sum=0.0;
 
-sum=three_d_avg(in, in->n);
-sum+=three_d_avg(in, in->p);
 
-sum+=three_d_avg(in, in->pt_all);
-sum+=three_d_avg(in, in->nt_all);
 
-sum/=2.0;
-
-return sum;
-}
-
-/**
-* @brief Calculate average change in free carrier density in the device
-*/
-gdouble get_free_np_avg(struct device *in)
-{
-long double sum=0.0;
-
-sum=three_d_avg(in, in->n);
-sum+=three_d_avg(in, in->p);
-
-sum-=three_d_avg(in, in->nf_save);
-sum-=three_d_avg(in, in->pf_save);
-
-sum/=2.0;
-
-return sum;
-}
-
-/**
-* @brief Calculate free electron density
-*/
-gdouble get_free_n_charge(struct device *in)
-{
-long double ret=0.0;
-
-ret=three_d_avg(in, in->n);
-
-return ret;
-}
-
-/**
-* @brief Calculate free hole density
-*/
-gdouble get_free_p_charge(struct device *in)
-{
-long double ret=0.0;
-
-ret=three_d_avg(in, in->p);
-
-return ret;
-}
-
-/**
-* @brief Total charge in the device
-*/
-gdouble get_charge_tot(struct device *in)
-{
-long double ret=0.0;
-long double n=0.0;
-long double p=0.0;
-long double pt_all=0.0;
-long double nt_all=0.0;
-
-n=three_d_avg(in, in->n);
-p=three_d_avg(in, in->p);
-nt_all=three_d_avg(in, in->nt_all);
-pt_all=three_d_avg(in, in->pt_all);
-
-ret=p-n+pt_all-nt_all;
-return ret;
-}
-
-/**
-* @brief Set the origonal charge density
-*/
-void set_orig_charge_den(struct device *in)
-{
-int x=0;
-int y=0;
-int z=0;
-struct dimensions *dim=&in->ns.dim;
-
-for (z=0;z<dim->zlen;z++)
-{
-	for (x=0;x<dim->xlen;x++)
-	{
-		for (y=0;y<dim->ylen;y++)
-		{
-			in->n_orig[z][x][y]=in->n[z][x][y]+in->nt_all[z][x][y];
-			in->p_orig[z][x][y]=in->p[z][x][y]+in->pt_all[z][x][y];
-
-			in->n_orig_f[z][x][y]=in->n[z][x][y];
-			in->p_orig_f[z][x][y]=in->p[z][x][y];
-
-			in->n_orig_t[z][x][y]=in->nt_all[z][x][y];
-			in->p_orig_t[z][x][y]=in->pt_all[z][x][y];
-		}
-	}
-}
-}
-
-/**
-* @brief Calculate the change in free electron density
-*/
-gdouble get_free_n_charge_delta(struct device *in)
-{
-long double sum=0.0;
-
-sum=three_d_avg(in, in->n);
-sum-=three_d_avg(in, in->n_orig_f);
-
-return sum;
-}
-
-/**
-* @brief Calculate the change in free hole density
-*/
-gdouble get_free_p_charge_delta(struct device *in)
-{
-long double sum=0.0;
-
-sum=three_d_avg(in, in->p);
-sum-=three_d_avg(in, in->p_orig_f);
-
-return sum;
-}
 
 /**
 * @brief Save the device parameters
@@ -911,75 +494,7 @@ void reset_npequlib(struct device *in)
 	}
 }
 
-/**
-* @brief Get the trapped electron density
-*/
-gdouble get_n_trapped_charge(struct device *in)
-{
-long double ret=0.0;
 
-ret=three_d_avg(in, in->nt_all);
-
-return ret;
-}
-
-/**
-* @brief Get the trapped hole density
-*/
-gdouble get_p_trapped_charge(struct device *in)
-{
-long double ret=0.0;
-
-ret=three_d_avg(in, in->pt_all);
-
-return ret;
-}
-
-/**
-* @brief Get the change in charge using orig
-*/
-gdouble get_charge_delta(struct device *in)
-{
-long double tot=0.0;
-
-tot=three_d_avg(in, in->n);
-tot+=three_d_avg(in, in->nt_all);
-tot-=three_d_avg(in, in->n_orig);
-
-tot+=three_d_avg(in, in->p);
-tot+=three_d_avg(in, in->pt_all);
-tot-=three_d_avg(in, in->p_orig);
-
-tot/=2.0;
-
-return tot;
-}
-
-/**
-* @brief Get the change in trapped electrons using orig
-*/
-gdouble get_n_trapped_charge_delta(struct device *in)
-{
-long double tot=0.0;
-
-tot=three_d_avg(in, in->nt_all);
-tot-=three_d_avg(in, in->n_orig_t);
-
-return tot;
-}
-
-/**
-* @brief Get the change in trapped holes using orig
-*/
-gdouble get_p_trapped_charge_delta(struct device *in)
-{
-long double tot=0.0;
-
-tot=three_d_avg(in, in->pt_all);
-tot-=three_d_avg(in, in->p_orig_t);
-
-return tot;
-}
 
 /**
 * @brief Calculate the external current using internal recombination
@@ -1034,10 +549,28 @@ return Iout;
 */
 gdouble get_equiv_J(struct simulation *sim,struct device *in)
 {
+struct newton_state *ns=&(in->ns);
+struct dimensions *dim=&in->ns.dim;
+struct circuit *cir=&in->cir;
+
 gdouble Vapplied=0.0;
 Vapplied=contact_get_active_contact_voltage(sim,in);
 gdouble J=0.0;
+
 J=get_J(in);
+
+if (in->circuit_simulation==TRUE)
+{
+	if ((dim->xlen>1)||(dim->zlen>1))
+	{
+		if (cir->abstract_circuit==FALSE)
+		{
+			J=contacts_get_Jright(in);
+			//printf("%Le\n",J);
+		}
+	}
+}
+
 //if (in->lr_pcontact==RIGHT) J*= -1.0;
 J+=Vapplied/in->Rshunt/in->area;
 
@@ -1144,11 +677,11 @@ for (z=0;z<dim->zlen;z++)
 			dEc=Ecr-Ecl;
 			dEv=Evr-Evl;
 			dx=(xr-xl);
-			in->Jn_diffusion[z][x][y]=Q*in->Dn[z][x][y]*dn/dx;
-			in->Jn_drift[z][x][y]=Q*in->mun_y[z][x][y]*in->n[z][x][y]*dEc/dx;
+			in->Jn_diffusion[z][x][y]=Qe*in->Dn[z][x][y]*dn/dx;
+			in->Jn_drift[z][x][y]=Qe*in->mun_y[z][x][y]*in->n[z][x][y]*dEc/dx;
 
-			in->Jp_diffusion[z][x][y]= -Q*in->Dp[z][x][y]*dp/dx;
-			in->Jp_drift[z][x][y]=Q*in->mup_y[z][x][y]*in->p[z][x][y]*dEv/dx;
+			in->Jp_diffusion[z][x][y]= -Qe*in->Dp[z][x][y]*dp/dx;
+			in->Jp_drift[z][x][y]=Qe*in->mup_y[z][x][y]*in->p[z][x][y]*dEv/dx;
 		}
 	}
 }
@@ -1231,7 +764,7 @@ gdouble get_J(struct device *in)
 {
 //int i;
 gdouble ret=0.0;
-
+//printf("%Le %Le\n",get_J_left(in),get_J_right(in));
 ret=(get_J_left(in)+get_J_right(in))/2.0;
 
 return ret;
