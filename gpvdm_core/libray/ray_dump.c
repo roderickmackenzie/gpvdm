@@ -152,6 +152,7 @@ void dump_plane_to_file(struct simulation *sim,char *file_name,struct image *in,
 	{
 		worker=&(in->worker[w]);
 
+		//printf("%d %d\n",w,worker->nrays);
 		for (i=0;i<worker->nrays;i++)
 		{
 			if (worker->rays[i].state==DONE)
@@ -595,6 +596,11 @@ void dump_ang_escape_as_rgb(struct simulation *sim,struct image *in)
 
 void dump_rendered_image(struct simulation *sim,char *out_dir, struct image *in)
 {
+	if (in->viewpoint_enabled==FALSE)
+	{
+		return;
+	}
+
 	struct dat_file buf;
 	buffer_init(&buf);
 
@@ -630,6 +636,11 @@ void dump_rendered_image(struct simulation *sim,char *out_dir, struct image *in)
 
 void dump_rendered_cross_section(struct simulation *sim,char *out_dir, struct image *in)
 {
+	if (in->viewpoint_enabled==FALSE)
+	{
+		return;
+	}
+
 	int l;
 	char file_name[100];
 	char unit[10];

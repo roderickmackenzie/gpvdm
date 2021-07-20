@@ -86,10 +86,6 @@ void ray_build_scene(struct simulation *sim,struct device *dev,struct image *my_
 	double camera_x=0.0;
 	double camera_z=0.0;
 
-	//dump_plane_to_file("l.dat",my_image);
-	//exit(0);
-
-
 	double x_start=dx+dx/2.0;
 	double x_stop=dx+xlen-dx/2.0;
 	dx=(x_stop-x_start)/((double)my_image->n_start_rays);

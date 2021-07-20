@@ -50,30 +50,30 @@
 	@brief Read the config file for the ray tracer
 */
 
-void ray_read_viewpoint(struct simulation *sim,struct image *my_image)
+void ray_read_viewpoint(struct simulation *sim,struct image *my_image, struct json_obj *json_config)
 {
-	char temp[200];
-	struct inp_file inp;
-	inp_init(sim,&inp);
-	if (inp_load_from_path(sim,&inp,get_input_path(sim),"view_point.inp")==0)
+	struct json_obj *json_viewpoint;
+
+	if (json_config==NULL)
 	{
-
-		inp_check(sim,&inp,1.0);
-		inp_search_string(sim,&inp,temp,"#viewpoint_enabled");
-		my_image->viewpoint_enabled=english_to_bin(sim,temp);
-
-		inp_search_double(sim,&inp,&(my_image->viewpoint_size),"#viewpoint_size");
-		inp_search_double(sim,&inp,&(my_image->viewpoint_dz),"#viewpoint_dz");
-
-		inp_search_int(sim,&inp,&(my_image->viewpoint_dim.xlen),"#viewpoint_nx");
-		inp_search_int(sim,&inp,&(my_image->viewpoint_dim.zlen),"#viewpoint_nz");
-		my_image->viewpoint_dim.ylen=my_image->ray_wavelength_points;
-
-		inp_free(sim,&inp);
-	}else
-	{
-		my_image->viewpoint_enabled=FALSE;
+		ewe(sim,"json_config null\n");
 	}
+
+	json_viewpoint=json_obj_find(json_config, "viewpoint");
+	if (json_viewpoint==NULL)
+	{
+		ewe(sim,"Object json_viewpoint not found\n");
+	}
+
+	json_get_english(sim, json_viewpoint, &(my_image->viewpoint_enabled),"viewpoint_enabled");
+
+	json_get_double(sim, json_viewpoint, &(my_image->viewpoint_size),"viewpoint_size");
+	json_get_double(sim, json_viewpoint,&(my_image->viewpoint_dz),"viewpoint_dz");
+
+	json_get_int(sim, json_viewpoint, &(my_image->viewpoint_dim.xlen),"viewpoint_nx");
+	json_get_int(sim, json_viewpoint, &(my_image->viewpoint_dim.zlen),"viewpoint_nz");
+	my_image->viewpoint_dim.ylen=my_image->ray_wavelength_points;
+
 }
 
 void ray_viewpoint_reset(struct simulation *sim,struct image *my_image)

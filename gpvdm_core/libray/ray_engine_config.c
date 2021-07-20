@@ -42,7 +42,7 @@
 #include <cal_path.h>
 #include <log.h>
 #include <device.h>
-#include <inp.h>
+#include <json.h>
 #include <util.h>
 #include <triangles.h>
 
@@ -50,48 +50,48 @@
 	@brief Read the config file for the ray tracer
 */
 
-void ray_read_config(struct simulation *sim,struct image *my_image)
+void ray_read_config(struct simulation *sim,struct image *my_image,struct json_obj *json_config)
 {
-	struct inp_file inp;
-	char temp[200];
+	struct json_obj *json_ray;
 
-	inp_init(sim,&inp);
-	inp_load_from_path(sim,&inp,get_input_path(sim),"ray.inp");
+	if (json_config==NULL)
+	{
+		ewe(sim,"json_config null\n");
+	}
 
-	inp_check(sim,&inp,1.0);
+	json_ray=json_obj_find(json_config, "config");
+	if (json_ray==NULL)
+	{
+		ewe(sim,"Object config not found\n");
+	}
 
+	json_get_int(sim, json_ray, &(my_image->ray_wavelength_points),"ray_wavelength_points");
 
-	inp_search_int(sim,&inp,&(my_image->ray_wavelength_points),"#ray_wavelength_points");
+	json_get_int(sim, json_ray, &(my_image->escape_bins),"ray_escape_bins");
 
-	inp_search_int(sim,&inp,&(my_image->escape_bins),"#ray_escape_bins");
-
-	inp_search_double(sim,&inp,&(my_image->ray_xsrc),"#ray_xsrc");
-	inp_search_double(sim,&inp,&(my_image->ray_ysrc),"#ray_ysrc");
+	json_get_double(sim, json_ray, &(my_image->ray_xsrc),"ray_xsrc");
+	json_get_double(sim, json_ray, &(my_image->ray_ysrc),"ray_ysrc");
 	//inp_search_double(sim,&inp,&(my_image->ray_zsrc),"#ray_zsrc");
 
-	inp_search_int(sim,&inp,&(my_image->theta_steps),"#ray_theta_steps");
-	inp_search_double(sim,&inp,&(my_image->ray_theta_start),"#ray_theta_start");
-	inp_search_double(sim,&inp,&(my_image->ray_theta_stop),"#ray_theta_stop");
+	json_get_int(sim, json_ray, &(my_image->theta_steps),"ray_theta_steps");
+	json_get_double(sim, json_ray, &(my_image->ray_theta_start),"ray_theta_start");
+	json_get_double(sim, json_ray, &(my_image->ray_theta_stop),"ray_theta_stop");
 
-	inp_search_int(sim,&inp,&(my_image->phi_steps),"#ray_phi_steps");
-	inp_search_double(sim,&inp,&(my_image->ray_phi_start),"#ray_phi_start");
-	inp_search_double(sim,&inp,&(my_image->ray_phi_stop),"#ray_phi_stop");
+	json_get_int(sim, json_ray, &(my_image->phi_steps),"ray_phi_steps");
+	json_get_double(sim, json_ray, &(my_image->ray_phi_start),"ray_phi_start");
+	json_get_double(sim, json_ray, &(my_image->ray_phi_stop),"ray_phi_stop");
 
-	inp_search_double(sim,&inp,&(my_image->ray_lambda_start),"#ray_lambda_start");
-	inp_search_double(sim,&inp,&(my_image->ray_lambda_stop),"#ray_lambda_stop");
+	json_get_double(sim, json_ray, &(my_image->ray_lambda_start),"ray_lambda_start");
+	json_get_double(sim, json_ray, &(my_image->ray_lambda_stop),"ray_lambda_stop");
 
-	inp_search_string(sim,&inp,temp,"#ray_auto_wavelength_range");
-	my_image->ray_auto_wavelength_range=english_to_bin(sim,temp);
+	json_get_english(sim, json_ray,&(my_image->ray_auto_wavelength_range),"ray_auto_wavelength_range");
 
-	inp_search_string(sim,&inp,temp,"#ray_auto_run");
-	my_image->ray_auto_run=english_to_bin(sim,temp);
+	json_get_english(sim, json_ray, &(my_image->ray_auto_run),"ray_auto_run");
 
-	inp_search_string(sim,&inp,temp,"#ray_emission_source");
-	my_image->ray_emission_source=english_to_bin(sim,temp);
+	json_get_english(sim, json_ray, &(my_image->ray_emission_source),"ray_emission_source");
 
-	inp_free(sim,&inp);
 
-	ray_read_viewpoint(sim,my_image);
+	ray_read_viewpoint(sim,my_image, json_config);
 }
 
 

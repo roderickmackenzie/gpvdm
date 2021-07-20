@@ -67,7 +67,7 @@ void light_update_ray_mat(struct simulation *sim,struct device *dev,struct image
 
 			if (s!=NULL)		//It's a shape
 			{
-				//printf("%s\n",my_image->obj[i].name);
+				//printf("%s %p\n",dev->obj[i].name,my_image->lam);
 				for (l=0;l<my_image->ray_wavelength_points;l++)
 				{
 					lambda=my_image->lam[l];

@@ -33,6 +33,7 @@
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
 
+#include <enabled_libs.h>
 #include <stdio.h>
 #include <ray.h>
 #include <gpvdm_const.h>
@@ -51,7 +52,7 @@
 #include <epitaxy_struct.h>
 #include <epitaxy.h>
 #include <dump.h>
-
+#include <device_fun.h>
 #include <timer.h>
 
 	#include <pthread.h>
@@ -115,3 +116,49 @@ void ray_solve(struct simulation *sim,struct device *dev, double x0, double y0, 
 
 }
 
+void ray_dump_shapshots(struct simulation *sim,struct device *dev, struct image *my_image ,struct ray_worker *worker,int layer)
+{
+	struct dat_file buf;
+	int ret=0;
+	char name[PATH_MAX];
+	char out_dir[PATH_MAX];
+	char temp[200];
+
+	sprintf(out_dir,"%s/ray_trace",get_output_path(dev));
+
+	ret=snprintf(name,PATH_MAX,"%s/light_ray_%d_%.0f.dat",out_dir,layer,(my_image->lam[worker->l]*1e9));
+	if (ret<0)
+	{
+		ewe(sim,"lib ray solve.c: sprintf error\n");
+	}
+	dump_plane_to_file(sim,name,my_image,dev);
+
+	if (my_image->dump_snapshots==TRUE)
+	{
+	
+		dump_make_snapshot_dir(sim,out_dir,dev->output_path ,"snapshots", dev->snapshot_number);
+
+		buffer_init(&buf);
+		buffer_malloc(&buf);
+
+		sprintf(temp,"{\n");
+		buffer_add_string(&buf,temp);
+
+		sprintf(temp,"\t\"wavelength\":%le,\n",my_image->lam[worker->l]);
+		buffer_add_string(&buf,temp);
+
+		sprintf(temp,"}");
+		buffer_add_string(&buf,temp);
+
+		buffer_dump_path(sim,out_dir,"data.json",&buf);
+		buffer_free(&buf);
+
+		ret=snprintf(name,PATH_MAX,"%s/RAY_light_beams_%d_%.0f.dat",out_dir,layer,(my_image->lam[worker->l]*1e9));
+		if (ret<0)
+		{
+			ewe(sim,"lib ray solve.c: sprintf error\n");
+		}
+
+		dump_plane_to_file(sim,name,my_image,dev);
+	}
+}
