@@ -37,7 +37,7 @@
 @brief find an electrical dll and run it.
 */
 
-
+#include <enabled_libs.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <dll_export.h>
@@ -45,6 +45,7 @@
 #include <lang.h>
 #include <util.h>
 
+	#define _GNU_SOURCE
 	#include <dlfcn.h>
 
 #include <cal_path.h>
@@ -88,8 +89,8 @@ void run_electrical_dll(struct simulation *sim,struct device *in,char *dll_name)
 
 (*dll_sim_run)(sim,in);
 
-	#ifndef disable_dlclose
+	//#ifndef disable_dlclose
 		dlclose(lib_handle);
-	#endif
+	//#endif
 
 }

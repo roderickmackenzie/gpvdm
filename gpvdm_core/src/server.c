@@ -37,6 +37,7 @@
 	@brief Job management for fitting, run multiple fitting instances over multiple CPUs.
 */
 
+#include <enabled_libs.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -59,6 +60,7 @@
 #include "log.h"
 #include <gui_hooks.h>
 #include <cal_path.h>
+#include <device_fun.h>
 
 static int unused __attribute__((unused));
 
@@ -80,9 +82,30 @@ void change_cpus(struct simulation *sim,struct server_struct *myserver)
 {
 }
 
-void alarm_wakeup (int i)
+/*void alarm_wakeup (int i)
 {
-}
+#ifdef enable_server
+		struct itimerval tout_val;
+
+		signal(SIGALRM,alarm_wakeup);
+
+		tout_val.it_interval.tv_sec = 0;
+		tout_val.it_interval.tv_usec = 0;
+		tout_val.it_value.tv_sec = alarm_time; // 10 seconds timer 
+		tout_val.it_value.tv_usec = 0;
+
+		int since_last_job=(int)(time(NULL)-last_job_ended_at);
+		//Note we can't use print f within a signal handelr.
+		//printf_log(local_sim,"\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Time since %d seconds since last job run.\n",since_last_job);
+		if (since_last_job>stall_time)
+		{
+			ewe(local_sim,"\n%s %ld>%ld\n",_("Job stalled. Time since last run:"),since_last_job,stall_time);
+		}
+
+		setitimer(ITIMER_REAL, &tout_val,0);
+		server_check_wall_clock(local_sim,pserver);
+#endif
+}*/
 
 
 int cmp_lock(char *in)
@@ -131,44 +154,28 @@ strcpy(sim->server.lock_file,"");
 }
 
 
-int server_decode(struct simulation *sim,char *command)
-{
-int odes=0;
-char split[100];
-
-
-return odes;
-}
 
 void server_add_job(struct simulation *sim,char *command,char *output)
 {
 char split[100];
-char old_output_path[PATH_MAX];
-char old_input_path[PATH_MAX];
 char send_data[PATH_MAX];
 char temp[PATH_MAX];
 poll_gui(sim);
+struct device dev;
 
 	int odes=0;
 
 	//printf("%s %s\n",command,output);
 	//getchar();
 
-	strcpy(old_input_path,sim->input_path);
-	strcpy(old_output_path,sim->output_path);
-
-
-	strcpy(sim->input_path,command);
-	strcpy(sim->output_path,output);
 	gui_send_data(sim,gui_main,"pulse");
 	sprintf(send_data,"text:%s",output);
 	gui_send_data(sim,gui_main,send_data);
 
-	odes=run_simulation(sim);
-
-
-	strcpy(sim->input_path,old_input_path);
-	strcpy(sim->output_path,old_output_path);
+	device_init(sim,&dev);
+	strcpy(dev.input_path,command);
+	strcpy(dev.output_path,output);
+	odes=device_run_simulation(sim,&dev);
 
 	printf_log(sim,"Solved %d ODEs\n",odes);
 }
@@ -176,6 +183,7 @@ poll_gui(sim);
 
 void server_exe_jobs(struct simulation *sim, struct server_struct *myserver)
 {
+
 if (myserver->jobs==0) return;
 }
 
@@ -186,6 +194,7 @@ void server_job_finished(struct server_struct *myserver,char *job)
 
 int server_run_jobs(struct simulation *sim,struct server_struct *myserver)
 {
+
 	return 0;
 }
 

@@ -38,43 +38,39 @@
 */
 
 
-
+#include <enabled_libs.h>
 #include <sim.h>
 #include <string.h>
 #include <server.h>
+#include <hard_limit.h>
+#include <dos.h>
+#include <color.h>
+#include <solver_interface.h>
 
 void sim_init(struct simulation *sim)
 {
 //plotting
 	sim->gnuplot= NULL;
 	sim->gnuplot_time= NULL;
-	sim->converge= NULL;
-	sim->tconverge= NULL;
 	sim->log_level= -1;
 
 	//newton solver dll
-	sim->dll_solve_cur=NULL;
-	sim->dll_solver_realloc=NULL;
-	sim->dll_solver_free_memory=NULL;
-	sim->dll_solver_handle=NULL;
 	strcpy(sim->force_sim_mode,"");
 
 	//matrix solver dll
-	sim->dll_matrix_handle=NULL;
-	sim->dll_matrix_solve=NULL;
-	sim->dll_matrix_solver_free=NULL;
+	strcpy(sim->solver_name,"");
 
 	//complex matrix solver dll
 	sim->dll_complex_matrix_handle=NULL;
 	sim->dll_complex_matrix_solve=NULL;
 	sim->dll_complex_matrix_solver_free=NULL;
+	sim->dll_complex_matrix_init=NULL;
+	strcpy(sim->complex_solver_name,"");
 
 	//fit vars
 	sim->last_total_error=-1.0;
 	sim->gui=FALSE;
-	sim->fitting=FALSE;
-	sim->dumpfile=NULL;
-	sim->dumpfiles=-1;
+	sim->fitting=FIT_NOT_FITTING;
 	sim->html=FALSE;
 	sim->bytes_written=0;
 	sim->bytes_read=0;
@@ -83,6 +79,9 @@ void sim_init(struct simulation *sim)
 	sim->T0=300.0;
 	sim->D0=243.75;
 	sim->n0=1e20;
+
+	sim->math_stop_on_convergence_problem=FALSE;
+
 	//sim->x_matrix_offset=0;
 
 	sim->cache_len=-1;
@@ -91,10 +90,7 @@ void sim_init(struct simulation *sim)
 
 	sim->mindbustx=FALSE;
 
-	#ifdef dbus
-		sim->connection=NULL;
-	#endif
-
+	sim->connection=NULL;
 
 	sim->error_log=NULL;
 	sim->error_log_size=0;
@@ -107,6 +103,29 @@ void sim_init(struct simulation *sim)
 	//run control
 
 	strcpy(sim->command_line_path,"");
+	hard_limit_init(sim,&(sim->hl));
+	dos_cache_init(&(sim->doscache));
 
+	int i;
+	for (i=0;i<100;i++)
+	{
+		sim->dump_array[i]=FALSE;
+	}
 }
 
+
+void sim_free(struct simulation *sim)
+{
+	solver_unload_dll(sim);
+	complex_solver_unload_dll(sim);
+	server_shut_down(sim,&(sim->server));
+
+	server2_free(sim,&sim->server);
+
+	color_cie_free(sim);
+	hard_limit_free(sim,&(sim->hl));
+	dos_cache_dump(&(sim->doscache));
+	dos_cache_free(&(sim->doscache));
+	errors_free(sim);
+	printf("SIM FREE!!!!!!!!!\n");
+}

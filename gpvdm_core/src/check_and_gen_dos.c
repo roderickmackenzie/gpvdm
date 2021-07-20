@@ -54,16 +54,36 @@
 #include <inp.h>
 #include <server.h>
 #include <epitaxy.h>
+#include <json.h>
 
 THREAD_FUNCTION thread_dos_n(void * in)
 {
+	char temp[100];
+	char path[PATH_MAX];
+	struct dosconfig confige;
+	struct dosconfig configh;
+
 	struct job *j=(struct job *)in;
 	struct simulation *sim=(struct simulation *)j->sim;
 	char *dos_file=(char *)j->data0;
-	char *lumo_file=(char *)j->data1;
-	char *homo_file=(char *)j->data2;
+	struct json_obj *json_dos=(struct json_obj *)j->data1;
 
-	gen_dos_fd_gaus_n(sim,dos_file,lumo_file,homo_file);
+	dos_config_load(sim,&confige,&configh,dos_file, json_dos);
+
+	printf_log(sim,"Electrons.... %s\n",confige.dos_name);
+	//printf_log(sim,"e Eg='%Le' \n",confige.Eg);
+	//printf_log(sim,"e Eg='%Le' \n",configh.Eg);
+
+	sprintf(temp,"%s_dosn.dat",confige.dos_name);
+	join_path(2, path,get_cache_path(sim),temp);
+
+	//char json_path[PATH_MAX];
+	//join_path(2,json_path,get_cache_path(sim),"json_dos_n.dat");
+	//json_obj_save_as(sim,json_path,json_dos);
+
+	gen_do(sim,&confige,&configh,path,json_dos,TRUE);
+
+	j->data1=NULL;
 
 	server2_job_finished(sim,j);
 
@@ -72,250 +92,226 @@ THREAD_FUNCTION thread_dos_n(void * in)
 
 THREAD_FUNCTION thread_dos_p(void * in)
 {
+	char temp[100];
+	char path[PATH_MAX];
+	FILE *out;
+	struct dosconfig confige;
+	struct dosconfig configh;
 	struct job *j=(struct job *)in;
 	struct simulation *sim=(struct simulation *)j->sim;
-	char *st=(char *)j->data0;
 	char *dos_file=(char *)j->data0;
-	char *lumo_file=(char *)j->data1;
-	char *homo_file=(char *)j->data2;
+	struct json_obj *json_dos=(struct json_obj *)j->data1;
 
-	gen_dos_fd_gaus_p(sim,dos_file,lumo_file,homo_file);
+	dos_config_load(sim,&confige,&configh,dos_file, json_dos);
 
+	printf_log(sim,"Holes.... %s\n",configh.dos_name);
+	//printf_log(sim,"h Eg='%Le' \n",confige.Eg);
+	//printf_log(sim,"h Eg='%Le' \n",configh.Eg);
+
+	sprintf(temp,"%s_dosp.dat",configh.dos_name);
+	join_path(2, path,get_cache_path(sim),temp);
+
+	//char json_path[PATH_MAX];
+	//join_path(2,json_path,get_cache_path(sim),"json_dos_p.dat");
+	//json_obj_save_as(sim,json_path,json_dos);
+
+	gen_do(sim,&configh,&confige,path,json_dos,FALSE);
+
+	join_path(2, path,get_cache_path(sim),"mat.inp");
+
+	out=fopen(path,"w");
+	fprintf(out,"#gpvdm_file_type\n");
+	fprintf(out,"cache\n");
+	fprintf(out,"#end\n");
+	fclose(out);
+
+	j->data1=NULL;
 	server2_job_finished(sim,j);
 
 	return 0;
 }
-void gen_dos_fd_gaus_fd_stand_alone(struct simulation *sim)
+void gen_dos_fd_gaus_fd_stand_alone(struct simulation *sim,char *input_path)
 {
 	struct epitaxy epi;
 	char full_name[PATH_MAX];
 	epitaxy_init(sim,&epi);
-	join_path(2, full_name,get_input_path(sim),"epitaxy.inp");
-	epitaxy_load(sim,&epi,full_name);
-	gen_dos_fd_gaus_fd(sim,&epi);
+	struct json j;
+	struct json_obj *json_epi;
+
+	json_init(&j);
+
+	join_path(2, full_name,input_path,"json.inp");
+
+	json_load(sim,&j,full_name);
+
+	json_epi=json_obj_find(&(j.obj), "epitaxy");
+
+	if (json_epi==NULL)
+	{
+		ewe(sim,"Object light not found\n");
+	}
+
+	epitaxy_load(sim,&epi,json_epi);
+	dos_cache_setup(sim,&(sim->doscache),&(j.obj));
+	gen_dos_fd_gaus_fd(sim,&epi,json_epi);
 	epitaxy_free(sim,&epi);
+
+	json_free(&j);
 }
 
-
-void gen_dos_fd_gaus_fd(struct simulation *sim,struct epitaxy *my_epitaxy)
+int check_and_gen_dos(struct simulation *sim,struct shape *s,struct json_obj *json_dos, char *check_file, char *md5,int batch_id)
 {
-int ret=0;
-char name[200];
-char full_name[PATH_MAX];
-int matnumber=0;
-//printf("yes %s %s\n",get_input_path(sim),get_cache_path(sim));
-//getchar();
-matnumber=my_epitaxy->electrical_layers;
-int file_bandn=FALSE;
-int file_bandp=FALSE;
-int file_an_lumo=FALSE;
-int file_an_homo=FALSE;
-int file_dos=FALSE;
-int launch_server=FALSE;
-
-FILE *file;
-int mat=0;
-int problem_with_dos=FALSE;
-int dostype;
-char temp[100];
-
-struct inp_file inp;
-
-struct job j;
-
-
-for (mat=0;mat<matnumber;mat++)
-{
-	file_bandn=FALSE;
-	file_bandp=FALSE;
-
-	file_an_lumo=FALSE;
-	file_an_homo=FALSE;
-	file_dos=FALSE;
-
-
-
-
-	problem_with_dos=FALSE;
-
-
-	sprintf(name,"%s.inp",my_epitaxy->layer[mat].dos_file);
-	join_path(2, full_name,get_input_path(sim),name);
-
-	inp_init(sim,&inp);
-	inp_load(sim,&inp,full_name);
-
-	inp_search_string(sim,&inp,temp,"#dostype");
-	dostype=english_to_bin(sim,temp);
-	inp_free(sim,&inp);
-
-	if (checksum_check(sim,full_name)==FALSE)
+	int enabled=FALSE;
+	int ret=0;
+	struct job my_job;
+	char name[200];
+	char full_name[PATH_MAX];
+	char chk_file[200];
+	int launch_server=FALSE;
+	FILE *file;
+	//json_dump_obj(json_dos);
+	//printf("a\n");
+	json_get_english(sim,json_dos, &(enabled),"enabled");
+	if (enabled==FALSE)
 	{
-		problem_with_dos=TRUE;
+		return FALSE;
 	}
 
-	sprintf(name,"%s_dosn.dat",my_epitaxy->layer[mat].dos_file);
-	join_path(2, full_name,get_cache_path(sim),name);
-	if (isfile(full_name)!=0)
-	{
-		problem_with_dos=TRUE;
-		//printf("oh0 %s\n",full_name);
-	}
+	sprintf(chk_file,"%s.chk",s->dos_file);
+	join_path(2, full_name,get_cache_path(sim),chk_file);
+	strcpy(check_file,chk_file);
 
-	sprintf(name,"%s_dosp.dat",my_epitaxy->layer[mat].dos_file);
-	join_path(2, full_name,get_cache_path(sim),name);
-	if (isfile(full_name)!=0)
+	if (json_checksum_check(sim,md5,full_name,json_dos)==FALSE)
 	{
-		problem_with_dos=TRUE;
-		//printf("oh1\n");
-
-	}
-
-	if (problem_with_dos==TRUE)
-	{
-		file_dos=TRUE;
-		file_bandn=TRUE;
-		file_bandp=TRUE;
+		printf("checksum failed\n");
 		launch_server=TRUE;
-		//printf("launch\n");
-		//getchar();
 	}
 
+	sprintf(name,"%s_dosn.dat",s->dos_file);
 
-	if (dostype==dos_read)
+	join_path(2, full_name,get_cache_path(sim),name);
+	if (isfile(full_name)!=0)
 	{
-		sprintf(name,"%s_srhbandn.inp",my_epitaxy->layer[mat].dos_file);
-		join_path(2, full_name,get_input_path(sim),name);
-		if (checksum_check(sim,full_name)==FALSE)
-		{
-			file_bandn=TRUE;
-			launch_server=TRUE;
-		}
-
-		sprintf(name,"%s_srhbandp.inp",my_epitaxy->layer[mat].dos_file);
-		join_path(2, full_name,get_input_path(sim),name);
-		if (checksum_check(sim,full_name)==FALSE)
-		{
-			file_bandp=TRUE;
-			launch_server=TRUE;
-		}
+		launch_server=TRUE;
 	}
 
-	if (dostype==dos_an)
+	sprintf(name,"%s_dosp.dat",s->dos_file);
+	join_path(2, full_name,get_cache_path(sim),name);
+	if (isfile(full_name)!=0)
 	{
-		sprintf(name,"%s.inp",my_epitaxy->lumo_file[mat]);
-		join_path(2, full_name,get_input_path(sim),name);
-		if (checksum_check(sim,full_name)==FALSE)
-		{
-			file_an_lumo=TRUE;
-			file_bandn=TRUE;
-			launch_server=TRUE;
-		}
-
-		sprintf(name,"%s.inp",my_epitaxy->homo_file[mat]);
-		join_path(2, full_name,get_input_path(sim),name);
-		if (checksum_check(sim,full_name)==FALSE)
-		{
-			file_an_homo=TRUE;
-			file_bandp=TRUE;
-			launch_server=TRUE;
-		}
+		launch_server=TRUE;
 	}
-
 
 	if (launch_server==TRUE)
 	{
+		job_init(sim,&my_job);
+		strcpy(my_job.name,"dosn");
+		my_job.fun=&thread_dos_n;
+		my_job.sim=(void *)sim;
+		my_job.batch_id=batch_id;
+
+		malloc_1d((void **)&(my_job.data0),100,sizeof(char));
+
+		strcpy((char *)my_job.data0,s->dos_file);
+		my_job.data1=(void *)json_dos;
+		gpvdm_mkdir(get_cache_path(sim));
+
+		//printf("adding job\n");
+		server2_add_job(sim,&(sim->server),&my_job);
+		job_init(sim,&my_job);
+		strcpy(my_job.name,"dosp");
+		my_job.fun=&thread_dos_p;
+		my_job.sim=(void *)sim;
+		my_job.batch_id=batch_id;
+
+		malloc_1d((void **)&(my_job.data0),100,sizeof(char));
+
+		strcpy((char *)my_job.data0,s->dos_file);
+		my_job.data1=(void *)json_dos;
+		//printf("adding job\n");
+
+		server2_add_job(sim,&(sim->server),&my_job);
+
+		return TRUE;
+	}
+
+return FALSE;
+}
 
 
-		if (file_bandn==TRUE)
+void gen_dos_fd_gaus_fd(struct simulation *sim,struct epitaxy *my_epitaxy,struct json_obj *json_epi)
+{
+int i;
+int l;
+int ns;
+char temp[PATH_MAX];
+FILE *file;
+struct shape *s;
+struct inp_file inp;
+struct job j;
+struct json_obj *json_dos;
+struct json_obj *json_layer;
+struct json_obj *json_shape_dos;
+struct epi_layer *layer;
+struct json_obj *json_sub_shape;
+char check_files[20][100];
+char sum[20][100];
+int pos=0;
+int batch_id=server2_get_next_batch_id(sim,&(sim->server));
+
+	for (l=0;l<my_epitaxy->layers;l++)
+	{
+		layer=&(my_epitaxy->layer[l]);
+		s=&(layer->s);
+		sprintf(temp,"layer%d",l);
+		json_layer=json_obj_find(json_epi, temp);
+		json_shape_dos=json_obj_find(json_layer, "shape_dos");
+		printf_log(sim,"DoS gen: %s > %s\n",temp,s->dos_file);
+
+		if (check_and_gen_dos(sim,s,json_shape_dos,check_files[pos],sum[pos],batch_id)==TRUE)
 		{
-			//server_add_job(sim,name,get_output_path(sim));
-			//printf("oh yes\n");
-			//getchar();
-			job_init(sim,&j);
-			strcpy(j.name,"dosn");
-			j.fun=&thread_dos_n;
-			j.sim=(void *)sim;
-
-			malloc_1d((void **)&(j.data0),100,sizeof(char));
-			malloc_1d((void **)&(j.data1),100,sizeof(char));
-			malloc_1d((void **)&(j.data2),100,sizeof(char));
-
-			strcpy((char *)j.data0,my_epitaxy->layer[mat].dos_file);
-			strcpy((char *)j.data1,my_epitaxy->lumo_file[mat]);
-			strcpy((char *)j.data2,my_epitaxy->homo_file[mat]);
-			
-			server2_add_job(sim,&(sim->server),&j);
+			pos++;
 		}
-
-
-		if (file_bandp==TRUE)
-		{
-			//gen_dos_fd_gaus_p(sim,my_epitaxy->layer[mat].dos_file,my_epitaxy->lumo_file[mat],my_epitaxy->homo_file[mat]);
-
-			//gen_dos_fd_gaus_p(sim,mat);
-			//server_add_job(sim,name,get_output_path(sim));
-			job_init(sim,&j);
-			strcpy(j.name,"dosp");
-			j.fun=&thread_dos_p;
-			j.sim=(void *)sim;
-
-			malloc_1d((void **)&(j.data0),100,sizeof(char));
-			malloc_1d((void **)&(j.data1),100,sizeof(char));
-			malloc_1d((void **)&(j.data2),100,sizeof(char));
-
-			strcpy((char *)j.data0,my_epitaxy->layer[mat].dos_file);
-			strcpy((char *)j.data1,my_epitaxy->lumo_file[mat]);
-			strcpy((char *)j.data2,my_epitaxy->homo_file[mat]);
-			
-			server2_add_job(sim,&(sim->server),&j);
-		}
-
-		server2_run_until_done(sim,&(sim->server));
-		server2_free_finished_jobs(sim,&(sim->server));
-		//server2_dump_jobs(sim,&(sim->server));
-
-		//exit(0);
-
-		sprintf(name,"%s.inp",my_epitaxy->layer[mat].dos_file);
-		join_path(2, full_name,get_input_path(sim),name);
-		if (file_dos==TRUE) checksum_write(sim,full_name);
-
-
-		if (dostype==dos_read)
-		{
-			sprintf(name,"%s_srhbandn.inp",my_epitaxy->layer[mat].dos_file);
-			safe_file(name);
-			join_path(2, full_name,get_input_path(sim),name);
-			if (file_bandn==TRUE) checksum_write(sim,full_name);
-
-			sprintf(name,"%s_srhbandp.inp",my_epitaxy->layer[mat].dos_file);
-			safe_file(name);
-			join_path(2, full_name,get_input_path(sim),name);
-			if (file_bandp==TRUE) checksum_write(sim,full_name);
-		}
-
-		if (dostype==dos_an)
-		{
-			sprintf(name,"%s.inp",my_epitaxy->lumo_file[mat]);
-			join_path(2, full_name,get_input_path(sim),name);
-			if (file_an_lumo==TRUE) checksum_write(sim,full_name);
-
-			sprintf(name,"%s.inp",my_epitaxy->homo_file[mat]);
-			join_path(2, full_name,get_input_path(sim),name);
-			if (file_an_homo==TRUE) checksum_write(sim,full_name);
-		}
-
-	//print_jobs(sim);
-
-	//server_run_jobs(sim,&(sim->server));
-	printf_log(sim,_("Finished generating DoS....\n"));
 
 	}
 
+	for (l=0;l<my_epitaxy->layers;l++)
+	{
+		layer=&(my_epitaxy->layer[l]);
+		s=&(layer->s);
+		sprintf(temp,"layer%d",l);
+		json_layer=json_obj_find(json_epi, temp);
+
+		for (ns=0;ns<layer->nshape;ns++)
+		{
+			s=&(layer->shapes[ns]);
+			sprintf(temp,"shape%d",ns);
+			json_sub_shape=json_obj_find(json_layer, temp);
+			json_shape_dos=json_obj_find(json_sub_shape, "shape_dos");
+			printf_log(sim,"DoS gen: layer%d,shape%d > %s\n",l,ns,s->dos_file);
+			if (check_and_gen_dos(sim,s,json_shape_dos,check_files[pos],sum[pos],batch_id)==TRUE)
+			{
+				pos++;
+			}	
+		}
+	}
+	//server2_dump_jobs(sim,&(sim->server));
+
+	server2_run_until_done(sim,&(sim->server),batch_id);
+	server2_free_finished_jobs(sim,&(sim->server),batch_id);
+	//server2_dump_jobs(sim,&(sim->server));
+
+	for (i=0;i<pos;i++)
+	{
+		join_path(2, temp,get_cache_path(sim),check_files[i]);
+		file=fopen(temp,"w");
+		fprintf(file,"%s\n",sum[i]);
+		fclose(file);
+	}
+
+	printf_log(sim,_("Finished generating DoS....\n"));
+
+	//exit(0);
 }
 
-
-
-}
 

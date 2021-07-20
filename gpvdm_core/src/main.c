@@ -37,7 +37,7 @@
 @brief main... everything begins here.
 */
 
-
+#include <enabled_libs.h>
 #include <sys/types.h>
 #include <dirent.h>
 #include <stdio.h>
@@ -59,7 +59,6 @@
 #include <timer.h>
 #include <rand.h>
 #include <hard_limit.h>
-#include <patch.h>
 #include <cal_path.h>
 #include <lang.h>
 #include <log.h>
@@ -80,13 +79,52 @@
 //</strip>
 
 #include <signal.h>
-#include <enabled_libs.h>
+
+#include <json.h>
+#include <device.h>
+#include <device_fun.h>
+#include <solver_interface.h>
 
 static int unused __attribute__((unused));
+
+#include <stdio.h>
+//#include <execinfo.h>
+/*void print_trace(void) {
+    char **strings;
+    size_t i, size;
+    enum Constexpr { MAX_SIZE = 1024 };
+    void *array[MAX_SIZE];
+    size = backtrace(array, MAX_SIZE);
+    strings = backtrace_symbols(array, size);
+    for (i = 0; i < size; i++)
+        printf("%s\n", strings[i]);
+    puts("");
+    free(strings);
+}
+
+void segfault_sigaction(int signal, siginfo_t *si, void *arg)
+{
+    printf("Caught segfault at address %p\n", si->si_addr);
+	print_trace();
+    exit(0);
+}*/
+
 
 
 int main (int argc, char *argv[])
 {
+/*struct sigaction sa;
+
+memset(&sa, 0, sizeof(struct sigaction));
+sigemptyset(&sa.sa_mask);
+sa.sa_sigaction = segfault_sigaction;
+sa.sa_flags   = SA_SIGINFO;
+
+sigaction(SIGSEGV, &sa, NULL);*/
+
+struct json j;
+
+struct json_obj *obj;
 set_ewe_lock_file("","");
 	prctl(PR_SET_PDEATHSIG, SIGKILL);
 
@@ -102,10 +140,24 @@ struct simulation sim;
 strcpy(sim.server.lock_file,"");
 sim_init(&sim);
 
+/*json_init(&j);
+
+struct json_obj *json_obj;
+json_load(&sim,&j,"json.inp");
+json_obj=&(j.obj);//json_obj_find_by_path(&sim,&(j.obj), "circuit.circuit_diagram.segment3");
+
+struct json_obj *next_obj;
+next_obj=(struct json_obj* )json_obj->objs;
+
+json_dump_obj(&(j.obj));
+json_free(&j);
+exit(0);*/
+
 /*struct rpn rpn_cal;
 rpn_init(&sim,&rpn_cal);
-rpn_add_var(&sim,&rpn_cal,"a",1e-10);
-double value1=rpn_evaluate(&sim,&rpn_cal,"log(a)");
+rpn_add_var(&sim,&rpn_cal,"a",1.0);
+rpn_add_var(&sim,&rpn_cal,"b",2.0);
+double value1=rpn_evaluate(&sim,&rpn_cal,"(a>b)*100.0");
 printf("rodeval: %le\n",value1);
 return 0;*/
 
@@ -190,16 +242,24 @@ dbus_init();
 
 if (scanarg( argv,argc,"--version2")==TRUE)
 {
-	printf_log(&sim,_("gpvdm_core, Version %s\n"),gpvdm_ver);
+	if (lock_feature_enabled(&sim)==0)
+	{
+		printf_log(&sim,_("gpvdm_core/gpvdm_next, Version %s\n"),gpvdm_ver);
+	}else
+	{
+		printf_log(&sim,_("gpvdm_core, Version %s\n"),gpvdm_ver);
+	}
 	printf_log(&sim,"%s\n",_("gpvdm (General-purpose Photovoltaic Device Model) core."));
 	printf_log(&sim,"%s\n",_("Copyright Roderick MacKenzie, released under the BSD 3-Clause License 2010-2019"));
 	printf_log(&sim,_("There is ABSOLUTELY NO WARRANTY; not even for MERCHANTABILITY or\n"));
 	printf_log(&sim,_("FITNESS FOR A PARTICULAR PURPOSE.\n"));
 	printf_log(&sim,"\n");
 	//<strip>
+
 	//</strip>
 	exit(0);
 }
+
 
 char pwd[1000];
 if (getcwd(pwd,1000)==NULL)
@@ -211,14 +271,12 @@ if (getcwd(pwd,1000)==NULL)
 remove_file(&sim,"snapshots.zip");
 remove_file(&sim,"light_dump.zip");
 
-hard_limit_init(&sim);
+
 errors_init(&sim);
 
-dumpfiles_load(&sim);
 set_plot_script_dir(pwd);
 
 //set_plot_script_dir(char * in)
-
 
 
 if(geteuid()==0) {
@@ -227,8 +285,7 @@ if(geteuid()==0) {
 
 
 srand(time(0));
-//printf_log(&sim,"%s\n",_("Token"));
-//exit(0);
+
 randomprint(&sim,_("gpvdm_core - General-purpose Photovoltaic Device Model\n"));
 randomprint(&sim,_("Copyright (C) 2010-2019 Roderick C. I. MacKenzie,\n"));
 randomprint(&sim,_(" Releced the BSD 3-clause License"));
@@ -243,32 +300,20 @@ sim.server.on=FALSE;
 sim.server.max_threads=1;
 sim.server.readconfig=TRUE;
 
-
+log_clear(&sim);
 color_cie_init(&sim);
 color_cie_load(&sim);
-
-if (scanarg( argv,argc,"--outputpath")==TRUE)
-{
-	strcpy(sim.output_path,get_arg_plusone( argv,argc,"--outputpath"));
-}
-
-
-if (scanarg( argv,argc,"--inputpath")==TRUE)
-{
-	strcpy(sim.input_path,get_arg_plusone( argv,argc,"--inputpath"));
-}
-
 
 
 
 
 char name[200];
-struct inp_file inp;
+/*struct inp_file inp;
 
 inp_init(&sim,&inp);
-if (inp_load_from_path(&sim,&inp,sim.input_path,"ver.inp")!=0)
+if (inp_load_from_path(&sim,&inp,sim.root_simulation_path,"ver.inp")!=0)
 {
-	printf_log(&sim,"can't find file %s ver.inp",sim.input_path);
+	printf_log(&sim,"can't find file %s ver.inp",sim.root_simulation_path);
 	exit(0);
 }
 inp_check(&sim,&inp,1.0);
@@ -279,7 +324,7 @@ if (strcmp(name,gpvdm_ver)!=0)
 {
 printf_log(&sim,"Software is version %s and the input files are version %s\n",gpvdm_ver,name);
 exit(0);
-}
+}*/
 
 if (scanarg( argv,argc,"--gui")==TRUE)
 {
@@ -287,9 +332,62 @@ if (scanarg( argv,argc,"--gui")==TRUE)
 }
 
 gui_start(&sim);
+
+json_init(&j);
+json_load_from_path(&sim,&j,sim.root_simulation_path,"json.inp");
+
+//Check version
+	obj=json_obj_find(&(j.obj), "sim");
+	if (obj==NULL)
+	{
+		ewe(&sim,"Object sim not found\n");
+	}
+
+	json_get_string(&sim, obj, name,"version");
+
+	if (strcmp(name+1,gpvdm_ver)!=0)
+	{
+		printf_log(&sim,"Software is version %s and the input files are version %s\n",gpvdm_ver,name+1);
+		exit(0);
+	}
+
+obj=json_obj_find(&(j.obj), "server");
+if (obj==NULL)
+{
+	ewe(&sim,"Object server not found\n");
+}
+
 server_init(&sim);
 
-server2_config_load(&sim,&(sim.server));
+server2_config_load(&sim,&(sim.server),obj);
+
+obj=json_obj_find(&(j.obj), "hard_limit");
+
+if (obj==NULL)
+{
+	ewe(&sim,"Object hard_limit not found\n");
+}
+
+hard_limit_load(&sim,&(sim.hl),obj);
+
+	obj=json_obj_find(&(j.obj), "math");
+	if (obj==NULL)
+	{
+		ewe(&sim,"Object math not found\n");
+	}
+
+	json_get_string(&sim, obj, sim.solver_name,"solver_name");
+	json_get_string(&sim, obj, sim.complex_solver_name,"complex_solver_name");
+	solver_init(&sim,sim.solver_name);
+	complex_solver_init(&sim,sim.complex_solver_name);
+
+json_free(&j);
+
+//long double val=1.1;
+//hard_limit_do(&sim,"Eg",&val);
+//printf("%Le\n",val);
+//getchar();
+
 server2_malloc(&sim,&(sim.server));
 
 if (scanarg( argv,argc,"--lock")==TRUE)
@@ -315,42 +413,43 @@ if (scanarg( argv,argc,"--path")==TRUE)
 
 int ret=0;
 char temp[200];
-join_path(2,temp,get_output_path(&sim),"tx.dat");
+join_path(2,temp,sim.root_simulation_path,"tx.dat");
 remove_file(&sim,temp);
 
 #ifdef libfit_enabled
 	if (scanarg( argv,argc,"--1fit")==TRUE)
 	{
-		sim.fitting=TRUE;
+		sim.fitting=FIT_SINGLE_FIT;
 
-		static struct fitvars fitconfig;
+		struct fitvars fitconfig;
 		fit_init(&sim,&fitconfig);
 		int fit_file_found=fit_read_config(&sim,&fitconfig);
 
 		if (fit_file_found==0)
 		{
+			fit_build_jobs(&sim,&fitconfig);
 			fit_run_sims(&sim,&fitconfig);
-
 		}else
 		{
 			ewe(&sim,"Can't find fit file\n");
 		}
 
-		hard_limit_free(&sim);
+		hard_limit_free(&sim,&(sim.hl));
+		fit_free(&sim,&fitconfig);
 		run=TRUE;
-
 	}else
 	if (scanarg( argv,argc,"--fit")==TRUE)
 	{
 
-		static struct fitvars fitconfig;
+		struct fitvars fitconfig;
 		fit_init(&sim,&fitconfig);
 		fit_read_config(&sim,&fitconfig);
-		sim.fitting=TRUE;
+		sim.fitting=FIT_RUN_FIT;
 		int cont=TRUE;
 
 		fit_log_init(&sim);
 		fit_now(&sim,&fitconfig);
+		fit_free(&sim,&fitconfig);
 		run=TRUE;
 	}
 #endif
@@ -367,21 +466,28 @@ if (run==FALSE)
 	set_logging_level(&sim,log_level_screen_and_disk);
 	//gen_dos_fd_gaus_fd(&sim);
 
-	server_add_job(&sim,sim.output_path,sim.input_path);
-	print_jobs(&sim);
+	struct device dev;
+	device_init(&sim,&dev);
+	strcpy(dev.input_path,sim.root_simulation_path);
+	strcpy(dev.output_path,sim.root_simulation_path);
 
-	ret=server_run_jobs(&sim,&(sim.server));
+	//sprintf(my_temp,"%s\n%d\n",myserver->command[i],ode);
+	//sprintf(lockname,"lock%d.dat",i);
+	//set_ewe_lock_file(lockname,my_temp);
+
+//	ode=
+	device_run_simulation(&sim,&dev);
+	//server_add_job(&sim,sim.root_simulation_path,sim.root_simulation_path);
+	//print_jobs(&sim);
+
+	//ret=server_run_jobs(&sim,&(sim.server));
 
 }
 
-server_shut_down(&sim,&(sim.server));
+dump_clean_cache_files(&sim);
+write_lock_file(&sim);
+sim_free(&sim);
 
-server2_free(&sim,&sim.server);
-
-color_cie_free(&sim);
-hard_limit_free(&sim);
-dumpfiles_free(&sim);
-errors_free(&sim);
 
 if (ret!=0)
 {

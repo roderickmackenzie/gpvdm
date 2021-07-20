@@ -36,7 +36,7 @@
 /** @file sim_run.c
 @brief run the simulation
 */
-
+#include <enabled_libs.h>
 #include "util.h"
 #include "sim.h"
 #include "dos.h"
@@ -67,50 +67,62 @@
 #include <device_fun.h>
 #include <heat.h>
 #include <heat_fun.h>
-#include <enabled_libs.h>
+#include <json.h>
+#include <server.h>
 
-int run_simulation(struct simulation *sim)
+int device_run_simulation(struct simulation *sim, struct device *dev)
 {
+
 	int i;
 	int z;
 	int x;
 	int y;
-	struct device cell;
-	int enable_electrical=TRUE;
 	struct stat st = {0};
 	char temp[PATH_MAX];
-	char device_file_path[PATH_MAX];
+	char json_path[PATH_MAX];
+	FILE *file;
 
+	struct json_obj *json_epi;
+	struct json_obj *json_layer;
+	struct json_obj *json_dos;
+	struct json_obj *json_mesh;
+	struct json_obj *json_ray;
+
+
+	struct epitaxy *epi;
 	log_clear(sim);
 
 	printf_log(sim,"%s\n",_("Runing simulation"));
 
-	device_init(sim,&cell);
-	cache_init(sim);
-	cell.onlypos=FALSE;
+	join_path(2,json_path,dev->input_path,"json.inp");
+	json_load(sim,&(dev->config),json_path);
 
-	dump_init(sim,&cell);
+	dev->onlypos=FALSE;
+
+	dump_init(sim,dev);
+
+
 
 	set_dump_status(sim,dump_stop_plot, FALSE);
 	set_dump_status(sim,dump_print_text, TRUE);
-	dump_load_config(sim,&cell);
+	dump_load_config(sim,dev);
 
-	cell.kl_in_newton=FALSE;
-	struct dimensions *dim=&(cell.ns.dim);
+	dev->kl_in_newton=FALSE;
+	struct dimensions *dim=&(dev->ns.dim);
 
 
-	join_path(2,temp,get_output_path(sim),"error.dat");
+	join_path(2,temp,dev->output_path,"error.dat");
 	remove_file(sim,temp);
 
-	join_path(2,temp,get_output_path(sim),"equilibrium");
+	join_path(2,temp,dev->output_path,"equilibrium");
 	remove_dir(sim,temp);
 
-	join_path(2,temp,get_output_path(sim),"solver");
+	join_path(2,temp,dev->output_path,"solver");
 	remove_dir(sim,temp);
 
 	if (get_dump_status(sim,dump_newton)==TRUE)
 	{
-		join_path(2,temp,get_output_path(sim),"solver");
+		join_path(2,temp,dev->output_path,"solver");
 
 		if (stat(temp, &st) == -1)
 		{
@@ -120,355 +132,326 @@ int run_simulation(struct simulation *sim)
 
 	//join_path(2,temp,get_output_path(sim),"snapshots");
 	//remove_dir(sim,temp);
-	dump_remove_snapshots(sim);
 
-	join_path(2,temp,get_output_path(sim),"optics_output");
+	dump_remove_snapshots(sim,dev->output_path);
+
+	join_path(2,temp,get_output_path(dev),"optics_output");
 	remove_dir(sim,temp);
 
-	join_path(2,temp,get_output_path(sim),"optical_snapshots");
+	join_path(2,temp,get_output_path(dev),"optical_snapshots");
 	remove_dir(sim,temp);
 
-	join_path(2,temp,get_output_path(sim),"ray_trace");
+	join_path(2,temp,get_output_path(dev),"ray_trace");
 	remove_dir(sim,temp);
 
-	join_path(2,temp,get_output_path(sim),"dynamic");
+	join_path(2,temp,get_output_path(dev),"dynamic");
 	remove_dir(sim,temp);
 
-	join_path(2,temp,get_output_path(sim),"frequency");
+	join_path(2,temp,get_output_path(dev),"frequency");
 	remove_dir(sim,temp);
 
-	join_path(2,temp,get_output_path(sim),"matrix_times.dat");
+	join_path(2,temp,get_output_path(dev),"matrix_times.dat");
 	remove_file(sim,temp);
 
-	device_load_math_config(sim,&cell);
+	device_load_math_config(sim,dev);
 
 	///////////////Mesh and epitaxy//////////////////////////
 
-	join_path(2,device_file_path,get_input_path(sim),"epitaxy.inp");
-	load_sim_file(sim,&cell);
+	load_sim_file(sim,dev);
 
 	if (strcmp(sim->force_sim_mode,"")!=0)
 	{
-		strcpy(cell.simmode,sim->force_sim_mode);
+		strcpy(dev->simmode,sim->force_sim_mode);
 	}
 
-
-	if (strcmp(cell.simmode,"opticalmodel@optics")==0)
+	
+	if (strcmp_end(dev->simmode,"@optics")==0)
 	{
-		enable_electrical=FALSE;
+		dev->electrical_simulation_enabled=FALSE;
+		dev->drift_diffision_simulations_enabled=FALSE;
 	}
 
-	if (strcmp(cell.simmode,"fdtd@fdtd")==0)
+	if (strcmp(dev->simmode,"fdtd@fdtd")==0)
 	{
-		enable_electrical=FALSE;
+		dev->electrical_simulation_enabled=FALSE;
+		dev->drift_diffision_simulations_enabled=FALSE;
 	}
 
-	if (strcmp(cell.simmode,"trace@trace")==0)
+	if (strcmp(dev->simmode,"trace@trace")==0)
 	{
-		enable_electrical=FALSE;
+		dev->electrical_simulation_enabled=FALSE;
+		dev->drift_diffision_simulations_enabled=FALSE;
 	}
 
-	if (strcmp_end(cell.simmode,"mesh_gen")==0)
+	if (strcmp_end(dev->simmode,"mesh_gen")==0)
 	{
-		enable_electrical=FALSE;
+		dev->electrical_simulation_enabled=FALSE;
+		dev->drift_diffision_simulations_enabled=FALSE;
 	}
 
-	epitaxy_load(sim,&(cell.my_epitaxy),device_file_path);
+	/*if (strcmp_end(dev->simmode,"mesh_gen_electrical")==0)
+	{
+		dev->drift_diffision_simulations_enabled=FALSE;
+	}*/
 
 
-	gen_dos_fd_gaus_fd(sim,&(cell.my_epitaxy));
+	json_epi=json_obj_find(&(dev->config.obj), "epitaxy");
+	if (json_epi==NULL)
+	{
+		ewe(sim,"Object sim not found\n");
+	}
+	epi=&(dev->my_epitaxy);
+	epitaxy_load(sim,epi,json_epi);
 
 
-	mesh_obj_load(sim,&(cell.mesh_data));
-	contacts_load(sim,&cell);
-	mesh_obj_apply_srh_contacts(sim,&(cell.mesh_data),&cell);
+	if (dev->drift_diffision_simulations_enabled==TRUE)
+	{
+		dos_cache_setup(sim,&(sim->doscache),&(dev->config.obj));
+		gen_dos_fd_gaus_fd(sim,epi,json_epi);
+	}
 
-	dim->zlen=cell.mesh_data.meshdata_z.tot_points;
-	dim->xlen=cell.mesh_data.meshdata_x.tot_points;
-	dim->ylen=cell.mesh_data.meshdata_y.tot_points;
 
-	mesh_build(sim,&cell);
+
+	json_mesh=json_obj_find(&(dev->config.obj), "mesh");
+	if (json_mesh==NULL)
+	{
+		ewe(sim,"Mesh object not found\n");
+	}
+
+	mesh_obj_load(sim,&(dev->mesh_data),json_mesh);
+
+	contacts_load(sim,dev);
+	mesh_obj_apply_srh_contacts(sim,&(dev->mesh_data),dev);
+
+	device_to_dim(sim,dim,dev);
+
+
+
+	mesh_build(sim,dev);
 	//mesh_dump_y(sim,dim);
 	//getchar();
-	device_get_memory(sim,&cell);
+	device_get_memory(sim,dev);
 
 
-	mesh_numerate_points(sim,&cell);
+	mesh_numerate_points(sim,dev);
 
-	load_config(sim,&cell);
+	load_config(sim,dev);
 
-	contacts_setup(sim,&cell);
-	contacts_cal_std_resistance(sim,&cell);
+	contacts_setup(sim,dev);
+	contacts_cal_std_resistance(sim,dev);
 
 
-	epitaxy_mask(sim,&cell);
+	epitaxy_mask(sim,dev);
+	state_cache_init(sim,dev);
+	state_cache_enable(sim,dev);
 
-	state_cache_init(sim,&cell);
-	state_cache_enable(sim,&cell);
-	complex_solver_init(sim,&(cell.msm),cell.complex_solver_name);
+	complex_solver_get_mem(sim,&(dev->msm));
 
-	ray_read_config(sim,&(cell.my_image));
+	json_ray=json_obj_find_by_path(sim,&(dev->config.obj), "ray.segment0");
+	ray_read_config(sim,&(dev->my_image),json_ray);
 
-	device_build_scene(sim,&(cell));
-	printf("here\n");
-	device_build_obj_pointer_array(sim,&(cell));
+	device_build_scene(sim,dev);
+
+	device_build_obj_pointer_array(sim,dev);
 
 	#ifdef libheat_enabled
-		heat_load_config(sim,&(cell.thermal), &(cell));
+		heat_load_config(sim,&(dev->thermal), dev);
 	#endif
 
-	cell.emission_enabled=FALSE;
-	cell.pl_use_experimental_emission_spectra=FALSE;
+	dev->emission_enabled=FALSE;
+	dev->pl_use_experimental_emission_spectra=FALSE;
 
-	for (i=0;i<cell.my_epitaxy.layers;i++)
+	for (i=0;i<epi->layers;i++)
 	{
-		if (cell.my_epitaxy.layer[i].pl_enabled==TRUE)
+		if (epi->layer[i].pl_enabled==TRUE)
 		{
-			cell.emission_enabled=TRUE;
+			dev->emission_enabled=TRUE;
 		}
 
-		if (cell.my_epitaxy.layer[i].pl_use_experimental_emission_spectra==TRUE)
+		if (epi->layer[i].pl_use_experimental_emission_spectra==TRUE)
 		{
-			cell.pl_use_experimental_emission_spectra=TRUE;
+			dev->pl_use_experimental_emission_spectra=TRUE;
 		}
 
 	}
 
 
 
-	printf_log(sim,"%s: %d\n",_("Loading DoS layers"),cell.my_epitaxy.electrical_layers);
-	i=0;
+	dev->mun_symmetric=TRUE;
+	dev->mup_symmetric=TRUE;
 
-	cell.mun_symmetric=TRUE;
-	cell.mup_symmetric=TRUE;
 
-	for (i=0;i<cell.my_epitaxy.electrical_layers;i++)
+	epitaxy_load_dos_files(sim,dev,epi,json_epi);
+
+	epitaxy_setup_interfaces(sim,dev);
+
+	solver_get_mem(sim,&(dev->msm));
+
+	if (strcmp(dev->solver_type,"circuit")==0)
 	{
-		printf_log(sim,"%s %d/%d\n",_("Load DoS"),i,cell.my_epitaxy.electrical_layers);
-		//printf("%s\n",cell.my_epitaxy.layer[i].dos_file);
-		//getchar();
-		load_dos(sim,&cell,cell.my_epitaxy.layer[i].dos_file,i);
-
-		//printf("%d\n",cell.dosn[i].mobility_symmetric);
-		//printf("%d\n",cell.dosp[i].mobility_symmetric);
-		//getchar();
-
+		strcpy(dev->newton_name,"newton_simple");
 	}
 
-	epitaxy_setup_interfaces(sim,&(cell));
 
-	solver_init(sim,&(cell.msm),cell.solver_name);
 
-	if (enable_electrical==TRUE)
+	if (dev->electrical_simulation_enabled==TRUE)
 	{
 
 		if ((dim->xlen>1)||(dim->zlen>1))
 		{
-			if (strcmp(cell.newton_name,"newton_simple")!=0)
+			if (strcmp(dev->newton_name,"newton_simple")!=0)
 			{
-				strcpy(cell.newton_name,"newton_2d");
+				if (strcmp(dev->newton_name,"poisson_2d")!=0)
+				{
+					strcpy(dev->newton_name,"newton_2d");
+				}
 			}
 		}
 
 
 
-		newton_init(sim,cell.newton_name);
+		newton_init(sim,dev,dev->newton_name);
 
 		#ifdef libcircuit_enabled
-			circuit_build_device(sim,&(cell.cir),&cell);
+			circuit_build_device(sim,&(dev->cir),dev);
 		#endif
 
-		device_alloc_traps(&cell);
+		device_alloc_traps(dev);
 
 		if (get_dump_status(sim,dump_write_converge)==TRUE)
 		{
-			sim->converge = fopena(get_output_path(sim),"converge.dat","w");
-			fclose(sim->converge);
+			file = fopena(get_output_path(dev),"converge.dat","w");
+			fclose(file);
 
-			sim->tconverge=fopena(get_output_path(sim),"tconverge.dat","w");
-			fclose(sim->tconverge);
+			file=fopena(get_output_path(dev),"tconverge.dat","w");
+			fclose(file);
+
+			file=fopena(get_output_path(dev),"ion_converge.dat","w");
+			fclose(file);
 		}
 
 
 
-		mesh_cal_layer_widths(&cell);
+		mesh_cal_layer_widths(dev);
 
-		long double dy=0.0;
-		long double pos=0.0;
-		long double value=0.0;
-		long double Nad0=0.0;
-		long double Nad1=0.0;
-		struct epitaxy *epi=&(cell.my_epitaxy);
 
-		for (z=0;z<dim->zlen;z++)
-		{
-			for (x=0;x<dim->xlen;x++)
-			{
-				for (y=0;y<dim->ylen;y++)
-				{
-					Nad0=get_dos_doping_start(epi,cell.imat[z][x][y]);
-					Nad1=get_dos_doping_stop(epi,cell.imat[z][x][y]);
-					
-
-					dy=epi->layer[cell.imat_epitaxy[z][x][y]].width;
-					pos=cell.ns.dim.ymesh[y]-cell.layer_start[cell.imat[z][x][y]];
-
-					cell.Nad[z][x][y]=Nad0+(Nad1-Nad0)*(pos/dy);
-					//printf("%Le %Le\n",cell.layer_start[cell.imat[z][x][y]],cell.Nad[z][x][y]);
-				}
-				//getchar();
-			}
-
-		}
-		
-		/*for (x=0;x<dim->xlen;x++)
-		{
-			cell.Nad[0][x][0]=cell.test_param;
-		}*/
-
-		update_material_arrays(sim,&cell);
-
-		cell.C=cell.xlen*cell.zlen*epsilon0*cell.epsilonr[0][0][0]/(cell.ylen+cell.other_layers);
-		if (get_dump_status(sim,dump_print_text)==TRUE) printf_log(sim,"C=%Le\n",cell.C);
-		//printf("%Le\n",cell.C);
 		//getchar();
-		cell.A=cell.xlen*cell.zlen;
-		cell.Vol=cell.xlen*cell.zlen*cell.ylen;
+
+		update_material_arrays(sim,dev);
+
+		device_interface_doping(sim,dev);
+
+		dev->C=dev->xlen*dev->zlen*epsilon0*dev->epsilonr[0][0][0]/(dev->ylen+dev->other_layers);
+		if (get_dump_status(sim,dump_print_text)==TRUE) printf_log(sim,"C=%Le\n",dev->C);
+		//printf("%Le\n",dev->C);
+		//getchar();
+		dev->A=dev->xlen*dev->zlen;
+		dev->Vol=dev->xlen*dev->zlen*dev->ylen;
 
 		///////////////////////light model
-		char old_model[100];
 		gdouble old_Psun=0.0;
-		old_Psun=light_get_sun(&cell.mylight);
+		old_Psun=light_get_sun(&dev->mylight);
 
-		light_load_config(sim,&cell.mylight,&cell);
+		light_load_config(sim,&dev->mylight,dev);
 
 
 
-		//printf("%d \n",get_dump_status(sim,dump_optics_verbose));
-		//getchar();
-		if ((get_dump_status(sim,dump_optics_verbose)==TRUE) || (get_dump_status(sim,dump_optics)==TRUE))
+		if (dev->mylight.dump_verbosity>-1)
 		{
-			light_setup_dump_dir(sim,&cell.mylight);
+			light_setup_dump_dir(sim,get_output_path(dev),&dev->mylight);
 		}
 
-		light_load_dlls(sim,&cell.mylight);
+		light_load_dlls(sim,&dev->mylight);
 
 		#ifdef libcircuit_enabled
-			circuit_cal_resistance(sim,&(cell.cir),&cell);
+			circuit_cal_resistance(sim,&(dev->cir),dev);
 		#endif
 
-		//update_arrays(&cell);
+		//update_arrays(dev);
 
-		contacts_force_to_zero(sim,&cell);
+		contacts_force_to_zero(sim,dev);
+
+		stop_if_not_registered_and_gpvdm_next(sim);
+		int y;
 
 
-		get_initial(sim,&cell,TRUE);
+		get_initial(sim,dev,TRUE);
 
-		remesh_shrink(sim,&cell);
+		remesh_shrink(sim,dev);
 
-		if (cell.math_enable_pos_solver==TRUE)
+		if (solve_pos(sim,dev)==-1)
 		{
-			for (z=0;z<dim->zlen;z++)
-			{
-				for (x=0;x<dim->xlen;x++)
-				{
-					solve_pos(sim,&cell,z,x);
-				}
-			}
+			goto solver_exit;
 		}
 
 
+		time_init(sim,dev);
 
+		//matrix_init(&dev->mx);
 
-		time_init(sim,&cell);
-
-		//matrix_init(&cell.mx);
-
-		solver_realloc(sim,&cell);
+		solver_realloc(sim,dev);
 
 
 
 		plot_open(sim);
 
 
-		cell.go_time=FALSE;
+		dev->go_time=FALSE;
 
-		plot_now(sim,&cell,"plot");
+		plot_now(sim,dev,"plot");
 		//set_solver_dump_every_matrix(1);
 
-		find_n0(sim,&cell);
-
-		cell.map_start=cell.Ev[0][0][dim->ylen-1];
-		cell.map_stop=cell.Ec[0][0][0]+1.0;
-
+		if (dev->drift_diffision_simulations_enabled==TRUE)
+		{
+			dev->map_start=dev->Ev[0][0][dim->ylen-1];
+			dev->map_stop=dev->Ec[0][0][0]+1.0;
+		}
 		//set_solver_dump_every_matrix(0);
 
 
-		if (cell.onlypos==TRUE)
+		/*if (dev->onlypos==TRUE)
 		{
 			join_path(2,temp,get_output_path(sim),"equilibrium");
-			dump_1d_slice(sim,&cell,temp);
+			dump_1d_slice(sim,dev,temp);
 			cache_dump(sim);
 			cache_free(sim);
-			device_free(sim,&cell);
+			device_free(sim,dev);
 	//		color_cie_load(sim);
 			return 0;
-		}
+		}*/
 
 	}
 
 
-
-	//Load the dll
-	if (is_domain(cell.simmode)!=0)
-	{
-		char gussed_full_mode[200];
-		if (guess_whole_sim_name(sim,gussed_full_mode,get_input_path(sim),cell.simmode)==0)
-		{
-			printf_log(sim,"I guess we are using running %s\n",gussed_full_mode);
-			strcpy(cell.simmode,gussed_full_mode);
-		}else
-		{
-			ewe(sim,"I could not guess which simulation to run from the mode %s\n",cell.simmode);
-		}
-
-
-	}
-
-
-
-	run_electrical_dll(sim,&cell,strextract_domain(cell.simmode));
+	run_electrical_dll(sim,dev,strextract_domain(dev->simmode));
 
 	#ifdef libheat_enabled
-		if (enable_electrical==FALSE)
+		if (dev->electrical_simulation_enabled==FALSE)
 		{
-			if (cell.thermal.newton_enable_external_thermal==TRUE)
+			if (dev->thermal.newton_enable_external_thermal==TRUE)
 			{
 				//printf("Run thermal solver\n");
-				heat_solve(sim, &(cell.thermal),&(cell), 0, 0);
+				heat_solve(sim, &(dev->thermal),dev, 0, 0);
 			}
 		}
 	#endif
 
 	//Clean up
-	cache_dump(sim);
+	solver_exit:
 
-	cache_free(sim);
-
-	device_free(sim,&cell);
+	device_free(sim,dev);
 
 	plot_close(sim);
 
-	newton_interface_free(sim);
+	newton_interface_free(sim,dev);
 
 	//Free solver dlls
-	complex_solver_free(sim,&(cell.msm));
-	solver_free(sim,&(cell.msm));
-	printf_log(sim,"%s %i %s\n", _("Solved"), cell.odes, _("Equations"));
+	complex_solver_free(sim,&(dev->msm));
+	solver_free(sim,&(dev->msm));
+	printf_log(sim,"%s %i %s\n", _("Solved"), dev->odes, _("Equations"));
 
-	measure(sim);
-	dump_clean_cache_files(sim);
+	//measure(sim,dev->output_path,dev->input_path);
 
-return cell.odes;
+return dev->odes;
 }
 

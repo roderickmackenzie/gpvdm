@@ -180,13 +180,13 @@ FILE *out=fopen(output,"w");
 		}
 
 
-		capq=(data.x[0]*cap)/Q;	//charge on capasitor
+		capq=(data.x[0]*cap)/Qe;	//charge on capasitor
 		capq/=area;
 		capq/=d;
 
 		tot/=area;
 		tot/=d;
-		tot/=Q;
+		tot/=Qe;
 
 		fprintf(out,"%Le %Le\n",data.data[0],tot-capq);
 		inter_free(&data);

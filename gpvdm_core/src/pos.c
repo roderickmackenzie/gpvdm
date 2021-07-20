@@ -37,6 +37,7 @@
 @brief poisson solver - make a better guess at 0V in the dark.
 */
 
+#include <enabled_libs.h>
 #include <string.h>
 #include <stdlib.h>
 #include <dump.h>
@@ -50,20 +51,20 @@
 #include <sys/types.h>
 #include <lang.h>
 #include <memory.h>
+#include <device_fun.h>
+#include <json.h>
 
-gdouble min_pos_error=1e-4;
-
-void pos_dump(struct simulation *sim,struct device *in)
+void pos_dump(struct simulation *sim,struct device *in,struct pos_config *config)
 {
 struct newton_state *ns=&(in->ns);
 struct dimensions *dim=&(ns->dim);
 
-if (get_dump_status(sim,dump_first_guess)==TRUE)
+if (config->pos_dump_verbosity>0)
 {
 	struct stat st = {0};
 
 	char out_dir[PATH_MAX];
-	join_path(2,out_dir,get_output_path(sim),"equilibrium");
+	join_path(2,out_dir,get_output_path(in),"equilibrium");
 
 	if (stat(out_dir, &st) == -1)
 	{
@@ -77,7 +78,7 @@ if (get_dump_status(sim,dump_first_guess)==TRUE)
 	int i=0;
 
 	buffer_malloc(&buf);
-	sprintf(name,"%s%s","first_guess_Fi",".dat");
+	sprintf(name,"%s%s","Fi",".dat");
 	buf.y_mul=1.0;
 	buf.x_mul=1e9;
 	strcpy(buf.title,_("Intrinsic Fermi - position"));
@@ -94,7 +95,7 @@ if (get_dump_status(sim,dump_first_guess)==TRUE)
 	buffer_free(&buf);
 
 	buffer_malloc(&buf);
-	sprintf(name,"%s%s","first_guess_Ec",".dat");
+	sprintf(name,"%s%s","Ec",".dat");
 	buf.y_mul=1.0;
 	buf.x_mul=1e9;
 	strcpy(buf.title,_("LUMO energy - position"));
@@ -111,7 +112,7 @@ if (get_dump_status(sim,dump_first_guess)==TRUE)
 	buffer_free(&buf);
 
 	buffer_malloc(&buf);
-	sprintf(name,"%s%s","first_guess_Ev",".dat");
+	sprintf(name,"%s%s","Ev",".dat");
 	buf.y_mul=1.0;
 	buf.x_mul=1e9;
 	strcpy(buf.title,_("HOMO energy - position"));
@@ -129,7 +130,7 @@ if (get_dump_status(sim,dump_first_guess)==TRUE)
 
 
 	buffer_malloc(&buf);
-	sprintf(name,"%s%s","first_guess_n",".dat");
+	sprintf(name,"%s%s","n",".dat");
 	buf.y_mul=1.0;
 	buf.x_mul=1e9;
 	strcpy(buf.title,_("Electron density - position"));
@@ -147,7 +148,7 @@ if (get_dump_status(sim,dump_first_guess)==TRUE)
 
 
 	buffer_malloc(&buf);
-	sprintf(name,"%s%s","first_guess_p",".dat");
+	sprintf(name,"%s%s","p",".dat");
 	buf.y_mul=1.0;
 	buf.x_mul=1e9;
 	strcpy(buf.title,_("Hole density - position"));
@@ -164,7 +165,7 @@ if (get_dump_status(sim,dump_first_guess)==TRUE)
 	buffer_free(&buf);
 
 	buffer_malloc(&buf);
-	sprintf(name,"%s%s","first_guess_phi",".dat");
+	sprintf(name,"%s%s","phi",".dat");
 	buf.y_mul=1.0;
 	buf.x_mul=1e9;
 	strcpy(buf.title,_("Potential - position"));
@@ -218,8 +219,56 @@ for (i=0;i<dim->ylen;i++)
 return tot;
 }
 
+int solve_pos(struct simulation *sim,struct device *dev)
+{
+	int x;
+	int y;
+	int z;
+	char solver_type[100];
+	struct json_obj *json_solver_type;
+	struct json_obj *json_poisson;
+	struct dimensions *dim=&(dev->ns.dim);
+	struct pos_config config;
 
-int solve_pos(struct simulation *sim,struct device *in, int z, int x)
+	if (dev->cir.enabled==TRUE)
+	{
+		return 0;
+	}
+
+	json_solver_type=json_obj_find_by_path(sim,&(dev->config.obj), "electrical_solver");
+	json_get_string(sim,json_solver_type, solver_type,"solver_type");
+
+	json_poisson=json_obj_find_by_path(sim,&(dev->config.obj), "electrical_solver.poisson");
+	json_get_int(sim,json_poisson, &(config.max_ittr),"pos_max_ittr");
+	json_get_long_double(sim,json_poisson, &(config.posclamp),"posclamp");
+	json_get_long_double(sim,json_poisson, &(config.pos_min_error),"pos_min_error");
+	json_get_int(sim,json_poisson, &(config.pos_dump_verbosity),"pos_dump_verbosity");
+
+
+	if (strcmp(solver_type,"poisson")==0)
+	{
+		dev->math_enable_pos_solver=TRUE;
+	}
+
+	if (dev->math_enable_pos_solver==TRUE)
+	{
+		for (z=0;z<dim->zlen;z++)
+		{
+			for (x=0;x<dim->xlen;x++)
+			{
+				solve_pos_y(sim,dev,z,x,&config);
+			}
+		}
+	}
+
+	if (strcmp(solver_type,"poisson")==0)
+	{
+		return -1;
+	}
+
+	return 0;
+}
+int solve_pos_y(struct simulation *sim,struct device *in, int z, int x,struct pos_config *config)
 {
 
 if (in->circuit_simulation==TRUE)
@@ -275,49 +324,39 @@ gdouble ec=0.0;
 gdouble er=0.0;
 gdouble e0=0.0;
 gdouble e1=0.0;
-int pos_max_ittr=250;
 
 int quit=FALSE;
 int adv_step=0;
 int adv=FALSE;
 int band;
 long double not_used;
-
+long double deriv;
+struct shape *s;
 struct newton_state *ns=&(in->ns);
 
-gdouble kTq=(in->Te[z][x][0]*kb/Q);
+gdouble kTq=(in->Te[z][x][0]*kb/Qe);
 
 	matrix_cache_reset(sim,&mx);
-
+	strcpy(mx.dump_name,"pos");
 	do
 	{
-
-		//if (in->interfaceleft==TRUE)
-		//{
-		//	ns->phi[z][x][0]=in->V_y0[z][x];
-		//}
-
-		//if (in->interfaceright==TRUE)
-		//{
-		//	ns->phi[z][x][dim->ylen-1]=in->V_y1[z][x];
-		//}
 
 		pos=0;
 
 		for (i=0;i<dim->ylen;i++)
 		{
 
-
+			s=in->obj_zxy[z][x][i]->s;
 			if (i==0)
 			{
 				phil=in->V_y0[z][x];
-				el=in->epsilonr[z][x][0]*epsilon0;
+				el=in->epsilonr_e0[z][x][0];
 				yl=dim->ymesh[0]-(dim->ymesh[1]-dim->ymesh[0]);
 
 
 			}else
 			{
-				el=in->epsilonr[z][x][i-1]*epsilon0;
+				el=in->epsilonr_e0[z][x][i-1];
 				phil=ns->phi[z][x][i-1];
 				yl=dim->ymesh[i-1];
 			}
@@ -325,11 +364,11 @@ gdouble kTq=(in->Te[z][x][0]*kb/Q);
 			if (i==(dim->ylen-1))
 			{
 				phir=in->V_y1[z][x];
-				er=in->epsilonr[z][x][i]*epsilon0;
+				er=in->epsilonr_e0[z][x][i];
 				yr=dim->ymesh[i]+(dim->ymesh[i]-dim->ymesh[i-1]);
 			}else
 			{
-				er=in->epsilonr[z][x][i+1]*epsilon0;
+				er=in->epsilonr_e0[z][x][i+1];
 				phir=ns->phi[z][x][i+1];
 				yr=dim->ymesh[i+1];
 
@@ -341,7 +380,7 @@ gdouble kTq=(in->Te[z][x][0]*kb/Q);
 			dyr=yr-yc;
 			dyc=(dyl+dyr)/2.0;
 
-			ec=in->epsilonr[z][x][i]*epsilon0;
+			ec=in->epsilonr_e0[z][x][i];
 			e0=(el+ec)/2.0;
 			e1=(ec+er)/2.0;
 			phic=ns->phi[z][x][i];
@@ -351,11 +390,11 @@ gdouble kTq=(in->Te[z][x][0]*kb/Q);
 			gdouble dphidn=0.0;
 			if (adv==FALSE)
 			{
-				dphidn=(Q/(kb*in->Tl[z][x][i]))*in->Nc[z][x][i]*exp(((in->Fi[z][x][i]-(-ns->phi[z][x][i]-in->Xi[z][x][i])))/(kTq));
+				dphidn=(Qe/(kb*in->Tl[z][x][i]))*in->Nc[z][x][i]*exp(((in->Fi[z][x][i]-(-ns->phi[z][x][i]-in->Xi[z][x][i])))/(kTq));
 
 			}else
 			{
-				get_n_den(epi,in->Fi[z][x][i]-in->Ec[z][x][i],in->Tl[z][x][i],in->imat[z][x][i],&not_used,&dphidn,NULL);
+				get_n_den(s,in->Fi[z][x][i]-in->Ec[z][x][i],in->Tl[z][x][i],&not_used,&dphidn,NULL);
 
 			}
 
@@ -363,68 +402,31 @@ gdouble kTq=(in->Te[z][x][0]*kb/Q);
 			gdouble dphidp=0.0;
 			if (adv==FALSE)
 			{
-				dphidp= -(Q/(kb*in->Tl[z][x][i]))*in->Nv[z][x][i]*exp((((-ns->phi[z][x][i]-in->Xi[z][x][i]-in->Eg[z][x][i])-in->Fi[z][x][i]))/(kTq));
+				dphidp= -(Qe/(kb*in->Tl[z][x][i]))*in->Nv[z][x][i]*exp((((-ns->phi[z][x][i]-in->Xi[z][x][i]-in->Eg[z][x][i])-in->Fi[z][x][i]))/(kTq));
 			}else
 			{
-				get_p_den(epi,ns->xp[z][x][i]-in->tp[z][x][i],in->Tl[z][x][i],in->imat[z][x][i],&not_used,&(dphidp),NULL);
+				get_p_den(s,ns->xp[z][x][i]-in->tp[z][x][i],in->Tl[z][x][i],&not_used,&(dphidp),NULL);
 				dphidp= -dphidp;
 			}
-			gdouble dphil=e0/dyl/dyc;
-			gdouble dphic= -(e0/dyl/dyc+e1/dyr/dyc);
-			gdouble dphir=e1/dyr/dyc;
+
+			gdouble dphil=-e0/dyl/dyc;
+			gdouble dphic= (e0/dyl/dyc+e1/dyr/dyc);
+			gdouble dphir=-e1/dyr/dyc;
 
 			gdouble dphil_d=dphil;
 			gdouble dphic_d=dphic;
 			gdouble dphir_d=dphir;
 
-			/*if (in->interfaceleft==TRUE)
-			{
+			deriv=dphil*phil+dphic*phic+dphir*phir;
+			//printf("%Le %Le %Le %Le %Le %Le\n",dphil,phil,dphic,phic,dphir,phir);
 
-				if (i==1)
-				{
-					dphil_d=0.0;
-					phil=in->Vl[z][x];
-
-				}
-
-				if (i==0)
-				{
-					dphil_d=0.0;
-					dphic_d=1e-6;
-					dphir_d=0.0;
-
-				}
-			}*/
-
-			/*if (in->interfaceright==TRUE)
-			{
-
-				if (i==dim->ylen-2)
-				{
-					dphir_d=0.0;
-					phir=in->V_y1[z][x];
-
-				}
-
-				if (i==dim->ylen-1)
-				{
-					dphil_d=0.0;
-					dphic_d=1e-6;
-					dphir_d=0.0;
-
-				}
-			}*/
-
-			gdouble dphi=dphil*phil+dphic*phic+dphir*phir;
-
-
-			dphic_d+= -Q*(dphidn-dphidp); // just put in the _d to get it working again.
+			dphic_d+= -Qe*(dphidp-dphidn); // just put in the _d to get it working again.
 
 			//if (adv==TRUE)
 			//{
 			//	for (band=0;band<dim->srh_bands;band++)
 			//	{
-			//		dphic_d+=(-q*(in->dnt[i][band]-in->dpt[i][band]));
+			//		dphic_d+=(-q*(in->dpt[i][band]-in->dnt[i][band]));
 			//	}
 			//}
 
@@ -455,32 +457,28 @@ gdouble kTq=(in->Te[z][x][0]*kb/Q);
 
 			}
 
-			/*if ((in->interfaceleft==TRUE)&&(i==0))
+
+			//printf("%Le %Le %Le %Le\n",dphi,in->n[z][x][i],in->p[z][x][i],in->Nad[z][x][i]);
+			mx.b[i]= -(deriv);
+			mx.b[i]-= -(in->p[z][x][i]-in->n[z][x][i]+in->Nad[z][x][i]+in->Nion[z][x][i])*Qe;//
+			//printf("%Le\n",in->Nad[z][x][i]);
+			//getchar();
+			if (adv==TRUE)
 			{
-				mx.b[i]= -0.0;
-			}else
-			if ((in->interfaceright==TRUE)&&(i==dim->ylen-1))
-			{
-				mx.b[i]= -0.0;
-			}else
-			{*/
-				mx.b[i]= -(dphi-Q*(in->n[z][x][i]-in->p[z][x][i]-in->Nad[z][x][i])); //
-				if (adv==TRUE)
+				for (band=0;band<dim->srh_bands;band++)
 				{
-					for (band=0;band<dim->srh_bands;band++)
-					{
-						mx.b[i]+= -(-Q*(in->nt[z][x][i][band]-in->pt[z][x][i][band]));
-					}
+					mx.b[i]-= -(Qe*(in->pt[z][x][i][band]-in->nt[z][x][i][band]));
 				}
-			//}
-			//in->n[i]=in->Nc[z][x][i]*exp(((in->Fi[z][x][i]-in->Ec[z][x][i])*q)/(kb*in->Tl[z][x][i]));
+			}
+
 
 		}
 
-		error=get_p_error(in,mx.b);
 
+		//printf("error%Le\n",error);
 		matrix_solve(sim,&(in->msm),&mx);
-
+		error=get_p_error(in,mx.b);
+		//getchar();
 		/*if (mx.ans_loaded_from_cache==TRUE)
 		{
 			error=matrix_cal_error(sim,&mx);
@@ -490,37 +488,29 @@ gdouble kTq=(in->Te[z][x][0]*kb/Q);
 
 		for (i=0;i<dim->ylen;i++)
 		{
-			//if ((in->interfaceleft==TRUE)&&(i==0))
-			//{
-			//}else
-			//if ((in->interfaceright==TRUE)&&(i==dim->ylen-1))
-			//{
-			//}else
-			//{
 			gdouble update;
 
 			gdouble clamp_temp=300.0;
-			update=mx.b[i]/(1.0+fabs(mx.b[i]/in->posclamp/(clamp_temp*kb/Q)));
+			update=mx.b[i]/(1.0+fabs(mx.b[i]/config->posclamp/(clamp_temp*kb/Qe)));
 			ns->phi[z][x][i]+=update;
-
-			//}
 		}
 
 		//getchar();
 
 		for (i=0;i<dim->ylen;i++)
 		{
+			s=in->obj_zxy[z][x][i]->s;
 			in->Ec[z][x][i]= -ns->phi[z][x][i]-in->Xi[z][x][i];
 			in->Ev[z][x][i]= -ns->phi[z][x][i]-in->Xi[z][x][i]-in->Eg[z][x][i];
 
 
 				if (adv==FALSE)
 				{
-					in->n[z][x][i]=in->Nc[z][x][i]*exp(((in->Fi[z][x][i]-in->Ec[z][x][i])*Q)/(kb*in->Tl[z][x][i]));
-					in->dn[z][x][i]=(Q/(kb*in->Tl[z][x][i]))*in->Nc[z][x][i]*exp((Q*(in->Fi[z][x][i]-in->Ec[z][x][i]))/(kb*in->Tl[z][x][i]));
+					in->n[z][x][i]=in->Nc[z][x][i]*exp(((in->Fi[z][x][i]-in->Ec[z][x][i])*Qe)/(kb*in->Tl[z][x][i]));
+					in->dn[z][x][i]=(Qe/(kb*in->Tl[z][x][i]))*in->Nc[z][x][i]*exp((Qe*(in->Fi[z][x][i]-in->Ec[z][x][i]))/(kb*in->Tl[z][x][i]));
 				}else
 				{
-					get_n_den(epi,in->Fi[z][x][i]-in->Ec[z][x][i],in->Tl[z][x][i],in->imat[z][x][i],&(in->n[z][x][i]),&(in->dn[z][x][i]),NULL);
+					get_n_den(s,in->Fi[z][x][i]-in->Ec[z][x][i],in->Tl[z][x][i],&(in->n[z][x][i]),&(in->dn[z][x][i]),NULL);
 				}
 
 				in->Fn[z][x][i]=in->Fi[z][x][i];
@@ -534,31 +524,32 @@ gdouble kTq=(in->Te[z][x][0]*kb/Q);
 
 				if (adv==FALSE)
 				{
-					in->p[z][x][i]=in->Nv[z][x][i]*exp(((ns->xp[z][x][i]-in->tp[z][x][i])*Q)/(kb*in->Tl[z][x][i]));
-					in->dp[z][x][i]=(Q/(kb*in->Tl[z][x][i]))*in->Nv[z][x][i]*exp(((ns->xp[z][x][i]-in->tp[z][x][i])*Q)/(kb*in->Tl[z][x][i]));
+					in->p[z][x][i]=in->Nv[z][x][i]*exp(((ns->xp[z][x][i]-in->tp[z][x][i])*Qe)/(kb*in->Tl[z][x][i]));
+					in->dp[z][x][i]=(Qe/(kb*in->Tl[z][x][i]))*in->Nv[z][x][i]*exp(((ns->xp[z][x][i]-in->tp[z][x][i])*Qe)/(kb*in->Tl[z][x][i]));
 				}else
 				{
-					get_p_den(epi,ns->xp[z][x][i]-in->tp[z][x][i],in->Tl[z][x][i],in->imat[z][x][i],&(in->p[z][x][i]),&(in->dp[z][x][i]),NULL);
-					//in->dp[z][x][i]=get_dp_den(in,ns->xp[z][x][i]-in->tp[z][x][i],in->Tl[z][x][i],in->imat[z][x][i]);
+					get_p_den(s,ns->xp[z][x][i]-in->tp[z][x][i],in->Tl[z][x][i],&(in->p[z][x][i]),&(in->dp[z][x][i]),NULL);
 				}
+
 
 
 				for (band=0;band<dim->srh_bands;band++)
 				{
 
-					in->Fnt[z][x][i][band]= -ns->phi[z][x][i]-in->Xi[z][x][i]+dos_srh_get_fermi_n(epi,in->n[z][x][i], in->p[z][x][i],band,in->imat[z][x][i],in->Te[z][x][i]);
-					in->Fpt[z][x][i][band]= -ns->phi[z][x][i]-in->Xi[z][x][i]-in->Eg[z][x][i]-dos_srh_get_fermi_p(epi,in->n[z][x][i], in->p[z][x][i],band,in->imat[z][x][i],in->Th[z][x][i]);
+					in->Fnt[z][x][i][band]= -ns->phi[z][x][i]-in->Xi[z][x][i]+dos_srh_get_fermi_n(s,in->n[z][x][i], in->p[z][x][i],band,in->Te[z][x][i]);
+					in->Fpt[z][x][i][band]= -ns->phi[z][x][i]-in->Xi[z][x][i]-in->Eg[z][x][i]-dos_srh_get_fermi_p(s,in->n[z][x][i], in->p[z][x][i],band,in->Th[z][x][i]);
 
-					//printf("p:%Le\n",dos_srh_get_fermi_p(epi,in->n[z][x][i], in->p[z][x][i],band,in->imat[z][x][i],in->Th[z][x][i]));
+					//printf("p:%Le\n",dos_srh_get_fermi_p(s,in->n[z][x][i], in->p[z][x][i],band,in->imat[z][x][i],in->Th[z][x][i]));
 					//getchar();
 					ns->xt[z][x][i][band]=ns->phi[z][x][i]+in->Fnt[z][x][i][band];
-					in->nt[z][x][i][band]=get_n_pop_srh(sim,epi,ns->xt[z][x][i][band]+in->tt[z][x][i],in->Te[z][x][i],band,in->imat[z][x][i]);
-					in->dnt[z][x][i][band]=get_dn_pop_srh(sim,epi,ns->xt[z][x][i][band]+in->tt[z][x][i],in->Te[z][x][i],band,in->imat[z][x][i]);
+					in->nt[z][x][i][band]=get_n_pop_srh(sim,s,ns->xt[z][x][i][band]+in->tt[z][x][i],in->Te[z][x][i],band);
+					in->dnt[z][x][i][band]=get_dn_pop_srh(sim,s,ns->xt[z][x][i][band]+in->tt[z][x][i],in->Te[z][x][i],band);
 
 
 					ns->xpt[z][x][i][band]= -(ns->phi[z][x][i]+in->Fpt[z][x][i][band]);
-					in->pt[z][x][i][band]=get_p_pop_srh(sim,epi,ns->xpt[z][x][i][band]-in->tpt[z][x][i],in->Th[z][x][i],band,in->imat[z][x][i]);
-					in->dpt[z][x][i][band]=get_dp_pop_srh(sim,epi,ns->xpt[z][x][i][band]-in->tpt[z][x][i],in->Th[z][x][i],band,in->imat[z][x][i]);
+					in->pt[z][x][i][band]=get_p_pop_srh(sim,s,ns->xpt[z][x][i][band]-in->tpt[z][x][i],in->Th[z][x][i],band);
+					in->dpt[z][x][i][band]=get_dp_pop_srh(sim,s,ns->xpt[z][x][i][band]-in->tpt[z][x][i],in->Th[z][x][i],band);
+
 				}
 
 		}
@@ -566,26 +557,30 @@ gdouble kTq=(in->Te[z][x][0]*kb/Q);
 		update_y_array(sim,in,z,x);
 
 
-		if (error<1)
+		if (error<0.1)
 		{
 			adv=TRUE;
 		}
 		//#ifdef print_newtonerror
 
-		//if (get_dump_status(sim,dump_print_pos_error)==TRUE)
-		if ((ittr%10)==0)
+		if (get_dump_status(sim,dump_print_pos_error)==TRUE)
 		{
-			printf_log(sim,"%d %s = %Le %d\n",ittr,_("Electrostatic solver f()="),error,adv);
-		}
+			if ((ittr%10)==0)
+			{
+				printf_log(sim,"%d %s = %Le %d\n",ittr,_("Electrostatic solver f()="),error,adv);
+			}
 		//#endif
-
+		}
 		#ifdef dump_converge
 
 
 
 		/*in->converge=fopena(get_output_path(sim),"converge.dat","a");
-		fprintf(in->converge,"%e\n",error);
-		fclose(in->converge);*/
+		if (in->converge!=NULL)
+		{
+			fprintf(in->converge,"%e\n",error);
+			fclose(in->converge);
+		}*/
 		#endif
 
 
@@ -597,12 +592,12 @@ gdouble kTq=(in->Te[z][x][0]*kb/Q);
 		adv_step++;
 	}
 
-	if (ittr>pos_max_ittr)
+	if (ittr>config->max_ittr)
 	{
 		quit=TRUE;
 	}
 
-	if ((error<min_pos_error)&&(adv_step>3))
+	if ((error<config->pos_min_error)&&(adv_step>3))
 	{
 		quit=TRUE;
 	}
@@ -612,7 +607,7 @@ gdouble kTq=(in->Te[z][x][0]*kb/Q);
 
 	printf_log(sim,"%d %s = %Le %d\n",ittr,_("Electrostatic solver f()="),error,adv);
 
-	pos_dump(sim,in);
+	pos_dump(sim,in,config);
 
 	update_y_array(sim,in,z,x);
 
@@ -627,6 +622,12 @@ gdouble kTq=(in->Te[z][x][0]*kb/Q);
 
 in->odes+=dim->ylen;
 
+
+/*for (y=0;y<dim->ylen;y++)
+{
+	printf("%d %.20Le new\n",y,in->n[0][0][y]);
+}
+getchar();*/
 
 
 for (y=0;y<dim->ylen;y++)

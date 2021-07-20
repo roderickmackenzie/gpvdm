@@ -57,78 +57,96 @@ static int unused __attribute__((unused));
 
 void device_load_math_config(struct simulation *sim,struct device *in)
 {
-	char temp[100];
-	struct inp_file inp;
+	int dump;
+	struct json_obj *obj;
+	struct json_obj *electrical_solver;
+	struct json_obj *poisson;
 
-	inp_init(sim,&inp);
-	inp_load_from_path(sim,&inp,get_input_path(sim),"math.inp");
-	inp_check(sim,&inp,1.50);
-	inp_search_int(sim,&inp,&(in->max_electrical_itt0),"#maxelectricalitt_first");
-	inp_search_gdouble(sim,&inp,&(in->electrical_clamp0),"#electricalclamp_first");
-	inp_search_gdouble(sim,&inp,&(in->electrical_error0),"#math_electrical_error_first");
+	obj=json_obj_find(&(in->config.obj), "math");
+	if (obj==NULL)
+	{
+		ewe(sim,"Object light not found\n");
+	}
 
-	inp_search_string(sim,&inp,temp,"#math_enable_pos_solver");
-	in->math_enable_pos_solver=english_to_bin(sim,temp);
+	json_get_int(sim, obj, &in->max_electrical_itt0,"maxelectricalitt_first");
 
-	inp_search_int(sim,&inp,&(in->max_electrical_itt),"#maxelectricalitt");
-	inp_search_gdouble(sim,&inp,&(in->electrical_clamp),"#electricalclamp");
-	inp_search_gdouble(sim,&inp,&(in->posclamp),"#posclamp");
-	inp_search_gdouble(sim,&inp,&(in->min_cur_error),"#electricalerror");
-	//inp_search_int(sim,&inp,&(in->newton_clever_exit),"#newton_clever_exit");
+	json_get_long_double(sim, obj, &in->electrical_clamp0,"electricalclamp_first");
+	json_get_long_double(sim, obj, &in->electrical_error0,"math_electrical_error_first");
 
-	inp_search_string(sim,&inp,temp,"#newton_clever_exit");
-	in->newton_clever_exit=english_to_bin(sim,temp);
+	json_get_int(sim, obj, &in->max_electrical_itt,"maxelectricalitt");
+	json_get_long_double(sim, obj, &in->electrical_clamp,"electricalclamp");
 
-	inp_search_int(sim,&inp,&(in->newton_min_itt),"#newton_min_itt");
-	inp_search_int(sim,&inp,&(in->remesh),"#remesh");
-	inp_search_int(sim,&inp,&(in->newmeshsize),"#newmeshsize");
-	inp_search_int(sim,&inp,&(in->pos_max_ittr),"#pos_max_ittr");
-	inp_search_int(sim,&inp,&(in->config_kl_in_newton),"#kl_in_newton");
-	inp_search_string(sim,&inp,in->solver_name,"#solver_name");
-	inp_search_string(sim,&inp,in->complex_solver_name,"#complex_solver_name");
-	inp_search_string(sim,&inp,in->newton_name,"#newton_name");
 
-	if (strcmp(in->newton_name,"newton_simple")==0)
+	json_get_long_double(sim, obj, &in->min_cur_error,"electricalerror");
+
+	json_get_english(sim,obj, &(in->newton_clever_exit),"newton_clever_exit");
+
+	json_get_int(sim, obj, &in->newton_min_itt,"newton_min_itt");
+	json_get_int(sim, obj, &in->remesh,"remesh");
+	json_get_int(sim, obj, &in->newmeshsize,"newmeshsize");
+	json_get_int(sim, obj, &in->config_kl_in_newton,"kl_in_newton");
+
+	json_get_string(sim, obj, in->newton_name,"newton_name");
+
+
+	json_get_long_double(sim, obj, &sim->T0,"math_t0");
+	json_get_long_double(sim, obj, &sim->D0,"math_d0");
+	json_get_long_double(sim, obj, &sim->n0,"math_n0");
+
+	json_get_english(sim, obj, &sim->math_stop_on_convergence_problem,"math_stop_on_convergence_problem");
+	json_get_english(sim, obj, &in->solver_verbosity,"solver_verbosity");
+
+
+	json_get_english(sim,obj, &(in->dynamic_mesh),"math_dynamic_mesh");
+
+	//Poisson solver
+	electrical_solver=json_obj_find(&(in->config.obj), "electrical_solver");
+	if (obj==NULL)
+	{
+		ewe(sim,"Object electrical_solver not found\n");
+	}
+
+	json_get_string(sim,electrical_solver, in->solver_type,"solver_type");
+
+	if (strcmp(in->solver_type,"circuit")==0)
 	{
 		in->circuit_simulation=TRUE;
+		in->drift_diffision_simulations_enabled=FALSE;
 	}
-	inp_search_gdouble(sim,&inp,&(sim->T0),"#math_t0");
-	inp_search_gdouble(sim,&inp,&(sim->D0),"#math_d0");
-	inp_search_gdouble(sim,&inp,&(sim->n0),"#math_n0");
 
-	inp_search_string(sim,&inp,temp,"#math_dynamic_mesh");
-	in->dynamic_mesh=english_to_bin(sim,temp);
+	poisson=json_obj_find(electrical_solver, "poisson");
+	if (poisson==NULL)
+	{
+		ewe(sim,"Object electrical_solver not found\n");
+	}
 
-	inp_free(sim,&inp);
+
+
+	json_get_english(sim,poisson, &(in->math_enable_pos_solver),"math_enable_pos_solver");
+	json_get_english(sim,poisson, &(dump),"dump_print_pos_error");
+	set_dump_status(sim,dump_print_pos_error, dump);
+
 
 }
 
 void load_sim_file(struct simulation *sim,struct device *in)
 {
-	if (get_dump_status(sim,dump_info_text)==TRUE)
+	struct json_obj *obj;
+	obj=json_obj_find(&(in->config.obj), "sim");
+	if (obj==NULL)
 	{
-		printf_log(sim,"%s\n",_("load: sim.inp"));
+		ewe(sim,"Object sim not found\n");
 	}
 
-	int i;
-	char temp[100];
-
-	struct inp_file inp;
-	inp_init(sim,&inp);
-	inp_load_from_path(sim,&inp,get_input_path(sim),"sim.inp");
-	inp_check(sim,&inp,1.2);
-
-	inp_search_string(sim,&inp,in->simmode,"#simmode");
-
-	inp_search_int(sim,&inp,&(in->stoppoint),"#stoppoint");
-
-
-	inp_free(sim,&inp);
+	json_get_int(sim, obj, &in->stoppoint,"stoppoint");
+	json_get_string(sim, obj, in->simmode,"simmode");
 
 }
 
 void load_config(struct simulation *sim,struct device *in)
 {
+struct json_obj *obj;
+
 if (get_dump_status(sim,dump_info_text)==TRUE)
 {
 	printf_log(sim,"%s\n",_("load: config files"));
@@ -150,40 +168,23 @@ in->ylen=epitaxy_get_electrical_length(&(in->my_epitaxy));
 mesh_check_y(sim,&(in->mesh_data.meshdata_y),in);
 
 
-inp_init(sim,&inp);
-inp_load_from_path(sim,&inp,get_input_path(sim),"device.inp");
-inp_check(sim,&inp,1.24);
-
 in->area=in->xlen*in->zlen;
 
 
-inp_search_gdouble(sim,&inp,&(in->Rshort),"#Rshort");
-in->Rshort=fabs(in->Rshort);
+obj=json_obj_find(&(in->config.obj), "parasitic");
 
-//inp_search_int(sim,&inp,&(in->interfaceleft),"#interfaceleft");
-//inp_search_int(sim,&inp,&(in->interfaceright),"#interfaceright");
-
-inp_free(sim,&inp);
-
-
-inp_init(sim,&inp);
-inp_load_from_path(sim,&inp,get_input_path(sim),"parasitic.inp");
-inp_check(sim,&inp,1.1);
-
-inp_search_gdouble(sim,&inp,&(in->other_layers),"#otherlayers");
+json_get_long_double(sim,obj, &(in->other_layers),"otherlayers");
 in->other_layers=fabs(in->other_layers);
-hard_limit(sim,"#other_layers",&(in->other_layers));
+hard_limit_do(sim,"other_layers",&(in->other_layers));
 
-inp_search_gdouble(sim,&inp,&(in->Rshunt),"#Rshunt");
+json_get_long_double(sim,obj, &(in->Rshunt),"Rshunt");
 in->Rshunt=fabs(in->Rshunt)/in->area;
 
-inp_search_gdouble(sim,&inp,&(in->Rcontact),"#Rcontact");
+json_get_long_double(sim,obj, &(in->Rcontact),"Rcontact");
 in->Rcontact=fabs(in->Rcontact);
 
-inp_search_gdouble(sim,&inp,&(in->test_param),"#test_param");
-
-inp_free(sim,&inp);
-
+json_get_long_double(sim,obj, &(in->Rshort),"Rshort");
+in->Rshort=fabs(in->Rshort);
 
 
 }
