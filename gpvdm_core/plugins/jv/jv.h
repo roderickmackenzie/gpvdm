@@ -28,6 +28,7 @@
 #ifndef jv_h
 #define jv_h
 #include <sim.h>
+#include <json.h>
 
 struct jv
 {
@@ -40,10 +41,10 @@ struct jv
 	long double jv_Rshunt;
 	long double jv_Rcontact;
 	int jv_single_point;
-	int dump_verbocity;
+	int dump_verbosity;
 	int jv_use_external_voltage_as_stop;
 };
 
 void sim_jv(struct simulation *sim,struct device *in);
-void jv_load_config(struct simulation *sim,struct jv* in,struct device *dev, char* config_file_name);
+void jv_load_config(struct simulation *sim,struct jv* in, struct json_obj *json_jv);
 #endif

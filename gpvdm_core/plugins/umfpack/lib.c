@@ -37,13 +37,16 @@
 	@brief Call the UMFPACK solver.
 */
 
-
+#include <enabled_libs.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <umfpack.h>
+
 #include <util.h>
 
 #include <matrix_solver_memory.h>
+
+	pthread_mutex_t lock;
 
 void error_report(int status, const char *file, const char *func, int line)
 {
@@ -68,73 +71,6 @@ int umfpack_solver(struct matrix_solver_memory *msm,int col,int nz,int *Ti,int *
 int i;
 void *Symbolic, *Numeric;
 int status;
-double *dtemp;
-int *itemp;
-
-	if (msm->last_col!=col)
-	{
-		dtemp = realloc(msm->x,col*sizeof(double));
-		if (dtemp==NULL)
-		{
-			printf("realloc failed\n");
-		}else
-		{
-			msm->x=dtemp;
-		}
-
-
-		dtemp = realloc(msm->b,col*sizeof(double));
-		if (dtemp==NULL)
-		{
-			printf("realloc failed\n");
-		}else
-		{
-			msm->b=dtemp;
-		}
-
-		itemp = realloc(msm->Ap,(col+1)*sizeof(int));
-		if (itemp==NULL)
-		{
-			printf("realloc failed\n");
-		}else
-		{
-			msm->Ap=itemp;
-		}
-	}
-
-	if (msm->last_nz!=nz)
-	{
-		itemp = realloc(msm->Ai,(nz)*sizeof(int));
-		if (itemp==NULL)
-		{
-			printf("realloc failed\n");
-		}else
-		{
-			msm->Ai=itemp;
-		}
-
-		dtemp  = realloc(msm->Ax,(nz)*sizeof(double));
-		if (dtemp==NULL)
-		{
-			printf("realloc failed\n");
-		}else
-		{
-			msm->Ax=dtemp;
-		}
-
-		dtemp  = realloc(msm->Tx,(nz)*sizeof(double));
-		if (dtemp==NULL)
-		{
-			printf("realloc failed\n");
-		}else
-		{
-			msm->Tx=dtemp;
-		}
-
-	}
-
-	msm->last_col=col;
-	msm->last_nz=nz;
 
 
 for (i=0;i<col;i++)
@@ -173,9 +109,19 @@ if (status != UMFPACK_OK) {
 	return EXIT_FAILURE;
 }
 
+/*#ifdef windows
+	 EnterCriticalSection(&lock);
+#else
+	pthread_mutex_lock(&lock);
+#endif*/
 // LU factorization
 umfpack_di_numeric(msm->Ap, msm->Ai, msm->Ax, Symbolic, &Numeric, Control, Info);
 
+/*#ifdef windows
+	 LeaveCriticalSection(&lock);
+#else
+	pthread_mutex_unlock(&lock);
+#endif*/
 
 if (status != UMFPACK_OK) {
 	error_report(status, __FILE__, __func__, __LINE__);
@@ -196,6 +142,8 @@ if (status != UMFPACK_OK) {
 
 umfpack_di_free_numeric(&Numeric);
 
+
+
 for (i=0;i<col;i++)
 {
 lb[i]=(long double)msm->x[i];
@@ -210,6 +158,6 @@ return 0;
 
 void umfpack_solver_free(struct matrix_solver_memory *msm)
 {
-	matrix_solver_memory_free(msm);
+	
 }
 

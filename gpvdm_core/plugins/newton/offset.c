@@ -1,4 +1,4 @@
-// 
+//
 // General-purpose Photovoltaic Device Model gpvdm.com - a drift diffusion
 // base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solarcells.
 // The model can simulate OLEDs, Perovskite cells, and OFETs.
@@ -33,43 +33,119 @@
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
 
-/** @file solver.c
-	@brief UMFPACK solver interface.
+/** @file newton.c
+	@brief Standard newton solver.
 */
 
 
-#include <solver_interface.h>
+#include <string.h>
+#include <log.h>
+#include <gpvdm_const.h>
+#include "newton.h"
 #include <dll_export.h>
 #include <util.h>
-#include "lib.h"
-#include <log.h>
-#include <matrix_solver_memory.h>
+#include <exp.h>
+#include <advmath.h>
+#include <dump.h>
+#include <cal_path.h>
+#include <dos.h>
+#include <sim.h>
+#include <solver_interface.h>
+#include <contacts.h>
+#include <memory.h>
+#include <newton_tricks.h>
+#include <timer.h>
+#include <perovskite.h>
 
-struct dll_interface *fun;
 
-EXPORT void dll_matrix_init(struct matrix_solver_memory *msm)
+int get_offset_Je(struct device *dev)
 {
-//printf("init\n");
+	int offset=0;
+	struct newton_state *ns=&(dev->ns);
+	struct dimensions *dim=&(ns->dim);
+	int contact_left=dev->contacts[dev->n_contact_y0[0][0]].type;
+
+	offset=dim->ylen;
+
+	if (contact_left==contact_schottky)
+	{
+		offset++;
+	}
+
+	return offset;
 }
 
-EXPORT void set_interface(struct dll_interface *in)
+int get_offset_Jh(struct device *dev)
 {
-fun=in;
+	int offset=0;
+	struct newton_state *ns=&(dev->ns);
+	struct dimensions *dim=&(ns->dim);
+	int contact_right=dev->contacts[dev->n_contact_y1[0][0]].type;
+	offset=get_offset_Je(dev);
+	offset+=dim->ylen;
+
+	/*if (contact_right==contact_schottky)
+	{
+		offset++;
+	}*/
+
+	return offset;
 }
 
-EXPORT void dll_matrix_solve(struct matrix_solver_memory *msm,int col,int nz,int *Ti,int *Tj, long double *Tx,long double *b)
+int get_offset_srh_e(struct device *dev)
 {
-//printf("%p %p %p %p\n",Ti,Tj,Tx,b);
-umfpack_solver(msm,col,nz,Ti,Tj, Tx,b);
+	int offset=0;
+	struct newton_state *ns=&(dev->ns);
+	struct dimensions *dim=&(ns->dim);
+
+	offset=get_offset_Jh(dev);
+	offset+=dim->ylen;
+
+	return offset;
 }
 
-EXPORT void dll_matrix_dump(struct matrix_solver_memory *msm,int col,int nz,int *Ti,int *Tj, long double *Tx,long double *b,char *index)
+int get_offset_srh_h(struct device *dev)
 {
-//printf_log(sim,"hello\n");
+	int offset=0;
+	struct newton_state *ns=&(dev->ns);
+	struct dimensions *dim=&(ns->dim);
+
+	offset=get_offset_srh_e(dev);
+
+	if (dev->ntrapnewton==TRUE)
+	{
+		offset+=dim->ylen*dim->srh_bands;	//srh electron
+	}
+
+	return offset;
 }
 
-EXPORT void dll_matrix_solver_free(struct matrix_solver_memory *msm)
+int get_offset_kcl(struct device *dev)
 {
-umfpack_solver_free(msm);
+	int offset=0;
+	struct newton_state *ns=&(dev->ns);
+	struct dimensions *dim=&(ns->dim);
+
+	offset=get_offset_srh_h(dev);
+
+	if (dev->ptrapnewton==TRUE)
+	{
+		offset+=dim->ylen*dim->srh_bands;	//srh hole
+	}
+
+	return offset;
 }
 
+int get_offset_nion(struct device *dev)
+{
+	int offset=0;
+
+	offset=get_offset_kcl(dev);
+
+	if (dev->kl_in_newton==TRUE)
+	{
+		offset++;
+	}
+
+	return offset;
+}

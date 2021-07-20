@@ -63,7 +63,7 @@ EXPORT void light_dll_ver(struct simulation *sim)
 }
 
 
-EXPORT int light_dll_solve_lam_slice(struct simulation *sim,struct device *cell,struct light *li,int z, int x, int l,int w)
+EXPORT int light_dll_solve_lam_slice(struct simulation *sim,struct device *cell,struct light *li,long double *sun_E,int z, int x, int l,int w)
 {
 	int y;
 	long double complex Epl=0.0+0.0*I;
@@ -111,7 +111,7 @@ EXPORT int light_dll_solve_lam_slice(struct simulation *sim,struct device *cell,
 	struct matrix *mx=&(li->mx[w]);
 	struct dim_light *dim=&li->dim;
 
-	if (li->sun_E[l]==0.0)
+	if (sun_E[l]==0.0)
 	{
 		return 0;
 	}
@@ -140,6 +140,7 @@ EXPORT int light_dll_solve_lam_slice(struct simulation *sim,struct device *cell,
 	}
 	//printf("%le %le %le\n",my_vec.x,my_vec.z,mul);
 	//getchar();
+
 	do
 	{
 		pos=0;
@@ -151,14 +152,13 @@ EXPORT int light_dll_solve_lam_slice(struct simulation *sim,struct device *cell,
 			tc=li->t[z][x][y][l];
 
 
-
 			if (y==0)
 			{
 				rl=li->r[z][x][y][l];
 				tl=li->t[z][x][y][l];
 
 				nbar_l=li->nbar[z][x][y][l];
-				Epl=li->sun_E[l]*mul+0.0*I;
+				Epl=sun_E[l]*mul+0.0*I;
 
 			}else
 			{
@@ -309,7 +309,6 @@ EXPORT int light_dll_solve_lam_slice(struct simulation *sim,struct device *cell,
 		quit=TRUE;
 	}
 	}while(quit==FALSE);
-
 
 	//getchar();
 return 0;

@@ -37,7 +37,7 @@
 	@brief Call the complex UMFPACK solver.
 */
 
-
+#include <enabled_libs.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <lang.h>

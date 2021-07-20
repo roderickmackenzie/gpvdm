@@ -1,4 +1,4 @@
-OBJS=plugin.o newton.o
+OBJS=plugin.o newton.o update.o offset.o memory.o error.o
 lib=-L../../
 inc=-I../../include/
 

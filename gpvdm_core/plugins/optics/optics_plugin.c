@@ -51,7 +51,7 @@
 #include <cal_path.h>
 #include <fdtd.h>
 #include <light_fun.h>
-
+#include <device_fun.h>
 
 static int unused __attribute__((unused));
 
@@ -59,15 +59,15 @@ void sim_optics(struct simulation *sim,struct device *in)
 {
 	struct inp_file inp;
 
-	dumpfiles_turn_on_dir(sim,"optical_output");
 	set_dump_status(sim,dump_lock, FALSE);
-	set_dump_status(sim,dump_optics, TRUE);
-	set_dump_status(sim,dump_optics_verbose, TRUE);
-
+	in->mylight.dump_verbosity=1;
 
 	light_load_config(sim,&in->mylight,in);
 
-	light_setup_dump_dir(sim,&in->mylight);
+	light_setup_dump_dir(sim,get_output_path(in),&in->mylight);
+
+	//printf("%s %s\n",in->mylight.dump_dir,get_output_path(in));
+	//getchar();
 
 	light_load_dlls(sim,&in->mylight);
 
@@ -79,13 +79,14 @@ void sim_optics(struct simulation *sim,struct device *in)
 
 	light_set_sun(&in->mylight,1.0);
 
-
 	light_solve_and_update(sim,in,&in->mylight,0.0);
+
+
 
 	light_dump(sim,&in->mylight);
 
 
-	light_dump_sim_info(sim,&in->mylight);
+	light_dump_sim_info(sim,in->output_path,&in->mylight,in);
 
 
 

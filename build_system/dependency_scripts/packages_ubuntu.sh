@@ -32,7 +32,7 @@ apt-get -y install rsync pluma build-essential autoconf python-bashate codespell
 
 apt-get -y install python3 python3-matplotlib l python3-opengl python3-numpy python3-crypto python3-dbus.mainloop.pyqt5 python3-psutil python3-dateutil
 
- 
+apt-get -y install libqt5multimedia5-plugins 
 apt-get -y install python3-pyqt5.qtmultimedia python3-pyqt5.qtopeng
 
 #removed
