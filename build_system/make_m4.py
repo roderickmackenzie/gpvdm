@@ -36,13 +36,13 @@ import os
 import sys
 import argparse
 
-def make_m4(hpc=False, win=False,usear=False):
+def make_m4(hpc=False, win=False,usear=False,dbus=True,windows=False):
 	path=os.getcwd()
-	make_m4_core(path,hpc=hpc, win=win,usear=usear)
+	make_m4_core(path,hpc=hpc, win=win,usear=usear,dbus=dbus,windows=windows)
 	make_m4_gui(path,hpc=hpc, win=win,usear=usear)
 	make_m4_data(path,hpc=hpc, win=win,usear=usear)
 
-def make_m4_core(path,hpc=False, win=False,usear=False):
+def make_m4_core(path,hpc=False, win=False,usear=False,dbus=True,windows=False):
 	path=os.path.join(path,"gpvdm_core")
 	config_files=[]
 	gpvdm_lib=[]
@@ -85,6 +85,9 @@ def make_m4_core(path,hpc=False, win=False,usear=False):
 	config_files.append("liblight")
 	gpvdm_lib.append("liblight")
 
+	config_files.append("libjson")
+	gpvdm_lib.append("libjson")
+
 	if os.path.isdir(os.path.join(path,"libheat")):
 		config_files.append("libheat")
 		gpvdm_lib.append("libheat")
@@ -108,8 +111,8 @@ def make_m4_core(path,hpc=False, win=False,usear=False):
 	config_files.append("libdump")
 	gpvdm_lib.append("libdump")
 
-	config_files.append("libdumpctrl")
-	gpvdm_lib.append("libdumpctrl")
+	#config_files.append("libdumpctrl")
+	#gpvdm_lib.append("libdumpctrl")
 
 	config_files.append("libdevice")
 	gpvdm_lib.append("libdevice")
@@ -231,6 +234,14 @@ def make_m4_core(path,hpc=False, win=False,usear=False):
 
 	if config_files.count("libfit")!=0:
 		f.write("#define libfit_enabled\n")
+
+	if dbus==True:
+		f.write("#define dbus\n")
+
+	if windows==True:
+		f.write("#define windows\n")
+	else:
+		f.write("#define enable_server\n")
 
 	f.close()
 

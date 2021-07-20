@@ -43,7 +43,7 @@ from shutil import copyfile
 
 def write_includes(dbus=None,umfpack=None):
 	if dbus==None:
-		dbus="-I/usr/include/dbus-1.0/ `pkg-config --cflags dbus-1` -D dbus"
+		dbus="-I/usr/include/dbus-1.0/ `pkg-config --cflags dbus-1`"
 	f = open(os.path.join("gpvdm_core","includes.m4"), "w")
 	f.write( "AC_SUBST(I_DBUS,\"")
 	f.write(dbus)
@@ -93,7 +93,7 @@ def build_configure_all():
 	build_configure("gpvdm_data")
 
 def configure_for_fedora(d):
-	make_m4(hpc=False, win=False,usear=True)
+	make_m4(hpc=False, win=False,usear=True,dbus=True,windows=False)
 	#d.infobox("aclocal", width=0, height=0, title="configure")
 	build_configure_all()
 	mpi_include="-I/usr/include/openmpi-x86_64/ -I/usr/include/MUMPS/ -L/usr/lib64/openmpi/lib/"
@@ -107,7 +107,7 @@ def configure_for_fedora(d):
 	et=d.tailbox("log.txt", height=None, width=100)
 
 def configure_for_debian(d):
-	make_m4(hpc=False, win=False,usear=True)
+	make_m4(hpc=False, win=False,usear=True,dbus=True,windows=False)
 	#d.infobox("aclocal", width=0, height=0, title="configure")
 	build_configure_all()
 	os.system("cd gpvdm_core;./configure CPPFLAGS=\"-I/usr/include/\" --datadir=\"/usr/share/\" --bindir=\"/usr/bin/\" >../log.txt 2>../log.txt &")
@@ -121,7 +121,7 @@ def configure_for_debian(d):
 
 
 def configure_for_ubuntu(d):
-	make_m4(hpc=False, win=False,usear=True)
+	make_m4(hpc=False, win=False,usear=True,dbus=True,windows=False)
 	write_includes()
 	build_configure_all()
 
@@ -138,7 +138,7 @@ def configure_for_ubuntu(d):
 	et=d.tailbox("log.txt", height=None, width=100)
 
 def configure_for_ubuntu_with_flat_install(d):
-	make_m4(hpc=False, win=False,usear=True)
+	make_m4(hpc=False, win=False,usear=True,dbus=True,windows=False)
 
 	build_configure_all()
 
@@ -153,7 +153,7 @@ def configure_for_ubuntu_with_flat_install(d):
 
 def configure_for_centos_hpc(d):
 	print("Running:configure_for_centos_hpc")
-	make_m4(hpc=True, win=False,usear=False)
+	make_m4(hpc=True, win=False,usear=False,dbus=True,windows=False)
 
 	build_configure_all()
 
@@ -169,7 +169,7 @@ def configure_for_centos_hpc(d):
 
 def configure_for_centos(d):
 	print("Running:configure_for_centos")
-	make_m4(hpc=False, win=False,usear=True)
+	make_m4(hpc=False, win=False,usear=True,dbus=True,windows=False)
 
 	build_configure_all()
 
@@ -185,7 +185,7 @@ def configure_for_centos(d):
 	make_all(d)
 
 def configure_for_arch(d):
-	make_m4(hpc=False, win=False,usear=True)
+	make_m4(hpc=False, win=False,usear=True,dbus=True,windows=False)
 
 	build_configure_all()
 
@@ -201,12 +201,12 @@ def configure_for_arch(d):
 	make_all(d)
 
 def configure_for_windows(d):
-	make_m4(hpc=False, win=True,usear=True)
+	make_m4(hpc=False, win=True,usear=True,dbus=False,windows=True)
 	write_includes(dbus="")
 	build_configure_all()
 
 	home=str(Path.home())
-	flags="-I"+home+"/windll/libzip/libzip-0.11.2/lib/ -I"+home+"/windll/SuiteSparse-3.0.0/SuiteSparse/UFconfig/ -I"+home+"/windll/SuiteSparse-3.0.0/SuiteSparse/AMD/Include/ -I"+home+"/windll/SuiteSparse-3.0.0/SuiteSparse/UMFPACK/Include/"
+	flags="-I"+home+"/windll/libzip/libzip-0.11.2/lib/ -I"+home+"/windll/SuiteSparse-3.0.0/SuiteSparse/UFconfig/ -I"+home+"/windll/SuiteSparse-3.0.0/SuiteSparse/AMD/Include/ -I"+home+"/windll/SuiteSparse-3.0.0/SuiteSparse/UMFPACK/Include/ -I"+home+"/windll/libpng/libpng-1.6.37/"
 	#+home+"-I/windll/OpenCL-Headers-master/"
 	#+"-I/windll/gsl-1.16/
 	os.system("cd gpvdm_core; ./configure --host=i686-w64-mingw32 CPPFLAGS=\""+flags+"\"  --enable-noplots --enable-noman  >../log.txt 2>../log.txt &")

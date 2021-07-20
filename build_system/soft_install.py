@@ -84,7 +84,7 @@ def soft_install(d):
 
 		if os.path.islink(install_of_gpvdm_core) or os.path.isfile(install_of_gpvdm_core):
 			os.unlink(install_of_gpvdm_core)
-		os.symlink( os.path.join(os.getcwd(),"gpvdm_core"), install_of_gpvdm_core)
+		os.symlink( os.path.join(os.getcwd(),"gpvdm_core","gpvdm_core"), install_of_gpvdm_core)
 
 		return
 
