@@ -51,6 +51,8 @@
 #include "log.h"
 #include "memory.h"
 #include <heat_fun.h>
+#include <contacts.h>
+#include <exp.h>
 
 static int unused __attribute__((unused));
 
@@ -98,7 +100,7 @@ void heat_transfer_temperatures_to_device(struct device *dev,struct heat *therma
 }
 
 
-void heat_transfer_device_heat_to_heat_mesh(struct heat *thermal, struct device *dev)
+void heat_transfer_device_heat_to_heat_mesh(struct simulation *sim,struct heat *thermal, struct device *dev)
 {
 	int z=0;
 	int x=0;
@@ -111,9 +113,23 @@ void heat_transfer_device_heat_to_heat_mesh(struct heat *thermal, struct device 
 	long double Hh=0.0;
 	long double pos=0;
 
+	long double Vapplied=0.0;
+	long double J=0.0;
+	long double P=0.0;
+	long double H_parasitic=0.0;
 	struct dimensions *dim=&(dev->ns.dim);
 	struct dim_heat *dim_t=&(thermal->dim);
 	struct epitaxy *epi=&(dev->my_epitaxy);
+
+	Vapplied=contact_get_active_contact_voltage(sim,dev);
+
+
+	if (thermal->parasitic_heating==TRUE)
+	{
+		J=fabs(Vapplied)/dev->Rshunt/dev->area;
+		P=J*fabs(Vapplied);
+		H_parasitic=P/dev->ylen;
+	}
 
 	for (z=0;z<dim_t->zlen;z++)
 	{
@@ -136,8 +152,9 @@ void heat_transfer_device_heat_to_heat_mesh(struct heat *thermal, struct device 
 
 					H_recombination=interpolate_zxy_long_double(dim, dev->H_recombination, z, x, pos);
 					thermal->H_recombination[z][x][y]=H_recombination;
+					//printf("%Le %Le\n",dim_t->y[y],H_recombination);
 
-
+					thermal->H_parasitic[z][x][y]=H_parasitic;
 				}
 			}
 		}

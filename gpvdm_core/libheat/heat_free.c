@@ -71,6 +71,7 @@ void heat_free_memory(struct simulation *sim,struct heat *thermal)
 		free_heat_zxy_long_double(dim,&(thermal->H_optical));
 		free_heat_zxy_long_double(dim,&(thermal->H_recombination));
 		free_heat_zxy_long_double(dim,&(thermal->H_joule));
+		free_heat_zxy_long_double(dim,&(thermal->H_parasitic));
 
 		free_heat_zxy_long_double(dim,&(thermal->He));
 		free_heat_zxy_long_double(dim,&(thermal->Hh));

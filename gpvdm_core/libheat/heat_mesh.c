@@ -98,7 +98,7 @@ void heat_build_materials_arrays(struct simulation *sim,struct heat *thermal, st
 	int x=0;
 	int y=0;
 	int z=0;
-	//struct object *obj;
+	struct object *obj;
 	struct dim_heat *dim=&(thermal->dim);
 
 	heat_build_obj_pointer_array(sim,thermal, dev);
@@ -109,8 +109,9 @@ void heat_build_materials_arrays(struct simulation *sim,struct heat *thermal, st
 		{
 			for (y=0;y<dim->ylen;y++)
 			{
-				//obj=thermal->obj[z][x][y];//ray_obj_search_xyz(sim,dev,&v);
-				thermal->kl[z][x][y]=thermal->thermal_kl;
+				
+				obj=thermal->obj[z][x][y];
+				thermal->kl[z][x][y]=obj->s->heat.thermal_kl;
 
 			}
 

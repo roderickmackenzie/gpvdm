@@ -34,36 +34,45 @@
 // 
 
 
-
-/** @file light_dump.c
-	@brief Dumps optical fields from the light model.
+/** @file init.c
+	@brief Initilization for heat structure
 */
 
+#include <stdlib.h>
 #include <string.h>
-#include <sys/stat.h>
 #include "util.h"
 #include "gpvdm_const.h"
-#include "dump_ctrl.h"
-#include "light.h"
-#include "dat_file.h"
-#include <cal_path.h>
-#include <lang.h>
-#include <light_fun.h>
-#include <dump.h>
-#include <heat_fun.h>
+#include "heat.h"
+#include "device.h"
+#include "config.h"
+#include "util.h"
+#include "lang.h"
+#include "log.h"
 
-
-void heat_setup_dump_dir(struct simulation *sim,char *path,struct heat *thermal)
+void heat_material_init(struct heat_material *mat)
 {
-	if (thermal->newton_enable_external_thermal==TRUE)
-	{
-		join_path(2,thermal->dump_dir,path,"thermal_output");
-
-		gpvdm_mkdir(thermal->dump_dir);
-	}
+	mat->thermal_kl=-1.0;
+	mat->thermal_tau_e=-1.0;
+	mat->thermal_tau_h=-1.0;
 }
 
-void heat_dump(struct simulation *sim,char *path,struct heat *thermal)
+void heat_material_cpy(struct heat_material *out,struct heat_material *in)
 {
+	out->thermal_kl=in->thermal_kl;
+	out->thermal_tau_e=in->thermal_tau_e;
+	out->thermal_tau_h=in->thermal_tau_h;
 }
 
+void heat_material_free(struct heat_material *mat)
+{
+	mat->thermal_kl=-1.0;
+	mat->thermal_tau_e=-1.0;
+	mat->thermal_tau_h=-1.0;
+}
+
+void heat_material_load_from_json(struct simulation *sim,struct heat_material *mat, struct json_obj *json_heat_material)
+{
+	json_get_long_double(sim,json_heat_material, &(mat->thermal_kl),"thermal_kl");
+	json_get_long_double(sim,json_heat_material, &(mat->thermal_tau_e),"thermal_tau_e");
+	json_get_long_double(sim,json_heat_material, &(mat->thermal_tau_h),"thermal_tau_h");
+}

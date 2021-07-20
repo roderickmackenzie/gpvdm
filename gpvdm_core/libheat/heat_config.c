@@ -51,6 +51,7 @@
 #include <cal_path.h>
 #include <heat_fun.h>
 #include <mesh.h>
+#include <device_fun.h>
 
 static int unused __attribute__((unused));
 
@@ -60,90 +61,71 @@ static int unused __attribute__((unused));
 
 
 
-void heat_load_config_file(struct simulation *sim,struct heat *thermal)
+void heat_load_config_file(struct simulation *sim,struct heat *thermal, struct json_obj *json_config)
 {
-	char temp[100];
+	struct json_obj *json_thermal;
+	struct json_obj *json_thermal_boundary;
 
-	struct inp_file inp;
+	json_thermal=json_obj_find(json_config, "thermal");
 
-	inp_init(sim,&inp);
-	inp_load_from_path(sim,&inp,get_input_path(sim),"thermal.inp");
-	inp_check(sim,&inp,1.1);
+	json_get_english(sim,json_thermal, &(thermal->newton_enable_external_thermal),"thermal");
+	json_get_english(sim,json_thermal, &(thermal->thermal_couple_to_electrical_solver),"thermal_couple_to_electrical_solver");
 
-	inp_search_string(sim,&inp,temp,"#thermal");
-	thermal->newton_enable_external_thermal=english_to_bin(sim,temp);
+	json_get_english(sim,json_thermal, &(thermal->thermal_model_type),"thermal_model_type");
 
-	inp_search_string(sim,&inp,temp,"#thermal_model_type");
-	thermal->thermal_model_type=english_to_bin(sim,temp);
+	json_get_english(sim,json_thermal, &(thermal->thermal_l),"thermal_l");
 
-	inp_search_string(sim,&inp,temp,"#thermal_l");
-	thermal->thermal_l=english_to_bin(sim,temp);
+	json_get_english(sim,json_thermal, &(thermal->thermal_e),"thermal_e");
 
-	inp_search_string(sim,&inp,temp,"#thermal_e");
-	thermal->thermal_e=english_to_bin(sim,temp);
+	json_get_english(sim,json_thermal, &(thermal->thermal_h),"thermal_h");
 
-	inp_search_string(sim,&inp,temp,"#thermal_h");
-	thermal->thermal_h=english_to_bin(sim,temp);
+	json_get_int(sim,json_thermal, &(thermal->thermal_max_ittr),"thermal_max_ittr");
+	json_get_long_double(sim,json_thermal, &(thermal->min_error),"thermal_min_error");
 
-	inp_search_int(sim,&inp,&(thermal->thermal_max_ittr),"#thermal_max_ittr");
+	json_get_int(sim,json_thermal, &(thermal->nofluxl),"nofluxl");
 
-	inp_search_gdouble(sim,&inp,&(thermal->thermal_kl),"#thermal_kl");
-	inp_search_gdouble(sim,&inp,&(thermal->thermal_tau_e),"#thermal_tau_e");
-	inp_search_gdouble(sim,&inp,&(thermal->thermal_tau_h),"#thermal_tau_h");
+	json_get_english(sim,json_thermal, &(thermal->joule_heating),"joule_heating");
+	json_get_english(sim,json_thermal, &(thermal->parasitic_heating),"parasitic_heating");
 
-	inp_search_int(sim,&inp,&(thermal->nofluxl),"#nofluxl");
+	json_get_english(sim,json_thermal, &(thermal->recombination_heating),"recombination_heating");
 
-	inp_search_string(sim,&inp,temp,"#joule_heating");
-	thermal->joule_heating=english_to_bin(sim,temp);
-	
-	inp_search_string(sim,&inp,temp,"#recombination_heating");
-	thermal->recombination_heating=english_to_bin(sim,temp);
+	json_get_english(sim,json_thermal, &(thermal->optical_heating),"optical_heating");
 
-	inp_search_string(sim,&inp,temp,"#optical_heating");
-	thermal->optical_heating=english_to_bin(sim,temp);
+	json_get_int(sim,json_thermal, &(thermal->dump_verbosity),"dump_verbosity");
+	json_get_english(sim,json_thermal, &(thermal->solver_verbosity),"solver_verbosity");
 
-	inp_free(sim,&inp);
+	json_thermal_boundary=json_obj_find(json_config, "thermal_boundary");
 
-	inp_load_from_path(sim,&inp,get_input_path(sim),"thermal_boundry.inp");
-	inp_check(sim,&inp,1.0);
+	json_get_english(sim,json_thermal_boundary, &(thermal->Ty0_boundry),"Ty0_boundry");
+	json_get_long_double(sim,json_thermal_boundary, &(thermal->Ty0),"Ty0");
+	json_get_long_double(sim,json_thermal_boundary, &(thermal->heatsink_y0),"heatsink_y0");
+	json_get_long_double(sim,json_thermal_boundary, &(thermal->heatsink_length_y0),"heatsink_length_y0");
 
-	inp_search_string(sim,&inp,temp,"#Ty0_boundry");
-	thermal->Ty0_boundry=english_to_bin(sim,temp);
-	inp_search_gdouble(sim,&inp,&(thermal->Ty0),"#Ty0");
-	inp_search_gdouble(sim,&inp,&(thermal->heatsink_y0),"#heatsink_y0");
-	inp_search_gdouble(sim,&inp,&(thermal->heatsink_length_y0),"#heatsink_length_y0");
+	json_get_english(sim,json_thermal_boundary, &(thermal->Ty1_boundry),"Ty1_boundry");
+	json_get_long_double(sim,json_thermal_boundary, &(thermal->Ty1),"Ty1");
+	json_get_long_double(sim,json_thermal_boundary, &(thermal->heatsink_y1),"heatsink_y1");
+	json_get_long_double(sim,json_thermal_boundary, &(thermal->heatsink_length_y1),"heatsink_length_y1");
 
-	inp_search_string(sim,&inp,temp,"#Ty1_boundry");
-	thermal->Ty1_boundry=english_to_bin(sim,temp);
-	inp_search_gdouble(sim,&inp,&(thermal->Ty1),"#Ty1");
-	inp_search_gdouble(sim,&inp,&(thermal->heatsink_y1),"#heatsink_y1");
-	inp_search_gdouble(sim,&inp,&(thermal->heatsink_length_y1),"#heatsink_length_y1");
+	json_get_english(sim,json_thermal_boundary, &(thermal->Tx0_boundry),"Tx0_boundry");
+	json_get_long_double(sim,json_thermal_boundary, &(thermal->Tx0),"Tx0");
+	json_get_long_double(sim,json_thermal_boundary, &(thermal->heatsink_x0),"heatsink_x0");
+	json_get_long_double(sim,json_thermal_boundary, &(thermal->heatsink_length_x0),"heatsink_length_x0");
 
-	inp_search_string(sim,&inp,temp,"#Tx0_boundry");
-	thermal->Tx0_boundry=english_to_bin(sim,temp);
-	inp_search_gdouble(sim,&inp,&(thermal->Tx0),"#Tx0");
-	inp_search_gdouble(sim,&inp,&(thermal->heatsink_x0),"#heatsink_x0");
-	inp_search_gdouble(sim,&inp,&(thermal->heatsink_length_x0),"#heatsink_length_x0");
+	json_get_english(sim,json_thermal_boundary, &(thermal->Tx1_boundry),"Tx1_boundry");
+	json_get_long_double(sim,json_thermal_boundary, &(thermal->Tx1),"Tx1");
+	json_get_long_double(sim,json_thermal_boundary, &(thermal->heatsink_x1),"heatsink_x1");
+	json_get_long_double(sim,json_thermal_boundary, &(thermal->heatsink_length_x1),"heatsink_length_x1");
 
-	inp_search_string(sim,&inp,temp,"#Tx1_boundry");
-	thermal->Tx1_boundry=english_to_bin(sim,temp);
-	inp_search_gdouble(sim,&inp,&(thermal->Tx1),"#Tx1");
-	inp_search_gdouble(sim,&inp,&(thermal->heatsink_x1),"#heatsink_x1");
-	inp_search_gdouble(sim,&inp,&(thermal->heatsink_length_x1),"#heatsink_length_x1");
+	json_get_english(sim,json_thermal_boundary, &(thermal->Tz0_boundry),"Tz0_boundry");
+	json_get_long_double(sim,json_thermal_boundary, &(thermal->Tz0),"Tz0");
+	json_get_long_double(sim,json_thermal_boundary, &(thermal->heatsink_z0),"heatsink_z0");
+	json_get_long_double(sim,json_thermal_boundary, &(thermal->heatsink_length_z0),"heatsink_length_z0");
 
-	inp_search_string(sim,&inp,temp,"#Tz0_boundry");
-	thermal->Tx0_boundry=english_to_bin(sim,temp);
-	inp_search_gdouble(sim,&inp,&(thermal->Tz0),"#Tz0");
-	inp_search_gdouble(sim,&inp,&(thermal->heatsink_z0),"#heatsink_z0");
-	inp_search_gdouble(sim,&inp,&(thermal->heatsink_length_z0),"#heatsink_length_z0");
+	json_get_english(sim,json_thermal_boundary, &(thermal->Tz1_boundry),"Tz1_boundry");
+	json_get_long_double(sim,json_thermal_boundary, &(thermal->Tz1),"Tz1");
+	json_get_long_double(sim,json_thermal_boundary, &(thermal->heatsink_z1),"heatsink_z1");
+	json_get_long_double(sim,json_thermal_boundary, &(thermal->heatsink_length_z1),"heatsink_length_z1");
 
-	inp_search_string(sim,&inp,temp,"#Tz1_boundry");
-	thermal->Tz1_boundry=english_to_bin(sim,temp);
-	inp_search_gdouble(sim,&inp,&(thermal->Tz1),"#Tz1");
-	inp_search_gdouble(sim,&inp,&(thermal->heatsink_z1),"#heatsink_z1");
-	inp_search_gdouble(sim,&inp,&(thermal->heatsink_length_z1),"#heatsink_length_z1");
-
-	inp_free(sim,&inp);
 
 }
 
@@ -152,7 +134,8 @@ void heat_load_config(struct simulation *sim,struct heat *thermal, struct device
 	//struct dimensions *dim_dev=&(dev->ns.dim);
 	struct dim_heat *dim=&(thermal->dim);
 	struct epitaxy* epi=&(dev->my_epitaxy);
-	heat_load_config_file(sim,thermal);
+	
+	heat_load_config_file(sim,thermal,&(dev->config.obj));
 
 	if (thermal->newton_enable_external_thermal==TRUE)
 	{
@@ -168,7 +151,7 @@ void heat_load_config(struct simulation *sim,struct heat *thermal, struct device
 			//We are assuming the lattice heat model covers only the active layer - for now
 			long double start=epitaxy_get_heat_problem_start(epi);
 			long double stop=epitaxy_get_heat_problem_stop(epi);
-			mesh_gen_simple(sim, &(thermal->mesh_data.meshdata_y),stop-start,40);
+			mesh_gen_simple(sim, &(thermal->mesh_data.meshdata_y),stop-start,50);
 			//mesh_cpy(sim,&(thermal->mesh_data.meshdata_y),&(dev->mesh_data.meshdata_y));
 			thermal->mesh_data.meshdata_y.start=start;
 		}
@@ -179,7 +162,7 @@ void heat_load_config(struct simulation *sim,struct heat *thermal, struct device
 
 		heat_malloc(sim,thermal);
 		heat_build_materials_arrays(sim,thermal,dev);
-		heat_setup_dump_dir(sim,thermal);
+		heat_setup_dump_dir(sim,get_output_path(dev),thermal);
 		heat_set_initial_distribution(thermal);
 	}else
 	{

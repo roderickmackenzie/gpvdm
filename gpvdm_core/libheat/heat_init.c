@@ -70,6 +70,7 @@ void heat_init(struct heat *thermal)
 	thermal->H_optical=NULL;
 	thermal->H_recombination=NULL;
 	thermal->H_joule=NULL;
+	thermal->H_parasitic=NULL;
 
 	thermal->He=NULL;
 	thermal->Hh=NULL;
@@ -80,8 +81,6 @@ void heat_init(struct heat *thermal)
 
 	//objects
 	thermal->obj=NULL;
-
-	thermal->thermal_kl=-1.0;
 
 	thermal->thermal_l=FALSE;
 	thermal->thermal_e=FALSE;
@@ -119,19 +118,23 @@ void heat_init(struct heat *thermal)
 	thermal->Tliso=FALSE;
 	thermal->Triso=FALSE;
 
-	thermal->thermal_tau_e=-1.0;
-	thermal->thermal_tau_h=-1.0;
-
 	thermal->thermal_conv=FALSE;
 
 	thermal->min_error=2e-11;
 
 	thermal->joule_heating=-1;
+	thermal->parasitic_heating=-1;
 	thermal->recombination_heating=-1;
 	thermal->optical_heating=-1;
 
 	dim_heat_init(dim);
 	mesh_obj_init(&(thermal->mesh_data));
 	matrix_init(&(thermal->mx));
+
+	thermal->dump_verbosity=-1;
+
+	thermal->solver_verbosity=-1;
+
+
 }
 

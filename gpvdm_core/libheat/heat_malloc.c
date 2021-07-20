@@ -75,7 +75,7 @@ void heat_malloc(struct simulation *sim,struct heat *thermal)
 	malloc_heat_zxy_long_double(dim,&(thermal->H_optical));
 	malloc_heat_zxy_long_double(dim,&(thermal->H_recombination));
 	malloc_heat_zxy_long_double(dim,&(thermal->H_joule));
-
+	malloc_heat_zxy_long_double(dim,&(thermal->H_parasitic));
 
 	malloc_heat_zxy_long_double(dim,&(thermal->He));
 	malloc_heat_zxy_long_double(dim,&(thermal->Hh));

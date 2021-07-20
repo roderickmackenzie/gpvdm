@@ -57,8 +57,8 @@ hydrodynamic_mesh_check(sim, thermal,dev);
 
 	for (y=0;y<dim->ylen;y++)
 	{
-		thermal->ke[z][x][y]=(5/2+1.5)*kb*(kb/Q)*thermal->Te[z][x][y]*dev->mun_y[z][x][y]*dev->n[z][x][y];
-		thermal->kh[z][x][y]=(5/2+1.5)*kb*(kb/Q)*thermal->Th[z][x][y]*dev->mup_y[z][x][y]*dev->p[z][x][y];
+		thermal->ke[z][x][y]=(5/2+1.5)*kb*(kb/Qe)*thermal->Te[z][x][y]*dev->mun_y[z][x][y]*dev->n[z][x][y];
+		thermal->kh[z][x][y]=(5/2+1.5)*kb*(kb/Qe)*thermal->Th[z][x][y]*dev->mup_y[z][x][y]*dev->p[z][x][y];
 	}
 
 }

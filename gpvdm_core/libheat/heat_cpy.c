@@ -75,7 +75,7 @@ void heat_cpy(struct simulation *sim,struct heat *out,struct heat *in)
 	cpy_heat_zxy_long_double(dim,&(out->H_optical),&(in->H_optical));
 	cpy_heat_zxy_long_double(dim,&(out->H_recombination),&(in->H_recombination));
 	cpy_heat_zxy_long_double(dim,&(out->H_joule),&(in->H_joule));
-
+	cpy_heat_zxy_long_double(dim,&(out->H_parasitic),&(in->H_parasitic));
 
 	cpy_heat_zxy_long_double(dim,&(out->He),&(in->He));
 	cpy_heat_zxy_long_double(dim,&(out->Hh),&(in->Hh));
@@ -86,10 +86,6 @@ void heat_cpy(struct simulation *sim,struct heat *out,struct heat *in)
 
 	//objects
 	cpy_heat_zxy_p_object(dim, &(out->obj),&(in->obj));
-
-	out->thermal_kl=in->thermal_kl;
-	out->thermal_tau_e=in->thermal_tau_e;
-	out->thermal_tau_h=in->thermal_tau_h;
 
 
 	//boundry temperatures
@@ -131,17 +127,22 @@ void heat_cpy(struct simulation *sim,struct heat *out,struct heat *in)
 	out->thermal_conv=in->thermal_conv;
 	out->min_error=in->min_error;
 	out->newton_enable_external_thermal=in->newton_enable_external_thermal;
+	out->thermal_couple_to_electrical_solver=in->thermal_couple_to_electrical_solver;
 	out->thermal_l=in->thermal_l;
 	out->thermal_e=in->thermal_e;
 	out->thermal_h=in->thermal_h;
 	out->thermal_max_ittr=in->thermal_max_ittr;
+	out->min_error=in->min_error;
 
 	//Options
 	out->joule_heating=in->joule_heating;
+	out->parasitic_heating=in->parasitic_heating;
 	out->recombination_heating=in->recombination_heating;
 	out->optical_heating=in->optical_heating;
 
 	matrix_cpy(sim,&(out->mx),&(in->mx));
 
+	out->dump_verbosity=in->dump_verbosity;
+	out->solver_verbosity=in->solver_verbosity;
 }
 
