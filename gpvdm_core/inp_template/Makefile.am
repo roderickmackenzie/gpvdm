@@ -1,7 +1,7 @@
 
 
 
-all: epitaxy.inp
+all: server.inp
 	echo "inp template built"
 
 clean:
