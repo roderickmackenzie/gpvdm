@@ -48,6 +48,7 @@
 #include <dump.h>
 #include <shape.h>
 #include <shape_struct.h>
+#include <json.h>
 
 int contacts_find_ground_contact(struct simulation *sim,struct device *in)
 {
@@ -194,6 +195,7 @@ struct newton_state *ns=&(in->ns);
 	{
 
 		up=TRUE;
+
 		if (in->contacts[i].voltage_want!=in->contacts[i].voltage)
 		{
 			changed=TRUE;
@@ -204,7 +206,7 @@ struct newton_state *ns=&(in->ns);
 
 			if (ns->last_ittr<16)
 			{
-				dV=dV*(1.0+0.001);
+				dV=dV*(1.0+0.005);
 			}
 
 			if (ns->last_ittr>18)
@@ -389,6 +391,11 @@ gdouble value=0.0;
 struct newton_state *ns=&in->ns;
 struct dimensions *dim=&in->ns.dim;
 struct contact *c;
+int electrical_y0_boundry;
+long double Voltage_electrical_y0;
+struct json_obj *obj_contacts;
+struct json_obj *obj_contact;
+
 
 if (in->Vapplied_y0==NULL) return;
 
@@ -420,6 +427,12 @@ if (dim->xlen==1)
 	return;
 }
 
+obj_contacts=json_obj_find_by_path(sim,&(in->config.obj), "electrical_solver.boundary");
+
+json_get_english(sim,obj_contacts, &electrical_y0_boundry,"electrical_y0_boundry");
+json_get_long_double(sim,obj_contacts, &Voltage_electrical_y0,"electrical_y0");
+
+
 //Reset contacts
 for (z=0;z<dim->zlen;z++)
 {
@@ -431,8 +444,9 @@ for (z=0;z<dim->zlen;z++)
 		in->n_contact_y0[z][x]=-1;
 		in->n_contact_y1[z][x]=-1;
 
-		in->passivate_y0[z][x]=TRUE;
-		in->passivate_y1[z][x]=TRUE;
+		in->passivate_y0[z][x]=electrical_y0_boundry;
+		in->Vapplied_y0[z][x]=Voltage_electrical_y0;
+		in->passivate_y1[z][x]=NEUMANN;
 	}
 
 	for (y=0;y<dim->ylen;y++)
@@ -443,8 +457,8 @@ for (z=0;z<dim->zlen;z++)
 		in->n_contact_x0[z][y]=-1;
 		in->n_contact_x1[z][y]=-1;
 
-		in->passivate_x0[z][y]=TRUE;
-		in->passivate_x1[z][y]=TRUE;
+		in->passivate_x0[z][y]=NEUMANN;
+		in->passivate_x1[z][y]=NEUMANN;
 	}
 
 }
@@ -469,7 +483,7 @@ for (z=0;z<dim->zlen;z++)
 
 						in->Vapplied_y0[z][x]=c->voltage;
 						in->n_contact_y0[z][x]=i;
-						in->passivate_y0[z][x]=FALSE;
+						in->passivate_y0[z][x]=CONSTANT;
 					}
 				}
 			}
@@ -567,6 +581,20 @@ void contacts_interpolate(struct simulation *sim,struct device *in, long double 
 	int cc;
 	int interpolate=FALSE;
 	int last_x=0;
+	int electrical_y0_boundry;
+
+	struct json_obj *obj_contacts;
+	struct json_obj *obj_contact;
+	char contact_name[200];
+
+	obj_contacts=json_obj_find_by_path(sim,&(in->config.obj), "electrical_solver.boundary");
+
+	json_get_english(sim,obj_contacts, &electrical_y0_boundry,"electrical_y0_boundry");
+
+	if (electrical_y0_boundry!=INTERPOLATE)
+	{
+		return;
+	}
 	//struct newton_state *ns=&in->ns;
 	struct dimensions *dim=&in->ns.dim;
 	for (z=0;z<dim->zlen;z++)

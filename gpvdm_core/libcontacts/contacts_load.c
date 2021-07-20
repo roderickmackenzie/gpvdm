@@ -60,19 +60,15 @@ void contacts_load(struct simulation *sim,struct device *in)
 	long double layer_btm;
 	long double y_pos=0.0;
 	struct shape *s;
-	struct inp_file inp;
+	struct json_obj *obj_contacts;
+	struct json_obj *obj_contact;
+	char contact_name[200];
 	in->ncontacts=0;
 
-	inp_init(sim,&inp);
-	if (inp_load(sim, &inp , "contacts.inp")!=0)
-	{
-		ewe(sim,"Can't open the file contacts\n");
-	}
+	obj_contacts=json_obj_find_by_path(sim,&(in->config.obj), "epitaxy.contacts");
 
-	inp_check(sim,&inp,1.3);
-	inp_reset_read(sim,&inp);
-	inp_get_string(sim,&inp);
-	sscanf(inp_get_string(sim,&inp),"%d",&(in->ncontacts));
+	json_get_int(sim,obj_contacts, &(in->ncontacts),"ncontacts");
+
 
 	in->contacts=(struct contact *)malloc(in->ncontacts*sizeof(struct contact));
 
@@ -88,15 +84,15 @@ void contacts_load(struct simulation *sim,struct device *in)
 
 	for (i=0;i<in->ncontacts;i++)
 	{
+		sprintf(contact_name,"contact%d",i);
+		obj_contact=json_obj_find(obj_contacts, contact_name);
+
 		contact_init(sim,&(in->contacts[i]));
-		//inp_get_string(sim,&inp);	//name
-		//strcpy(in->contacts[i].name,inp_get_string(sim,&inp));
 
-		inp_get_string(sim,&inp);	//position
-		in->contacts[i].position=english_to_bin(sim, inp_get_string(sim,&inp));
+		json_get_english(sim,obj_contact, &(in->contacts[i].position),"position");
 
-		inp_get_string(sim,&inp);	//applied voltage type
-		strcpy(in->contacts[i].applied_voltage_type,inp_get_string(sim,&inp));
+		json_get_string(sim, obj_contact, in->contacts[i].applied_voltage_type,"applied_voltage_type");
+
 		if (strcmp(in->contacts[i].applied_voltage_type,"change")==0)
 		{
 			in->contacts[i].active=TRUE;
@@ -105,9 +101,8 @@ void contacts_load(struct simulation *sim,struct device *in)
 			in->contacts[i].active=FALSE;
 		}
 
+		json_get_long_double(sim,obj_contact, &(in->contacts[i].voltage_want),"applied_voltage");
 
-		inp_get_string(sim,&inp);	//applied_voltage
-		sscanf(inp_get_string(sim,&inp),"%Le",&(in->contacts[i].voltage_want));
 		in->contacts[i].voltage=0.0;
 		in->contacts[i].voltage_last=in->contacts[i].voltage;
 
@@ -126,15 +121,10 @@ void contacts_load(struct simulation *sim,struct device *in)
 		//printf("%Le\n",in->contacts[i].voltage_want);
 		//getchar();
 
-		inp_get_string(sim,&inp);	//np
-		sscanf(inp_get_string(sim,&inp),"%Le",&(in->contacts[i].np));
+		json_get_long_double(sim,obj_contact, &(in->contacts[i].np),"np");
 		in->contacts[i].np=fabs(in->contacts[i].np);
 
-		inp_get_string(sim,&inp);	//charge_type
-		in->contacts[i].charge_type=english_to_bin(sim, inp_get_string(sim,&inp));
-
-		inp_get_string(sim,&inp);	//shape_file_name
-		strcpy(in->contacts[i].shape_file_name,inp_get_string(sim,&inp));
+		json_get_english(sim,obj_contact, &(in->contacts[i].charge_type),"charge_type");
 
 		if (in->contacts[i].position==BOTTOM)
 		{
@@ -146,7 +136,9 @@ void contacts_load(struct simulation *sim,struct device *in)
 
 		//printf("%d %Le\n",in->contacts[i].position,y_pos);
 		//getchar();
-		s=shape_load_file(sim,&(in->my_epitaxy),&(in->contacts[i].shape),in->contacts[i].shape_file_name,y_pos);
+		shape_load_from_json(sim,&(in->my_epitaxy),&(in->contacts[i].shape), obj_contact ,y_pos);
+		//shape_load_file(sim,&(in->my_epitaxy),&(in->contacts[i].shape),in->contacts[i].shape_file_name,y_pos);
+		s=&(in->contacts[i].shape);
 		s->nx=1;
 		s->nz=1;
 		s->dz=in->zlen;
@@ -155,23 +147,18 @@ void contacts_load(struct simulation *sim,struct device *in)
 		s->dz_padding=0.0;
 		strcpy(in->contacts[i].name,s->name);
 
-		inp_get_string(sim,&inp);	//contact_resistance_sq
-		sscanf(inp_get_string(sim,&inp),"%Le",&(in->contacts[i].contact_resistance_sq));
+		json_get_long_double(sim,obj_contact, &(in->contacts[i].contact_resistance_sq),"contact_resistance_sq");
 		in->contacts[i].contact_resistance_sq=fabs(in->contacts[i].contact_resistance_sq);
 
-		inp_get_string(sim,&inp);	//shunt_resistance_sq
-		sscanf(inp_get_string(sim,&inp),"%Le",&(in->contacts[i].shunt_resistance_sq));
+		json_get_long_double(sim,obj_contact, &(in->contacts[i].shunt_resistance_sq),"shunt_resistance_sq");
 		in->contacts[i].shunt_resistance_sq=fabs(in->contacts[i].shunt_resistance_sq);
 
-		inp_get_string(sim,&inp);	//Physical model
-		in->contacts[i].type=english_to_bin(sim, inp_get_string(sim,&inp));
+		json_get_english(sim,obj_contact, &(in->contacts[i].type),"physical_model");
 
-		inp_get_string(sim,&inp);	//ve0
-		sscanf(inp_get_string(sim,&inp),"%Le",&(in->contacts[i].ve0));
+		json_get_long_double(sim,obj_contact, &(in->contacts[i].ve0),"ve0");
 		in->contacts[i].ve0=fabs(in->contacts[i].ve0);
 
-		inp_get_string(sim,&inp);	//ve0
-		sscanf(inp_get_string(sim,&inp),"%Le",&(in->contacts[i].vh0));
+		json_get_long_double(sim,obj_contact, &(in->contacts[i].vh0),"vh0");
 		in->contacts[i].vh0=fabs(in->contacts[i].vh0);
 
 		if (in->contacts[i].position==LEFT)
@@ -179,14 +166,6 @@ void contacts_load(struct simulation *sim,struct device *in)
 			s->dx=ingress;
 		}
 	}
-
-	char * ver = inp_get_string(sim,&inp);
-	if (strcmp(ver,"#ver")!=0)
-	{
-			ewe(sim,"No #ver tag found in file\n");
-	}
-
-	inp_free(sim,&inp);
 
 	in->boundry_y0=contact_ohmic;
 	for (i=0;i<in->ncontacts;i++)
@@ -208,15 +187,5 @@ void contacts_setup(struct simulation *sim,struct device *in)
 	contact_set_flip_current(sim,in);
 
 	contacts_cal_area(sim,in);
-		struct lock *l;
-		l=&(sim->lock_data);
-	
-		if (lock_is_item_locked(sim, l,"high_voltage")==TRUE)
-		{
-			in->high_voltage_limit=TRUE;
-		}else
-		{
-			in->high_voltage_limit=FALSE;
-		}
 }
 
