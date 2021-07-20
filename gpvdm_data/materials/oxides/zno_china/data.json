@@ -1,0 +1,11 @@
+{
+	"item_type":"material",
+	"color_r":0.7,
+	"color_g":0.7,
+	"color_b":0.7,
+	"color_alpha":1.0,
+	"material_type":"inorganic",
+	"status":"public",
+	"changelog":"",
+	"mat_src":"unknown"
+	}

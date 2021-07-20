@@ -1,0 +1,25 @@
+{
+	"item_type":"emission",
+	"color_r":0.8,
+	"color_g":0.8,
+	"color_b":0.8,
+	"color_alpha":0.8,
+	"material_type":"other",
+	"status":"public",
+	"changelog":"",
+	"mat_src":"",
+	"emission_import": {
+		"import_file_path":"none",
+		"import_x_combo_pos":9,
+		"import_data_combo_pos":5,
+		"import_x_spin":0,
+		"import_data_spin":1,
+		"import_title":"Voltage - J",
+		"import_xlabel":"Voltage",
+		"import_data_label":"J",
+		"import_area":0.104,
+		"import_data_invert":"False",
+		"import_x_invert":"False",
+		"data_file":"none"
+		}
+	}

@@ -1,0 +1,51 @@
+{
+	"item_type":"material",
+	"color_r":0.53803,
+	"color_g":0.53803,
+	"color_b":0.0,
+	"color_alpha":1.0,
+	"material_type":"metal",
+	"status":"public",
+	"changelog":"",
+	"mat_src":"unknown",
+	"n_import": {
+		"import_file_path":"none",
+		"import_x_combo_pos":9,
+		"import_data_combo_pos":5,
+		"import_x_spin":0,
+		"import_data_spin":1,
+		"import_title":"Voltage - J",
+		"import_xlabel":"Voltage",
+		"import_data_label":"J",
+		"import_area":0.104,
+		"import_data_invert":"False",
+		"import_x_invert":"False",
+		"data_file":"n.gmat"
+		},
+	"alpha_import": {
+		"import_file_path":"none",
+		"import_x_combo_pos":9,
+		"import_data_combo_pos":5,
+		"import_x_spin":0,
+		"import_data_spin":1,
+		"import_title":"Voltage - J",
+		"import_xlabel":"Voltage",
+		"import_data_label":"J",
+		"import_area":0.104,
+		"import_data_invert":"False",
+		"import_x_invert":"False",
+		"data_file":"alpha.gmat"
+		},
+	"electrical_constants": {
+		"material_blend":"False",
+		"Xi0":-5.2,
+		"Eg0":1.0,
+		"Xi1":-3.0,
+		"Eg1":1.0
+		},
+	"thermal_constants": {
+		"thermal_kl":2.2,
+		"thermal_tau_e":1.0,
+		"thermal_tau_h":1.0
+		}
+	}

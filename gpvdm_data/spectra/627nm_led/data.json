@@ -1,0 +1,19 @@
+{
+	"item_type":"spectra",
+	"status":"public",
+	"changelog":"An LED with about a 30 nm line width. Modeled on Autolab LED for IMPS",
+	"spectra_import": {
+		"import_file_path":"none",
+		"import_x_combo_pos":9,
+		"import_data_combo_pos":5,
+		"import_x_spin":0,
+		"import_data_spin":2,
+		"import_title":"Voltage - J",
+		"import_xlabel":"Voltage",
+		"import_data_label":"J",
+		"import_area":0.104,
+		"import_data_invert":"False",
+		"import_x_invert":"False",
+		"data_file":"none"
+		}
+	}

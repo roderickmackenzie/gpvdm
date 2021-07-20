@@ -765,11 +765,7 @@ Removing the z dependence because we don't care about it.
 \frac{\partial E_z}{\partial t}= \frac{1}{\epsilon}(\frac{\partial H_y}{\partial x}-\frac{\partial H_x}{\partial y}-\sigma E_z) 
 \end{equation}
 
-\bibliographystyle{gpvdm.bst}
-\bibliography{gpvdm}
 
-\appendix
-\addcontentsline{toc}{chapter}{APPENDICES}
 \section{Output directories}
 \textbf{equilibrium}\newline
 Before the solver starts any simulation it solves the device equations in the dark with 0V applied bias.  The result of this calculation are placed in this directory.  The practical reason for doing this is that Newton's method only works if you give it a reasonable starting guess for any given problem.  Thus to start the solver, we guess the carrier densities at 0V in the dark, we then use Newton's method to calculate the exact carrier density profiles at 0V in the dark (results are stored in the equilibrium directory), then from this point we can work our way to other solutions say at +1V in the light.\cite{0953-8984-25-21-215301}
@@ -785,6 +781,72 @@ Writing to disk is slow on even the most modern of computers with an SSD.  The s
 \end{figure}
 
 \input{files}
+
+\textbf{sim\_info.dat}\newline
+This file contains quantities calculated from the simulation such as $V_{oc}$, $J_{sc}$ what is in the file depends on what type of simulation you whish to carry out.  The file is a JSON formatted file file some common tokens are defined below:
+
+JV curve simulation:
+
+\begin{center}
+\begin{tabular}{ |c|c|c| c|} 
+\hline
+JSON token & Meaning & Units & Ref \\
+\hline
+ff & Fill factor&au&\\
+pce & 			PCE& percent&\\
+Pmax & 			Power at Pmax&&\\
+voc & 			$V_{oc}$ &&\\
+voc\textunderscore R & 		Recombination rate at $P_{max}$& &\\
+jv\textunderscore voc \textunderscore k & 		&&\\
+jv\textunderscore pmax \textunderscore n & 	&&\\
+voc\textunderscore nt & Trapped electron carrier densiyt at $V_oc$		&&\\
+voc\textunderscore pt & Trapped hole carrier density at $V_oc$		&&\\
+voc\textunderscore nf & Free electron carrier densiyt at $V_oc$		&&\\
+voc\textunderscore pf & Free hole carrier density at $V_oc$		&&\\
+jsc 				  & 	$J_{sc}$		& $Am^{-2}$&\\
+jv\textunderscore jsc \textunderscore n & Average charge density at $J_{sc}$	& $m^{-3}$&\\
+jv\textunderscore vbi & Built in voltage		& V&\\
+jv\textunderscore gen & Average generation rate		&&\\
+voc\textunderscore np \textunderscore tot & 	&&\\
+j\textunderscore pmax & Current at $P_{max}$		& $Am^{-2}$&\\
+v\textunderscore pmax & Voltage at $P_{max}$    & V &\\
+mu\textunderscore jsc & 		&$m^{2} V^{-1} s^{-1}$&\\
+mu\textunderscore pmax & 		&$m^{2} V^{-1} s^{-1}$&\\
+mu\textunderscore voc & 	Average mobility at $V_{oc}$	& $m^{2} V^{-1} s^{-1}$&\\
+mue\textunderscore pmax & Average electron mobility at $P_{max}$	&$m^{2} V^{-1} s^{-1}$&\\
+muh\textunderscore pmax & Average hole mobility at $P_{max}$ &$m^{2} V^{-1} s^{-1}$&\\
+tau\textunderscore voc & 	Recombination time constant at $V_{oc}$	 & s &\\
+tau\textunderscore pmax & 	Recombination time constant at $P_{max}$	&s&\\
+
+theta\textunderscore srh\textunderscore free & $\theta_{SRH}$ Collection coefficient at $P_{max}$ y & au &p.100 5.2a\cite{Summon-FETCH-bonn_catalog_45326403},\cite{PhysRevApplied.6.024001}\\
+theta\textunderscore srh\textunderscore free\textunderscore trap & $\theta_{SRH}$ Collection coefficient at $P_{max}$ & au &p.100 5.2a\cite{Summon-FETCH-bonn_catalog_45326403},\cite{PhysRevApplied.6.024001}\\
+
+\hline
+\end{tabular}
+\end{center}
+
+Optical simulation
+
+\begin{center}
+\begin{tabular}{ |c|c|c| c|} 
+\hline
+JSON token & Meaning & Units & Ref \\
+\hline
+J\textunderscore photo & Photo current density $Am^{-2}$& &\\
+I\textunderscore photo & Photo current $A$& &\\
+
+
+\hline
+\end{tabular}
+\end{center}
+
+\section{Copyright of the manual}
+This manual is released under CC-BY license.
+
+\bibliographystyle{gpvdm.bst}
+\bibliography{gpvdm}
+
+
 
 \end{document}
 

@@ -1,0 +1,11 @@
+{
+	"item_type":"material",
+	"color_r":0.4,
+	"color_g":0.4,
+	"color_b":0.4,
+	"color_alpha":1.0,
+	"material_type":"oxide",
+	"status":"public",
+	"changelog":"",
+	"mat_src":"unknown"
+	}
