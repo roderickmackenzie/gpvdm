@@ -6,7 +6,7 @@ LINK_FLAG=@LINK_FLAG@
 
 inc=-I../include/
 
-OBJS=light_config.o light_dump.o light_dump_verbose_1d.o light_dump_verbose_2d.o light_interface.o light_laser.o light_materials.o light_memory.o light_mesh.o light_utils.o light_solve.o light_init.o light_filter.o light_free.o light_cpy.o stats.o light_dump_snapshots.o
+OBJS=light_config.o light_dump.o light_dump_verbose_1d.o light_dump_verbose_2d.o light_interface.o light_laser.o light_materials.o light_memory.o light_mesh.o light_utils.o light_solve.o light_init.o light_free.o light_cpy.o stats.o light_dump_snapshots.o light_src.o
 
 all: $(OBJS)
 	$(AR) rcs libgpvdm_light.@SLIB_EXT@ $(OBJS)

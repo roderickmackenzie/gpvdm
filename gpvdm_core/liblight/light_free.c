@@ -38,6 +38,7 @@
 	@brief Deals with memory allocation for the light model.
 */
 
+#include <enabled_libs.h>
 #include <string.h>
 #include <stdlib.h>
 #include "util.h"
@@ -54,6 +55,7 @@
 #include <device_fun.h>
 #include <triangles.h>
 
+	#define _GNU_SOURCE
 	#include <dlfcn.h>
 
 static int unused __attribute__((unused));
@@ -67,19 +69,19 @@ void light_free_memory(struct simulation *sim,struct light *li)
 	struct matrix *mx;
 
 	//long double zxyl
-	free_light_zxyl_long_double(dim,&(li->Ep));
-	free_light_zxyl_long_double(dim,&(li->Epz));
-	free_light_zxyl_long_double(dim,&(li->En));
-	free_light_zxyl_long_double(dim,&(li->Enz));
-	free_light_zxyl_long_double(dim,&(li->n));
-	free_light_zxyl_long_double(dim,&(li->alpha0));
-	free_light_zxyl_long_double(dim,&(li->alpha));
-	free_light_zxyl_long_double(dim,&(li->photons));
-	free_light_zxyl_long_double(dim,&(li->photons_asb));
-	free_light_zxyl_long_double(dim,&(li->pointing_vector));
-	free_light_zxyl_long_double(dim,&(li->E_tot_r));
-	free_light_zxyl_long_double(dim,&(li->E_tot_i));
-	free_light_zxyl_long_double(dim,&(li->H));
+	free_light_zxyl_float(dim,&(li->Ep));
+	free_light_zxyl_float(dim,&(li->Epz));
+	free_light_zxyl_float(dim,&(li->En));
+	free_light_zxyl_float(dim,&(li->Enz));
+	free_light_zxyl_float(dim,&(li->n));
+	free_light_zxyl_float(dim,&(li->alpha0));
+	free_light_zxyl_float(dim,&(li->alpha));
+	free_light_zxyl_double(dim,&(li->photons));
+	free_light_zxyl_double(dim,&(li->photons_asb));
+	//free_light_zxyl_float(dim,&(li->pointing_vector));
+	//free_light_zxyl_float(dim,&(li->E_tot_r));
+	//free_light_zxyl_float(dim,&(li->E_tot_i));
+	free_light_zxyl_float(dim,&(li->H));
 
 	//long double zxy
 	free_light_zxy_long_double(dim,&(li->Gn));
@@ -88,9 +90,9 @@ void light_free_memory(struct simulation *sim,struct light *li)
 	free_light_zxy_long_double(dim,&(li->photons_tot));
 
 	//long double complex
-	free_light_zxyl_long_double_complex(dim,&(li->t));
-	free_light_zxyl_long_double_complex(dim,&(li->r));
-	free_light_zxyl_long_double_complex(dim,&(li->nbar));
+	free_light_zxyl_float_complex(dim,&(li->t));
+	free_light_zxyl_float_complex(dim,&(li->r));
+	free_light_zxyl_float_complex(dim,&(li->nbar));
 
 	//zxy_p_object
 	free_light_zxy_p_object(dim, &(li->obj));
@@ -101,23 +103,24 @@ void light_free_memory(struct simulation *sim,struct light *li)
 	free_light_l_long_double(dim,&(li->reflect));
 
 	//Input spectra
-	inter_free(&(li->sun_read));
-	free_light_l_long_double(dim,&(li->sun));
-	free_light_l_long_double(dim,&(li->sun_norm));
-	free_light_l_long_double(dim,&(li->sun_photons));
-	free_light_l_long_double(dim,&(li->sun_E));
-	free_light_l_long_double(dim,&(li->filter));
+	light_src_free(sim, &(li->light_src_y0));
+	light_src_free(sim, &(li->light_src_y1));
 
+	free_light_l_long_double(dim,&(li->sun_y0));
+	free_light_l_long_double(dim,&(li->sun_y1));
+	free_light_l_long_double(dim,&(li->sun_photons_y0));
+	free_light_l_long_double(dim,&(li->sun_photons_y1));
+	free_light_l_long_double(dim,&(li->sun_E_y0));
+	free_light_l_long_double(dim,&(li->sun_E_y1));
 
 	//config
 	free_light_l_long_double(dim,&(li->extract_eff));
 
 /////////////
-	//printf("%d\n",sim->server.worker_max);
-	//getchar();
+
 	if (li->mx!=NULL)
 	{
-		for (w=0;w<sim->server.worker_max;w++)
+		for (w=0;w<li->worker_max;w++)
 		{
 			mx=&(li->mx[w]);
 			matrix_free(sim,mx);
@@ -128,9 +131,9 @@ void light_free_memory(struct simulation *sim,struct light *li)
 
 	if (li->msm!=NULL)
 	{
-		for (w=0;w<sim->server.worker_max;w++)
+		for (w=0;w<li->worker_max;w++)
 		{
-			matrix_solver_memory_free(&(li->msm[w]));
+			matrix_solver_memory_free(sim,&(li->msm[w]));
 		}
 
 		free_1d((void **)&(li->msm),sizeof(struct matrix_solver_memory));
@@ -148,7 +151,6 @@ void light_free_memory(struct simulation *sim,struct light *li)
 		dlclose(li->lib_handle);
 	}
 
-	inter_free(&(li->filter_read));
 
 	light_init(sim,li);
 	

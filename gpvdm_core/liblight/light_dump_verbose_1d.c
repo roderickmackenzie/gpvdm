@@ -73,8 +73,8 @@ void light_dump_verbose_1d(struct simulation *sim,struct light *li, int l,char *
 	struct dat_file data_photons;
 	struct dat_file data_light_1d_Ep;
 	struct dat_file data_light_1d_En;
-	struct dat_file data_pointing;
-	struct dat_file data_E_tot;
+	//struct dat_file data_pointing;
+	//struct dat_file data_E_tot;
 
 	struct dat_file data_r;
 	struct dat_file data_t;
@@ -84,8 +84,8 @@ void light_dump_verbose_1d(struct simulation *sim,struct light *li, int l,char *
 
 	buffer_init(&data_light_1d_Ep);
 	buffer_init(&data_light_1d_En);
-	buffer_init(&data_pointing);
-	buffer_init(&data_E_tot);
+	//buffer_init(&data_pointing);
+	//buffer_init(&data_E_tot);
 	buffer_init(&buf);
 
 	buffer_init(&data_r);
@@ -95,8 +95,8 @@ void light_dump_verbose_1d(struct simulation *sim,struct light *li, int l,char *
 	buffer_malloc(&data_photons);
 	buffer_malloc(&data_light_1d_Ep);
 	buffer_malloc(&data_light_1d_En);
-	buffer_malloc(&data_pointing);
-	buffer_malloc(&data_E_tot);
+	//buffer_malloc(&data_pointing);
+	//buffer_malloc(&data_E_tot);
 	buffer_malloc(&data_r);
 	buffer_malloc(&data_t);
 
@@ -112,20 +112,20 @@ void light_dump_verbose_1d(struct simulation *sim,struct light *li, int l,char *
 	//
 	for (y=0;y<dim->ylen;y++)
 	{
-		sprintf(line,"%Le %Le\n",dim->y[y]-device_start,li->photons[z][x][y][l]);
+		sprintf(line,"%Le %e\n",dim->y[y]-device_start,li->photons[z][x][y][l]);
 		buffer_add_string(&data_photons,line);
 
-		sprintf(line,"%Le %Le %Le %Le\n",dim->y[y]-device_start,gpow(gpow(li->Ep[z][x][y][l],2.0)+gpow(li->Epz[z][x][y][l],2.0),0.5),li->Ep[z][x][y][l],li->Epz[z][x][y][l]);
+		sprintf(line,"%Le %e %e %e\n",dim->y[y]-device_start,pow(pow(li->Ep[z][x][y][l],2.0)+pow(li->Epz[z][x][y][l],2.0),0.5),li->Ep[z][x][y][l],li->Epz[z][x][y][l]);
 		buffer_add_string(&data_light_1d_Ep,line);
 
-		sprintf(line,"%Le %Le %Le %Le\n",dim->y[y]-device_start,gpow(gpow(li->En[z][x][y][l],2.0)+gpow(li->Enz[z][x][y][l],2.0),0.5),li->En[z][x][y][l],li->Enz[z][x][y][l]);
+		sprintf(line,"%Le %e %e %e\n",dim->y[y]-device_start,pow(pow(li->En[z][x][y][l],2.0)+pow(li->Enz[z][x][y][l],2.0),0.5),li->En[z][x][y][l],li->Enz[z][x][y][l]);
 		buffer_add_string(&data_light_1d_En,line);
 
-		sprintf(line,"%Le %Le\n",dim->y[y]-device_start,li->pointing_vector[z][x][y][l]);
-		buffer_add_string(&data_pointing,line);
+		//sprintf(line,"%Le %e\n",dim->y[y]-device_start,li->pointing_vector[z][x][y][l]);
+		//buffer_add_string(&data_pointing,line);
 
-		sprintf(line,"%Le %Le %Le\n",dim->y[y]-device_start,li->E_tot_r[z][x][y][l],li->E_tot_i[z][x][y][l]);
-		buffer_add_string(&data_E_tot,line);
+		//sprintf(line,"%Le %e %e\n",dim->y[y]-device_start,li->E_tot_r[z][x][y][l],li->E_tot_i[z][x][y][l]);
+		//buffer_add_string(&data_E_tot,line);
 
 		sprintf(line,"%Le %Le %Le %Le\n",dim->y[y]-device_start,gcabs(li->r[z][x][y][l]),gcreal(li->r[z][x][y][l]),gcimag(li->r[z][x][y][l]));
 		buffer_add_string(&data_r,line);
@@ -139,8 +139,8 @@ void light_dump_verbose_1d(struct simulation *sim,struct light *li, int l,char *
 
 	buffer_dump_path(sim,li->dump_dir,name_light_1d_Ep,&data_light_1d_Ep);
 	buffer_dump_path(sim,li->dump_dir,name_light_1d_En,&data_light_1d_En);
-	buffer_dump_path(sim,li->dump_dir,name_pointing,&data_pointing);
-	buffer_dump_path(sim,li->dump_dir,name_E_tot,&data_E_tot);
+	//buffer_dump_path(sim,li->dump_dir,name_pointing,&data_pointing);
+	//buffer_dump_path(sim,li->dump_dir,name_E_tot,&data_E_tot);
 	buffer_dump_path(sim,li->dump_dir,name_r,&data_r);
 	buffer_dump_path(sim,li->dump_dir,name_t,&data_t);
 
@@ -150,8 +150,8 @@ void light_dump_verbose_1d(struct simulation *sim,struct light *li, int l,char *
 
 	buffer_free(&data_light_1d_Ep);
 	buffer_free(&data_light_1d_En);
-	buffer_free(&data_pointing);
-	buffer_free(&data_E_tot);
+	//buffer_free(&data_pointing);
+	//buffer_free(&data_E_tot);
 	buffer_free(&data_r);
 	buffer_free(&data_t);
 
@@ -171,7 +171,7 @@ void light_dump_verbose_1d(struct simulation *sim,struct light *li, int l,char *
 
 	for (y=0;y<dim->ylen;y++)
 	{
-		sprintf(line,"%Le %Le\n",dim->y[y],li->n[0][0][y][l]);
+		sprintf(line,"%Le %e\n",dim->y[y],li->n[0][0][y][l]);
 		buffer_add_string(&buf,line);
 	}
 
@@ -201,7 +201,7 @@ void light_dump_verbose_1d(struct simulation *sim,struct light *li, int l,char *
 
 	for (y=0;y<dim->ylen;y++)
 	{
-		sprintf(line,"%Le %Le\n",dim->y[y],li->alpha[0][0][y][l]);
+		sprintf(line,"%Le %e\n",dim->y[y],li->alpha[0][0][y][l]);
 		buffer_add_string(&buf,line);
 	}
 

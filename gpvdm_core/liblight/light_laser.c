@@ -53,56 +53,58 @@
 
 static int unused __attribute__((unused));
 
-int light_load_laser(struct simulation *sim, struct light *li,char *name)
+int light_load_laser(struct simulation *sim, struct light *li,char *name, struct json_obj *json_data)
 {
-	char pwd[PATH_MAX];
-	char file_name[255];
-	struct inp_file inp;
-	int ret=0;
+	int i;
+	int segments=0;
 	long double laser_photon_efficiency=0.0;
+	char temp[200];
+	char temp2[200];
+	char search_name[200];
+	char laser_name_in_file[200];
+	struct json_obj *json_lasers;
+	struct json_obj *json_laser;
+	struct json_obj *json_config;
 	struct dim_light *dim=&(li->dim);
 
-	if (getcwd(pwd,1000)==NULL)
+	str_to_lower(search_name, name);
+
+	json_lasers=json_obj_find(json_data, "lasers");
+	json_get_int(sim, json_lasers, &segments,"segments");
+	for (i=0;i<segments;i++)
 	{
-		ewe(sim,"IO error\n");
+		sprintf(temp,"segment%d",i);
+		json_laser=json_obj_find(json_lasers, temp);
+		json_get_string(sim, json_laser, temp2,"english_name");
+		str_to_lower(laser_name_in_file, temp2);
+		//printf("%s %s\n",laser_name_in_file,search_name);
+		if (strcmp(laser_name_in_file,search_name)==0)
+		{
+			json_config=json_obj_find(json_laser, "config");
+			json_get_long_double(sim, json_config, &(li->laser_wavelength),"laserwavelength");
+
+			li->laser_pos=(int)((li->laser_wavelength-li->lstart)/dim->dl);
+
+			json_get_long_double(sim, json_config, &(li->spotx),"spotx");
+			li->spotx=gfabs(li->spotx);
+
+
+			json_get_long_double(sim, json_config, &(li->spoty),"spoty");
+			li->spoty=gfabs(li->spoty);
+
+			json_get_long_double(sim, json_config, &(li->pulseJ),"pulseJ");
+			li->pulseJ=gfabs(li->pulseJ);
+
+			json_get_long_double(sim, json_config, &(laser_photon_efficiency),"laser_photon_efficiency");
+
+			li->pulseJ=li->pulseJ*gfabs(laser_photon_efficiency);
+
+			json_get_long_double(sim, json_config, &(li->pulse_width),"laser_pulse_width");
+			return 0;
+		}
 	}
 
-	ret=search_for_token(sim,file_name,pwd,"#laser_name",name);
-
-	if (ret==0)
-	{
-		inp_init(sim,&inp);
-		inp_load_from_path(sim,&inp,get_input_path(sim),file_name);
-		inp_check(sim,&inp,1.0);
-
-		inp_search_gdouble(sim,&inp,&li->laser_wavelength,"#laserwavelength");
-		li->laser_pos=(int)((li->laser_wavelength-li->lstart)/dim->dl);
-
-		inp_search_gdouble(sim,&inp,&li->spotx,"#spotx");
-		li->spotx=gfabs(li->spotx);
-
-		inp_search_gdouble(sim,&inp,&li->spoty,"#spoty");
-		li->spoty=gfabs(li->spoty);
-
-		inp_search_gdouble(sim,&inp,&li->pulseJ,"#pulseJ");
-		li->pulseJ=gfabs(li->pulseJ);
-
-		inp_search_gdouble(sim,&inp,&laser_photon_efficiency,"#laser_photon_efficiency");
-
-		//printf("%Le\n",li->pulseJ);
-
-		li->pulseJ=li->pulseJ*gfabs(laser_photon_efficiency);
-
-		//printf("%Le\n",li->pulseJ);
-		//getchar();
-		inp_search_gdouble(sim,&inp,&li->pulse_width,"#laser_pulse_width");
-
-		inp_free(sim,&inp);
-		printf_log(sim,"Loaded laser\n");
-	}else
-	{
-		ewe(sim,"laser name not found\n");
-	}
-return 0;
+	ewe(sim,"laser name not %s found\n",search_name);
+return -1;
 }
 

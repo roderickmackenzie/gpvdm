@@ -57,56 +57,32 @@
 #include <cal_path.h>
 #include <dat_file.h>
 #include <triangles.h>
+#include <light_fun.h>
 
 static int unused __attribute__((unused));
 
 void light_load_materials(struct simulation *sim,struct light *li, struct device *dev)
 {
 	printf_log(sim,"%s\n",_("load: materials"));
+	long double min;
+	long double max;
 	struct vec my_vec;
 	char file_path[PATH_MAX];
 
 	struct dim_light *dim=&(li->dim);
 
-	DIR *theFolder;
-
-	theFolder = opendir(get_spectra_path(sim));
-	if (theFolder==NULL)
-	{
-		ewe(sim,_("Optical spectra directory not found\n"));
-	}
-	closedir (theFolder);
-
-
-
-	join_path(3,file_path,get_spectra_path(sim),li->suns_spectrum_file,"spectra.inp");
-
-
-	if (isfile(file_path)!=0)
-	{
-		ewe(sim,"%s: %s\n",_("File not found"),file_path);
-	}
-
-	inter_load(sim,&(li->sun_read),file_path);
-	inter_sort(&(li->sun_read));
-
-	inter_mod(&(li->sun_read));
-
 
 	if (li->light_wavelength_auto_mesh==TRUE)
 	{
 		dim->llen=100;	//100 wavelengths as default
-		int left=0;
-		int right=0;
-		math_xy_get_left_right_start(&(li->sun_read),&left,&right, 0.02);
-		li->lstart=li->sun_read.x[left];
-		li->lstop=li->sun_read.x[right];
+
+		light_src_cal_min_max(sim,&min,&max,&(li->light_src_y0));
+		light_src_cal_min_max(sim,&min,&max,&(li->light_src_y1));
+		li->lstart=min;
+		li->lstop=max;
 	}
 
 	dim->dl=(li->lstop-li->lstart)/((long double)dim->llen);
-
-	long double Power=inter_intergrate(&(li->sun_read));
-	printf_log(sim,"%s %Le Wm^{-2}\n",_("Power density of the optical spectra:"),Power);
 
 	if (strcmp(li->light_profile,"box")!=0)
 	{

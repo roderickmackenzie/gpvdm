@@ -130,8 +130,20 @@ int light_build_obj_pointer_array_z(struct simulation *sim,struct device *dev,st
 
 THREAD_FUNCTION thread_light_build_obj_pointer_array(void * in)
 {
+	int l;
 	int y;
 	int x;
+	long double n=0.0;
+	long double alpha=0.0;
+
+	long double nc=0.0;
+	long double kc=0.0;
+
+	long double nr=0.0;
+	long double kr=0.0;
+	long double complex n0=0.0+0.0*I;
+	long double complex n1=0.0+0.0*I;
+
 	//int nw;
 	struct vec v;
 
@@ -143,24 +155,88 @@ THREAD_FUNCTION thread_light_build_obj_pointer_array(void * in)
 	struct light *li=(struct light *)j->data0;
 	struct device *dev=(struct device *)j->data1;
 	struct dim_light *dim=&li->dim;
-	//struct shape *s;
+	struct object *obj_last=NULL;
+	struct object *obj=NULL;
+	struct shape *s;
 	int z=j->data_int0;
+	long double lam=0.0;
 
-	for (x=0;x<dim->xlen;x++)
+	for (l=0;l<dim->llen;l++)
 	{
-		for (y=0;y<dim->ylen;y++)
-		{
-			v.z=dim->z[z];
-			v.x=dim->x[x];
-			v.y=dim->y[y];
+		lam=dim->l[l];
 
-			li->obj[z][x][y]=ray_obj_search_xyz(sim,dev,&v);
+		for (x=0;x<dim->xlen;x++)
+		{
+			for (y=0;y<dim->ylen;y++)
+			{
+				if (l==0)
+				{
+					v.z=dim->z[z];
+					v.x=dim->x[x];
+					v.y=dim->y[y];
+
+					obj=ray_obj_search_xyz(sim,dev,&v);
+					li->obj[z][x][y]=obj;
+				}else
+				{
+					obj=li->obj[z][x][y];
+				}
+
+				if (obj_last!=obj)
+				{
+					s=obj->s;
+					n=inter_get_noend(&(s->n),lam);
+					alpha=inter_get_noend(&(s->alpha),lam);
+				}
+
+				li->alpha[z][x][y][l]=alpha;
+				li->alpha0[z][x][y][l]=alpha;
+				li->n[z][x][y][l]=n;
+
+				obj_last=obj;
+				//printf("%le %le %le %s\n",v.z,v.x,v.y,li->obj[z][x][y]->epi_layer);
+			}
 		}
+	}
+
+	for (l=0;l<dim->llen;l++)
+	{
+		for (x=0;x<dim->xlen;x++)
+		{
+			for (y=0;y<dim->ylen;y++)
+			{
+
+				if (y==dim->ylen-1)
+				{
+					nr=li->n[z][x][y][l];
+					kr=li->alpha[z][x][y][l]*(dim->l[l]/(PI*4.0));
+				}else
+				{
+					nr=li->n[z][x][y+1][l];
+					kr=li->alpha[z][x][y+1][l]*(dim->l[l]/(PI*4.0));
+				}
+
+				nc=li->n[z][x][y][l];
+				kc=li->alpha[z][x][y][l]*(dim->l[l]/(PI*4.0));
+
+				n0=nc-kc*I;
+				n1=nr-kr*I;
+
+				li->nbar[z][x][y][l]=n0;
+
+				li->r[z][x][y][l]=(n0-n1)/(n0+n1);
+				li->t[z][x][y][l]=(2.0*n0)/(n0+n1);
+			}
+		}
+
 	}
 
 	j->data0=NULL;
 	j->data1=NULL;
-	server2_job_finished(sim,j);
+	if (sim->server.max_threads>1)
+	{
+		server2_job_finished(sim,j);
+	}
 
 	return 0;
 }
@@ -171,40 +247,40 @@ void light_build_obj_pointer_array(struct simulation *sim,struct light *li, stru
 	int z=0;
 	struct job j;
 	struct dim_light *dim=&(li->dim);
-
-	//sim->server.worker_max=1;
+	int batch_id=server2_get_next_batch_id(sim,&(sim->server));
 	for (z=0;z<dim->zlen;z++)
 	{
-		job_init(sim,&j);
-		sprintf(j.name,"build_light_mesh-%d",z);
-		j.fun=&thread_light_build_obj_pointer_array;
-		j.sim=(void *)sim;
+			job_init(sim,&j);
+			sprintf(j.name,"build_light_mesh-%d",z);
+			j.fun=&thread_light_build_obj_pointer_array;
+			j.sim=(void *)sim;
+			j.batch_id=batch_id;
 
-		j.data0=(void *)li;
-		j.data1=(void *)dev;
-		j.data_int0=z;
-
-		server2_add_job(sim,&(sim->server),&j);
-		//printf("add\n");
+			j.data0=(void *)li;
+			j.data1=(void *)dev;
+			j.data_int0=z;
+			if (sim->server.max_threads>1)
+			{
+				server2_add_job(sim,&(sim->server),&j);
+			}else
+			{
+				thread_light_build_obj_pointer_array((void*)&j);
+			}
 	}
-	server2_run_until_done(sim,&(sim->server));
-	server2_free_finished_jobs(sim,&(sim->server));
 
+	if (sim->server.max_threads>1)
+	{
+		server2_run_until_done(sim,&(sim->server),batch_id);
+		server2_free_finished_jobs(sim,&(sim->server),batch_id);
+		server2_dump_jobs(sim,&(sim->server));
+	}
 }
 
 void light_build_materials_arrays(struct simulation *sim,struct light *li, struct device *dev)
 {
-	int x=0;
-	int y=0;
-	int z=0;
-	int l=0;
-	//long double ypos=0.0;
-	long double n=0.0;
-	long double alpha=0.0;
-	long double lam=0.0;
-	struct object *obj;
+
 	struct dim_light *dim=&(li->dim);
-	struct shape *s;
+
 
 	/*for (z=0;z<dim->zlen;z++)
 	{
@@ -222,107 +298,23 @@ void light_build_materials_arrays(struct simulation *sim,struct light *li, struc
 	light_build_obj_pointer_array(sim,li, dev);
 
 
-	for (l=0;l<dim->llen;l++)
-	{
-		lam=dim->l[l];
 
-		//printf("%d %d %d\n",dim->zlen,dim->xlen,dim->ylen);
-		//getchar();
-		for (z=0;z<dim->zlen;z++)
-		{
-			for (x=0;x<dim->xlen;x++)
-			{
-				for (y=0;y<dim->ylen;y++)
-				{
-					//v.z=dim->z[z];
-					//v.x=dim->x[x];
-					//v.y=dim->y[y];
-
-					obj=li->obj[z][x][y];//ray_obj_search_xyz(sim,dev,&v);
-					//printf("test2 %d %d %d %p\n",z,x,y,obj);
-					//printf("%d %d %d %s %x\n",z,x,y,li->obj[z][x][y]->name,obj);
-					s=obj->s;
-
-
-					//getchar();
-
-					if (strcmp(s->optical_material,"none")==0)
-					{
-						ewe(sim,"No optical material defined for object: %s",obj->name);
-					}
-
-					n=inter_get_noend(&(s->n),lam);
-					alpha=inter_get_noend(&(s->alpha),lam);
-					li->alpha[z][x][y][l]=alpha;
-					li->alpha0[z][x][y][l]=alpha;
-					li->n[z][x][y][l]=n;
-
-
-				}
-				//getchar();
-			}
-		}
-		//
-	}
-
-	/*char fname[200];
-
-	for (y=0;y<dim->ylen;y++)
-	{
-		sprintf(fname,"slice%d.dat",y);
-		FILE* out;
-		out=fopen(fname,"w");
-
-		for (z=0;z<dim->zlen;z++)
-		{
-			for (x=0;x<dim->xlen;x++)
-			{
-
-				//v.z=dim->z[z];
-				//v.x=dim->x[x];
-				//v.y=dim->y[y];
-
-				obj=li->obj[z][x][y];//ray_obj_search_xyz(sim,dev,&v);
-
-				s=obj->s;
-
-				fprintf(out,"%Le %Le %d\n",dim->z[z],dim->x[x],obj->uid);
-
-			}
-
-			fprintf(out,"\n");
-			//getchar();
-		}
-
-		fclose(out);
-	}*/
-
-	//exit(0);
-
-	if (li->flip_field==TRUE)
+	/*if (li->flip_field==TRUE)
 	{
 		flip_light_zxyl_long_double_y(sim, dim,li->alpha);
 		flip_light_zxyl_long_double_y(sim, dim,li->alpha0);
 		flip_light_zxyl_long_double_y(sim, dim,li->n);
-	}
+	}*/
 
 
-	light_calculate_complex_n(li);
-	light_load_filter(sim,li);
+	//light_calculate_complex_n(li);
 
-	for (l=0;l<dim->llen;l++)
-	{
-		//printf("%Le\n",dim->l[l]);
-		//getchar();
-		li->sun_norm[l]=inter_get_hard(&(li->sun_read),dim->l[l]);
-		if (li->filter_enabled==TRUE)
-		{
-			li->filter[l]=inter_get_hard(&(li->filter_read),dim->l[l]);
-		}else
-		{
-			li->filter[l]=1.0;
-		}
-	}
+	memset_light_zxyl_float(dim, li->En,0);
+	memset_light_zxyl_float(dim, li->Ep,0);
+	memset_light_zxyl_float(dim, li->Enz,0);
+	memset_light_zxyl_float(dim, li->Epz,0);
 
+	light_src_build_spectra_tot(sim,&(li->light_src_y0), li->lstart, li->lstop, dim->llen);
+	light_src_build_spectra_tot(sim,&(li->light_src_y1), li->lstart, li->lstop, dim->llen);
 
 }

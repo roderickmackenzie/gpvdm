@@ -50,28 +50,68 @@
 #include <lang.h>
 #include <light_fun.h>
 #include <dump.h>
+#include <color.h>
 
 
-
-void light_dump_shapshots(struct simulation *sim,struct light *li)
+void light_dump_snapshots(struct simulation *sim,char *output_path,struct light *li)
 {
+	if (li->dump_verbosity<=0)
+	{
+		return;
+	}
+
 	int l;
-	FILE *out;
 	char out_dir[PATH_MAX];
 	struct dim_light *dim=&li->dim;
-
+	char temp[200];
+	char line[400];
+	char snapshots_path[PATH_MAX];
 	struct dat_file buf;
 	buffer_init(&buf);
 
-	if (li->dump_verbosity==0)
+	struct dat_file info_file;
+	buffer_init(&info_file);
+
+	struct dat_file wavelengths_buffer;
+	buffer_init(&wavelengths_buffer);
+	buffer_malloc(&wavelengths_buffer);
+
+	int dump_number=0;
+	int tot_dump_number=0;
+	int r;
+	int g;
+	int b;
+	int y;
+	double max=0.0;
+
+
+	for (l=0;l<dim->llen;l++)
 	{
-		for (l=0;l<dim->llen;l++)
+
+		if (dump_number>=li->dump_verbosity)
 		{
-			dump_make_snapshot_dir_with_name(sim,out_dir ,(double)0.0, 0.0, dim->l[l] ,l,"optical_snapshots");
+			dump_make_snapshot_dir(sim,out_dir,output_path ,"optical_snapshots", tot_dump_number);
+
+			buffer_malloc(&info_file);
+
+			sprintf(temp,"{\n");
+			buffer_add_string(&info_file,temp);
+
+			sprintf(temp,"\t\"wavelength\":%Le\n",(long double )dim->l[l]);
+			buffer_add_string(&info_file,temp);
+
+			sprintf(temp,"}");
+			buffer_add_string(&info_file,temp);
+
+
+			buffer_dump_path(sim,out_dir,"data.json",&buf);
+			buffer_free(&info_file);
+
+			wavelength_to_rgb(&r,&g,&b,dim->l[l]);
 
 			buffer_malloc(&buf);
 			dim_light_info_to_buf(&buf,dim);
-			strcpy(buf.title,_("Electron generation rate"));
+			sprintf(buf.title,"%s %.2Lf nm",_("Absorbed photons at"),dim->l[l]*1e9);
 			strcpy(buf.type,"zxy-d");
 			strcpy(buf.data_label,_("Generation rate"));
 			strcpy(buf.data_units,"m^{-3}");
@@ -79,14 +119,95 @@ void light_dump_shapshots(struct simulation *sim,struct light *li)
 			buf.y=dim->ylen;
 			buf.z=dim->zlen;
 			buffer_add_info(sim,&buf);
-			dat_file_add_zxy_from_zxyl_long_double_light_data(sim,&buf,li->photons_asb, dim,l);
+			sprintf(buf.rgb,"%.2x%.2x%.2x",r,g,b);
+			dat_file_add_zxy_from_zxyl_double_light_data(sim,&buf,li->photons_asb, dim,l);
 			dat_file_add_zxy_long_double_light_data(sim,&buf,li->Gn, dim);
 			buffer_dump_path(sim,out_dir,"light_Gn.dat",&buf);
 			buffer_free(&buf);
 
-			///////////
+			buffer_malloc(&buf);
+			dim_light_info_to_buf(&buf,dim);
+			strcpy(buf.title,"Photons absorbed vs position");
+			strcpy(buf.type,"xy");
+			strcpy(buf.data_label,_("Photons absorbed"));
+			strcpy(buf.data_units,"m^{-3} m^{-1}");
+			buf.x=1;
+			buf.y=dim->ylen;
+			buf.z=1;
+			buffer_add_info(sim,&buf);
+			sprintf(buf.rgb,"%.2x%.2x%.2x",r,g,b);
+
+			sprintf(temp,"#data\n");
+			buffer_add_string(&buf,temp);
+
+			for (y=0;y<dim->ylen;y++)
+			{
+				sprintf(line,"%Le %le\n",dim->y[y],li->photons_asb[0][0][y][l]);
+				buffer_add_string(&buf,line);
+			}
+
+
+			sprintf(temp,"#end\n");
+			buffer_add_string(&buf,temp);
+
+			buffer_dump_path(sim,out_dir,"light_photons_abs.dat",&buf);
+			//dat_file_reset(&buf);
+			buffer_free(&buf);
+
+
+			buffer_malloc(&buf);
+			dim_light_info_to_buf(&buf,dim);
+			strcpy(buf.title,"Position - Normalized photon density");
+			strcpy(buf.type,"xy");
+			strcpy(buf.data_label,"Normalized photon density");
+			strcpy(buf.data_units,"a.u.");
+			buf.x=1;
+			buf.y=dim->ylen;
+			buf.z=1;
+			buffer_add_info(sim,&buf);
+			sprintf(buf.rgb,"%.2x%.2x%.2x",r,g,b);
+
+			max=0.0;
+			for (y=0;y<dim->ylen;y++)
+			{
+				if (li->photons[0][0][y][l]>max)
+				{
+					max=li->photons[0][0][y][l];
+				}
+			}
+
+			for (y=0;y<dim->ylen;y++)
+			{
+				sprintf(line,"%Le %le\n",dim->y[y],li->photons[0][0][y][l]/max);
+				buffer_add_string(&buf,line);
+			}
+
+			buffer_dump_path(sim,out_dir,"light_photons_norm.dat",&buf);
+			buffer_free(&buf);
+			//dat_file_reset(&buf);
+
+			sprintf(temp,"%.0Lf\n",dim->l[l]*1e9);
+			buffer_add_string(&wavelengths_buffer,temp);
+
+			tot_dump_number++;
+		}
+
+		dump_number++;
+		if (dump_number>li->dump_verbosity)
+		{
+			dump_number=0;		
 		}
 	}
+
+
+
+
+
+
+
+	join_path(2,snapshots_path,output_path,"optical_snapshots");
+	buffer_dump_path(sim,snapshots_path,"wavelengths.dat",&wavelengths_buffer);
+	buffer_free(&wavelengths_buffer);
 
 }
 

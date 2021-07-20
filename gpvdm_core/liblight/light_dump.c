@@ -53,33 +53,30 @@
 
 
 
-void light_setup_dump_dir(struct simulation *sim,struct light *li)
+void light_setup_dump_dir(struct simulation *sim,char *path,struct light *li)
 {
-
-	int l;
-	FILE *out;
+	//printf("%d\n",li->dump_verbosity);
+	if (li->dump_verbosity==-1)
+	{
+		return;
+	}
 	char out_dir[PATH_MAX];
-	struct dim_light *dim=&li->dim;
 
-	join_path(2,out_dir,get_output_path(sim),"optical_output");
+	join_path(2,out_dir,path,"optical_output");
 	//sprintf(out_dir,"%s/optical_output/",get_output_path(sim));
 
 	gpvdm_mkdir(out_dir);
-
-	out=fopena(out_dir,"wavelengths.dat","w");
-
-	for (l=0;l<dim->llen;l++)
-	{
-		fprintf(out,"%.0Lf\n",dim->l[l]*1e9);
-	}
-
-	fclose(out);
-
+	//printf("%s\n",li->dump_dir);
 	strcpy(li->dump_dir,out_dir);
 }
 
 void light_dump(struct simulation *sim,struct light *li)
 {
+	if (li->dump_verbosity==-1)
+	{
+		return;
+	}
+
 	struct dat_file buf;
 	struct dim_light *dim=&li->dim;
 	//struct epitaxy *epi=li->epi;
@@ -100,11 +97,10 @@ void light_dump(struct simulation *sim,struct light *li)
 	buf.z=1;
 	buffer_add_info(sim,&buf);
 
-	buffer_add_yl_light_data(sim,&buf,dim,li->photons, 0.0, 0 , 0);
+	buffer_add_yl_light_data_double(sim,&buf,dim,li->photons, 0.0, 0 , 0);
 
 	buffer_dump_path(sim,li->dump_dir,"light_2d_photons.dat",&buf);
 	buffer_free(&buf);
-
 
 
 	buffer_malloc(&buf);
@@ -120,37 +116,53 @@ void light_dump(struct simulation *sim,struct light *li)
 	buf.z=1;
 	buffer_add_info(sim,&buf);
 
-	buffer_add_yl_light_data(sim,&buf,dim,li->photons_asb,0.0, 0 , 0);
+	buffer_add_yl_light_data_double(sim,&buf,dim,li->photons_asb,0.0, 0 , 0);
 
 	buffer_dump_path(sim,li->dump_dir,"light_2d_photons_asb.dat",&buf);
 	buffer_free(&buf);
 
-	if (get_dump_status(sim,dump_optics_verbose)==TRUE)
+	if (li->dump_verbosity==1)
 	{
 		light_dump_verbose_2d(sim,li);
 	}
 
+
 }
 
-void light_dump_sim_info(struct simulation *sim,struct light *li)
+void light_dump_sim_info(struct simulation *sim,char *path,struct light *li,struct device *dev)
 {
-	light_dump_stats(sim,li);
-
-	long double ret=0.0;
-	ret=light_calculate_photons_absorbed_in_active_layer(li);
+	long double J_photo=0.0;
+	long double I_photo=0.0;
 	FILE *out;
-	out=fopena(get_output_path(sim),"sim_info.dat","w");
-	fprintf(out,"#light_photons_in_active_layer\n%Le\n",ret);
-	fprintf(out,"#end");
-	fclose(out);
 
+	if (li->dump_verbosity==-1)
+	{
+		return;
+	}
+
+	light_dump_stats(sim,path,li);
+
+	J_photo=light_J_photo(li);
+	I_photo=light_i_photo(li,dev);
+
+	out=fopena(path,"sim_info.dat","w");
+	if (out!=NULL)
+	{
+		fprintf(out,"{\n");
+		fprintf(out,"\t \"J_photo\":\"%Le\",\n",J_photo);
+		fprintf(out,"\t \"I_photo\":\"%Le\"\n",I_photo);
+
+		fprintf(out,"}");
+		fclose(out);
+	}
 }
 
-void light_dump_1d(struct simulation *sim,struct light *li, int l,char *ext)
+void light_dump_1d(struct simulation *sim,char *path,struct light *li, int l,char *ext)
 {
-//	printf("%d\n",li->dump_level);
+//printf("%d %d\n",li->dump_verbosity,l);
+//getchar();
 
-if (li->dump_level==0)
+if (li->dump_verbosity<0)
 {
 	return;
 }
@@ -158,12 +170,12 @@ if (li->dump_level==0)
 char line[1024];
 char out_name[200];
 char temp_name[400];
-char temp[1024];
+int z=0;
+int x=0;
+
 int y;
 
-char name[400];
 double max=0.0;
-
 struct dim_light *dim=&li->dim;
 //struct epitaxy *epi=li->epi;
 
@@ -178,12 +190,10 @@ struct dat_file buf;
 buffer_init(&buf);
 
 
-if (get_dump_status(sim,dump_optics)==TRUE)
-{
 
 	if (l==0)
 	{
-		light_dump_shapshots(sim,li);
+		light_dump_snapshots(sim,path,li);
 
 		buffer_malloc(&buf);
 		dim_light_info_to_buf(&buf,dim);
@@ -196,7 +206,7 @@ if (get_dump_status(sim,dump_optics)==TRUE)
 		buf.z=dim->zlen;
 		buffer_add_info(sim,&buf);
 		dat_file_add_zxy_long_double_light_data(sim,&buf,li->Gn, dim);
-		buffer_dump_path(sim,"","light_Gn.dat",&buf);
+		buffer_dump_path(sim,li->dump_dir,"light_Gn.dat",&buf);
 		buffer_free(&buf);
 
 		buffer_malloc(&buf);
@@ -210,7 +220,7 @@ if (get_dump_status(sim,dump_optics)==TRUE)
 		buf.z=dim->zlen;
 		buffer_add_info(sim,&buf);
 		dat_file_add_zxy_long_double_light_data(sim,&buf,li->Htot, dim);
-		buffer_dump_path(sim,"","light_Htot.dat",&buf);
+		buffer_dump_path(sim,li->dump_dir,"light_Htot.dat",&buf);
 		buffer_free(&buf);
 
 		buffer_malloc(&buf);
@@ -224,9 +234,8 @@ if (get_dump_status(sim,dump_optics)==TRUE)
 		buf.z=dim->zlen;
 		buffer_add_info(sim,&buf);
 		dat_file_add_zxy_long_double_light_data(sim,&buf,li->photons_tot, dim);
-		buffer_dump_path(sim,"","light_photons.dat",&buf);
+		buffer_dump_path(sim,li->dump_dir,"light_photons.dat",&buf);
 		buffer_free(&buf);
-
 		///////////
 
 
@@ -242,7 +251,6 @@ if (get_dump_status(sim,dump_optics)==TRUE)
 		buf.y=dim->ylen;
 		buf.z=1;
 		buffer_add_info(sim,&buf);
-
 		buffer_add_string(&buf,"#data\n");
 
 		for (y=0;y<dim->ylen;y++)
@@ -295,7 +303,6 @@ if (get_dump_status(sim,dump_optics)==TRUE)
 		buffer_dump_path(sim,li->dump_dir,out_name,&buf);
 		buffer_free(&buf);
 
-
 		buffer_malloc(&buf);
 		dim_light_info_to_buf(&buf,dim);
 		strcpy(buf.title,_("Electron generation rate"));
@@ -309,13 +316,12 @@ if (get_dump_status(sim,dump_optics)==TRUE)
 
 		for (y=0;y<dim->ylen;y++)
 		{
-			sprintf(line,"%Le %Le\n",dim->y[y],li->Gn[0][0][y]);
+			sprintf(line,"%Le %Le\n",dim->y[y],li->Gn[z][x][y]);
 			buffer_add_string(&buf,line);
 		}
 
 		buffer_dump_path(sim,li->dump_dir,"light_1d_Gn.dat",&buf);
 		buffer_free(&buf);
-
 
 		buffer_malloc(&buf);
 		dim_light_info_to_buf(&buf,dim);
@@ -338,10 +344,8 @@ if (get_dump_status(sim,dump_optics)==TRUE)
 		buffer_free(&buf);
 
 
-
-
 		buffer_malloc(&buf);
-		buf.y_mul=1.0;
+		buf.data_mul=1.0;
 		buf.y_mul=1e9;
 		strcpy(buf.title,"Wavelength - Reflected light");
 		strcpy(buf.type,"xy");
@@ -356,11 +360,11 @@ if (get_dump_status(sim,dump_optics)==TRUE)
 		buf.z=1;
 		buffer_add_info(sim,&buf);
 		buffer_add_xy_data(sim,&buf,dim->l, li->reflect, dim->llen);
-		buffer_dump_path(sim,get_output_path(sim),"reflect.dat",&buf);
+		buffer_dump_path(sim,path,"reflect.dat",&buf);
 		buffer_free(&buf);
 
 		buffer_malloc(&buf);
-		buf.y_mul=1.0;
+		buf.data_mul=1.0;
 		buf.y_mul=1e9;
 		strcpy(buf.title,"Wavelength - Transmitted light");
 		strcpy(buf.type,"xy");
@@ -375,86 +379,19 @@ if (get_dump_status(sim,dump_optics)==TRUE)
 		buf.z=1;
 		buffer_add_info(sim,&buf);
 		buffer_add_xy_data(sim,&buf,dim->l, li->transmit, dim->llen);
-		buffer_dump_path(sim,get_output_path(sim),"transmit.dat",&buf);
+		buffer_dump_path(sim,path,"transmit.dat",&buf);
 		buffer_free(&buf);
 
 	}
 
-
-	buffer_malloc(&buf);
-	dim_light_info_to_buf(&buf,dim);
-	strcpy(buf.title,"Position - Normalized photon density");
-	strcpy(buf.type,"xy");
-	strcpy(buf.data_label,"Normalized photon density");
-	strcpy(buf.data_units,"a.u.");
-	buf.x=1;
-	buf.y=dim->ylen;
-	buf.z=1;
-	buffer_add_info(sim,&buf);
-
-	char name_photons_norm[200];
-	sprintf(name_photons_norm,"light_1d_%.0Lf_photons%s_norm.dat",dim->l[l]*1e9,ext);
-
-	max=0.0;
-	for (y=0;y<dim->ylen;y++)
-	{
-		if (li->photons[0][0][y][l]>max)
-		{
-			max=li->photons[0][0][y][l];
-		}
-	}
-
-	for (y=0;y<dim->ylen;y++)
-	{
-		sprintf(line,"%Le %Le\n",dim->y[y],li->photons[0][0][y][l]/max);
-		buffer_add_string(&buf,line);
-	}
-
-	buffer_dump_path(sim,li->dump_dir,name_photons_norm,&buf);
-	buffer_free(&buf);
-
-
-
-
-	if (get_dump_status(sim,dump_optics_verbose)==TRUE)
+	if (li->dump_verbosity==1)
 	{
 		light_dump_verbose_1d(sim,li,l,ext);
-
-		buffer_malloc(&buf);
-		dim_light_info_to_buf(&buf,dim);
-		strcpy(buf.title,"Photons absorbed vs position");
-		strcpy(buf.type,"xy");
-		strcpy(buf.data_label,_("Photons absorbed"));
-		strcpy(buf.data_units,"m^{-3} m^{-1}");
-		buf.x=1;
-		buf.y=dim->ylen;
-		buf.z=1;
-		buffer_add_info(sim,&buf);
-
-		sprintf(temp,"#data\n");
-		buffer_add_string(&buf,temp);
-
-		for (y=0;y<dim->ylen;y++)
-		{
-			sprintf(line,"%Le %Le\n",dim->y[y],li->photons_asb[0][0][y][l]);
-			buffer_add_string(&buf,line);
-		}
-
-
-		sprintf(temp,"#end\n");
-		buffer_add_string(&buf,temp);
-
-		sprintf(name,"light_1d_%.0Lf_photons_abs%s.dat",dim->l[l]*1e9,ext);
-		buffer_dump_path(sim,li->dump_dir,name,&buf);
-		buffer_free(&buf);
-
-
+		light_src_dump(sim,li->dump_dir,&(li->light_src_y0),"light_src_y0.dat");
+		light_src_dump(sim,li->dump_dir,&(li->light_src_y1),"light_src_y1.dat");
 
 	}
 
-
-
-}
 
 }
 

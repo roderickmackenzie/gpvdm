@@ -74,10 +74,6 @@ void light_init(struct simulation *sim,struct light *li)
 	li->finished_solveing=FALSE;
 	li->print_wavlengths=TRUE;
 
-	//output files
-	li->dump_level=2;
-	//strcpy(li->dump_dir,"none");
-
 	//long double zxyl
 	li->Ep=NULL;
 	li->Epz=NULL;
@@ -88,9 +84,9 @@ void light_init(struct simulation *sim,struct light *li)
 	li->alpha=NULL;
 	li->photons=NULL;
 	li->photons_asb=NULL;
-	li->pointing_vector=NULL;
-	li->E_tot_r=NULL;
-	li->E_tot_i=NULL;
+	//li->pointing_vector=NULL;
+	//li->E_tot_r=NULL;
+	//li->E_tot_i=NULL;
 	li->H=NULL;
 
 	//long double zxy
@@ -114,31 +110,30 @@ void light_init(struct simulation *sim,struct light *li)
 	li->transmit=NULL;
 	li->extract_eff=NULL;
 
-
 	//Input spectra
-	inter_init(sim,&(li->sun_read));
-	li->sun=NULL;
-	li->sun_norm=NULL;
-	li->sun_photons=NULL;
-	li->sun_E=NULL;
-	li->filter=NULL;
+	light_src_init(sim,&(li->light_src_y0));
+	light_src_init(sim,&(li->light_src_y1));
+
+	li->sun_y0=NULL;
+	li->sun_y1=NULL;
+	li->sun_photons_y0=NULL;
+	li->sun_photons_y1=NULL;
+	li->sun_E_y0=NULL;
+	li->sun_E_y1=NULL;
 	strcpy(li->suns_spectrum_file,"");
 	strcpy(li->light_file_generation,"");
 
 	li->lib_handle=NULL;
-
-	//filter
-	li->filter_enabled=FALSE;
-	inter_init(sim,&(li->filter_read));
-	strcpy(li->filter_path,"");
 	
 	strcpy(li->light_profile,"box");
 	triangles_init((&(li->light_profile_tri)));
 
 	dim_light_init(dim);
+	li->worker_max=-1;
 	li->mx=NULL;
 	li->msm=NULL;
-	strcpy(li->snapshot_path,"");
+	strcpy(li->snapshot_path,"none");
 	li->dump_verbosity=0;
+	strcpy(li->dump_dir,"none");
 }
 

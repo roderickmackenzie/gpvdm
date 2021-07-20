@@ -57,7 +57,7 @@
 static int unused __attribute__((unused));
 
 
-void light_dump_stats(struct simulation *sim,struct light *li)
+void light_dump_stats(struct simulation *sim, char *path, struct light *li)
 {
 struct dim_light *dim=&li->dim;
 
@@ -115,19 +115,29 @@ char line[1000];
 
 	buffer_malloc(&buf);
 
+	buffer_add_string(&buf,"{\n");
+	sprintf(line,"\t\"layers\" : %d,\n",epi->layers);
+	buffer_add_string(&buf,line);
+
 	for (l=0;l<epi->layers;l++)
 	{
-		sprintf(line,"#light_frac_photon_generation%d\n",l);
+		sprintf(line,"\t\"layer%d\": {\n",l);
 		buffer_add_string(&buf,line);
 
-		sprintf(line,"%Le\n",layers[l]);
+		sprintf(line,"\t\t\"light_frac_photon_generation\": %Le\n",layers[l]);
 		buffer_add_string(&buf,line);
 
+		buffer_add_string(&buf,"\t\t}");
+		if (l<epi->layers-1)
+		{
+			buffer_add_string(&buf,",");
+		}
+		buffer_add_string(&buf,"\n");
 	}
 
-	buffer_add_string(&buf,"#end\n");
+	buffer_add_string(&buf,"}\n");
 
-	buffer_dump_path(sim,get_output_path(sim),"light_stats.dat",&buf);
+	buffer_dump_path(sim,path,"light_stats.json",&buf);
 	buffer_free(&buf);
 }
 

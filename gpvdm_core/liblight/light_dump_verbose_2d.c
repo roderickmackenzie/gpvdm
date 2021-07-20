@@ -127,7 +127,7 @@ void light_dump_verbose_2d(struct simulation *sim,struct light *li)
 	{
 		for (y=0;y<dim->ylen;y++)
 		{
-			sprintf(line,"%Le %Le %Le\n",dim->l[l],dim->y[y]-device_start,li->n[z][x][y][l]);
+			sprintf(line,"%Le %Le %e\n",dim->l[l],dim->y[y]-device_start,li->n[z][x][y][l]);
 			buffer_add_string(&buf,line);
 		}
 
@@ -141,26 +141,13 @@ void light_dump_verbose_2d(struct simulation *sim,struct light *li)
 	buffer_free(&buf);
 
 
-	out=fopena(li->dump_dir,"light_lambda_sun.dat","w");
-	for (l=0;l<dim->llen;l++)
-	{
-		fprintf(out,"%Le %Le\n",dim->l[l],li->sun[l]);
-	}
-	fclose(out);
 
-	out=fopena(li->dump_dir,"light_lambda_sun_norm.dat","w");
+	/*out=fopena(li->dump_dir,"light_lambda_sun_photons.dat","w");
 	for (l=0;l<dim->llen;l++)
 	{
-		fprintf(out,"%Le %Le\n",dim->l[l],li->sun_norm[l]);
+		fprintf(out,"%Le %Le\n",dim->l[l],li->sun_photons_y0[l]);
 	}
-	fclose(out);
-
-	out=fopena(li->dump_dir,"light_lambda_sun_photons.dat","w");
-	for (l=0;l<dim->llen;l++)
-	{
-		fprintf(out,"%Le %Le\n",dim->l[l],li->sun_photons[l]);
-	}
-	fclose(out);
+	fclose(out);*/
 
 	buffer_malloc(&buf);
 	buf.y_mul=1e9;
@@ -187,7 +174,7 @@ void light_dump_verbose_2d(struct simulation *sim,struct light *li)
 	{
 		for (y=0;y<dim->ylen;y++)
 		{
-			sprintf(line,"%Le %Le %Le\n",dim->l[l],dim->y[y]-device_start,li->alpha[z][x][y][l]);
+			sprintf(line,"%Le %Le %e\n",dim->l[l],dim->y[y]-device_start,li->alpha[z][x][y][l]);
 			buffer_add_string(&buf,line);
 		}
 
@@ -225,7 +212,7 @@ void light_dump_verbose_2d(struct simulation *sim,struct light *li)
 	{
 		for (y=0;y<dim->ylen;y++)
 		{
-			sprintf(line,"%Le %Le %Le\n",dim->l[l],dim->y[y]-device_start,li->n[z][x][y][l]);
+			sprintf(line,"%Le %Le %e\n",dim->l[l],dim->y[y]-device_start,li->n[z][x][y][l]);
 			buffer_add_string(&buf,line);
 		}
 
@@ -238,12 +225,12 @@ void light_dump_verbose_2d(struct simulation *sim,struct light *li)
 	buffer_dump_path(sim,li->dump_dir,"light_lambda_n.dat",&buf);
 	buffer_free(&buf);
 
-	out=fopena(li->dump_dir,"light_sun_wavelength_E.dat","w");
+	/*out=fopena(li->dump_dir,"light_sun_wavelength_E.dat","w");
 	for (l=0;l<dim->llen;l++)
 	{
 		fprintf(out,"%Le %Le\n",dim->l[l],li->sun_E[l]);
 	}
-	fclose(out);
+	fclose(out);*/
 
 
 }

@@ -52,19 +52,49 @@
 #include "memory.h"
 #include <light_fun.h>
 #include <server.h>
+#include <device_fun.h>
 
 static int unused __attribute__((unused));
 
 void light_solve_and_update(struct simulation *sim,struct device *dev,struct light *li,long double laser_eff_in)
 {
+	int l=0;
+	long double Psun=0.0;
+	struct dim_light *dim=&li->dim;
 
-	struct dimensions *dim=&dev->ns.dim;
+	//struct dimensions *dim=&dev->ns.dim;
 
 	li->laser_eff=laser_eff_in;
+	//printf(">>%Le %Le\n",li->last_laser_eff,li->laser_eff);
+	//printf(">%Le, %Le\n",li->last_Psun,li->Psun);
+	//printf(">%d\n",(li->last_wavelength_laser!=li->laser_wavelength));
+	//printf(">%d\n",li->force_update);
 
 	if ((li->last_laser_eff!=li->laser_eff)||(li->last_Psun!=li->Psun)||(li->last_wavelength_laser!=li->laser_wavelength)||(li->force_update==TRUE))
 	{
-		light_solve_optical_problem(sim,dev,li);
+
+		memset_light_zxy_long_double(dim,li->Gn,0);
+		memset_light_zxy_long_double(dim,li->Gp,0);
+		memset_light_zxy_long_double(dim,li->Htot,0);
+		memset_light_zxy_long_double(dim,li->photons_tot,0);
+
+		memset_light_zxyl_float(dim,li->H,0);
+		memset_light_zxyl_double(dim,li->photons_asb,0);
+		memset_light_zxyl_double(dim,li->photons,0);
+
+		Psun=li->Psun*gpow(10.0,-li->ND);
+
+		light_set_sun_power(li,Psun,li->laser_eff);
+
+		light_solve_all(sim,dev,li);
+
+		light_cal_photon_density(sim,li,dev);
+
+		for (l=0;l<dim->llen;l++)
+		{
+			light_dump_1d(sim,get_output_path(dev),li, l,"");
+		}
+
 		li->last_laser_eff=li->laser_eff;
 		li->last_Psun=li->Psun;
 		li->last_wavelength_laser=li->laser_wavelength;
@@ -72,99 +102,135 @@ void light_solve_and_update(struct simulation *sim,struct device *dev,struct lig
 
 	if (li->laser_pos!=-1)
 	{
-		light_dump_1d(sim,li, li->laser_pos,"");
+		light_dump_1d(sim,get_output_path(dev),li, li->laser_pos,"");
 	}
 
-	light_transfer_gen_rate_to_device(dev,li);
-
-	if (li->flip_field==TRUE)
-	{
-		flip_zxy_long_double_y(sim, dim,dev->Gn);
-		flip_zxy_long_double_y(sim, dim,dev->Gp);
-	}
+	light_transfer_gen_rate_to_device(sim, dev,li);
 
 }
 
-void light_solve_optical_problem(struct simulation *sim,struct device *dev,struct light *li)
+
+void restore_slice(struct simulation *sim, struct light *li, float *En, float *Ep, float *Enz,float *Epz,int x,int z,int l)
 {
-	int l=0;
-	long double Psun=0.0;
+	int y;
 	struct dim_light *dim=&li->dim;
-
-	Psun=li->Psun*gpow(10.0,-li->ND);
-
-	light_set_sun_power(li,Psun,li->laser_eff);
-
-	light_solve_all(sim,dev,li);
-
-	light_cal_photon_density(sim,li,dev);
-
-	for (l=0;l<dim->llen;l++)
+	for (y=0;y<dim->ylen;y++)
 	{
-		light_dump_1d(sim,li, l,"");
+		li->En[z][x][y][l]=En[y];
+		li->Ep[z][x][y][l]=Ep[y];
+		li->Enz[z][x][y][l]=Enz[y];
+		li->Epz[z][x][y][l]=Epz[y];
 	}
 
 }
 
-THREAD_FUNCTION thread_light_solve(void * in)
+void save_slice(struct simulation *sim, float *En, float *Ep, float *Enz,float *Epz,struct light *li,int z,int x,int l)
+{
+	int y;
+	struct dim_light *dim=&li->dim;
+	for (y=0;y<dim->ylen;y++)
+	{
+		En[y]=li->En[z][x][y][l];
+		Ep[y]=li->Ep[z][x][y][l];
+		Enz[y]=li->Enz[z][x][y][l];
+		Epz[y]=li->Epz[z][x][y][l];
+	}
+
+}
+
+float sum_layer(struct simulation *sim, struct light *li,int z,int x,int l)
+{
+int y;
+float ret=0;
+struct dim_light *dim=&li->dim;
+for (y=0;y<dim->ylen;y++)
+{
+	ret+=li->alpha[z][x][y][l]+li->n[z][x][y][l];
+}
+
+return ret;
+}
+
+void light_zx_lambda_solver(struct simulation *sim, struct light *li, struct device *cell, int l, int nw)
 {
 	int z;
 	int x;
-	int nw;
-	//printf("yes\n");
 	char temp[200];
-
-	struct job *j=(struct job *)in;
-	struct worker *my_worker=j->w;
-	nw=my_worker->worker_n;
-	//printf("nw=%d\n",nw);
-	struct simulation *sim=(struct simulation *)j->sim;
-	struct light *li=(struct light *)j->data0;
-	struct device *cell=(struct device *)j->data1;
 	struct dim_light *dim=&li->dim;
-	int l=((int*)j->data2)[0];
 
 	for (z=0;z<dim->zlen;z++)
 	{
 		for (x=0;x<dim->xlen;x++)
 		{
 
-			
-			memset_light_zxyl_long_double_y(dim, li->En,z,x,l,0.0);
-			memset_light_zxyl_long_double_y(dim, li->Ep,z,x,l,0.0);
-			memset_light_zxyl_long_double_y(dim, li->Enz,z,x,l,0.0);
-			memset_light_zxyl_long_double_y(dim, li->Epz,z,x,l,0.0);
 
-			if (li->sun_E[l]!=0.0)
+			if ((li->sun_E_y0[l]==0.0)&&(li->sun_E_y1[l]==0.0))
+			{
+				memset_light_zxyl_float_y(dim, li->En,z,x,l,0.0);
+				memset_light_zxyl_float_y(dim, li->Ep,z,x,l,0.0);
+				memset_light_zxyl_float_y(dim, li->Enz,z,x,l,0.0);
+				memset_light_zxyl_float_y(dim, li->Epz,z,x,l,0.0);
+				light_cal_photon_density_y(sim,li,cell, z, x, l);
+			}else
 			{
 				if ((x==0)&&(z==0))
 				{
 					if (li->print_wavlengths==TRUE)
 					{
-						if (get_dump_status(sim,dump_optics)==TRUE)
+						if (li->dump_verbosity>=0)
 						{
 							sprintf(temp,"%s %Lf nm\n",_("Solve optical slice at"),dim->l[l]*1e9);
 							waveprint(sim,temp,dim->l[l]*1e9);
 						}
 					}
 				}
-				//printf("here %d\n",li->finished_solveing);
-				light_solve_lam_slice(sim,cell,li,z,x,l,nw);
 
-				//printf("here %d\n",li->finished_solveing);
-				//getchar();
+				if (li->sun_E_y0[l]!=0.0)
+				{
+					light_solve_lam_slice(sim,cell,li,li->sun_E_y0,z,x,l,nw,FALSE);
+					light_cal_photon_density_y(sim,li,cell, z, x, l);
+				}
+
+				if (li->sun_E_y1[l]!=0.0)
+				{
+					light_solve_lam_slice(sim,cell,li,li->sun_E_y1,z,x,l,nw,TRUE);
+					light_cal_photon_density_y(sim,li,cell, z, x, l);
+				}
 
 				if (li->finished_solveing==TRUE)
 				{
 					break;
 				}
 
-			}//else
-			//{
+			}
 
-			//}
+
 		}
 	}
+
+}
+
+THREAD_FUNCTION thread_light_solve(void * in)
+{
+
+	int nw;
+	//printf("yes\n");
+	struct job *j=(struct job *)in;
+	struct worker *my_worker=j->w;
+	nw=my_worker->worker_n;
+
+	//printf("nw=%d\n",nw);
+	struct simulation *sim=(struct simulation *)j->sim;
+	struct light *li=(struct light *)j->data0;
+	struct device *cell=(struct device *)j->data1;
+	if (nw>li->worker_max)
+	{
+		ewe(sim,"Worker error\n");
+	}
+
+	int l=((int*)j->data2)[0];
+
+	light_zx_lambda_solver(sim, li, cell, l,nw);
 
 	j->data0=NULL;
 	j->data1=NULL;
@@ -177,36 +243,44 @@ void light_solve_all(struct simulation *sim,struct device *cell,struct light *li
 {
 	int l=0;
 	struct job j;
+	int batch_id=server2_get_next_batch_id(sim,&(sim->server));
 
 	int slices_solved=0;
 	struct dim_light *dim=&li->dim;
 	li->finished_solveing=FALSE;
 
-
-	for (l=0;l<dim->llen;l++)
+	if (((dim->zlen>1)||(dim->xlen>1))&&(sim->server.max_threads>1))
 	{
-		job_init(sim,&j);
-		sprintf(j.name,"light-%d",l);
-		j.fun=&thread_light_solve;
-		j.sim=(void *)sim;
+		//server2_dump_jobs(sim,&(sim->server));
+		//printf("here\n");
+		for (l=0;l<dim->llen;l++)
+		{
+			job_init(sim,&j);
+			sprintf(j.name,"light-%d",l);
+			j.fun=&thread_light_solve;
+			j.sim=(void *)sim;
+			j.batch_id=batch_id;
 
-		j.data0=(void *)li;
-		j.data1=(void *)cell;
-		malloc_1d((void **)&(j.data2),1,sizeof(int));
-		((int *)j.data2)[0]=l;
+			j.data0=(void *)li;
+			j.data1=(void *)cell;
+			malloc_1d((void **)&(j.data2),1,sizeof(int));
+			((int *)j.data2)[0]=l;
 
-		server2_add_job(sim,&(sim->server),&j);
-		slices_solved++;
+			server2_add_job(sim,&(sim->server),&j);
+			slices_solved++;
 
+		}
+
+		server2_run_until_done(sim,&(sim->server),batch_id);
+		
+		server2_free_finished_jobs(sim,&(sim->server),batch_id);
+	}else
+	{
+		for (l=0;l<dim->llen;l++)
+		{
+			light_zx_lambda_solver(sim, li, cell, l,0);
+		}
 	}
-
-	//server2_dump_jobs(sim,&(sim->server));
-	//int store=sim->server.worker_max;			//To make this multithreaded you need a fix to the matrix memory in the light solver
-	//sim->server.worker_max=3;
-	server2_run_until_done(sim,&(sim->server));
-	//sim->server.worker_max=store;
-	server2_free_finished_jobs(sim,&(sim->server));
-	
 
 	if (slices_solved==0)
 	{
@@ -216,8 +290,33 @@ void light_solve_all(struct simulation *sim,struct device *cell,struct light *li
 }
 
 
-int light_solve_lam_slice(struct simulation *sim, struct device *dev, struct light *li,int z, int x,int l, int w)
+int light_solve_lam_slice(struct simulation *sim, struct device *dev, struct light *li,long double *sun_E,int z, int x,int l, int w,int flip_material)
 {
-li->disable_cal_photon_density=FALSE;
-return (*li->fn_solve_lam_slice)(sim,dev,li,z,x,l,w);
+	int ret=0;
+	struct dim_light *dim=&li->dim;
+	li->disable_cal_photon_density=FALSE;
+
+	if (flip_material==TRUE)
+	{
+		light_flip_y_float_complex(dim,li->r,z,x,l);
+		light_flip_y_float_complex(dim,li->t,z,x,l);
+		light_flip_y_float_complex(dim,li->nbar,z,x,l);
+	}
+
+	ret= (*li->fn_solve_lam_slice)(sim,dev,li,sun_E,z,x,l,w);
+
+	if (flip_material==TRUE)
+	{
+		light_flip_y_float_complex(dim,li->r,z,x,l);
+		light_flip_y_float_complex(dim,li->t,z,x,l);
+		light_flip_y_float_complex(dim,li->nbar,z,x,l);
+
+		light_flip_y_float(dim,li->Ep,z,x,l);
+		light_flip_y_float(dim,li->Epz,z,x,l);
+
+		light_flip_y_float(dim,li->En,z,x,l);
+		light_flip_y_float(dim,li->Enz,z,x,l);
+	}
+
+	return ret;
 }

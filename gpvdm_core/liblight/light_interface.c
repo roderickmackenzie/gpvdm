@@ -36,7 +36,9 @@
 /** @file light_interface.c
 	@brief Acts as an interface between the model and the light dlls for each optical model.
 */
+#include <enabled_libs.h>
 
+	#define _GNU_SOURCE
 	#include <dlfcn.h>
 
 #include "util.h"

@@ -38,6 +38,7 @@
 	@brief Deals with memory allocation for the light model.
 */
 
+#include <enabled_libs.h>
 #include <string.h>
 #include <stdlib.h>
 #include "util.h"
@@ -54,6 +55,7 @@
 #include <device_fun.h>
 #include <triangles.h>
 
+	#define _GNU_SOURCE
 	#include <dlfcn.h>
 
 static int unused __attribute__((unused));
@@ -62,6 +64,7 @@ static int unused __attribute__((unused));
 void light_malloc(struct simulation *sim,struct light *li)
 {
 printf_log(sim,"alloc: light_memory\n");
+
 	int l=0;
 	int w=0;
 	struct dim_light *dim=&(li->dim);
@@ -70,44 +73,43 @@ printf_log(sim,"alloc: light_memory\n");
 	dim_light_malloc(dim);
 
 	//long double zxyl
-	malloc_light_zxyl_long_double(dim,&(li->Ep));
-	malloc_light_zxyl_long_double(dim,&(li->Epz));
-	malloc_light_zxyl_long_double(dim,&(li->En));
-	malloc_light_zxyl_long_double(dim,&(li->Enz));
-	malloc_light_zxyl_long_double(dim,&(li->n));
-	malloc_light_zxyl_long_double(dim,&(li->alpha0));
-	malloc_light_zxyl_long_double(dim,&(li->alpha));
-	malloc_light_zxyl_long_double(dim,&(li->photons));
-	malloc_light_zxyl_long_double(dim,&(li->photons_asb));
-	malloc_light_zxyl_long_double(dim,&(li->pointing_vector));
-	malloc_light_zxyl_long_double(dim,&(li->E_tot_r));
-	malloc_light_zxyl_long_double(dim,&(li->E_tot_i));
-	malloc_light_zxyl_long_double(dim,&(li->H));
-
+	malloc_light_zxyl_float(dim,&(li->Ep));
+	malloc_light_zxyl_float(dim,&(li->Epz));
+	malloc_light_zxyl_float(dim,&(li->En));
+	malloc_light_zxyl_float(dim,&(li->Enz));
+	malloc_light_zxyl_float(dim,&(li->n));
+	malloc_light_zxyl_float(dim,&(li->alpha0));
+	malloc_light_zxyl_float(dim,&(li->alpha));
+	malloc_light_zxyl_double(dim,&(li->photons));
+	malloc_light_zxyl_double(dim,&(li->photons_asb));
+	malloc_light_zxyl_float(dim,&(li->H));
 
 	//long double zxy
+	//printf("light\n");
+	//getchar();
 	malloc_light_zxy_long_double(dim,&(li->Gn));
 	malloc_light_zxy_long_double(dim,&(li->Gp));
 	malloc_light_zxy_long_double(dim,&(li->Htot));
 	malloc_light_zxy_long_double(dim,&(li->photons_tot));
 
 	//long double complex
-	malloc_light_zxyl_long_double_complex(dim,&(li->t));
-	malloc_light_zxyl_long_double_complex(dim,&(li->r));
-	malloc_light_zxyl_long_double_complex(dim,&(li->nbar));
+	malloc_light_zxyl_float_complex(dim,&(li->t));
+	malloc_light_zxyl_float_complex(dim,&(li->r));
+	malloc_light_zxyl_float_complex(dim,&(li->nbar));
 
 	//zxy_p_object
 	malloc_light_zxy_p_object(dim, &(li->obj));
 
-	malloc_light_l_long_double(dim,&(li->sun_E));
-	malloc_light_l_long_double(dim,&(li->sun));
-	malloc_light_l_long_double(dim,&(li->sun_norm));
-	malloc_light_l_long_double(dim,&(li->sun_photons));
+	malloc_light_l_long_double(dim,&(li->sun_y0));
+	malloc_light_l_long_double(dim,&(li->sun_y1));
+	malloc_light_l_long_double(dim,&(li->sun_E_y0));
+	malloc_light_l_long_double(dim,&(li->sun_E_y1));
+	malloc_light_l_long_double(dim,&(li->sun_photons_y0));
+	malloc_light_l_long_double(dim,&(li->sun_photons_y1));
 	malloc_light_l_long_double(dim,&(li->reflect));
 	malloc_light_l_long_double(dim,&(li->transmit));
 	malloc_light_l_long_double(dim,&(li->extract_eff));
-	malloc_light_l_long_double(dim,&(li->filter));
-
+	//printf("%p 11\n",li);
 	for (l=0;l<dim->llen;l++)
 	{
 		li->extract_eff[l]=1.0;
@@ -115,27 +117,30 @@ printf_log(sim,"alloc: light_memory\n");
 
 	//sort out the matrix
 	
-
-	malloc_1d((void**)&(li->mx),sim->server.worker_max, sizeof(struct matrix));
-	malloc_1d((void**)&(li->msm),sim->server.worker_max, sizeof(struct matrix_solver_memory));
-	for (w=0;w<sim->server.worker_max;w++)
+	li->worker_max=sim->server.worker_max;
+	if (li->worker_max>0)
 	{
-		matrix_solver_memory_init(&(li->msm[w]));
-		mx=&(li->mx[w]);
-		matrix_init(mx);
-		mx->nz=0.0;
-		mx->nz+=dim->ylen;
-		mx->nz+=dim->ylen-1;
-		mx->nz+=dim->ylen;
+		malloc_1d((void**)&(li->mx),li->worker_max, sizeof(struct matrix));
+		malloc_1d((void**)&(li->msm),li->worker_max, sizeof(struct matrix_solver_memory));
+		for (w=0;w<li->worker_max;w++)
+		{
+			matrix_solver_memory_init(&(li->msm[w]));
+			mx=&(li->mx[w]);
+			matrix_init(mx);
+			mx->nz=0.0;
+			mx->nz+=dim->ylen;
+			mx->nz+=dim->ylen-1;
+			mx->nz+=dim->ylen;
 
-		mx->nz+=dim->ylen-1;
-		mx->nz+=dim->ylen; //t
-		mx->nz+=dim->ylen-1;
-		//li->N+=1;
-		mx->M=dim->ylen+dim->ylen;
-		mx->complex_matrix=TRUE;
-		matrix_malloc(sim,mx);	
+			mx->nz+=dim->ylen-1;
+			mx->nz+=dim->ylen; //t
+			mx->nz+=dim->ylen-1;
+			//li->N+=1;
+			mx->M=dim->ylen+dim->ylen;
+			mx->complex_matrix=TRUE;
+			matrix_malloc(sim,mx);	
+		}
 	}
-
+	printf_log(sim,"alloc: light_memory end\n");
 }
 

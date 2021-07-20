@@ -50,7 +50,8 @@
 #include "log.h"
 #include <cal_path.h>
 #include <light_fun.h>
-
+#include <json.h>
+#include <device_fun.h>
 
 static int unused __attribute__((unused));
 
@@ -60,40 +61,30 @@ static int unused __attribute__((unused));
 
 
 
-void light_load_config_file(struct simulation *sim,struct light *li)
+void light_load_config_file(struct simulation *sim,struct light *li, struct json_obj *json_config)
 {
-
-	char path_temp[PATH_MAX];
+	struct json_obj *json_spectra;
+	struct json_obj *json_light;
 	char temp_str[100];
 
-	long double temp=0.0;
-	struct inp_file inp;
 	struct dim_light *dim=&(li->dim);
 
 	li->disable_transfer_to_electrical_mesh=FALSE;
 
-	join_path(2,path_temp,get_output_path(sim),"optical_output");
-	remove_dir(sim,path_temp);
+	json_light=json_obj_find(json_config, "light");
 
-	join_path(2,li->config_file,get_output_path(sim),"light.inp");
+	if (json_light==NULL)
+	{
+		ewe(sim,"Object light not found\n");
+	}
+	json_get_string(sim, json_light, li->suns_spectrum_file,"sun");
+	
+	json_get_int(sim, json_light, &li->align_mesh,"alignmesh");
 
-	printf_log(sim,"%s: %s\n",_("load"),li->config_file);
+	json_get_int(sim, json_light, &dim->ylen,"meshpoints");
 
-	inp_init(sim,&inp);
-	inp_load_from_path(sim,&inp,get_input_path(sim),"light.inp");
+	json_get_string(sim, json_light, temp_str,"light_illuminate_from");
 
-	inp_check(sim,&inp,1.31);
-
-	inp_search_string(sim,&inp,li->suns_spectrum_file,"#sun");
-
-	inp_search_int(sim,&inp,&li->align_mesh,"#alignmesh");
-
-	inp_search_int(sim,&inp,&dim->ylen,"#meshpoints");
-
-	//dim->dy=epitaxy_get_optical_length(li->epi)/((long double)dim->ylen);
-	//printf("%Le\n",epitaxy_get_optical_length(li->epi));
-	//getchar();
-	inp_search_string(sim,&inp,temp_str,"#light_illuminate_from");
 	if (strcmp(temp_str,"bottom")==0)
 	{
 		li->flip_field=TRUE;
@@ -102,50 +93,78 @@ void light_load_config_file(struct simulation *sim,struct light *li)
 		li->flip_field=FALSE;
 	}
 
-	li->light_wavelength_auto_mesh=inp_search_english(sim,&inp,"#light_wavelength_auto_mesh");
-	inp_search_int(sim,&inp,&dim->llen,"#lpoints");
+	json_get_english(sim,json_light, &(li->light_wavelength_auto_mesh),"light_wavelength_auto_mesh");
 
-	inp_search_gdouble(sim,&inp,&li->lstart,"#lstart");
+	json_get_int(sim, json_light, &dim->llen,"lpoints");
 
-	inp_search_gdouble(sim,&inp,&li->lstop,"#lstop");
+	json_get_long_double(sim, json_light, &li->lstart,"lstart");
+	json_get_long_double(sim, json_light, &li->lstop,"lstop");
 
-	inp_search_gdouble(sim,&inp,&(li->electron_eff),"#electron_eff");
+	json_get_long_double(sim, json_light, &li->electron_eff,"electron_eff");
 	li->electron_eff=fabs(li->electron_eff);
 
-	inp_search_gdouble(sim,&inp,&(li->hole_eff),"#hole_eff");
+	json_get_long_double(sim, json_light, &li->hole_eff,"hole_eff");
 	li->hole_eff=fabs(li->hole_eff);
 
-	inp_search_gdouble(sim,&inp,&(temp),"#Psun");
-	li->Psun=fabs(temp);
+	json_get_long_double(sim, json_light, &li->Psun,"Psun");
+	//printf("%Le\n",li->Psun);
+	//getchar();
+	li->Psun=fabs(li->Psun);
 
-	inp_search_string(sim,&inp,li->mode,"#light_model");
+	json_get_string(sim, json_light, li->mode,"light_model");
 
-	inp_search_gdouble(sim,&inp,&(li->Dphotoneff),"#Dphotoneff");
+	json_get_long_double(sim, json_light, &(li->Dphotoneff),"Dphotoneff");
 	li->Dphotoneff=fabs(li->Dphotoneff);
 
-	inp_search_gdouble(sim,&inp,&(li->ND),"#NDfilter");
+	json_get_long_double(sim, json_light, &(li->ND),"NDfilter");
 
-	inp_search_string(sim,&inp,li->light_file_generation,"#light_file_generation");
+	json_get_string(sim, json_light, li->light_file_generation,"light_file_generation");
 
-	inp_search_gdouble(sim,&inp,&(li->light_file_generation_shift),"#light_file_generation_shift");
+	json_get_long_double(sim, json_light, &(li->light_file_generation_shift),"light_file_generation_shift");
 
-	inp_search_string(sim,&inp,li->light_profile,"#light_profile");
+	json_get_string(sim, json_light, li->light_profile,"light_profile");
 
-	inp_search_int(sim,&inp,&li->dump_verbosity,"#dump_verbosity");
+	json_get_int(sim, json_light, &li->dump_verbosity,"dump_verbosity");
+	//json_dump_obj(obj);
+	//getchar();
 
-	inp_free(sim,&inp);
+	//printf("yes'%d'\n",li->dump_verbosity);
+	//getchar();
+
+	json_spectra=json_obj_find(json_light, "light_source_obj_y0");
+
+	if (json_spectra==NULL)
+	{
+		ewe(sim,"Object light_source_obj_y0 not found\n");
+	}
+
+	light_src_load(sim,&(li->light_src_y0), json_spectra);
+
+
+	json_spectra=json_obj_find(json_light, "light_source_obj_y1");
+
+	if (json_spectra==NULL)
+	{
+		ewe(sim,"Object light_source_obj_y1 not found\n");
+	}
+
+	light_src_load(sim,&(li->light_src_y1), json_spectra);
 
 }
 
 void light_load_config(struct simulation *sim,struct light *li, struct device *dev)
 {
+	char path_temp[PATH_MAX];
 	struct dimensions *dim=&(dev->ns.dim);
 	li->epi=&(dev->my_epitaxy);
 	li->dim.xlen=dim->xlen;
 	li->dim.zlen=dim->zlen;
 	li->force_update=FALSE;
 
-	light_load_config_file(sim,li);
+	join_path(2,path_temp,get_output_path(dev),"optical_output");
+	remove_dir(sim,path_temp);
+
+	light_load_config_file(sim,li,&(dev->config.obj));
 	light_load_materials(sim,li,dev);
 	light_malloc(sim,li);
 	light_build_mesh(sim,li,dim);
