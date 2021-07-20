@@ -85,4 +85,8 @@ class Dialog():
 		tag=choices[n][0]	
 		return code, tag
 
+	def inputbox(self,text):
+		print(text)
+		text_out=input(':')
 
+		return self.OK,text_out
