@@ -258,7 +258,7 @@ def build_token_lib():
 	#mat.inp
 	lib.append(my_data("material_type","type",_("Material type"),"e",1.0,"QComboBoxLang",defaults=[[("organic"),_("Organic")],["oxide",_("Oxide")],["inorganic",_("Inorganic")],["metal",_("Metal")],["other",_("Other")]]))
 	lib.append(my_data("mat_alpha","0-1",_("Transparency"),"e",1.0,"QLineEdit"))
-	lib.append(my_data("status","type",_("Publish material data?"),"e",1.0,"QComboBoxLang",defaults=[[("public"),_("Public")],["private",_("Private")]]))
+	lib.append(my_data("status","type",_("Privicy options"),"e",1.0,"QComboBoxLang",defaults=[[("public"),_("Public - everyone")],[("public_internal"),_("Public - within org")],["private",_("Private - never publish")]]))
 	lib.append(my_data("changelog","au",_("Change log"),"e",1.0,"QChangeLog"))
 
 	#jv.inp

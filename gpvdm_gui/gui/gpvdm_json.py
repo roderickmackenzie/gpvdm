@@ -164,10 +164,16 @@ class all_gpvdm_data(json_base):
 		self.var_list.append(["lasers",json_lasers()])
 		self.var_list.append(["circuit",json_circuit()])
 		self.var_list.append(["gl",json_gl()])
+
 		self.var_list.append(["icon","icon"])
 		self.var_list.append(["english_name","Simulation"])
 		self.var_list.append(["hidden",False])
 		self.var_list.append(["password",""])
+		self.var_list.append(["status","open"])
+
+		#public
+		#private
+
 		self.var_list_build()
 
 		#short hands
