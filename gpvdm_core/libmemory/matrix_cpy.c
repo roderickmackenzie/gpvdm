@@ -55,16 +55,31 @@
 void matrix_cpy(struct simulation *sim,struct matrix *out,struct matrix *in)
 {
 	int y;
-	
+	//printf("matrix copy\n");
+	//getchar();
 	out->nz=in->nz;
+	out->nz_max=in->nz_max;
 	out->M=in->M;
 	out->complex_matrix=in->complex_matrix;
 	out->build_from_non_sparse=in->build_from_non_sparse;
-	
-	cpy_1d_alloc((void **)&(out->Ti), (void **)&(in->Ti), in->nz, sizeof(int));
-	cpy_1d_alloc((void **)&(out->Tj), (void **)&(in->Tj), in->nz, sizeof(int));
-	cpy_1d_alloc((void **)&(out->Tx), (void **)&(in->Tx), in->nz, sizeof(long double));
+	out->msort_len=in->msort_len;
+	out->use_cache=in->use_cache;
+	out->ittr=in->ittr;
+	strcpy(out->hash,in->hash);
+	strcpy(out->cache_file_path,in->cache_file_path);
 
+	if (in->nz_max==0)
+	{
+		cpy_1d_alloc((void **)&(out->Ti), (void **)&(in->Ti), in->nz, sizeof(int));
+		cpy_1d_alloc((void **)&(out->Tj), (void **)&(in->Tj), in->nz, sizeof(int));
+		cpy_1d_alloc((void **)&(out->Tx), (void **)&(in->Tx), in->nz, sizeof(long double));
+	}else
+	{
+		out->nz_max=in->nz_max;
+		cpy_1d_alloc((void **)&(out->Ti), (void **)&(in->Ti), in->nz_max, sizeof(int));
+		cpy_1d_alloc((void **)&(out->Tj), (void **)&(in->Tj), in->nz_max, sizeof(int));
+		cpy_1d_alloc((void **)&(out->Tx), (void **)&(in->Tx), in->nz_max, sizeof(long double));
+	}
 	cpy_1d_alloc((void **)&(out->b), (void **)&(in->b), in->M, sizeof(long double));
 
 	if (in->complex_matrix==TRUE)
@@ -75,7 +90,9 @@ void matrix_cpy(struct simulation *sim,struct matrix *out,struct matrix *in)
 
 	if (in->build_from_non_sparse==TRUE)
 	{
-		cpy_2d_alloc((void ***)&(out->J), (void ***)&(in->J),in->M, in->M, sizeof(long double));
+		cpy_1d_alloc((void **)&(out->msort), (void **)&(in->msort), in->msort_len, sizeof(struct matrix_sort));
 	}
+
+
 
 }

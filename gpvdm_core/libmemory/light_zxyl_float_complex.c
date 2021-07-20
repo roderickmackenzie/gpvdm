@@ -49,27 +49,23 @@
 #include <solver_interface.h>
 #include "memory.h"
 
-void free_srh_bands(struct dimensions *dim, gdouble *(**** in_var))
+
+void malloc_light_zxyl_float_complex(struct dim_light *dim, float complex * (****var))
 {
-	free_4d_long_double(dim->zlen, dim->xlen, dim->ylen,dim->srh_bands, in_var);
+	malloc_4d( (void*****)var, dim->zlen, dim->xlen, dim->ylen,dim->llen,sizeof(float complex));
 }
 
 
-void cpy_srh_long_double(struct dimensions *dim, long double *(****dst), long double *(****src))
-{
-	free_4d_long_double(dim->zlen, dim->xlen, dim->ylen,dim->srh_bands, dst);
-	if (*src==NULL)
-	{
-		return;
-	}
-	malloc_4d_long_double(dim->zlen, dim->xlen, dim->ylen,dim->srh_bands, dst);
-	cpy_4d_long_double(dim->zlen, dim->xlen, dim->ylen,dim->srh_bands, dst, src);
-}
 
-void malloc_srh_bands(struct dimensions *dim, gdouble * (****var))
+void free_light_zxyl_float_complex(struct dim_light *dim, float complex * (****in_var))
 {
-	malloc_4d_long_double(dim->zlen, dim->xlen, dim->ylen,dim->srh_bands, var);
-
+	free_4d( (void*****)in_var, dim->zlen, dim->xlen, dim->ylen,dim->llen,sizeof(float complex));
 }
 
 
+void cpy_light_zxyl_float_complex(struct dim_light *dim, float complex * (****out),float complex * (****in))
+{
+	free_4d( (void*****)out, dim->zlen, dim->xlen, dim->ylen,dim->llen,sizeof(float complex));
+	malloc_4d( (void*****)out, dim->zlen, dim->xlen, dim->ylen,dim->llen,sizeof(float complex));
+	cpy_4d( (void*****)out, (void*****)in, dim->zlen, dim->xlen, dim->ylen,dim->llen,sizeof(float complex));
+}

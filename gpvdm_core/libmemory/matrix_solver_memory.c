@@ -37,6 +37,12 @@
 @brief get/free memory
 */
 
+
+#include <enabled_libs.h>
+
+	#define _GNU_SOURCE
+	#include <dlfcn.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -52,6 +58,80 @@
 #include "ray_fun.h"
 #include "newton_tricks.h"
 #include "shape.h"
+
+void matrix_solver_memory_check_memory(struct simulation *sim,struct matrix_solver_memory *msm,int col,int nz)
+{
+double *dtemp;
+int *itemp;
+	if (msm->last_col!=col)
+	{
+		//printf("realloc\n");
+		dtemp = realloc(msm->x,col*sizeof(double));
+		if (dtemp==NULL)
+		{
+			printf("realloc failed\n");
+		}else
+		{
+			msm->x=dtemp;
+		}
+
+
+		dtemp = realloc(msm->b,col*sizeof(double));
+		if (dtemp==NULL)
+		{
+			printf("realloc failed\n");
+		}else
+		{
+			msm->b=dtemp;
+		}
+
+		itemp = realloc(msm->Ap,(col+1)*sizeof(int));
+		if (itemp==NULL)
+		{
+			printf("realloc failed\n");
+		}else
+		{
+			msm->Ap=itemp;
+		}
+	}
+
+	if (msm->last_nz!=nz)
+	{
+		//printf("realloc\n");
+
+		itemp = realloc(msm->Ai,(nz)*sizeof(int));
+		if (itemp==NULL)
+		{
+			printf("realloc failed\n");
+		}else
+		{
+			msm->Ai=itemp;
+		}
+
+		dtemp  = realloc(msm->Ax,(nz)*sizeof(double));
+		if (dtemp==NULL)
+		{
+			printf("realloc failed\n");
+		}else
+		{
+			msm->Ax=dtemp;
+		}
+
+		dtemp  = realloc(msm->Tx,(nz)*sizeof(double));
+		if (dtemp==NULL)
+		{
+			printf("realloc failed\n");
+		}else
+		{
+			msm->Tx=dtemp;
+		}
+
+	}
+
+	msm->last_col=col;
+	msm->last_nz=nz;
+}
+
 
 void matrix_solver_memory_init(struct matrix_solver_memory *msm)
 {
@@ -88,11 +168,84 @@ void matrix_solver_memory_init(struct matrix_solver_memory *msm)
 	msm->fd_from_solver=-1;
 
 	msm->x_matrix_offset=0;
+
+	/*msm->dll_matrix_handle=NULL;
+	msm->dll_matrix_solve=NULL;
+	msm->dll_matrix_solver_free=NULL;
+	msm->dll_matrix_init=NULL;*/
 }
 
-void matrix_solver_memory_free(struct matrix_solver_memory *msm)
+void matrix_solver_memory_load_dll(struct simulation *sim,struct matrix_solver_memory *msm)
 {
+	/*char lib_path[PATH_MAX];
+	if (msm->dll_matrix_handle==NULL)
+	{
+		find_dll(sim, lib_path,sim->solver_name);
+		#ifndef windows
+			char *error;
 
+			msm->dll_matrix_handle = dlopen(lib_path, RTLD_LAZY |RTLD_GLOBAL);
+			//printf("here1\n");
+			//msm->dll_matrix_handle = dlmopen(LM_ID_NEWLM,lib_path, RTLD_LAZY);
+			//printf("here2\n");
+			//printf("1%p\n",dlmopen(LM_ID_NEWLM,lib_path, RTLD_LAZY ));
+			//printf("2%p\n",dlmopen(LM_ID_NEWLM,lib_path, RTLD_LAZY ));
+			//getchar();
+			if (!msm->dll_matrix_handle)
+			{
+				ewe(sim, "oh: %s\n", dlerror());
+			}
+
+			msm->dll_matrix_solve = dlsym(msm->dll_matrix_handle, "dll_matrix_solve");
+			if ((error = dlerror()) != NULL)
+			{
+				ewe(sim, "%s\n", error);
+			}
+
+			msm->dll_matrix_solver_free = dlsym(msm->dll_matrix_handle, "dll_matrix_solver_free");
+			if ((error = dlerror()) != NULL)
+			{
+				ewe(sim, "%s\n", error);
+			}
+
+			msm->dll_matrix_init = dlsym(msm->dll_matrix_handle, "dll_matrix_init");
+			if ((error = dlerror()) != NULL)
+			{
+				ewe(sim, "%s\n", error);
+			}
+
+		#else
+
+			msm->dll_matrix_handle = LoadLibrary(lib_path);
+			if (msm->dll_matrix_handle==NULL)
+			{
+				ewe(sim,"%s %s\n",_("dll not loaded"),lib_path);
+			}
+
+			msm->dll_matrix_solve = (void*)GetProcAddress(msm->dll_matrix_handle, "dll_matrix_solve");
+			if (msm->dll_matrix_solve==NULL)
+			{
+				ewe(sim,_("dll function dll_matrix_solve not found\n"));
+			}
+
+
+			msm->dll_matrix_solver_free = (void*)GetProcAddress(msm->dll_matrix_handle, "dll_matrix_solver_free");
+			if (msm->dll_matrix_solver_free==NULL)
+			{
+				ewe(sim,_("dll function dll_matrix_solver_free not found\n"));
+			}
+
+			msm->dll_matrix_init = (void*)GetProcAddress(msm->dll_matrix_handle, "dll_matrix_init");
+			if (msm->dll_matrix_init==NULL)
+			{
+				ewe(sim,_("dll function dll_matrix_init not found\n"));
+			}
+		#endif
+	}*/
+}
+
+void matrix_solver_memory_free(struct simulation *sim,struct matrix_solver_memory *msm)
+{
 	//Real part
 	if (msm->x!=NULL)
 	{
@@ -196,5 +349,26 @@ void matrix_solver_memory_free(struct matrix_solver_memory *msm)
 
 	msm->last_col=0;
 	msm->last_nz=0;
+
+	/*if (msm->dll_matrix_handle!=NULL)
+	{
+
+		#ifdef windows
+			FreeLibrary(msm->dll_matrix_handle);
+		#else
+
+			//#ifndef disable_dlclose
+			//printf(">>>>>>>>>dealloc %p\n",sim->dll_matrix_handle);
+			if (dlclose(msm->dll_matrix_handle)!=0)
+			{
+				ewe(sim,"%s\n",_("Error closing dll"));
+			}
+			//#endif
+			msm->dll_matrix_handle=NULL;
+			msm->dll_matrix_solve=NULL;
+			msm->dll_matrix_solver_free=NULL;
+			msm->dll_matrix_init=NULL;
+		#endif
+	}*/
 }
 

@@ -64,7 +64,7 @@ void free_heat_zxy_long_double(struct dim_heat *dim, long double * (***var))
 
 void cpy_heat_zxy_long_double(struct dim_heat *dim, long double * (***out),long double * (***in))
 {
-	cpy_3d((void****)out,(void****)in,dim->zlen,dim->xlen,dim->ylen,sizeof(long double));
+	cpy_3d_alloc((void****)out,(void****)in,dim->zlen,dim->xlen,dim->ylen,sizeof(long double));
 }
 
 void flip_heat_zxy_long_double_y(struct simulation *sim, struct dim_heat *dim,long double *** data)

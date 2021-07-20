@@ -49,27 +49,128 @@
 #include <solver_interface.h>
 #include "memory.h"
 
-void free_srh_bands(struct dimensions *dim, gdouble *(**** in_var))
+
+void malloc_light_zxyl_float(struct dim_light *dim, float * (****var))
 {
-	free_4d_long_double(dim->zlen, dim->xlen, dim->ylen,dim->srh_bands, in_var);
+	malloc_4d( (void *****)var, dim->zlen, dim->xlen, dim->ylen,dim->llen,sizeof(float));
 }
 
 
-void cpy_srh_long_double(struct dimensions *dim, long double *(****dst), long double *(****src))
+
+void free_light_zxyl_float(struct dim_light *dim, float * (****in_var))
 {
-	free_4d_long_double(dim->zlen, dim->xlen, dim->ylen,dim->srh_bands, dst);
-	if (*src==NULL)
+	free_4d( (void *****)in_var, dim->zlen, dim->xlen, dim->ylen,dim->llen,sizeof(float));
+}
+
+void cpy_light_zxyl_float(struct dim_light *dim, float * (****out), float * (****in))
+{
+	free_4d( (void *****)out, dim->zlen, dim->xlen, dim->ylen,dim->llen,sizeof(float));
+	if (*in==NULL)
 	{
 		return;
 	}
-	malloc_4d_long_double(dim->zlen, dim->xlen, dim->ylen,dim->srh_bands, dst);
-	cpy_4d_long_double(dim->zlen, dim->xlen, dim->ylen,dim->srh_bands, dst, src);
+	malloc_4d( (void *****)out, dim->zlen, dim->xlen, dim->ylen,dim->llen,sizeof(float));
+	cpy_4d( (void *****)out, (void *****)in,dim->zlen, dim->xlen, dim->ylen,dim->llen,sizeof(float));
 }
 
-void malloc_srh_bands(struct dimensions *dim, gdouble * (****var))
+void flip_light_zxyl_float_y(struct simulation *sim, struct dim_light *dim,float **** data)
 {
-	malloc_4d_long_double(dim->zlen, dim->xlen, dim->ylen,dim->srh_bands, var);
+	int x=0;
+	int y=0;
+	int z=0;
+	int l=0;
+
+
+	float ****temp=NULL;
+
+	malloc_light_zxyl_float(dim, &temp);
+
+	for (l=0;l<dim->llen;l++)
+	{
+		for (z=0;z<dim->zlen;z++)
+		{
+
+			for (x=0;x<dim->xlen;x++)
+			{
+
+				for (y=0;y<dim->ylen;y++)
+				{
+					temp[z][x][y][l]=data[z][x][y][l];
+				}
+
+			}
+		}
+	}
+
+	for (l=0;l<dim->llen;l++)
+	{
+		for (z=0;z<dim->zlen;z++)
+		{
+
+			for (x=0;x<dim->xlen;x++)
+			{
+
+				for (y=0;y<dim->ylen;y++)
+				{
+					data[z][x][dim->ylen-y-1][l]=temp[z][x][y][l];
+				}
+			}
+		}
+	}
+
+
+	free_light_zxyl_float(dim, &temp);
+}
+
+void div_light_zxyl_float(struct dim_light *dim, float ****data,float val)
+{
+	int x=0;
+	int y=0;
+	int z=0;
+	int l=0;
+
+	for (l = 0; l < dim->llen; l++)
+	{
+		for (z = 0; z < dim->zlen; z++)
+		{
+			for (x = 0; x < dim->xlen; x++)
+			{
+				for (y = 0; y < dim->ylen; y++)
+				{
+					data[z][x][y][l]/=val;
+				}
+			}
+		}
+	}
 
 }
 
+void memset_light_zxyl_float(struct dim_light *dim, float ****data,int val)
+{
+	int x=0;
+	int y=0;
+	int z=0;
+
+	for (z = 0; z < dim->zlen; z++)
+	{
+		for (x = 0; x < dim->xlen; x++)
+		{
+			for (y = 0; y < dim->ylen; y++)
+			{
+				memset(data[z][x][y], val, dim->llen * sizeof(float ));
+			}
+		}
+	}
+
+}
+
+void memset_light_zxyl_float_y(struct dim_light *dim, float ****data,int z, int x, int l,float val)
+{
+	int y=0;
+	for (y = 0; y < dim->ylen; y++)
+	{
+		data[z][x][y][l]=val;
+	}
+
+}
 

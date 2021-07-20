@@ -69,6 +69,25 @@ void cpy_light_zxy_long_double(struct dim_light *dim, long double * (***out), lo
 	cpy_3d((void ****)out,(void ****)in,dim->zlen, dim->xlen, dim->ylen,sizeof(long double));	
 }
 
+void light_zxy_mul_long_double(struct simulation *sim, struct dim_light *dim,long double *** data,long double mul)
+{
+	int x=0;
+	int y=0;
+	int z=0;
+
+	for (z=0;z<dim->zlen;z++)
+	{
+		for (x=0;x<dim->xlen;x++)
+		{
+			for (y=0;y<dim->ylen;y++)
+			{
+				data[z][x][y]*=mul;
+			}
+		}
+	}
+
+}
+
 void flip_light_zxy_long_double_y(struct simulation *sim, struct dim_light *dim,long double *** data)
 {
 	int x=0;

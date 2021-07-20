@@ -100,6 +100,10 @@ void cpy_2d(void * (**out), void * (**in),int zlen, int xlen, int item_size)
 void cpy_2d_alloc(void * (**out), void * (**in),int zlen, int xlen, int item_size)
 {
 	free_2d((void ***)out, zlen, xlen, item_size);
+	if (*in==NULL)
+	{
+		return;
+	}
 	malloc_2d((void ***)out, zlen, xlen, item_size);
 	cpy_2d((void ***)out, (void ***)in,zlen, xlen, item_size);
 

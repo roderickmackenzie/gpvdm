@@ -127,4 +127,13 @@ void cpy_3d(void * (***out), void * (***in),int zlen, int xlen, int ylen,int ite
 
 }
 
-
+void cpy_3d_alloc(void * (***out), void * (***in),int zlen, int xlen, int ylen,int item_size)
+{
+	free_3d(out,zlen, xlen, ylen,item_size);
+	if (*in==NULL)
+	{
+		return;
+	}
+	malloc_3d(out, zlen, xlen, ylen,item_size);
+	cpy_3d(out, in, zlen, xlen, ylen,item_size);
+}

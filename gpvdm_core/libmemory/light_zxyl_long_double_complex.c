@@ -53,28 +53,6 @@
 void malloc_light_zxyl_long_double_complex(struct dim_light *dim, long double complex * (****var))
 {
 	malloc_4d( (void*****)var, dim->zlen, dim->xlen, dim->ylen,dim->llen,sizeof(long double complex));
-	/*int x=0;
-	int y=0;
-	int z=0;
-	int l=0;
-
-	*var = (long double complex ****) malloc(dim->zlen * sizeof(long double complex ***));
-
-	for (z = 0; z < dim->zlen; z++)
-	{
-		(*var)[z] = (long double complex ***) malloc(dim->xlen * sizeof(long double complex**));
-		for (x = 0; x < dim->xlen; x++)
-		{
-			(*var)[z][x] = (long double complex **) malloc(dim->ylen * sizeof(long double complex*));
-			for (y = 0; y < dim->ylen; y++)
-			{
-				(*var)[z][x][y] = (long double complex *) malloc(dim->llen * sizeof(long double complex));
-				memset((*var)[z][x][y], 0, dim->llen * sizeof(long double complex));
-
-			}
-		}
-	}*/
-
 }
 
 
@@ -82,35 +60,6 @@ void malloc_light_zxyl_long_double_complex(struct dim_light *dim, long double co
 void free_light_zxyl_long_double_complex(struct dim_light *dim, long double complex * (****in_var))
 {
 	free_4d( (void*****)in_var, dim->zlen, dim->xlen, dim->ylen,dim->llen,sizeof(long double complex));
-	/*int x=0;
-	int y=0;
-	int z=0;
-	int l=0;
-
-	long double complex ****var=*in_var;
-	if (var==NULL)
-	{
-		return;
-	}
-
-	for (z = 0; z < dim->zlen; z++)
-	{
-
-		for (x = 0; x < dim->xlen; x++)
-		{
-			for (y = 0; y < dim->ylen; y++)
-			{
-				free(var[z][x][y]);
-			}
-			free(var[z][x]);
-		}
-		free(var[z]);
-	}
-
-	free(var);
-
-	*in_var=NULL;*/
-
 }
 
 
@@ -119,33 +68,4 @@ void cpy_light_zxyl_long_double_complex(struct dim_light *dim, long double compl
 	free_4d( (void*****)out, dim->zlen, dim->xlen, dim->ylen,dim->llen,sizeof(long double complex));
 	malloc_4d( (void*****)out, dim->zlen, dim->xlen, dim->ylen,dim->llen,sizeof(long double complex));
 	cpy_4d( (void*****)out, (void*****)in, dim->zlen, dim->xlen, dim->ylen,dim->llen,sizeof(long double complex));
-	/*int x=0;
-	int y=0;
-	int z=0;
-	int l=0;
-
-	long double complex ****var=*in_var;
-	if (var==NULL)
-	{
-		return;
-	}
-
-	for (z = 0; z < dim->zlen; z++)
-	{
-
-		for (x = 0; x < dim->xlen; x++)
-		{
-			for (y = 0; y < dim->ylen; y++)
-			{
-				free(var[z][x][y]);
-			}
-			free(var[z][x]);
-		}
-		free(var[z]);
-	}
-
-	free(var);
-
-	*in_var=NULL;*/
-
 }

@@ -49,27 +49,124 @@
 #include <solver_interface.h>
 #include "memory.h"
 
-void free_srh_bands(struct dimensions *dim, gdouble *(**** in_var))
+
+void malloc_light_zxyl_double(struct dim_light *dim, double * (****var))
 {
-	free_4d_long_double(dim->zlen, dim->xlen, dim->ylen,dim->srh_bands, in_var);
+	malloc_4d( (void *****)var, dim->zlen, dim->xlen, dim->ylen,dim->llen,sizeof(double));
 }
 
 
-void cpy_srh_long_double(struct dimensions *dim, long double *(****dst), long double *(****src))
+
+void free_light_zxyl_double(struct dim_light *dim, double * (****in_var))
 {
-	free_4d_long_double(dim->zlen, dim->xlen, dim->ylen,dim->srh_bands, dst);
-	if (*src==NULL)
+	free_4d( (void *****)in_var, dim->zlen, dim->xlen, dim->ylen,dim->llen,sizeof(double));
+}
+
+void cpy_light_zxyl_double(struct dim_light *dim, double * (****out), double * (****in))
+{
+	free_4d( (void *****)out, dim->zlen, dim->xlen, dim->ylen,dim->llen,sizeof(double));
+	malloc_4d( (void *****)out, dim->zlen, dim->xlen, dim->ylen,dim->llen,sizeof(double));
+	cpy_4d( (void *****)out, (void *****)in,dim->zlen, dim->xlen, dim->ylen,dim->llen,sizeof(double));
+}
+
+void flip_light_zxyl_double_y(struct simulation *sim, struct dim_light *dim,double **** data)
+{
+	int x=0;
+	int y=0;
+	int z=0;
+	int l=0;
+
+
+	double ****temp=NULL;
+
+	malloc_light_zxyl_double(dim, &temp);
+
+	for (l=0;l<dim->llen;l++)
 	{
-		return;
+		for (z=0;z<dim->zlen;z++)
+		{
+
+			for (x=0;x<dim->xlen;x++)
+			{
+
+				for (y=0;y<dim->ylen;y++)
+				{
+					temp[z][x][y][l]=data[z][x][y][l];
+				}
+
+			}
+		}
 	}
-	malloc_4d_long_double(dim->zlen, dim->xlen, dim->ylen,dim->srh_bands, dst);
-	cpy_4d_long_double(dim->zlen, dim->xlen, dim->ylen,dim->srh_bands, dst, src);
+
+	for (l=0;l<dim->llen;l++)
+	{
+		for (z=0;z<dim->zlen;z++)
+		{
+
+			for (x=0;x<dim->xlen;x++)
+			{
+
+				for (y=0;y<dim->ylen;y++)
+				{
+					data[z][x][dim->ylen-y-1][l]=temp[z][x][y][l];
+				}
+			}
+		}
+	}
+
+
+	free_light_zxyl_double(dim, &temp);
 }
 
-void malloc_srh_bands(struct dimensions *dim, gdouble * (****var))
+void div_light_zxyl_double(struct dim_light *dim, double ****data,double val)
 {
-	malloc_4d_long_double(dim->zlen, dim->xlen, dim->ylen,dim->srh_bands, var);
+	int x=0;
+	int y=0;
+	int z=0;
+	int l=0;
+
+	for (l = 0; l < dim->llen; l++)
+	{
+		for (z = 0; z < dim->zlen; z++)
+		{
+			for (x = 0; x < dim->xlen; x++)
+			{
+				for (y = 0; y < dim->ylen; y++)
+				{
+					data[z][x][y][l]/=val;
+				}
+			}
+		}
+	}
 
 }
 
+void memset_light_zxyl_double(struct dim_light *dim, double ****data,int val)
+{
+	int x=0;
+	int y=0;
+	int z=0;
+
+	for (z = 0; z < dim->zlen; z++)
+	{
+		for (x = 0; x < dim->xlen; x++)
+		{
+			for (y = 0; y < dim->ylen; y++)
+			{
+				memset(data[z][x][y], val, dim->llen * sizeof(double ));
+			}
+		}
+	}
+
+}
+
+void memset_light_zxyl_double_y(struct dim_light *dim, double ****data,int z, int x, int l,double val)
+{
+	int y=0;
+	for (y = 0; y < dim->ylen; y++)
+	{
+		data[z][x][y][l]=val;
+	}
+
+}
 

@@ -59,42 +59,43 @@ void matrix_free(struct simulation *sim,struct matrix *mx)
 	if (mx->Ti!=NULL)
 	{
 		free(mx->Ti);
+		mx->Ti=NULL;
 	}
 
 	if (mx->Tj!=NULL)
 	{
 		free(mx->Tj);
+		mx->Tj=NULL;
 	}
 
 	if (mx->Tx!=NULL)
 	{
 		free(mx->Tx);
+		mx->Tx=NULL;
 	}
 
 	if (mx->b!=NULL)
 	{
 		free(mx->b);
+		mx->b=NULL;
 	}
 
 	if (mx->Txz!=NULL)
 	{
 		free(mx->Txz);
+		mx->Txz=NULL;
 	}
 
 	if (mx->bz!=NULL)
 	{
 		free(mx->bz);
+		mx->bz=NULL;
 	}
 
-	if (mx->build_from_non_sparse==TRUE)
+	if (mx->msort!=NULL)
 	{
-		for (y=0;y<mx->M;y++)
-		{
-			free(mx->J[y]);
-		}
-
-		free(mx->J);
-		mx->J=NULL;
+		free(mx->msort);
+		mx->msort=NULL;
 	}
 
 	matrix_init(mx);

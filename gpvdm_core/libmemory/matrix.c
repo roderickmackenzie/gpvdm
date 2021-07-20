@@ -68,14 +68,20 @@ void matrix_init(struct matrix *mx)
 
 	mx->use_cache=FALSE;
 	strcpy(mx->hash,"");
+	strcpy(mx->cache_file_path,"");
+
 	mx->ittr=0;
 	mx->complex_matrix=FALSE;
 
 	mx->build_from_non_sparse=FALSE;
-	mx->J=NULL;
+	//mx->J=NULL;
 
 	//stats
 	mx->tot_time=0;
+	mx->call=0;
+	strcpy(mx->dump_name,"");
+	mx->msort = NULL;
+	mx->msort_len=-1;
 }
 
 void matrix_stats(struct simulation *sim,struct matrix *mx)
@@ -106,6 +112,101 @@ int i;
 		printf_log(sim,"%Le\n",mx->b[i]);
 	}
 
+}
+
+void matrix_load_from_file(struct simulation *sim,struct matrix *mx,char *file_name)
+{
+int i;
+	FILE *in;
+	char temp[200];
+	in=fopen(file_name,"r");
+	fscanf(in,"%d",&mx->M);
+	fscanf(in,"%d",&mx->nz);
+	matrix_malloc(sim,mx);
+	fscanf(in,"%s",temp);
+	for (i=0;i<mx->nz;i++)
+	{
+		fscanf(in,"%d %d %Le",&mx->Tj[i],&mx->Ti[i],&mx->Tx[i]);
+	}
+
+	fscanf(in,"%s",temp);
+	
+	for (i=0;i<mx->M;i++)
+	{
+		fscanf(in,"%Le\n",&mx->b[i]);
+	}
+
+	fclose(in);
+}
+
+void matrix_dump_to_file(struct simulation *sim,struct matrix *mx,char *file_name)
+{
+int i;
+	FILE *out;
+	out=fopen(file_name,"w");
+	fprintf(out,"%d\n",mx->M);
+	fprintf(out,"%d\n",mx->nz);
+	fprintf(out,"J:\n");
+	for (i=0;i<mx->nz;i++)
+	{
+		fprintf(out,"%d %d %Le\n",mx->Tj[i],mx->Ti[i],mx->Tx[i]);
+	}
+
+	fprintf(out,"b:\n");
+	
+	for (i=0;i<mx->M;i++)
+	{
+		fprintf(out,"%Le\n",mx->b[i]);
+	}
+
+	fclose(out);
+}
+
+int matrix_cmp_to_file(struct simulation *sim,struct matrix *mx,char *file_name)
+{
+	int i;
+	char temp[100];
+	char Tx_file[100];
+	char Tx[100];
+	char b[100];
+	char b_file[100];
+	int Tj,Ti;
+	FILE *out;
+
+	out=fopen(file_name,"r");
+
+	fscanf(out,"%s",temp);
+	for (i=0;i<mx->nz;i++)
+	{
+		fscanf(out,"%d %d %s",&Tj,&Ti,Tx_file);
+
+
+		sprintf(Tx,"%Le",mx->Tx[i]);
+		if (strcmp(Tx,Tx_file)!=0)
+		{
+			printf("J: %d %d %s!=%s\n",Ti,Tj,Tx,Tx_file);
+			fclose(out);
+			return -1;
+		}		
+
+	}
+
+	fscanf(out,"%s",temp);
+	
+	for (i=0;i<mx->M;i++)
+	{
+		fscanf(out,"%s",b);
+		sprintf(b_file,"%Le",mx->b[i]);
+		if (strcmp(b,b_file)!=0)
+		{
+			printf("b: %d %s!=%s\n",i,b,b_file);
+			fclose(out);
+			return -1;
+		}		
+	}
+
+	fclose(out);
+	return 0;
 }
 
 void matrix_dump_b(struct simulation *sim,struct matrix *mx)
@@ -161,9 +262,12 @@ return sum;
 int matrix_solve(struct simulation *sim,struct matrix_solver_memory *msm,struct matrix *mx)
 {
 char out[100];
+char temp[200];
 struct md5 hash;
+int dump_matrix_check=FALSE;
+int matrix_check=FALSE;
 int start_time=timer_get_time_in_ms();
-
+	
 	if (mx->use_cache==TRUE)
 	{
 		if (mx->ittr==0)
@@ -204,8 +308,11 @@ int start_time=timer_get_time_in_ms();
 		if (sim->dll_matrix_solve==NULL)
 		{
 			ewe(sim,"The matrix solver dll is not loaded\n");
-		} 
+		}
+
+		matrix_solver_memory_check_memory(sim,msm,mx->M,mx->nz);
 		(*sim->dll_matrix_solve)(msm,mx->M,mx->nz,mx->Ti,mx->Tj,mx->Tx,mx->b);
+
 		//printf("fin\n");
 	}else
 	{
@@ -213,6 +320,7 @@ int start_time=timer_get_time_in_ms();
 	}
 
 	mx->tot_time+=(timer_get_time_in_ms()-start_time);
+	mx->call++;
 return -1;
 }
 
@@ -234,49 +342,224 @@ void matrix_malloc(struct simulation *sim,struct matrix *mx)
 		malloc_1d((void **)(&mx->bz), mx->M, sizeof(long double));
 	}
 
-	if (mx->build_from_non_sparse==TRUE)
+	/*if (mx->build_from_non_sparse==TRUE)
 	{
 		malloc_2d((void ***)(&mx->J), mx->M, mx->M, sizeof(long double));
+	}*/
+
+}
+
+int matrix_sort_comparator (const void *in_m0, const void *in_m1)
+{
+	struct matrix_sort *val0=(struct matrix_sort *)in_m0;
+	struct matrix_sort *val1=(struct matrix_sort *)in_m1;
+
+	if (val0->Ti<val1->Ti)
+	{
+		return -1;
 	}
 
+	if (val0->Ti>val1->Ti)
+	{
+		return 1;
+	}
+
+	if (val0->Tj<val1->Tj)
+	{
+		return -1;
+	}
+
+	if (val0->Tj>val1->Tj)
+	{
+		return 1;
+	}
+
+	return 0;
 }
 
 void matrix_convert_J_to_sparse(struct simulation *sim,struct matrix *mx)
 {
 	int x;
 	int y;
-	for (y=0;y<mx->M;y++)
-	{
-			for (x=0;x<mx->M;x++)
-			{
-				if (mx->J[y][x]!=0.0)
-				{
-					if (mx->nz>=mx->nz_max)
-					{
-						mx->nz_max+=1000;
-						mx->Ti=realloc(mx->Ti,mx->nz_max*sizeof(int));
-						mx->Tj=realloc(mx->Tj,mx->nz_max*sizeof(int));
-						mx->Tx=realloc(mx->Tx,mx->nz_max*sizeof(long double));
-					}
+	int n;
+	int nn;
+	int write_pos=0;
+	int read_pos=0;
+	int read_Ti=0;
+	int read_Tj=0;
+	int t=0;
 
-					mx->Ti[mx->nz]=y;
-					mx->Tj[mx->nz]=x;
-					mx->Tx[mx->nz]=mx->J[y][x];
-					mx->nz++;
-				}
+	struct matrix_sort *ms;
+	if (mx->msort_len<mx->nz)
+	{
+		mx->msort=realloc(mx->msort,sizeof(struct matrix_sort)*mx->nz);
+		mx->msort_len=mx->nz;
+	}
+
+	for (n=0;n<mx->nz;n++)
+	{
+		ms=&(mx->msort[n]);
+		ms->Ti=mx->Ti[n];
+		ms->Tj=mx->Tj[n];
+		ms->Tx=mx->Tx[n];
+	}
+
+	/*for (n=0;n<mx->nz;n++)
+	{
+		ms=&(mx->msort[n]);
+		printf("b %d %d %Le\n",ms->Ti,ms->Tj,ms->Tx);
+	}*/
+
+	qsort(mx->msort, mx->nz,sizeof(struct matrix_sort),matrix_sort_comparator);
+	/*printf("\n");
+	for (n=0;n<mx->nz;n++)
+	{
+		ms=&(mx->msort[n]);
+		printf("a %d %d %Le\n",ms->Ti,ms->Tj,ms->Tx);
+	}*/
+	
+
+	//printf("\n");
+	int last_Ti=-1;
+	int last_Tj=-1;
+	int pos=0;
+	for (n=0;n<mx->nz;n++)
+	{
+		ms=&(mx->msort[n]);
+		//printf("c %d %d %Le %d\n",ms->Ti,ms->Tj,ms->Tx,pos);
+		//printf("%d %d\n",last_Ti,last_Tj);
+		if ((ms->Ti!=-1)&&(ms->Tj!=-1))
+		{
+			if ((ms->Ti!=last_Ti)||(ms->Tj!=last_Tj))
+			{
+				last_Ti=ms->Ti;
+				last_Tj=ms->Tj;
+				pos=n;
+			}else
+			{
+				mx->msort[pos].Tx+=ms->Tx;
+				ms->Ti=-1;
+				ms->Tj=-1;
 			}
+
+		}
+	}
+
+	/*for (n=0;n<mx->nz;n++)
+	{
+		ms=&(mx->msort[n]);
+		printf("c %d %d %Le\n",ms->Ti,ms->Tj,ms->Tx);
+	}
+	printf("\n");*/
+	pos=0;
+	for (n=0;n<mx->nz;n++)
+	{
+		ms=&(mx->msort[n]);
+		if (ms->Ti!=-1)
+		{
+			mx->Ti[pos]=ms->Ti;
+			mx->Tj[pos]=ms->Tj;
+			mx->Tx[pos]=ms->Tx;
+			pos++;
+		}
+	}
+	//printf("\n");
+	mx->nz=pos;
+
+
+///////////////////////Right
+	/*for (n=0;n<mx->nz;n++)
+	{
+
+		if (mx->Ti[read_pos]!=-1)
+		{
+			read_Ti=mx->Ti[read_pos];
+			read_Tj=mx->Tj[read_pos];
+
+			for (nn=read_pos;nn<mx->nz;nn++)
+			{
+
+
+				if ((read_Ti==mx->Ti[nn])&&(mx->Ti[nn]!=-1))
+				{
+					if ((read_Tj==mx->Tj[nn])&&(mx->Tj[nn]!=-1))
+					{
+						if (write_pos!=nn)
+						{
+							mx->Tx[write_pos]+=mx->Tx[nn];
+							mx->Ti[write_pos]=mx->Ti[nn];
+							mx->Tj[write_pos]=mx->Tj[nn];
+							mx->Ti[nn]=-1;
+							mx->Tj[nn]=-1;
+							mx->Tx[nn]=0.0;
+						}
+
+					}
+				}
+
+
+			}
+
+			write_pos++;
+		}
+
+
+
+		read_pos++;
+
+
+
 	}
 
 
+
+	int found=FALSE;
+	for (n=0;n<mx->nz;n++)
+	{
+		ms=&(mx->msort[n]);
+		if (ms->Ti!=-1)
+		{
+			found=FALSE;
+			for (nn=0;nn<mx->nz;nn++)
+			{
+				if (mx->Ti[nn]==ms->Ti)
+				{
+					if (mx->Tj[nn]==ms->Tj)
+					{
+						if (mx->Tx[nn]!=ms->Tx)
+						{
+							printf("error!\n");
+						}else
+						{
+							found=TRUE;
+							printf("OK\n");
+						}
+						break;
+					}
+				}
+
+			}
+
+			if (found==FALSE)
+			{
+				printf("error!\n");
+			}
+		}
+	}*/
+			//	mx->Ti[nn]=ms->Ti;
+			//	mx->Tj[nn]=ms->Tj;
+			//	mx->Tx[pos]=ms->Tx;
+
+	//mx->nz=write_pos;
 }
 
 void matrix_add_nz_item(struct simulation *sim,struct matrix *mx,int x,int y,long double val)
 {
-	int i;
+	//int i;
 	//(printf("search =%d %d\n",x,y);
-	mx->J[y][x]+=val;
-	/*
-	for (i=0;i<mx->nz;i++)
+	//mx->J[y][x]+=val;
+	
+	/*for (i=0;i<mx->nz;i++)
 	{
 		if ((x==mx->Tj[i])&&(y==mx->Ti[i]))
 		{
@@ -284,7 +567,7 @@ void matrix_add_nz_item(struct simulation *sim,struct matrix *mx,int x,int y,lon
 			mx->Tx[i]+=val;
 			return;
 		}
-	}
+	}*/
 
 	if (mx->nz>=mx->nz_max)
 	{
@@ -297,7 +580,7 @@ void matrix_add_nz_item(struct simulation *sim,struct matrix *mx,int x,int y,lon
 	mx->Ti[mx->nz]=y;
 	mx->Tj[mx->nz]=x;
 	mx->Tx[mx->nz]=val;
-	mx->nz++;*/
+	mx->nz++;
 
 }
 void matrix_realloc(struct simulation *sim,struct matrix *mx)
@@ -370,7 +653,7 @@ void matrix_realloc(struct simulation *sim,struct matrix *mx)
 
 	}
 
-	if (mx->build_from_non_sparse==TRUE)
+	/*if (mx->build_from_non_sparse==TRUE)
 	{
 		int y;
 		for (y=0;y<mx->M;y++)
@@ -386,7 +669,7 @@ void matrix_realloc(struct simulation *sim,struct matrix *mx)
 			mx->J[y]=malloc(mx->M*sizeof(long double));
 			memset(mx->J[y], 0, mx->M*sizeof(long double));
 		}
-	}
+	}*/
 }
 
 void matrix_zero_b(struct simulation *sim,struct matrix *mx)
@@ -398,7 +681,7 @@ void matrix_zero_b(struct simulation *sim,struct matrix *mx)
 		memset(mx->bz, 0, mx->M*sizeof(long double));
 	}
 
-	if (mx->build_from_non_sparse==TRUE)
+	/*if (mx->build_from_non_sparse==TRUE)
 	{
 		int y;
 
@@ -406,7 +689,7 @@ void matrix_zero_b(struct simulation *sim,struct matrix *mx)
 		{
 			memset(mx->J[y], 0, mx->M*sizeof(long double));
 		}
-	}
+	}*/
 }
 
 void matrix_save(struct simulation *sim,struct matrix *mx)
@@ -461,4 +744,88 @@ int matrix_load(struct simulation *sim,struct matrix *mx)
 	return 0;
 
 }
+
+
+
+/*
+for (n=0;n<mx->nz;n++)
+	{
+
+		if (mx->Ti[read_pos]!=-1)
+		{
+			read_Ti=mx->Ti[read_pos];
+			read_Tj=mx->Tj[read_pos];
+
+			//mx->Tx[write_pos]=0.0;
+			for (nn=read_pos;nn<mx->nz;nn++)
+			{
+				//for (t=0;t<mx->nz;t++)
+				//{
+				//	printf("%d %d %Lf",mx->Ti[t],mx->Tj[t],mx->Tx[t]);
+				//	if (t==write_pos)
+				//	{
+				//		printf(" W");
+				//	}
+
+				//	if (t==read_pos)
+				//	{
+				//		printf(" R");
+				//	}
+
+				//	if (t==nn)
+				//	{
+				//		printf(" *");
+				//	}
+
+				//	printf("\n");
+				//
+
+				if ((read_Ti==mx->Ti[nn])&&(mx->Ti[nn]!=-1))
+				{
+					if ((read_Tj==mx->Tj[nn])&&(mx->Tj[nn]!=-1))
+					{
+						if (write_pos!=nn)
+						{
+							mx->Tx[write_pos]+=mx->Tx[nn];
+							mx->Ti[write_pos]=mx->Ti[nn];
+							mx->Tj[write_pos]=mx->Tj[nn];
+							mx->Ti[nn]=-1;
+							mx->Tj[nn]=-1;
+							mx->Tx[nn]=0.0;
+							//printf("%d %d\n",nn,write_pos);
+						}
+
+					}
+				}
+
+				//Think I need to replace with hashing
+				//if ((read_Ti<mx->Ti[nn])&&(mx->Ti[nn]!=-1))
+				//{
+				//	if ((read_Tj<mx->Tj[nn])&&(mx->Tj[nn]!=-1))
+				//	{
+				//		//printf("break!");
+				//		break;
+				//	}
+				//}
+
+				//printf("\n");
+
+
+
+
+				//getchar();
+			}
+
+			write_pos++;
+		}
+
+
+
+		read_pos++;
+
+
+
+	}
+
+*/
 

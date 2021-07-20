@@ -52,21 +52,21 @@
 
 void malloc_light_zxyl_long_double(struct dim_light *dim, long double * (****var))
 {
-	malloc_4d_long_double(dim->zlen, dim->xlen, dim->ylen,dim->llen, var);
+	malloc_4d( (void *****)var, dim->zlen, dim->xlen, dim->ylen,dim->llen,sizeof(long double));
 }
 
 
 
 void free_light_zxyl_long_double(struct dim_light *dim, long double * (****in_var))
 {
-	free_4d_long_double(dim->zlen, dim->xlen, dim->ylen,dim->llen, in_var);
+	free_4d( (void *****)in_var, dim->zlen, dim->xlen, dim->ylen,dim->llen,sizeof(long double));
 }
 
 void cpy_light_zxyl_long_double(struct dim_light *dim, long double * (****out), long double * (****in))
 {
-	free_4d_long_double(dim->zlen, dim->xlen, dim->ylen,dim->llen, out);
-	malloc_4d_long_double(dim->zlen, dim->xlen, dim->ylen,dim->llen, out);
-	cpy_4d_long_double(dim->zlen, dim->xlen, dim->ylen,dim->llen, out, in);
+	free_4d( (void *****)out, dim->zlen, dim->xlen, dim->ylen,dim->llen,sizeof(long double));
+	malloc_4d( (void *****)out, dim->zlen, dim->xlen, dim->ylen,dim->llen,sizeof(long double));
+	cpy_4d( (void *****)out, (void *****)in,dim->zlen, dim->xlen, dim->ylen,dim->llen,sizeof(long double));
 }
 
 void flip_light_zxyl_long_double_y(struct simulation *sim, struct dim_light *dim,long double **** data)

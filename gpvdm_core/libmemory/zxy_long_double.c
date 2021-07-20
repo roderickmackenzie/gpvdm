@@ -63,12 +63,27 @@ void free_zxy_gdouble(struct dimensions *dim, gdouble * (***var))
 void cpy_zxy_long_double(struct dimensions *dim, long double * (***out), long double * (***in))
 {
 	free_3d((void****)out,dim->zlen, dim->xlen, dim->ylen,sizeof(long double));
+	if (*in==NULL)
+	{
+		return;
+	}
 	malloc_3d((void****)out,dim->zlen, dim->xlen, dim->ylen,sizeof(long double));
 	cpy_3d((void****)out, (void****)in, dim->zlen, dim->xlen, dim->ylen, sizeof(long double));
 }
 
 void three_d_copy_gdouble(struct dimensions *dim, long double ***out, long double ***in)
 {
+	if (in==NULL)
+	{
+		printf("Warning copying null pointer\n");
+	}
+
+	if (out==NULL)
+	{
+		printf("Warning copying onto null pointer!\n");
+		getchar();
+	}
+
 	cpy_3d((void****)&out, (void****)&in, dim->zlen, dim->xlen, dim->ylen, sizeof(long double));
 }
 
@@ -293,6 +308,10 @@ int y=0;
 int z=0;
 long double sum=0.0;
 long double ret=0.0;
+if (src==NULL)
+{
+	return 0.0;
+}
 
 long double count=0.0;
 struct dimensions *dim=&(in->ns.dim);
@@ -327,6 +346,11 @@ long double ret=0.0;
 long double dx=0.0;
 long double dy=0.0;
 long double dz=0.0;
+
+if (src==NULL)
+{
+	return 0.0;
+}
 
 struct dimensions *dim=&(in->ns.dim);
 
@@ -379,6 +403,12 @@ int y=0;
 int z=0;
 long double sum=0.0;
 long double ret=0.0;
+
+if (src==NULL)
+{
+	return 0.0;
+}
+
 struct dimensions *dim=&(in->ns.dim);
 	for (z = 0; z < dim->zlen; z++)
 	{
