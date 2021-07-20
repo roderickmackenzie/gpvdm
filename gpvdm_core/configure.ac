@@ -69,7 +69,8 @@ AC_SUBST(OPEN_CL_COMPILE, "")
 
 AC_SUBST(WIN_ICON, "" )
 AC_SUBST(WIN_RES_FILE, "" )
-
+AC_SUBST(PNG_LIB,[""])
+AC_SUBST(PNG_HEADER,[""])
 #This is a case statment the default is to compile for linux
 AS_CASE([$target_os],
   [mingw32], [
@@ -98,8 +99,8 @@ AC_SUBST(EXE_EXT, "")
 
 AC_SUBST(DLL_LINKER, ["`dpkg-buildflags --get LDFLAGS` -Wl,-soname,plugin.so"])
 AC_SUBST(DLL_COMPILE, ["-fPIC"])
-AC_SUBST(DLL_DEBUG, ["-Wall -g -fsanitize=address -fno-omit-frame-pointer"])
-AC_SUBST(SRC_DEBUG, [" -g -fsanitize=address -fno-omit-frame-pointer"])
+AC_SUBST(DLL_DEBUG, ["-Wall -g "])
+AC_SUBST(SRC_DEBUG, [" -g "])
 
 #-g -fsanitize=address -fno-omit-frame-pointer
 # -fsanitize=address -fno-omit-frame-pointer

@@ -7,8 +7,6 @@ gpvdm_core_SOURCES=
 
 
 
-dist_pkgdata_DATA = base.gpvdm
-
 inp_templatedir = $(pkgdatadir)/inp_template
 inp_template_DATA = inp_template/*.inp
 
@@ -19,8 +17,8 @@ if INCLUDE_DEVICELIB
 device_libdir = $(pkgdatadir)/device_lib
 device_lib_DATA=device_lib/*.gpvdm
 
-device_lib_maeckel_et_aldir = $(pkgdatadir)/device_lib/maeckel_et_al/
-device_lib_maeckel_et_al_DATA=device_lib/maeckel_et_al/*.gpvdm
+#device_lib_maeckel_et_aldir = $(pkgdatadir)/device_lib/maeckel_et_al/
+#device_lib_maeckel_et_al_DATA=device_lib/maeckel_et_al/*.gpvdm
 endif
 
 if INCLUDE_CLUSTER
