@@ -46,12 +46,13 @@
 #include <epitaxy_struct.h>
 #include <heat.h>
 #include <device.h>
+#include <json.h>
 
 //General
 int heat_solve(struct simulation *sim, struct heat *thermal,struct device *dev, int z, int x);
 void heat_load_config(struct simulation *sim,struct heat *thermal, struct device *dev);
-void heat_load_config_file(struct simulation *sim,struct heat *thermal);
-void heat_setup_dump_dir(struct simulation *sim,struct heat *thermal);
+void heat_load_config_file(struct simulation *sim,struct heat *thermal, struct json_obj *json_config);
+void heat_setup_dump_dir(struct simulation *sim, char *path,struct heat *thermal);
 void heat_dump(struct simulation *sim,char *path,struct heat *thermal);
 void heat_free_memory(struct simulation *sim,struct heat *thermal);
 void heat_malloc(struct simulation *sim,struct heat *thermal);
@@ -59,8 +60,9 @@ void heat_cpy(struct simulation *sim,struct heat *out,struct heat *in);
 void heat_init(struct heat *thermal);
 
 //Transfer between meshes
-void heat_transfer_device_heat_to_heat_mesh(struct heat *thermal, struct device *dev);
+void heat_transfer_device_heat_to_heat_mesh(struct simulation *sim,struct heat *thermal, struct device *dev);
 void heat_transfer_optical_heat_to_heat_mesh(struct heat *thermal, struct light *li);
+void heat_transfer_temperatures_to_device(struct device *dev,struct heat *thermal);
 
 //New thermal model
 void heat_build_obj_pointer_array(struct simulation *sim,struct heat *thermal, struct device *dev);
@@ -76,4 +78,10 @@ int hydrodynamic_solve(struct simulation *sim, struct heat *thermal,struct devic
 long double lattice_get_error(struct heat *thermal);
 int lattice_solve(struct simulation *sim, struct heat *thermal,struct device *dev, int z, int x);
 void heat_set_initial_distribution(struct heat *thermal);
+
+//heat material
+void heat_material_init(struct heat_material *mat);
+void heat_material_cpy(struct heat_material *out,struct heat_material *in);
+void heat_material_free(struct heat_material *mat);
+void heat_material_load_from_json(struct simulation *sim,struct heat_material *mat, struct json_obj *json_heat_material);
 #endif

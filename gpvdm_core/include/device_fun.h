@@ -75,5 +75,11 @@ void device_world_stats(struct simulation *sim,struct device *dev);
 //cahce
 void device_cache_init(struct solver_cache *cache);
 void device_cache_cpy(struct solver_cache *out,struct solver_cache *in);
-
+void epitaxy_load_dos_files(struct simulation *sim,struct device *dev, struct epitaxy *epi,struct json_obj *json_epi);
+void device_interface_doping(struct simulation *sim,struct device *dev);
+char *get_input_path(struct device *dev);
+char *get_output_path(struct device *dev);
+void set_input_path(struct device *dev,char *in);
+void set_output_path(struct device *dev,char *in);
+void device_to_dim(struct simulation *sim,struct dimensions *dim,struct device *dev);
 #endif

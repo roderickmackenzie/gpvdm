@@ -86,7 +86,6 @@ long double newton_sim_voc(struct simulation *sim, struct device *in)
 	long double i0;
 	long double i1;
 	long double deriv;
-	long double Rdrain=in->Rload+in->Rcontact;
 
 	long double Vapplied=0.0;
 	long double Vapplied_last=0.0;
@@ -96,19 +95,34 @@ long double newton_sim_voc(struct simulation *sim, struct device *in)
 	long double ret=0.0;
 
 	Vapplied=contact_get_active_contact_voltage(sim,in);
-	printf("%Lf %Le\n",Vapplied,in->Gn[0][0][0]);
-	getchar();
+	//printf("%Lf %Le %Lf %Le\n",Vapplied,in->Gn[0][0][0],in->Rload,in->Rcontact);
+	//getchar();
 	Vapplied_last=contact_get_active_contact_voltage_last(sim,in);
 	//printf("Generation rate: %Le m^-3 s^-1\n",in->Gn[0][0][0]);
+	//getchar();
+	//printf("%p\n",sim->dll_matrix_handle);
+	//getchar();
 	solve_all(sim,in);
+	//getchar();
 	i0=get_I(in);
-	e0=fabs(i0+Vapplied*(1.0/in->Rshunt-1.0/Rdrain));
-
+	if (in->go_time==FALSE)
+	{
+		e0=fabs(i0+Vapplied*(1.0/in->Rshunt));
+	}else
+	{
+		e0=fabs(i0+Vapplied*(1.0/in->Rshunt)+C*(Vapplied-Vapplied_last)/in->dt);
+	}
 	Vapplied+=step;
 	contact_set_active_contact_voltage(sim,in,Vapplied);
 	solve_all(sim,in);
 	i1=get_I(in);
-	e1=fabs(i1+Vapplied*(1.0/in->Rshunt-1.0/Rdrain));
+	if (in->go_time==FALSE)
+	{
+		e1=fabs(i1+Vapplied*(1.0/in->Rshunt));
+	}else
+	{
+		e1=fabs(i1+Vapplied*(1.0/in->Rshunt)+C*(Vapplied-Vapplied_last)/in->dt);
+	}
 
 	deriv=(e1-e0)/step;
 	step=-e1/deriv;
@@ -122,7 +136,14 @@ long double newton_sim_voc(struct simulation *sim, struct device *in)
 		e0=e1;
 		solve_all(sim,in);
 		i1=get_I(in);
-		e1=fabs(i1+Vapplied*(1.0/in->Rshunt-1.0/Rdrain));
+		if (in->go_time==FALSE)
+		{
+			e1=fabs(i1+Vapplied*(1.0/in->Rshunt));
+		}else
+		{
+			e1=fabs(i1+Vapplied*(1.0/in->Rshunt)+C*(Vapplied-Vapplied_last)/in->dt);
+		}
+		printf("%Le\n",get_equiv_J(sim,in));
 		deriv=(e1-e0)/step;
 		step=-e1/deriv;
 		error_diff=e1-e0;
@@ -131,7 +152,7 @@ long double newton_sim_voc(struct simulation *sim, struct device *in)
 		Vapplied+=step;
 		contact_set_active_contact_voltage(sim,in,Vapplied);
 
-		if (get_dump_status(sim,dump_print_text)==TRUE)
+		//if (get_dump_status(sim,dump_print_text)==TRUE)
 		{
 			printf_log(sim,"%d Vapplied=%Lf step=%Le f()=%Le\n",count,Vapplied,step,e1);
 		}
@@ -145,9 +166,7 @@ long double newton_sim_voc(struct simulation *sim, struct device *in)
 			printf_log(sim,"*");
 		}
 			
-		}while(e1>1e-12);
-
-	ret=Vapplied-C*(i1-in->Ilast)/in->dt;
+	}while(e1>1e-12);
 
 	if (Vapplied<0.0)
 	{

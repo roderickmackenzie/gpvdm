@@ -39,8 +39,9 @@
 
 #ifndef matrix_solver_memory_h
 #define matrix_solver_memory_h
+#include <enabled_libs.h>
 #include <stdio.h>
-
+#include "cal_path.h"
 
 struct matrix_solver_memory
 {
@@ -77,8 +78,11 @@ struct matrix_solver_memory
 		char fname_to_solver[PATH_MAX];
 		int fd_from_solver;
 
+
 };
 
 void matrix_solver_memory_init(struct matrix_solver_memory *msm);
-void matrix_solver_memory_free(struct matrix_solver_memory *msm);
+void matrix_solver_memory_free(struct simulation *sim,struct matrix_solver_memory *msm);
+void matrix_solver_memory_load_dll(struct simulation *sim,struct matrix_solver_memory *msm);
+void matrix_solver_memory_check_memory(struct simulation *sim,struct matrix_solver_memory *msm,int col,int nz);
 #endif

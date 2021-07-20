@@ -43,9 +43,9 @@
 #include <sim_struct.h>
 
 void newton_set_min_ittr(struct device *in,int ittr);
-void newton_init(struct simulation *sim,char *solver_name);
+void newton_init(struct simulation *sim,struct device *dev,char *solver_name);
 int solve_cur(struct simulation *sim,struct device *in,int z, int x);
 void solver_realloc(struct simulation *sim,struct device * in);
 void solver_free_memory(struct simulation *sim,struct device * in);
-void newton_interface_free(struct simulation *sim);
+void newton_interface_free(struct simulation *sim,struct device * dev);
 #endif

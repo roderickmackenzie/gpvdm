@@ -39,6 +39,7 @@
 
 #ifndef colors_h
 #define colors_h
+#include <enabled_libs.h>
 
 #define fg_reset	0
 #define fg_wight	97

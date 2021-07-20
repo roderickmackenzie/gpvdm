@@ -44,6 +44,7 @@
 #include <sim_struct.h>
 #include "list_struct.h"
 #include <lib_fxdomain.h>
+#include <json.h>
 
 //fitting
 void fit_cos(struct simulation *sim,int dump_fit_progress_data,long double *fit_error,gdouble *ret_mag,gdouble *ret_delta,struct math_xy *input_data,gdouble fx,char * prefix, char *output_path);
@@ -61,7 +62,7 @@ void fxdomain_free(struct simulation *sim,struct fxdomain *fxdomain_config);
 void fxdomain_dump(struct simulation *sim,struct fxdomain *fxdomain_config);
 int fxdomain_fit(struct simulation *sim,struct device *in,struct fxdomain *fxdomain_config);
 void fxdomain_reset(struct simulation *sim,struct fxdomain *fxdomain_config);
-void fxdomain_load_config(struct simulation *sim,struct fxdomain *fxdomain_config,struct device *dev,char *config_file_name);
+void fxdomain_load_config(struct simulation *sim,struct fxdomain *fxdomain_config,struct device *dev,struct json_obj *json_is);
 void fxdomain_large_signal_solve(struct simulation *sim,struct device *in,struct fxdomain *fxdomain_config);
 void fxdomain_small_signal_solve(struct simulation *sim,struct device *in,struct fxdomain *fxdomain_config);
 void fxdomain_cal_complex_j(struct simulation *sim,struct device *in,struct newton_state_complex *ns,int z,int x);
@@ -70,7 +71,7 @@ int fxdomain_large_signal_test(struct simulation *sim,struct device *in,struct f
 
 //mesh
 void fx_mesh_save(struct simulation *sim,struct fxdomain *config);
-void fx_load_mesh(struct simulation *sim,struct fxdomain *config,int number);
+void fx_load_mesh(struct simulation *sim,struct fxdomain *config,struct json_obj *json_is);
 void fx_mesh_step(struct simulation *sim,struct fxdomain *config);
 int fx_mesh_points(struct fxdomain *config);
 int fx_mesh_run(struct fxdomain *config);

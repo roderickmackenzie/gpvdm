@@ -45,8 +45,6 @@
 #include "list_struct.h"
 
 void inp_replace_double(struct simulation *sim,struct inp_file *in,char *token, double value);
-int inp_get_array_len(struct simulation *sim,struct inp_file *in,char *token);
-int inp_get_array(struct simulation *sim,char ** out,struct inp_file *in,char *token);
 int inp_save(struct simulation *sim,struct inp_file *in);
 void inp_init(struct simulation *sim,struct inp_file *in);
 int inp_aes_load(struct inp_file *in,char *path,char *file,char *key);
@@ -61,11 +59,9 @@ int inp_search(struct simulation *sim,char* out,struct inp_file *in,char *token)
 void inp_check(struct simulation *sim,struct inp_file *in,double ver);
 int inp_read_buffer(struct simulation *sim,char **buf, long *len,char *full_file_name);
 void inp_reset_read(struct simulation *sim,struct inp_file *in);
-char* inp_get_string(struct simulation *sim,struct inp_file *in);
-char* inp_search_part(struct simulation *sim,struct inp_file *in,char *token);
+int inp_get_string(struct simulation *sim,char *out, struct inp_file *in);
 int inp_load_from_path(struct simulation *sim,struct inp_file *in,char *path,char *file);
 void inp_replace(struct simulation *sim,struct inp_file *in,char *token, char *text);
-int inp_search_pos(struct simulation *sim,struct inp_file *in,char *token);
 int inp_search_english(struct simulation *sim,struct inp_file *in,char *token);
 int inp_isfile(struct simulation *sim,char *full_file_name);
 int zip_is_in_archive(char *full_file_name);
@@ -78,8 +74,6 @@ int search_for_token(struct simulation *sim,char *ret,char *dir_name,char* token
 void inp_replace_offset(struct simulation *sim,struct inp_file *in,char *token, char *text,int offset);
 void inp_replace_double_offset(struct simulation *sim,struct inp_file *in,char *token, double value,int offset);
 void inp_search_double_offset(struct simulation *sim,struct inp_file *in,double* out,char* token,int offset);
-int inp_get_array_gdouble(struct simulation *sim,long double * out,struct inp_file *in,char *token);
-int inp_count_hash_tags(struct simulation *sim,struct inp_file *in);
 void inp_replace_double_offset_col(struct simulation *sim,struct inp_file *in,char *token, double value,int offset,int col);
 int inp_test_end_of_data(char *line);
 void inp_load_from_buffer(struct simulation *sim,struct inp_file *in,char *file,char *buffer,int len);

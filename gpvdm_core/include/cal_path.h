@@ -45,15 +45,11 @@
 void cal_path(struct simulation *sim);
 char *get_plugins_path(struct simulation *sim);
 char *get_lang_path(struct simulation *sim);
-char *get_input_path(struct simulation *sim);
-char *get_output_path(struct simulation *sim);
 char *get_cache_path(struct simulation *sim);
 char *get_materials_path(struct simulation *sim);
 char *get_cie_color_path(struct simulation *sim);
 char *get_shape_path(struct simulation *sim);
 char *get_spectra_path(struct simulation *sim);
-void set_input_path(struct simulation *sim,char *in);
-void set_output_path(struct simulation *sim,char *in);
 int find_dll(struct simulation *sim, char *lib_path,char *lib_name);
 void join_path(int max, ...);
 void assert_platform_path(char * path);
@@ -63,6 +59,9 @@ int is_dir_in_path(char *long_path, char* search_dir);
 int get_delta_path(struct simulation *sim,char *out, char *root,char *file_name);
 char *get_gpvdm_local_path(struct simulation *sim);
 char *get_tmp_path(struct simulation *sim);
+void remove_file_ext(char * path);
+void get_dir_name(char *out,char *in);
+void mkdirs(char *dir);
 
 //<strip>
 void set_key_path(struct simulation *sim);

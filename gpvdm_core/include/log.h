@@ -49,11 +49,11 @@
 
 void textcolor(struct simulation *sim,int color);
 void textcolor_rgb(struct simulation *sim, int r, int g, int b);
-void set_logging_level(struct simulation *sim,int value);
+void set_logging_level(struct simulation *sim, int value);
 void log_clear(struct simulation *sim);
 void printf_log(struct simulation *sim, const char *format, ...);
 void waveprint(struct simulation *sim, char *in,double wavelength);
-void rainbow_print(struct simulation *sim,char *in);
+void rainbow_print(struct simulation *sim, const char *format, ...);
 void log_time_stamp(struct simulation *sim);
 int log_search_error(char *path);
 void log_write_file_access(struct simulation *sim,char * file,char mode);

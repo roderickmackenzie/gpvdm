@@ -40,7 +40,7 @@
 
 #ifndef h_dll_export
 #define h_dll_export
-
+#include <enabled_libs.h>
 	#define EXPORT
 
 #include <sim_struct.h>
@@ -64,7 +64,7 @@ EXPORT void dll_complex_matrix_solver_free(struct matrix_solver_memory *msm);
 
 //Light
 EXPORT void light_dll_init(struct simulation *sim);
-EXPORT int light_dll_solve_lam_slice(struct simulation *sim,struct device *cell,struct light *in,int z, int x, int l, int w);
+EXPORT int light_dll_solve_lam_slice(struct simulation *sim,struct device *cell,struct light *in, long double *sun_E,int z, int x, int l, int w);
 EXPORT void light_dll_ver(struct simulation *sim);
 EXPORT void light_fixup(char *name,void (*in));
 

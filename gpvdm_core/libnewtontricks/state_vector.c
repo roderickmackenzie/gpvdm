@@ -55,7 +55,7 @@
 
 static int unused __attribute__((unused));
 
-void state_gen_vector(struct simulation *sim,struct device *in)
+/*void state_gen_vector(struct simulation *sim,struct device *in)
 {
 	int i;
 	long double *buf;
@@ -122,6 +122,6 @@ void state_gen_vector(struct simulation *sim,struct device *in)
 	write_zip_buffer(sim,cache_vector,buf,len);
 
 	free(buf);
-}
+}*/
 
 

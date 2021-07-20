@@ -59,7 +59,7 @@ void circuit_node_set_type(struct simulation * sim, struct circuit_node *node, i
 void circuit_print_nodes(struct simulation * sim,struct circuit *cir);
 void circuit_print_links(struct simulation * sim,struct circuit *cir);
 struct circuit_link *circuit_add_link(struct simulation * sim,struct circuit *cir,struct circuit_link *in_link);
-int circuit_load_config(struct simulation * sim,struct circuit *cir);
+int circuit_load_config(struct simulation * sim,struct circuit *cir,struct json_obj *json_circuit,struct epitaxy *epi);
 void circuit_time_step(struct simulation * sim,struct circuit *cir);
 void circuit_apply_photo_generation(struct simulation * sim,struct circuit *cir,struct device *dev);
 
@@ -71,8 +71,8 @@ void circuit_calculate_matrix_pos(struct simulation * sim,struct circuit *cir);
 void circuit_cal_device_resistance(struct simulation * sim,struct device *dev);
 int circuit_cal_max_y_node_level(struct simulation * sim,struct circuit *cir,struct device *dev);
 int link_get_other_end(struct circuit *cir,struct circuit_link *link,int node);
-void circuit_build_and_solve_matrix(struct simulation * sim,struct circuit *cir,struct device *dev);
-void circuit_spm(struct simulation * sim,struct device *dev);
+void circuit_build_and_solve_matrix(struct simulation * sim,struct circuit *cir,struct device *dev, int dump_number);
+void circuit_spm(struct simulation * sim,struct device *dev,long double x0,long double x1,long double z0,long double z1);
 void circuit_malloc_matrix(struct simulation * sim,struct circuit *cir);
 
 //dump
@@ -88,4 +88,6 @@ void circuit_nodes_flood_fill(struct simulation * sim,struct circuit *cir,int no
 struct circuit_node * circuit_nodes_selected_find_maxx_maxy_maxz(struct simulation * sim,struct circuit *cir);
 struct circuit_node * circuit_nodes_find_node_x_plus_one(struct simulation * sim,struct circuit *cir,struct circuit_node *base_node);
 struct circuit_node * circuit_nodes_selected_find_miny(struct simulation * sim,struct circuit *cir,struct circuit_node *base_node);
+void circuit_dump_snapshot(struct simulation * sim,struct device *dev,char *out_dir);
+void circuit_dump_I_layers(struct simulation * sim,struct device *dev,char *out_dir);
 #endif

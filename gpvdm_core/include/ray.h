@@ -38,7 +38,7 @@
 */
 #ifndef ray_h
 #define ray_h
-
+#include <enabled_libs.h>
 #include <vec.h>
 #include <i.h>
 #include <sim_struct.h>

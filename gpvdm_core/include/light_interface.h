@@ -39,6 +39,7 @@
 
 #ifndef h_light_interface
 #define h_light_interface
+#include <enabled_libs.h>
 #include "device.h"
 
 	#define EXPORT

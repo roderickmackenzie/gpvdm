@@ -85,9 +85,10 @@ gdouble inter_sum(struct math_xy* in);
 void inter_copy(struct math_xy* in,struct math_xy* orig,int alloc);
 int inter_get_col(char *file);
 void inter_load_by_col(struct simulation *sim,struct math_xy* in,char *name,int col);
-gdouble inter_get_diff(char *out_path,struct math_xy* one,struct math_xy* two,gdouble start,gdouble stop,struct math_xy* mull);
+gdouble inter_get_diff(struct math_xy* delta,struct math_xy* one,struct math_xy* two,struct math_xy* mull,long double window_left);
 void inter_pow(struct math_xy* in,gdouble p);
 gdouble inter_get_raw(gdouble *x,gdouble *data,int len,gdouble pos);
+float math_interpolate_raw_float(long double *x,float *data,int len,long double pos);
 gdouble inter_norm(struct math_xy* in,gdouble mul);
 void inter_log_y(struct math_xy* in);
 void math_xy_mul_long_double(struct math_xy* in,gdouble mul);
@@ -127,4 +128,5 @@ void math_xy_get_left_right_start(struct math_xy* in,int *left,int *right, long 
 
 long double math_xy_get_delta(struct math_xy* one,struct math_xy* two);
 void math_xy_dft_full(struct simulation *sim,struct math_xy *fx_data,struct math_xy* data, int start_fx, int stop_fx);
+float math_interpolate_raw_double(long double *x,double *data,int len,long double pos);
 #endif

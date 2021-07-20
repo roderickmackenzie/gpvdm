@@ -55,6 +55,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <inp.h>
+#include <device_fun.h>
 
 static int unused __attribute__((unused));
 
@@ -64,16 +65,15 @@ void state_cache_enable(struct simulation *sim,struct device *in)
 {
 	char temp[200];
 	struct inp_file inp;
-	inp_init(sim,&inp);
+	struct json_obj *json_math;
 	in->cache.enabled=FALSE;
 
-	inp_load_from_path(sim,&inp,get_input_path(sim),"math.inp");
-	if (inp_search(sim,temp,&inp,"#math_newton_cache")==0)
+	json_math=json_obj_find(&(in->config.obj), "math");
+	if (json_math==NULL)
 	{
-		in->cache.enabled=english_to_bin(sim,temp);
+		ewe(sim,"Object math not found\n");
 	}
-
-	inp_free(sim,&inp);
+	json_get_english(sim, json_math, &(in->cache.enabled),"math_newton_cache");
 
 	if (strcmp(in->newton_name,"newton_simple")==0)
 	{

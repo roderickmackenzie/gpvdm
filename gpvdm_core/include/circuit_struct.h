@@ -60,6 +60,8 @@ struct circuit_config_line
 	double L;
 	double nid;
 	double I0;
+	double Dphotoneff;
+	char layer_name[100];
 };
 
 struct circuit_link
@@ -75,7 +77,7 @@ struct circuit_link
 	int enable_Isc;
 	double n0;
 	double i;
-
+	double Dphotoneff;
 	//For 3d electrical not use for the calculation
 	//double J0;
 	//double Jsc;
@@ -95,7 +97,7 @@ struct circuit_node
 {
 	double V;
 	double V_last;
-	int type;
+	char type;
 	int matrix_pos;
 	int z;
 	int x;
@@ -107,7 +109,7 @@ struct circuit_node
 
 	int links[10];
 	int nlinks;
-	int selected;
+	char selected;
 
 	int node_index;
 };

@@ -66,5 +66,7 @@ void lock_dump(struct simulation *sim,struct lock *l);
 void lock_tx_uid_to_ui(struct simulation *sim,struct lock *l);
 int lock_feature_enabled(struct simulation *sim);
 int lock_update_key(struct simulation *sim,struct lock *l);
-
+void lock_user_key_gen(struct simulation *sim,struct lock *l);
+void lock_cal_answer(struct simulation *sim,char *out, char *in);
+void stop_if_not_registered_and_gpvdm_next(struct simulation *sim);
 #endif

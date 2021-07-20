@@ -56,7 +56,6 @@ struct epi_layer
 	struct shape shapes[10];
 	int nshape;
 	long double width;
-	char pl_file[100];
 	int pl_use_experimental_emission_spectra;
 	long double pl_experimental_emission_efficiency;
 	int pl_enabled;
@@ -74,18 +73,21 @@ struct epi_layer
 
 	int electrical_layer;
 
-	char dos_file[100];
 	int layer_type;
 
-	char interface_file[100];
 	int interface_type;
 	long double interface_R;
+
+	int interface_left_doping_enabled;
+	long double interface_left_doping;
+
+	int interface_right_doping_enabled;
+	long double interface_right_doping;
 
 	long double rgb[3];
 
 	//Generation
 	long double G_percent;		//Percentage of light absorbed in each layer
-	long double Gnp;
 
 	int solve_optical_problem;
 	int solve_thermal_problem;
@@ -99,14 +101,6 @@ struct epitaxy
 	long double device_start;
 	long double device_stop;
 
-	//electrical layres including shapes
-	int electrical_layers;
-	char lumo_file[20][100];
-	char homo_file[20][100];
-	char shape_file[20][100];
-
-	struct dos dosn[10];
-	struct dos dosp[10];
 };
 
 #endif

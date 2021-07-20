@@ -39,9 +39,10 @@
 
 #ifndef serverh
 #define serverh
-
 #include <sim_struct.h>
 #include <server_struct.h>
+#include <json.h>
+
 struct my_msgbuf{
     long mtype;
     char mtext[200];
@@ -70,13 +71,14 @@ void server2_malloc(struct simulation *sim,struct server_struct *server);
 void server2_free(struct simulation *sim,struct server_struct *server);
 void server2_add_job(struct simulation *sim,struct server_struct *server,struct job *j_in);
 void server2_dump_jobs(struct simulation *sim,struct server_struct *server);
-void server2_jobs_run(struct simulation *sim,struct server_struct *server);
+void server2_jobs_run(struct simulation *sim,struct server_struct *server,int batch_id);
 struct worker* server2_get_next_worker(struct simulation *sim,struct server_struct *server);
 void server2_job_finished(struct simulation *sim,struct job *j);
-void server2_run_until_done(struct simulation *sim,struct server_struct *server);
+void server2_run_until_done(struct simulation *sim,struct server_struct *server,int batch_id);
 void server2_dump_workers(struct simulation *sim,struct server_struct *server);
-void server2_config_load(struct simulation *sim,struct server_struct *server);
+void server2_config_load(struct simulation *sim,struct server_struct *server,struct json_obj *json_server);
 void job_init(struct simulation *sim,struct job *j);
 void job_free(struct simulation *sim,struct job *j);
-void server2_free_finished_jobs(struct simulation *sim,struct server_struct *server);
+void server2_free_finished_jobs(struct simulation *sim,struct server_struct *server, int batch_id);
+int server2_get_next_batch_id(struct simulation *sim,struct server_struct *server);
 #endif

@@ -51,17 +51,17 @@
 #include <dump.h>
 #include <log.h>
 #include <enabled_libs.h>
+#include <heat_fun.h>
 
 static int unused __attribute__((unused));
 
 
-static gdouble glob_wanted=0.0;
-
 struct newton_math_state math_save_state;
 
-int solve_cur(struct simulation *sim,struct device *in,int z,int x)
+int solve_cur(struct simulation *sim,struct device *dev,int z,int x)
 {
-	int ret=(*sim->dll_solve_cur)(sim,in,z,x);
+	//printf("pointer=%p\n",dev->dll_solve_cur);
+	int ret=(*dev->dll_solve_cur)(sim,dev,z,x);
 	if (is_errors(sim)==0)
 	{
 		errors_dump(sim);
@@ -95,7 +95,6 @@ gdouble dV=0.12;
 if ((to-from)<0.0) dV*= -1.0;
 printf_log(sim,"dV=%Le\n",dV);
 printf_log(sim,"Ramping: from=%Le to=%Le\n",from,to);
-
 
 
 if (fabs(to-from)<=fabs(dV)) return;
@@ -207,16 +206,22 @@ for (z=0;z<dim->zlen;z++)
 			#ifdef libheat_enabled
 				do
 				{
+
 					solve_cur(sim,in,z,x);
 
 					//plot_now(sim,"thermal.plot");
 					//getchar();
 					heat_solve(sim,&(in->thermal),in,z,x);
+					if (in->thermal.thermal_couple_to_electrical_solver==TRUE)
+					{
+						heat_transfer_temperatures_to_device(in,&(in->thermal));
+					}
 					//plot_now(sim,"thermal.plot");
 					//getchar();
 
 					//plot_now(in);
 					///getchar();
+					//printf("%d %d\n",thermal->thermal_conv,in->dd_conv);
 					if (((thermal->thermal_conv==TRUE)&&(in->dd_conv==TRUE))||(ittr>10)) cont=FALSE;
 					//getchar();
 					ittr++;

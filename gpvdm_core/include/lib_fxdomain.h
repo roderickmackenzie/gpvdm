@@ -79,6 +79,9 @@ struct fxdomain
 	long double fxdomain_modulation_rolloff_start_fx;
 	long double fxdomain_modulation_rolloff_speed;
 
+	//imps
+	int fxdomain_norm_tx_function;
+
 	//dump verbosity
 	int fxdomain_dump_verbocity;
 	int fxdomain_screen_verbocity;

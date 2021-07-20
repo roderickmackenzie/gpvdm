@@ -33,14 +33,25 @@
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
 
-/** @file patch.h
-@brief patch input files for fitting.
+/** @file hard_limit_struct.h
+@brief functions to hard limit inputs from files
 */
 
 
-#ifndef patch_h
-#define patch_h
-#include <sim.h>
-void patch(struct simulation *sim,char *dest,char * patch_file);
+#ifndef hard_limit_struct_h
+#define hard_limit_struct_h
+
+struct hard_limit_line
+{
+	char token[100];
+	long double min;
+	long double max;
+};
+
+struct hard_limit
+{
+	int n_lines;
+	struct hard_limit_line* lines;	
+};
 
 #endif

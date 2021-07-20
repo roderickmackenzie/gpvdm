@@ -44,7 +44,8 @@
 #include "advmath.h"
 #include <sim_struct.h>
 #include <component.h>
+#include <json.h>
 
-void component_load_electrical_file(struct simulation *sim,struct component *com,char *in_file_name);
+void component_load_electrical_file(struct simulation *sim,struct component *com,struct json_obj *json_obj);
 void component_init(struct simulation *sim,struct component *com);
 #endif

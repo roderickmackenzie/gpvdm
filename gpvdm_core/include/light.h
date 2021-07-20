@@ -51,36 +51,45 @@
 #include <dat_file_struct.h>
 #include <dim.h>
 
+struct light_src
+{
+	int nspectra;
+	struct math_xy spectra_tot;
+	struct math_xy *spectra;
+	double light_multiplyer[20];
 
+	//filter
+	int filter_enabled;
+	char filter_path[PATH_MAX];
+	struct math_xy filter_read;
+	long double filter_dB;
+};
 
 struct light
 {
-	char config_file[300];
-
 	//output files
 	char dump_dir[PATH_MAX];
-	int dump_level;		//0 nothing, 1 summary, 2 everything
 	struct dim_light dim;
 
 	//long double zxyl
-	long double ****Ep;
-	long double ****Epz;
-	long double ****En;
-	long double ****Enz;
-	long double ****n;
-	long double ****alpha0;
-	long double ****alpha;
-	long double ****photons;
-	long double ****photons_asb;
-	long double ****pointing_vector;
-	long double ****E_tot_r;
-	long double ****E_tot_i;
-	long double ****H;
+	float ****Ep;
+	float ****Epz;
+	float ****En;
+	float ****Enz;
+	float ****n;
+	float ****alpha0;
+	float ****alpha;
+	double ****photons;
+	double ****photons_asb;
+	//float ****pointing_vector;
+	//float ****E_tot_r;
+	//float ****E_tot_i;
+	float ****H;
 
 	//complex zxyl
-	long double complex ****t;
-	long double complex ****r;
-	long double complex ****nbar;
+	float complex ****t;
+	float complex ****r;
+	float complex ****nbar;
 
 	//zxy_p_object
 	struct object ****obj;
@@ -97,16 +106,20 @@ struct light
 	long double *transmit;
 
 	//Input spectra
-	struct math_xy sun_read;
-	long double *sun;
-	long double *sun_norm;
-	long double *sun_photons;
-	long double *sun_E;
-	long double *filter;
+	struct light_src light_src_y0;
+	struct light_src light_src_y1;
+
+	long double *sun_y0;
+	long double *sun_y1;
+	long double *sun_photons_y0;
+	long double *sun_photons_y1;
+	long double *sun_E_y0;
+	long double *sun_E_y1;
 	char suns_spectrum_file[200];
 	char light_file_generation[300];
 
 	//matrix
+	int worker_max;
 	struct matrix *mx;
 	struct matrix_solver_memory *msm;
 
@@ -150,11 +163,6 @@ struct light
 	int disable_transfer_to_electrical_mesh;
 	int disable_cal_photon_density;
 	long double light_file_generation_shift;
-
-	//filter
-	int filter_enabled;
-	char filter_path[PATH_MAX];
-	struct math_xy filter_read;
 
 	int print_wavlengths;
 

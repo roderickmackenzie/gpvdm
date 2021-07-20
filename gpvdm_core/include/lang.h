@@ -37,7 +37,7 @@
 @brief multi language support.
 */
 
-
+#include <enabled_libs.h>
 
 #ifndef _
 

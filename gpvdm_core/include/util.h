@@ -40,6 +40,7 @@
 
 #ifndef h_util
 #define h_util
+#include <enabled_libs.h>
 #include <stdio.h>
 #include <sim_struct.h>
 
@@ -50,6 +51,7 @@ void set_ewe_lock_file(char *lockname,char *data);
 void print_hex(struct simulation *sim,unsigned char *data);
 void remove_dir(struct simulation *sim,char* dir_name);
 int ewe(struct simulation *sim, const char *format, ...);
+void write_lock_file( struct simulation *sim);
 double read_value(struct simulation *sim,char *file,int skip,int line);
 
 void randomprint(struct simulation *sim,char *in);
@@ -98,6 +100,7 @@ void get_meter_dim(char *unit,long double *mul,long double max_val);
 void get_time_dim(char *unit,long double *mul,long double max_val);
 void get_wavelength_dim(char *unit,long double *mul,long double max_val);
 void str_strip(char *in_string);
+void str_to_lower(char *out, char *in);
 
 //zip_buffer
 void write_zip_buffer(struct simulation *sim,char *outfile,long double *buf,int buf_len);

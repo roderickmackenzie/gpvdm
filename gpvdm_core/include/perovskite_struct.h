@@ -54,6 +54,10 @@ struct perovskite
 	struct matrix mx;
 
 	long double error;
+
+	long double Nion_mul;
+	int perovskite_conv;
+	int full_newton;
 };
 
 #endif

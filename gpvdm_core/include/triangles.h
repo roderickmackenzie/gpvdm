@@ -61,7 +61,7 @@ void triangles_add_triangle(struct triangles *obj, struct triangle *tri);
 void triangles_set_object_type(struct triangles *in,int object_type);
 double triangles_interpolate(struct triangles *in,struct vec *p);
 void triangles_to_dat_file(struct dat_file *buf,struct triangles *in);
-void triangles_reduce(struct simulation *sim,struct triangles *in);
+void triangles_reduce(struct simulation *sim,struct triangles *in, double min_allowable_ang);
 struct triangle *triangles_find_by_zx(struct triangles *in,double z0,double x0,double z1,double x1,double z2,double x2);
 void triangles_calculate_cog(struct triangles *in);
 int triangles_count(struct triangles *in);
@@ -69,7 +69,7 @@ void triangles_find_by_vec(	struct triangles *out, struct triangles *in,struct v
 void triangles_dump(struct triangles *in);
 void triangles_to_vectors(struct vectors* out,struct triangles *in);
 void triangles_vectors_to_triangles(struct triangles *out,struct vectors* in, int start);
-int triangles_reduce_nodes(struct simulation *sim,struct triangles *in, int pass);
+int triangles_reduce_nodes(struct simulation *sim,struct triangles *in, int pass, double min_allowable_ang);
 void triangles_replace_vec(	struct triangles *in,struct vec *find,struct vec *replace);
 void triangles_delete_zero_area_triangles(struct triangles *in);
 double triangles_get_area(struct triangles *in);
@@ -80,6 +80,8 @@ void triangles_add_many(struct triangles *full_list, struct triangles *in);
 void triangles_cal_angles(struct vectors* out,struct triangles* in);
 void triangles_remove_y_zero_triangles(struct triangles *in);
 void triangles_make_btm_layer_from_top(struct triangles *in);
+void triangles_rotate_y(struct triangles *in,double ang);
+
 //flags
 void triangles_set_flag(struct triangles *obj,int flag);
 void triangles_unset_flags_for_flat(struct triangles *obj);

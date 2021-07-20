@@ -87,13 +87,7 @@ gdouble get_J_right(struct device *in);
 gdouble get_J_recom(struct device *in);
 gdouble get_I_ce(struct simulation *sim,struct device *in);
 gdouble get_equiv_I(struct simulation *sim,struct device *in);
-gdouble carrier_count_get_rn(struct device *in);
-gdouble carrier_count_get_rp(struct device *in);
 
-gdouble carrier_count_get_n(struct device *in);
-gdouble carrier_count_get_p(struct device *in);
-void carrier_count_reset(struct device *in);
-void carrier_count_add(struct device *in);
 gdouble get_extracted_n(struct device *in);
 gdouble get_extracted_p(struct device *in);
 gdouble get_equiv_V(struct simulation *sim,struct device *in);
@@ -109,4 +103,11 @@ gdouble get_tot_photons_abs(struct device *in);
 gdouble get_i_intergration(struct device *in);
 gdouble get_avg_J_std(struct device *in);
 gdouble get_max_Jsc(struct device *in);
+long double get_tau(struct device *dev);
+//thermal 
+
+long double get_avg_Tl(struct device *in);
+long double get_avg_Te(struct device *in);
+long double get_avg_Th(struct device *in);
+long double cal_contact_charge(struct device *in);
 #endif

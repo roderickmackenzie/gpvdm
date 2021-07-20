@@ -39,6 +39,12 @@
 
 #ifndef matrix_h
 #define matrix_h
+struct matrix_sort
+{
+	int Ti;
+	int Tj;
+	long double Tx;
+};
 
 struct matrix
 {
@@ -46,6 +52,14 @@ struct matrix
 	int nz;
 	int nz_max;
 	int M;
+	int complex_matrix;
+	int build_from_non_sparse;
+	int msort_len;
+	int use_cache;
+	int ittr;
+	char hash[256];
+	char cache_file_path[PATH_MAX];
+
 	int *Ti;			//row
 	int *Tj;			//col
 	long double *Tx;	//data
@@ -56,17 +70,13 @@ struct matrix
 
 	char** Tdebug;
 
-	int use_cache;
-	char hash[256];
-	char cache_file_path[PATH_MAX];
-	int ittr;
-	int complex_matrix;
-
-	int build_from_non_sparse;
-	long double **J;
-
+	int call;
+	char dump_name[100];
 	//stats
 	int tot_time;
+
+	struct matrix_sort *msort;
+
 };
 
 #endif

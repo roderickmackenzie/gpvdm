@@ -48,7 +48,7 @@
 
 void dump_init(struct simulation *sim,struct device* in);
 void dump_load_config(struct simulation* sim,struct device *in);
-void dump_remove_snapshots(struct simulation* sim);
+void dump_remove_snapshots(struct simulation* sim, char *output_path);
 void dump_dynamic_init(struct simulation *sim,struct dynamic_store *store,struct device *in);
 void dump_dynamic_save(struct simulation *sim,struct device *in,char *outputpath,struct dynamic_store *store);
 void dump_dynamic_save_j(struct simulation *sim,struct device *in,char *outputpath,struct dynamic_store *store);
@@ -66,15 +66,8 @@ void buffer_add_3d_data(struct simulation *sim,struct dat_file *buf,struct dimen
 void buffer_add_zx_data(struct simulation *sim,struct dat_file *buf,struct dimensions *dim,gdouble **data);
 void buffer_add_zxy_data_y_slice(struct simulation *sim,struct dat_file *buf,struct dimensions *dim,long double ***data,int y);
 
-void dumpfiles_load(struct simulation* sim);
-void dumpfiles_free(struct simulation* sim);
-int dumpfiles_should_dump(struct simulation* sim,char *name);
-void dumpfiles_process(struct simulation* sim,struct math_xy *in,char *name);
-void dumpfiles_turn_on_dir(struct simulation* sim,char *in);
 void dump_clean_cache_files(struct simulation* sim);
-void dump_make_snapshot_dir(struct simulation *sim,char *out_dir ,char *snapshot_name, int number);
-void dump_make_snapshot_dir_with_info(struct simulation *sim,char *out_dir ,long double time,long double voltage, long double fx, int number);
-void dump_make_snapshot_dir_with_name(struct simulation *sim,char *out_dir ,long double time,long  double voltage, long double fx, int number,char *snapshot_name);
+void dump_make_snapshot_dir(struct simulation *sim,char *ret_path,char *base_dir ,char *snapshot_name, int number);
 void buffer_add_3d_device_data_int(struct simulation *sim,struct dat_file *buf,struct device *in,int ***data);
 void buffer_add_3d_to_2d_projection(struct simulation *sim,struct dat_file *buf,struct device *in,gdouble ***data);
 void buffer_add_zxy_rgb_data(struct simulation *sim,struct dat_file *buf,struct dimensions *dim,gdouble ***data);
@@ -82,4 +75,7 @@ void dynamic_info_to_buf(struct simulation *sim,struct dat_file *buf, struct dev
 
 //light
 void buffer_add_yl_light_data(struct simulation *sim,struct dat_file *buf,struct dim_light *dim,long double ****data,long double shift ,int z, int x);
+void buffer_add_yl_light_data_float(struct simulation *sim,struct dat_file *buf,struct dim_light *dim,float ****data,long double shift, int z, int x);
+void buffer_add_yl_light_data_double(struct simulation *sim,struct dat_file *buf,struct dim_light *dim,double ****data,long double shift, int z, int x);
+int dump_can_i_dump(struct simulation *sim,struct device *dev, char *file_name);
 #endif

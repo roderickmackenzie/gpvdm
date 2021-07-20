@@ -41,17 +41,18 @@
 #define dos_an_h
 
 #include <sim_struct.h>
+#include <json.h>
 
-struct dos_an_data{
-int items;
-char file[100];
-int type[100];
-int enable[100];
-double a[100];
-double b[100];
-double c[100];
+struct dos_an_data
+{
+	int items;
+	int type[100];
+	int enable[100];
+	double a[100];
+	double b[100];
+	double c[100];
 };
 
-void dos_an_load(struct simulation *sim,struct dos_an_data *in,char *name);
+void dos_an_load(struct simulation *sim,struct dos_an_data *in,struct json_obj *json_complex_dos);
 double dos_an_get_value(struct simulation *sim,struct dos_an_data *in,double E);
 #endif

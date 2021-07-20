@@ -58,7 +58,6 @@ struct dimensions
 	long double *dz;
 
 	int srh_bands;
-
 };
 
 struct dim_zx_epitaxy

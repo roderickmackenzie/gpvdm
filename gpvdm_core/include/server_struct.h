@@ -46,7 +46,7 @@
 #define server_job_running 2
 
 #include <time.h>
-
+#include <enabled_libs.h>
 	#include <pthread.h>
 
 
@@ -68,13 +68,17 @@ struct job
 {
 	char name[100];
 	int status;
+	int batch_id;
 		void *(* fun)(void *);		//Function to call
 	void *sim;
 	void * data0;
 	void * data1;
 	void * data2;
+	void * data3;
 	int data_int0;
+	int cpus;
 	struct worker *w;
+	void * next;
 };
 
 struct server_struct
@@ -96,7 +100,7 @@ struct server_struct
 	time_t end_time;
 	time_t start_time;
 	int max_forks;
-
+	int batch_id;
 	//server2
 	int max_threads;
 	int worker_max;

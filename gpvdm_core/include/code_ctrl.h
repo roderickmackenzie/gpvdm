@@ -40,9 +40,8 @@
 #ifndef code_ctrl_h
 #define code_ctrl_h
 #define private
+#define never_release
 #define enable_fast
-#define enable_interface
-#define enable_lock
 #define gpvdm_next
 #define disable_dlclose
 #endif

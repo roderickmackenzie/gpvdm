@@ -41,6 +41,6 @@
 #define measure_h
 #include <sim_struct.h>
 
-void measure(struct simulation *sim);
+void measure(struct simulation *sim, char *output_path,char *input_path);
 
 #endif

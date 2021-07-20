@@ -39,9 +39,15 @@
 
 
 #ifndef hard_limit_h
-#include <sim_struct.h>
+#define hard_limit_h
 
-void hard_limit(struct simulation *sim,char *token,gdouble *value);
-void hard_limit_init(struct simulation *sim);
-void hard_limit_free(struct simulation *sim);
+#include <hard_limit_struct.h>
+#include <sim_struct.h>
+#include <json.h>
+
+void hard_limit_do(struct simulation *sim,char *token,long double *value);
+void hard_limit_init(struct simulation *sim,struct hard_limit *hl);
+void hard_limit_free(struct simulation *sim,struct hard_limit *hl);
+void hard_limit_load(struct simulation *sim,struct hard_limit *hl,struct json_obj *json_hl);
 #endif
+

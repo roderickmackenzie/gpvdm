@@ -64,19 +64,26 @@ long double newton_externv(struct simulation *sim,struct device *in,long double 
 	long double Vapplied_last=0.0;
 	long double Vapplied=0.0;
 	long double C=in->C;
+	struct dimensions *dim=&in->ns.dim;
 
-	if (in->go_time==FALSE)
+	if ((dim->xlen==1)&&(dim->zlen==1))
 	{
-		C=0.0;
+		if (in->go_time==FALSE)
+		{
+			C=0.0;
+		}
+		contact_set_wanted_active_contact_voltage(sim,in,Vtot);
+		Vapplied_last=contact_get_active_contact_voltage_last(sim,in);
+
+			sim_externalv_ittr(sim,in,Vtot);
+
+		Vapplied=contact_get_active_contact_voltage(sim,in);
+		//printf("%Le %Le %Le\n",Vapplied,Vtot,Vapplied_last);
+		return get_I(in)+Vapplied/in->Rshunt+C*(Vapplied-Vapplied_last)/in->dt;
 	}
-	contact_set_wanted_active_contact_voltage(sim,in,Vtot);
-	Vapplied_last=contact_get_active_contact_voltage_last(sim,in);
 
-		sim_externalv_ittr(sim,in,Vtot);
-
-	Vapplied=contact_get_active_contact_voltage(sim,in);
-	//printf("%Le %Le %Le\n",Vapplied,Vtot,Vapplied_last);
-return get_I(in)+Vapplied/in->Rshunt+C*(Vapplied-Vapplied_last)/in->dt;
+	newton_externalv_simple(sim,in,Vtot);
+	return get_I(in);
 }
 
 

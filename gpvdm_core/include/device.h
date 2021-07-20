@@ -55,7 +55,7 @@
 #include <lib_fxdomain.h>
 #include <time_mesh.h>
 #include <matrix_solver_memory.h>
-
+#include <json.h>
 
 struct solver_cache
 {
@@ -73,15 +73,26 @@ struct newton_state
 	long double last_error;
 	double last_time;
 	long double ***phi;
+	long double ***x_Nion;
+
 	long double ***x;
 	long double ***xp;
 
 	long double ****xt;
 	long double ****xpt;
 
+	//Fermi levels for schottky contact
+	long double **x_y0;
+	long double **xp_y0;
+	long double **x_y1;
+	long double **xp_y1;
+
 	//for clever exiting of solver
 	long double last_errors[10];
 	int last_error_pos;
+
+	//What so solver for
+	int Nion_enabled;
 
 	//for accelerating the Bernoulli fucntion
 	long double ***By_xi_plus;
@@ -123,6 +134,7 @@ struct newton_state_complex
 struct device
 {
 
+	int sim_number;
 
 	//Dimensions
 		long double xlen;
@@ -155,7 +167,7 @@ struct device
 		long double **Fi0_y1;		
 		long double **Fi0_x0;
 		long double **Fi0_x1;
-
+	
 	//Built in potentials
 		long double **V_y0;		//Diference between the equlibrium fermi level and the fermilevel at in->Fi0_y0[0][0]
 		long double **V_y1;		//This is referenced to Fi0_y0[0][0], and is the difference between Fi0_y0[0][0] and Fi0_y0[z][x/y]
@@ -163,7 +175,6 @@ struct device
 		long double **V_x1;
 
 		long double Vbi;		//I have no idea why there are two
-		long double vbi;
 
 	//Charge densities on surfaces even away from contacts
 		long double **electrons_y0;
@@ -181,6 +192,8 @@ struct device
 	//Ions
 		long double ***Nad;
 		long double ***Nion;
+		long double ***dNion;
+		long double ***dNiondphi;
 		long double ***Nion_last;
 
 	//Generation
@@ -226,6 +239,7 @@ struct device
 
 		long double ***t;			//in->Xi[z][x][y];
 		long double ***tp;			//in->Xi[z][x][y]+in->Eg[z][x][y]
+		long double ***t_ion;
 
 	//Fermi levels
 		long double ***Fi;
@@ -252,8 +266,10 @@ struct device
 
 	//Interfaces
 		int interfaces_n;
+		int interfaces_n_srh;
 		int ***interface_type;
 		long double ***interface_B;
+		long double ***interface_Bt;
 		long double ***interface_R;
 
 	//Rates
@@ -330,7 +346,6 @@ struct device
 		long double ***Photon_gen;
 
 	//Device layout
-		int ***imat;
 		int ***imat_epitaxy;		//These should no longer be used
 		int ***mask;				//These should no longer be used
 
@@ -418,11 +433,7 @@ struct device
 		long double electrical_error0;
 
 		int math_enable_pos_solver;
-		long double posclamp;
-		int pos_max_ittr;
 
-		char solver_name[20];
-		char complex_solver_name[20];
 		char newton_name[20];
 
 		int kl_in_newton;
@@ -451,6 +462,7 @@ struct device
 		long double *newton_dptrap;
 		long double *newton_dptrapdn;
 		long double *newton_dJpdtrapp;
+		long double *newton_dJpdtrapp_interface_right;
 		long double *newton_dJdtrapp;
 		long double *newton_dphidntrap;
 		long double *newton_dphidptrap;
@@ -465,6 +477,7 @@ struct device
 		long double C;
 		long double Rshort;
 		long double other_layers;
+		long double contact_charge;
 
 	//Dump contorl
 		int dump_energy_slice_xpos;
@@ -502,7 +515,8 @@ struct device
 		int dd_conv;
 		int high_voltage_limit;
 		int stoppoint;
-
+		int drift_diffision_simulations_enabled;
+		int electrical_simulation_enabled;
 	//Matrix
 		struct matrix mx;
 
@@ -537,9 +551,6 @@ struct device
 		long double pl_intensity_tot;
 		int pl_use_experimental_emission_spectra;
 
-	//Test
-		long double test_param;
-
 	//thermal
 		struct heat thermal;
 
@@ -553,6 +564,7 @@ struct device
 	//Ray tracing
 		struct image my_image;
 		struct shape big_box;
+
 
 	//Contacts
 		struct contact *contacts;
@@ -574,12 +586,32 @@ struct device
 		struct time_mesh tm;
 
 	//solver cache
+		char solver_type[200];
 		struct solver_cache cache;
 
 	//fxdomain config
+		struct fxdomain fxdomain_config;
 	
 	//matrix solver memory
 		struct matrix_solver_memory msm;
+
+	//configure
+		struct json config;
+
+	//temp vars
+		long double glob_wanted;
+
+	//paths
+	//paths
+		char output_path[PATH_MAX];
+		char input_path[PATH_MAX];
+
+	//Newton solver dll
+		int (*dll_solve_cur)();
+		int (*dll_solver_realloc)();
+		int (*dll_solver_free_memory)();
+		void *dll_solver_handle;
+		int solver_verbosity;
 };
 
 

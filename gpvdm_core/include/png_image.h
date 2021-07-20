@@ -40,11 +40,14 @@
 
 #ifndef png_image_h
 #define png_image_h
+	#include <enabled_libs.h>
 	#include <sim_struct.h>
+	//#ifndef windows
 		#define png_infopp_NULL (png_infopp)NULL
 		#define int_p_NULL (int*)NULL
 
 		#include <png.h>
+	//#endif
 
 	struct png_image
 	{
@@ -52,6 +55,7 @@
 		int height;
 		int number_of_passes;
 
+		//#ifndef windows
 			png_byte color_type;
 			png_byte bit_depth;
 
@@ -59,6 +63,7 @@
 			png_infop info_ptr;
 
 			png_bytep * row_pointers;
+		//#endif
 	};
 
 

@@ -44,13 +44,6 @@
 
 #define CACHE_DIR -1
 
-int cache_search(struct simulation *sim,char * file_name);
-void cache_init(struct simulation *sim);
-void cache_dump(struct simulation *sim);
-void cache_free(struct simulation *sim);
-void cache_add_item(struct simulation *sim,char * file_name,char *data,int len);
-int cache_search(struct simulation *sim,char * file_name);
-void cache_add_dir(struct simulation *sim,char * file_name);
 void state_cache_enable(struct simulation *sim,struct device *in);
 
 #endif

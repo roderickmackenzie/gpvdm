@@ -45,6 +45,10 @@
 #include <sim_struct.h>
 #include <triangle.h>
 #include <component.h>
+#include <enabled_libs.h>
+#include <dos_struct.h>
+#include <heat_material.h>
+
 struct shape
 {
 	int enabled;
@@ -58,21 +62,32 @@ struct shape
 	int ny;
 	int nz;
 	char name[100];
-	char dos_file[20];
-	char electrical_file[100];
 	char shape_type[20];
 	char optical_material[100];
 	long double x0;
 	long double y0;
 	long double z0;
-	int dos_index;
 	int epi_index;
 	struct math_xy alpha;
 	struct math_xy n;
 	struct triangles tri;
 	int flip_y;
 	int flip_x;
-	struct component com;
+	#ifdef libcircuit_enabled
+		struct component com;
+	#endif
+
+	char dos_file[100];
+	char id[100];
+	struct dos dosn;
+	struct dos dosp;
+	struct heat_material heat;
+	long double Gnp;
+	double rotate_y;
+
+	long double color_r;
+	long double color_g;
+	long double color_b;
 };
 
 #endif

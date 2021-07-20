@@ -41,6 +41,7 @@
 
 #ifndef h_fdtd
 #define h_fdtd
+#include <enabled_libs.h>
 #include <complex.h>
 #include "advmath.h"
 #include <sim_struct.h>
@@ -184,7 +185,7 @@ void fdtd_opencl_write_ctrl_data(struct simulation *sim,struct fdtd_data *data);
 void fdtd_solve_step(struct simulation *sim,struct fdtd_data *data);
 int fdtd_opencl_solve_step(struct simulation *sim,struct fdtd_data *data);
 void fdtd_opencl_pull_data(struct simulation *sim,struct fdtd_data *data);
-void fdtd_dump(struct simulation *sim,struct fdtd_data *data);
+void fdtd_dump(struct simulation *sim,char *output_path,struct fdtd_data *data);
 void fdtd_opencl_get_mem(struct simulation *sim, struct fdtd_data *data);
 void fdtd_opencl_freemem(struct simulation *sim, struct fdtd_data *data);
 void fdtd_mesh(struct simulation *sim,struct fdtd_data *data,struct device *cell);
@@ -198,6 +199,6 @@ float fdtd_test_conv(struct simulation *sim,struct fdtd_data *data);
 void fdtd_set_lambda(struct simulation *sim,struct fdtd_data *data,struct device *cell,float lambda);
 void fdtd_solve_all_lambda(struct simulation *sim,struct device *cell,struct fdtd_data *data);
 void fdtd_solve_lambda(struct simulation *sim,struct fdtd_data *data,struct device *cell,float lambda);
-void fdtd_load_config(struct simulation *sim, struct fdtd_data *data);
+void fdtd_load_config(struct simulation *sim, struct fdtd_data *data,struct json_obj *json_obj);
 
 #endif

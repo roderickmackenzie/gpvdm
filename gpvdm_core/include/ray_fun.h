@@ -75,7 +75,7 @@ int propergate_next_ray(struct simulation *sim,struct device *dev,struct image *
 double get_eff(struct image *in);
 void ray_build_scene(struct simulation *sim,struct device *cell,struct image *my_image,struct epitaxy *my_epitaxy);
 void ray_free(struct simulation *sim,struct device *in,struct image *my_image);
-void ray_read_config(struct simulation *sim,struct image *my_image);
+void ray_read_config(struct simulation *sim,struct image *my_image,struct json_obj *json_config);
 void ray_solve(struct simulation *sim,struct device *dev, double x0, double y0, double z0,double mag,struct ray_worker *worker);
 void ray_solve_all(struct simulation *sim,struct device *dev);
 void dump_extraction_efficiency(struct simulation *sim,struct device *dev,struct image *in);
@@ -116,7 +116,7 @@ void ray_init(struct ray *a);
 
 //Viewpoint
 void ray_viewpoint_reset(struct simulation *sim,struct image *my_image);
-void ray_read_viewpoint(struct simulation *sim,struct image *my_image);
-
+void ray_read_viewpoint(struct simulation *sim,struct image *my_image, struct json_obj *json_config);
+void ray_dump_shapshots(struct simulation *sim,struct device *dev, struct image *my_image ,struct ray_worker *worker,int layer);
 
 #endif

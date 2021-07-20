@@ -50,6 +50,7 @@
 #include <dat_file_struct.h>
 #include <dim.h>
 #include <mesh_struct.h>
+#include <heat_material.h>
 
 
 struct heat
@@ -57,6 +58,7 @@ struct heat
 	char dump_dir[PATH_MAX];
 	struct dim_heat dim;
 	int thermal_model_type;
+	int dump_verbosity;
 
 	//zxy
 	long double ***Tl;
@@ -67,6 +69,7 @@ struct heat
 
 	long double ***H_optical;
 	long double ***H_joule;
+	long double ***H_parasitic;
 	long double ***H_recombination;
 
 	long double ***He;
@@ -79,10 +82,6 @@ struct heat
 	//objects
 	struct object ****obj;
 
-	long double thermal_kl;
-
-	long double thermal_tau_e;
-	long double thermal_tau_h;
 
 	struct matrix mx;
 
@@ -129,12 +128,16 @@ struct heat
 	int thermal_e;
 	int thermal_h;
 	int thermal_max_ittr;
+	int thermal_couple_to_electrical_solver;
 	struct mesh_obj mesh_data;
 
 	//Options
 	int joule_heating;
+	int parasitic_heating;
 	int recombination_heating;
 	int optical_heating;
+
+	int solver_verbosity;
 
 };
 

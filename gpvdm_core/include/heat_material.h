@@ -1,4 +1,4 @@
-//
+// 
 // General-purpose Photovoltaic Device Model gpvdm.com - a drift diffusion
 // base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solarcells.
 // The model can simulate OLEDs, Perovskite cells, and OFETs.
@@ -33,76 +33,19 @@
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
 
-/** @file perovskite.c
-	@brief A perovskite ion solver.
+/** @file heat_material.h
+@brief a structure for the heat model
 */
 
-#include <string.h>
-#include <stdlib.h>
-#include <dump.h>
-#include <dos.h>
-#include "sim.h"
-#include "solver_interface.h"
-#include "dat_file.h"
-#include "log.h"
-#include <cal_path.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <lang.h>
-//<strip>
-#include <perovskite.h>
-//</strip>
-#include <inp.h>
-#include <memory.h>
-#include <newton_tricks.h>
-#include <enabled_libs.h>
+#ifndef h_heat_material
+#define h_heat_material
 
-long double newton_externalv_simple_perovskite(struct simulation *sim,struct device *in,gdouble V)
+struct heat_material
 {
-	long double i0;
-	//<strip>
-	i0=newton_externalv_simple(sim,in,V);
-	#ifdef libperovskite_enabled
-		solve_perovskite(sim,in, 0, 0);
-	#endif
-	//</strip>
-	return i0;
-}
+	long double thermal_kl;
 
-long double newton_externv_perovskite(struct simulation *sim,struct device *in,gdouble Vtot,int usecap)
-{
-	int i=0;
-	int ii=0;
-	long double i0;
-	long double i0_last=1000.0;
-	long double error=0.0;
-	long double first_error=0.0;
-	for (i==0;ii<10;ii++)
-	{
-		for (i=0;i<3;i++)
-		{
-			i0=newton_externv(sim,in,Vtot);
-			//<strip>
-			#ifdef libperovskite_enabled
-				solve_perovskite(sim,in, 0, 0);
-			#endif
-			//</strip>
-			error=fabsl(i0-i0_last);
-			//			printf_log(sim,"%s %Le %d\n",_("Perovskite ion"),error,ii);printf_log(sim,"%s %Le %d\n",_("Perovskite ion"),error,ii);
+	long double thermal_tau_e;
+	long double thermal_tau_h;
+};
 
-			if (error<1e-6)
-			{
-				break;
-			}
-
-			i0_last=i0;
-		}
-		//getchar();
-	}
-
-	printf_log(sim,"%s %Le\n",_("Electrical+perovskite solver f(x)="),error);
-	return i0;
-}
-
-
-
+#endif

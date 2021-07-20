@@ -67,14 +67,10 @@ long double newton_externv(struct simulation *sim,struct device *in,long double 
 gdouble newton_externalv_simple(struct simulation *sim,struct device *in,gdouble V);
 long double sim_externalv_ittr(struct simulation *sim,struct device *in,gdouble wantedv);
 
-//perovskite functions
-long double newton_externalv_simple_perovskite(struct simulation *sim,struct device *in,gdouble V);
-long double newton_externv_perovskite(struct simulation *sim,struct device *in,gdouble Vtot,int usecap);
-
 void state_cache_init(struct simulation *sim,struct device *in);
 void hash_dir(struct simulation *sim,char *out);
-void state_gen_vector(struct simulation *sim,struct device *in);
-int state_find_vector(struct simulation *sim,struct device *in,char *out);
+//void state_gen_vector(struct simulation *sim,struct device *in);
+//int state_find_vector(struct simulation *sim,struct device *in,char *out);
 
 //newton state
 void newton_state_init(struct newton_state *ns);

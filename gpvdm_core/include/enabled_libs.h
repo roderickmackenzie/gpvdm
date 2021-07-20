@@ -9,6 +9,7 @@
 #define libmemory_enabled
 #define libdos_enabled
 #define liblight_enabled
+#define libjson_enabled
 #define libheat_enabled
 #define libray_enabled
 #define libcolor_enabled
@@ -16,7 +17,6 @@
 #define libcontacts_enabled
 #define lib_enabled
 #define libdump_enabled
-#define libdumpctrl_enabled
 #define libdevice_enabled
 #define libserver_enabled
 #define libmesh_enabled
@@ -27,3 +27,5 @@
 #define liblock_enabled
 #define libcircuit_enabled
 #define libfit_enabled
+#define dbus
+#define enable_server

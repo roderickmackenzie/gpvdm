@@ -85,6 +85,7 @@ struct triangle *data;
 int len;
 int max_len;
 char zip_file_name[400];
+char file_name[400];
 //struct zip *zip_file;
 };
 

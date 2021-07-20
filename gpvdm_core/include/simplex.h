@@ -66,7 +66,11 @@ struct multimin
 	double error;
 	double error_delta;
 	double error_last;
-	double (*fn)(double *p,int len);
+
+	//pointer to f()
+	double (*fn)(void *min,double *p);
+	void *p0;
+	void *p1;
 };
 
 void multimin_dump(struct simulation *sim,struct multimin *data);

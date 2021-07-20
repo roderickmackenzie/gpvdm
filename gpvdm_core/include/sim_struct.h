@@ -41,13 +41,14 @@
 #ifndef sim_struct_h
 #define sim_struct_h
 
+#include <enabled_libs.h>
 #include <stdio.h>
 #include <server_struct.h>
 #include "cache_struct.h"
-
-#ifdef dbus
-	#include <dbus/dbus.h>
-#endif
+#include <hard_limit_struct.h>
+//#ifdef dbus
+//	#include <dbus/dbus.h>
+//#endif
 
 	#include <sys/mman.h>
 	#include <sys/stat.h>
@@ -56,7 +57,7 @@
 
 #include <dirent.h>
 #include <i_struct.h>
-#include "enabled_libs.h"
+#include <dos_struct.h>
 
 //<strip>
 
@@ -64,11 +65,18 @@
 #include <gpvdm_const.h>
 //</strip>
 
-struct dumpfiles_struct
+/*struct dumpfiles_struct
 {
 char file_name[100];
 char path_name[100];
 int write_out;
+};*/
+
+struct logging
+{
+	int log_level;
+	char path[PATH_MAX];
+	int html;
 };
 
 struct simulation
@@ -76,21 +84,21 @@ struct simulation
 	//plotting
 	FILE *gnuplot;
 	FILE *gnuplot_time;
-	FILE *converge;
-	FILE *tconverge;
 	//dump
 	int dump_array[100];
 	int dumpfiles;
-	struct dumpfiles_struct *dumpfile;
-
-	int log_level;
+	//struct dumpfiles_struct *dumpfile;
 
 	//paths
+	char root_simulation_path[PATH_MAX];
+
+	//struct logging log;
+	int log_level;
+	//char path[PATH_MAX];
+	int html;
+
 	char plugins_path[PATH_MAX];
 	char lang_path[PATH_MAX];
-	char input_path[PATH_MAX];
-	char root_simulation_path[PATH_MAX];
-	char output_path[PATH_MAX];
 	char share_path[PATH_MAX];
 	char exe_path[PATH_MAX];
 	char exe_path_dot_dot[PATH_MAX];
@@ -101,10 +109,15 @@ struct simulation
 	char home_path[PATH_MAX];
 	char shape_path[PATH_MAX];
 	char cache_path[PATH_MAX];
+	char cache_path_for_fit[PATH_MAX];
 	char gpvdm_local_path[PATH_MAX];
 	char tmp_path[PATH_MAX];
 	char command_line_path[PATH_MAX];
 
+
+	//solver name
+	char solver_name[20];
+	char complex_solver_name[20];
 
 	//Matrix solver dll	- external
 	void (*dll_matrix_init)();
@@ -119,10 +132,6 @@ struct simulation
 	void *dll_complex_matrix_handle;
 
 	//Solve dlls
-	int (*dll_solve_cur)();
-	int (*dll_solver_realloc)();
-	int (*dll_solver_free_memory)();
-	void *dll_solver_handle;
 	char force_sim_mode[100];
 
 	//Fitting vars
@@ -131,7 +140,7 @@ struct simulation
 	struct server_struct server;
 
 	int gui;
-	int html;
+
 	long int bytes_written;
 	long int bytes_read;
 	long int files_read;
@@ -141,16 +150,22 @@ struct simulation
 	long double D0;
 	long double n0;
 
+	int math_stop_on_convergence_problem;
+
 	int cache_len;
 	int cache_max;
 	struct cache_item *cache;
 
 	//gui
 	int mindbustx;
-	#ifdef dbus
-		DBusConnection *connection;
-	#endif
+	//#ifdef dbus
+	//	DBusConnection *connection;
+	//#endif
 
+	//#ifdef windows
+	//	HANDLE connection;
+	//#endif
+	void *connection;
 
 	struct math_xy cie_x;
 	struct math_xy cie_y;
@@ -161,7 +176,9 @@ struct simulation
 	int error_log_size_max;
 	int errors_logged;
 
-	struct lock lock_data;
+
+	struct hard_limit hl;
+	struct dos_cache doscache;
 
 };
 

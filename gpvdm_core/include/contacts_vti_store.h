@@ -43,8 +43,10 @@
 
 struct contacts_vti_store
 {
-	struct math_xy x[10];
-	struct math_xy v[10];
+//	struct math_xy x[10];
+//	struct math_xy v[10];
+	struct math_xy time_J[10];
+	struct math_xy time_v[10];
 	struct math_xy J[10];
 	struct math_xy J_external[10];
 };

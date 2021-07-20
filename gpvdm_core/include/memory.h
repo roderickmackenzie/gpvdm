@@ -143,6 +143,15 @@ void memset_light_zxyl_long_double(struct dim_light *dim, long double ****data,i
 void memset_light_zxyl_long_double_y(struct dim_light *dim, long double ****data,int z, int x, int l,long double val);
 void cpy_light_zxyl_long_double(struct dim_light *dim, long double * (****out), long double * (****in));
 
+//light_zxyl_float
+void malloc_light_zxyl_float(struct dim_light *dim, float * (****var));
+void free_light_zxyl_float(struct dim_light *dim, float * (****in_var));
+void cpy_light_zxyl_float(struct dim_light *dim, float * (****out), float * (****in));
+void flip_light_zxyl_float_y(struct simulation *sim, struct dim_light *dim,float **** data);
+void div_light_zxyl_float(struct dim_light *dim, float ****data,float val);
+void memset_light_zxyl_float(struct dim_light *dim, float ****data,int val);
+void memset_light_zxyl_float_y(struct dim_light *dim, float ****data,int z, int x, int l,float val);
+
 //light_zxy_long_double
 void malloc_light_zxy_long_double(struct dim_light *dim, long double * (***var));
 void free_light_zxy_long_double(struct dim_light *dim, long double * (***in_var));
@@ -152,6 +161,7 @@ void memset_light_zxy_long_double(struct dim_light *dim, long double ***data,int
 void div_light_zxy_long_double(struct dim_light *dim, long double ***data,long double val);
 long double interpolate_light_zxy_long_double(struct dim_light *dim, long double ***data,int z, int x, long double y_in);
 long double interpolate_light_zxy_long_double_intergral(struct dim_light *dim, long double ***data,int z, int x, long double y_start,long double y_stop);
+void light_zxy_mul_long_double(struct simulation *sim, struct dim_light *dim,long double *** data,long double mul);
 
 //light_l_long_double
 void malloc_light_l_long_double(struct dim_light *dim, long double * (*var));
@@ -162,6 +172,11 @@ void cpy_light_l_long_double(struct dim_light *dim, long double * (*out), long d
 //light_zxyl_long_double_complex
 void malloc_light_zxyl_long_double_complex(struct dim_light *dim, long double complex * (****var));
 void free_light_zxyl_long_double_complex(struct dim_light *dim, long double complex * (****in_var));
+
+//light_zxyl_float_complex
+void malloc_light_zxyl_float_complex(struct dim_light *dim, float complex * (****var));
+void free_light_zxyl_float_complex(struct dim_light *dim, float complex * (****in_var));
+void cpy_light_zxyl_float_complex(struct dim_light *dim, float complex * (****out),float complex * (****in));
 
 //light_zxy_p_object
 void malloc_light_zxy_p_object(struct dim_light *dim, struct object * (****var));
@@ -199,6 +214,7 @@ void cpy_srh_long_double(struct dimensions *dim, long double *(****dst), long do
 //matrix
 void matrix_init(struct matrix *mx);
 void matrix_dump(struct simulation *sim,struct matrix *mx);
+void matrix_dump_to_file(struct simulation *sim,struct matrix *mx,char *file_name);
 void matrix_malloc(struct simulation *sim,struct matrix *mx);
 void matrix_free(struct simulation *sim,struct matrix *mx);
 void matrix_cpy(struct simulation *sim,struct matrix *out,struct matrix *in);
@@ -214,6 +230,8 @@ void matrix_dump_J(struct simulation *sim,struct matrix *mx);
 void matrix_add_nz_item(struct simulation *sim,struct matrix *mx,int x,int y,long double val);
 void matrix_convert_J_to_sparse(struct simulation *sim,struct matrix *mx);
 void matrix_stats(struct simulation *sim,struct matrix *mx);
+int matrix_cmp_to_file(struct simulation *sim,struct matrix *mx,char *file_name);
+void matrix_load_from_file(struct simulation *sim,struct matrix *mx,char *file_name);
 
 //raw memory opps
 int search(long double *x,int N,long double find);
@@ -243,6 +261,7 @@ void matrix_solver_memory_init(struct matrix_solver_memory *msm);
 void malloc_3d( void * (***var),int zlen, int xlen, int ylen,int item_size);
 void free_3d(void * (***in_var),int zlen, int xlen, int ylen,int item_size);
 void cpy_3d(void * (***out), void * (***in),int zlen, int xlen, int ylen,int item_size);
+void cpy_3d_alloc(void * (***out), void * (***in),int zlen, int xlen, int ylen,int item_size);
 
 //4d
 void free_4d( void *(**** in_var), int zlen, int xlen, int ylen,int bands,int item_size);
@@ -261,4 +280,13 @@ void free_1d( void * (*in_var), int item_size);
 void cpy_1d(void * (*out), void * (*in), int zlen, int item_size);
 void cpy_1d_alloc(void * (*out), void * (*in), int zlen, int item_size);
 
+
+// light_zxyl_double
+void malloc_light_zxyl_double(struct dim_light *dim, double * (****var));
+void free_light_zxyl_double(struct dim_light *dim, double * (****in_var));
+void cpy_light_zxyl_double(struct dim_light *dim, double * (****out), double * (****in));
+void flip_light_zxyl_double_y(struct simulation *sim, struct dim_light *dim,double **** data);
+void div_light_zxyl_double(struct dim_light *dim, double ****data,double val);
+void memset_light_zxyl_double(struct dim_light *dim, double ****data,int val);
+void memset_light_zxyl_double_y(struct dim_light *dim, double ****data,int z, int x, int l,double val);
 #endif

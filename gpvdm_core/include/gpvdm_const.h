@@ -40,6 +40,8 @@
 #ifndef h_gpvdm_const
 #define h_gpvdm_const
 
+#include <enabled_libs.h>
+
 //Physical constants
 #define STR_MAX	1024
 #define epsilon0 (long double)8.85418782e-12			// m-3 kg-1 s4 A2;
@@ -54,7 +56,7 @@
 
 #define hbar (long double)(6.62606896e-34/(2.0*PI))	//Calculated
 #define kb (long double)1.3806504e-23			//J K-1 Wiki
-#define Q (long double)1.602176487e-19			//C Wikipeda
+#define Qe (long double)1.602176487e-19			//C Wikipeda
 #define m0 (long double)9.10938215e-31 			//Kg Wikipeda
 #define cl  (long double)2.99792458e8			//m/s Wikipieda
 #define clf  (float)2.99792458e8			//m/s Wikipieda
@@ -70,12 +72,12 @@
 //Interfaces
 #define INTERFACE_NONE				0
 #define INTERFACE_RECOMBINATION		1
-
+#define INTERFACE_RECOMBINATION_SRH	2
 //TRUE/FALSE
 #define TRUE 1
 #define FALSE 0
 
-#define INTERPOLATE 2
+
 
 #define TOP 0
 #define BOTTOM 1
@@ -88,6 +90,10 @@
 #define FIT_SIMPLEX 0
 #define FIT_NEWTON 1
 #define FIT_BFGS 2
+
+#define FIT_NOT_FITTING 0
+#define FIT_SINGLE_FIT 1
+#define FIT_RUN_FIT 2
 
 //tpv light
 #define tpv_set_light 0
@@ -115,12 +121,9 @@
 #define dump_lock 11
 #define dump_norm_time_to_one 12
 #define dump_band_structure 14
-#define dump_print_newtonerror 15
-#define dump_print_converge 16
 #define dump_first_guess 17
 #define dump_1d_slices 18
 #define dump_print_pos_error 19
-#define dump_optics_verbose 20
 #define dump_dynamic 22
 #define dump_norm_y_axis 24
 #define dump_write_out_band_structure 25
@@ -133,6 +136,7 @@
 #define dump_remove_dos_cache 38
 
 //Atempt to put output in files
+#define dump_nothing				-1
 #define dump_verbosity_key_results	0	
 #define dump_verbosity_everything	1
 
@@ -168,6 +172,10 @@
 #define ray_emission_single_point 0
 #define ray_emission_electrical_mesh 1
 
+#define CONSTANT 0
+#define INTERPOLATE 2
+#define INTERPOLATE2 3
+
 //Heat model
 #define THERMAL_HYDRODYNAMIC 	0
 #define THERMAL_LATTICE 			1
@@ -197,5 +205,14 @@
 	#define THREAD_NULL	-1
 	#define THREAD_FUNCTION void *
 
+
+#define SOLVER_VERBOSITY_NOTHING 0
+#define SOLVER_VERBOSITY_AT_END 1
+#define SOLVER_VERBOSITY_EVERY_STEP 2
+
+//spm
+#define SPM_WHOLE_DEVICE 0
+#define SPM_BOX 1
+#define SPM_X_CUT 2
 
 #endif

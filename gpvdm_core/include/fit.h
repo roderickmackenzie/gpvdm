@@ -41,22 +41,28 @@
 #define fith
 #include <advmath.h>
 #include <sim_struct.h>
-
+#include <simplex.h>
+#include <json.h>
 
 #define FIT_RUN 0
 #define FIT_FINISH 1
 #define FIT_RESET 2
 
-#define FIT_MAX 100
 #define FIT_VAR_MAX 2000
 
-struct fits_struct
+
+struct fit_data
 {
-int enabled;
-char fit_name[200];
-char fit_path[200];
-char fit_plugin[200];
-double error;
+	int enabled;
+	int run_this_simulation;
+	char fit_name[200];
+	char fit_agaist[200];
+	char fit_path[PATH_MAX];
+	char sim_data[200];
+	struct json_obj *json_fit_patch;
+	struct json_obj *json_fit_config;
+	struct json_obj *json_fit_import_config;
+	double error;
 };
 
 struct fititem
@@ -64,13 +70,14 @@ struct fititem
 	double min;
 	double max;
 	double add_error;
-	char fit_file[100];
-	char fit_token[100];
+	int log_fit;
+	char json_token[200];
 };
 
 struct fitvars
 {
-	struct fits_struct data_set[FIT_MAX];
+	int data_sets;
+	struct fit_data *data_set;
 
 	double simplexmul;
 	int simplexreset;
@@ -88,6 +95,10 @@ struct fitvars
 	int sub_iterations_two;
 	int stall_steps;
 	int fit_method;
+	double best_ever_error;
+
+	//configure
+	struct json config;
 };
 
 int fit_simplex(struct simulation *sim,struct fitvars *fitconfig);
@@ -97,17 +108,23 @@ double get_constraints_error(struct simulation *sim,struct fitvars *config);
 int fit_read_config(struct simulation *sim,struct fitvars *fitconfig);
 double fit_run_sims(struct simulation *fit,struct fitvars *fitconfig);
 int fit_now(struct simulation *sim,struct fitvars *fitconfig);
-double fit_load_plugin(struct simulation *sim,struct fitvars *config,int i);
-void duplicate(struct simulation *sim);
+void duplicate(struct simulation *sim,struct fitvars *fitconfig,struct json *j);
+void fit_patch(struct simulation *sim,char *path,struct json_obj *json_patch);
 int get_fit_crashes(struct simulation *sim,struct fitvars *fitconfig);
 void fit_init(struct simulation *sim,struct fitvars *fitconfig);
-void my_f_set_globals(struct simulation *sim, struct fitvars *config);
 int fit_newton(struct simulation *sim,struct fitvars *fitconfig);
+void fit_free(struct simulation *sim,struct fitvars *fitconfig);
 
-double my_f (double *p,int len);
+double my_f (void *min,double *p);
 //void  my_df (const gsl_vector *v, void *params,  gsl_vector *df);
 //void my_fdf (const gsl_vector *x, void *params, double *f, gsl_vector *df) ;
 void fit_dump_log(struct simulation *sim,struct fitvars *fitconfig,double error,double size);
-
-
+void mass_copy_file(struct simulation *sim,struct fitvars *fitconfig,char *input,int n);
+void fit_build_jobs(struct simulation *sim,struct fitvars *fitconfig);
+void fit_load_vars(struct simulation *sim,struct multimin *data,char *path,struct fitvars *fitconfig);
+void fit_save_vars(struct simulation *sim, struct json *j,double *p,struct fitvars *fitconfig);
+void fit_save_best_answer(struct simulation *sim,struct fitvars *fitconfig,double *p,double error);
+void fit_cmp_sim_and_exp(struct simulation *sim,struct json_obj *json_config, struct json_obj *json_import_config, struct math_xy *sim_data,struct math_xy *exp_data,char *sim_name);
+double fit_get_sim_error(struct simulation *sim,struct fitvars *config, int fit_number,int force_dump);
+void fit_gen_plot(struct simulation *sim,struct fitvars *fitconfig);
 #endif

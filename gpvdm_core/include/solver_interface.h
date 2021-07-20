@@ -40,11 +40,14 @@
 #define h_solver_interface
 #include <sim_struct.h>
 #include <device.h>
-void solver_init(struct simulation *sim,struct matrix_solver_memory *msm,char *solver_name);
+void solver_init(struct simulation *sim,char *solver_name);
+void solver_get_mem(struct simulation *sim,struct matrix_solver_memory *msm);
 void dump_matrix(struct simulation *sim,struct device *in);
 void solver_free(struct simulation *sim,struct matrix_solver_memory *msm);
+void solver_unload_dll(struct simulation *sim);
 
-void complex_solver_init(struct simulation *sim,struct matrix_solver_memory *msm,char *solver_name);
+void complex_solver_init(struct simulation *sim,char *solver_name);
+void complex_solver_get_mem(struct simulation *sim,struct matrix_solver_memory *msm);
 void complex_solver_free(struct simulation *sim,struct matrix_solver_memory *msm);
-
+void complex_solver_unload_dll(struct simulation *sim);
 #endif

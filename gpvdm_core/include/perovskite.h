@@ -51,6 +51,6 @@ int solve_perovskite(struct simulation *sim,struct device *in, int z, int x);
 void perovskite_build_matrix(struct simulation *sim,struct device *in,struct perovskite *config, int z, int x);
 void perovskite_init(struct simulation *sim,struct device *in);
 void perovskite_free(struct simulation *sim,struct device *in);
-
-
+void perovskite_load(struct simulation *sim,struct device *in);
+void perovskite_cpy(struct simulation *sim,struct perovskite *out,struct perovskite *in);
 #endif

@@ -39,6 +39,7 @@
 
 #ifndef mesh_h
 #define mesh_h
+#include <json.h>
 
 void mesh_check_y(struct simulation *sim,struct mesh *in,struct device *dev);
 void mesh_remesh(struct simulation *sim,struct mesh *in,struct device *dev);
@@ -47,7 +48,7 @@ void mesh_free(struct mesh *in);
 void mesh_build(struct simulation *sim,struct device *in);
 void mesh_cal_layer_widths(struct device *in);
 void mesh_init(struct mesh *in);
-void mesh_load_file(struct simulation * sim, struct mesh *in,char *file);
+void mesh_load_file(struct simulation * sim, struct mesh *in,struct json_obj *mesh_xyz);
 void mesh_cpy(struct simulation *sim,struct mesh *out,struct mesh *in);
 void mesh_malloc_sub_mesh(struct simulation * sim, struct mesh *in);
 void mesh_gen_simple(struct simulation * sim, struct mesh *in,long double len,int points);
@@ -57,7 +58,7 @@ long double mesh_to_lin_array(struct simulation *sim,long double *mesh, long dou
 
 //mesh obj
 void mesh_obj_cpy(struct simulation *sim,struct mesh_obj *out,struct mesh_obj *in);
-void mesh_obj_load(struct simulation *sim,struct mesh_obj *mesh);
+void mesh_obj_load(struct simulation *sim,struct mesh_obj *mesh,struct json_obj *json_mesh);
 void mesh_obj_free(struct simulation *sim,struct mesh_obj *in);
 void mesh_obj_init(struct mesh_obj *in);
 void mesh_numerate_points(struct simulation *sim,struct device *in);

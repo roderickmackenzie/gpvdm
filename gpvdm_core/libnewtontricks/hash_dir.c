@@ -48,7 +48,7 @@
 
 void hash_dir(struct simulation *sim,char *out)
 {
-	int do_md5=FALSE;
+	/*int do_md5=FALSE;
 	struct md5 sum;
 	md5_init(&sum);
 
@@ -121,19 +121,12 @@ void hash_dir(struct simulation *sim,char *out)
 			inp_free_no_save(sim,&inp);
 		}
 
-		/*if (strcmp(files.names[i],"light.inp")==0)
-		{
-			inp_init(sim,&inp);
-			inp_load(sim,&inp,files.names[i]);
-			md5_update(&sum,inp.data,inp.fsize);
-			inp_free_no_save(sim,&inp);
-		}*/
 
 	}
 
 
 	list_free(&files);
 
-	md5_to_str(out,&sum);
+	md5_to_str(out,&sum);*/
 }
 

@@ -41,10 +41,27 @@
 #ifndef dos_struct_h
 #define dos_struct_h
 
+struct dos_cache_obj
+{
+	int len;
+	char id[100];
+	char md5[100];
+	char *dosn;
+	char *dosp;
+};
+
+struct dos_cache
+{
+	int enabled;
+	int setup;
+	int len;
+	int len_max;
+	struct dos_cache_obj *objs;
+};
+
 struct dosconfig
 {
 	char dos_name[20];
-	char analytical_dos_file_name[20];
 	int dos_number;
 	int dostype;
 	int dos_free_carrier_stats;
@@ -90,7 +107,7 @@ struct dosconfig
 
 struct dos
 {
-	int used;
+	int enabled;
 	long double *x;
 	int xlen;
 	int tlen;

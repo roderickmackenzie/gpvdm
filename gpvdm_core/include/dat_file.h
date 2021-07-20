@@ -67,4 +67,8 @@ void buffer_add_2d_device_data_int(struct simulation *sim,struct dat_file *buf,s
 void dat_file_dump_gnuplot_file(struct simulation *sim,char * path,char * file_name,struct dat_file *in);
 void dat_file_load_info(struct simulation *sim,struct dat_file *in,char *file_name);
 void dat_file_add_zxy_from_zxyl_long_double_light_data(struct simulation *sim,struct dat_file *in,long double ****data, struct dim_light *dim,int l);
+void dat_file_add_zxy_from_zxyl_float_light_data(struct simulation *sim,struct dat_file *in,float ****data, struct dim_light *dim,int l);
+void dat_file_add_zxy_from_zxyl_double_light_data(struct simulation *sim,struct dat_file *in,double ****data, struct dim_light *dim,int l);
+void dat_file_reset(struct dat_file *in);
+int buffer_set_file_name(struct simulation *sim,struct device *dev,struct dat_file *in,char * file_name);
 #endif
