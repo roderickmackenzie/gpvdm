@@ -37,6 +37,7 @@
 	@brief Reads in the DoS files but does not generate them, also deals with interpolation.
 */
 
+#include <enabled_libs.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <dos.h>

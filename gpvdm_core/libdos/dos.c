@@ -37,6 +37,7 @@
 	@brief Reads in the DoS files but does not generate them, also deals with interpolation.
 */
 
+#include <enabled_libs.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <dos.h>
@@ -64,8 +65,7 @@ long double n_tot=0.0;
 long double n_tot_den=0.0;
 
 struct dimensions *dim=&(in->ns.dim);
-struct epitaxy *epi=&(in->my_epitaxy);
-
+struct shape *s;
 for (z=0;z<dim->zlen;z++)
 {
 	for (x=0;x<dim->xlen;x++)
@@ -74,8 +74,9 @@ for (z=0;z<dim->zlen;z++)
 		{
 			for (band=0;band<dim->srh_bands;band++)
 			{
+				s=in->obj_zxy[z][x][y]->s;
 				n_tot+=in->nt[z][x][y][band];
-				n_tot_den+=epi->dosn[in->imat[z][x][y]].srh_den[band];
+				n_tot_den+=s->dosn.srh_den[band];
 			}
 		}
 	}
@@ -95,7 +96,7 @@ int band;
 long double p_tot=0.0;
 long double p_tot_den=0.0;
 struct dimensions *dim=&(in->ns.dim);
-struct epitaxy *epi=&(in->my_epitaxy);
+struct shape *s;
 
 for (z=0;z<dim->zlen;z++)
 {
@@ -105,8 +106,9 @@ for (z=0;z<dim->zlen;z++)
 		{
 			for (band=0;band<dim->srh_bands;band++)
 			{
+				s=in->obj_zxy[z][x][y]->s;
 				p_tot+=in->pt[z][x][y][band];
-				p_tot_den+=epi->dosp[in->imat[z][x][y]].srh_den[band];
+				p_tot_den+=s->dosp.srh_den[band];
 			}
 		}
 	}
@@ -115,102 +117,111 @@ p_tot=(p_tot)/(p_tot_den);
 return p_tot;
 }
 
-long double dos_srh_get_fermi_n(struct epitaxy *epi,long double n, long double p,int band,int mat,long double T)
+long double dos_srh_get_fermi_n(struct shape *s,long double n, long double p, int band,long double T)
 {
-	long double srh_sigman=epi->dosn[mat].config.srh_sigman;
-	long double srh_sigmap=epi->dosn[mat].config.srh_sigmap;
-	long double Nc=epi->dosn[mat].config.Nc;
-	long double Nv=epi->dosn[mat].config.Nv;
-	long double srh_vth=epi->dosn[mat].config.srh_vth;
-	//long double srh_Nt=epi->dosn[mat].srh_den[band];
-	long double srh_en=srh_vth*srh_sigman*Nc*gexp((Q*epi->dosn[mat].srh_E[band])/(T*kb));
-	long double srh_ep=srh_vth*srh_sigmap*Nv*gexp((Q*(-1.0-epi->dosn[mat].srh_E[band]))/(T*kb));
+	long double srh_sigman=s->dosn.config.srh_sigman;
+	long double srh_sigmap=s->dosn.config.srh_sigmap;
+	long double Nc=s->dosn.config.Nc;
+	long double Nv=s->dosn.config.Nv;
+	long double srh_vth=s->dosn.config.srh_vth;
+	//long double srh_Nt=s->dosn.srh_den[band];
+	long double srh_en=srh_vth*srh_sigman*Nc*gexp((Qe*s->dosn.srh_E[band])/(T*kb));
+	long double srh_ep=srh_vth*srh_sigmap*Nv*gexp((Qe*(-1.0-s->dosn.srh_E[band]))/(T*kb));
 
 	long double f=0.0;
 	f=(n*srh_vth*srh_sigman+srh_ep)/(n*srh_vth*srh_sigman+p*srh_vth*srh_sigmap+srh_en+srh_ep);
 	long double level=0.0;
-	level=epi->dosn[mat].srh_E[band]-T*kb*logl((1.0/f)-1.0)/Q;
+	level=s->dosn.srh_E[band]-T*kb*logl((1.0/f)-1.0)/Qe;
 	//printf("rod=%Le %Le %Le\n",logl((1.0/f)-1.0),(1.0/f)-1.0,f);
 return level;
 }
 
-long double dos_srh_get_fermi_p(struct epitaxy *epi,long double n, long double p,int band,int mat, long double T)
+long double dos_srh_get_fermi_p(struct shape *s,long double n, long double p,int band, long double T)
 {
-	long double srh_sigmap=epi->dosp[mat].config.srh_sigmap;
-	long double srh_sigman=epi->dosp[mat].config.srh_sigman;
-	long double Nc=epi->dosp[mat].config.Nc;
-	long double Nv=epi->dosp[mat].config.Nv;
-	long double srh_vth=epi->dosp[mat].config.srh_vth;
-	//long double srh_Nt=epi->dosn[mat].srh_den[band];
-	long double srh_ep=srh_vth*srh_sigmap*Nv*gexp((Q*epi->dosp[mat].srh_E[band])/(T*kb));
-	long double srh_en=srh_vth*srh_sigman*Nc*gexp((Q*(-1.0-epi->dosp[mat].srh_E[band]))/(T*kb));
+	long double srh_sigmap=s->dosp.config.srh_sigmap;
+	long double srh_sigman=s->dosp.config.srh_sigman;
+	long double Nc=s->dosp.config.Nc;
+	long double Nv=s->dosp.config.Nv;
+	long double srh_vth=s->dosp.config.srh_vth;
+	//long double srh_Nt=s->dosn.srh_den[band];
+	long double srh_ep=srh_vth*srh_sigmap*Nv*gexp((Qe*s->dosp.srh_E[band])/(T*kb));
+	long double srh_en=srh_vth*srh_sigman*Nc*gexp((Qe*(-1.0-s->dosp.srh_E[band]))/(T*kb));
 	long double f=0.0;
 	f=(p*srh_vth*srh_sigmap+srh_en)/(p*srh_vth*srh_sigmap+n*srh_vth*srh_sigman+srh_ep+srh_en);
 	long double level=0.0;
-	level=epi->dosp[mat].srh_E[band]-T*kb*logl((1.0/f)-1.0)/Q;
+	level=s->dosp.srh_E[band]-T*kb*logl((1.0/f)-1.0)/Qe;
 return level;
 }
 
 
 
 
-long double get_Nc_free(struct epitaxy *epi,int mat)
+long double get_Nc_free(struct shape *s)
 {
-return epi->dosn[mat].config.Nc;
+return s->dosn.config.Nc;
 
 }
 
-long double get_Nv_free(struct epitaxy *epi,int mat)
+long double get_Nv_free(struct shape *s)
 {
-return epi->dosp[mat].config.Nv;
+return s->dosp.config.Nv;
 }
 
-void load_txt_dos_file(struct simulation *sim,struct dos *dos_n,struct dos *dos_p,char *file)
+void load_txt_dos_from_json(struct simulation *sim,struct dos *dos_n,struct dos *dos_p, struct json_obj *json_dos)
 {
-	struct inp_file inp;
-
-	inp_init(sim,&inp);
-	inp_load(sim,&inp,file);
-	inp_search_gdouble(sim,&inp,&(dos_n->muz),"#mue_z");
-	inp_search_gdouble(sim,&inp,&(dos_n->mux),"#mue_x");
-	inp_search_gdouble(sim,&inp,&(dos_n->muy),"#mue_y");
-	dos_n->muz=fabsl(dos_n->muz);
-	dos_n->mux=fabsl(dos_n->mux);
-	dos_n->muy=fabsl(dos_n->muy);
-
-	inp_search_gdouble(sim,&inp,&(dos_p->muz),"#muh_z");
-	inp_search_gdouble(sim,&inp,&(dos_p->mux),"#muh_x");
-	inp_search_gdouble(sim,&inp,&(dos_p->muy),"#muh_y");
-	dos_p->muz=fabsl(dos_p->muz);
-	dos_p->mux=fabsl(dos_p->mux);
-	dos_p->muy=fabsl(dos_p->muy);
-
-	inp_search_gdouble(sim,&inp,&(dos_n->B),"#free_to_free_recombination");
-	dos_n->B=fabsl(dos_n->B);
-	dos_p->B=dos_n->B;
-
 	char temp[200];
-	inp_search_string(sim,&inp,temp,"#symmetric_mobility_e");
-	//printf("%s\n",temp);
-	//getchar();
+
+	json_get_long_double(sim,json_dos, &(dos_n->muz),"mue_z");
+	json_get_long_double(sim,json_dos, &(dos_n->mux),"mue_x");
+	json_get_long_double(sim,json_dos, &(dos_n->muy),"mue_y");
+
+	json_get_string(sim, json_dos, temp,"symmetric_mobility_e");
+
 	if (strcmp(temp,"symmetric")==0)
 	{
+		dos_n->muy=fabsl(dos_n->muy);
+		dos_n->mux=dos_n->muy;
+		dos_n->muz=dos_n->muy;
+
 		dos_n->mobility_symmetric=TRUE;
 	}else
 	{
+		dos_n->muy=fabsl(dos_n->muy);
+		dos_n->mux=fabsl(dos_n->mux);
+		dos_n->muz=fabsl(dos_n->muz);
+
 		dos_n->mobility_symmetric=FALSE;
 	}
 
-	inp_search_string(sim,&inp,temp,"#symmetric_mobility_h");
+
+
+	json_get_long_double(sim,json_dos, &(dos_p->muz),"muh_z");
+	json_get_long_double(sim,json_dos, &(dos_p->mux),"muh_x");
+	json_get_long_double(sim,json_dos, &(dos_p->muy),"muh_y");
+
 	if (strcmp(temp,"symmetric")==0)
 	{
+		dos_p->muy=fabsl(dos_p->muy);
+		dos_p->mux=dos_p->muy;
+		dos_p->muz=dos_p->muy;
+
 		dos_p->mobility_symmetric=TRUE;
 	}else
 	{
+		dos_p->muy=fabsl(dos_p->muy);
+		dos_p->mux=fabsl(dos_p->mux);
+		dos_p->muz=fabsl(dos_p->muz);
+
 		dos_p->mobility_symmetric=FALSE;
 	}
 
-	inp_free(sim,&inp);
+	json_get_long_double(sim,json_dos, &(dos_n->B),"free_to_free_recombination");
+	dos_n->B=fabsl(dos_n->B);
+	dos_p->B=dos_n->B;
+
+	json_get_string(sim, json_dos, temp,"symmetric_mobility_h");
+
+
 }
 
 void load_binary_dos_file(struct simulation *sim,struct dos *mydos,char *file)
@@ -224,19 +235,19 @@ long double srh_c=0.0;
 long double w0;
 long double n;
 #endif
-mydos->used=TRUE;
-mydos->used=TRUE;
+mydos->enabled=TRUE;
 mydos->srh_E=NULL;
 mydos->srh_den=NULL;
 
 
 
-if (get_dump_status(sim,dump_print_text)==TRUE) printf_log(sim,"%s %s\n",_("Loading file"),file);
+//if (get_dump_status(sim,dump_print_text)==TRUE)
+printf_log(sim,"%s %s\n",_("Loading file"),file);
 
 
 	long double *buf;
 	int buf_pos=0;
-	int buf_len=read_zip_buffer(sim,file,&buf);
+	read_zip_buffer(sim,file,&buf);
 
 
 	int t=0;
@@ -255,8 +266,9 @@ if (get_dump_status(sim,dump_print_text)==TRUE) printf_log(sim,"%s %s\n",_("Load
 	mydos->config.srh_sigmap=buf[buf_pos++];
 	mydos->config.Nc=buf[buf_pos++];
 	mydos->config.Nv=buf[buf_pos++];
-
 	mydos->config.Nt=buf[buf_pos++];
+	//printf("wow::%Le\n",mydos->config.Nt);
+	//getchar();
 	mydos->config.Eg=buf[buf_pos++];
 	mydos->config.Xi=buf[buf_pos++];
 	mydos->config.dos_free_carrier_stats=(int)buf[buf_pos++];
@@ -334,100 +346,93 @@ if (get_dump_status(sim,dump_print_text)==TRUE) printf_log(sim,"%s %s\n",_("Load
 
 }
 
-long double get_dos_ion_density(struct epitaxy *epi,int mat)
+long double get_dos_ion_density(struct shape *s)
 {
-return epi->dosn[mat].config.ion_density;
+return s->dosn.config.ion_density;
 }
 
-long double get_dos_ion_mobility(struct epitaxy *epi,int mat)
+long double get_dos_ion_mobility(struct shape *s)
 {
-return epi->dosn[mat].config.ion_mobility;
+return s->dosn.config.ion_mobility;
 }
 
 
-long double get_dos_doping_start(struct epitaxy *epi,int mat)
+long double get_dos_doping_start(struct shape *s)
 {
-return epi->dosn[mat].config.doping_start;
+return s->dosn.config.doping_start;
 }
 
-long double get_dos_doping_stop(struct epitaxy *epi,int mat)
+long double get_dos_doping_stop(struct shape *s)
 {
-return epi->dosn[mat].config.doping_stop;
+return s->dosn.config.doping_stop;
 }
 
-long double get_dos_epsilonr(struct epitaxy *epi,int mat)
+long double get_dos_epsilonr(struct shape *s)
 {
-return epi->dosn[mat].config.epsilonr;
+	return s->dosn.config.epsilonr;
 }
 
-long double dos_get_band_energy_n(struct epitaxy *epi,int band,int mat)
+long double dos_get_band_energy_n(struct shape *s,int band)
 {
-return epi->dosn[mat].srh_E[band];
+return s->dosn.srh_E[band];
 }
 
-long double dos_get_band_energy_p(struct epitaxy *epi,int band,int mat)
+long double dos_get_band_energy_p(struct shape *s,int band)
 {
-return epi->dosp[mat].srh_E[band];
+return s->dosp.srh_E[band];
 }
 
-long double get_dos_Eg(struct epitaxy *epi,int mat)
+long double get_dos_Eg(struct shape *s)
 {
-return epi->dosn[mat].config.Eg;
+return s->dosn.config.Eg;
 }
 
-long double get_dos_Xi(struct epitaxy *epi,int mat)
+long double get_dos_Xi(struct shape *s)
 {
-return epi->dosn[mat].config.Xi;
+return s->dosn.config.Xi;
 }
 
-void load_dos(struct simulation *sim,struct device *in,char *dos_file,int mat)
+void load_dos(struct simulation *sim,struct device *in,struct shape *s,struct json_obj *json_dos)
 {
 	char binary_path[PATH_MAX];
-	char txt_path[PATH_MAX];
+	//char txt_path[PATH_MAX];
 	char file_name[200];
-	struct epitaxy *epi=&(in->my_epitaxy);
 	//electrons
-	sprintf(file_name,"%s_dosn.dat",dos_file);
-	join_path(3, binary_path,sim->root_simulation_path,"cache",file_name);
+	sprintf(file_name,"%s_dosn.dat",s->dos_file);
+	join_path(2, binary_path,get_cache_path(sim),file_name);
 
-	load_binary_dos_file(sim,&(epi->dosn[mat]),binary_path);
-
+	load_binary_dos_file(sim,&(s->dosn),binary_path);
 
 	//holes
-	sprintf(file_name,"%s_dosp.dat",dos_file);
-	join_path(3, binary_path,sim->root_simulation_path,"cache",file_name);
+	sprintf(file_name,"%s_dosp.dat",s->dos_file);
+	join_path(2, binary_path,get_cache_path(sim),file_name);
 
-	load_binary_dos_file(sim,&(epi->dosp[mat]),binary_path);
+	load_binary_dos_file(sim,&(s->dosp),binary_path);
 
-
-	//text
-	sprintf(file_name,"%s.inp",dos_file);
-	join_path(2, txt_path,sim->root_simulation_path,file_name);
-
-	load_txt_dos_file(sim,&(epi->dosn[mat]),&(epi->dosp[mat]),txt_path);
+	load_txt_dos_from_json(sim,&(s->dosn),&(s->dosp),json_dos);
 
 
-	in->ns.dim.srh_bands=epi->dosn[mat].srh_bands;
+	in->ns.dim.srh_bands=s->dosn.srh_bands;
 
 
-	if (epi->dosn[mat].mobility_symmetric==FALSE)
+	if (s->dosn.mobility_symmetric==FALSE)
 	{
 		in->mun_symmetric=FALSE;
 	}
-	if (epi->dosp[mat].mobility_symmetric==FALSE)
+	if (s->dosp.mobility_symmetric==FALSE)
 	{
 		in->mup_symmetric=FALSE;
 	}
 }
 
-long double get_dos_E_n(struct epitaxy *epi,int band,int mat)
+long double get_dos_E_n(struct shape *s,int band)
 {
-return epi->dosn[mat].srh_E[band];
+return s->dosn.srh_E[band];
 }
 
-long double get_dos_E_p(struct epitaxy *epi,int band,int mat)
+long double get_dos_E_p(struct shape *s,int band)
 {
-return epi->dosp[mat].srh_E[band];
+return s->dosp.srh_E[band];
 }
 
 

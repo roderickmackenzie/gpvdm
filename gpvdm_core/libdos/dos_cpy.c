@@ -37,6 +37,7 @@
 	@brief Copy a dos structure
 */
 
+#include <enabled_libs.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <dos.h>
@@ -57,38 +58,24 @@
 void dos_cpy(struct dos *out,struct dos *in)
 {
 
-	out->used=in->used;
+	out->enabled=in->enabled;
 	out->xlen=in->xlen;
 	out->tlen=in->tlen;
 	out->srh_bands=in->srh_bands;
 
-	free_3d((void ****)&(out->srh_r1),out->tlen, out->xlen, out->srh_bands,sizeof(long double));
-	malloc_3d((void ****)&(out->srh_r1),out->tlen, out->xlen, out->srh_bands,sizeof(long double));
-	cpy_3d((void ****)&(out->srh_r1), (void ****)&(in->srh_r1),out->tlen, out->xlen, out->srh_bands, sizeof(long double));
+	cpy_3d_alloc((void ****)&(out->srh_r1), (void ****)&(in->srh_r1),out->tlen, out->xlen, out->srh_bands, sizeof(long double));
 
-	free_3d((void ****)&(out->srh_r2),out->tlen, out->xlen, out->srh_bands,sizeof(long double));
-	malloc_3d((void ****)&(out->srh_r2),out->tlen, out->xlen, out->srh_bands,sizeof(long double));
-	cpy_3d((void ****)&(out->srh_r2), (void ****)&(in->srh_r2),out->tlen, out->xlen, out->srh_bands, sizeof(long double));
+	cpy_3d_alloc((void ****)&(out->srh_r2), (void ****)&(in->srh_r2),out->tlen, out->xlen, out->srh_bands, sizeof(long double));
 
-	free_3d((void ****)&(out->srh_r3),out->tlen, out->xlen, out->srh_bands,sizeof(long double));
-	malloc_3d((void ****)&(out->srh_r3),out->tlen, out->xlen, out->srh_bands,sizeof(long double));
-	cpy_3d((void ****)&(out->srh_r3), (void ****)&(in->srh_r3), out->tlen, out->xlen, out->srh_bands, sizeof(long double));
+	cpy_3d_alloc((void ****)&(out->srh_r3), (void ****)&(in->srh_r3), out->tlen, out->xlen, out->srh_bands, sizeof(long double));
 
-	free_3d((void ****)&(out->srh_r4),out->tlen, out->xlen, out->srh_bands,sizeof(long double));
-	malloc_3d((void ****)&(out->srh_r4),out->tlen, out->xlen, out->srh_bands,sizeof(long double));
-	cpy_3d((void ****)&(out->srh_r4), (void ****)&(in->srh_r4), out->tlen, out->xlen, out->srh_bands, sizeof(long double));
+	cpy_3d_alloc((void ****)&(out->srh_r4), (void ****)&(in->srh_r4), out->tlen, out->xlen, out->srh_bands, sizeof(long double));
 
-	free_3d((void ****)&(out->srh_c),out->tlen, out->xlen, out->srh_bands,sizeof(long double));
-	malloc_3d((void ****)&(out->srh_c),out->tlen, out->xlen, out->srh_bands,sizeof(long double));
-	cpy_3d((void ****)&(out->srh_c), (void ****)&(in->srh_c), out->tlen, out->xlen, out->srh_bands, sizeof(long double));
+	cpy_3d_alloc((void ****)&(out->srh_c), (void ****)&(in->srh_c), out->tlen, out->xlen, out->srh_bands, sizeof(long double));
 
-	free_2d((void ***)&(out->c), out->tlen, out->xlen, sizeof(long double));
-	malloc_2d((void ***)&(out->c), out->tlen, out->xlen, sizeof(long double));
-	cpy_2d((void ***)&(out->c), (void ***)&(in->c), out->tlen, out->xlen, sizeof(long double));
+	cpy_2d_alloc((void ***)&(out->c), (void ***)&(in->c), out->tlen, out->xlen, sizeof(long double));
 
-	free_2d((void ***)&(out->w), out->tlen, out->xlen, sizeof(long double));
-	malloc_2d((void ***)&(out->w), out->tlen, out->xlen, sizeof(long double));
-	cpy_2d((void ***)&(out->w), (void ***)&(in->w), out->tlen, out->xlen, sizeof(long double));
+	cpy_2d_alloc((void ***)&(out->w), (void ***)&(in->w), out->tlen, out->xlen, sizeof(long double));
 
 	cpy_1d_alloc((void **)&(out->x), (void **)&(in->x), in->xlen, sizeof (long double) );
 	cpy_1d_alloc((void **)&(out->t), (void **)&(in->t), in->tlen, sizeof (long double) );
@@ -107,7 +94,6 @@ void dos_cpy(struct dos *out,struct dos *in)
 	struct dosconfig *config_in=&(in->config);
 
 	strcpy(config_out->dos_name,config_in->dos_name);
-	strcpy(config_out->analytical_dos_file_name,config_in->analytical_dos_file_name);
 
 	config_out->dos_number=config_in->dos_number;
 	config_out->dostype=config_in->dostype;

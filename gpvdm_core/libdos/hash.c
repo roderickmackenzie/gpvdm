@@ -42,11 +42,11 @@
 
 int hashget(long double *x,int N,long double find)
 {
-static gdouble *x_=NULL;
-static gdouble find_=0.0;
-static int steps_=0.0;
-if (N==1) return 0;
-if ((x_==x)&&(find_==find)) return steps_;
+//static gdouble *x_=NULL;
+//static gdouble find_=0.0;
+//static int steps_=0.0;
+//if (N==1) return 0;
+//if ((x_==x)&&(find_==find)) return steps_;
 gdouble x0=x[0];
 gdouble x1=x[1];
 gdouble delta=find-x0;
@@ -55,9 +55,9 @@ int steps=delta/step;
 
 if (steps>(N-2)) steps=N-2;
 if (steps<0) steps=0;
-x_=x;
-find_=find;
-steps_=steps;
+//x_=x;
+//find_=find;
+//steps_=steps;
 return steps;
 }
 

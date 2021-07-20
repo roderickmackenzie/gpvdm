@@ -37,6 +37,7 @@
 	@brief An MD5 like check sum for deciding if files have been changed.  Implemented because I do not want openssl dependencies.
 */
 
+#include <enabled_libs.h>
 #include <string.h>
 #include <stdint.h>
 #include <stdlib.h>

@@ -37,6 +37,7 @@
 	@brief Reads in the DoS files but does not generate them, also deals with interpolation.
 */
 
+#include <enabled_libs.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <dos.h>
@@ -54,23 +55,23 @@
 
 
 
-long double get_dpdT_den(struct epitaxy *epi,long double top,long double T,int mat)
+long double get_dpdT_den(struct shape *s,long double top,long double T)
 {
 long double ret=0.0;
-long double N=epi->dosp[mat].config.Nv;
-ret= -((top*Q)/kb)*N*gexp((top*Q)/(kb*T))*gpow(T,-2.0);
+long double N=s->dosp.config.Nv;
+ret= -((top*Qe)/kb)*N*gexp((top*Qe)/(kb*T))*gpow(T,-2.0);
 return ret;
 }
 
-long double get_dndT_den(struct epitaxy *epi,long double top,long double T,int mat)
+long double get_dndT_den(struct shape *s,long double top,long double T)
 {
 long double ret=0.0;
-long double N=epi->dosn[mat].config.Nc;
-ret= -((top*Q)/kb)*N*gexp((top*Q)/(kb*T))*gpow(T,-2.0);
+long double N=s->dosn.config.Nc;
+ret= -((top*Qe)/kb)*N*gexp((top*Qe)/(kb*T))*gpow(T,-2.0);
 return ret;
 }
 
-long double get_top_from_n(struct epitaxy *epi,long double n,long double T,int mat)
+long double get_top_from_n(struct shape *s,long double n,long double T)
 {
 long double ret=0.0;
 long double c0=0.0;
@@ -85,16 +86,16 @@ int t=0;
 int x=0;
 
 
-	if (epi->dosn[mat].config.dos_free_carrier_stats==mb_equation)
+	if (s->dosn.config.dos_free_carrier_stats==mb_equation)
 	{
-		ret=(kb*T/Q)*log((fabs(n))/epi->dosn[mat].config.Nc);
+		ret=(kb*T/Qe)*log((fabs(n))/s->dosn.config.Nc);
 	}else
 	{
-		if (epi->dosn[mat].tlen>1)
+		if (s->dosn.tlen>1)
 		{
-			for (t=0;t<epi->dosn[mat].tlen-1;t++)
+			for (t=0;t<s->dosn.tlen-1;t++)
 			{
-				if (epi->dosn[mat].t[t]>T) break;
+				if (s->dosn.t[t]>T) break;
 			}
 			t--;
 
@@ -106,9 +107,9 @@ int x=0;
 		xx=0;
 
 
-		for (x=0;x<epi->dosn[mat].xlen-1;x++)
+		for (x=0;x<s->dosn.xlen-1;x++)
 		{
-			if (epi->dosn[mat].c[t][x]>n) break;
+			if (s->dosn.c[t][x]>n) break;
 		}
 
 		x--;
@@ -117,12 +118,12 @@ int x=0;
 		if (xx<0) xx=0;
 		if (t<0) t=0;
 
-		x0=epi->dosn[mat].c[t][x];
-		x1=epi->dosn[mat].c[t][x+1];
+		x0=s->dosn.c[t][x];
+		x1=s->dosn.c[t][x+1];
 		xr=(n-x0)/(x1-x0);
 		if (xr>1) xr=1;
-		c0=epi->dosn[mat].x[x];
-		c1=epi->dosn[mat].x[x+1];
+		c0=s->dosn.x[x];
+		c1=s->dosn.x[x+1];
 
 		cll=c0+xr*(c1-c0);
 
@@ -135,7 +136,7 @@ return ret;
 }
 
 
-long double get_top_from_p(struct epitaxy *epi,long double p,long double T,int mat)
+long double get_top_from_p(struct shape *s,long double p,long double T)
 {
 long double ret=0.0;
 long double c0=0.0;
@@ -150,15 +151,15 @@ long double c;
 int t;
 int x;
 
-	if (epi->dosp[mat].config.dos_free_carrier_stats==mb_equation)
+	if (s->dosp.config.dos_free_carrier_stats==mb_equation)
 	{
-		ret=(kb*T/Q)*log((fabs(p))/epi->dosp[mat].config.Nv);
+		ret=(kb*T/Qe)*log((fabs(p))/s->dosp.config.Nv);
 	}else
 	{
 
-		for (t=0;t<epi->dosp[mat].tlen-1;t++)
+		for (t=0;t<s->dosp.tlen-1;t++)
 		{
-		if (epi->dosp[mat].t[t]>T) break;
+		if (s->dosp.t[t]>T) break;
 		}
 		t--;
 
@@ -166,9 +167,9 @@ int x;
 
 		xx=0;
 
-		for (x=0;x<epi->dosp[mat].xlen-1;x++)
+		for (x=0;x<s->dosp.xlen-1;x++)
 		{
-			if (epi->dosp[mat].c[t][x]>p) break;
+			if (s->dosp.c[t][x]>p) break;
 		}
 
 		x--;
@@ -176,25 +177,25 @@ int x;
 		if (x<0) x=0;
 		if (xx<0) xx=0;
 
-		x0=epi->dosp[mat].c[t][x];
-		x1=epi->dosp[mat].c[t][x+1];
+		x0=s->dosp.c[t][x];
+		x1=s->dosp.c[t][x+1];
 		xr=(p-x0)/(x1-x0);
-		c0=epi->dosp[mat].x[x];
-		c1=epi->dosp[mat].x[x+1];
+		c0=s->dosp.x[x];
+		c1=s->dosp.x[x+1];
 		if (xr>1) xr=1;
 		cll=c0+xr*(c1-c0);
 
 		c=cll;
 
 		ret=c;
-//		printf(">>>>>> %Le %Le\n",ret ,(kb*T/Q)*log((fabs(p))/epi->dosp[mat].config.Nv));
+//		printf(">>>>>> %Le %Le\n",ret ,(kb*T/Qe)*log((fabs(p))/s->dosp.config.Nv));
 //		getchar();
 	}
 
 return ret;
 }
 
-void get_n_den(struct epitaxy *epi,long double top,long double T,int mat,long double *n, long double *dn,long double *w)
+void get_n_den(struct shape *s,long double top,long double T,long double *n, long double *dn,long double *w)
 {
 	long double c0=0.0;
 	long double c1=0.0;
@@ -211,17 +212,21 @@ void get_n_den(struct epitaxy *epi,long double top,long double T,int mat,long do
 	long double c11=0.0;
 	int t=0;
 	int x=0;
-	long double ret=0.0;
+	//long double ret=0.0;
 
-	if (epi->dosn[mat].config.dos_free_carrier_stats==mb_equation)
+	if (s->dosn.config.dos_free_carrier_stats==mb_equation)
 	{
 		long double Tkb=T*kb;
-		*n=epi->dosn[mat].config.Nc*gexp((Q*top)/(Tkb));
+		*n=s->dosn.config.Nc*gexp((Qe*top)/(Tkb));
 
+		//if (*n>s->dosn.config.Nc)
+		//{
+		//	printf("%Le %Le %Le\n",s->dosn.config.Nc,*n,top);
+		//}
 		if (dn!=NULL)
 		{
-			//*dn=(Q/(T*kb))*epi->dosn[mat].config.Nc*gexp((Q*top)/(T*kb));
-			*dn=(Q/(Tkb))*(*n);
+			//*dn=(Qe/(T*kb))*s->dosn.config.Nc*gexp((Qe*top)/(T*kb));
+			*dn=(Qe/(Tkb))*(*n);
 		}
 
 		if (w!=NULL)
@@ -232,41 +237,41 @@ void get_n_den(struct epitaxy *epi,long double top,long double T,int mat,long do
 	{
 
 		#ifdef dos_warn
-		if ((epi->dosn[mat].x[0]>top)||(epi->dosn[mat].x[epi->dosn[mat].xlen-1]<top))
+		if ((s->dosn.x[0]>top)||(s->dosn.x[s->dosn.xlen-1]<top))
 		{
-			errors_add(sim,"Free electrons asking for %Le but range %Le %Le\n",top,epi->dosn[mat].x[0],epi->dosn[mat].x[epi->dosn[mat].xlen-1]);
+			errors_add(sim,"Free electrons asking for %Le but range %Le %Le\n",top,s->dosn.x[0],s->dosn.x[s->dosn.xlen-1]);
 		}
 		#endif
 
-		t=search(epi->dosn[mat].t,epi->dosn[mat].tlen,T);
-		x=search(epi->dosn[mat].x,epi->dosn[mat].xlen,top);
+		t=search(s->dosn.t,s->dosn.tlen,T);
+		x=search(s->dosn.x,s->dosn.xlen,top);
 
 		if (x<0) x=0;
 		if (t<0) t=0;
 
 		//n
-		x0=epi->dosn[mat].x[x];
-		x1=epi->dosn[mat].x[x+1];
+		x0=s->dosn.x[x];
+		x1=s->dosn.x[x+1];
 		xr=(top-x0)/(x1-x0);
 
-		if (epi->dosn[mat].tlen>1)
+		if (s->dosn.tlen>1)
 		{
-			t0=epi->dosn[mat].t[t];
-			t1=epi->dosn[mat].t[t+1];
+			t0=s->dosn.t[t];
+			t1=s->dosn.t[t+1];
 			tr=(T-t0)/(t1-t0);
 		}else
 		{
 			tr=0.0;
 		}
 
-		c00=epi->dosn[mat].c[t][x];
-		c01=epi->dosn[mat].c[t][x+1];
+		c00=s->dosn.c[t][x];
+		c01=s->dosn.c[t][x+1];
 		c0=c00+xr*(c01-c00);
 
-		if (epi->dosn[mat].tlen>1)
+		if (s->dosn.tlen>1)
 		{
-			c10=epi->dosn[mat].c[t+1][x];
-			c11=epi->dosn[mat].c[t+1][x+1];
+			c10=s->dosn.c[t+1][x];
+			c11=s->dosn.c[t+1][x+1];
 			c1=c10+xr*(c11-c10);
 		}
 
@@ -274,39 +279,39 @@ void get_n_den(struct epitaxy *epi,long double top,long double T,int mat,long do
 		*n=c;
 
 			//double N=2.0*pow(((2.0*pi*kb*T*m*m0)/(hp*hp)),1.5);
-			//long double test=epi->dosn[mat].config.Nc*gexp((Q*top)/(T*kb));
+			//long double test=s->dosn.config.Nc*gexp((Qe*top)/(T*kb));
 			//printf("test = %Le %Le\n",test,ret);
 			//getchar();
-		//printf("%Lf %Lf %Lf\n",epi->dosn[mat].x[x],epi->dosn[mat].x[x+1],top);
-		//printf(">>%Le %Le\n",epi->dosn[mat].config.Nc*gexp((Q*top)/(T*kb)),ret);
-		//printf("%Le %Le\n",epi->dosn[mat].config.Nc*gexp((Q*epi->dosn[mat].x[x])/(T*kb)),epi->dosn[mat].c[0][x]);
+		//printf("%Lf %Lf %Lf\n",s->dosn.x[x],s->dosn.x[x+1],top);
+		//printf(">>%Le %Le\n",s->dosn.config.Nc*gexp((Qe*top)/(T*kb)),ret);
+		//printf("%Le %Le\n",s->dosn.config.Nc*gexp((Qe*s->dosn.x[x])/(T*kb)),s->dosn.c[0][x]);
 		//getchar();
 
 		//dn
 		if (dn!=NULL)
 		{
-			x0=epi->dosn[mat].x[x];
-			x1=epi->dosn[mat].x[x+1];
+			x0=s->dosn.x[x];
+			x1=s->dosn.x[x+1];
 			xr=1.0/(x1-x0);
 
-			if (epi->dosn[mat].tlen>1)
+			if (s->dosn.tlen>1)
 			{
-				t0=epi->dosn[mat].t[t];
-				t1=epi->dosn[mat].t[t+1];
+				t0=s->dosn.t[t];
+				t1=s->dosn.t[t+1];
 				tr=(T-t0)/(t1-t0);
 			}else
 			{
 				tr=0.0;
 			}
 
-			c00=epi->dosn[mat].c[t][x];
-			c01=epi->dosn[mat].c[t][x+1];
+			c00=s->dosn.c[t][x];
+			c01=s->dosn.c[t][x+1];
 			c0=xr*(c01-c00);
 
-			if (epi->dosn[mat].tlen>1)
+			if (s->dosn.tlen>1)
 			{
-				c10=epi->dosn[mat].c[t+1][x];
-				c11=epi->dosn[mat].c[t+1][x+1];
+				c10=s->dosn.c[t+1][x];
+				c11=s->dosn.c[t+1][x+1];
 				c1=xr*(c11-c10);
 			}
 
@@ -317,29 +322,29 @@ void get_n_den(struct epitaxy *epi,long double top,long double T,int mat,long do
 
 		if (w!=NULL)
 		{
-			x0=epi->dosn[mat].x[x];
-			x1=epi->dosn[mat].x[x+1];
+			x0=s->dosn.x[x];
+			x1=s->dosn.x[x+1];
 			xr=(top-x0)/(x1-x0);
 
-			if (epi->dosn[mat].tlen>1)
+			if (s->dosn.tlen>1)
 			{
-				t0=epi->dosn[mat].t[t];
-				t1=epi->dosn[mat].t[t+1];
+				t0=s->dosn.t[t];
+				t1=s->dosn.t[t+1];
 				tr=(T-t0)/(t1-t0);
 			}else
 			{
 				tr=0.0;
 			}
 
-			c00=epi->dosn[mat].w[t][x];
-			c01=epi->dosn[mat].w[t][x+1];
+			c00=s->dosn.w[t][x];
+			c01=s->dosn.w[t][x+1];
 
 			c0=c00+xr*(c01-c00);
 
-			if (epi->dosn[mat].tlen>1)
+			if (s->dosn.tlen>1)
 			{
-				c10=epi->dosn[mat].w[t+1][x];
-				c11=epi->dosn[mat].w[t+1][x+1];
+				c10=s->dosn.w[t+1][x];
+				c11=s->dosn.w[t+1][x+1];
 				c1=c10+xr*(c11-c10);
 			}
 
@@ -348,11 +353,11 @@ void get_n_den(struct epitaxy *epi,long double top,long double T,int mat,long do
 		}
 
 		}
-	//ret=epi->dosn[mat].config.Nc*gexp((Q*top)/(T*kb));
+	//ret=s->dosn.config.Nc*gexp((Qe*top)/(T*kb));
 
 }
 
-void get_p_den(struct epitaxy *epi,long double top,long double T, int mat,long double *p, long double *dp, long double *w)
+void get_p_den(struct shape *s,long double top,long double T, long double *p, long double *dp, long double *w)
 {
 	long double c0=0.0;
 	long double c1=0.0;
@@ -369,16 +374,16 @@ void get_p_den(struct epitaxy *epi,long double top,long double T, int mat,long d
 	long double c11=0.0;
 	int t=0;
 	int x=0;
-	long double ret=0.0;
+	//long double ret=0.0;
 
-	if (epi->dosp[mat].config.dos_free_carrier_stats==mb_equation)
+	if (s->dosp.config.dos_free_carrier_stats==mb_equation)
 	{
 		long double Tkb=T*kb;
-		*p=epi->dosp[mat].config.Nv*gexp((Q*top)/(Tkb));
+		*p=s->dosp.config.Nv*gexp((Qe*top)/(Tkb));
 
 		if (dp!=NULL)
 		{
-			*dp=(Q/(Tkb))*(*p);
+			*dp=(Qe/(Tkb))*(*p);
 		}
 
 		if (w!=NULL)
@@ -387,46 +392,46 @@ void get_p_den(struct epitaxy *epi,long double top,long double T, int mat,long d
 		}
 
 
-		//ret=(Q/(T*kb))*epi->dosp[mat].config.Nv*gexp((Q*top)/(T*kb));
+		//ret=(Qe/(T*kb))*s->dosp.config.Nv*gexp((Qe*top)/(T*kb));
 	}else
 	{
 
 		#ifdef dos_warn
-		if ((epi->dosp[mat].x[0]>top)||(epi->dosp[mat].x[epi->dosp[mat].xlen-1]<top))
+		if ((s->dosp.x[0]>top)||(s->dosp.x[s->dosp.xlen-1]<top))
 		{
-			errors_add(sim,"Free holes asking for %Le but range %Le %Le\n",top,epi->dosp[mat].x[0],epi->dosp[mat].x[epi->dosp[mat].xlen-1]);
+			errors_add(sim,"Free holes asking for %Le but range %Le %Le\n",top,s->dosp.x[0],s->dosp.x[s->dosp.xlen-1]);
 		}
 		#endif
 
-		t=search(epi->dosp[mat].t,epi->dosp[mat].tlen,T);
-		x=search(epi->dosp[mat].x,epi->dosp[mat].xlen,top);
+		t=search(s->dosp.t,s->dosp.tlen,T);
+		x=search(s->dosp.x,s->dosp.xlen,top);
 
 		if (x<0) x=0;
 		if (t<0) t=0;
 
-		x0=epi->dosp[mat].x[x];
-		x1=epi->dosp[mat].x[x+1];
+		x0=s->dosp.x[x];
+		x1=s->dosp.x[x+1];
 
 		xr=(top-x0)/(x1-x0);
 
-		if (epi->dosp[mat].tlen>1)
+		if (s->dosp.tlen>1)
 		{
-			t0=epi->dosp[mat].t[t];
-			t1=epi->dosp[mat].t[t+1];
+			t0=s->dosp.t[t];
+			t1=s->dosp.t[t+1];
 			tr=(T-t0)/(t1-t0);
 		}else
 		{
 			tr=0.0;
 		}
 
-		c00=epi->dosp[mat].c[t][x];
-		c01=epi->dosp[mat].c[t][x+1];
+		c00=s->dosp.c[t][x];
+		c01=s->dosp.c[t][x+1];
 		c0=c00+xr*(c01-c00);
 
-		if (epi->dosp[mat].tlen>1)
+		if (s->dosp.tlen>1)
 		{
-			c10=epi->dosp[mat].c[t+1][x];
-			c11=epi->dosp[mat].c[t+1][x+1];
+			c10=s->dosp.c[t+1][x];
+			c11=s->dosp.c[t+1][x+1];
 			c1=c10+xr*(c11-c10);
 		}
 
@@ -434,35 +439,35 @@ void get_p_den(struct epitaxy *epi,long double top,long double T, int mat,long d
 		*p=c;
 
 			//double N=2.0*pow(((2.0*pi*kb*T*m*m0)/(hp*hp)),1.5);
-			//long double test=epi->dosp[mat].config.Nv*gexp((Q*top)/(T*kb));
+			//long double test=s->dosp.config.Nv*gexp((Qe*top)/(T*kb));
 			//printf("test h = %Le %Le\n",test,ret);
 			//getchar();
 
 		//dp
 		if (dp!=NULL)
 		{
-			x0=epi->dosp[mat].x[x];
-			x1=epi->dosp[mat].x[x+1];
+			x0=s->dosp.x[x];
+			x1=s->dosp.x[x+1];
 			xr=1.0/(x1-x0);
 
-			if (epi->dosp[mat].tlen>1)
+			if (s->dosp.tlen>1)
 			{
-				t0=epi->dosp[mat].t[t];
-				t1=epi->dosp[mat].t[t+1];
+				t0=s->dosp.t[t];
+				t1=s->dosp.t[t+1];
 				tr=(T-t0)/(t1-t0);
 			}else
 			{
 				tr=0.0;
 			}
 
-			c00=epi->dosp[mat].c[t][x];
-			c01=epi->dosp[mat].c[t][x+1];
+			c00=s->dosp.c[t][x];
+			c01=s->dosp.c[t][x+1];
 			c0=xr*(c01-c00);
 
-			if (epi->dosp[mat].tlen>1)
+			if (s->dosp.tlen>1)
 			{
-				c10=epi->dosp[mat].c[t+1][x];
-				c11=epi->dosp[mat].c[t+1][x+1];
+				c10=s->dosp.c[t+1][x];
+				c11=s->dosp.c[t+1][x+1];
 				c1=xr*(c11-c10);
 			}
 
@@ -472,29 +477,29 @@ void get_p_den(struct epitaxy *epi,long double top,long double T, int mat,long d
 
 		if (w!=NULL)
 		{
-			x0=epi->dosp[mat].x[x];
-			x1=epi->dosp[mat].x[x+1];
+			x0=s->dosp.x[x];
+			x1=s->dosp.x[x+1];
 			xr=(top-x0)/(x1-x0);
 
-			if (epi->dosp[mat].tlen>1)
+			if (s->dosp.tlen>1)
 			{
-				t0=epi->dosp[mat].t[t];
-				t1=epi->dosp[mat].t[t+1];
+				t0=s->dosp.t[t];
+				t1=s->dosp.t[t+1];
 				tr=(T-t0)/(t1-t0);
 			}else
 			{
 				tr=0.0;
 			}
 
-			c00=epi->dosp[mat].w[t][x];
-			c01=epi->dosp[mat].w[t][x+1];
+			c00=s->dosp.w[t][x];
+			c01=s->dosp.w[t][x+1];
 
 			c0=c00+xr*(c01-c00);
 
-			if (epi->dosp[mat].tlen>1)
+			if (s->dosp.tlen>1)
 			{
-				c10=epi->dosp[mat].w[t+1][x];
-				c11=epi->dosp[mat].w[t+1][x+1];
+				c10=s->dosp.w[t+1][x];
+				c11=s->dosp.w[t+1][x+1];
 				c1=c10+xr*(c11-c10);
 			}
 
@@ -505,43 +510,43 @@ void get_p_den(struct epitaxy *epi,long double top,long double T, int mat,long d
 
 }
 
-long double get_n_muz(struct epitaxy *epi,int mat)
+long double get_n_muz(struct shape *s)
 {
-	return epi->dosn[mat].muz;
+	return s->dosn.muz;
 }
 
-long double get_p_muz(struct epitaxy *epi,int mat)
+long double get_p_muz(struct shape *s)
 {
-	return epi->dosp[mat].muz;
+	return s->dosp.muz;
 }
 
-long double get_n_mux(struct epitaxy *epi,int mat)
+long double get_n_mux(struct shape *s)
 {
-	return epi->dosn[mat].mux;
+	return s->dosn.mux;
 }
 
-long double get_p_mux(struct epitaxy *epi,int mat)
+long double get_p_mux(struct shape *s)
 {
-	return epi->dosp[mat].mux;
+	return s->dosp.mux;
 }
 
-long double get_n_muy(struct epitaxy *epi,int mat)
+long double get_n_muy(struct shape *s)
 {
-	return epi->dosn[mat].muy;
+	return s->dosn.muy;
 }
 
-long double get_p_muy(struct epitaxy *epi,int mat)
+long double get_p_muy(struct shape *s)
 {
-	return epi->dosp[mat].muy;
+	return s->dosp.muy;
 }
 
-long double get_dos_B(struct epitaxy *epi,int mat)
+long double get_dos_B(struct shape *s)
 {
-return epi->dosn[mat].B;
+return s->dosn.B;
 }
 
 
-long double get_dp_den(struct epitaxy *epi,long double top,long double T, int mat)
+long double get_dp_den(struct shape *s,long double top,long double T)
 {
 	long double c0=0.0;
 	long double c1=0.0;
@@ -562,43 +567,43 @@ long double get_dp_den(struct epitaxy *epi,long double top,long double T, int ma
 
 	long double ret=0.0;
 
-	if (epi->dosp[mat].config.dos_free_carrier_stats==mb_equation)
+	if (s->dosp.config.dos_free_carrier_stats==mb_equation)
 	{
-		ret=(Q/(T*kb))*epi->dosp[mat].config.Nv*gexp((Q*top)/(T*kb));
+		ret=(Qe/(T*kb))*s->dosp.config.Nv*gexp((Qe*top)/(T*kb));
 	}else
 	{
 		#ifdef dos_warn
-		if ((epi->dosp[mat].x[0]>top)||(epi->dosp[mat].x[epi->dosp[mat].xlen-1]<top))
+		if ((s->dosp.x[0]>top)||(s->dosp.x[s->dosp.xlen-1]<top))
 		{
-			errors_add(sim,"Free electrons Asking for %e but range %e %e\n",top,epi->dosp[mat].x[0],epi->dosp[mat].x[epi->dosp[mat].xlen-1]);
+			errors_add(sim,"Free electrons Asking for %e but range %e %e\n",top,s->dosp.x[0],s->dosp.x[s->dosp.xlen-1]);
 		}
 		#endif
 
-		t=search(epi->dosp[mat].t,epi->dosp[mat].tlen,T);
-		x=search(epi->dosp[mat].x,epi->dosp[mat].xlen,top);
+		t=search(s->dosp.t,s->dosp.tlen,T);
+		x=search(s->dosp.x,s->dosp.xlen,top);
 
-		x0=epi->dosp[mat].x[x];
-		x1=epi->dosp[mat].x[x+1];
+		x0=s->dosp.x[x];
+		x1=s->dosp.x[x+1];
 		xr=1.0/(x1-x0);
 
-		if (epi->dosp[mat].tlen>1)
+		if (s->dosp.tlen>1)
 		{
-			t0=epi->dosp[mat].t[t];
-			t1=epi->dosp[mat].t[t+1];
+			t0=s->dosp.t[t];
+			t1=s->dosp.t[t+1];
 			tr=(T-t0)/(t1-t0);
 		}else
 		{
 			tr=0.0;
 		}
 
-		c00=epi->dosp[mat].c[t][x];
-		c01=epi->dosp[mat].c[t][x+1];
+		c00=s->dosp.c[t][x];
+		c01=s->dosp.c[t][x+1];
 		c0=xr*(c01-c00);
 
-		if (epi->dosp[mat].tlen>1)
+		if (s->dosp.tlen>1)
 		{
-			c10=epi->dosp[mat].c[t+1][x];
-			c11=epi->dosp[mat].c[t+1][x+1];
+			c10=s->dosp.c[t+1][x];
+			c11=s->dosp.c[t+1][x+1];
 			c1=xr*(c11-c10);
 		}
 
@@ -606,7 +611,7 @@ long double get_dp_den(struct epitaxy *epi,long double top,long double T, int ma
 
 		ret=c;
 
-		//printf(">>%Le %Le\n",ret,(Q/(T*kb))*epi->dosp[mat].config.Nv*gexp((Q*top)/(T*kb)));
+		//printf(">>%Le %Le\n",ret,(Qe/(T*kb))*s->dosp.config.Nv*gexp((Qe*top)/(T*kb)));
 		//getchar();
 	}
 return ret;

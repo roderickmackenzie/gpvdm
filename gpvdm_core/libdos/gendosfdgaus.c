@@ -37,6 +37,7 @@
 	@brief Generates the DoS files.
 */
 
+#include <enabled_libs.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -85,7 +86,7 @@ printf_log(sim,"p srhbandp.inp %d 1\n",i);
 }
 
 
-void gen_do(struct simulation *sim,struct dosconfig *in,struct dosconfig *in2,char * outfile,int electrons)
+void gen_do(struct simulation *sim,struct dosconfig *in,struct dosconfig *in2,char * outfile,struct json_obj *json_dos,int electrons)
 {
 char name[200];
 char temp[1000];
@@ -117,8 +118,9 @@ gdouble E=0.0;
 gdouble dE=0.0;
 gdouble rho=0.0;
 gdouble sum=0.0;
+long double sum_E=0.0;
 gdouble f=0.0;
-gdouble last_n0=0;
+//gdouble last_n0=0;
 gdouble *xmesh=NULL;
 
 long double srh_pos=0.0;
@@ -136,6 +138,7 @@ long double dE_free=(E_free_stop-E_free_start)/(long double)E_free_points;
 long double sum_l=0.0;
 long double sum_r=0.0;
 long double pos=0.0;
+struct json_obj *json_dos_an;
 struct dos_an_data my_dos_an;
 
 //#define dos_test_stats
@@ -190,12 +193,14 @@ buf_len+=17;
 buf_len+=in->npoints;		//mesh
 buf_len+=tsteps;		//mesh
 buf_len+=in->srh_bands;	//mesh
-buf_len+=in->srh_bands;	//holds the density
+buf_len+=in->srh_bands;	//total number of trap states
 buf_len+=tsteps*in->npoints*2; //data
 buf_len+=tsteps*in->npoints*5*in->srh_bands; //data
 
 int buf_pos=0;
-gdouble *buf=(gdouble*)malloc(buf_len*sizeof(gdouble));
+long double *buf=(long double*)malloc(buf_len*sizeof(long double));
+memset(buf, 0, buf_len * sizeof(long double));		//This is to stop valgrind trigering due to long doubles not setting whole memory
+
 buf[buf_pos++]=(gdouble)in->npoints;
 buf[buf_pos++]=(gdouble)tsteps;
 buf[buf_pos++]=(gdouble)in->srh_bands;
@@ -226,7 +231,7 @@ for (x=0;x<in->npoints;x++)
 for (t=0;t<tsteps;t++)
 {
 	buf[buf_pos++]=tpos;
-	printf("t=%Le\n",buf[buf_pos-1]);
+	printf("t=%.1Lf\n",buf[buf_pos-1]);
 	tpos+=dt;
 }
 
@@ -299,30 +304,30 @@ FILE *dosread;
 	for (band=0;band<in->srh_bands;band++)
 	{
 		unused=fscanf(dosread,"%Le",&(srh_read[band]));
-		printf_log(sim,"%Le\n",srh_read[band]);
+		//printf_log(sim,"%Le\n",srh_read[band]);
 		srh_read[band]=fabs(srh_read[band]);
 	}
 
 
 	fclose(dosread);
 }else
-if (in->dostype==dos_an)
+//if (in->dostype==dos_an)
 {
 printf_log(sim,"---------------------Generating---------------------\n");
 	if (electrons==TRUE)
 	{
-		sprintf(name,"%s.inp",in->analytical_dos_file_name);
-		dos_an_load(sim,&my_dos_an,name);
+		json_dos_an=json_obj_find(json_dos, "complex_lumo");
+		dos_an_load(sim,&my_dos_an,json_dos_an);
 	}else
 	{
-		sprintf(name,"%s.inp",in2->analytical_dos_file_name);
-		dos_an_load(sim,&my_dos_an,name);
+		json_dos_an=json_obj_find(json_dos, "complex_homo");
+		dos_an_load(sim,&my_dos_an,json_dos_an);
 	}
 
 	for (band=0;band<in->srh_bands;band++)
 	{
 		srh_read[band]=fabs(dos_an_get_value(sim,&my_dos_an,srh_mid[band]));
-		printf_log(sim,"%d %Le\n",band,srh_read[band]);
+		//printf_log(sim,"%d %Le\n",band,srh_read[band]);
 	}
 
 }
@@ -421,18 +426,19 @@ printf_log(sim,"%d/%d\n",t,(int)tsteps);
 			srh_band=band_i[e];
 			srh_E=srh_mid[srh_band];
 
-			f=1.0/(1.0+exp((E-xpos)*Q/(kb*tpos)));
+			f=1.0/(1.0+exp((E-xpos)*Qe/(kb*tpos)));
 
-			srh_f=1.0/(1.0+exp((srh_E-xpos)*Q/(kb*tpos)));
+			srh_f=1.0/(1.0+exp((srh_E-xpos)*Qe/(kb*tpos)));
 
 			if (in->dostype==dos_exp)
 			{
 				rho=in->Nt*exp((E)/(in->Et));
 			}else
-			if ((in->dostype==dos_read)||(in->dostype==dos_an))
+			if (in->dostype==dos_an)
 			{
-				rho=srh_read[srh_band];
+				rho=dos_an_get_value(sim,&my_dos_an,E);
 			}else
+			if (in->dostype==dos_read)
 			{
 				ewe(sim,"I don't understand this DoS type.\n");
 			}
@@ -462,9 +468,9 @@ printf_log(sim,"%d/%d\n",t,(int)tsteps);
 			if (electrons==TRUE)
 			{
 				srh_r1[srh_band]+=in->srh_vth*in->srh_sigman*rho*(1.0-srh_f)*dE;
-				srh_r2[srh_band]+=in->srh_vth*in->srh_sigman*in->Nc*exp((srh_E*Q)/(tpos*kb))*rho*srh_f*dE;//in->srh_vth*srh_sigman*rho*(1.0-srh_f)*dE;//
+				srh_r2[srh_band]+=in->srh_vth*in->srh_sigman*in->Nc*exp((srh_E*Qe)/(tpos*kb))*rho*srh_f*dE;//in->srh_vth*srh_sigman*rho*(1.0-srh_f)*dE;//
 				srh_r3[srh_band]+=in->srh_vth*in->srh_sigmap*rho*srh_f*dE;
-				srh_r4[srh_band]+=in->srh_vth*in->srh_sigmap*in->Nv*exp((-in->Eg*Q-srh_E*Q)/(tpos*kb))*rho*(1.0-srh_f)*dE;//in->srh_vth*srh_sigmap*rho*srh_f*dE;//
+				srh_r4[srh_band]+=in->srh_vth*in->srh_sigmap*in->Nv*exp((-in->Eg*Qe-srh_E*Qe)/(tpos*kb))*rho*(1.0-srh_f)*dE;//in->srh_vth*srh_sigmap*rho*srh_f*dE;//
 				//if (srh_r1[srh_band]<1e-3)
 				//{
 				//	printf("%Lf %Le %Le %Le %Le\n",srh_mid[srh_band],srh_r1[srh_band],srh_r2[srh_band],srh_r3[srh_band],srh_r4[srh_band]);
@@ -475,9 +481,9 @@ printf_log(sim,"%d/%d\n",t,(int)tsteps);
 			}else
 			{
 				srh_r1[srh_band]+=in->srh_vth*in->srh_sigmap*rho*(1.0-srh_f)*dE;
-				srh_r2[srh_band]+=in->srh_vth*in->srh_sigmap*in->Nv*exp((srh_E*Q)/(tpos*kb))*rho*srh_f*dE;//in->srh_vth*srh_sigman*rho*(1.0-srh_f)*dE;//
+				srh_r2[srh_band]+=in->srh_vth*in->srh_sigmap*in->Nv*exp((srh_E*Qe)/(tpos*kb))*rho*srh_f*dE;//in->srh_vth*srh_sigman*rho*(1.0-srh_f)*dE;//
 				srh_r3[srh_band]+=in->srh_vth*in->srh_sigman*rho*srh_f*dE;
-				srh_r4[srh_band]+=in->srh_vth*in->srh_sigman*in->Nc*exp((-in->Eg*Q-(srh_E*Q))/(tpos*kb))*rho*(1.0-srh_f)*dE;//in->srh_vth*srh_sigmap*rho*srh_f*dE;//
+				srh_r4[srh_band]+=in->srh_vth*in->srh_sigman*in->Nc*exp((-in->Eg*Qe-(srh_E*Qe))/(tpos*kb))*rho*(1.0-srh_f)*dE;//in->srh_vth*srh_sigmap*rho*srh_f*dE;//
 				srh_n[srh_band]+=rho*srh_f*dE;
 				srh_den[srh_band]+=rho*dE;
 				srh_dE_sum[srh_band]+=dE;
@@ -487,7 +493,7 @@ printf_log(sim,"%d/%d\n",t,(int)tsteps);
 
 
 
-		if (x==0)
+		if ((x==0)&&(t==0))
 		{
 			for (band=0;band<in->srh_bands;band++)
 			{
@@ -520,6 +526,7 @@ printf_log(sim,"%d/%d\n",t,(int)tsteps);
 		///////////Free stuff
 		sum_l=0.0;
 		sum_r=0.0;
+		sum_E=0.0;
 		long double Nc=2.0*powl((in->me*m0*kb*tpos)/(2.0*PI*hbar*hbar),3.0/2.0);
 		long double Nv=2.0*powl((in->mh*m0*kb*tpos)/(2.0*PI*hbar*hbar),3.0/2.0);
 
@@ -527,27 +534,28 @@ printf_log(sim,"%d/%d\n",t,(int)tsteps);
 		{
 			E=E_free_start;
 			sum=0.0;
-
-			gdouble w0=0.0;
+			sum_E=0.0;
+			//gdouble w0=0.0;
 			for (e=0;e<E_free_points;e++)
 			{
 
 				if (electrons==TRUE)
 				{
-					rho=(sqrtl(E*Q)/(2.0*PI*PI))*pow((2.0*in->me*m0)/(hbar*hbar),3.0/2.0);
+					rho=(sqrtl(E*Qe)/(2.0*PI*PI))*pow((2.0*in->me*m0)/(hbar*hbar),3.0/2.0);
 				}else
 				{
-					rho=(sqrtl(E*Q)/(2.0*PI*PI))*pow((2.0*in->mh*m0)/(hbar*hbar),3.0/2.0);
+					rho=(sqrtl(E*Qe)/(2.0*PI*PI))*pow((2.0*in->mh*m0)/(hbar*hbar),3.0/2.0);
 				}
 
-				f=1.0/(1.0+expl((E-xpos)*Q/(kb*tpos)));
-				sum+=rho*Q*f*dE_free;
+				f=1.0/(1.0+expl((E-xpos)*Qe/(kb*tpos)));
+				sum+=rho*Qe*f*dE_free;
+				sum_E+=E*Qe*rho*Qe*f*dE_free;
 
-				f=1.0/(1.0+expl((E-xpos-dxr/2.0)*Q/(kb*tpos)));
-				sum_l+=rho*Q*f*dE_free;
+				f=1.0/(1.0+expl((E-xpos-dxr/2.0)*Qe/(kb*tpos)));
+				sum_l+=rho*Qe*f*dE_free;
 
-				f=1.0/(1.0+expl((E-xpos+dxr/2.0)*Q/(kb*tpos)));
-				sum_r+=rho*Q*f*dE_free;
+				f=1.0/(1.0+expl((E-xpos+dxr/2.0)*Qe/(kb*tpos)));
+				sum_r+=rho*Qe*f*dE_free;
 				E+=dE_free;
 				//if (electrons==FALSE)
 				//{
@@ -557,7 +565,7 @@ printf_log(sim,"%d/%d\n",t,(int)tsteps);
 
 			}
 
-			//printf("here %Le %Le %Le \n",sum,in->Nc*exp((xpos*Q)/(kb*tpos)),xpos);//
+			//printf("here %Le %Le %Le \n",sum,in->Nc*exp((xpos*Qe)/(kb*tpos)),xpos);//
 			//getchar();
 
 
@@ -566,28 +574,29 @@ printf_log(sim,"%d/%d\n",t,(int)tsteps);
 		{
 			E=E_free_start;
 			sum=0.0;
-
-			gdouble w0=0.0;
+			sum_E=0.0;
+			//gdouble w0=0.0;
 
 			for (e=0;e<E_free_points;e++)
 			{
 
 				if (electrons==TRUE)
 				{
-					rho=(sqrtl(E*Q)/(2.0*PI*PI))*pow((2.0*in->me*m0)/(hbar*hbar),3.0/2.0);
+					rho=(sqrtl(E*Qe)/(2.0*PI*PI))*pow((2.0*in->me*m0)/(hbar*hbar),3.0/2.0);
 				}else
 				{
-					rho=(sqrtl(E*Q)/(2.0*PI*PI))*pow((2.0*in->mh*m0)/(hbar*hbar),3.0/2.0);
+					rho=(sqrtl(E*Qe)/(2.0*PI*PI))*pow((2.0*in->mh*m0)/(hbar*hbar),3.0/2.0);
 				}
 
-				f=expl((xpos-E)*Q/(kb*tpos));
-				sum+=rho*Q*f*dE_free;
+				f=expl((xpos-E)*Qe/(kb*tpos));
+				sum+=rho*Qe*f*dE_free;
+				sum+=E*Qe*rho*Qe*f*dE_free;
 
-				f=expl((xpos-E-dxr/2.0)*Q/(kb*tpos));
-				sum_l+=rho*Q*f*dE_free;
+				f=expl((xpos-E-dxr/2.0)*Qe/(kb*tpos));
+				sum_l+=rho*Qe*f*dE_free;
 
-				f=expl((xpos-E+dxr/2.0)*Q/(kb*tpos));
-				sum_r+=rho*Q*f*dE_free;
+				f=expl((xpos-E+dxr/2.0)*Qe/(kb*tpos));
+				sum_r+=rho*Qe*f*dE_free;
 				E+=dE_free;
 				//if (electrons==FALSE)
 				//{
@@ -602,15 +611,15 @@ printf_log(sim,"%d/%d\n",t,(int)tsteps);
 		{
 			if (electrons==TRUE)
 			{
-				sum_l=Nc*exp(((xpos-dxr/2.0)*Q)/(kb*tpos));
-				sum=Nc*exp((xpos*Q)/(kb*tpos));
-				sum_r=Nc*exp(((xpos+dxr/2.0)*Q)/(kb*tpos));
+				sum_l=Nc*exp(((xpos-dxr/2.0)*Qe)/(kb*tpos));
+				sum=Nc*exp((xpos*Qe)/(kb*tpos));
+				sum_r=Nc*exp(((xpos+dxr/2.0)*Qe)/(kb*tpos));
 
 			}else
 			{
-				sum_l=Nv*exp(((xpos-dxr/2.0)*Q)/(kb*tpos));
-				sum=Nv*exp((xpos*Q)/(kb*tpos));
-				sum_r=Nv*exp(((xpos+dxr/2.0)*Q)/(kb*tpos));
+				sum_l=Nv*exp(((xpos-dxr/2.0)*Qe)/(kb*tpos));
+				sum=Nv*exp((xpos*Qe)/(kb*tpos));
+				sum_r=Nv*exp(((xpos+dxr/2.0)*Qe)/(kb*tpos));
 			}
 		}else
 		{
@@ -620,11 +629,17 @@ printf_log(sim,"%d/%d\n",t,(int)tsteps);
 		//printf("%d %Le\n",in->dos_free_carrier_stats,sum);
 		//if (electrons==TRUE)
 		//{
-		//	printf("%Le %Le %Lf\n",in->Nc*exp((xpos*Q)/(kb*tpos)),sum,tpos);
+		//	printf("%Le %Le %Lf\n",in->Nc*exp((xpos*Qe)/(kb*tpos)),sum,tpos);
 		//}
 		//getchar();
 		//printf("%Le %Le\n",xpos-dxr/2.0,xpos+dxr/2.0);
-		gdouble w0=(3.0/2.0)*sum/((fabs(sum_l-sum_r))/(dxr*Q));
+		gdouble w0=(3.0/2.0)*sum/((fabs(sum_l-sum_r))/(dxr*Qe));
+
+		if (in->dos_free_carrier_stats==fd_look_up_table)
+		{
+			w0=sum_E/sum;		//After 22 in Solid State Electron Vol. 32 No. 6 469-473 1989 R. Kishore and Azof
+			//printf("%Le %Le %Le\n",w0,sum_E/sum,(3.0/2.0)*kb*tpos);	
+		}
 
 		//printf("%Le %Le\n",w0,(3.0/2.0)*kb*tpos);
 		//getchar();
@@ -651,28 +666,34 @@ printf_log(sim,"%d/%d\n",t,(int)tsteps);
 				if (electrons==TRUE)
 				{
 					freetest=fopen("freetestn.dat","a");
-					//fprintf(freetest,"%.20le %.20le %.20le %.20le\n",xpos,sum,in->Nc*exp((xpos*Q)/(kb*tpos)),in->Nv*exp((-(in->Eg+xpos)*Q)/(kb*tpos)));
-					//fprintf(freetest,"%Le %Le %Le\n",xpos,in->Nc*exp((xpos*Q)/(kb*tpos)),sum);
-
-					for (srh_band=0;srh_band<in->srh_bands;srh_band++)
+					if (freetest!=NULL)
 					{
-						fprintf(freetest,"%Le %Le\n",srh_mid[srh_band],srh_r2[0]);
-					}
-					fprintf(freetest,"\n");
+						//fprintf(freetest,"%.20le %.20le %.20le %.20le\n",xpos,sum,in->Nc*exp((xpos*Qe)/(kb*tpos)),in->Nv*exp((-(in->Eg+xpos)*Qe)/(kb*tpos)));
+						//fprintf(freetest,"%Le %Le %Le\n",xpos,in->Nc*exp((xpos*Qe)/(kb*tpos)),sum);
 
-					fclose(freetest);
+						for (srh_band=0;srh_band<in->srh_bands;srh_band++)
+						{
+							fprintf(freetest,"%Le %Le\n",srh_mid[srh_band],srh_r2[0]);
+						}
+						fprintf(freetest,"\n");
+
+						fclose(freetest);
+					}
 				}else
 				{
 					freetest=fopen("freetestp.dat","a");
-					//fprintf(freetest,"%Le %Le %Le\n",xpos,in->Nv*exp((xpos*Q)/(kb*tpos)),sum);
-
-					for (srh_band=0;srh_band<in->srh_bands;srh_band++)
+					if (freetest!=NULL)
 					{
-						fprintf(freetest,"%Le %Le\n",srh_mid[srh_band],srh_n[srh_band]);
-					}
-					fprintf(freetest,"\n");
+						//fprintf(freetest,"%Le %Le %Le\n",xpos,in->Nv*exp((xpos*Qe)/(kb*tpos)),sum);
 
-					fclose(freetest);
+						for (srh_band=0;srh_band<in->srh_bands;srh_band++)
+						{
+							fprintf(freetest,"%Le %Le\n",srh_mid[srh_band],srh_n[srh_band]);
+						}
+						fprintf(freetest,"\n");
+
+						fclose(freetest);
+					}
 				}
 			}
 		#endif
@@ -715,12 +736,15 @@ if (get_dump_status(sim,dump_write_out_band_structure)==TRUE)
 
 	if (buf_len!=buf_pos)
 	{
-	ewe(sim,_("Expected dos size is different from generated\n"));
+	ewe(sim,_("Expected dos size is different from generated %d %d\n"),buf_len,buf_pos);
 	}
 
 
 	/*FILE* file;
-	file = fopen ("one.dat", "w");
+	char temp_path[PATH_MAX];
+	strcpy(temp_path,outfile);
+	strcat(temp_path,".txt");
+	file = fopen (temp_path, "w");
 	for (i=0;i<buf_len;i++)
 	{
 		fprintf ( file,"%d %Le\n",i, buf[i]);
@@ -760,65 +784,6 @@ free(srh_mid);
 
 return;
 }
-
-
-void gen_dos_fd_gaus_n(struct simulation *sim,char * dos_file, char *lumo_file, char *homo_file)
-{
-
-	char temp[100];
-	char path[PATH_MAX];
-	struct dosconfig confige;
-	struct dosconfig configh;
-
-	dos_config_load(sim,&confige,&configh,dos_file, lumo_file, homo_file);
-	//printf(">>%Le\n",confige.srh_stop);
-	//getchar();
-
-	printf_log(sim,"Electrons.... %s\n",confige.dos_name);
-
-	join_path(2, path,get_input_path(sim),"cache");
-
-	gpvdm_mkdir(path);
-
-	sprintf(temp,"%s_dosn.dat",confige.dos_name);
-	join_path(3, path,get_input_path(sim),"cache",temp);
-
-	gen_do(sim,&confige,&configh,path,TRUE);
-
-}
-
-void gen_dos_fd_gaus_p(struct simulation *sim,char * dos_file, char *lumo_file, char *homo_file)
-{
-	char temp[100];
-	char path[PATH_MAX];
-	FILE *out;
-	struct dosconfig confige;
-	struct dosconfig configh;
-
-	dos_config_load(sim,&confige,&configh,dos_file, lumo_file, homo_file);
-
-	printf_log(sim,"Holes.... %s\n",configh.dos_name);
-
-	join_path(2, path,get_input_path(sim),"cache");
-	gpvdm_mkdir(path);
-
-	sprintf(temp,"%s_dosp.dat",configh.dos_name);
-	join_path(3, path,get_input_path(sim),"cache",temp);
-	gen_do(sim,&configh,&confige,path,FALSE);
-
-	join_path(3, path,get_input_path(sim),"cache","mat.inp");
-
-	out=fopen(path,"w");
-	fprintf(out,"#gpvdm_file_type\n");
-	fprintf(out,"cache\n");
-	fprintf(out,"#end\n");
-	fclose(out);
-}
-
-
-
-
-
 
 
 

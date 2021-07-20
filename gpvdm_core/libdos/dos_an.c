@@ -48,13 +48,14 @@
 static int unused __attribute__((unused));
 
 
-void dos_an_load(struct simulation *sim,struct dos_an_data *in,char *name)
+void dos_an_load(struct simulation *sim,struct dos_an_data *in,struct json_obj *json_complex_dos)
 {
 }
 
 double dos_an_get_value(struct simulation *sim,struct dos_an_data *in,double E)
 {
+	double rho=0.0;
+
 return rho;
-//</clean>
 }
 
