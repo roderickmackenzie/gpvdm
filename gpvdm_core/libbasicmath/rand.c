@@ -96,7 +96,7 @@ inp_init(sim,&ifile);
 inp_load(sim,&inp,"random.inp");
 inp_check(sim,&inp,1.0);
 inp_reset_read(sim,&inp);
-char *data;
+char data[4000];
 char file[100];
 char token[100];
 double man_min=0.0;
@@ -107,9 +107,10 @@ double a=0.0;
 double b=0.0;
 double value=0.0;
 char value_string[100];
+int ret_val;
 do
 {
-	data=inp_get_string(sim,&inp);
+	ret_val=inp_get_string(sim,data,&inp);
 
 	if (strcmp(data,"#ver")==0)
 	{

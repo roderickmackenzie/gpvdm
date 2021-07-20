@@ -51,7 +51,7 @@
 	@brief A mesh reduction algorithm
 */
 
-int triangles_simplify_node(struct simulation *sim,struct triangles *in, struct vec *remove)
+int triangles_simplify_node(struct simulation *sim,struct triangles *in, struct vec *remove, double min_allowable_ang)
 {
 	int t;
 	double A_orig=0.0;
@@ -124,8 +124,7 @@ int triangles_simplify_node(struct simulation *sim,struct triangles *in, struct 
 				{
 					triangles_cal_angles(&vec_list,&reduced_triangles);
 					min_ang=vectors_min_value(&vec_list);
-
-					if (min_ang>25.0)
+					if (min_ang>min_allowable_ang)
 					{
 
 						delta_y=triangles_get_delta(&out_list,&reduced_triangles);
@@ -159,7 +158,7 @@ int triangles_simplify_node(struct simulation *sim,struct triangles *in, struct 
 
 	return removed;
 }
-int triangles_reduce_nodes(struct simulation *sim,struct triangles *in, int pass)
+int triangles_reduce_nodes(struct simulation *sim,struct triangles *in, int pass, double min_allowable_ang)
 {	
 	int i;
 	char temp[1000];
@@ -194,7 +193,7 @@ int triangles_reduce_nodes(struct simulation *sim,struct triangles *in, int pass
 
 		if (tri->flag==0)
 		{
-			if (triangles_simplify_node(sim,in,&(tri->xy0))==0)
+			if (triangles_simplify_node(sim,in,&(tri->xy0),min_allowable_ang)==0)
 			{
 				tri->flag=1;
 			}
@@ -202,7 +201,7 @@ int triangles_reduce_nodes(struct simulation *sim,struct triangles *in, int pass
 
 		if (tri->flag==0)
 		{
-			if (triangles_simplify_node(sim,in,&(tri->xy1))==0)
+			if (triangles_simplify_node(sim,in,&(tri->xy1),min_allowable_ang)==0)
 			{
 				tri->flag=1;
 			}
@@ -210,7 +209,7 @@ int triangles_reduce_nodes(struct simulation *sim,struct triangles *in, int pass
 
 		if (tri->flag==0)
 		{
-			if (triangles_simplify_node(sim,in,&(tri->xy2))==0)
+			if (triangles_simplify_node(sim,in,&(tri->xy2),min_allowable_ang)==0)
 			{
 				tri->flag=1;
 			}

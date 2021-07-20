@@ -146,14 +146,28 @@ return sqrt(pow(my_vec->x,2.0)+pow(my_vec->y,2.0)+pow(my_vec->z,2.0));
 
 void vec_rotate(struct vec *my_vec,double ang)
 {
-double x=0.0;
-double y=0.0;
+	double x=0.0;
+	double y=0.0;
 
-x=my_vec->x*cos(ang)-my_vec->y*sin(ang);
-y=my_vec->x*sin(ang)+my_vec->y*cos(ang);
-my_vec->x=x;
-my_vec->y=y;
+	x=my_vec->x*cos(ang)-my_vec->y*sin(ang);
+	y=my_vec->x*sin(ang)+my_vec->y*cos(ang);
+	my_vec->x=x;
+	my_vec->y=y;
+}
 
+//Rotate arround the y-axis
+void vec_rotate_y(struct vec *my_vec,double ang)
+{
+	double x=0.0;
+	double y=0.0;
+	double z=0.0;
+	x = my_vec->x*cos(ang) + my_vec->z*sin(ang);
+	y = my_vec->y;
+	z = my_vec->z*cos(ang) - my_vec->x*sin(ang);
+
+	my_vec->x=x;
+	my_vec->y=y;
+	my_vec->z=z;
 }
 
 ///Perform a dot product between two vectors

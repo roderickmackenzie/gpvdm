@@ -59,7 +59,7 @@ struct dat_file dat;
 dat_file_load_info(sim,&dat,file_name);
 in->len=dat.y;
 in->max_len=dat.y+10;
-in->data=(struct triangle*)malloc(sizeof(struct triangle)*in->len);
+in->data=(struct triangle*)malloc(sizeof(struct triangle)*in->max_len);
 
 for (i=0;i<in->len;i++)
 {
@@ -137,6 +137,11 @@ do
 
 }while(!feof(file));
 fclose(file);
+
+if (items!=in->len)
+{
+	ewe(sim,"number of triangles does not equal the number I'm expecting %d %d\n",in->len,items);
+}
 //getchar();
 }
 
@@ -194,7 +199,7 @@ void triangles_save(struct simulation *sim,char *file_name,struct triangles *in)
 	buf.logscale_x=0;
 	buf.logscale_y=0;
 	buf.x=1;
-	buf.y=in->len;
+	buf.y=triangles_count(in);
 	buf.z=1;
 	buffer_add_info(sim,&buf);
 
@@ -213,6 +218,7 @@ void triangles_to_dat_file(struct dat_file *buf,struct triangles *in)
 
 	for (i=0;i<in->len;i++)
 	{
+		//printf("%d\n",i);
 		tri=&(in->data[i]);
 		if (tri->deleted==FALSE)
 		{
@@ -249,6 +255,16 @@ void triangles_sub_vec(struct triangles *in,struct vec *v)
 	}
 }
 
+void triangles_rotate_y(struct triangles *in,double ang)
+{
+	int i;
+	for (i=0;i<in->len;i++)
+	{
+		vec_rotate_y(&(in->data[i].xy0), ang);
+		vec_rotate_y(&(in->data[i].xy1), ang);
+		vec_rotate_y(&(in->data[i].xy2), ang);
+	}
+}
 void triangles_add_vec(struct triangles *in,struct vec *v)
 {
 	int i;

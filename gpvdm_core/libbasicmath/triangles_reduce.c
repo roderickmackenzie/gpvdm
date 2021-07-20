@@ -229,7 +229,7 @@ int triangles_reduce_triangle(struct simulation *sim,struct triangles *in,int fo
 }
 
 
-void triangles_reduce(struct simulation *sim,struct triangles *in)
+void triangles_reduce(struct simulation *sim,struct triangles *in, double min_allowable_ang)
 {
 	int i;
 	//triangles_reduce_nodes(sim,in);
@@ -252,7 +252,7 @@ void triangles_reduce(struct simulation *sim,struct triangles *in)
 
 	for (i=0;i<20;i++)
 	{
-		if (triangles_reduce_nodes(sim,in,i)==0)
+		if (triangles_reduce_nodes(sim,in,i,min_allowable_ang)==0)
 		{
 			break;
 		}
