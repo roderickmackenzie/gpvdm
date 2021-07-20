@@ -50,6 +50,7 @@ struct dat_file buf;
 buffer_init(&buf);
 char name[200];
 char outpath[200];
+struct shape *s;
 int band=0;
 int x=in->dump_energy_slice_xpos;
 int y=in->dump_energy_slice_ypos;
@@ -92,19 +93,19 @@ inter_init(sim,&dump_nt);
 struct math_xy dump_pt;
 inter_init(sim,&dump_pt);
 
-int mat=in->imat[z][x][y];
+s=in->obj_zxy[z][x][y]->s;
 for (band=0;band<dim->srh_bands;band++)
 {
-	inter_append(&dump1,get_dos_E_n(epi,band,mat),in->n[z][x][y]*in->srh_n_r1[z][x][y][band]-in->srh_n_r2[z][x][y][band]);
-	inter_append(&dump2,get_dos_E_p(epi,band,mat),in->p[z][x][y]*in->srh_p_r1[z][x][y][band]-in->srh_p_r2[z][x][y][band]);
-	inter_append(&dump3,get_dos_E_n(epi,band,mat),in->nt[z][x][y][band]-in->ntb_save[z][x][y][band]);
-	inter_append(&dump4,get_dos_E_p(epi,band,mat),in->pt[z][x][y][band]-in->ptb_save[z][x][y][band]);
-	inter_append(&dump5,get_dos_E_n(epi,band,mat),in->p[z][x][y]*in->srh_n_r3[z][x][y][band]-in->srh_n_r4[z][x][y][band]);
-	inter_append(&dump6,get_dos_E_p(epi,band,mat),in->n[z][x][y]*in->srh_p_r3[z][x][y][band]-in->srh_p_r4[z][x][y][band]);
-	inter_append(&dump9,get_dos_E_n(epi,band,mat),in->Fnt[z][x][y][band]);
-	inter_append(&dump10,get_dos_E_p(epi,band,mat),in->Fpt[z][x][y][band]);
-	inter_append(&dump_nt,get_dos_E_n(epi,band,mat),in->nt[z][x][y][band]);
-	inter_append(&dump_pt,get_dos_E_p(epi,band,mat),in->pt[z][x][y][band]);
+	inter_append(&dump1,get_dos_E_n(s,band),in->n[z][x][y]*in->srh_n_r1[z][x][y][band]-in->srh_n_r2[z][x][y][band]);
+	inter_append(&dump2,get_dos_E_p(s,band),in->p[z][x][y]*in->srh_p_r1[z][x][y][band]-in->srh_p_r2[z][x][y][band]);
+	inter_append(&dump3,get_dos_E_n(s,band),in->nt[z][x][y][band]-in->ntb_save[z][x][y][band]);
+	inter_append(&dump4,get_dos_E_p(s,band),in->pt[z][x][y][band]-in->ptb_save[z][x][y][band]);
+	inter_append(&dump5,get_dos_E_n(s,band),in->p[z][x][y]*in->srh_n_r3[z][x][y][band]-in->srh_n_r4[z][x][y][band]);
+	inter_append(&dump6,get_dos_E_p(s,band),in->n[z][x][y]*in->srh_p_r3[z][x][y][band]-in->srh_p_r4[z][x][y][band]);
+	inter_append(&dump9,get_dos_E_n(s,band),in->Fnt[z][x][y][band]);
+	inter_append(&dump10,get_dos_E_p(s,band),in->Fpt[z][x][y][band]);
+	inter_append(&dump_nt,get_dos_E_n(s,band),in->nt[z][x][y][band]);
+	inter_append(&dump_pt,get_dos_E_p(s,band),in->pt[z][x][y][band]);
 
 }
 

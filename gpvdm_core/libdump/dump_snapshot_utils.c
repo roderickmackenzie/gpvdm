@@ -56,7 +56,7 @@
 
 static int unused __attribute__((unused));
 
-void dump_remove_snapshots(struct simulation* sim)
+void dump_remove_snapshots(struct simulation* sim, char *output_path)
 {
 	char test_dir[PATH_MAX];
 	char test_file[PATH_MAX];
@@ -64,15 +64,15 @@ void dump_remove_snapshots(struct simulation* sim)
 	DIR *d;
 	struct dirent *dir;
 
-	d = opendir(get_output_path(sim));
+	d = opendir(output_path);
 	if (d)
 	{
 		while ((dir = readdir(d)) != NULL)
 		{
-			join_path(2,test_dir,get_output_path(sim),dir->d_name);
+			join_path(2,test_dir,output_path,dir->d_name);
 			if (isdir(test_dir)==0)
 			{
-				join_path(3,test_file,get_output_path(sim),dir->d_name,"snapshots.inp");
+				join_path(3,test_file,output_path,dir->d_name,"snapshots.inp");
 				//printf("%s\n",test_file);
 				if (isfile(test_file)==0)
 				{
@@ -87,81 +87,34 @@ void dump_remove_snapshots(struct simulation* sim)
 
 }
 
-void dump_make_snapshot_dir(struct simulation *sim,char *out_dir ,char *snapshot_name, int number)
+void dump_make_snapshot_dir(struct simulation *sim,char *ret_path,char *base_dir ,char *snapshot_name, int number)
 {
 	struct dat_file buf;
-
 	char temp[200];
 	char sub_dir[200];
-	char snapshots_dir[PATH_MAX];
+	char main_snapshots_dir[PATH_MAX];
+	char sub_dir_path[PATH_MAX];
+
+	buffer_init(&buf);
+
+	join_path(2,main_snapshots_dir,base_dir,snapshot_name);
+	buffer_add_dir(sim,main_snapshots_dir);
+
+	buffer_malloc(&buf);
+
+	buffer_add_string(&buf,"{\n");
+	buffer_add_string(&buf," \"icon\":\"snapshots\"\n");
+	buffer_add_string(&buf,"}\n");
+
+	buffer_dump_path(sim,main_snapshots_dir,"snapshots.inp",&buf);
+	buffer_free(&buf);
+
+
 	sprintf(sub_dir,"%d",number);
-
-	buffer_init(&buf);
-
-	join_path(2,snapshots_dir,get_output_path(sim),snapshot_name);
-	buffer_add_dir(sim,snapshots_dir);
-
-	buffer_malloc(&buf);
-
-	sprintf(temp,"#end\n");
-	buffer_add_string(&buf,temp);
-
-	buffer_dump_path(sim,snapshots_dir,"snapshots.inp",&buf);
-	buffer_free(&buf);
-
-	join_path(2,out_dir,snapshots_dir,sub_dir);
-	buffer_add_dir(sim,out_dir);
-}
-
-void dump_make_snapshot_dir_with_name(struct simulation *sim,char *out_dir ,long double time,long  double voltage, long double fx, int number,char *snapshot_name)
-{
-
-	char temp[200];
-	struct dat_file buf;
-
-	dump_make_snapshot_dir(sim,out_dir,snapshot_name, number);
-
-	buffer_init(&buf);
-
-
-	buffer_malloc(&buf);
-
-	sprintf(temp,"#dump_voltage\n");
-	buffer_add_string(&buf,temp);
-
-	sprintf(temp,"%Lf\n",voltage);
-	buffer_add_string(&buf,temp);
-
-	sprintf(temp,"#dump_time\n");
-	buffer_add_string(&buf,temp);
-
-	sprintf(temp,"%Lf\n",time);
-	buffer_add_string(&buf,temp);
-
-	sprintf(temp,"#dump_fx\n");
-	buffer_add_string(&buf,temp);
-
-	sprintf(temp,"%Le\n",fx);
-	buffer_add_string(&buf,temp);
-
-	sprintf(temp,"#ver\n");
-	buffer_add_string(&buf,temp);
-
-	sprintf(temp,"1.0\n");
-	buffer_add_string(&buf,temp);
-
-	sprintf(temp,"#end\n");
-	buffer_add_string(&buf,temp);
-
-	buffer_dump_path(sim,out_dir,"snapshot_info.dat",&buf);
-	buffer_free(&buf);
+	join_path(2,ret_path,main_snapshots_dir,sub_dir);
+	buffer_add_dir(sim,ret_path);
 
 
 }
 
-void dump_make_snapshot_dir_with_info(struct simulation *sim,char *out_dir ,long double time,long  double voltage, long double fx ,int number)
-{
-	dump_make_snapshot_dir_with_name(sim,out_dir ,time,voltage, fx,number,"snapshots");
-
-}
 

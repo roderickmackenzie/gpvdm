@@ -40,70 +40,66 @@
 
 #include "sim.h"
 #include "dump.h"
-#include "inp.h"
 #include "log.h"
 #include "dump.h"
 #include <cal_path.h>
+#include <json.h>
 
 void dump_load_config(struct simulation* sim,struct device *in)
 {
 	int dump;
 	struct dimensions *dim=&in->ns.dim;
+	struct json_obj *obj;
+	obj=json_obj_find(&(in->config.obj), "dump");
+	if (obj==NULL)
+	{
+		ewe(sim,"Object light not found\n");
+	}
 
-	struct inp_file inp;
-	inp_init(sim,&inp);
 
-
-	inp_load_from_path(sim,&inp,get_input_path(sim),"dump.inp");
-
-	inp_check(sim,&inp,1.57);
-
-	dump=inp_search_english(sim,&inp,"#plot");
+	json_get_english(sim,obj, &(dump),"plot");
 	set_dump_status(sim,dump_plot,dump);
 
-	dump=inp_search_english(sim,&inp,"#newton_dump");
+	json_get_english(sim,obj, &(dump),"newton_dump");
 	set_dump_status(sim,dump_newton, dump);
 
-	dump=inp_search_english(sim,&inp,"#dump_dynamic");
+	json_get_english(sim,obj, &(dump),"dump_dynamic");
 	set_dump_status(sim,dump_dynamic, dump);
 
-	in->stop_start=inp_search_english(sim,&inp,"#startstop");
+	json_get_english(sim,obj, &(in->stop_start),"startstop");
 
-	in->dumpitdos=inp_search_english(sim,&inp,"#dumpitdos");
+	json_get_english(sim,obj, &(in->dumpitdos),"dumpitdos");
 
-	inp_search_string(sim,&inp,in->plot_file,"#plotfile");
+	json_get_string(sim, obj, in->plot_file,"plotfile");
 
-	inp_search_gdouble(sim,&inp,&(in->start_stop_time),"#start_stop_time");
+	json_get_long_double(sim,obj, &(in->start_stop_time),"start_stop_time");
 
-	dump=inp_search_english(sim,&inp,"#dump_optics");
+	json_get_english(sim,obj, &(dump),"dump_optics");
 	set_dump_status(sim,dump_optics, dump);
 
-	dump=inp_search_english(sim,&inp,"#dump_optics_verbose");
-	set_dump_status(sim,dump_optics_verbose, dump);
-
-	dump=inp_search_english(sim,&inp,"#dump_norm_time_to_one");
+	json_get_english(sim,obj, &(dump),"dump_norm_time_to_one");
 	set_dump_status(sim,dump_norm_time_to_one, dump);
 
-	dump=inp_search_english(sim,&inp,"#dump_norm_y_axis");
+	json_get_english(sim,obj, &(dump),"dump_norm_y_axis");
 	set_dump_status(sim,dump_norm_y_axis, dump);
 
 	set_dump_status(sim,dump_energy_slice_switch, TRUE);
 
-	inp_search_int(sim,&inp,&(in->dump_energy_slice_xpos),"#dump_energy_slice_xpos");
+	json_get_int(sim,obj, &in->dump_energy_slice_xpos,"dump_energy_slice_xpos");
 	if (in->dump_energy_slice_xpos<0)
 	{
 			set_dump_status(sim,dump_energy_slice_switch, FALSE);
 	}
 	if (in->dump_energy_slice_xpos>=dim->xlen) in->dump_energy_slice_xpos=0;
 
-	inp_search_int(sim,&inp,&(in->dump_energy_slice_ypos),"#dump_energy_slice_ypos");
+	json_get_int(sim,obj, &in->dump_energy_slice_ypos,"dump_energy_slice_ypos");
 	if (in->dump_energy_slice_xpos<0)
 	{
 			set_dump_status(sim,dump_energy_slice_switch, FALSE);
 	}
 	if (in->dump_energy_slice_ypos>=dim->ylen) in->dump_energy_slice_ypos=0;
 
-	inp_search_int(sim,&inp,&(in->dump_energy_slice_zpos),"#dump_energy_slice_zpos");
+	json_get_int(sim,obj, &in->dump_energy_slice_zpos,"dump_energy_slice_zpos");
 	if (in->dump_energy_slice_xpos<0)
 	{
 			set_dump_status(sim,dump_energy_slice_switch, FALSE);
@@ -113,69 +109,58 @@ void dump_load_config(struct simulation* sim,struct device *in)
 
 	set_dump_status(sim,dump_1d_slices, TRUE);
 
-	inp_search_int(sim,&inp,&(in->dump_1d_slice_xpos),"#dump_1d_slice_xpos");
+	json_get_int(sim,obj, &in->dump_1d_slice_xpos,"dump_1d_slice_xpos");
 	if (in->dump_1d_slice_xpos<0) in->dump_1d_slice_xpos=-1;
 
-	inp_search_int(sim,&inp,&(in->dump_1d_slice_zpos),"#dump_1d_slice_zpos");
+	json_get_int(sim,obj, &in->dump_1d_slice_zpos,"dump_1d_slice_zpos");
 	if (in->dump_1d_slice_zpos<0) in->dump_1d_slice_zpos=-1;
 
 
-	dump=inp_search_english(sim,&inp,"#dump_verbose_electrical_solver_results");
+	json_get_english(sim,obj, &(dump),"dump_verbose_electrical_solver_results");
 	set_dump_status(sim,dump_1d_slices, dump);
 
 
-	dump=inp_search_english(sim,&inp,"#dump_print_newtonerror");
-	set_dump_status(sim,dump_print_newtonerror, dump);
 
-	dump=inp_search_english(sim,&inp,"#dump_write_converge");
+	json_get_english(sim,obj, &(dump),"dump_write_converge");
 	set_dump_status(sim,dump_write_converge, dump);
 
-	dump=inp_search_english(sim,&inp,"#dump_print_converge");
-	set_dump_status(sim,dump_print_converge, dump);
 
-	dump=inp_search_english(sim,&inp,"#dump_print_pos_error");
-	set_dump_status(sim,dump_print_pos_error, dump);
-
-	dump=inp_search_english(sim,&inp,"#dump_zip_files");
+	json_get_english(sim,obj, &(dump),"dump_zip_files");
 	set_dump_status(sim,dump_zip_files, dump);
 
-	dump=inp_search_english(sim,&inp,"#dump_write_out_band_structure");
+	json_get_english(sim,obj, &(dump),"dump_write_out_band_structure");
 	set_dump_status(sim,dump_write_out_band_structure, dump);
 
-	dump=inp_search_english(sim,&inp,"#dump_first_guess");
+	json_get_english(sim,obj, &(dump),"dump_first_guess");
 	set_dump_status(sim,dump_first_guess, dump);
 
-	dump=inp_search_english(sim,&inp,"#dump_optical_probe");
+	json_get_english(sim,obj, &(dump),"dump_optical_probe");
 	set_dump_status(sim,dump_optical_probe, dump);
 
-	dump=inp_search_english(sim,&inp,"#dump_optical_probe_spectrum");
+	json_get_english(sim,obj, &(dump),"dump_optical_probe_spectrum");
 	set_dump_status(sim,dump_optical_probe_spectrum, dump);
 
+	json_get_english(sim,obj, &(sim->log_level),"dump_log_level");
 
-	sim->log_level=inp_search_english(sim,&inp,"#dump_log_level");
-
-	dump=inp_search_english(sim,&inp,"#dump_print_text");
+	json_get_english(sim,obj, &(dump),"dump_log_level");
 	set_dump_status(sim,dump_print_text, dump);
 
-	dump=inp_search_english(sim,&inp,"#dump_info_text");
+	json_get_english(sim,obj, &(dump),"dump_info_text");
 	set_dump_status(sim,dump_info_text, dump);
 
-	dump=inp_search_english(sim,&inp,"#dump_ray_trace_map");
+	json_get_english(sim,obj, &(dump),"dump_ray_trace_map");
 	set_dump_status(sim,dump_ray_trace_map, dump);
 
-	dump=inp_search_english(sim,&inp,"#dump_use_cache");
+	json_get_english(sim,obj, &(dump),"dump_use_cache");
 	set_dump_status(sim,dump_use_cache, dump);
 
-	dump=inp_search_english(sim,&inp,"#dump_write_headers");
+	json_get_english(sim,obj, &(dump),"dump_write_headers");
 	set_dump_status(sim,dump_write_headers, dump);
 
-	dump=inp_search_english(sim,&inp,"#dump_remove_dos_cache");
+	json_get_english(sim,obj, &(dump),"dump_remove_dos_cache");
 	set_dump_status(sim,dump_remove_dos_cache, dump);
 
-	inp_search_gdouble(sim,&inp,&(in->dump_dynamic_pl_energy), "#dump_dynamic_pl_energy");
-
-
-	inp_free(sim,&inp);
+	json_get_long_double(sim,obj, &(in->dump_dynamic_pl_energy),"dump_dynamic_pl_energy");
 
 
 }

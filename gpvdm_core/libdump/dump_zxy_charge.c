@@ -107,6 +107,7 @@ buffer_init(&buf);
 	strcpy(buf.section_two,_("Material parameters"));
 	buf.time=in->time;
 	buf.Vexternal=Vexternal;
+	buf.logscale_data=TRUE;
 	buf.x=dim->xlen;
 	buf.y=dim->ylen+2;
 	buf.z=dim->zlen;
@@ -126,6 +127,7 @@ buffer_init(&buf);
 	strcpy(buf.section_two,_("Material parameters"));
 	buf.time=in->time;
 	buf.Vexternal=Vexternal;
+	buf.logscale_data=TRUE;
 	buf.x=dim->xlen;
 	buf.y=dim->ylen+2;
 	buf.z=dim->zlen;
@@ -231,7 +233,7 @@ buffer_init(&buf);
 	buffer_free(&buf);
 
 	buffer_malloc(&buf);
-	sprintf(name,"%s","charge.dat");
+	sprintf(name,"%s","Q_total.dat");
 	dim_info_to_buf(&buf,dim);
 	sprintf(buf.title,"%s - %s",_("Total charge"),_("Position"));
 	strcpy(buf.data_label,_("Carrier density"));
@@ -346,20 +348,23 @@ buffer_init(&buf);
 	buffer_dump_path(sim,out_dir,name,&buf);
 	buffer_free(&buf);
 
-	buffer_malloc(&buf);
-	sprintf(name,"%s","ion.dat");
-	dim_info_to_buf(&buf,dim);
-	sprintf(buf.title,"%s - %s",_("Perovskite mobile ion density"),_("Position"));
-	strcpy(buf.data_label,_("Ion density"));
-	strcpy(buf.data_units,"m^{-3}");
-	strcpy(buf.section_one,_("1D position space output"));
-	strcpy(buf.section_two,_("Charge density"));
-	buf.time=in->time;
-	buf.Vexternal=Vexternal;
-	buffer_add_info(sim,&buf);
-	buffer_add_3d_data(sim,&buf,dim,  in->Nion);
-	buffer_dump_path(sim,out_dir,name,&buf);
-	buffer_free(&buf);
+	if (in->Nion!=NULL)
+	{
+		buffer_malloc(&buf);
+		sprintf(name,"%s","Nion.dat");
+		dim_info_to_buf(&buf,dim);
+		sprintf(buf.title,"%s - %s",_("Perovskite mobile ion density"),_("Position"));
+		strcpy(buf.data_label,_("Ion density"));
+		strcpy(buf.data_units,"m^{-3}");
+		strcpy(buf.section_one,_("1D position space output"));
+		strcpy(buf.section_two,_("Charge density"));
+		buf.time=in->time;
+		buf.Vexternal=Vexternal;
+		buffer_add_info(sim,&buf);
+		buffer_add_3d_data(sim,&buf,dim,  in->Nion);
+		buffer_dump_path(sim,out_dir,name,&buf);
+		buffer_free(&buf);
+	}
 
 	free_zxy_gdouble(dim, &temp_3d);
 }

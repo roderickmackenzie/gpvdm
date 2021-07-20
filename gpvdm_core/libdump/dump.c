@@ -59,6 +59,7 @@
 #include <heat_fun.h>
 #include <contacts.h>
 #include <enabled_libs.h>
+#include <circuit.h>
 
 static int unused __attribute__((unused));
 
@@ -66,14 +67,13 @@ static int unused __attribute__((unused));
 void dump_clean_cache_files(struct simulation* sim)
 {
 struct inp_file inp;
-char temp[200];
+char temp[400];
 char cach_dir[PATH_MAX];
 
 
 	if (get_dump_status(sim,dump_remove_dos_cache)==TRUE)
 	{
-		join_path(2, cach_dir,get_input_path(sim),"cache");
-		remove_dir(sim,cach_dir);
+		remove_dir(sim,get_cache_path(sim));
 	}
 
 	inp_init(sim,&inp);
@@ -81,7 +81,7 @@ char cach_dir[PATH_MAX];
 	{
 
 		inp_reset_read(sim,&inp);
-		strcpy(temp,inp_get_string(sim,&inp));
+		inp_get_string(sim,temp,&inp);
 		if (strcmp(temp,"#begin")!=0)
 		{
 			return;
@@ -89,7 +89,7 @@ char cach_dir[PATH_MAX];
 
 		while(1)
 		{
-			strcpy(temp,inp_get_string(sim,&inp));
+			inp_get_string(sim,temp,&inp);
 			if (strcmp(temp,"#end")==0)
 			{
 				break;
@@ -432,6 +432,78 @@ char string[200];
 
 }
 
+void buffer_add_yl_light_data_float(struct simulation *sim,struct dat_file *buf,struct dim_light *dim,float ****data,long double shift, int z, int x)
+{
+int y=0;
+int l=0;
+
+long double xpos=0.0;
+long double zpos=0.0;
+
+char string[200];
+
+	if (get_dump_status(sim,dump_write_headers)==TRUE)
+	{
+		sprintf(string,"#data\n");
+		buffer_add_string(buf,string);
+	}
+
+	for (l=0;l<dim->llen;l++)
+	{
+		for (y=0;y<dim->ylen;y++)
+		{
+			sprintf(string,"%Le %Le %e\n",dim->l[l],dim->y[y]-shift,data[z][x][y][l]);
+
+			buffer_add_string(buf,string);
+		}
+
+		buffer_add_string(buf,"\n");
+	}
+
+	if (get_dump_status(sim,dump_write_headers)==TRUE)
+	{
+		sprintf(string,"#end\n");
+		buffer_add_string(buf,string);
+	}
+
+}
+
+void buffer_add_yl_light_data_double(struct simulation *sim,struct dat_file *buf,struct dim_light *dim,double ****data,long double shift, int z, int x)
+{
+int y=0;
+int l=0;
+
+long double xpos=0.0;
+long double zpos=0.0;
+
+char string[200];
+
+	if (get_dump_status(sim,dump_write_headers)==TRUE)
+	{
+		sprintf(string,"#data\n");
+		buffer_add_string(buf,string);
+	}
+
+	for (l=0;l<dim->llen;l++)
+	{
+		for (y=0;y<dim->ylen;y++)
+		{
+			sprintf(string,"%Le %Le %le\n",dim->l[l],dim->y[y]-shift,data[z][x][y][l]);
+
+			buffer_add_string(buf,string);
+		}
+
+		buffer_add_string(buf,"\n");
+	}
+
+	if (get_dump_status(sim,dump_write_headers)==TRUE)
+	{
+		sprintf(string,"#end\n");
+		buffer_add_string(buf,string);
+	}
+
+}
+
 void buffer_add_zx_data(struct simulation *sim,struct dat_file *buf,struct dimensions *dim,gdouble **data)
 {
 int x=0;
@@ -677,8 +749,8 @@ void dump_write_to_disk(struct simulation *sim,struct device* in)
 {
 char temp[200];
 char postfix[100];
-char out_dir[PATH_MAX];
 char sim_name[PATH_MAX];
+char out_dir[PATH_MAX];
 struct dat_file buf;
 buffer_init(&buf);
 struct heat *thermal=&(in->thermal);
@@ -704,10 +776,27 @@ FILE* out;
 		voltage=contact_get_active_contact_voltage(sim,in);
 	}
 
-	//printf("%Le\n",voltage);
-	//getchar();
-	dump_make_snapshot_dir_with_info(sim,out_dir ,in->time, voltage, fx, in->snapshot_number);
-	//}
+	//make the snapshots dir
+	dump_make_snapshot_dir(sim,out_dir,in->output_path ,"snapshots", in->snapshot_number);
+
+	buffer_init(&buf);
+	buffer_malloc(&buf);
+
+	sprintf(temp,"{\n");
+	buffer_add_string(&buf,temp);
+
+	sprintf(temp,"\t\"voltage\":%Le,\n",(long double )voltage);
+	buffer_add_string(&buf,temp);
+
+	sprintf(temp,"\t\"time\":%Le\n",(long double )in->time);
+	buffer_add_string(&buf,temp);
+
+	sprintf(temp,"}");
+	buffer_add_string(&buf,temp);
+
+
+	buffer_dump_path(sim,out_dir,"data.json",&buf);
+	buffer_free(&buf);
 
 
 	if ((in->dump_1d_slice_zpos!=-1)&&(in->dump_1d_slice_xpos!=-1))
@@ -717,14 +806,14 @@ FILE* out;
 	}
 
 
-	if (get_dump_status(sim,dump_1d_slices)==TRUE)
-	{
-		dump_1d_slice(sim,in,out_dir);
-		#ifdef libheat_enabled
-			heat_dump(sim,out_dir,thermal);
-		#endif
-		dumped=TRUE;
-	}
+	dump_1d_slice(sim,in,out_dir);
+
+	circuit_dump_snapshot(sim,in,out_dir);
+
+	#ifdef libheat_enabled
+		heat_dump(sim,out_dir,thermal);
+	#endif
+	dumped=TRUE;
 
 	if (get_dump_status(sim,dump_energy_slice_switch)==TRUE)
 	{

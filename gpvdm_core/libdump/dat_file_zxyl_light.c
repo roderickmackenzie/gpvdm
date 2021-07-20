@@ -48,7 +48,6 @@
 #include "cal_path.h"
 #include "dump.h"
 #include <log.h>
-#include <cache.h>
 #include <enabled_libs.h>
 //<strip>
 #include <lock.h>
@@ -109,6 +108,74 @@ void dat_file_add_zxy_from_zxyl_long_double_light_data(struct simulation *sim,st
 				for (y = 0; y < dim->ylen; y++)
 				{
 					sprintf(string,"%Le %Le %Le %Le\n",dim->z[z],dim->x[x],dim->y[y],data[z][x][y][l]);
+					buffer_add_string(in,string);
+				}
+			}
+		}
+
+
+	if (get_dump_status(sim,dump_write_headers)==TRUE)
+	{
+		sprintf(string,"#end\n");
+		buffer_add_string(in,string);
+	}
+
+}
+
+void dat_file_add_zxy_from_zxyl_float_light_data(struct simulation *sim,struct dat_file *in,float ****data, struct dim_light *dim,int l)
+{
+	int z;
+	int x;
+	int y;
+	char string[100];
+
+	if (get_dump_status(sim,dump_write_headers)==TRUE)
+	{
+		sprintf(string,"#data\n");
+		buffer_add_string(in,string);
+	}
+
+		for (z = 0; z < dim->zlen; z++)
+		{
+			for (x = 0; x < dim->xlen; x++)
+			{
+				for (y = 0; y < dim->ylen; y++)
+				{
+					sprintf(string,"%Le %Le %Le %e\n",dim->z[z],dim->x[x],dim->y[y],data[z][x][y][l]);
+					buffer_add_string(in,string);
+				}
+			}
+		}
+
+
+	if (get_dump_status(sim,dump_write_headers)==TRUE)
+	{
+		sprintf(string,"#end\n");
+		buffer_add_string(in,string);
+	}
+
+}
+
+void dat_file_add_zxy_from_zxyl_double_light_data(struct simulation *sim,struct dat_file *in,double ****data, struct dim_light *dim,int l)
+{
+	int z;
+	int x;
+	int y;
+	char string[100];
+
+	if (get_dump_status(sim,dump_write_headers)==TRUE)
+	{
+		sprintf(string,"#data\n");
+		buffer_add_string(in,string);
+	}
+
+		for (z = 0; z < dim->zlen; z++)
+		{
+			for (x = 0; x < dim->xlen; x++)
+			{
+				for (y = 0; y < dim->ylen; y++)
+				{
+					sprintf(string,"%Le %Le %Le %le\n",dim->z[z],dim->x[x],dim->y[y],data[z][x][y][l]);
 					buffer_add_string(in,string);
 				}
 			}

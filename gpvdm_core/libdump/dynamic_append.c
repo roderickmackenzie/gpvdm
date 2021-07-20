@@ -96,13 +96,13 @@ if (get_dump_status(sim,dump_dynamic)==TRUE)
 	J_tot=fabs(dev->Jn_y0[0][0])+fabs(dev->Jp_y0[0][0]);
 	J_out=fabs(dev->Jn_y0[0][0]+dev->Jp_y0[0][0]);
 	dJ=J_tot-J_out;
-	s0=dJ/dim->dy[0]/Q;
+	s0=dJ/dim->dy[0]/Qe;
 	inter_append(&(store->R_surface_y0),x_value,s0);
 
 	J_tot=fabs(dev->Jn_y1[0][0])+fabs(dev->Jp_y1[0][0]);
 	J_out=fabs(dev->Jn_y1[0][0]+dev->Jp_y1[0][0]);
 	dJ=J_tot-J_out;
-	s1=dJ/dim->dy[dim->ylen-1]/Q;
+	s1=dJ/dim->dy[dim->ylen-1]/Qe;
 	inter_append(&(store->R_surface_y1),x_value,s1);
 
 	//charge
@@ -211,7 +211,7 @@ if (get_dump_status(sim,dump_dynamic)==TRUE)
 	inter_append(&(store->dynamic_Vapplied),x_value,Vapplied);
 
 	//other
-	inter_append(&(store->dynamic_qe),x_value,-100.0*(get_J(dev)/dev->ylen)/get_avg_gen(dev)/Q);
+	inter_append(&(store->dynamic_qe),x_value,-100.0*(get_J(dev)/dev->ylen)/get_avg_gen(dev)/Qe);
 
 	gdouble tot=0.0;
 

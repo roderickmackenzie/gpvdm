@@ -37,6 +37,7 @@
 @brief used to save output files to disk with a nice header, so the user knows what was writtne to them
 */
 
+#include <enabled_libs.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <stdlib.h>
@@ -48,8 +49,7 @@
 #include "cal_path.h"
 #include "dump.h"
 #include <log.h>
-#include <cache.h>
-#include <enabled_libs.h>
+#include <lang.h>
 //<strip>
 #include <lock.h>
 //</strip>
@@ -67,6 +67,7 @@ in->norm_x_axis=FALSE;
 in->norm_y_axis=FALSE;
 in->data_max=NAN;
 in->data_min=NAN;
+strcpy(in->file_name,"");
 }
 
 void buffer_malloc(struct dat_file *in)
@@ -300,10 +301,17 @@ void buffer_add_string(struct dat_file *in,char * string)
 int str_len=strlen(string);
 int pos=in->len;
 in->len+=str_len;
+int Kb=1024;
 //the +1 accounts for the zero at the end of a string
 if (in->len+100>in->max_len)
 {
-	in->max_len+=10240;
+	if (in->max_len<Kb*100)	//100k
+	{
+		in->max_len+=Kb*10;
+	}else
+	{
+		in->max_len+=Kb*100;
+	}
 	in->buf=(char*)realloc((char*)in->buf,sizeof(char)*in->max_len);
 	//printf("here\n");
 }
@@ -459,6 +467,15 @@ void buffer_dump(struct simulation *sim,char * file,struct dat_file *in)
 	char *out_data;
 
 	//<strip>
+	/*#ifdef liblock_enabled
+		if (sim->lock_data.encode_output==TRUE)
+		{
+			lock_ecrypt(&out_data,in->buf,&out_len,in->len,"hello");
+			fwrite(out_data, out_len, 1, out);
+			free(out_data);
+		}else
+		//</strip>
+	#endif*/
 	{
 		fwrite(in->buf, in->len, 1, out);
 	}
@@ -502,33 +519,41 @@ void dat_file_dump_gnuplot_file(struct simulation *sim,char * path,char * file_n
 
 void buffer_dump_cache(struct simulation *sim,char * file_name,struct dat_file *in)
 {
-	if (dumpfiles_should_dump(sim,file_name)==0)
-	{
-		if ((get_dump_status(sim,dump_use_cache)==FALSE)||(sim->cache_len==-1))
-		{
-			buffer_dump(sim,file_name,in);
-		}else
-		{
-			cache_add_item(sim,file_name,in->buf,in->len);
-		}
-	}
+	buffer_dump(sim,file_name,in);
 }
 
 void buffer_add_dir(struct simulation *sim,char * file_name)
 {
-	if ((get_dump_status(sim,dump_use_cache)==FALSE)||(sim->cache_len==-1))
+	gpvdm_mkdir(file_name);
+
+}
+
+int buffer_set_file_name(struct simulation *sim,struct device *dev,struct dat_file *in,char * file_name)
+{
+	if (dump_can_i_dump(sim,dev, file_name)==0)
 	{
-		gpvdm_mkdir(file_name);
-	}else
-	{
-		cache_add_dir(sim,file_name);
+		strcpy(in->file_name,file_name);
+		return 0;
 	}
+
+	return -1;
 }
 
 void buffer_dump_path(struct simulation *sim,char *path,char * file,struct dat_file *in)
 {
 	char wholename[PATH_MAX];
-	join_path(2, wholename,path,file);
+	if (file!=NULL)
+	{
+		join_path(2, wholename,path,file);
+	}else
+	{
+		if (strcmp(in->file_name,"")==0)
+		{
+			ewe(sim,_("file name not set\n"));
+		}
+		join_path(2, wholename,path,in->file_name);
+	}
+
 	buffer_dump_cache(sim,wholename,in);
 }
 
@@ -538,4 +563,9 @@ void buffer_free(struct dat_file *in)
 free(in->buf);
 in->len=0;
 in->max_len=0;
+}
+
+void dat_file_reset(struct dat_file *in)
+{
+	in->len=0;
 }

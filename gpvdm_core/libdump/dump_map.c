@@ -77,7 +77,10 @@ int i=0;
 long double Vexternal=get_equiv_V(sim,in);
 int Epoints=0;
 struct math_2d map;
-long double delta_E=dos_get_band_energy_n(epi,1,in->imat[in->dump_1d_slice_zpos][in->dump_1d_slice_xpos][0])-dos_get_band_energy_n(epi,0,in->imat[in->dump_1d_slice_zpos][in->dump_1d_slice_xpos][0]);
+struct shape *s;
+s=in->obj_zxy[in->dump_1d_slice_zpos][in->dump_1d_slice_xpos][0]->s;
+
+long double delta_E=dos_get_band_energy_n(s,1)-dos_get_band_energy_n(s,0);
 long double start=in->map_start;
 long double stop=in->map_stop;
 Epoints=(int)abs(stop-start)/delta_E;
@@ -85,7 +88,6 @@ int band=0;
 long double E=0;
 int vpos=0;
 struct newton_state *ns=&(in->ns);
-
 math_2d_init(&map);
 math_2d_malloc(&map,dim->ylen,Epoints);
 math_2d_init_y_mesh(&map,start, stop);
@@ -127,7 +129,8 @@ for (band=0;band<dim->srh_bands;band++)
 
 	for (y=0;y<dim->ylen;y++)
 	{
-		E=in->Ec[in->dump_1d_slice_zpos][in->dump_1d_slice_xpos][y]+dos_get_band_energy_n(epi,band,in->imat[in->dump_1d_slice_zpos][in->dump_1d_slice_xpos][y]);
+		s=in->obj_zxy[in->dump_1d_slice_zpos][in->dump_1d_slice_xpos][y]->s;
+		E=in->Ec[in->dump_1d_slice_zpos][in->dump_1d_slice_xpos][y]+dos_get_band_energy_n(s,band);
 		//printf("%Le\n",in->Ec[in->dump_1d_slice_zpos][in->dump_1d_slice_xpos][y]);
 		//printf("%Le\n",dos_get_band_energy_n(epi,band,in->imat[in->dump_1d_slice_zpos][in->dump_1d_slice_xpos][y]));
 		//printf("%Le eV\n",E);
@@ -198,7 +201,8 @@ for (band=0;band<dim->srh_bands;band++)
 
 	for (y=0;y<dim->ylen;y++)
 	{
-		E=in->Ev[in->dump_1d_slice_zpos][in->dump_1d_slice_xpos][y]-dos_get_band_energy_p(epi,band,in->imat[in->dump_1d_slice_zpos][in->dump_1d_slice_xpos][y]);
+		s=in->obj_zxy[in->dump_1d_slice_zpos][in->dump_1d_slice_xpos][y]->s;
+		E=in->Ev[in->dump_1d_slice_zpos][in->dump_1d_slice_xpos][y]-dos_get_band_energy_p(s,band);
 		vpos=search(map.y_mesh,map.y_len,E);
 		map.data[y][vpos]=in->pt[in->dump_1d_slice_zpos][in->dump_1d_slice_xpos][y][band];
 	}
@@ -258,11 +262,12 @@ for (band=0;band<dim->srh_bands;band++)
 
 	for (y=0;y<dim->ylen;y++)
 	{
-		E=in->Ev[in->dump_1d_slice_zpos][in->dump_1d_slice_xpos][y]-dos_get_band_energy_p(epi,band,in->imat[in->dump_1d_slice_zpos][in->dump_1d_slice_xpos][y]);
+		s=in->obj_zxy[in->dump_1d_slice_zpos][in->dump_1d_slice_xpos][y]->s;
+		E=in->Ev[in->dump_1d_slice_zpos][in->dump_1d_slice_xpos][y]-dos_get_band_energy_p(s,band);
 		vpos=search(map.y_mesh,map.y_len,E);
 		map.data[y][vpos]=in->nt[in->dump_1d_slice_zpos][in->dump_1d_slice_xpos][y][band];
 
-		E=in->Ec[in->dump_1d_slice_zpos][in->dump_1d_slice_xpos][y]+dos_get_band_energy_n(epi,band,in->imat[in->dump_1d_slice_zpos][in->dump_1d_slice_xpos][y]);
+		E=in->Ec[in->dump_1d_slice_zpos][in->dump_1d_slice_xpos][y]+dos_get_band_energy_n(s,band);
 		vpos=search(map.y_mesh,map.y_len,E);
 		map.data[y][vpos]=in->pt[in->dump_1d_slice_zpos][in->dump_1d_slice_xpos][y][band];
 	}

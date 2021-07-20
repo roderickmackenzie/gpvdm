@@ -40,6 +40,62 @@
 #include <dump_ctrl.h>
 #include <gpvdm_const.h>
 #include <sim.h>
+#include <json.h>
+
+int dump_can_i_dump(struct simulation *sim,struct device *dev, char *file_name)
+{
+	if (sim->fitting==FIT_NOT_FITTING)
+	{
+		return 0;
+	}
+
+	int i;
+	int data_sets;
+	char temp[200];
+	char sim_file[200];
+	struct json_obj *json_data_set;
+	struct json_obj *json_config;
+	struct json_obj *json_fits;
+	json_fits=json_obj_find(&(dev->config.obj), "fits");
+	if (json_fits==NULL)
+	{
+		ewe(sim,"Object fits not found\n");
+	}
+
+	json_fits=json_obj_find(json_fits, "fits");
+	if (json_fits==NULL)
+	{
+		ewe(sim,"Object fits not found\n");
+	}
+
+
+	json_get_int(sim,json_fits, &data_sets,"data_sets");
+	//printf("data sets=%d\n",data_sets);
+	for (i=0;i<data_sets;i++)
+	{
+		sprintf(temp,"data_set%d",i);
+		json_data_set=json_obj_find(json_fits, temp);
+		if (json_data_set==NULL)
+		{
+			ewe(sim,"Object fits not found\n");
+		}
+
+		json_config=json_obj_find(json_data_set, "config");
+		if (json_config==NULL)
+		{
+			ewe(sim,"Object fits not found\n");
+		}
+		json_get_string(sim,json_config, sim_file,"sim_data");
+		if (strcmp(file_name,sim_file)==0)
+		{
+			return 0;
+		}
+		
+
+	}
+
+return -1;
+}
 
 int get_dump_status(struct simulation *sim,int a)
 {

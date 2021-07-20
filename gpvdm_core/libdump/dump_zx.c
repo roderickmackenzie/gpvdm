@@ -124,28 +124,5 @@ buffer_init(&buf);
 
 	free_zx_gdouble(dim, &temp_2d);
 
-	/*zxy_set_gdouble(dim, temp_3d, 0.0);
-	three_d_add_gdouble(dim, temp_3d, in->Jp_diffusion);
-	three_d_add_gdouble(dim, temp_3d, in->Jp_drift);
-	buffer_add_3d_data(sim,&buf,dim, temp_3d);
-	buffer_dump_path(sim,out_dir,name,&buf);
-	buffer_free(&buf);
-
-
-	malloc_zx_gdouble(dim, &temp_top);
-	malloc_zx_gdouble(dim, &temp_btm);
-
-	mem_set_zx_gdouble_from_zx_gdouble(dim, temp_top, in->V_y0);
-	mem_add_zx_gdouble_from_zx_gdouble(dim, temp_top, in->Vapplied_y0);
-
-	mem_set_zx_gdouble_from_zx_gdouble(dim, temp_btm, in->V_y1);
-	mem_add_zx_gdouble_from_zx_gdouble(dim, temp_btm, in->Vapplied_y1);
-
-	buffer_add_3d_device_data_including_boundaries(sim,&buf,in,  ns->phi,temp_top,temp_btm);
-
-	free_zx_gdouble(dim, &temp_btm);
-	free_zx_gdouble(dim, &temp_top);
-
-	buffer_dump_path(sim,out_dir,name,&buf);*/
 
 }

@@ -48,7 +48,6 @@
 #include "cal_path.h"
 #include "dump.h"
 #include <log.h>
-#include <cache.h>
 //<strip>
 #include <lock.h>
 //</strip>

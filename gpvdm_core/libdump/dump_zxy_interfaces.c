@@ -77,8 +77,8 @@ buffer_init(&buf);
 		buffer_malloc(&buf);
 		sprintf(name,"%s","interfaces_B.dat");
 		dim_info_to_buf(&buf,dim);
-		sprintf(buf.title,"%s - %s",_("Interface recombination constant"),_("Position"));
-		strcpy(buf.data_label,_("Interface recombination constant"));
+		sprintf(buf.title,"%s - %s",_("Interface free-to-free recombination constant"),_("Position"));
+		strcpy(buf.data_label,_("Interface free-to-free recombination constant"));
 		strcpy(buf.data_units,"m^{3}s^{-1}");
 		strcpy(buf.section_one,_("1D position space output"));
 		strcpy(buf.section_two,_("Interface recombination"));
@@ -86,6 +86,25 @@ buffer_init(&buf);
 		buf.Vexternal=Vexternal;
 		buffer_add_info(sim,&buf);
 		buffer_add_3d_data(sim,&buf,dim,  dev->interface_B);
+		buffer_dump_path(sim,out_dir,name,&buf);
+		buffer_free(&buf);
+
+	}
+
+	if (dev->interfaces_n_srh>0)
+	{
+		buffer_malloc(&buf);
+		sprintf(name,"%s","interfaces_srh.dat");
+		dim_info_to_buf(&buf,dim);
+		sprintf(buf.title,"%s - %s",_("Interface free-to-trap recombination constant"),_("Position"));
+		strcpy(buf.data_label,_("Interface free-to-trap  recombination constant"));
+		strcpy(buf.data_units,"m^{3}s^{-1}");
+		strcpy(buf.section_one,_("1D position space output"));
+		strcpy(buf.section_two,_("Interface recombination"));
+		buf.time=dev->time;
+		buf.Vexternal=Vexternal;
+		buffer_add_info(sim,&buf);
+		buffer_add_3d_data(sim,&buf,dim,  dev->interface_Bt);
 		buffer_dump_path(sim,out_dir,name,&buf);
 		buffer_free(&buf);
 

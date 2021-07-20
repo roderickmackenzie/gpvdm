@@ -57,6 +57,10 @@
 
 void dump_1d_slice(struct simulation *sim,struct device *in,char *out_dir)
 {
+if (in->drift_diffision_simulations_enabled==FALSE)
+{
+	return;
+}
 int x;
 int y;
 int z;
@@ -820,7 +824,7 @@ buffer_init(&buf);
 	buffer_free(&buf);
 */
 
-	buffer_malloc(&buf);
+	/*buffer_malloc(&buf);
 	sprintf(name,"%s","imat.dat");
 	dim_info_to_buf(&buf,dim);
 	sprintf(buf.title,"%s - %s",_("Material number"),_("Position"));
@@ -833,7 +837,7 @@ buffer_init(&buf);
 	buffer_add_info(sim,&buf);
 	buffer_add_3d_device_data_int(sim,&buf,in,in->imat);
 	buffer_dump_path(sim,out_dir,name,&buf);
-	buffer_free(&buf);
+	buffer_free(&buf);*/
 
 	buffer_malloc(&buf);
 	sprintf(name,"%s","passivate_top.dat");
