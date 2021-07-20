@@ -38,7 +38,7 @@
 */
 
 
-
+#include <enabled_libs.h>
 #include <stdio.h>
 #include <stdarg.h>
 #include "log.h"
@@ -54,6 +54,40 @@
 #include <wchar.h>
 #include <color.h>
 
+void randomprint(struct simulation *sim,char *in)
+{
+	int i;
+
+	wchar_t wide[1000];
+	//char temp[1000];
+	int len=mbstowcs(wide, in, 1000);
+	//wprintf(L"%S",wide);
+	for (i=0;i<len;i++)
+	{
+	int rnd=(float)5.0*rand()/(float)RAND_MAX;
+		if (rnd==0) textcolor(sim,fg_wight);
+		if (rnd==1) textcolor(sim,fg_red);
+		if (rnd==2) textcolor(sim,fg_green);
+		if (rnd==3) textcolor(sim,fg_yellow);
+		if (rnd==4) textcolor(sim,fg_blue);
+		if (rnd==5) textcolor(sim,fg_purple);
+
+		if ((wide[i]!='\n')||(sim->html==FALSE))
+		{
+			//mbstowcs(wide, in, 1000);
+			//swprintf(temp,L"%C",wide[i]);
+			printf_log(sim,"%C",wide[i]);
+		}else
+		{
+			printf_log(sim,"<br>");
+		}
+
+		textcolor(sim,fg_reset);
+
+		}
+
+fflush(stdout);
+}
 
 void log_time_stamp(struct simulation *sim)
 {
@@ -67,16 +101,17 @@ void log_time_stamp(struct simulation *sim)
 
 void log_clear(struct simulation *sim)
 {
-	FILE* out;
+	//FILE* out;
 	char temp[500];
+	/*
 	join_path(2,temp,get_output_path(sim),"log.dat");
 	remove_file(sim,temp);
 	//out=fopen(temp,"w");
 	//fprintf(out,"gpvdm log file:\n");
 	//fclose(out);
-
-	join_path(2,temp,sim->root_simulation_path,"log_file_access.dat");
-	remove_file(sim,temp);
+	*/
+	//join_path(2,temp,sim->path,"log_file_access.dat");
+	//remove_file(sim,temp);
 
 	//out=fopen(temp,"w");
 	//fprintf(out,"gpvdm file access log file:\n");
@@ -89,18 +124,18 @@ void log_tell_use_where_file_access_log_is(struct simulation *sim)
 	if ((sim->log_level==log_level_disk)||(sim->log_level==log_level_screen_and_disk))
 	{
 		char temp[500];
-		join_path(2,temp,sim->root_simulation_path,"log_file_access.dat");
-		printf_log(sim,_("File access log written to %s\n"),temp);
+		//join_path(2,temp,sim->path,"log_file_access.dat");
+		//printf_log(sim,_("File access log written to %s\n"),temp);
 	}
 
 }
 void log_write_file_access(struct simulation *sim,char * file,char mode)
 {
-	if ((sim->log_level==log_level_disk)||(sim->log_level==log_level_screen_and_disk))
+	/*if ((sim->log_level==log_level_disk)||(sim->log_level==log_level_screen_and_disk))
 	{
 		FILE* out;
 		char temp[500];
-		join_path(2,temp,sim->root_simulation_path,"log_file_access.dat");
+		join_path(2,temp,sim->path,"log_file_access.dat");
 		out=fopen(temp,"a");
 		if (mode=='w')
 		{
@@ -111,7 +146,7 @@ void log_write_file_access(struct simulation *sim,char * file,char mode)
 		}
 
 		fclose(out);
-	}
+	}*/
 }
 
 void set_logging_level(struct simulation *sim,int value)
@@ -179,23 +214,31 @@ void printf_log(struct simulation *sim, const char *format, ...)
 
 	}
 
-	if ((sim->log_level==log_level_disk)||(sim->log_level==log_level_screen_and_disk))
+	/*if ((sim->log_level==log_level_disk)||(sim->log_level==log_level_screen_and_disk))
 	{
-		join_path(2,temp,get_output_path(sim),"log.dat");
+		join_path(2,temp,sim->path,"log.dat");
 		out=fopen(temp,"a");
-		if (out==NULL)
+		if (out!=NULL)
 		{
-			wprintf(L"error: opening file %s\n",temp);
-		}
-		fprintf(out,"%s",data);
-		fclose(out);
-	}
+			fprintf(out,"%s",data);
+			fclose(out);
+		}//else
+		//{
+		//	wprintf(L"error: opening file %s\n",temp);
+		//}
+	}*/
 
 	va_end(args);
 }
 
-void rainbow_print(struct simulation *sim,char *in)
+void rainbow_print(struct simulation *sim, const char *format, ...)
 {
+	char data[STR_MAX];
+	char temp[PATH_MAX];
+	va_list args;
+	va_start(args, format);
+	vsnprintf(data,STR_MAX,format, args);
+
 	int r,g,b;
 	int i;
 	double start=350e-9;
@@ -203,7 +246,7 @@ void rainbow_print(struct simulation *sim,char *in)
 	double dl=0.0;
 	double lambda=start;
 	int len=0;
-	len=strlen(in);
+	len=strlen(data);
 
 	dl=(stop-start)/((double)50);
 
@@ -214,7 +257,7 @@ void rainbow_print(struct simulation *sim,char *in)
 		{
 			textcolor_rgb(sim,r, g, b);
 		}
-		printf_log(sim,"%c",in[i]);
+		printf_log(sim,"%c",data[i]);
 		lambda+=dl;
 	}
 

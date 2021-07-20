@@ -38,7 +38,7 @@
 */
 
 
-
+#include <enabled_libs.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -56,19 +56,6 @@
 #include <cal_path.h>
 
 static char* unused_pchar __attribute__((unused));
-
-void gpvdm_mkdir(char *file_name)
-{
-struct stat st = {0};
-
-	if (stat(file_name, &st) == -1)
-	{
-			mkdir(file_name, 0700);
-	}
-
-}
-
-
 
 
 /**Get length of a file in lines
@@ -257,6 +244,10 @@ if (strcmp(temp,"exp")==0)
 {
 	return 1;
 }else
+if (strcmp(temp,"lorentzian")==0)
+{
+	return 2;
+}else
 if (strcmp(temp,"exponential")==0)
 {
 	return dos_exp;
@@ -415,6 +406,10 @@ if (strcmp(temp,"heatsink")==0)
 {
 	return HEATSINK;
 }else
+if (strcmp(temp,"dump_nothing")==0)
+{
+	return dump_nothing;
+}
 if (strcmp(temp,"dump_verbosity_key_results")==0)
 {
 	return dump_verbosity_key_results;
@@ -442,10 +437,46 @@ if (strcmp(temp,"none")==0)
 if (strcmp(temp,"recombination")==0)
 {
 	return INTERFACE_RECOMBINATION;
+}else
+if (strcmp(temp,"recombination_srh")==0)
+{
+	return INTERFACE_RECOMBINATION_SRH;
+}else
+if (strcmp(temp,"interpolate")==0)
+{
+	return INTERPOLATE;
+}else
+if (strcmp(temp,"constant")==0)
+{
+	return INTERPOLATE2;
+}else
+if (strcmp(temp,"solver_verbosity_nothing")==0)
+{
+	return SOLVER_VERBOSITY_NOTHING;
+}else
+if (strcmp(temp,"solver_verbosity_every_step")==0)
+{
+	return SOLVER_VERBOSITY_EVERY_STEP;
+}else
+if (strcmp(temp,"solver_verbosity_at_end")==0)
+{
+	return SOLVER_VERBOSITY_AT_END;
+}else
+if (strcmp(temp,"spm_whole_device")==0)
+{
+	return SPM_WHOLE_DEVICE;
+}else
+if (strcmp(temp,"spm_box")==0)
+{
+	return SPM_BOX;
+}else
+if (strcmp(temp,"spm_x_cut")==0)
+{
+	return SPM_X_CUT;
 }
 
-
-
+//printf("I don't understand: %s\n",in);
+//getchar();
 ewe(sim,"%s %s\n",_("I don't understand the command"),in);
 return 0;
 }
@@ -498,44 +529,9 @@ fclose(file);
 
 
 
-void randomprint(struct simulation *sim,char *in)
-{
-	int i;
-
-	wchar_t wide[1000];
-	//char temp[1000];
-	int len=mbstowcs(wide, in, 1000);
-	//wprintf(L"%S",wide);
-	for (i=0;i<len;i++)
-	{
-	int rnd=(float)5.0*rand()/(float)RAND_MAX;
-		if (rnd==0) textcolor(sim,fg_wight);
-		if (rnd==1) textcolor(sim,fg_red);
-		if (rnd==2) textcolor(sim,fg_green);
-		if (rnd==3) textcolor(sim,fg_yellow);
-		if (rnd==4) textcolor(sim,fg_blue);
-		if (rnd==5) textcolor(sim,fg_purple);
-
-		if ((wide[i]!='\n')||(sim->html==FALSE))
-		{
-			//mbstowcs(wide, in, 1000);
-			//swprintf(temp,L"%C",wide[i]);
-			printf_log(sim,"%C",wide[i]);
-		}else
-		{
-			printf_log(sim,"<br>");
-		}
-
-		textcolor(sim,fg_reset);
-
-		}
-
-fflush(stdout);
-}
-
 FILE *fopena(char *path,char *name,const char *mode)
 {
-char wholename[200];
+char wholename[PATH_MAX];
 join_path(2, wholename,path,name);
 
 FILE *pointer;
@@ -771,14 +767,36 @@ void remove_file(struct simulation *sim,char* file_name)
 	}
 }
 
-void remove_dir_ittr(struct simulation *sim,char* dir_name,int depth)
+struct remove_dir_struct
+{
+	int delete;
+	int tot_files;
+	int count;
+	int progress_count;
+};
+
+void remove_dir_ittr(struct simulation *sim,char* dir_name,int depth, struct remove_dir_struct *data)
 {
 	depth++;
 	struct dirent *next_file;
 	DIR *theFolder;
 	char filepath[PATH_MAX];
-
+	if (depth==-1)
+	{
+		if (data->delete==TRUE)
+		{
+			printf_log(sim,"%s =%s:",_("Deleting directory: "),dir_name);
+		}
+		data->progress_count=0;
+	}
 	theFolder = opendir(dir_name);
+
+	int progress_delta;
+	if (data->delete==TRUE)
+	{
+		progress_delta=data->tot_files/20;
+	}
+
 	if (theFolder!=NULL)
 	{
 		while((next_file=readdir(theFolder))!=NULL)
@@ -788,12 +806,33 @@ void remove_dir_ittr(struct simulation *sim,char* dir_name,int depth)
 				join_path(2, filepath,dir_name,next_file->d_name);
 				if (isdir(filepath)==0)
 				{
-					remove_dir_ittr(sim,filepath,depth);
-					printf_log(sim,"%s =%s\n",_("Deleting directory"),filepath);
-						remove(filepath);
+					remove_dir_ittr(sim,filepath,depth,data);
+					if (data->delete==TRUE)
+					{
+						//printf_log(sim,"%s =%s\r",_("Deleting directory"),filepath);
+							remove(filepath);
+						data->progress_count++;
+						if (data->progress_count>progress_delta)
+						{
+							printf_log(sim,"#");
+							data->progress_count=0;
+						}
+						
+					}
+					data->count++;
 				}else
 				{
-					remove_file(sim,filepath);
+					if (data->delete==TRUE)
+					{
+						remove_file(sim,filepath);
+						if (data->progress_count>progress_delta)
+						{
+							printf_log(sim,"#");
+							data->progress_count=0;
+						}
+						data->progress_count++;
+					}
+					data->count++;
 				}
 			}
 		}
@@ -802,14 +841,34 @@ void remove_dir_ittr(struct simulation *sim,char* dir_name,int depth)
 
 		if (depth==0)
 		{
-				remove(dir_name);
+			if (data->delete==TRUE)
+			{
+					remove(dir_name);
+
+				printf_log(sim,"\n");
+
+			}
 		}
 	}
+
+	
 }
 
 void remove_dir(struct simulation *sim,char* dir_name)
 {
-	remove_dir_ittr(sim,dir_name,-1);
+	struct remove_dir_struct data;
+	data.delete=FALSE;
+	data.tot_files=0;
+	data.count=0;
+
+	remove_dir_ittr(sim,dir_name,-1,&data);
+
+	data.tot_files=data.count;
+	data.count=0;
+	data.delete=TRUE;
+
+	remove_dir_ittr(sim,dir_name,-1,&data);
+
 
 }
 

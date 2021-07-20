@@ -37,10 +37,11 @@
 	@brief Load the sparse matrix solver .so/.dll.  If this is UMFPACK the plugin will call UMFPACK, for other custom solvers the work will be done in the plugin.
 */
 
-
+#include <enabled_libs.h>
 #include <stdio.h>
 #include <stdlib.h>
 
+	#define _GNU_SOURCE
 	#include <dlfcn.h>
 
 #include "util.h"
@@ -56,63 +57,81 @@
 
 static int unused __attribute__((unused));
 
-void solver_init(struct simulation *sim,struct matrix_solver_memory *msm,char *solver_name)
+void solver_init(struct simulation *sim,char *solver_name)
 {
 char lib_path[PATH_MAX];
 
 
-find_dll(sim, lib_path,solver_name);
 
-char *error;
 
-	sim->dll_matrix_handle = dlopen(lib_path, RTLD_LAZY |RTLD_GLOBAL);
-
-	if (!sim->dll_matrix_handle)
+	if (sim->dll_matrix_handle==NULL)
 	{
-		ewe(sim, "%s\n", dlerror());
+		find_dll(sim, lib_path,solver_name);
+			char *error;
+
+
+			sim->dll_matrix_handle = dlopen(lib_path, RTLD_LAZY |RTLD_GLOBAL);
+			if (!sim->dll_matrix_handle)
+			{
+				ewe(sim, "%s\n", dlerror());
+			}
+
+			sim->dll_matrix_solve = dlsym(sim->dll_matrix_handle, "dll_matrix_solve");
+			if ((error = dlerror()) != NULL)
+			{
+				ewe(sim, "%s\n", error);
+			}
+
+			sim->dll_matrix_solver_free = dlsym(sim->dll_matrix_handle, "dll_matrix_solver_free");
+			if ((error = dlerror()) != NULL)
+			{
+				ewe(sim, "%s\n", error);
+			}
+
+			sim->dll_matrix_init = dlsym(sim->dll_matrix_handle, "dll_matrix_init");
+			if ((error = dlerror()) != NULL)
+			{
+				ewe(sim, "%s\n", error);
+			}
+
 	}
 
-	sim->dll_matrix_solve = dlsym(sim->dll_matrix_handle, "dll_matrix_solve");
-	if ((error = dlerror()) != NULL)
-	{
-		ewe(sim, "%s\n", error);
-	}
 
-	sim->dll_matrix_solver_free = dlsym(sim->dll_matrix_handle, "dll_matrix_solver_free");
-	if ((error = dlerror()) != NULL)
-	{
-		ewe(sim, "%s\n", error);
-	}
+}
 
-	sim->dll_matrix_init = dlsym(sim->dll_matrix_handle, "dll_matrix_init");
-	if ((error = dlerror()) != NULL)
-	{
-		ewe(sim, "%s\n", error);
-	}
-
+void solver_get_mem(struct simulation *sim,struct matrix_solver_memory *msm)
+{
 
 	(*sim->dll_matrix_init)(msm);
 }
 
-
 void solver_free(struct simulation *sim,struct matrix_solver_memory *msm)
 {
-if (sim->dll_matrix_handle!=NULL)
-{
-	(*sim->dll_matrix_solver_free)(msm);
-
-
-
-	#ifndef disable_dlclose
-	if (dlclose(sim->dll_matrix_handle)!=0)
+	if (sim->dll_matrix_handle!=NULL)
 	{
-		ewe(sim,"%s\n",_("Error closing dll"));
+		(*sim->dll_matrix_solver_free)(msm);
+		matrix_solver_memory_free(sim,msm);
 	}
-	#endif
-	sim->dll_matrix_handle=NULL;
-	sim->dll_matrix_solve=NULL;
-	sim->dll_matrix_solver_free=NULL;
 
 }
-}
 
+void solver_unload_dll(struct simulation *sim)
+{
+	printf("unload DLLs\n");
+	if (sim->dll_matrix_handle!=NULL)
+	{
+
+
+			//#ifndef disable_dlclose
+			//printf(">>>>>>>>>dealloc %p\n",sim->dll_matrix_handle);
+			if (dlclose(sim->dll_matrix_handle)!=0)
+			{
+				ewe(sim,"%s\n",_("Error closing dll"));
+			}
+			//#endif
+			sim->dll_matrix_handle=NULL;
+			sim->dll_matrix_solve=NULL;
+			sim->dll_matrix_solver_free=NULL;
+			sim->dll_matrix_init=NULL;
+	}
+}

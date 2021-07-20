@@ -40,6 +40,8 @@
 
 
 #define _DEFAULT_SOURCE
+#include <enabled_libs.h>
+#include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/time.h>
@@ -60,30 +62,28 @@ struct timeval my_last_time;
 
 void gui_send_finished_to_gui(struct simulation *sim)
 {
-printf_log(sim,"finished signal=%s\n",sim->server.dbus_finish_signal);
-if (strcmp(sim->server.dbus_finish_signal,"")!=0)
-{
-	gui_send_data(sim,gui_main,sim->server.dbus_finish_signal);
-}
-
-if (strcmp(sim->server.lock_file,"")!=0)
-{
-	char lockname[500];
-	FILE *out=fopen(sim->server.lock_file,"w");
-	if (out == NULL)
+	if (sim->gui==FALSE)
 	{
-		printf("Problem writing file!\n");
-		getchar();
+		return;
 	}
-	fclose(out);
 
-}
+	printf_log(sim,"finished signal=%s\n",sim->server.dbus_finish_signal);
+	if (strcmp(sim->server.dbus_finish_signal,"")!=0)
+	{
+		gui_send_data(sim,gui_main,sim->server.dbus_finish_signal);
+	}
 
 	gui_close_pipe(sim);
+
 }
 
 void poll_gui(struct simulation *sim)
 {
+	if (sim->gui==FALSE)
+	{
+		return;
+	}
+
 char temp[PATH_MAX];
 FILE *in;
 char line[200];
@@ -131,10 +131,13 @@ int gui_send_data (struct simulation *sim,int from,char *tx_data_in)
 char tx_data[1024];
 char temp[1024];
 int ret;
+//printf("sending data!!!!!!!!!!!!!!!!!!!!!! %s\n",tx_data_in);
+	if (sim->gui==FALSE)
+	{
+		return 0;
+	}
 
-if (sim->gui==TRUE)
-{
-	if (sim->fitting==TRUE)
+	if (sim->fitting>FIT_NOT_FITTING)
 	{
 		if (from==gui_sub)
 		{
@@ -185,15 +188,14 @@ if (sim->gui==TRUE)
 		DBusMessage *message;
 		message = dbus_message_new_signal ("/org/my/test","org.my.gpvdm",tx_data);
 		/* Send the signal */
-		dbus_connection_send (sim->connection, message, NULL);
-		dbus_connection_flush(sim->connection);
+		dbus_connection_send ((DBusConnection*)sim->connection, message, NULL);
+		dbus_connection_flush((DBusConnection*)sim->connection);
 		dbus_message_unref (message);
 
 		#endif
 
 
 
-}
 return 0;
 }
 
@@ -206,11 +208,33 @@ return 0;
 
 void gui_close_pipe(struct simulation *sim)
 {
+	if (sim->gui==FALSE)
+	{
+		return;
+	}
+//DWORD numBytesRead = 0;
+//DWORD lpTotalBytesAvail = 0;
+//LPDWORD lpBytesLeftThisMessage =0;
+//char tx_data[1000];
+//int i=0;
+/*for (i=0;i<10;i++)
+{
+	PeekNamedPipe((HANDLE)sim->connection,(LPVOID)tx_data, 1000 * sizeof(char), &numBytesRead,  &lpTotalBytesAvail, lpBytesLeftThisMessage);
+	if (numBytesRead==0)
+	{
+		break;
+	}
+//	printf_log(sim,"bytes left %lu %lu %lu",numBytesRead,lpTotalBytesAvail,lpBytesLeftThisMessage);
+	sleep(1);
+}*/
+	//printf_log(sim,"I am going to wait 10 seconds\n");
+	//sleep(3);
+	//printf_log(sim,"Done waiting\n");
 
 	#ifdef dbus
 	if (sim->connection!=NULL)
 	{
-		dbus_connection_unref (sim->connection);
+		dbus_connection_unref ((DBusConnection*)sim->connection);
 		//dbus_connection_close(sim->connection);
 	}
 	dbus_shutdown();
@@ -219,13 +243,18 @@ void gui_close_pipe(struct simulation *sim)
 
 void gui_start(struct simulation *sim)
 {
+	if (sim->gui==FALSE)
+	{
+		return;
+	}
+
 	gettimeofday (&my_last_time, NULL);
 
 	#ifdef dbus
 	DBusError error;
 	dbus_error_init (&error);
-	sim->connection = dbus_bus_get (DBUS_BUS_SESSION, &error);
-
+	sim->connection = (void*)dbus_bus_get (DBUS_BUS_SESSION, &error);
+	dbus_connection_set_exit_on_disconnect(sim->connection,FALSE);
 	if (!sim->connection)
 	{
 		printf_log(sim,"Failed to connect to the D-BUS daemon: %s", error.message);

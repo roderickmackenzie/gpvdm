@@ -39,7 +39,7 @@
 
 
 
-
+#include <enabled_libs.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -280,7 +280,7 @@ for (i=0;i<strlen(in)-1;i++)
 		return (char *)(&in[i+1]);
 	}
 }
-return (char *)-1;
+return NULL;
 }
 
 int is_domain(char * in)
@@ -370,6 +370,7 @@ int str_isnumber(char *input)
 	}
 
     int dot_or_e = FALSE;
+    int seen_e = FALSE;
 	int i=start;
 
     for(i ; i <= stop ; i++)
@@ -403,7 +404,13 @@ int str_isnumber(char *input)
 		}else
 		if ((input[i] == 'e') || (input[i] == 'E'))
         {
+            if (seen_e==TRUE)
+			{
+				return FALSE;
+			}
+
             dot_or_e = TRUE;
+			seen_e=TRUE;
 
             // e as the last character is also not allowed
             if(i == len-1)
@@ -442,6 +449,7 @@ void split_dot(char *out, char *in)
 		}
 	}
 }
+
 
 int get_line(char *out,char *data,int len,int *pos)
 {

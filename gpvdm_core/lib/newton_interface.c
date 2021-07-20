@@ -38,11 +38,12 @@
 */
 
 
-
+#include <enabled_libs.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "util.h"
 
+	#define _GNU_SOURCE
 	#include <dlfcn.h>
 
 #include "inp.h"
@@ -59,7 +60,7 @@
 static int unused __attribute__((unused));
 
 
-void newton_init(struct simulation *sim,char *solver_name)
+void newton_init(struct simulation *sim,struct device *dev,char *solver_name)
 {
 //printf_log(sim,_("Solver initialization\n"));
 char lib_path[1000];
@@ -69,26 +70,26 @@ find_dll(sim, lib_path,solver_name);
 
 char *error;
 
-	sim->dll_solver_handle = dlopen(lib_path, RTLD_LAZY);
+	dev->dll_solver_handle = dlopen(lib_path, RTLD_LAZY);
 
-	if (!sim->dll_solver_handle)
+	if (!dev->dll_solver_handle)
 	{
 		ewe(sim,"%s\n", dlerror());
 	}
 
-	sim->dll_solve_cur = dlsym(sim->dll_solver_handle, "dll_solve_cur");
+	dev->dll_solve_cur = dlsym(dev->dll_solver_handle, "dll_solve_cur");
 	if ((error = dlerror()) != NULL)
 	{
 		ewe(sim, "%s\n", error);
 	}
 
-	sim->dll_solver_realloc = dlsym(sim->dll_solver_handle, "dll_solver_realloc");
+	dev->dll_solver_realloc = dlsym(dev->dll_solver_handle, "dll_solver_realloc");
 	if ((error = dlerror()) != NULL)
 	{
 		ewe(sim, "%s\n", error);
 	}
 
-	sim->dll_solver_free_memory = dlsym(sim->dll_solver_handle, "dll_solver_free_memory");
+	dev->dll_solver_free_memory = dlsym(dev->dll_solver_handle, "dll_solver_free_memory");
 	if ((error = dlerror()) != NULL)
 	{
 		ewe(sim, "%s\n", error);
@@ -99,34 +100,34 @@ char *error;
 }
 
 
-void newton_set_min_ittr(struct device *in,int ittr)
+void newton_set_min_ittr(struct device *dev,int ittr)
 {
-	in->newton_min_itt=ittr;
+	dev->newton_min_itt=ittr;
 }
 
-void solver_realloc(struct simulation *sim,struct device * in)
+void solver_realloc(struct simulation *sim,struct device * dev)
 {
-	if (sim->dll_solver_realloc!=NULL)
+	if (dev->dll_solver_realloc!=NULL)
 	{
-		(*sim->dll_solver_realloc)(sim,in);
+		(*dev->dll_solver_realloc)(sim,dev);
 	}
 }
 
-void solver_free_memory(struct simulation *sim,struct device * in)
+void solver_free_memory(struct simulation *sim,struct device * dev)
 {
-	if (sim->dll_solver_free_memory!=NULL)
+	if (dev->dll_solver_free_memory!=NULL)
 	{
-		(*sim->dll_solver_free_memory)(sim,in);
+		(*dev->dll_solver_free_memory)(sim,dev);
 	}
 }
 
-void newton_interface_free(struct simulation *sim)
+void newton_interface_free(struct simulation *sim,struct device * dev)
 {
-if (sim->dll_solver_handle!=NULL)
-{
-	dlclose(sim->dll_solver_handle);
-}
-sim->dll_solver_free_memory=NULL;
-sim->dll_solver_realloc=NULL;
-sim->dll_solve_cur=NULL;
+	if (dev->dll_solver_handle!=NULL)
+	{
+		dlclose(dev->dll_solver_handle);
+	}
+	dev->dll_solver_free_memory=NULL;
+	dev->dll_solver_realloc=NULL;
+	dev->dll_solve_cur=NULL;
 }

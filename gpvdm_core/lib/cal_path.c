@@ -37,7 +37,7 @@
 	@brief Calculate the path of where stuff is, and if it can't find a file look harder.  Win/Linux.
 */
 
-
+#include <enabled_libs.h>
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
@@ -51,11 +51,12 @@
 #include <fcntl.h>
 #include <stdarg.h>
 #include <gpvdm_const.h>
-
+#include <sys/types.h>
+#include <sys/stat.h>
 
 #include <limits.h>
-#include <sys/types.h>
 #include <pwd.h>
+
 
 int get_delta_path(struct simulation *sim,char *out, char *root,char *file_name)
 {
@@ -234,10 +235,10 @@ char temp[PATH_MAX];
 		return;
 	}
 
-	if ((strcmp(name,"settings.inp")!=0)&&(strcmp(name,"info.inp")!=0))
-	{
-		ewe(sim,"I can't find the %s\n",name);
-	}
+	//if ((strcmp(name,"settings.inp")!=0)&&(strcmp(name,"info.inp")!=0))
+	//{
+	//	ewe(sim,"I can't find the %s\n",name);
+	//}
 }
 
 void get_file_name_from_path(char *out,char *in)
@@ -263,6 +264,27 @@ void get_file_name_from_path(char *out,char *in)
 
 }
 
+void get_dir_name(char *out,char *in)
+{
+	int i=0;
+
+	strcpy(out,in);
+
+	if (strlen(in)==0)
+	{
+		return;
+	}
+
+	for (i=strlen(out)-1;i>=0;i--)
+	{
+		if ((out[i]=='\\') || (out[i]=='/'))
+		{
+			out[i]=0;
+			return;
+		}
+	}
+
+}
 int is_dir_in_path(char *long_path, char* search_dir)
 {
 	if( strstr(long_path, search_dir) != NULL)
@@ -336,8 +358,6 @@ strcpy(sim->share_path,"nopath");
 
 strcpy(sim->plugins_path,"");
 strcpy(sim->lang_path,"");
-strcpy(sim->input_path,"");
-strcpy(sim->output_path,"");
 
 
 memset(temp, 0, PATH_MAX * sizeof(char));
@@ -377,8 +397,6 @@ if (getcwd(cwd,PATH_MAX)==NULL)
 }
 
 strcpy(sim->root_simulation_path,cwd);
-strcpy(sim->output_path,cwd);
-strcpy(sim->input_path,cwd);
 set_path(sim,sim->plugins_path, "plugins");
 //set_path(sim,sim->lang_path, "lang");
 strcpy(sim->lang_path,"langdisabled");
@@ -388,8 +406,8 @@ set_path(sim,sim->shape_path, "shape");
 set_path(sim,sim->emission_path, "emission");
 
 set_path(sim,sim->spectra_path, "spectra");
-//join_path(3,sim->cache_path,sim->home_path,"gpvdm_local","cache");
-join_path(2,sim->cache_path,sim->input_path,"cache");
+join_path(2,sim->cache_path,cwd,"cache");
+join_path(3,sim->cache_path_for_fit,cwd,"sim","cache");
 join_path(2,sim->gpvdm_local_path,sim->home_path,"gpvdm_local");
 
 join_path(2,sim->tmp_path,sim->gpvdm_local_path,"tmp");
@@ -399,8 +417,13 @@ join_path(2,sim->tmp_path,sim->gpvdm_local_path,"tmp");
 
 char *get_cache_path(struct simulation *sim)
 {
-
-return sim->cache_path;
+	if (sim->fitting==FALSE)
+	{
+		return sim->cache_path;
+	}else
+	{
+		return sim->cache_path_for_fit;
+	}
 }
 
 char *get_gpvdm_local_path(struct simulation *sim)
@@ -437,26 +460,6 @@ return sim->plugins_path;
 char *get_lang_path(struct simulation *sim)
 {
 return sim->lang_path;
-}
-
-char *get_input_path(struct simulation *sim)
-{
-return sim->input_path;
-}
-
-char *get_output_path(struct simulation *sim)
-{
-return sim->output_path;
-}
-
-void set_output_path(struct simulation *sim,char *in)
-{
-strcpy(sim->output_path,in);
-}
-
-void set_input_path(struct simulation *sim,char *in)
-{
-strcpy(sim->input_path,in);
 }
 
 char *get_tmp_path(struct simulation *sim)
@@ -515,4 +518,54 @@ void assert_platform_path(char * path)
 	strcpy(path,temp);
 
 	return;
+}
+
+void remove_file_ext(char *path)
+{
+	int i=0;
+	for (i=strlen(path)-1;i>0;i--)
+	{
+		if (path[i]=='.')
+		{
+			path[i]=0;
+			break;
+		}
+	}
+}
+
+void gpvdm_mkdir(char *file_name)
+{
+struct stat st = {0};
+
+	if (stat(file_name, &st) == -1)
+	{
+			mkdir(file_name, 0700);
+	}
+
+}
+
+void mkdirs(char *dir)
+{
+
+	int i;
+	char temp[PATH_MAX];
+	strcpy(temp,dir);
+	for (i=0;i<strlen(dir);i++)
+	{
+		if ((temp[i]=='/')&&(i!=0))
+		{
+			temp[i]=0;
+			if (isdir(temp)!=0)
+			{
+				gpvdm_mkdir(temp);
+			}
+			strcpy(temp,dir);
+		}
+	}
+
+	if (isdir(dir)!=0)
+	{
+		gpvdm_mkdir(dir);
+	}
+
 }

@@ -37,7 +37,7 @@
 	@brief Exit while sending sane data to the gui, also handle crashes while fitting.
 */
 
-
+#include <enabled_libs.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -166,7 +166,23 @@ int ewe( struct simulation *sim, const char *format, ...)
 	}
 	//printf_log(sim,"Raising segmentation fault\n");
 	//raise(SIGSEGV);
+
+	write_lock_file(sim);
 exit(1);
 }
 
+void write_lock_file( struct simulation *sim)
+{
+	if (strcmp(sim->server.lock_file,"")!=0)
+	{
+		char lockname[500];
+		FILE *out=fopen(sim->server.lock_file,"w");
+		if (out == NULL)
+		{
+			printf("Problem writing file!\n");
+			getchar();
+		}
+		fclose(out);
 
+	}
+}

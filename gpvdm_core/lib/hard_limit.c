@@ -40,47 +40,74 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+#include <sim_struct.h>
+#include <json.h>
+#include <hard_limit_struct.h>
+#include <hard_limit.h>
 #include "gpvdm_const.h"
-#include "inp.h"
 
-struct inp_file hard_limit_inp;
 
-void hard_limit_init(struct simulation *sim)
+void hard_limit_init(struct simulation *sim,struct hard_limit *hl)
 {
-inp_init(sim,&hard_limit_inp);
-inp_load(sim,&hard_limit_inp,"hard_limit.inp");
+	hl->n_lines=-1;
+	hl->lines=NULL;
 }
 
-void hard_limit_free(struct simulation *sim)
+void hard_limit_free(struct simulation *sim,struct hard_limit *hl)
 {
-inp_free(sim,&hard_limit_inp);
+	free(hl->lines);
+	hl->lines=NULL;
+	hl->n_lines=-1;
+
 }
 
-void hard_limit(struct simulation *sim,char *token,gdouble *value)
+void hard_limit_load(struct simulation *sim,struct hard_limit *hl,struct json_obj *json_hl)
 {
-char token0[1000];
-gdouble ret= *value;
-gdouble min=0.0;
-gdouble max=0.0;
-char* text=inp_search_part(sim,&hard_limit_inp,token);
+	int i;
+	char seg_name[100];
+	struct json_obj *json_hl_seg;
+	hl->n_lines=0;
 
-if (text!=NULL)
-{
-	sscanf(text,"%s %Lf %Lf",token0,&max,&min);
+	json_get_int(sim,json_hl, &(hl->n_lines),"segments");
 
-
-	if (strcmp(token0,token)==0)
+	hl->lines=malloc(hl->n_lines*sizeof(struct hard_limit_line));
+	for (i=0;i<hl->n_lines;i++)
 	{
-		if (ret>max)
-		{
-			ret=max;
-		}
+		sprintf(seg_name,"segment%d",i);
+		json_hl_seg=json_obj_find(json_hl, seg_name);
 
-		if (ret<min)
+		json_get_string(sim,json_hl_seg, hl->lines[i].token,"token");
+		json_get_long_double(sim,json_hl_seg, &(hl->lines[i].min),"min");
+		json_get_long_double(sim,json_hl_seg, &(hl->lines[i].max),"max");
+	}
+
+}
+
+void hard_limit_do(struct simulation *sim,char *token,long double *value)
+{
+int i;
+long double ret= *value;
+struct hard_limit *hl=&(sim->hl);
+	//printf("== %d %p\n",	sim->hl.n_lines,&(sim->hl.n_lines));
+
+	for (i=0;i<hl->n_lines;i++)
+	{
+		//printf("found\n %d %s",i,hl->lines[i].token);
+
+		if (strcmp(hl->lines[i].token,token)==0)
 		{
-			ret=min;
+			if (ret>hl->lines[i].max)
+			{
+				ret=hl->lines[i].max;
+			}
+
+			if (ret<hl->lines[i].min)
+			{
+				ret=hl->lines[i].min;
+			}
 		}
 	}
-}
 *value=ret;
 }
+

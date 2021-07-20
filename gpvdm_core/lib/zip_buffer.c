@@ -36,6 +36,7 @@
 /** @file zip_buffer.c
 	@brief Writing and reading zip buffer
 */
+#include <enabled_libs.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -59,15 +60,22 @@ static int unused __attribute__((unused));
 
 void write_zip_buffer(struct simulation *sim,char *outfile,long double *buf,int buf_len)
 {
-		gzFile file;
-		file = gzopen (outfile, "w9b");
-		gzwrite (file, (char*)buf, buf_len*sizeof(gdouble));
-		gzclose (file);
-	FILE * yes;
-	yes = fopen (outfile, "ab");
-	int temp1=buf_len*sizeof(gdouble);
-	fwrite ((char*)&temp1, sizeof(int),1,yes);
-	fclose (yes);
+	//#ifndef windows
+	//	gzFile file;
+	//	file = gzopen (outfile, "w9b");
+	//	gzwrite (file, (char*)buf, buf_len*sizeof(long double));
+	//	gzclose (file);
+	//#else
+		FILE* file;
+		file = fopen (outfile, "wb");
+		fwrite ( (char*)buf, buf_len*sizeof(long double),1,file);
+		fclose (file);
+	//#endif
+	FILE * file_append;
+	file_append = fopen (outfile, "ab");
+	int temp1=buf_len*sizeof(long double);
+	fwrite ((char*)&temp1, sizeof(int),1,file_append);
+	fclose (file_append);
 
 	//out = fopen(outfile, "wb");
 	//fwrite((char*)buf, buf_len*sizeof(gdouble), 1, out);
@@ -94,12 +102,21 @@ int read_zip_buffer(struct simulation *sim,char *file_name,long double **buf)
 
 	fclose(tl);
 
-		gzFile file_in;
-		file_in = gzopen (file_name, "rb");
-		if (file_in==Z_NULL)
+	//#ifndef windows
+	//	gzFile file_in;
+	//	file_in = gzopen (file_name, "rb");
+	//	if (file_in==Z_NULL)
+	//	{
+	//		ewe(sim,_("File not found\n"));
+	//	}
+	//#else
+		FILE *file_in;
+		file_in = fopen (file_name, "rb");
+		if (file_in==NULL)
 		{
 			ewe(sim,_("File not found\n"));
 		}
+	//#endif
 
 
 
@@ -108,8 +125,13 @@ int read_zip_buffer(struct simulation *sim,char *file_name,long double **buf)
 	(*buf)=(long double *)malloc(sizeof(long double)*buf_len);
 
 
-		gzread (file_in, (char*)(*buf), len);
-		gzclose(file_in);
+	//#ifndef windows
+	//	gzread (file_in, (char*)(*buf), len);
+	//	gzclose(file_in);
+	//#else
+		fread((char*)(*buf), len, 1, file_in);
+		fclose(file_in);
+	//#endif
 
 	return buf_len;
 }

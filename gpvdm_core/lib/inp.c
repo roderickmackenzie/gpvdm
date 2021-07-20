@@ -342,50 +342,25 @@ if (f!=NULL)
 
 }
 
-int inp_search_pos(struct simulation *sim,struct inp_file *in,char *token)
-{
-	int pos=0;
-	inp_reset_read(sim,in);
-	char * line=NULL;
-	do
-	{
-		line  = inp_get_string(sim,in);
-		if (line==NULL)
-		{
-			break;
-		}
-
-		if (strcmp(line,token)==0)
-		{
-			return pos;
-		}
-
-		pos++;
-
-	}while(1);
-
-return -1;
-}
 
 void inp_reset_read(struct simulation *sim,struct inp_file *in)
 {
 in->pos=0;
 }
 
-char* inp_get_string(struct simulation *sim,struct inp_file *in)
+int inp_get_string(struct simulation *sim,char *out, struct inp_file *in)
 {
-int i;
-static char ret[4000];
-memset(ret, 0, 400);
-int ii=0;
-if (in->pos>=in->fsize)
-{
-	return NULL;
-}
+	//int i;
+	//memset(out, 0, 400);
+	//int ii=0;
+	if (in->pos>=in->fsize)
+	{
+		return -1;
+	}
 
-get_line(ret,in->data,in->fsize,&in->pos);
+	get_line(out,in->data,in->fsize,&in->pos);
 
-return ret;
+	return 0;
 }
 
 
@@ -940,24 +915,6 @@ ewe(sim,"Token #ver not found in %s\n",in->full_name);
 return;
 }
 
-char* inp_search_part(struct simulation *sim,struct inp_file *in,char *token)
-{
-	inp_reset_read(sim,in);
-	char * line = inp_get_string(sim,in);
-	while(line!=NULL)
-	{
-
-		if (cmpstr_min(line,token)==0)
-		{
-			return line;
-		}
-
-		line  = inp_get_string(sim,in);
-	}
-
-return NULL;
-}
-
 
 int inp_search(struct simulation *sim,char* out,struct inp_file *in,char *token)
 {
@@ -1000,152 +957,6 @@ int inp_search(struct simulation *sim,char* out,struct inp_file *in,char *token)
 return -1;
 }
 
-
-int inp_get_array_len(struct simulation *sim,struct inp_file *in,char *token)
-{
-	int ret=-1;
-	inp_reset_read(sim,in);
-	char * line = inp_get_string(sim,in);
-	while(line!=NULL)
-	{
-		if (strcmp(line,token)==0)
-		{
-			ret=0;
-			do
-			{
-				line  = inp_get_string(sim,in);
-				if (line==NULL)
-				{
-					break;
-				}
-
-				if (line[0]=='#')
-				{
-					break;
-				}
-				ret++;
-
-			}while(1);
-
-			return ret;
-		}
-
-		line  = inp_get_string(sim,in);
-	}
-
-return ret;
-}
-
-int inp_get_array_gdouble(struct simulation *sim,long double * out,struct inp_file *in,char *token)
-{
-	int ret=-1;
-	inp_reset_read(sim,in);
-	char * line = inp_get_string(sim,in);
-	gdouble value;
-	while(line!=NULL)
-	{
-		if (strcmp(line,token)==0)
-		{
-			ret=0;
-			do
-			{
-				line  = inp_get_string(sim,in);
-
-				if (line==NULL)
-				{
-					break;
-				}
-
-				if (line[0]=='#')
-				{
-					break;
-				}
-
-				sscanf(line,"%Le",&value);
-				out[ret]=value;
-
-				ret++;
-
-			}while(1);
-
-			return ret;
-		}
-
-		line  = inp_get_string(sim,in);
-	}
-
-return ret;
-}
-
-int inp_count_hash_tags(struct simulation *sim,struct inp_file *in)
-{
-	int count=0;
-	inp_reset_read(sim,in);
-	char *line;
-	do
-	{
-		line  = inp_get_string(sim,in);
-
-		if (line==NULL)
-		{
-			break;
-		}
-
-		if (strlen(line)>0)
-		{
-
-			if (line[0]=='#')
-			{
-				count++;
-			}
-
-		}
-
-	}while(1);
-
-
-
-return count;
-}
-
-int inp_get_array(struct simulation *sim,char ** out,struct inp_file *in,char *token)
-{
-	int ret=-1;
-	inp_reset_read(sim,in);
-	char * line = inp_get_string(sim,in);
-	while(line!=NULL)
-	{
-		if (strcmp(line,token)==0)
-		{
-			ret=0;
-			do
-			{
-				line  = inp_get_string(sim,in);
-
-				if (line==NULL)
-				{
-					break;
-				}
-
-				if (line[0]=='#')
-				{
-					break;
-				}
-
-				strcpy(out[ret],line);
-
-				ret++;
-
-			}while(1);
-
-			return ret;
-		}
-
-		line  = inp_get_string(sim,in);
-	}
-
-return ret;
-}
 
 int inp_search_english(struct simulation *sim,struct inp_file *in,char *token)
 {
