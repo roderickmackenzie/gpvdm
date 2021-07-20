@@ -694,16 +694,6 @@ void contact_set_active_contact_voltage(struct simulation *sim,struct device *in
 	int i=0;
 	int found=FALSE;
 
-	/*#ifdef private
-		if (in->high_voltage_limit==TRUE)
-		{
-			if (voltage>20)
-			{
-				ewe(sim,"If you want to simulate above 7V please get in contact wiht me, roderick.mackenzie@nottingham.ac.uk\n");
-			}
-
-		}
-	#endif*/
 
 	for (i=0;i<in->ncontacts;i++)
 	{

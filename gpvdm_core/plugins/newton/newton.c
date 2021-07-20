@@ -1698,6 +1698,15 @@ int dllinternal_solve_cur(struct simulation *sim,struct device *in, int z, int x
 
 	if (ion->full_newton==FALSE)
 	{
+		
+		int cont=TRUE;
+		int ittr=0;
+		struct newton_state *ns=&(in->ns);
+
+		if (ns->Nion_enabled==FALSE)
+		{
+			solve_electrical(sim,in, 0, 0);
+		}
 	}else
 	{
 		solve_electrical(sim,in, 0, 0);

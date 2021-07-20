@@ -807,8 +807,9 @@ FILE* out;
 
 
 	dump_1d_slice(sim,in,out_dir);
-
-	circuit_dump_snapshot(sim,in,out_dir);
+	#ifdef libcircuit_enabled
+		circuit_dump_snapshot(sim,in,out_dir);
+	#endif
 
 	#ifdef libheat_enabled
 		heat_dump(sim,out_dir,thermal);

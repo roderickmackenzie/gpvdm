@@ -371,7 +371,7 @@ int device_run_simulation(struct simulation *sim, struct device *dev)
 
 		contacts_force_to_zero(sim,dev);
 
-		stop_if_not_registered_and_gpvdm_next(sim);
+
 		int y;
 
 
