@@ -37,6 +37,7 @@
 	@brief Job management for fitting, run multiple fitting instances over multiple CPUs.
 */
 
+#include <enabled_libs.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -53,7 +54,6 @@
 	#define EVENT_BUF_LEN     ( 1024 * ( EVENT_SIZE + 16 ) )
 #include "sim.h"
 #include "server.h"
-#include "inp.h"
 #include "timer.h"
 #include "gui_hooks.h"
 #include "lang.h"
@@ -63,23 +63,15 @@
 #include <gpvdm_const.h>
 #include <server.h>
 #include <memory.h>
+#include <json.h>
 
 static int unused __attribute__((unused));
 
 
-void server2_config_load(struct simulation *sim,struct server_struct *server)
+void server2_config_load(struct simulation *sim,struct server_struct *server,struct json_obj *json_server)
 {
-	struct inp_file inp;
-
-	inp_init(sim,&inp);
-	inp_load_from_path(sim,&inp,sim->input_path,"server.inp");
-	inp_check(sim,&inp,1.22);
-
-	inp_search_int(sim,&inp,&(server->max_threads),"#gpvdm_core_max_threads");
-	inp_search_int(sim,&inp,&(server->max_run_time),"#server_max_run_time");
-
-	inp_free(sim,&inp);
-
+	json_get_int(sim, json_server, &server->max_threads,"gpvdm_core_max_threads");
+	json_get_int(sim, json_server, &server->max_run_time,"server_max_run_time");
 
 }
 
