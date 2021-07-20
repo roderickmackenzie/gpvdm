@@ -60,7 +60,7 @@
 
 #include "vec.h"
 
-void fdtd_dump(struct simulation *sim,struct fdtd_data *data)
+void fdtd_dump(struct simulation *sim,char *output_path,struct fdtd_data *data)
 {
 	int z=0;
 	int x=0;
@@ -75,7 +75,24 @@ void fdtd_dump(struct simulation *sim,struct fdtd_data *data)
 
 	sprintf(lambda_name,"snapshots_%.0f",data->lambda*1e9);
 	//strcpy(out_dir,get_output_path(sim));
-	dump_make_snapshot_dir_with_name(sim,out_dir ,(double)data->time, 0.0, (long double )(1.0/data->lambda),data->step,lambda_name);
+	//dump_make_snapshot_dir_with_name(sim,out_dir ,(double)data->time, 0.0, (long double )(1.0/data->lambda),data->step,lambda_name);
+
+	dump_make_snapshot_dir(sim,out_dir,output_path ,lambda_name, data->step);
+
+	buffer_init(&buf);
+	buffer_malloc(&buf);
+
+	sprintf(temp,"{\n");
+	buffer_add_string(&buf,temp);
+
+	sprintf(temp,"\t\"fx\":%Le,\n",(long double )(1.0/data->lambda));
+	buffer_add_string(&buf,temp);
+
+	sprintf(temp,"}");
+	buffer_add_string(&buf,temp);
+
+	buffer_dump_path(sim,out_dir,"data.json",&buf);
+	buffer_free(&buf);
 
 	//////Ex
 	buffer_malloc(&buf);
@@ -120,7 +137,7 @@ void fdtd_dump(struct simulation *sim,struct fdtd_data *data)
 
 	}
 
-	buffer_dump_path(sim,get_output_path(sim),"Ex.dat",&buf);
+	buffer_dump_path(sim,output_path,"Ex.dat",&buf);
 	buffer_dump_path(sim,out_dir,"Ex.dat",&buf);
 	buffer_free(&buf);
 
@@ -167,7 +184,7 @@ void fdtd_dump(struct simulation *sim,struct fdtd_data *data)
 
 	}
 
-	buffer_dump_path(sim,get_output_path(sim),"Ey.dat",&buf);
+	buffer_dump_path(sim,output_path,"Ey.dat",&buf);
 	buffer_dump_path(sim,out_dir,"Ey.dat",&buf);
 	buffer_free(&buf);
 
@@ -215,7 +232,7 @@ void fdtd_dump(struct simulation *sim,struct fdtd_data *data)
 
 	}
 
-	buffer_dump_path(sim,get_output_path(sim),"Ez.dat",&buf);
+	buffer_dump_path(sim,output_path,"Ez.dat",&buf);
 	buffer_dump_path(sim,out_dir,"Ez.dat",&buf);
 	buffer_free(&buf);
 

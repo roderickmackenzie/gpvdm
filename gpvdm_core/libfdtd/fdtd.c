@@ -36,7 +36,7 @@
 /** @file fdtd.c
 	@brief Main FDTD interface
 */
-
+#include <enabled_libs.h>
 #include <math.h>
 #include <strings.h>
 #include <stdio.h>
@@ -48,7 +48,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <signal.h>
-#include <inp.h>
+#include <json.h>
 #include <sim.h>
 #include <log.h>
 #include <device.h>
@@ -68,6 +68,7 @@ free_all();
 
 int do_fdtd(struct simulation *sim,struct device *cell)
 {
+	struct json_obj *json_config;
 	printf_log(sim,"**************************\n");
 	printf_log(sim,"*       FDTD module      *\n");
 	printf_log(sim,"**************************\n");
@@ -80,7 +81,8 @@ int do_fdtd(struct simulation *sim,struct device *cell)
 
 	fdtd_init(&data);
 
-	fdtd_load_config(sim,&data);
+	json_config=json_obj_find_by_path(sim,&(cell->config.obj), "fdtd.section0");
+	fdtd_load_config(sim,&data,json_config);
 
 
 	if (data.use_gpu==TRUE)

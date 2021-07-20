@@ -361,9 +361,11 @@ void fdtd_solve_step(struct simulation *sim,struct fdtd_data *data)
 		fdtd_excitation(sim,data);
 		//printf("power %e\n",fdtd_power_zxy(sim,data,0, data->excitation_mesh_point, data->excitation_mesh_point));
 		conv=fopen("conv.dat","a");
-		fprintf(conv," %d %e %e %e\n",data->step,fdtd_power_zxy(sim,data,0, data->excitation_mesh_point_x, data->excitation_mesh_point_y),fdtd_power_y(sim,data,  data->ylen-data->ylen/4),fdtd_test_conv(sim,data));
-		fclose(conv);
-
+		if (conv!=NULL)
+		{
+			fprintf(conv," %d %e %e %e\n",data->step,fdtd_power_zxy(sim,data,0, data->excitation_mesh_point_x, data->excitation_mesh_point_y),fdtd_power_y(sim,data,  data->ylen-data->ylen/4),fdtd_test_conv(sim,data));
+			fclose(conv);
+		}
 		solve_H(sim,data);
 	}
 

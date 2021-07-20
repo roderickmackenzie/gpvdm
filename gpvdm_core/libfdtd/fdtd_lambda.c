@@ -36,7 +36,7 @@
 /** @file fdtd_lambda.c
 	@brief Runs the fdtd code over multiple wavelengths.
 */
-
+#include <enabled_libs.h>
 #include <math.h>
 #include <strings.h>
 #include <stdio.h>
@@ -57,7 +57,7 @@
 #include <gui_hooks.h>
 #include <dat_file.h>
 #include <cal_path.h>
-
+#include <device_fun.h>
 #include "vec.h"
 
 void fdtd_solve_all_lambda(struct simulation *sim,struct device *cell,struct fdtd_data *data)
@@ -109,7 +109,7 @@ void fdtd_solve_all_lambda(struct simulation *sim,struct device *cell,struct fdt
 	buf.z=1;
 	buffer_add_info(sim,&buf);
 	buffer_add_xy_data(sim,&buf,escape.x, escape.data, escape.len);
-	buffer_dump_path(sim,get_output_path(sim),"escape.dat",&buf);
+	buffer_dump_path(sim,get_output_path(cell),"escape.dat",&buf);
 	buffer_free(&buf);
 
 
@@ -137,7 +137,7 @@ void fdtd_solve_lambda(struct simulation *sim,struct fdtd_data *data,struct devi
 				fdtd_opencl_pull_data(sim,data);
 			}
 
-			fdtd_dump(sim,data);
+			fdtd_dump(sim,get_output_path(cell),data);
 
 			printf_log(sim,"plot! %ld\n",data->step);
 

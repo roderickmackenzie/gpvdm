@@ -37,6 +37,7 @@
 	@brief Init the fdtd struct.
 */
 
+#include <enabled_libs.h>
 #include <math.h>
 #include <strings.h>
 #include <stdio.h>

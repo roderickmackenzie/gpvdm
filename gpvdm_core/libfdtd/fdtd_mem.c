@@ -37,6 +37,7 @@
 	@brief Memory allocation for FDTD.
 */
 
+#include <enabled_libs.h>
 #include <math.h>
 #include <strings.h>
 #include <stdio.h>
