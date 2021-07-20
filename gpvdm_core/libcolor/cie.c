@@ -85,7 +85,7 @@ if (input_in_ev==TRUE)
 {
 	for (i=0;i<L.len;i++)
 	{
-		L.x[i]=	(hp*cl)/(L.x[i]*Q);
+		L.x[i]=	(hp*cl)/(L.x[i]*Qe);
 	}
 }
 inter_sort(&L);
