@@ -1,6 +1,6 @@
 #!/bin/bash
 #    model for 1st, 2nd and 3rd generation solar cells.
-#    Copyright (C) 2012-2016 Roderick C. I. MacKenzie
+#    Copyright (C) 2008-2021 Roderick C. I. MacKenzie
 #
 #	r.c.i.mackenzie at googlemail.com
 #	https://www.gpvdm.com
@@ -19,53 +19,95 @@
 #    with this program; if not, write to the Free Software Foundation, Inc.,
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-#Tested in Ubuntu 18.04
+#Tested in Ubuntu 20.04
+
+#This script will install all the dependencies needed by gpvdm for Ubuntu
+#it will install everything needed to build it and run it.
+#running the script on a decent VM with a decent internet connection takes about 20 min
+#from a fresh version of ubuntu.  The script must be run as root.
+#Rod 21/7/21
 
 #build system
-apt-get install python3-dialog
+apt-get -y install python3-dialog
 
+#gpvdm_core
+if [ "1" -eq "1" ]
+then
+	apt-get -y install libsuitesparse-dev
+	apt-get -y install libzip-dev 
+	apt-get -y install autoconf
+	apt-get -y install codespell
+	apt-get -y install librsvg2-bin
+	apt-get -y install gnuplot
+	apt-get -y install libsuperlu-dev
+	apt-get -y install automake
+	apt-get -y install libdbus-1-dev
+	apt-get -y install libzip-dev
+	apt-get -y install libpng-dev
+fi
 
-apt-get -y install libsuitesparse-dev indent unifdef libsuitesparse-dev libssl-dev  libzip-dev libgsl-dev libmatheval-dev pluma build-essential  autoconf codespell librsvg2-bin gnuplot libsuperlu-dev
+#development enviroment
+if [ "1" -eq "1" ]
+then
+	apt-get -y install pluma     
+	apt-get -y install indent
+	apt-get -y install unifdef
+	apt-get -y install rsync
+	apt-get -y install inkscape
+	apt-get -y install complexity
+	apt-get -y install help2man
+	apt-get -y install gettext
+	apt-get -y install electric-fence
+	apt-get -y install kdiff3
+	apt-get -y install valgrind
+	apt-get -y install kcachegrind
+	apt-get -y install graphviz
+fi
 
-apt-get -y install rsync pluma build-essential autoconf python-bashate codespell complexity apt-file gettext-lint gettext-lint inkscape pep8 i18nspector python-bashate automake pbuilder python3-dev
-
-
-apt-get -y install python3 python3-matplotlib l python3-opengl python3-numpy python3-crypto python3-dbus.mainloop.pyqt5 python3-psutil python3-dateutil
-
+#gpvdm_gui
+apt-get -y install python3
+apt-get -y install python3-opengl python3-numpy python3-dbus.mainloop.pyqt5 python3-psutil python3-dateutil
 apt-get -y install libqt5multimedia5-plugins 
 apt-get -y install python3-pyqt5.qtmultimedia python3-pyqt5.qtopeng
+apt-get -y install python3-pip
+apt-get -y install python3-matplotlib
 
-#removed
-#libedbus-dev
-apt-get install libdbus-1-dev
-apt-get -y install dh-virtualenv debhelper texlive 
-apt-get -y install mencoder
-apt-get install libzip-dev
-apt-get install help2man
-apt-get install gettext
-apt-get install imagemagick
-apt-get install license-reconcile
-apt-get install libcurl4-openssl-dev
-#because ubuntu seems odd
-apt-get install python3-pip
-pip3 install --upgrade PyOpenGL
-pip3 install --upgrade numpy
-pip3 install --upgrade matplotlib
-pip3 install pyopengl
-pip3 install pydbus
-pip3 install dbus-python
-pip3 install pyqt5
+#gpvdm_data
+apt-get -y install texlive
+apt-get install texlive-latex-extra
+
+#use these to fix python distro
+#pip3 install --upgrade PyOpenGL
+#pip3 install --upgrade numpy
+#pip3 install --upgrade matplotlib
+#pip3 install pyopengl
+#pip3 install pydbus
+#pip3 install dbus-python
+#pip3 install pyqt5
 
 #image processing
-apt-get install libpng-dev
+
+apt-get -y install mencoder
+apt-get -y install imagemagick
 
 #mpi/mumps
-apt-get install libopenmpi-dev libopenmpi2
-apt-get install libmumps-dev
+apt-get -y install libopenmpi-dev libopenmpi2
+apt-get -y install libmumps-dev
 
 #apt-get install libopenblas-base for paralel blas
 
-#debug tools
-apt-get install electric-fence kdiff3
-apt-get install valgrind kcachegrind graphviz
+#building deb packages for ubuntu
+apt-get -y install devscripts
+apt-get -y install debhelper
+apt-get -y install build-essential
+apt-get -y install dh-python
+apt-get -y install python-bashate
+apt-get -y install apt-file
+apt-get -y install gettext-lint
+apt-get -y install pep8
+apt-get -y install i18nspector
+apt-get -y install pbuilder
+apt-get -y install python3-dev
+apt-get -y install dh-virtualenv
+#apt-get -y install license-reconcile
 echo "Done"

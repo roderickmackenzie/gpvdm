@@ -1,0 +1,12 @@
+gpvdm-core (8.0-1) UNRELEASED; urgency=low
+
+  [ Roderick C. I. MacKenzie ]
+  * Initial release. (Closes: #818871)
+    
+  [ Roderick C. I. MacKenzie ]
+  * Switch to dpkg-source 3.0 (quilt) format
+
+  [ Roderick C. I. MacKenzie ]
+  * Fixed bugs in debian files
+
+ -- Roderick C. I. MacKenzie <r.c.i.mackenzie@googlemail.com>  Sat, 23 Apr 2016 08:38:00 -0400

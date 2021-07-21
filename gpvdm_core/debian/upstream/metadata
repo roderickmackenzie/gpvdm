@@ -1,0 +1,28 @@
+Name: gpvdm
+Homepage: http://www.gpvdm.org
+Other-References: http://gpvdm.com/publications.html
+Repository-Browse: https://github.com/roderickmackenzie/gpvdm
+Reference:
+ - Author: Roderick C. I. MacKenzie
+  Title: "gpvdm version 4.0, gpvdm manual"
+   Year: 2016
+   URL: http://gpvdm.com/docs/gpvdm_documentation.pdf
+ - Author: Roderick .C.I. MacKenzie and V. S. Balderrama and S. Schmeisser and R. Stoof and  S. Greedy and J. Pallarès and L. F. Marsal and A. Chanaewa and  E. von Hauff
+   Title: "Loss mechanisms in high efficiency polymer solar cells"
+   Journal: Adv. Energ. Mat.
+   Year: 2015
+   Volume: 4
+   Number: 6
+   Pages: 103-128
+   DOI: 10.1002/aenm.201501742
+   URL: http://onlinelibrary.wiley.com/wol1/doi/10.1002/aenm.201501742/abstract
+ - Author: Roderick C. I. MacKenzie and Chris G. Shuttle and  Michael L. Chabinyc and Jenny Nelson 
+   Title: "Extracting microscopic device parameters from transient photo current measurements of P3HT:PCBM solar cells."
+   Journal: Advan. Energ. Mat.
+   Year: 2012
+   Volume: 2
+   Number: 6
+   Pages: 662-669
+   DOI: 10.1002/aenm.201100709
+   URL: http://onlinelibrary.wiley.com/doi/10.1002/aenm.201100709/abstract
+

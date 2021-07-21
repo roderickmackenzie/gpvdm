@@ -1,0 +1,93 @@
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: gpvdm
+Upstream-Contact: Roderick C. I. MacKenzie <r.c.i.mackenzie@googlemail.com>
+Source: https://github.com/roderickmackenzie/gpvdm
+
+Files: *
+Copyright: 2012-2019 Roderick C. I. MacKenzie <r.c.i.mackenzie@googlemail.com>
+License: BSD-3-Clause
+
+Files: *Makefile
+Copyright: 2012-2016 Free Software Foundation, Inc
+License: GPL-2+
+
+Files: *Makefile.in
+Copyright: 1994-2014 Free Software Foundation, Inc.
+License: GPL-2+
+
+Files:  missing
+       py-compile
+       compile
+Copyright: 1994-2014 Free Software Foundation, Inc.
+License: GPL-2+
+
+Files: configure
+Copyright: 1992-1996, 1998-2012 Free Software Foundation, Inc.
+License: GPL-2+
+
+
+Files: *aclocal.m4
+Copyright: 1994-2014 Free Software Foundation, Inc.
+License: GPL-2+
+
+Files: debian/*
+Copyright: 2012-2016 Roderick C. I. MacKenzie <r.c.i.mackenzie@googlemail.com>
+License: BSD-3-Clause
+
+Files: materials/*
+Copyright: 2012-2016 Roderick C. I. MacKenzie <r.c.i.mackenzie@googlemail.com>
+License: CC-BY
+
+Files: images/splash.png
+Copyright: 2012-2016 Roderick C. I. MacKenzie <r.c.i.mackenzie@googlemail.com>
+License: CC-BY
+
+License: GPL-2
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; version 2 of the License.
+ .
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ .
+ You should have received a copy of the GNU General Public License along
+ with this program; if not, write to the Free Software Foundation, Inc.,
+ 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ .
+ On Debian systems, the full text of the GNU General Public
+ License version 2 can be found in the file
+ `/usr/share/common-licenses/GPL-2'.
+
+License: GPL-2+
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2 of the License,
+ or (at your option) any later version.
+ .
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU General Public License for more details.
+ .
+ You should have received a copy of the GNU General Public License along
+ with this program; if not, write to the Free Software Foundation, Inc.,
+ 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ .
+ On Debian systems, the complete text of the GNU General Public License
+ can be found in /usr/share/common-licenses/GPL-2 file.
+
+
+License: GFDL-1.3
+ Permission is granted to copy, distribute and/or modify this document
+ under the terms of the GNU Free Documentation License, Version 1.3
+ published by the Free Software Foundation; with no Invariant Sections,
+ no Front-Cover Texts, and no Back-Cover Texts.
+ .
+ A copy of the license should be found with this document. If you did
+ not obtain the license, it can be found at
+ http://www.gnu.org/licenses/fdl.html.
+ .
+ On Debian systems, the complete text of the GFDL-1.3
+ license can be found in `/usr/share/common-licenses/GFDL-1.3`.

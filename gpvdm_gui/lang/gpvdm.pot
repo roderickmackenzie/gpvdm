@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gpvdm 5.0\n"
 "Report-Msgid-Bugs-To: roderick.mackenzie@nottingham.ac.uk\n"
-"POT-Creation-Date: 2021-07-19 11:52+0100\n"
+"POT-Creation-Date: 2021-07-20 17:39+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2518,11 +2518,11 @@ msgstr ""
 msgid "Runing simulation"
 msgstr ""
 
-#: ../../gpvdm_core/src/sim_run.c:481
+#: ../../gpvdm_core/src/sim_run.c:485
 msgid "Solved"
 msgstr ""
 
-#: ../../gpvdm_core/src/sim_run.c:481
+#: ../../gpvdm_core/src/sim_run.c:485
 msgid "Equations"
 msgstr ""
 
@@ -4688,17 +4688,14 @@ msgid "Transparency"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:216
-#: ../../gpvdm_gui/gui/token_lib.py:261
 msgid "Publish material data?"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:216
-#: ../../gpvdm_gui/gui/token_lib.py:261
 msgid "Public"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:216
-#: ../../gpvdm_gui/gui/token_lib.py:261
 msgid "Private"
 msgstr ""
 
@@ -9899,6 +9896,22 @@ msgstr ""
 
 #: ../../gpvdm_gui/gui/token_lib.py:218
 msgid "Doping RHS"
+msgstr ""
+
+#: ../../gpvdm_gui/gui/token_lib.py:261
+msgid "Privicy options"
+msgstr ""
+
+#: ../../gpvdm_gui/gui/token_lib.py:261
+msgid "Public - everyone"
+msgstr ""
+
+#: ../../gpvdm_gui/gui/token_lib.py:261
+msgid "Public - within org"
+msgstr ""
+
+#: ../../gpvdm_gui/gui/token_lib.py:261
+msgid "Private - never publish"
 msgstr ""
 
 #: ../../gpvdm_gui/gui/token_lib.py:272

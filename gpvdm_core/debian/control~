@@ -1,0 +1,52 @@
+Source: gpvdm
+Maintainer: Roderick C. I. MacKenzie <r.c.i.mackenzie@googlemail.com>
+Build-Depends: autoconf,
+               automake,
+               autotools-dev,
+               debhelper (>= 9),
+               dh-python,
+               help2man,
+               libedbus-dev,
+               libgsl-dev,
+               libmatheval-dev,
+               librsvg2-2,
+               librsvg2-bin,
+               libsuitesparse-dev,
+               libzip-dev,
+               pkg-config,
+               python
+Section: science
+Priority: optional
+Homepage: http://www.gpvdm.com
+Standards-Version: 3.9.7
+
+Package: gpvdm
+Architecture: any
+Depends: python-matplotlib,
+         python-notify2,
+         python-numpy,
+         python-vte,
+         ${misc:Depends},
+         ${python:Depends},
+         ${shlibs:Depends}
+Description: Provides gpvdm a tool for simulating and solar cells.
+ It was originally written to model organic solar cells and OLEDs,
+ but it has recently been extended to simulate other devices
+ including silicon based devices. Currently the model can simulate;
+ Organic solar cells; Organic LEDs; Crystalline silicon solar cells
+ (beta); a-Si solar cells (beta) and CIGS solar cells (alpha).
+ .
+ The model can simulate: Dark JV curves; Light JV curves ; Dark/Light
+ CELIV transients; Dark/Light photo-CELIV transients; Transient Photo
+ Current (TPC); Transient Photo Voltage (TPV) ; Impedance Spectroscopy
+ (IS); Voltage transients of an arbitrary shape; Full optical model taking into
+ account reflection at interfaces and absorption and calculation of
+ reflection profile
+ .
+ The physical model solves both electron and hole drift-diffusion, and
+ carrier continuity equations in position space to describe the movement
+ of charge within the device. The model also solves Poisson's equation
+ to calculate the internal electrostatic potential. Recombination and
+ carrier trapping are described within the model using a Shockley-Read-Hall
+ (SRH) formalism, the distribution of trap sates can be arbitrarily defined.
+ All equations can be solved either in steady state or in time domain.

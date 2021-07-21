@@ -39,8 +39,10 @@ import os
 import locale
 import argparse
 import platform
+from code_ctrl import is_rod
 
 
+from buildpackage import buildpackage_menu
 from cal_path import build_setup_paths
 
 from package_menu import package_menu
@@ -82,6 +84,10 @@ while(1):
 	else:
 		menu.append(("(compile)", "Compile gpvdm"))
 		menu.append(("(packages)", "Install dependencies to compile"))
+		if is_rod()==True:
+			menu.append(("(buildpackage)", "Build package"))
+			menu.append(("(publish)", "Publish to web"))
+
 
 	menu.append(("(about)", "About"))
 
