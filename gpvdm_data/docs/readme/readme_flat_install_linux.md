@@ -1,5 +1,5 @@
 Gpvdm for Ubuntu 20.04 README
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------------
 
 This readme is for the compiled version of gpvdm which is distributed in a .tar file for Linux. To run gpvdm follow the following steps:
 
@@ -13,7 +13,9 @@ This readme is for the compiled version of gpvdm which is distributed in a .tar 
 
 6. Gpvdm will start and insert the following line in your .bashrc:
 
+~~~~~~~~~~~
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/path/to/your/install/gpvdm_core
+~~~~~~~~~
 
 7. Close gpvdm and close the bash terminal for the above line in your .bashrc to take effect.
 
