@@ -84,7 +84,6 @@ def buildpackage_menu(d):
 	menu.append(("(rpm)", "Build rpm"))
 	menu.append(("(deb)", "Build deb"))
 	menu.append(("(flat)", "Flat direct"))
-	menu.append(("(zip)", "Non windows zip file"))
 	menu.append(("(win)", "Windows installer"))
 
 
@@ -104,6 +103,8 @@ def buildpackage_menu(d):
 
 			if tag=="(flat)":
 				flat_install(d)
+				shutil.copyfile(os.path.join(os.getcwd(),"gpvdm_data","docs","readme","readme_flat_install_linux.md"), os.path.join("pub","flat","README.md"))
+				os.system("tar -czvf ./pub/gpvdm-8.0-for-ubuntu-20.04.tar.gz -C ./pub/flat/ .")
 
 		else:
 			return
