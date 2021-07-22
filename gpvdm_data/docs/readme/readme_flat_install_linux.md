@@ -10,7 +10,7 @@ This readme is for the compiled version of gpvdm which is distributed in a .tar 
 5. As su run:
 
 ```bash
-build_system/dependency_scripts/packages_ubuntu.sh.
+install_packages.sh
 ```
 This will download the packages need for gpvdm to run.  On a VM which is a fresh install of Ubuntu with a fast internet connection it takes about half an hour to finish.  I try to keep this script up to date, but if packages get renamed you may have to edit it.
 
