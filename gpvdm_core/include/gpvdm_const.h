@@ -108,7 +108,6 @@
 
 
 //dump control
-#define dump_optics 1
 #define dump_newton 2
 #define dump_plot 3
 #define dump_stop_plot 4

@@ -377,8 +377,24 @@ class gpvdm_main_window(QMainWindow):
 			self.load_sim(filename)
 
 	def callback_export(self, widget, data=None):
-		from dlg_export import dlg_export
-		dlg_export(self)
+		types=[]
+		dialog = QFileDialog(self)
+		dialog.setDirectory(get_sim_path())
+		dialog.selectFile(os.path.basename(get_sim_path()))
+		dialog.setWindowTitle(_("Export the simulation"))
+		dialog.setAcceptMode(QFileDialog.AcceptSave)
+		types.append(_("Zip file")+" (*.zip)")
+
+		dialog.setNameFilters(types)
+		dialog.setFileMode(QFileDialog.ExistingFile)
+		dialog.setAcceptMode(QFileDialog.AcceptSave)
+
+		if dialog.exec_() == QDialog.Accepted:
+			file_name = dialog.selectedFiles()[0]
+			from util_zip import archive_add_dir
+			if file_name.endswith(".zip")==False:
+				file_name=file_name+".zip"
+			archive_add_dir(file_name,get_sim_path(),get_sim_path())
 
 	def callback_on_line_help(self):
 		webbrowser.open("https://www.gpvdm.com")
@@ -497,6 +513,8 @@ class gpvdm_main_window(QMainWindow):
 
 		self.ribbon.file.home_new.clicked.connect(self.callback_new)
 		self.ribbon.file.home_open.clicked.connect(self.callback_open)
+		self.ribbon.file.home_export.clicked.connect(self.callback_export)
+
 		self.ribbon.file.used_files_click.connect(self.load_sim)
 		self.ribbon.home.undo.triggered.connect(self.callback_undo)
 		self.ribbon.home.run.start_sim.connect(self.callback_simulate)

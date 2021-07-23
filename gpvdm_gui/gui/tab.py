@@ -57,24 +57,19 @@ class tab_class(QWidget,tab_base):
 
 	changed = pyqtSignal()
 
-	def __init__(self,file_name_or_class,data=gpvdm_data(),db_json_file=None,db_json_sub_path=None):
+	def __init__(self,template_widget,data=gpvdm_data(),db_json_file=None,json_path=None,uid=None):
 		QWidget.__init__(self)
 		self.editable=True
 		self.icon_file=""
 		self.data=data
-		self.widget_list=[]
 		self.scroll=QScrollArea()
 		self.main_box_widget=QWidget()
 		self.vbox=QVBoxLayout()
 		self.hbox=QHBoxLayout()
 		self.hbox.setAlignment(Qt.AlignTop)
-		self.file_name=file_name_or_class
 
-		if type(file_name_or_class)==str:
-			print("This is no longer supported")
-		else:
-			self.tab=json_viewer(db_json_file=db_json_file,db_json_sub_path=db_json_sub_path)
-			self.tab.populate(file_name_or_class)
+		self.tab=json_viewer(db_json_file=db_json_file)
+		self.tab.populate(template_widget,json_path=json_path,uid=uid)
 
 		self.vbox.addWidget(self.tab)
 
@@ -108,16 +103,9 @@ class tab_class(QWidget,tab_base):
 
 		self.tab.changed.connect(self.callback_edit)
 
-	def update():
-		self.tab.update_lines(self,self.f.lines)
-
 	def callback_edit(self):
 		self.data.save()
-
 		self.changed.emit()
-
-	def help(self):
-		help_window().get_help(self.file_name)
 
 	def set_edit(self,editable):
 		self.tab.editable=editable

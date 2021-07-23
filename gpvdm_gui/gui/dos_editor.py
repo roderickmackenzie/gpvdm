@@ -92,6 +92,11 @@ class equation_editor(QGroupBox):
 		toolbar=QToolBar()
 		self.tab = gpvdm_tab(toolbar=toolbar)
 
+		#self.tab2 = gpvdm_tab2(toolbar=toolbar)
+		#self.tab2.set_tokens(["function","function_enable","function_a","function_b","function_c"])
+		#self.tab2.set_labels([_("Function"),_("Enabled"), _("a"), _("b"), _("c")])
+		#self.tab2.json_search_path="gpvdm_data().fits.vars.segments"
+
 		self.tab.tb_add.triggered.connect(self.add_item_clicked)
 
 		self.tab.tb_remove.triggered.connect(self.on_remove_click)
@@ -491,9 +496,11 @@ class dos_editor(QWidget):
 
 		self.status_bar.showMessage("Trap density: LUMO="+tot_lumo_str+" m-3,  HOMO="+tot_homo_str+" m-3")
 
-	def __init__(self,dos_data):
+	def __init__(self,json_path,uid):
 		QWidget.__init__(self)
-		self.dos_data=dos_data
+
+		json_path=eval(json_path)
+		self.dos_data=json_path.find_object_by_id(uid)
 
 
 		self.setWindowTitle(_("Complex Density of states editor - gpvdm"))
@@ -503,10 +510,10 @@ class dos_editor(QWidget):
 		edit_boxes=QWidget()
 		vbox=QVBoxLayout()
 
-		self.lumo=equation_editor("LUMO",dos_data.complex_lumo)
+		self.lumo=equation_editor("LUMO",self.dos_data.complex_lumo)
 		vbox.addWidget(self.lumo)
 		
-		self.homo=equation_editor("HOMO",dos_data.complex_homo)
+		self.homo=equation_editor("HOMO",self.dos_data.complex_homo)
 		vbox.addWidget(self.homo)
 		
 		self.plot=plot_widget(enable_toolbar=False)

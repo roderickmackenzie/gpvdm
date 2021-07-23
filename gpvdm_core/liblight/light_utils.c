@@ -82,6 +82,7 @@ void light_cal_photon_density_y(struct simulation *sim,struct light *li,struct d
 	long double pointing_vector=0.0;
 	long double E_tot_r=0.0;
 	long double E_tot_i=0.0;
+	double photon_density;
 
 	for (y=0;y<dim->ylen;y++)
 	{
@@ -95,9 +96,15 @@ void light_cal_photon_density_y(struct simulation *sim,struct light *li,struct d
 		//li->pointing_vector[z][x][y][l]=
 		pointing_vector=0.5*epsilon0*cl*li->n[z][x][y][l]*(gpow(E_tot_r,2.0)+gpow(E_tot_i,2.0));
 
-		li->photons[z][x][y][l]+=pointing_vector*(dim->l[l]/(hp*cl));
-		li->photons_asb[z][x][y][l]+=li->photons[z][x][y][l]*li->alpha[z][x][y][l];
-		
+		photon_density=pointing_vector*(dim->l[l]/(hp*cl));
+		//if (l==2)
+		//{
+		//	printf("b %e\n",photon_density);
+		//}
+
+		li->photons[z][x][y][l]+=photon_density;
+		li->photons_asb[z][x][y][l]+=photon_density*li->alpha[z][x][y][l];
+	
 		Eg=0.0;
 		if (obj->epi_layer!=-1)
 		{
@@ -118,7 +125,9 @@ void light_cal_photon_density_y(struct simulation *sim,struct light *li,struct d
 		{
 			li->H[z][x][y][l]+=E*Qe*li->photons_asb[z][x][y][l];
 		}
+		
 	}
+
 }
 
 long double light_cal_photon_density(struct simulation *sim,struct light *li,struct device *dev)
@@ -394,7 +403,7 @@ void light_flip_y_float_complex(struct dim_light *dim,float complex ****in,int z
 {
 	int i;
 	int j;
-	float temp;
+	float complex temp;
 	i = dim->ylen - 1;
 	j = 0;
 	while(i > j)

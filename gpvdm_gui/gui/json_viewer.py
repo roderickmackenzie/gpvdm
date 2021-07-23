@@ -95,7 +95,8 @@ class json_viewer(QWidget,tab_base):
 
 	changed = pyqtSignal(str)
 
-	def __init__(self,db_json_file=None,db_json_sub_path=None):
+	#jason path is a string
+	def __init__(self,db_json_file=None):
 		QWidget.__init__(self)
 
 		self.editable=True
@@ -107,7 +108,7 @@ class json_viewer(QWidget,tab_base):
 
 		self.json_default_values=None
 		self.db_json_file=db_json_file
-		self.db_json_sub_path=db_json_sub_path
+		self.json_path=None
 		#print(self.db_json_file)
 
 		self.menu_build()
@@ -229,7 +230,7 @@ class json_viewer(QWidget,tab_base):
 			try:
 				self.f=inp()
 				self.f.load_json(self.db_json_file)
-				self.json_default_values=json_get_val(self.f.json,self.db_json_sub_path)
+				self.json_default_values=json_get_val(self.f.json,self.json_path)
 			except:
 				return
 			for item in self.template_widget.var_list:
@@ -244,7 +245,7 @@ class json_viewer(QWidget,tab_base):
 
 	def refind_template_widget(self):
 		if self.uid!=None:
-			path=eval(self.self.json_path)
+			path=eval(self.json_path)
 			self.template_widget=path.find_object_by_id(self.uid)
 
 	def populate(self,template_widget,uid=None,json_path=None):
@@ -509,7 +510,7 @@ class json_viewer(QWidget,tab_base):
 
 		if token=="dostype":
 			from dos_editor import dos_editor
-			self.dos_editor=dos_editor(self.template_widget)
+			self.dos_editor=dos_editor(self.json_path,self.uid)
 			self.dos_editor.show()
 
 

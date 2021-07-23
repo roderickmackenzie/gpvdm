@@ -87,6 +87,14 @@ def build_token_lib():
 	lib.append(my_data("human_var",_("Select"),_("Select"),"e",1.0,"gpvdm_select"))
 	lib.append(my_data("fit_var_enabled",_("True/False"),_("Enable fit variable"),"e",1.0,"gtkswitch"))
 
+	#fit duplicate
+	lib.append(my_data("enabled",_("True/False"),_("Enabled"),"e",1.0,"gtkswitch"))
+	lib.append(my_data("human_src",_("Select"),_("Select"),"e",1.0,"gpvdm_select"))
+	lib.append(my_data("human_dest",_("Select"),_("Select"),"e",1.0,"gpvdm_select"))
+	lib.append(my_data("multiplier",_("multiplier"),_("Multiplier"),"e",1.0,"QLineEdit"))
+	lib.append(my_data("json_src",_("json_src"),_("json_src"),"e",1.0,"QLineEdit"))
+	lib.append(my_data("json_dest",_("json_dest"),_("json_dest"),"e",1.0,"QLineEdit"))
+
 	#laser?.inp
 	lib.append(my_data("laserwavelength","m",_("Laser wavelength"),"e",1.0,"QLineEdit"))
 	lib.append(my_data("laser_pulse_width","s",_("Length of pulse"),"e",1.0,"QLineEdit"))
@@ -513,8 +521,6 @@ def build_token_lib():
 	lib.append(my_data("dump_dynamic",_("True/False"),_("Dump dynamic"),"e",1.0,"gtkswitch"))
 	lib.append(my_data("dump_zip_files",_("True/False"),_("Dump zip files"),"e",1.0,"gtkswitch"))
 	lib.append(my_data("dump_write_out_band_structure",_("True/False"),_("Write out band structure"),"e",1.0,"gtkswitch"))
-	lib.append(my_data("dump_optics",_("True/False"),_("Dump optical information"),"e",1.0,"gtkswitch"))
-	lib.append(my_data("dump_optics_verbose",_("True/False"),_("Dump optics verbose"),"e",1.0,"gtkswitch"))
 	lib.append(my_data("dump_write_converge",_("True/False"),_("Write newton solver convergence to disk"),"e",1.0,"gtkswitch"))
 	lib.append(my_data("dump_print_pos_error",_("True/False"),_("Print poisson solver convergence"),"e",1.0,"gtkswitch"))
 	lib.append(my_data("dump_norm_time_to_one",_("True/False"),_("Normalize output x-time to one"),"e",1.0,"gtkswitch"))

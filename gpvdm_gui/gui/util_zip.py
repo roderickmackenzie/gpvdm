@@ -317,13 +317,14 @@ def archive_add_dir(archive_path,dir_name,base_dir, remove_src_dir=False,zf=None
 			file_name=os.path.join(root, name)
 
 			if os.path.isfile(file_name):
-				f=open(file_name, mode='rb')
-				lines = f.read()
-				f.close()
-				
-				if os.path.basename(file_name) not in exclude:
-					name_of_file_in_archive=subtract_paths(base_dir,file_name)
-					zf.writestr(name_of_file_in_archive, lines)
+				if archive_path!=file_name:
+					f=open(file_name, mode='rb')
+					lines = f.read()
+					f.close()
+					
+					if os.path.basename(file_name) not in exclude:
+						name_of_file_in_archive=subtract_paths(base_dir,file_name)
+						zf.writestr(name_of_file_in_archive, lines)
 
 
 	if close_file==True:

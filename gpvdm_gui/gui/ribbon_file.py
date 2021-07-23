@@ -71,12 +71,14 @@ class ribbon_file(ribbon_page):
 
 		self.home_open = QAction_lock("document-open", _("Open\nsimulation"), self,"main_open")
 
+
 		self.used_files_menu = QMenu(self)
 		self.populate_used_file_menu()
 		self.home_open.setMenu(self.used_files_menu)
-
-
 		self.addAction(self.home_open)
+
+		self.home_export = QAction_lock("zip", _("Export\nZip"), self,"main_zip")
+		self.addAction(self.home_export)
 
 		self.home_backup = QAction_lock("backup", _("Backup\nSimulaion"), self,"ribbion_db_backup")
 		self.home_backup.clicked.connect(self.callback_home_backup)
@@ -117,9 +119,11 @@ class ribbon_file(ribbon_page):
 		self.home_new.setEnabled(val)
 		self.home_open.setEnabled(val)
 		self.home_backup.setEnabled(val)
+		self.home_export.setEnabled(val)
 
 	def setEnabled_other(self,val):
 		self.home_backup.setEnabled(val)
+		self.home_export.setEnabled(val)
 		self.tb_script_editor.setEnabled(val)
 
 	def on_new_backup(self):

@@ -108,26 +108,23 @@ class dos_main(QWidget,tab_base):
 	def update(self):
 		self.notebook.clear()
 		data=gpvdm_data()
-		print(">>>>>>>>>",len(data.epi.layers))
 		for l in data.epi.layers:
 			if data.electrical_solver.solver_type!="circuit":
-				print(l.layer_type,l.shape_name,l.shape_dos.enabled)
 				if l.shape_dos.enabled==True and l.shape_enabled==True:
 					
 						name="DoS of "+l.shape_name
 						#print(l.shape_dos)
-						widget=tab_class(l.shape_dos)
+						widget=tab_class(None,json_path="gpvdm_data().epi",uid=l.shape_dos.id)
 						self.notebook.addTab(widget,name)
 
 						for s in l.shapes:
-							#print(s.shape_name,s.shape_dos.enabled)
 							if s.shape_dos.enabled==True and s.shape_enabled==True:
 								name="DoS of "+s.shape_name
-								widget=tab_class(s.shape_dos)
+								widget=tab_class(None,json_path="gpvdm_data().epi",uid=s.shape_dos.id)
 								widget.tab.json_human_path=""
 								self.notebook.addTab(widget,name)
 			else:
-				if l.layer_type=="active":# or l.layer_type=="contact":
+				if l.layer_type=="active":
 					name="Electrical "+l.shape_name
 					widget=tab_class(l.shape_electrical)
 

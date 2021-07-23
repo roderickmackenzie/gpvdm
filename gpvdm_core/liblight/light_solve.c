@@ -157,21 +157,22 @@ void light_zx_lambda_solver(struct simulation *sim, struct light *li, struct dev
 	int x;
 	char temp[200];
 	struct dim_light *dim=&li->dim;
+	int y;
 
 	for (z=0;z<dim->zlen;z++)
 	{
 		for (x=0;x<dim->xlen;x++)
 		{
 
+			memset_light_zxyl_float_y(dim, li->En,z,x,l,0.0);
+			memset_light_zxyl_float_y(dim, li->Ep,z,x,l,0.0);
+			memset_light_zxyl_float_y(dim, li->Enz,z,x,l,0.0);
+			memset_light_zxyl_float_y(dim, li->Epz,z,x,l,0.0);
+			memset_light_zxyl_double_y(dim, li->photons,z,x,l,0.0);
+			memset_light_zxyl_double_y(dim, li->photons_asb ,z,x,l,0.0);
+			memset_light_zxyl_float_y(dim, li->H,z,x,l,0.0);
 
-			if ((li->sun_E_y0[l]==0.0)&&(li->sun_E_y1[l]==0.0))
-			{
-				memset_light_zxyl_float_y(dim, li->En,z,x,l,0.0);
-				memset_light_zxyl_float_y(dim, li->Ep,z,x,l,0.0);
-				memset_light_zxyl_float_y(dim, li->Enz,z,x,l,0.0);
-				memset_light_zxyl_float_y(dim, li->Epz,z,x,l,0.0);
-				light_cal_photon_density_y(sim,li,cell, z, x, l);
-			}else
+			if ((li->sun_E_y0[l]!=0.0)&&(li->sun_E_y1[l]!=0.0))
 			{
 				if ((x==0)&&(z==0))
 				{
@@ -184,24 +185,38 @@ void light_zx_lambda_solver(struct simulation *sim, struct light *li, struct dev
 						}
 					}
 				}
+			}
 
-				if (li->sun_E_y0[l]!=0.0)
-				{
-					light_solve_lam_slice(sim,cell,li,li->sun_E_y0,z,x,l,nw,FALSE);
-					light_cal_photon_density_y(sim,li,cell, z, x, l);
-				}
+			if (li->sun_E_y0[l]!=0.0)
+			{
+				light_solve_lam_slice(sim,cell,li,li->sun_E_y0,z,x,l,nw,FALSE);
+				light_cal_photon_density_y(sim,li,cell, z, x, l);
+			}
 
-				if (li->sun_E_y1[l]!=0.0)
-				{
-					light_solve_lam_slice(sim,cell,li,li->sun_E_y1,z,x,l,nw,TRUE);
-					light_cal_photon_density_y(sim,li,cell, z, x, l);
-				}
+			//for (y=0;y<dim->ylen;y++)
+			//{
+			//	printf("y0 %d %d %e\n",y,l,li->photons_asb[z][x][y][l]);
+			//}
 
-				if (li->finished_solveing==TRUE)
-				{
-					break;
-				}
+			//printf("here1 %d\n",l);
+			//getchar();
+			if (li->sun_E_y1[l]!=0.0)
+			{
+				light_solve_lam_slice(sim,cell,li,li->sun_E_y1,z,x,l,nw,TRUE);
+				light_cal_photon_density_y(sim,li,cell, z, x, l);
+			}
 
+			//for (y=0;y<dim->ylen;y++)
+			//{
+			//	printf("y1 %d %d %e\n",y,l,li->photons_asb[z][x][y][l]);
+			//}
+
+			//printf("here2\n");
+			//getchar();
+
+			if (li->finished_solveing==TRUE)
+			{
+				break;
 			}
 
 
@@ -301,6 +316,9 @@ int light_solve_lam_slice(struct simulation *sim, struct device *dev, struct lig
 		light_flip_y_float_complex(dim,li->r,z,x,l);
 		light_flip_y_float_complex(dim,li->t,z,x,l);
 		light_flip_y_float_complex(dim,li->nbar,z,x,l);
+
+		light_flip_y_float(dim,li->n,z,x,l);
+		light_flip_y_float(dim,li->alpha,z,x,l);
 	}
 
 	ret= (*li->fn_solve_lam_slice)(sim,dev,li,sun_E,z,x,l,w);
@@ -310,6 +328,9 @@ int light_solve_lam_slice(struct simulation *sim, struct device *dev, struct lig
 		light_flip_y_float_complex(dim,li->r,z,x,l);
 		light_flip_y_float_complex(dim,li->t,z,x,l);
 		light_flip_y_float_complex(dim,li->nbar,z,x,l);
+
+		light_flip_y_float(dim,li->n,z,x,l);
+		light_flip_y_float(dim,li->alpha,z,x,l);
 
 		light_flip_y_float(dim,li->Ep,z,x,l);
 		light_flip_y_float(dim,li->Epz,z,x,l);

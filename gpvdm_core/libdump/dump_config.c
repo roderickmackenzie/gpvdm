@@ -74,9 +74,6 @@ void dump_load_config(struct simulation* sim,struct device *in)
 
 	json_get_long_double(sim,obj, &(in->start_stop_time),"start_stop_time");
 
-	json_get_english(sim,obj, &(dump),"dump_optics");
-	set_dump_status(sim,dump_optics, dump);
-
 	json_get_english(sim,obj, &(dump),"dump_norm_time_to_one");
 	set_dump_status(sim,dump_norm_time_to_one, dump);
 

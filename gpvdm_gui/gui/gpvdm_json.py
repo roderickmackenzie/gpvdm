@@ -75,7 +75,7 @@ class json_dump(json_base):
 		self.var_list.append(["dumpitdos",False])
 		self.var_list.append(["plotfile","plot"])
 		self.var_list.append(["start_stop_time",0.0])
-		self.var_list.append(["dump_optics",False])
+		self.var_list.append(["dump_optics",False])		#delete line 
 		self.var_list.append(["dump_1d_slice_xpos",-1])
 		self.var_list.append(["dump_1d_slice_zpos",-1])
 		self.var_list.append(["dump_energy_slice_xpos",-1])
