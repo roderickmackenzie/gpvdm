@@ -102,6 +102,10 @@ class gl_main_menu():
 		self.menu_view_plot.triggered.connect(self.menu_toggle_view)
 		self.menu_view_plot.setCheckable(True)
 
+		self.menu_view_transparent_objects=view.addAction(_("Transparent objects"))
+		self.menu_view_transparent_objects.triggered.connect(self.menu_toggle_view)
+		self.menu_view_transparent_objects.setCheckable(True)
+
 		action=view.addAction(_("Ray tracing mesh"))
 		action.triggered.connect(self.menu_toggle_view)
 
@@ -142,7 +146,7 @@ class gl_main_menu():
 	def menu_background_color(self):
 		col = QColorDialog.getColor(Qt.white, self)
 		if col.isValid():
-			self.view.bg_color=[col.red()/255,col.green()/255,col.blue()/255]
+			self.view_options.bg_color=[col.red()/255,col.green()/255,col.blue()/255]
 			self.force_redraw()
 
 	def menu_toggle_view(self):
@@ -150,13 +154,13 @@ class gl_main_menu():
 		text=action.text()
 		self.draw_electrical_mesh=self.menu_view_draw_electrical_mesh.isChecked()
 		self.draw_device_cut_through=self.menu_view_draw_device_cut_through.isChecked()
-		self.view.render_photons=self.menu_view_render_photons.isChecked()
-		self.view.render_grid=self.menu_view_grid.isChecked()
-		self.view.draw_device=self.menu_view_draw_device.isChecked()
-		self.view.optical_mode=self.menu_view_optical_mode.isChecked()
-		self.view.text=self.menu_view_text.isChecked()
-		self.view.render_plot=self.menu_view_plot.isChecked()
-
+		self.view_options.render_photons=self.menu_view_render_photons.isChecked()
+		self.view_options.render_grid=self.menu_view_grid.isChecked()
+		self.view_options.draw_device=self.menu_view_draw_device.isChecked()
+		self.view_options.optical_mode=self.menu_view_optical_mode.isChecked()
+		self.view_options.text=self.menu_view_text.isChecked()
+		self.view_options.render_plot=self.menu_view_plot.isChecked()
+		self.view_options.transparent_objects=self.menu_view_transparent_objects.isChecked()
 
 		if text==_("Ray tracing mesh"):
 			self.enable_draw_ray_mesh= not self.enable_draw_ray_mesh
@@ -178,19 +182,21 @@ class gl_main_menu():
 
 
 	def menu_stars(self):
-		if self.view.stars_distance==60:
-			self.view.stars_distance=0.0
+		if self.view_options.stars_distance==60:
+			self.view_options.stars_distance=0.0
 		else:
-			self.view.stars_distance=60
+			self.view_options.stars_distance=60
 
 		self.force_redraw()
 
 	def menu_update(self):
 		self.menu_view_draw_electrical_mesh.setChecked(self.draw_electrical_mesh)
 		self.menu_view_draw_device_cut_through.setChecked(self.draw_device_cut_through)
-		self.menu_view_render_photons.setChecked(self.view.render_photons)
-		self.menu_view_grid.setChecked(self.view.render_grid)
-		self.menu_view_draw_device.setChecked(self.view.draw_device)
-		self.menu_view_optical_mode.setChecked(self.view.optical_mode)
-		self.menu_view_text.setChecked(self.view.text)
-		self.menu_view_plot.setChecked(self.view.render_plot)
+		self.menu_view_render_photons.setChecked(self.view_options.render_photons)
+		self.menu_view_grid.setChecked(self.view_options.render_grid)
+		self.menu_view_draw_device.setChecked(self.view_options.draw_device)
+		self.menu_view_optical_mode.setChecked(self.view_options.optical_mode)
+		self.menu_view_text.setChecked(self.view_options.text)
+		self.menu_view_plot.setChecked(self.view_options.render_plot)
+		self.menu_view_transparent_objects.setChecked(self.view_options.transparent_objects)
+

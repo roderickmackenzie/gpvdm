@@ -80,8 +80,8 @@ class gl_input():
 			if event.text()=="z":
 				if self.timer==None:
 					self.start_rotate()
-					if self.view.zoom>-40:
-						self.view.zoom =-400
+					if self.active_view.zoom>-40:
+						self.active_view.zoom =-400
 					self.timer=QTimer()
 					self.timer.timeout.connect(self.fzoom_timer)
 					self.timer.start(50)
@@ -95,10 +95,10 @@ class gl_input():
 		y = self.height()-event.y()
 		self.set_false_color(True)
 
-		old_val=self.view.text
-		self.view.text=False
+		old_val=self.view_options.text
+		self.view_options.text=False
 		self.render()
-		self.view.text=old_val
+		self.view_options.text=old_val
 
 		data=glReadPixelsub(x, y, 1, 1, GL_RGBA,GL_FLOAT)
 
@@ -110,9 +110,10 @@ class gl_input():
 	def mouseDoubleClickEvent(self,event):
 		#thumb_nail_gen()
 		self.obj=self.event_to_3d_obj(event)
-		if gl_obj_id_starts_with(self.obj.id,"layer")==True:
-			self.selected_obj=self.obj
-			self.do_draw()
+		if self.obj!=None:
+			if gl_obj_id_starts_with(self.obj.id,"layer")==True:
+				self.selected_obj=self.obj
+				self.do_draw()
 
 	def set_cursor(self,cursor):
 		if self.cursor!=cursor:
@@ -134,14 +135,14 @@ class gl_input():
 		obj=self.gl_objects_is_selected()
 		if obj==False:
 			if event.buttons()==Qt.LeftButton:
-				
-				self.view.xRot =self.view.xRot - 1 * dy
-				self.view.yRot =self.view.yRot - 1 * dx
+				if self.active_view.enable_view_move==True:
+					self.active_view.xRot =self.active_view.xRot - 1 * dy
+					self.active_view.yRot =self.active_view.yRot - 1 * dx
 
 			if event.buttons()==Qt.RightButton:
 				self.set_cursor(QCursor(Qt.SizeAllCursor))
-				self.view.x_pos =self.view.x_pos + 0.1 * dx
-				self.view.y_pos =self.view.y_pos - 0.1 * dy
+				self.active_view.x_pos =self.active_view.x_pos + 0.1 * dx
+				self.active_view.y_pos =self.active_view.y_pos - 0.1 * dy
 		else:
 			self.gl_objects_move(dx*0.05,-dy*0.05)
 		
@@ -151,14 +152,27 @@ class gl_input():
 		self.update()
 		#self.view_dump()
 
+	def event_to_view(self,event):
+		for v in self.views:
+			if event.x()>v.window_x*self.width():
+				if self.height()-event.y()>v.window_y*self.height():
+					if event.x()<v.window_x*self.width()+v.window_w*self.width():
+						if self.height()-event.y()<v.window_y*self.height()+v.window_h*self.height():
+							return v
+
+		return False
+
 	def mousePressEvent(self,event):
 		self.lastPos=None
 		self.mouse_click_event=mouse_event()
 		self.mouse_click_event.time=time.time()
 		self.mouse_click_event.x=event.x()
 		self.mouse_click_event.y=event.y()
+		self.active_view=self.event_to_view(event)
+
 		if event.buttons()==Qt.LeftButton or event.buttons()==Qt.RightButton:
 			obj=self.event_to_3d_obj(event)
+
 			if obj!=None:
 				self.gl_object_deselect_all()
 				self.gl_objects_select_by_id(obj.id)
@@ -199,6 +213,7 @@ class gl_input():
 
 	def wheelEvent(self,event):
 		p=event.angleDelta()
-		self.view.zoom =self.view.zoom - p.y()/120
+		self.active_view=self.event_to_view(event)
+		self.active_view.zoom =self.active_view.zoom - p.y()/120
 		self.update()
 

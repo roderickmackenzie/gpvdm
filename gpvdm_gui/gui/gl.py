@@ -88,8 +88,8 @@ import copy
 
 from thumb import thumb_nail_gen
 
-from gl_view_point import view_point 
-from gl_view_point import gl_move_view
+from gl_views import gl_views
+from gl_views import gl_view_options
 
 from gl_lib import val_to_rgb
 
@@ -149,7 +149,7 @@ class open_gl_light:
 		self.number=GL_LIGHT0
 
 if open_gl_ok==True:		
-	class glWidget(QGLWidget,shape_layer, gl_lib_ray,gl_objects, gl_text,gl_move_view,gl_mesh,gl_layer_editor,gl_cords,gl_base_widget,gl_main_menu,gl_input, gl_contacts, gl_draw_light_profile, gl_graph, gl_draw_circuit, gl_color, gl_shapes, gl_render_obj, gl_photons, gl_toolbar):
+	class glWidget(QGLWidget,shape_layer, gl_lib_ray,gl_objects, gl_text,gl_views,gl_mesh,gl_layer_editor,gl_cords,gl_base_widget,gl_main_menu,gl_input, gl_contacts, gl_draw_light_profile, gl_graph, gl_draw_circuit, gl_color, gl_shapes, gl_render_obj, gl_photons, gl_toolbar):
 
 
 		text_output = pyqtSignal(str)
@@ -166,11 +166,12 @@ if open_gl_ok==True:
 			gl_input.__init__(self)
 			gl_graph.__init__(self)
 			gl_toolbar.__init__(self)
-			gl_move_view.__init__(self)
+			gl_views.__init__(self)
 			self.lit=True
 			self.setAutoBufferSwap(False)
 
 			self.lights=[]
+			self.view_options=gl_view_options()
 
 			l=open_gl_light()
 			l.xyz=[0, 5, -10, 1.0]
@@ -291,7 +292,7 @@ if open_gl_ok==True:
 					self.shape_layer(obj)			
 
 				if obj.layer_type=="active":
-					if self.view.render_text==True:
+					if self.view_options.render_text==True:
 						o=gl_base_object()
 						o.xyz.x=x+scale_get_device_x()+0.1
 						o.xyz.y=y
@@ -309,20 +310,21 @@ if open_gl_ok==True:
 						display_name=display_name+" ("+_("active")+")"
 						self.gl_objects_add(o)
 
-				if self.view.render_text==True:
-					if self.view.zoom<40:
-						o=gl_base_object()
-						o.r=1.0
-						o.g=1.0
-						o.b=1.0
-						o.xyz.x=x+scale_get_device_x()+0.2
-						o.xyz.y=y#+y_len/2
-						o.xyz.z=z+(len(epi.layers)-l)*0.1
-						o.id=["text"]
-						o.type="text"
-						o.text=display_name
-						#self.set_color(o)
-						self.gl_objects_add(o)
+				if self.view_options.render_text==True:
+					if self.views[0].zoom<40:
+						if self.views[0].enabled==True:
+							o=gl_base_object()
+							o.r=1.0
+							o.g=1.0
+							o.b=1.0
+							o.xyz.x=x+scale_get_device_x()+0.2
+							o.xyz.y=y#+y_len/2
+							o.xyz.z=z+(len(epi.layers)-l)*0.1
+							o.id=["text"]
+							o.type="text"
+							o.text=display_name
+							#self.set_color(o)
+							self.gl_objects_add(o)
 
 				l=l+1
 
@@ -331,8 +333,20 @@ if open_gl_ok==True:
 			self.update_real_to_gl_mul()
 			self.rebuild_scene()
 
-
 		def render(self):
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+			glClearColor(self.view_options.bg_color[0], self.view_options.bg_color[1], self.view_options.bg_color[2], 0.5)
+			glPolygonMode(GL_FRONT, GL_FILL);
+			for v in self.views:
+				if v.enabled==True:
+					w=int(self.width()*v.window_w)
+					h=int(self.height()*v.window_w)
+					x=int(self.width()*v.window_x)
+					y=int(self.height()*v.window_y)
+					glViewport(x, y, w, h)
+					self.render_view(v)
+
+		def render_view(self,view):
 			data=gpvdm_data()
 			self.update_real_to_gl_mul()
 
@@ -340,13 +354,9 @@ if open_gl_ok==True:
 			y=0.0#project_m2screen_y(0)
 			z=gl_scale.project_m2screen_z(0)
 			#print(">>>>>>22",project_m2screen_z(0))
-			glClearColor(self.view.bg_color[0], self.view.bg_color[1], self.view.bg_color[2], 0.5)
-
 
 			self.dos_start=-1
 			self.dos_stop=-1
-
-
 
 			self.emission=False
 			self.ray_model=data.ray.segments[0].config.ray_auto_run
@@ -354,18 +364,18 @@ if open_gl_ok==True:
 			lines=[]
 			epi=get_epi()
 					
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+
 			glLoadIdentity()
 			glScalef(1.0, 1.0, -1.0) 
 
-			glTranslatef(self.view.x_pos, self.view.y_pos, self.view.zoom) # Move Into The Screen
+			glTranslatef(view.x_pos, view.y_pos, view.zoom) # Move Into The Screen
 			
-			glRotatef(self.view.xRot, 1.0, 0.0, 0.0)
-			glRotatef(self.view.yRot, 0.0, 1.0, 0.0)
-			glRotatef(self.view.zRot, 0.0, 0.0, 1.0)
+			glRotatef(view.xRot, 1.0, 0.0, 0.0)
+			glRotatef(view.yRot, 0.0, 1.0, 0.0)
+			glRotatef(view.zRot, 0.0, 0.0, 1.0)
 
 			glColor3f( 1.0, 1.5, 0.0 )
-			glPolygonMode(GL_FRONT, GL_FILL);
+
 
 			#glClearColor(0.92, 0.92, 0.92, 0.5) # Clear to black.
 
@@ -378,7 +388,7 @@ if open_gl_ok==True:
 			if self.enable_draw_ray_mesh==True:
 				self.draw_ray_mesh()
 				
-			if self.view.optical_mode==True:
+			if self.view_options.optical_mode==True:
 				self.draw_mode()
 
 			if self.scene_built==False:
@@ -388,12 +398,12 @@ if open_gl_ok==True:
 				self.draw_graph()
 
 
-			if self.view.render_photons==True:
+			if self.view_options.render_photons==True:
 				self.draw_photons(x,z)
 
 			self.gl_objects_render()
 
-			if self.view.zoom>self.view.stars_distance:
+			if view.zoom>self.view_options.stars_distance:
 				self.draw_stars()
 
 
@@ -407,20 +417,9 @@ if open_gl_ok==True:
 			glLoadIdentity()
 			glScalef(1.0, 1.0, -1.0) 
 
-			glTranslatef(self.view.x_pos, self.view.y_pos, self.view.zoom) # Move Into The Screen
-			
-			glRotatef(self.view.xRot, 1.0, 0.0, 0.0)
-			glRotatef(self.view.yRot, 0.0, 1.0, 0.0)
-			glRotatef(self.view.zRot, 0.0, 0.0, 1.0)
-
-			glColor3f( 1.0, 1.5, 0.0 )
-			glPolygonMode(GL_FRONT, GL_FILL);
-
-			#self.bix_axis()
 			if self.failed==False:
 				self.do_draw()
 
-			#return
 
 
 		def load_data(self):
@@ -446,7 +445,8 @@ if open_gl_ok==True:
 
 			self.x_len=get_mesh().x.get_len()
 			if os.path.isdir(os.path.join(os.path.join(get_sim_path(),"ray_trace")))==True:
-				self.view.render_photons=False
+				for v in self.views:
+					v.render_photons=False
 
 
 		#This will rebuild the scene from scratch
@@ -492,7 +492,7 @@ if open_gl_ok==True:
 			if self.draw_electrical_mesh==True:
 				self.draw_mesh()
 
-			elif self.view.draw_device==True:
+			elif self.view_options.draw_device==True:
 				self.draw_device2(x,z)
 				self.draw_contacts()
 
@@ -502,7 +502,7 @@ if open_gl_ok==True:
 			if self.enable_light_profile==True:
 				self.draw_light_profile()
 
-			if self.view.render_grid==True:
+			if self.view_options.render_grid==True:
 				o=gl_base_object()
 				o.id=["grid"]
 				o.r=0.5
@@ -613,7 +613,7 @@ if open_gl_ok==True:
 			glMatrixMode(GL_PROJECTION)
 			glLoadIdentity()
 			#glScalef(1.0, 1.0, -1.0)                  
-			gluPerspective(45.0,float(self.width()) / float(self.height()+100),0.1, 1000.0) 
+			gluPerspective(45.0,float(self.width()) / float(self.height()+100),0.001, 1000.0) 
 			glMatrixMode(GL_MODELVIEW)
 			glEnable( GL_POLYGON_SMOOTH )
 			#glEnable(GL_MULTISAMPLE)
@@ -634,12 +634,7 @@ if open_gl_ok==True:
 			self.failed=False
 			global_object_register("gl_force_redraw",self.force_redraw)
 			global_object_register("gl_do_draw",self.do_draw)
-			#get_watch().add_call_back("light.inp",self.force_redraw)
 			get_epi().add_callback(self.force_redraw)
-			#get_watch().add_call_back("shape[0-9]+.inp",self.force_redraw)
-			#get_epi().changed.connect(self.boom)
-			#except:
-			#	print("OpenGL failed to load falling back to 2D rendering.",sys.exc_info()[0])
 
 		def boom(self):
 			print("oh")
@@ -649,7 +644,7 @@ else:
 		def __init__(self, parent):
 			QWidget.__init__(self)
 			gl_fallback.__init__(self)
-			self.view=view_point()
+			self.views=[]
 			self.failed=True
 			self.open_gl_working=False
 

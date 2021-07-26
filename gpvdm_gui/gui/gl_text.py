@@ -110,7 +110,7 @@ class gl_text():
 		return t
 
 	def text(self,x,y,z,text):
-		if self.view.text==False:
+		if self.view_options.text==False:
 			return
 		#qobj = gluNewQuadric()
 		#gluQuadricTexture(qobj, GL_TRUE)

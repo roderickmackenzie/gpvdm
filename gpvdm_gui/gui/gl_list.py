@@ -287,8 +287,11 @@ class gl_objects():
 				self.paint_from_array(o)
 			elif o.type=="solid_and_mesh":
 				#print("solid_and_mesh>>",o.z)
-				self.paint_from_array(o)
-				self.paint_open_triangles_from_array(o)
+				if self.view_options.transparent_objects==False:
+					self.paint_from_array(o)
+					self.paint_open_triangles_from_array(o)
+				else:
+					self.paint_open_triangles_from_array(o,false_color=False,line_width=2)
 			elif o.type=="solid_and_mesh_cut_through":
 				self.paint_from_array_cut_through(o)
 			elif o.type=="solid_and_mesh_color":

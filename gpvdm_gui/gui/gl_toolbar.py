@@ -80,11 +80,11 @@ class gl_toolbar():
 		self.xz = QAction(icon_get("xz"), _("xz"), self)
 		self.box_tb1.addAction(self.xz)
 		self.xz.triggered.connect(self.view_move_to_xz)
-		
-		self.tb_rotate = QAction(icon_get("rotate.png"), _("Rotate"), self)
-		self.box_tb1.addAction(self.tb_rotate)
-		self.tb_rotate.setEnabled(True)
-		self.tb_rotate.triggered.connect(self.start_rotate)
+
+		self.tb_orthographic = QAction(icon_get("orthographic"), _("Orthographic"), self)
+		self.box_tb1.addAction(self.tb_orthographic)
+		self.tb_orthographic.triggered.connect(self.view_move_to_orthographic)
+
 
 		#toolbar1
 		self.toolbar1=QWidget()
@@ -103,6 +103,12 @@ class gl_toolbar():
 		self.tb_video = QAction(icon_get("video"), _("Save\nvideo"), self)
 		self.box_tb2.addAction(self.tb_video)
 		self.tb_video.triggered.connect(self.callback_videomaker)
+
+		self.tb_rotate = QAction(icon_get("rotate.png"), _("Rotate"), self)
+		self.box_tb2.addAction(self.tb_rotate)
+		self.tb_rotate.setEnabled(True)
+		self.tb_rotate.triggered.connect(self.start_rotate)
+
 
 	def callback_videomaker(self):
 		self.video_maker_window=gl_video_maker(self)

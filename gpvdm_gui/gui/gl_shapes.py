@@ -146,14 +146,14 @@ class gl_shapes:
 		glEnd()
 		glPopMatrix()
 
-	def paint_open_triangles_from_array(self,o,colored=False):
+	def paint_open_triangles_from_array(self,o,false_color=True,line_width=5):
 		
 
 		dx=o.dxyz.x/2
 		dy=o.dxyz.y/2
 		dz=o.dxyz.z/2
 
-		glLineWidth(5)
+		glLineWidth(line_width)
 
 		glPushMatrix()
 		glTranslatef(o.xyz.x,o.xyz.y,o.xyz.z)
@@ -162,12 +162,6 @@ class gl_shapes:
 
 		n=1.0
 		for t in o.triangles:
-			
-			#if colored==True:
-			#	ratio=(t.xyz0.y-min_y)/(max_y-min_y)
-			#	r,g,b=val_to_rgb(ratio)
-				#print(ratio,r,g,b)
-			#	glColor4f(r,g,b, 1.0)
 			glVertex3f(t.xyz0.x,t.xyz0.y,t.xyz0.z)
 			glVertex3f(t.xyz1.x,t.xyz1.y,t.xyz1.z)
 
@@ -177,21 +171,13 @@ class gl_shapes:
 				o.b=0.0
 
 			if t.points==3:
-				self.set_color(o,r_override=o.r*0.1+o.r*0.9*n, g_override=o.g*0.1+o.g*0.9*n, b_override=o.b*0.1+o.b*0.9*n)
-				#if colored==True:
-				#	ratio=(t.xyz1.y-min_y)/(max_y-min_y)
-				#	r,g,b=val_to_rgb(ratio)
-				#	#print(ratio,r,g,b)
-				#	glColor4f(r,g,b, 1.0)
+				if false_color==True:
+					self.set_color(o,r_override=o.r*0.1+o.r*0.9*n, g_override=o.g*0.1+o.g*0.9*n, b_override=o.b*0.1+o.b*0.9*n)
+				else:
+					self.set_color(o)
 
 				glVertex3f(t.xyz1.x,t.xyz1.y,t.xyz1.z)
 				glVertex3f(t.xyz2.x,t.xyz2.y,t.xyz2.z)
-
-				#if colored==True:
-				#	ratio=(t.xyz2.y-min_y)/(max_y-min_y)
-				#	r,g,b=val_to_rgb(ratio)
-				#	#print(ratio,r,g,b)
-				#	glColor4f(r,g,b, 1.0)
 
 				glVertex3f(t.xyz2.x,t.xyz2.y,t.xyz2.z)
 				glVertex3f(t.xyz0.x,t.xyz0.y,t.xyz0.z)

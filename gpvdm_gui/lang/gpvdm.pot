@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gpvdm 5.0\n"
 "Report-Msgid-Bugs-To: roderick.mackenzie@nottingham.ac.uk\n"
-"POT-Creation-Date: 2021-07-23 14:24+0100\n"
+"POT-Creation-Date: 2021-07-26 09:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2949,7 +2949,7 @@ msgstr ""
 #: ../../gpvdm_gui/gui/parasitic.py:70 ../../gpvdm_gui/gui/pl_main.py:68
 #: ../../gpvdm_gui/gui/pl_main.py:69
 #: ../../gpvdm_gui/gui/ribbon_emission_db.py:77
-#: ../../gpvdm_gui/gui/ribbon_file.py:97 ../../gpvdm_gui/gui/contacts.py:347
+#: ../../gpvdm_gui/gui/ribbon_file.py:98 ../../gpvdm_gui/gui/contacts.py:347
 #: ../../gpvdm_gui/gui/interface_editor.py:73
 #: ../../gpvdm_gui/gui/interface_editor.py:74 ../../gpvdm_gui/gui/qe.py:73
 #: ../../gpvdm_gui/gui/sunsjsc.py:71
@@ -3816,17 +3816,17 @@ msgid ""
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gpvdm.py:452
-#: ../../gpvdm_gui/gui/gpvdm.py:371 ../../gpvdm_gui/gui/gpvdm.py:381
+#: ../../gpvdm_gui/gui/gpvdm.py:371
 msgid "Open an existing gpvdm simulation"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gpvdm.py:489
-#: ../../gpvdm_gui/gui/gpvdm.py:412
+#: ../../gpvdm_gui/gui/gpvdm.py:417
 msgid "The simulation directory has been deleted."
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gpvdm.py:517
-#: ../../gpvdm_gui/gui/gpvdm.py:428
+#: ../../gpvdm_gui/gui/gpvdm.py:433
 msgid "I can't run from inside a zip file!"
 msgstr ""
 
@@ -7178,7 +7178,7 @@ msgid "Detailed dump control"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl.py:293
-#: ../../gpvdm_gui/gui/gl.py:309
+#: ../../gpvdm_gui/gui/gl.py:310
 msgid "active"
 msgstr ""
 
@@ -8876,43 +8876,36 @@ msgid "Remove line"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/dlg_export.py:51
-#: ../../gpvdm_gui/gui/dlg_export.py:50
 msgid "Export the simulation as"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/dlg_export.py:54
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/dlg_export.py:68
-#: ../../gpvdm_gui/gui/dlg_export.py:53 ../../gpvdm_gui/gui/dlg_export.py:67
 msgid "gpvdm archive input+output files"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/dlg_export.py:55
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/dlg_export.py:70
-#: ../../gpvdm_gui/gui/dlg_export.py:54 ../../gpvdm_gui/gui/dlg_export.py:69
 msgid "gpvdm archive input files"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/dlg_export.py:56
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/dlg_export.py:72
-#: ../../gpvdm_gui/gui/dlg_export.py:55 ../../gpvdm_gui/gui/dlg_export.py:71
 msgid "optical materials database"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/dlg_export.py:57
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/dlg_export.py:74
-#: ../../gpvdm_gui/gui/dlg_export.py:56 ../../gpvdm_gui/gui/dlg_export.py:73
 msgid "pdf file"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/dlg_export.py:58
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/dlg_export.py:74
-#: ../../gpvdm_gui/gui/dlg_export.py:57 ../../gpvdm_gui/gui/dlg_export.py:73
 msgid "jpg image"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/dlg_export.py:59
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/dlg_export.py:74
-#: ../../gpvdm_gui/gui/dlg_export.py:58 ../../gpvdm_gui/gui/dlg_export.py:73
 msgid "tex file"
 msgstr ""
 
@@ -8954,7 +8947,7 @@ msgid ""
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_file.py:88
-#: ../../gpvdm_gui/gui/ribbon_file.py:82
+#: ../../gpvdm_gui/gui/ribbon_file.py:83
 msgid ""
 "Backup\n"
 "Simulaion"
@@ -8967,24 +8960,24 @@ msgid ""
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_file.py:98
-#: ../../gpvdm_gui/gui/ribbon_file.py:86
+#: ../../gpvdm_gui/gui/ribbon_file.py:87
 msgid ""
 "Script\n"
 "Editor"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_file.py:152
-#: ../../gpvdm_gui/gui/ribbon_file.py:127
+#: ../../gpvdm_gui/gui/ribbon_file.py:130
 msgid "New backup:"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_file.py:152
-#: ../../gpvdm_gui/gui/ribbon_file.py:127
+#: ../../gpvdm_gui/gui/ribbon_file.py:130
 msgid "New backup name"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_file.py:172
-#: ../../gpvdm_gui/gui/ribbon_file.py:147
+#: ../../gpvdm_gui/gui/ribbon_file.py:150
 msgid "New backup"
 msgstr ""
 
@@ -9724,6 +9717,14 @@ msgstr ""
 msgid "Explore the simulation data structure"
 msgstr ""
 
+#: ../../gpvdm_gui/gui/gpvdm.py:384
+msgid "Export the simulation"
+msgstr ""
+
+#: ../../gpvdm_gui/gui/gpvdm.py:386
+msgid "Zip file"
+msgstr ""
+
 #: ../../gpvdm_gui/gui/ml_anal.py:144
 msgid "Counts"
 msgstr ""
@@ -10444,6 +10445,10 @@ msgstr ""
 msgid "CV experiment window"
 msgstr ""
 
+#: ../../gpvdm_gui/gui/gl_toolbar.py:107
+msgid "Orthographic"
+msgstr ""
+
 #: ../../gpvdm_gui/gui/gl_video_maker.py:71
 msgid ""
 "Start\n"
@@ -10675,7 +10680,7 @@ msgstr ""
 msgid "Electrical boundary conditions"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/ribbon_file.py:74
+#: ../../gpvdm_gui/gui/ribbon_file.py:80
 msgid ""
 "Export\n"
 "Zip"
