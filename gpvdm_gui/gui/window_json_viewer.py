@@ -112,13 +112,6 @@ class window_json_viewer(QWidget):
 				a.pointer_to_var=class_data.segments[l]
 				var_list.append(a)
 
-		if "this_is_the_contact_class" in dir(class_data):
-			for l in range(0,len(class_data.contacts)):
-				a=obj_info()
-				a.var_name="contacts["+str(l)+"]"
-				a.pointer_to_var=class_data.contacts[l]
-				var_list.append(a)
-
 		#find icons
 		for o in var_list:
 			if isclass(o.pointer_to_var)==False:

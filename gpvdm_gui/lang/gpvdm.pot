@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gpvdm 5.0\n"
 "Report-Msgid-Bugs-To: roderick.mackenzie@nottingham.ac.uk\n"
-"POT-Creation-Date: 2021-07-26 09:02+0100\n"
+"POT-Creation-Date: 2021-07-27 12:09+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3258,7 +3258,7 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/display.py:117
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/display_mesh.py:117
 #: ../../gpvdm_gui/gui/ribbon_shape_import.py:153
-#: ../../gpvdm_gui/gui/gl_toolbar.py:84 ../../gpvdm_gui/gui/display_mesh.py:93
+#: ../../gpvdm_gui/gui/gl_toolbar.py:107 ../../gpvdm_gui/gui/display_mesh.py:93
 msgid "Rotate"
 msgstr ""
 
@@ -4457,7 +4457,7 @@ msgstr ""
 #: ../../gpvdm_gui/gui/token_lib.py:193 ../../gpvdm_gui/gui/token_lib.py:212
 #: ../../gpvdm_gui/gui/token_lib.py:213 ../../gpvdm_gui/gui/token_lib.py:214
 #: ../../gpvdm_gui/gui/token_lib.py:603 ../../gpvdm_gui/gui/token_lib.py:604
-#: ../../gpvdm_gui/gui/gl_main_menu.py:119
+#: ../../gpvdm_gui/gui/gl_main_menu.py:123
 #: ../../gpvdm_gui/gui/ribbon_shape_import.py:163
 #: ../../gpvdm_gui/gui/ribbon_shape_import.py:173
 #: ../../gpvdm_gui/gui/gl_layer_editor.py:68
@@ -6572,27 +6572,27 @@ msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_main_menu.py:102
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_main_menu.py:159
-#: ../../gpvdm_gui/gui/gl_main_menu.py:105
-#: ../../gpvdm_gui/gui/gl_main_menu.py:161
+#: ../../gpvdm_gui/gui/gl_main_menu.py:109
+#: ../../gpvdm_gui/gui/gl_main_menu.py:165
 msgid "Ray tracing mesh"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_main_menu.py:105
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_main_menu.py:165
-#: ../../gpvdm_gui/gui/gl_main_menu.py:108
-#: ../../gpvdm_gui/gui/gl_main_menu.py:167
+#: ../../gpvdm_gui/gui/gl_main_menu.py:112
+#: ../../gpvdm_gui/gui/gl_main_menu.py:171
 msgid "Light source"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_main_menu.py:108
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_main_menu.py:167
-#: ../../gpvdm_gui/gui/gl_main_menu.py:111
-#: ../../gpvdm_gui/gui/gl_main_menu.py:169
+#: ../../gpvdm_gui/gui/gl_main_menu.py:115
+#: ../../gpvdm_gui/gui/gl_main_menu.py:173
 msgid "Rays"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_main_menu.py:111
-#: ../../gpvdm_gui/gui/gl_main_menu.py:114
+#: ../../gpvdm_gui/gui/gl_main_menu.py:118
 msgid "Stars"
 msgstr ""
 
@@ -6603,18 +6603,18 @@ msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_main_menu.py:122
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_main_menu.py:169
-#: ../../gpvdm_gui/gui/gl_main_menu.py:121
-#: ../../gpvdm_gui/gui/gl_main_menu.py:171
+#: ../../gpvdm_gui/gui/gl_main_menu.py:125
+#: ../../gpvdm_gui/gui/gl_main_menu.py:175
 msgid "Font"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_main_menu.py:125
-#: ../../gpvdm_gui/gui/gl_main_menu.py:124
+#: ../../gpvdm_gui/gui/gl_main_menu.py:128
 msgid "Backgroud color"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_main_menu.py:163
-#: ../../gpvdm_gui/gui/gl_main_menu.py:165
+#: ../../gpvdm_gui/gui/gl_main_menu.py:169
 msgid "Device view"
 msgstr ""
 
@@ -10268,6 +10268,10 @@ msgstr ""
 msgid "Show plot"
 msgstr ""
 
+#: ../../gpvdm_gui/gui/gl_main_menu.py:105
+msgid "Transparent objects"
+msgstr ""
+
 #: ../../gpvdm_gui/gui/ribbon_shape_import.py:104
 msgid ""
 "Edit\n"
@@ -10445,7 +10449,7 @@ msgstr ""
 msgid "CV experiment window"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/gl_toolbar.py:107
+#: ../../gpvdm_gui/gui/gl_toolbar.py:84
 msgid "Orthographic"
 msgstr ""
 

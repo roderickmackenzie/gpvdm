@@ -97,7 +97,8 @@ class scripts(QWidgetSavePos):
 		self.ribbon.tb_save.clicked.connect(self.callback_save)
 
 		self.ribbon.tb_new.clicked.connect(self.callback_add_page)
-		#self.ribbon.tb_rename.clicked.connect(self.callback_rename_page)
+
+		self.ribbon.tb_rename.clicked.connect(self.callback_rename_page)
 
 		self.ribbon.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
 
@@ -165,6 +166,22 @@ class scripts(QWidgetSavePos):
 			a.save_signal.connect(self.callback_save)
 			self.notebook.addTab(a,os.path.basename(name))
 
+	def callback_rename_page(self):
+		tab = self.notebook.currentWidget()
+		index=self.notebook.currentIndex()
+		new_sim_name=dlg_get_text( _("Rename the script:"), os.path.basename(tab.file_name),"rename.png")
+
+		new_sim_name=new_sim_name.ret
+
+		if new_sim_name!=None:
+			if new_sim_name.endswith(".py")==False:
+				new_sim_name=new_sim_name+".py"
+
+			new_full_name=os.path.join(self.path,new_sim_name)
+			os.rename(os.path.join(self.path,tab.file_name) , new_full_name)
+			tab.file_name=new_full_name
+			self.callback_tab_changed()
+
 	def callback_tab_changed(self):
 		tab = self.notebook.currentWidget()
 		index=self.notebook.currentIndex() 
@@ -190,6 +207,7 @@ class scripts(QWidgetSavePos):
 
 
 	def callback_run(self):
+		self.callback_save()
 		tab = self.notebook.currentWidget()
 		tab.run()
 

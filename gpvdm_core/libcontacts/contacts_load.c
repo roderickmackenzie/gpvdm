@@ -67,7 +67,7 @@ void contacts_load(struct simulation *sim,struct device *in)
 
 	obj_contacts=json_obj_find_by_path(sim,&(in->config.obj), "epitaxy.contacts");
 
-	json_get_int(sim,obj_contacts, &(in->ncontacts),"ncontacts");
+	json_get_int(sim,obj_contacts, &(in->ncontacts),"segments");
 
 
 	in->contacts=(struct contact *)malloc(in->ncontacts*sizeof(struct contact));
@@ -84,7 +84,7 @@ void contacts_load(struct simulation *sim,struct device *in)
 
 	for (i=0;i<in->ncontacts;i++)
 	{
-		sprintf(contact_name,"contact%d",i);
+		sprintf(contact_name,"segment%d",i);
 		obj_contact=json_obj_find(obj_contacts, contact_name);
 
 		contact_init(sim,&(in->contacts[i]));

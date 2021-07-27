@@ -66,14 +66,23 @@ class contacts_io(json_base):
 
 	def load_json(self,json):
 		self.segments=[]
+		if "ncontacts" in json:
+			ncontacts=json['ncontacts']
+			for n in range(0,ncontacts):
+				contact_name="contact"+str(n)
+				c=contact()
+				c.decode_from_json(json[contact_name])
 
-		ncontacts=json['ncontacts']
-		for n in range(0,ncontacts):
-			contact_name="contact"+str(n)
-			c=contact()
-			c.decode_from_json(json[contact_name])
+				self.segments.append(c)
 
-			self.segments.append(c)
+		if "segments" in json:
+			ncontacts=json['segments']
+			for n in range(0,ncontacts):
+				contact_name="segment"+str(n)
+				c=contact()
+				c.decode_from_json(json[contact_name])
+
+				self.segments.append(c)
 
 	def print():
 		for s in self.segments:
@@ -102,11 +111,11 @@ class contacts_io(json_base):
 		out=[]
 		n=0
 		out.append("\"contacts\": {")
-		out.append("\"ncontacts\":"+str(len(self.segments))+",")
+		out.append("\"segments\":"+str(len(self.segments))+",")
 		for c in self.segments:
 			c.include_name=False
 			gen=c.gen_json()
-			gen[0]="\"contact"+str(n)+"\": {"
+			gen[0]="\"segment"+str(n)+"\": {"
 			gen[len(gen)-1]="},"
 			out.extend(gen)
 			n=n+1
