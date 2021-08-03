@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gpvdm 5.0\n"
 "Report-Msgid-Bugs-To: roderick.mackenzie@nottingham.ac.uk\n"
-"POT-Creation-Date: 2021-08-03 14:17+0100\n"
+"POT-Creation-Date: 2021-08-03 14:55+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -291,7 +291,7 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/fit_ribbon.py:116
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_thermal.py:176
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/experiment_tab.py:81
-#: ../../gpvdm_gui/gui/tab_light_src.py:70
+#: ../../gpvdm_gui/gui/tab_light_src.py:67
 #: ../../gpvdm_gui/gui/shape_editor.py:295
 #: ../../gpvdm_gui/gui/optics_ribbon.py:72
 #: ../../gpvdm_gui/gui/ribbon_shape_import.py:184
@@ -894,8 +894,8 @@ msgid "Photogeneration rate"
 msgstr ""
 
 #: ../../gpvdm_core/plugins/time_domain/pulse.c:538
-#: ../../gpvdm_core/libdump/dump_zxy.c:764
-#: ../../gpvdm_core/libdump/dump_zxy.c:779
+#: ../../gpvdm_core/libdump/dump_zxy.c:761
+#: ../../gpvdm_core/libdump/dump_zxy.c:776
 #: ../../gpvdm_core/libdump/dynamic.c:186
 #: ../../gpvdm_core/libdump/dynamic.c:197
 #: ../../gpvdm_core/liblight/light_dump_snapshots.c:116
@@ -1133,32 +1133,32 @@ msgstr ""
 #: ../../gpvdm_core/libdump/dump_zxy.c:470
 #: ../../gpvdm_core/libdump/dump_zxy.c:486
 #: ../../gpvdm_core/libdump/dump_zxy.c:501
-#: ../../gpvdm_core/libdump/dump_zxy.c:526
-#: ../../gpvdm_core/libdump/dump_zxy.c:541
-#: ../../gpvdm_core/libdump/dump_zxy.c:556
-#: ../../gpvdm_core/libdump/dump_zxy.c:573
-#: ../../gpvdm_core/libdump/dump_zxy.c:590
-#: ../../gpvdm_core/libdump/dump_zxy.c:606
-#: ../../gpvdm_core/libdump/dump_zxy.c:622
-#: ../../gpvdm_core/libdump/dump_zxy.c:641
-#: ../../gpvdm_core/libdump/dump_zxy.c:658
-#: ../../gpvdm_core/libdump/dump_zxy.c:674
-#: ../../gpvdm_core/libdump/dump_zxy.c:690
-#: ../../gpvdm_core/libdump/dump_zxy.c:763
-#: ../../gpvdm_core/libdump/dump_zxy.c:778
-#: ../../gpvdm_core/libdump/dump_zxy.c:794
-#: ../../gpvdm_core/libdump/dump_zxy.c:809
-#: ../../gpvdm_core/libdump/dump_zxy.c:824
-#: ../../gpvdm_core/libdump/dump_zxy.c:839
-#: ../../gpvdm_core/libdump/dump_zxy.c:855
-#: ../../gpvdm_core/libdump/dump_zxy.c:886
-#: ../../gpvdm_core/libdump/dump_zxy.c:912
-#: ../../gpvdm_core/libdump/dump_zxy.c:952
-#: ../../gpvdm_core/libdump/dump_zxy.c:990
-#: ../../gpvdm_core/libdump/dump_zxy.c:1005
-#: ../../gpvdm_core/libdump/dump_zxy.c:1020
-#: ../../gpvdm_core/libdump/dump_zxy.c:1037
-#: ../../gpvdm_core/libdump/dump_zxy.c:1067
+#: ../../gpvdm_core/libdump/dump_zxy.c:523
+#: ../../gpvdm_core/libdump/dump_zxy.c:538
+#: ../../gpvdm_core/libdump/dump_zxy.c:553
+#: ../../gpvdm_core/libdump/dump_zxy.c:570
+#: ../../gpvdm_core/libdump/dump_zxy.c:587
+#: ../../gpvdm_core/libdump/dump_zxy.c:603
+#: ../../gpvdm_core/libdump/dump_zxy.c:619
+#: ../../gpvdm_core/libdump/dump_zxy.c:638
+#: ../../gpvdm_core/libdump/dump_zxy.c:655
+#: ../../gpvdm_core/libdump/dump_zxy.c:671
+#: ../../gpvdm_core/libdump/dump_zxy.c:687
+#: ../../gpvdm_core/libdump/dump_zxy.c:760
+#: ../../gpvdm_core/libdump/dump_zxy.c:775
+#: ../../gpvdm_core/libdump/dump_zxy.c:791
+#: ../../gpvdm_core/libdump/dump_zxy.c:806
+#: ../../gpvdm_core/libdump/dump_zxy.c:821
+#: ../../gpvdm_core/libdump/dump_zxy.c:836
+#: ../../gpvdm_core/libdump/dump_zxy.c:852
+#: ../../gpvdm_core/libdump/dump_zxy.c:883
+#: ../../gpvdm_core/libdump/dump_zxy.c:909
+#: ../../gpvdm_core/libdump/dump_zxy.c:949
+#: ../../gpvdm_core/libdump/dump_zxy.c:987
+#: ../../gpvdm_core/libdump/dump_zxy.c:1002
+#: ../../gpvdm_core/libdump/dump_zxy.c:1017
+#: ../../gpvdm_core/libdump/dump_zxy.c:1034
+#: ../../gpvdm_core/libdump/dump_zxy.c:1064
 #: ../../gpvdm_core/libmath2d/math_2d_dump.c:71
 #: ../../gpvdm_core/liblight/light_dump_verbose_1d.c:222
 #: ../../gpvdm_core/liblight/light_dump_verbose_1d.c:255
@@ -1184,7 +1184,7 @@ msgstr ""
 #: ../../gpvdm_core/libdump/dump_map.c:106
 #: ../../gpvdm_core/libdump/dump_map.c:177
 #: ../../gpvdm_core/libdump/dump_map.c:238
-#: ../../gpvdm_core/libdump/dump_zxy.c:527
+#: ../../gpvdm_core/libdump/dump_zxy.c:524
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/cost.py:113
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/band_graph.py:250
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/get_email.py:65
@@ -1293,7 +1293,7 @@ msgstr ""
 #: ../../gpvdm_core/libdump/dump_zxy.c:315
 #: ../../gpvdm_core/libdump/dump_zxy.c:345
 #: ../../gpvdm_core/libdump/dump_zxy.c:360
-#: ../../gpvdm_core/libdump/dump_zxy.c:871
+#: ../../gpvdm_core/libdump/dump_zxy.c:868
 #: ../../gpvdm_core/libcircuit/circuit_spm.c:242
 #: ../../gpvdm_core/libcircuit/circuit_spm.c:261
 #: ../../gpvdm_core/libcircuit/circuit_spm.c:319
@@ -1352,35 +1352,35 @@ msgstr ""
 #: ../../gpvdm_core/libdump/dump_zxy.c:473
 #: ../../gpvdm_core/libdump/dump_zxy.c:489
 #: ../../gpvdm_core/libdump/dump_zxy.c:504
-#: ../../gpvdm_core/libdump/dump_zxy.c:529
-#: ../../gpvdm_core/libdump/dump_zxy.c:544
-#: ../../gpvdm_core/libdump/dump_zxy.c:559
-#: ../../gpvdm_core/libdump/dump_zxy.c:576
-#: ../../gpvdm_core/libdump/dump_zxy.c:593
-#: ../../gpvdm_core/libdump/dump_zxy.c:609
-#: ../../gpvdm_core/libdump/dump_zxy.c:625
-#: ../../gpvdm_core/libdump/dump_zxy.c:644
-#: ../../gpvdm_core/libdump/dump_zxy.c:661
-#: ../../gpvdm_core/libdump/dump_zxy.c:677
-#: ../../gpvdm_core/libdump/dump_zxy.c:693
-#: ../../gpvdm_core/libdump/dump_zxy.c:710
-#: ../../gpvdm_core/libdump/dump_zxy.c:737
-#: ../../gpvdm_core/libdump/dump_zxy.c:766
-#: ../../gpvdm_core/libdump/dump_zxy.c:781
-#: ../../gpvdm_core/libdump/dump_zxy.c:797
-#: ../../gpvdm_core/libdump/dump_zxy.c:812
-#: ../../gpvdm_core/libdump/dump_zxy.c:827
-#: ../../gpvdm_core/libdump/dump_zxy.c:842
-#: ../../gpvdm_core/libdump/dump_zxy.c:858
-#: ../../gpvdm_core/libdump/dump_zxy.c:874
-#: ../../gpvdm_core/libdump/dump_zxy.c:889
-#: ../../gpvdm_core/libdump/dump_zxy.c:921
-#: ../../gpvdm_core/libdump/dump_zxy.c:961
-#: ../../gpvdm_core/libdump/dump_zxy.c:993
-#: ../../gpvdm_core/libdump/dump_zxy.c:1008
-#: ../../gpvdm_core/libdump/dump_zxy.c:1023
-#: ../../gpvdm_core/libdump/dump_zxy.c:1040
-#: ../../gpvdm_core/libdump/dump_zxy.c:1070
+#: ../../gpvdm_core/libdump/dump_zxy.c:526
+#: ../../gpvdm_core/libdump/dump_zxy.c:541
+#: ../../gpvdm_core/libdump/dump_zxy.c:556
+#: ../../gpvdm_core/libdump/dump_zxy.c:573
+#: ../../gpvdm_core/libdump/dump_zxy.c:590
+#: ../../gpvdm_core/libdump/dump_zxy.c:606
+#: ../../gpvdm_core/libdump/dump_zxy.c:622
+#: ../../gpvdm_core/libdump/dump_zxy.c:641
+#: ../../gpvdm_core/libdump/dump_zxy.c:658
+#: ../../gpvdm_core/libdump/dump_zxy.c:674
+#: ../../gpvdm_core/libdump/dump_zxy.c:690
+#: ../../gpvdm_core/libdump/dump_zxy.c:707
+#: ../../gpvdm_core/libdump/dump_zxy.c:734
+#: ../../gpvdm_core/libdump/dump_zxy.c:763
+#: ../../gpvdm_core/libdump/dump_zxy.c:778
+#: ../../gpvdm_core/libdump/dump_zxy.c:794
+#: ../../gpvdm_core/libdump/dump_zxy.c:809
+#: ../../gpvdm_core/libdump/dump_zxy.c:824
+#: ../../gpvdm_core/libdump/dump_zxy.c:839
+#: ../../gpvdm_core/libdump/dump_zxy.c:855
+#: ../../gpvdm_core/libdump/dump_zxy.c:871
+#: ../../gpvdm_core/libdump/dump_zxy.c:886
+#: ../../gpvdm_core/libdump/dump_zxy.c:918
+#: ../../gpvdm_core/libdump/dump_zxy.c:958
+#: ../../gpvdm_core/libdump/dump_zxy.c:990
+#: ../../gpvdm_core/libdump/dump_zxy.c:1005
+#: ../../gpvdm_core/libdump/dump_zxy.c:1020
+#: ../../gpvdm_core/libdump/dump_zxy.c:1037
+#: ../../gpvdm_core/libdump/dump_zxy.c:1067
 #: ../../gpvdm_core/libcircuit/circuit_spm.c:245
 #: ../../gpvdm_core/libcircuit/circuit_spm.c:264
 #: ../../gpvdm_core/libcircuit/circuit_spm.c:322
@@ -1452,18 +1452,18 @@ msgstr ""
 
 #: ../../gpvdm_core/libdump/dump_zxy_charge.c:107
 #: ../../gpvdm_core/libdump/dump_zxy_charge.c:127
-#: ../../gpvdm_core/libdump/dump_zxy.c:545
-#: ../../gpvdm_core/libdump/dump_zxy.c:560
-#: ../../gpvdm_core/libdump/dump_zxy.c:577
-#: ../../gpvdm_core/libdump/dump_zxy.c:594
-#: ../../gpvdm_core/libdump/dump_zxy.c:610
-#: ../../gpvdm_core/libdump/dump_zxy.c:626
-#: ../../gpvdm_core/libdump/dump_zxy.c:645
-#: ../../gpvdm_core/libdump/dump_zxy.c:662
-#: ../../gpvdm_core/libdump/dump_zxy.c:678
-#: ../../gpvdm_core/libdump/dump_zxy.c:694
-#: ../../gpvdm_core/libdump/dump_zxy.c:711
-#: ../../gpvdm_core/libdump/dump_zxy.c:738
+#: ../../gpvdm_core/libdump/dump_zxy.c:542
+#: ../../gpvdm_core/libdump/dump_zxy.c:557
+#: ../../gpvdm_core/libdump/dump_zxy.c:574
+#: ../../gpvdm_core/libdump/dump_zxy.c:591
+#: ../../gpvdm_core/libdump/dump_zxy.c:607
+#: ../../gpvdm_core/libdump/dump_zxy.c:623
+#: ../../gpvdm_core/libdump/dump_zxy.c:642
+#: ../../gpvdm_core/libdump/dump_zxy.c:659
+#: ../../gpvdm_core/libdump/dump_zxy.c:675
+#: ../../gpvdm_core/libdump/dump_zxy.c:691
+#: ../../gpvdm_core/libdump/dump_zxy.c:708
+#: ../../gpvdm_core/libdump/dump_zxy.c:735
 msgid "Material parameters"
 msgstr ""
 
@@ -1514,8 +1514,8 @@ msgid "Excess electron density"
 msgstr ""
 
 #: ../../gpvdm_core/libdump/dump_zxy_charge.c:312
-#: ../../gpvdm_core/libdump/dump_zxy.c:913
-#: ../../gpvdm_core/libdump/dump_zxy.c:953
+#: ../../gpvdm_core/libdump/dump_zxy.c:910
+#: ../../gpvdm_core/libdump/dump_zxy.c:950
 #: ../../gpvdm_core/libmath2d/math_2d_dump.c:72
 #: ../../gpvdm_core/libcircuit/circuit_dump.c:412
 #: ../../gpvdm_core/libmesh/dim_light.c:223 ../../gpvdm_core/libmesh/dim.c:258
@@ -1524,8 +1524,8 @@ msgid "x-position"
 msgstr ""
 
 #: ../../gpvdm_core/libdump/dump_zxy_charge.c:313
-#: ../../gpvdm_core/libdump/dump_zxy.c:914
-#: ../../gpvdm_core/libdump/dump_zxy.c:954
+#: ../../gpvdm_core/libdump/dump_zxy.c:911
+#: ../../gpvdm_core/libdump/dump_zxy.c:951
 #: ../../gpvdm_core/libmath2d/math_2d_dump.c:73
 #: ../../gpvdm_core/libcircuit/circuit_dump.c:413
 #: ../../gpvdm_core/libmesh/dim_light.c:224 ../../gpvdm_core/libmesh/dim.c:259
@@ -1534,8 +1534,8 @@ msgid "y-position"
 msgstr ""
 
 #: ../../gpvdm_core/libdump/dump_zxy_charge.c:314
-#: ../../gpvdm_core/libdump/dump_zxy.c:915
-#: ../../gpvdm_core/libdump/dump_zxy.c:955
+#: ../../gpvdm_core/libdump/dump_zxy.c:912
+#: ../../gpvdm_core/libdump/dump_zxy.c:952
 #: ../../gpvdm_core/libmath2d/math_2d_dump.c:74
 #: ../../gpvdm_core/libcircuit/circuit_dump.c:414
 #: ../../gpvdm_core/libmesh/dim_light.c:225 ../../gpvdm_core/libmesh/dim.c:260
@@ -1657,9 +1657,9 @@ msgstr ""
 #: ../../gpvdm_core/libdump/dump_zxy.c:364
 #: ../../gpvdm_core/libdump/dump_zxy.c:380
 #: ../../gpvdm_core/libdump/dump_zxy.c:413
-#: ../../gpvdm_core/libdump/dump_zxy.c:530
-#: ../../gpvdm_core/libdump/dump_zxy.c:1041
-#: ../../gpvdm_core/libdump/dump_zxy.c:1071
+#: ../../gpvdm_core/libdump/dump_zxy.c:527
+#: ../../gpvdm_core/libdump/dump_zxy.c:1038
+#: ../../gpvdm_core/libdump/dump_zxy.c:1068
 msgid "Band structure"
 msgstr ""
 
@@ -1716,59 +1716,59 @@ msgstr ""
 msgid "Total current density (Jn+Jp)"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:526
+#: ../../gpvdm_core/libdump/dump_zxy.c:523
 msgid "Equlibrium Fermi-level"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:541
-#: ../../gpvdm_core/libdump/dump_zxy.c:542
+#: ../../gpvdm_core/libdump/dump_zxy.c:538
+#: ../../gpvdm_core/libdump/dump_zxy.c:539
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:119
 #: ../../gpvdm_gui/gui/token_lib.py:148
 msgid "Relative permittivity"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:556
+#: ../../gpvdm_core/libdump/dump_zxy.c:553
 msgid "Joule heating from device"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:557
+#: ../../gpvdm_core/libdump/dump_zxy.c:554
 msgid "Heating"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:573
-#: ../../gpvdm_core/libdump/dump_zxy.c:574
-#: ../../gpvdm_core/libdump/dump_zxy.c:591
-#: ../../gpvdm_core/libdump/dump_zxy.c:607
-#: ../../gpvdm_core/libdump/dump_zxy.c:623
+#: ../../gpvdm_core/libdump/dump_zxy.c:570
+#: ../../gpvdm_core/libdump/dump_zxy.c:571
+#: ../../gpvdm_core/libdump/dump_zxy.c:588
+#: ../../gpvdm_core/libdump/dump_zxy.c:604
+#: ../../gpvdm_core/libdump/dump_zxy.c:620
 #: ../../gpvdm_core/libdump/dynamic.c:357
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:96
 #: ../../gpvdm_gui/gui/token_lib.py:120
 msgid "Electron mobility"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:590
+#: ../../gpvdm_core/libdump/dump_zxy.c:587
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:99
 #: ../../gpvdm_gui/gui/token_lib.py:123
 msgid "Electron mobility z"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:606
+#: ../../gpvdm_core/libdump/dump_zxy.c:603
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:100
 #: ../../gpvdm_gui/gui/token_lib.py:124
 msgid "Electron mobility x"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:622
+#: ../../gpvdm_core/libdump/dump_zxy.c:619
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:101
 #: ../../gpvdm_gui/gui/token_lib.py:125
 msgid "Electron mobility y"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:641
-#: ../../gpvdm_core/libdump/dump_zxy.c:642
-#: ../../gpvdm_core/libdump/dump_zxy.c:659
-#: ../../gpvdm_core/libdump/dump_zxy.c:675
-#: ../../gpvdm_core/libdump/dump_zxy.c:691
+#: ../../gpvdm_core/libdump/dump_zxy.c:638
+#: ../../gpvdm_core/libdump/dump_zxy.c:639
+#: ../../gpvdm_core/libdump/dump_zxy.c:656
+#: ../../gpvdm_core/libdump/dump_zxy.c:672
+#: ../../gpvdm_core/libdump/dump_zxy.c:688
 #: ../../gpvdm_core/libdump/dynamic.c:368
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:97
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:107
@@ -1776,53 +1776,53 @@ msgstr ""
 msgid "Hole mobility"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:658
+#: ../../gpvdm_core/libdump/dump_zxy.c:655
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:103
 #: ../../gpvdm_gui/gui/token_lib.py:127
 msgid "Hole mobility z"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:674
+#: ../../gpvdm_core/libdump/dump_zxy.c:671
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:104
 #: ../../gpvdm_gui/gui/token_lib.py:128
 msgid "Hole mobility x"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:690
+#: ../../gpvdm_core/libdump/dump_zxy.c:687
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:105
 #: ../../gpvdm_gui/gui/token_lib.py:129
 msgid "Hole mobility y"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:707
-#: ../../gpvdm_core/libdump/dump_zxy.c:734
+#: ../../gpvdm_core/libdump/dump_zxy.c:704
+#: ../../gpvdm_core/libdump/dump_zxy.c:731
 msgid "Average electron mobility"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:708
-#: ../../gpvdm_core/libdump/dump_zxy.c:735
+#: ../../gpvdm_core/libdump/dump_zxy.c:705
+#: ../../gpvdm_core/libdump/dump_zxy.c:732
 #: ../../gpvdm_core/libdump/dynamic.c:358
 #: ../../gpvdm_core/libdump/dynamic.c:369
 #: ../../gpvdm_core/libdump/dynamic.c:381
 msgid "Mobility"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:763
+#: ../../gpvdm_core/libdump/dump_zxy.c:760
 #: ../../gpvdm_core/libdump/dynamic.c:185
 msgid "Free electron generation rate"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:767
-#: ../../gpvdm_core/libdump/dump_zxy.c:782
-#: ../../gpvdm_core/libdump/dump_zxy.c:798
-#: ../../gpvdm_core/libdump/dump_zxy.c:813
-#: ../../gpvdm_core/libdump/dump_zxy.c:828
-#: ../../gpvdm_core/libdump/dump_zxy.c:843
-#: ../../gpvdm_core/libdump/dump_zxy.c:859
-#: ../../gpvdm_core/libdump/dump_zxy.c:875
-#: ../../gpvdm_core/libdump/dump_zxy.c:890
-#: ../../gpvdm_core/libdump/dump_zxy.c:922
-#: ../../gpvdm_core/libdump/dump_zxy.c:962
+#: ../../gpvdm_core/libdump/dump_zxy.c:764
+#: ../../gpvdm_core/libdump/dump_zxy.c:779
+#: ../../gpvdm_core/libdump/dump_zxy.c:795
+#: ../../gpvdm_core/libdump/dump_zxy.c:810
+#: ../../gpvdm_core/libdump/dump_zxy.c:825
+#: ../../gpvdm_core/libdump/dump_zxy.c:840
+#: ../../gpvdm_core/libdump/dump_zxy.c:856
+#: ../../gpvdm_core/libdump/dump_zxy.c:872
+#: ../../gpvdm_core/libdump/dump_zxy.c:887
+#: ../../gpvdm_core/libdump/dump_zxy.c:919
+#: ../../gpvdm_core/libdump/dump_zxy.c:959
 #: ../../gpvdm_core/libdump/dynamic.c:208
 #: ../../gpvdm_core/libdump/dynamic.c:221
 #: ../../gpvdm_core/libdump/dynamic.c:232
@@ -1832,94 +1832,94 @@ msgstr ""
 msgid "Recombination"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:778
+#: ../../gpvdm_core/libdump/dump_zxy.c:775
 #: ../../gpvdm_core/libdump/dynamic.c:196
 msgid "Free hole generation rate"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:794
+#: ../../gpvdm_core/libdump/dump_zxy.c:791
 #: ../../gpvdm_core/libdump/dynamic.c:141
 msgid "Free electron loss due to SRH processes (including trapping)"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:795
-#: ../../gpvdm_core/libdump/dump_zxy.c:810
-#: ../../gpvdm_core/libdump/dump_zxy.c:825
+#: ../../gpvdm_core/libdump/dump_zxy.c:792
+#: ../../gpvdm_core/libdump/dump_zxy.c:807
+#: ../../gpvdm_core/libdump/dump_zxy.c:822
 msgid "Recombination rate"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:809
+#: ../../gpvdm_core/libdump/dump_zxy.c:806
 #: ../../gpvdm_core/libdump/dynamic.c:152
 msgid "Free hole loss due to SRH processes (including trapping)"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:824
+#: ../../gpvdm_core/libdump/dump_zxy.c:821
 #: ../../gpvdm_core/libdump/dynamic.c:129
 msgid "Free electron -> Free hole recombination rate"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:839
+#: ../../gpvdm_core/libdump/dump_zxy.c:836
 #: ../../gpvdm_core/libdump/dynamic.c:220
 msgid "SRH recombination free holes -> trapped electrons"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:840
-#: ../../gpvdm_core/libdump/dump_zxy.c:856
-#: ../../gpvdm_core/libdump/dump_zxy.c:872
-#: ../../gpvdm_core/libdump/dump_zxy.c:887
+#: ../../gpvdm_core/libdump/dump_zxy.c:837
+#: ../../gpvdm_core/libdump/dump_zxy.c:853
+#: ../../gpvdm_core/libdump/dump_zxy.c:869
+#: ../../gpvdm_core/libdump/dump_zxy.c:884
 msgid "Rate"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:855
+#: ../../gpvdm_core/libdump/dump_zxy.c:852
 #: ../../gpvdm_core/libdump/dynamic.c:207
 msgid "SRH recombination free electrons -> trapped holes"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:871
+#: ../../gpvdm_core/libdump/dump_zxy.c:868
 #: ../../gpvdm_core/libdump/dynamic.c:174
 msgid "SRH relaxation free holes -> trapped holes"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:886
+#: ../../gpvdm_core/libdump/dump_zxy.c:883
 #: ../../gpvdm_core/libdump/dynamic.c:163
 msgid "SRH relaxation free electrons -> trapped electrons"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:912
-#: ../../gpvdm_core/libdump/dump_zxy.c:952
+#: ../../gpvdm_core/libdump/dump_zxy.c:909
+#: ../../gpvdm_core/libdump/dump_zxy.c:949
 msgid "Trap fermi level"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:916
-#: ../../gpvdm_core/libdump/dump_zxy.c:956
+#: ../../gpvdm_core/libdump/dump_zxy.c:913
+#: ../../gpvdm_core/libdump/dump_zxy.c:953
 msgid "Electron Fermi level"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:990
-#: ../../gpvdm_core/libdump/dump_zxy.c:1037
-#: ../../gpvdm_core/libdump/dump_zxy.c:1067
+#: ../../gpvdm_core/libdump/dump_zxy.c:987
+#: ../../gpvdm_core/libdump/dump_zxy.c:1034
+#: ../../gpvdm_core/libdump/dump_zxy.c:1064
 msgid "Material number"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:991
-#: ../../gpvdm_core/libdump/dump_zxy.c:1038
-#: ../../gpvdm_core/libdump/dump_zxy.c:1068
+#: ../../gpvdm_core/libdump/dump_zxy.c:988
+#: ../../gpvdm_core/libdump/dump_zxy.c:1035
+#: ../../gpvdm_core/libdump/dump_zxy.c:1065
 msgid "Number"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:994
-#: ../../gpvdm_core/libdump/dump_zxy.c:1009
-#: ../../gpvdm_core/libdump/dump_zxy.c:1024
+#: ../../gpvdm_core/libdump/dump_zxy.c:991
+#: ../../gpvdm_core/libdump/dump_zxy.c:1006
+#: ../../gpvdm_core/libdump/dump_zxy.c:1021
 msgid "Model"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:1005
-#: ../../gpvdm_core/libdump/dump_zxy.c:1020
+#: ../../gpvdm_core/libdump/dump_zxy.c:1002
+#: ../../gpvdm_core/libdump/dump_zxy.c:1017
 msgid "Passivated"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:1006
-#: ../../gpvdm_core/libdump/dump_zxy.c:1021
+#: ../../gpvdm_core/libdump/dump_zxy.c:1003
+#: ../../gpvdm_core/libdump/dump_zxy.c:1018
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:61
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:139
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:161
@@ -6580,7 +6580,7 @@ msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_main_menu.py:105
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_main_menu.py:165
-#: ../../gpvdm_gui/gui/tab_light_src.py:67
+#: ../../gpvdm_gui/gui/tab_light_src.py:64
 #: ../../gpvdm_gui/gui/gl_main_menu.py:112
 msgid "Light source"
 msgstr ""
@@ -9637,7 +9637,7 @@ msgstr ""
 msgid "Laser editor"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/tab_light_src.py:66
+#: ../../gpvdm_gui/gui/tab_light_src.py:63
 msgid "Light source (y0)"
 msgstr ""
 

@@ -358,9 +358,6 @@ buffer_init(&buf);
 	buffer_free(&buf);
 
 	buffer_malloc(&buf);
-
-
-	buffer_malloc(&buf);
 	sprintf(name,"%s","Fi.dat");
 	dim_info_to_buf(&buf,dim);
 	sprintf(buf.title,"%s - %s",_("Equlibrium Fermi-level"),_("Position"));

@@ -60,10 +60,7 @@ class tab_light_src(QTabWidget):
 		#print("bbb",type(self.get_json_obj()),data.id,self.get_json_obj())
 
 		self.setMovable(True)
-		print(self.get_json_obj().virtual_spectra)
-		virt_spectra_id=self.get_json_obj().virtual_spectra.id
-		print(virt_spectra_id,self.uid)
-		self.light_src=optics_light_src("gpvdm_data().light_sources.lights",virt_spectra_id,_("Light source (y0)"))
+		self.light_src=optics_light_src("gpvdm_data().light_sources.lights",self.uid,_("Light source (y0)"))
 		self.addTab(self.light_src,_("Light source"))
 
 		tab=tab_class(self.get_json_obj())

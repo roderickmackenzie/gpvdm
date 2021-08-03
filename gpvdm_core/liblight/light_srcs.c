@@ -84,6 +84,22 @@ void light_srcs_free(struct simulation *sim,struct light_sources *srcs)
 
 }
 
+void light_srcs_dump(struct simulation *sim,char *path,struct light_sources *srcs)
+{
+	int i;
+	char out_dir[PATH_MAX];
+
+	join_path(2,out_dir,path,"optical_output");
+	gpvdm_mkdir(out_dir);
+
+	for (i=0;i<srcs->nlight_sources;i++)
+	{
+		light_src_dump(sim,out_dir,&(srcs->light_sources[i]));
+	}
+
+}
+		
+
 void light_srcs_cpy(struct simulation *sim,struct light_sources *out,struct light_sources *in)
 {
 	int i;

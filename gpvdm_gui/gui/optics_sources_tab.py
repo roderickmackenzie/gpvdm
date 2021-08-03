@@ -118,7 +118,7 @@ class optics_light_src(QWidget):
 
 		self.tab_y0.json_search_path=search_path
 		self.tab_y0.uid=uid
-		self.tab_y0.postfix="light_spectra.segments"
+		self.tab_y0.postfix="virtual_spectra.light_spectra.segments"
 		self.tab_y0.populate()
 
 		self.tab_y0.new_row_clicked.connect(self.callback_new_row_clicked)
@@ -145,7 +145,7 @@ class optics_light_src(QWidget):
 
 	def callback_new_row_clicked(self,row):
 		obj=json_light_spectrum()
-		self.get_json_obj().light_spectra.segments.insert(row,obj)
+		self.get_json_obj().virtual_spectra.light_spectra.segments.insert(row,obj)
 		self.tab_y0.insert_row(obj,row)
 		gpvdm_data().save()
 		self.plot_widget.do_plot()
@@ -160,21 +160,21 @@ class optics_light_src(QWidget):
 		self.plot_widget.do_plot()
 
 		self.blockSignals(True)
-		self.optical_filter.setChecked(self.get_json_obj().light_filter.filter_enabled)
-		self.optical_external_interface.setChecked(self.get_json_obj().external_interface.enabled)
+		self.optical_filter.setChecked(self.get_json_obj().virtual_spectra.light_filter.filter_enabled)
+		self.optical_external_interface.setChecked(self.get_json_obj().virtual_spectra.external_interface.enabled)
 
 		self.blockSignals(False)
 
 	def callback_filter_clicked(self):
 		data=gpvdm_data()
-		path=self.get_json_obj()
+		path=self.get_json_obj().virtual_spectra
 		path.light_filter.filter_enabled=self.optical_filter.isChecked()
 		path.external_interface.enabled=self.optical_external_interface.isChecked()
 		data.save()
 
 
 	def callback_filter_window(self):
-		self.widget=tab_class(self.get_json_obj().light_filter)
+		self.widget=tab_class(self.get_json_obj().virtual_spectra.light_filter)
 		self.widget.setWindowIcon(icon_get("filter_wheel"))
 
 		self.widget.setWindowTitle(_("Filter editor")+" (https://www.gpvdm.com)")    
@@ -182,7 +182,7 @@ class optics_light_src(QWidget):
 		self.widget.show()
 
 	def callback_external_interface_window(self):
-		self.widget=tab_class(self.get_json_obj().external_interface)
+		self.widget=tab_class(self.get_json_obj().virtual_spectra.external_interface)
 		self.widget.setWindowIcon(icon_get("reflection"))
 
 		self.widget.setWindowTitle(_("Reflective interface editor")+" (https://www.gpvdm.com)")    
