@@ -67,6 +67,7 @@ void light_srcs_init(struct simulation *sim,struct light_sources *srcs)
 	srcs->light_sources=NULL;
 	srcs->lstart=-1;
 	srcs->lstop=-1;
+	srcs->llen=-1;
 }
 
 void light_srcs_free(struct simulation *sim,struct light_sources *srcs)
@@ -79,7 +80,7 @@ void light_srcs_free(struct simulation *sim,struct light_sources *srcs)
 	}
 
 	free(srcs->light_sources);
-	device_light_srcs_init(sim,srcs);
+	light_srcs_init(sim,srcs);
 
 }
 
@@ -98,44 +99,57 @@ void light_srcs_cpy(struct simulation *sim,struct light_sources *out,struct ligh
 
 	out->lstart=in->lstart;
 	out->lstop=in->lstop;
+	out->llen=in->llen;
 
 }
 
 void light_srcs_load(struct simulation *sim,struct light_sources *srcs,struct json_obj *json_light_sources)
 {
-	int segs;
 	int i;
 	char temp[200];
-	int y0_found=FALSE;
-	int y1_found=FALSE;
 
-
+	struct json_obj *json_lights;
+	struct json_obj *json_config;
 	struct json_obj *json_seg;
 	struct json_obj *json_virtual_spectra;
 
-	char illuminate_from[200];
+	json_config=json_obj_find(json_light_sources, "config");
 
-	json_get_int(sim, json_light_sources, &srcs->nlight_sources,"segments");
+	if (json_config==NULL)
+	{
+		ewe(sim,"Object lights not found\n");
+	}
+
+	json_get_int(sim, json_config, &srcs->llen,"lpoints");
+	json_lights=json_obj_find(json_light_sources, "lights");
+
+	if (json_lights==NULL)
+	{
+		ewe(sim,"Object lights not found\n");
+	}
+
+	json_get_int(sim, json_lights, &srcs->nlight_sources,"segments");
 	if (srcs->nlight_sources>0)
 	{
 		srcs->light_sources=malloc(sizeof(struct light_src)*srcs->nlight_sources);
-		for (i=0;i<segs;i++)
+		for (i=0;i<srcs->nlight_sources;i++)
 		{
 			sprintf(temp,"segment%d",i);
-			json_seg=json_obj_find(json_light_sources, temp);
+			json_seg=json_obj_find(json_lights, temp);
 			json_virtual_spectra=json_obj_find(json_seg, "virtual_spectra");
 			if (json_virtual_spectra==NULL)
 			{
 				ewe(sim,"Object virtual_spectra not found\n");
 			}
-			light_src_load(sim,&(srcs->light_sources[i]), json_virtual_spectra);
+			light_src_init(sim,&(srcs->light_sources[i]));
+			light_src_load(sim,&(srcs->light_sources[i]), json_seg);
 
 		}
 
-		light_srcs_get_lambda_min_max(sim,srcs);
-		for (i=0;i<segs;i++)
+		light_srcs_cal_lambda_min_max(sim,srcs);
+		for (i=0;i<srcs->nlight_sources;i++)
 		{
-			light_src_build_spectra_tot(sim,&(srcs->light_sources[i]), srcs->lstart, srcs->lstop, dim->llen);
+			light_src_build_spectra_tot(sim,&(srcs->light_sources[i]), srcs->lstart, srcs->lstop, srcs->llen);
 		}
 	}
 
@@ -143,24 +157,24 @@ void light_srcs_load(struct simulation *sim,struct light_sources *srcs,struct js
 	
 }
 
-void device_light_srcs_cal_lambda_min_max(struct simulation *sim,struct device *srcs)
+void light_srcs_cal_lambda_min_max(struct simulation *sim,struct light_sources *srcs)
 {
 	int i;
 	srcs->lstop=-1.0;
 	srcs->lstart=1e6;
 
-	if (dev->nlight_sources>0)
+	if (srcs->nlight_sources>0)
 	{
-		for (i=0;i<segs;i++)
+		for (i=0;i<srcs->nlight_sources;i++)
 		{
-			if (dev->light_sources[i].lstart<srcs->lstart)
+			if (srcs->light_sources[i].lstart<srcs->lstart)
 			{
-				srcs->lstart=dev->light_sources[i].lstart;
+				srcs->lstart=srcs->light_sources[i].lstart;
 			}
 
-			if (dev->light_sources[i].lstop>srcs->lstop)
+			if (srcs->light_sources[i].lstop>srcs->lstop)
 			{
-				srcs->lstop=dev->light_sources[i].lstop;
+				srcs->lstop=srcs->light_sources[i].lstop;
 			}
 		}
 	}

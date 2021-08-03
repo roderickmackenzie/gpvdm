@@ -217,6 +217,7 @@ void light_src_load(struct simulation *sim,struct light_src *in, struct json_obj
 	int i;
 	struct json_obj *obj;
 	struct json_obj *json_light_spectra;
+	struct json_obj *virtual_spectra;
 	int segments;
 	char temp_str[100];
 	char spectrum_name[200];
@@ -227,8 +228,11 @@ void light_src_load(struct simulation *sim,struct light_src *in, struct json_obj
 	json_get_long_double(sim, json_light_src, &(in->lstart),"lstart");
 	json_get_long_double(sim, json_light_src, &(in->lstop),"lstop");
 
-	json_light_spectra=json_obj_find(json_light_src, "light_spectra");
+	virtual_spectra=json_obj_find(json_light_src, "virtual_spectra");
 
+	json_light_spectra=json_obj_find(virtual_spectra, "light_spectra");
+
+	
 	json_get_int(sim, json_light_spectra, &segments,"segments");
 	if (segments>0)
 	{
@@ -268,7 +272,7 @@ void light_src_load(struct simulation *sim,struct light_src *in, struct json_obj
 
 	//Load the filter
 
-	json_filter=json_obj_find(json_light_src, "light_filter");
+	json_filter=json_obj_find(virtual_spectra, "light_filter");
 	if (json_filter==NULL)
 	{
 		ewe(sim,"json_filter not found\n");
@@ -303,7 +307,7 @@ void light_src_load(struct simulation *sim,struct light_src *in, struct json_obj
 
 	//Reflection of external interface
 
-	json_external_interface=json_obj_find(json_light_src, "external_interface");
+	json_external_interface=json_obj_find(virtual_spectra, "external_interface");
 	if (json_external_interface==NULL)
 	{
 		ewe(sim,"json_external_interface not found\n");

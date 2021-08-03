@@ -240,3 +240,4 @@ class experiment(QWidgetSavePos):
 	def get_json_obj(self):
 		return eval(self.json_search_path)
 
+

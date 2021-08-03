@@ -57,7 +57,7 @@ struct light_sources
 	struct light_src *light_sources;
 	long double lstart;
 	long double lstop;
-
+	int llen;
 };
 
 struct light_src

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gpvdm 5.0\n"
 "Report-Msgid-Bugs-To: roderick.mackenzie@nottingham.ac.uk\n"
-"POT-Creation-Date: 2021-08-03 10:10+0100\n"
+"POT-Creation-Date: 2021-08-03 14:17+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -291,7 +291,7 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/fit_ribbon.py:116
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_thermal.py:176
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/experiment_tab.py:81
-#: ../../gpvdm_gui/gui/tab_light_src.py:66
+#: ../../gpvdm_gui/gui/tab_light_src.py:70
 #: ../../gpvdm_gui/gui/shape_editor.py:295
 #: ../../gpvdm_gui/gui/optics_ribbon.py:72
 #: ../../gpvdm_gui/gui/ribbon_shape_import.py:184
@@ -303,6 +303,7 @@ msgstr ""
 #: ../../gpvdm_gui/gui/jvexperiment_tab.py:55 ../../gpvdm_gui/gui/ribbon.py:203
 #: ../../gpvdm_gui/gui/fit_ribbon.py:100
 #: ../../gpvdm_gui/gui/fxexperiment_tab.py:66
+#: ../../gpvdm_gui/gui/window_light_src.py:60
 #: ../../gpvdm_gui/gui/ribbon_thermal.py:196
 #: ../../gpvdm_gui/gui/ribbon_electrical.py:88
 #: ../../gpvdm_gui/gui/ribbon_electrical.py:192
@@ -2247,11 +2248,11 @@ msgstr ""
 msgid "Power density of the optical spectra:"
 msgstr ""
 
-#: ../../gpvdm_core/liblight/light_src.c:251 ../../gpvdm_core/lib/util.c:530
+#: ../../gpvdm_core/liblight/light_src.c:258 ../../gpvdm_core/lib/util.c:530
 msgid "File not found"
 msgstr ""
 
-#: ../../gpvdm_core/liblight/light_src.c:285
+#: ../../gpvdm_core/liblight/light_src.c:292
 msgid "Light: Load filter"
 msgstr ""
 
@@ -2515,11 +2516,11 @@ msgstr ""
 msgid "Runing simulation"
 msgstr ""
 
-#: ../../gpvdm_core/src/sim_run.c:487
+#: ../../gpvdm_core/src/sim_run.c:496
 msgid "Solved"
 msgstr ""
 
-#: ../../gpvdm_core/src/sim_run.c:487
+#: ../../gpvdm_core/src/sim_run.c:496
 msgid "Equations"
 msgstr ""
 
@@ -6579,7 +6580,7 @@ msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_main_menu.py:105
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_main_menu.py:165
-#: ../../gpvdm_gui/gui/tab_light_src.py:63
+#: ../../gpvdm_gui/gui/tab_light_src.py:67
 #: ../../gpvdm_gui/gui/gl_main_menu.py:112
 msgid "Light source"
 msgstr ""
@@ -9636,7 +9637,7 @@ msgstr ""
 msgid "Laser editor"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/tab_light_src.py:62
+#: ../../gpvdm_gui/gui/tab_light_src.py:66
 msgid "Light source (y0)"
 msgstr ""
 

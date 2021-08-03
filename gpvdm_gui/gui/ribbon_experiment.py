@@ -68,9 +68,9 @@ class ribbon_experiment(ribbon_base):
 		#toolbar.addAction(self.tb_save)
 
 
-		spacer = QWidget()
-		spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-		toolbar.addWidget(spacer)
+		self.spacer = QWidget()
+		self.spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+		toolbar.addWidget(self.spacer)
 
 		self.home_help = QAction(icon_get("internet-web-browser"), _("Help"), self)
 		toolbar.addAction(self.home_help)

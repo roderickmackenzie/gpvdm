@@ -189,7 +189,7 @@ int json_get_long_double(struct simulation *sim,struct json_obj *obj, long doubl
 		return 0;
 	}else
 	{
-		//getchar();
+		getchar();
 		ewe(sim,"Not found %s\n",name);
 	}
 	return -1;

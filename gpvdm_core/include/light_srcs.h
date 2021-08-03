@@ -45,6 +45,6 @@ void light_srcs_init(struct simulation *sim,struct light_sources *srcs);
 void light_srcs_free(struct simulation *sim,struct light_sources *srcs);
 void light_srcs_cpy(struct simulation *sim,struct light_sources *out,struct light_sources *in);
 void light_srcs_load(struct simulation *sim,struct light_sources *srcs,struct json_obj *json_light_sources);
-void light_srcs_cal_lambda_min_max(struct simulation *sim,struct device *srcs);
+void light_srcs_cal_lambda_min_max(struct simulation *sim,struct light_sources *srcs);
 
 #endif

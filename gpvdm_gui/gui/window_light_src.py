@@ -47,7 +47,7 @@ from progress_class import progress_class
 from process_events import process_events
 from global_objects import global_object_run
 from experiment import experiment
-
+from gpvdm_json import gpvdm_data
 class window_light_src(experiment):
 
 
@@ -56,10 +56,19 @@ class window_light_src(experiment):
 
 
 		self.notebook.currentChanged.connect(self.switch_page)
+
+		self.tb_configure = QAction(icon_get("cog"), _("Configure"), self)
+		self.tb_configure.triggered.connect(self.callback_configwindow)
+		self.ribbon.file.insertAction(self.ribbon.tb_rename,self.tb_configure)
+
 		self.switch_page()
 
 	def switch_page(self):
 		tab = self.notebook.currentWidget()
 		#self.tb_lasers.update(tab.data)
 
-
+	def callback_configwindow(self):
+		from tab import tab_class
+		data=gpvdm_data()
+		self.configure_widget=tab_class(gpvdm_data().light_sources.config)
+		self.configure_widget.show()
