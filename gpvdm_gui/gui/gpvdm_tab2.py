@@ -59,6 +59,8 @@ class gpvdm_tab2(QTableWidget):
 	def __init__(self,toolbar=None):
 		QTableWidget.__init__(self)
 		self.json_search_path=None
+		self.uid=None
+		self.postfix=None
 		self.json_tokens=[]
 
 		self.toolbar=toolbar
@@ -175,7 +177,7 @@ class gpvdm_tab2(QTableWidget):
 				self.fixup_new_row(y)
 
 	def update_row(self,y):
-		path=eval(self.json_search_path)
+		path=self.get_json_obj()
 		s=path[y]
 		x=0
 		for t in self.json_tokens:
@@ -183,7 +185,7 @@ class gpvdm_tab2(QTableWidget):
 			x=x+1
 
 	def callback_value_changed(self):
-		path=eval(self.json_search_path)
+		path=self.get_json_obj()
 		y=0
 		for s in path:
 			x=0
@@ -202,9 +204,22 @@ class gpvdm_tab2(QTableWidget):
 			y=y+1
 		self.changed.emit()
 
+	def get_json_obj(self):
+		if self.uid==None:
+			ret=eval(self.json_search_path)
+		else:
+			path=eval(self.json_search_path)
+			if self.postfix==None:
+				ret=path.find_object_by_id(self.uid)
+			else:
+				ret=path.find_object_by_id(self.uid)
+				for a in self.postfix.split("."):
+					ret=getattr(ret, a,None)
+		return ret
+
 	def populate(self):
 		self.blockSignals(True)
-		path=eval(self.json_search_path)
+		path=self.get_json_obj()
 		y=0
 		for s in path:
 			self.insert_class(s,y)
@@ -215,7 +230,7 @@ class gpvdm_tab2(QTableWidget):
 	def callback_menu_copy(self):
 		if self.rowCount()==0:
 			return
-		path=eval(self.json_search_path)
+		path=self.get_json_obj()
 		b=json_base("gpvdm_tab2",segment_class=True)
 
 		rows=self.selectionModel().selectedRows()
@@ -312,7 +327,7 @@ class gpvdm_tab2(QTableWidget):
 				return
 
 			self.blockSignals(True)
-			path=eval(self.json_search_path)
+			path=self.get_json_obj()
 			path[a], path[b] = path[b], path[a]
 			self.update_row(a)
 			self.update_row(b)
@@ -380,7 +395,7 @@ class gpvdm_tab2(QTableWidget):
 				#b=tab.rowCount()-1
 
 			self.blockSignals(True)
-			path=eval(self.json_search_path)
+			path=self.get_json_obj()
 			path[b], path[a] = path[a], path[b]
 			self.update_row(a)
 			self.update_row(b)
@@ -405,7 +420,7 @@ class gpvdm_tab2(QTableWidget):
 
 	def callback_remove_rows(self):
 		self.blockSignals(True)
-		path=eval(self.json_search_path)
+		path=self.get_json_obj()
 		rows = []
 		for index in self.selectedIndexes():
 			row=index.row()

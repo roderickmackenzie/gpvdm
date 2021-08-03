@@ -55,11 +55,16 @@ _ = i18n.language.gettext
 
 class optics_light_src(QWidget):
  
-	def __init__(self,path,name,plot_file):
+	def get_json_obj(self):
+		data=gpvdm_data()
+		data_obj=eval(self.serach_path).find_object_by_id(self.uid)
+		return data_obj
+
+	def __init__(self,search_path,uid,name):
 		QWidget.__init__(self)
 		self.main_vbox_y0 = QVBoxLayout()
-
-		self.json_path=path
+		self.serach_path=search_path
+		self.uid=uid
 
 		label_left=QLabel(name)
 		self.main_vbox_y0.addWidget(label_left)
@@ -78,9 +83,25 @@ class optics_light_src(QWidget):
 		spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 		toolbar2.addWidget(spacer)
 
+
+
+		label = QLabel(_("External\ninterface:"))
+		toolbar2.addWidget(label)
+		#external interface
+		self.optical_external_interface = QAction(icon_get("reflection"), _("External\nReflection"), self)
+		self.optical_external_interface.setCheckable(True)
+		self.optical_external_interface.triggered.connect(self.callback_filter_clicked)
+
+		self.menu_optical_external_interface = QMenu(self)
+		self.optical_external_interface.setMenu(self.menu_optical_external_interface)
+
+		self.external_interface_edit=QAction(_("Edit"), self)
+		self.external_interface_edit.triggered.connect(self.callback_external_interface_window)
+		self.menu_optical_external_interface.addAction(self.external_interface_edit)
+		toolbar2.addAction(self.optical_external_interface)
+
 		label = QLabel(_("Filter:"))
 		toolbar2.addWidget(label)
-
 		#Filter
 		self.optical_filter = QAction(icon_get("optical_filter"), _("Optical\nFilter"), self)
 		self.optical_filter.setCheckable(True)
@@ -93,9 +114,11 @@ class optics_light_src(QWidget):
 		self.filter_edit.triggered.connect(self.callback_filter_window)
 		self.menu_optical_filter.addAction(self.filter_edit)
 		toolbar2.addAction(self.optical_filter)
-		
-		self.tab_y0.json_search_path=path+".light_spectra.segments"
 
+
+		self.tab_y0.json_search_path=search_path
+		self.tab_y0.uid=uid
+		self.tab_y0.postfix="light_spectra.segments"
 		self.tab_y0.populate()
 
 		self.tab_y0.new_row_clicked.connect(self.callback_new_row_clicked)
@@ -106,6 +129,8 @@ class optics_light_src(QWidget):
 
 		self.plot_widget=plot_widget(enable_toolbar=False,widget_mode="gpvdm_graph")
 		self.plot_widget.set_labels([_("Light intensity")])
+		plot_file=os.path.join(get_sim_path(),"optical_output","light_src_"+self.uid+".dat")
+		print(">>>>>>>>",plot_file)
 		self.plot_widget.load_data([plot_file])
 		self.plot_widget.canvas.x0_mul=0.2
 		self.plot_widget.canvas.y_label=""
@@ -120,8 +145,7 @@ class optics_light_src(QWidget):
 
 	def callback_new_row_clicked(self,row):
 		obj=json_light_spectrum()
-		command=self.tab_y0.json_search_path+".insert(row,obj)"
-		eval(command)
+		self.get_json_obj().light_spectra.segments.insert(row,obj)
 		self.tab_y0.insert_row(obj,row)
 		gpvdm_data().save()
 		self.plot_widget.do_plot()
@@ -136,45 +160,34 @@ class optics_light_src(QWidget):
 		self.plot_widget.do_plot()
 
 		self.blockSignals(True)
-		path=eval(self.json_path)
-		self.optical_filter.setChecked(path.light_filter.filter_enabled)		
+		self.optical_filter.setChecked(self.get_json_obj().light_filter.filter_enabled)
+		self.optical_external_interface.setChecked(self.get_json_obj().external_interface.enabled)
+
 		self.blockSignals(False)
 
 	def callback_filter_clicked(self):
 		data=gpvdm_data()
-		path=eval(self.json_path)
+		path=self.get_json_obj()
 		path.light_filter.filter_enabled=self.optical_filter.isChecked()
+		path.external_interface.enabled=self.optical_external_interface.isChecked()
 		data.save()
 
+
 	def callback_filter_window(self):
-		path=eval(self.json_path)
-		self.widget=tab_class(path.light_filter)
+		self.widget=tab_class(self.get_json_obj().light_filter)
 		self.widget.setWindowIcon(icon_get("filter_wheel"))
 
 		self.widget.setWindowTitle(_("Filter editor")+" (https://www.gpvdm.com)")    
 
 		self.widget.show()
 
-class optics_sources_tab(QWidget):
+	def callback_external_interface_window(self):
+		self.widget=tab_class(self.get_json_obj().external_interface)
+		self.widget.setWindowIcon(icon_get("reflection"))
 
-	def __init__(self):
-		QWidget.__init__(self)
+		self.widget.setWindowTitle(_("Reflective interface editor")+" (https://www.gpvdm.com)")    
 
-		self.main_hbox = QHBoxLayout()
+		self.widget.show()
 
-		plot_file=os.path.join(get_sim_path(),"optical_output","light_src_y0.dat")
-		self.widget_y0=optics_light_src("gpvdm_data().light.light_source_obj_y0",_("Top light source (y0)"),plot_file)
-
-		plot_file=os.path.join(get_sim_path(),"optical_output","light_src_y1.dat")
-		self.widget_y1=optics_light_src("gpvdm_data().light.light_source_obj_y1",_("Bottom light source (y1)"),plot_file)
-
-		self.main_hbox.addWidget(self.widget_y0)
-		self.main_hbox.addWidget(self.widget_y1)
-
-		self.setLayout(self.main_hbox)
-
-	def update(self):
-		self.widget_y0.update()
-		self.widget_y1.update()
 
 

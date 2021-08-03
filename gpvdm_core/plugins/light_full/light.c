@@ -184,6 +184,7 @@ EXPORT int light_dll_solve_lam_slice(struct simulation *sim,struct device *cell,
 
 			nbar_c=li->nbar[z][x][y][l];
 
+			//printf("%d %d %e %e\n",l,y,li->n[z][x][y][l],li->alpha[z][x][y][l]);
 			xi_l=((2*PI)/lam)*nbar_l;
 			xi_c=((2*PI)/lam)*nbar_c;
 			xi_r=((2*PI)/lam)*nbar_r;
@@ -309,7 +310,7 @@ EXPORT int light_dll_solve_lam_slice(struct simulation *sim,struct device *cell,
 		quit=TRUE;
 	}
 	}while(quit==FALSE);
-
+	//getchar();
 	//getchar();
 return 0;
 }

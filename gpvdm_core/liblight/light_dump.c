@@ -387,8 +387,8 @@ buffer_init(&buf);
 	if (li->dump_verbosity==1)
 	{
 		light_dump_verbose_1d(sim,li,l,ext);
-		light_src_dump(sim,li->dump_dir,&(li->light_src_y0),"light_src_y0.dat");
-		light_src_dump(sim,li->dump_dir,&(li->light_src_y1),"light_src_y1.dat");
+		light_src_dump(sim,li->dump_dir,&(li->light_src_y0));
+		light_src_dump(sim,li->dump_dir,&(li->light_src_y1));
 
 	}
 

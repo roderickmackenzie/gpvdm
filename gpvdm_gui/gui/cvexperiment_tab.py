@@ -58,6 +58,7 @@ class cvexperiment_tab(QTabWidget):
 		self.data.english_name=tab_name
 		gpvdm_data().save()
 
-
+	def get_json_obj(self):
+		return self.data
 
 

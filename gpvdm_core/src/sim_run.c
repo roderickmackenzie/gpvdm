@@ -69,6 +69,7 @@
 #include <heat_fun.h>
 #include <json.h>
 #include <server.h>
+#include <device_light_srcs.h>
 
 int device_run_simulation(struct simulation *sim, struct device *dev)
 {
@@ -87,7 +88,7 @@ int device_run_simulation(struct simulation *sim, struct device *dev)
 	struct json_obj *json_dos;
 	struct json_obj *json_mesh;
 	struct json_obj *json_ray;
-
+	struct json_obj *json_light_sources;
 
 	struct epitaxy *epi;
 	log_clear(sim);
@@ -349,6 +350,15 @@ int device_run_simulation(struct simulation *sim, struct device *dev)
 		dev->Vol=dev->xlen*dev->zlen*dev->ylen;
 
 		///////////////////////light model
+		json_light_sources=json_obj_find(&(dev->config.obj), "light_sources");
+
+		if (json_light_sources==NULL)
+		{
+			ewe(sim,"Object json_light_sources not found\n");
+		}
+
+		light_srcs_load(sim,&(dev->lights),json_light_sources);
+
 		gdouble old_Psun=0.0;
 		old_Psun=light_get_sun(&dev->mylight);
 

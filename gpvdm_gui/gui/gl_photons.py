@@ -53,13 +53,15 @@ class gl_photons():
 		device_top=scale_get_device_y()
 		dx=scale_get_device_x()
 
-		if source.light_iluminate_from=="y1":
+		if source.light_illuminate_from=="y0":
+			y=device_top+0.5
+		elif source.light_illuminate_from=="y1":
 			y=-1.5
 			up_photons=True
 		else:
-			y=device_top+0.5
+			return
 
-		suns=self.suns*source.light_multiplyer
+		suns=self.suns#*source.virtual_spectra.light_spectra.segments[0].light_multiplyer
 		if suns!=0:
 			if suns<=0.01:
 				den=dx/5
@@ -82,16 +84,11 @@ class gl_photons():
 	def draw_photons(self,x0,z0):
 		if self.false_color==True:
 			return
-
-		for source in gpvdm_data().light.light_source_obj_y0.light_spectra.segments:
-			source.light_iluminate_from="y0"
-			self.draw_photon_sheet(source,x0,z0)
-			break
-
-		for source in gpvdm_data().light.light_source_obj_y1.light_spectra.segments:
-			source.light_iluminate_from="y1"
-			self.draw_photon_sheet(source,x0,z0)
-			break
+		done=[]
+		for source in gpvdm_data().light_sources.lights.segments:
+			if source.light_illuminate_from not in done:
+				self.draw_photon_sheet(source,x0,z0)
+				done.append(source.light_illuminate_from)
 
 		if self.emission==True and self.ray_model==False:
 			den=1.2

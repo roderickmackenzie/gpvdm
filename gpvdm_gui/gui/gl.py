@@ -220,8 +220,6 @@ if open_gl_ok==True:
 			self.draw_electrical_mesh=False
 			self.draw_device_cut_through=False
 			self.enable_draw_ray_mesh=False
-			self.enable_draw_light_source=False
-			self.enable_draw_rays=True
 			self.enable_cordinates=True
 			self.plot_graph=False
 			self.plot_circuit=False
@@ -239,11 +237,6 @@ if open_gl_ok==True:
 			self.pre_built_scene=None
 			self.open_gl_working=True
 
-			self.gl_array_lines=[]
-			self.gl_array_lines_float32=[]
-
-			self.gl_array_colors=[]
-			self.gl_array_colors_float32=[]
 
 		#def bix_axis(self):
 		#	for xx in range(0,10):
@@ -429,7 +422,6 @@ if open_gl_ok==True:
 			self.dump_energy_slice_xpos=int(data.dump.dump_energy_slice_xpos)
 			self.dump_energy_slice_ypos=int(data.dump.dump_energy_slice_ypos)
 			self.dump_energy_slice_zpos=int(data.dump.dump_energy_slice_zpos)
-			self.light_illuminate_from=data.light.light_illuminate_from
 			self.dump_1d_slice_xpos=int(data.dump.dump_1d_slice_xpos)
 			self.dump_1d_slice_zpos=int(data.dump.dump_1d_slice_zpos)
 
@@ -458,10 +450,10 @@ if open_gl_ok==True:
 			x=gl_scale.project_m2screen_x(0)
 			z=gl_scale.project_m2screen_z(0)
 
-			if self.enable_draw_rays==True:
+			if self.view_options.draw_rays==True:
 				self.draw_rays(self.ray_file)
 
-			if self.enable_draw_light_source==True:
+			if self.view_options.enable_draw_light_source==True:
 
 				point_x=float(data.ray.segments[0].config.ray_xsrc)
 				point_y=float(data.ray.segments[0].config.ray_ysrc)
@@ -471,16 +463,16 @@ if open_gl_ok==True:
 				else:
 					point_x=gl_scale.project_m2screen_x(point_x)
 					point_y=gl_scale.project_m2screen_y(point_y)
-
+				print(point_x,point_y)
 				a=gl_base_object()
 				a.id=["ray_src"]
 				a.type="box"
 				a.xyz.x=point_x
 				a.xyz.y=point_y
 				a.xyz.z=0.0
-				a.dxyz.dx=0.2
-				a.dxyz.dy=0.2
-				a.dxyz.dz=0.2
+				a.dxyz.x=0.1
+				a.dxyz.y=0.1
+				a.dxyz.z=0.1
 				a.r=0.0
 				a.g=0.0
 				a.b=1.0
@@ -542,12 +534,6 @@ if open_gl_ok==True:
 			self.rebuild_scene()
 
 		def force_redraw(self):
-			#import inspect
-			#print("Force redraw")
-			#curframe = inspect.currentframe()
-			#calframe = inspect.getouterframes(curframe, 2)
-			#print('caller name:', calframe[1][3])
-
 			self.build_scene()
 			self.do_draw()
 			self.menu_update()

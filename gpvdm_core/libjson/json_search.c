@@ -147,6 +147,19 @@ int json_get_string(struct simulation *sim,struct json_obj *obj, char *out,char 
 
 }
 
+int json_is_token(struct simulation *sim,struct json_obj *obj,char *name)
+{
+	struct json_obj *found;
+	found=json_obj_find(obj, name);
+	if (found!=NULL)
+	{
+		return 0;
+	}
+
+	return -1;
+
+}
+
 int json_get_int(struct simulation *sim,struct json_obj *obj, int *out,char *name)
 {
 	struct json_obj *found;

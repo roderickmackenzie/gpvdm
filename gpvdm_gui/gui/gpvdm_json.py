@@ -62,6 +62,7 @@ from json_circuit import json_circuit
 from json_opengl_config import json_opengl_config
 from json_gl import json_gl
 from json_light import json_light
+from json_light_sources import json_light_sources
 
 class json_dump(json_base):
 
@@ -138,6 +139,7 @@ class all_gpvdm_data(json_base):
 		self.var_list.append(["dump",json_dump()])
 		self.var_list.append(["math",json_math()])
 		self.var_list.append(["light",json_light()])
+		self.var_list.append(["light_sources",json_light_sources()])
 		self.var_list.append(["server",json_server()])
 		self.var_list.append(["epitaxy",epitaxy()])
 		self.var_list.append(["thermal",json_thermal()])

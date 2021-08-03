@@ -50,6 +50,11 @@ class gl_objects():
 
 	def __init__(self):
 		self.objects=[]
+		self.gl_array_lines=[]
+		self.gl_array_lines_float32=[]
+
+		self.gl_array_colors=[]
+		self.gl_array_colors_float32=[]
 
 	def gl_objects_clear(self):
 		self.objects=[]
@@ -61,6 +66,8 @@ class gl_objects():
 
 		for data in self.graph_data:
 			data.plotted=False
+
+		self.ray_data.plotted=False
 
 	def gl_object_deselect_all(self):
 		for o in self.objects:
@@ -298,8 +305,8 @@ class gl_objects():
 				self.paint_from_array(o)
 				self.paint_open_triangles_from_array(o,colored=True)
 			elif o.type=="box":
-				#print("box>>",o.z)
 				self.box(o)
+				#self.paint_marker(o)
 			elif o.type=="marker":
 				self.paint_marker(o)
 			elif o.type=="marker_small":

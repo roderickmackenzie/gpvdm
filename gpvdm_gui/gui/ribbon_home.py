@@ -71,6 +71,7 @@ class ribbon_home(ribbon_page):
 		self.scan_window=None
 		self.fit_window=None
 		self.optics_window=None
+		self.light_sources_window=None
 		self.simulation_notes_window=None
 		self.server_config_window=None
 		self.undo = QAction(icon_get("edit-undo"), _("Undo"), self)
@@ -112,6 +113,9 @@ class ribbon_home(ribbon_page):
 		self.optics.clicked.connect(self.callback_optics_sim)
 		self.addAction(self.optics)
 
+		self.light_sources = QAction_lock("lighthouse", _("Light\nSources"), self,"ribbon_home_light_sources")
+		self.light_sources.clicked.connect(self.callback_light_sources)
+		self.addAction(self.light_sources)
 
 
 		self.sun=tb_item_sun()
@@ -151,6 +155,10 @@ class ribbon_home(ribbon_page):
 			del self.optics_window
 			self.optics_window=None
 
+		if self.light_sources_window!=None:
+			del self.light_sources_window
+			self.light_sources_window=None
+
 		self.sun.update()
 
 		self.fit.setVisible(True)
@@ -165,6 +173,7 @@ class ribbon_home(ribbon_page):
 		self.help.setEnabled(val)
 		self.fit.setEnabled(val)
 		self.optics.setEnabled(val)
+		self.light_sources.setEnabled(val)
 		self.server_config.setEnabled(val)
 
 	def callback_plot_select(self):
@@ -228,6 +237,20 @@ class ribbon_home(ribbon_page):
 			self.optics_window.ribbon.update()
 			self.optics_window.show()
 
+	def callback_light_sources(self, widget, data=None):
+		help_window().help_set_help(["lighthouse.png",_("<big><b>The light sources window</b></big><br>Use this window to setup optical sources for the transfer matrix, ray tracing and FDTD simulations.")])
+
+
+		if self.light_sources_window==None:
+			from window_light_src import window_light_src
+			self.light_sources_window=window_light_src()
+			#self.notebook.changed.connect(self.optics_window.update)
+
+		if self.light_sources_window.isVisible()==True:
+			self.light_sources_window.hide()
+		else:
+			self.light_sources_window.show()
+
 	def callback_simulation_notes(self, widget, data=None):
 		help_window().help_set_help(["si.png",_("<big><b>Record notes about the simulation here</b></big><br>Use this window to make notes about the simulation.")])
 
@@ -249,7 +272,6 @@ class ribbon_home(ribbon_page):
 		if self.server_config_window==None:
 			from server_config import server_config
 			self.server_config_window=server_config()
-			#self.notebook.changed.connect(self.optics_window.update)
 
 		if self.server_config_window.isVisible()==True:
 			self.server_config_window.hide()

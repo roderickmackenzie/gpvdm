@@ -53,6 +53,16 @@ class json_light_spectrum(json_base):
 		self.var_list_build()
 
 
+class json_light_external_interface(json_base):
+
+	def __init__(self):
+		json_base.__init__(self,"external_interface")
+		self.var_list=[]
+		self.var_list.append(["enabled",False])
+		self.var_list.append(["light_external_n",1.0])
+		self.var_list_build()
+
+
 class json_light_spectra(json_base):
 
 	def __init__(self):
@@ -68,13 +78,15 @@ class json_light_spectra(json_base):
 			self.segments.append(a)
 
 
-class json_light_source_obj(json_base):
+class json_virtual_spectra(json_base):
 
 	def __init__(self,name):
 		json_base.__init__(self,name)
 		self.var_list=[]
 		self.var_list.append(["light_filter",json_light_filter()])
 		self.var_list.append(["light_spectra",json_light_spectra()])
+		self.var_list.append(["external_interface",json_light_external_interface()])
+		self.var_list.append(["id",self.random_id()])
 		self.var_list_build()
 
 
@@ -89,10 +101,6 @@ class json_light(json_base):
 		self.var_list.append(["alignmesh",0])
 		self.var_list.append(["meshpoints",200])
 		self.var_list.append(["light_wavelength_auto_mesh",False])
-		self.var_list.append(["lpoints",200])
-		self.var_list.append(["lstart",270e-9])
-		self.var_list.append(["lstop",1600e-9])
-		self.var_list.append(["light_illuminate_from","top"])
 		self.var_list.append(["electron_eff",1.0])
 		self.var_list.append(["hole_eff",1.0])
 		self.var_list.append(["Dphotoneff",8.718361e-01])
@@ -103,8 +111,6 @@ class json_light(json_base):
 		self.var_list.append(["light_file_generation_shift",200e-9])
 		self.var_list.append(["light_profile","box"])
 		self.var_list.append(["dump_verbosity",10])
-		self.var_list.append(["light_source_obj_y0",json_light_source_obj("light_source_obj_y0")])
-		self.var_list.append(["light_source_obj_y1",json_light_source_obj("light_source_obj_y1")])
 		self.var_list_build()
 		self.latex_banned=["all"]
 		self.latex_allowed=["Dphotoneff"]

@@ -109,11 +109,13 @@ class gl_main_menu():
 		action=view.addAction(_("Ray tracing mesh"))
 		action.triggered.connect(self.menu_toggle_view)
 
-		action=view.addAction(_("Light source"))
-		action.triggered.connect(self.menu_toggle_view)
+		self.menu_view_light_source=view.addAction(_("Light source"))
+		self.menu_view_light_source.triggered.connect(self.menu_toggle_view)
+		self.menu_view_light_source.setCheckable(True)
 
-		action=view.addAction(_("Rays"))
-		action.triggered.connect(self.menu_toggle_view)
+		self.menu_view_draw_rays=view.addAction(_("Rays"))
+		self.menu_view_draw_rays.triggered.connect(self.menu_toggle_view)
+		self.menu_view_draw_rays.setCheckable(True)
 
 		action=view.addAction(_("Stars"))
 		action.triggered.connect(self.menu_stars)
@@ -161,17 +163,15 @@ class gl_main_menu():
 		self.view_options.text=self.menu_view_text.isChecked()
 		self.view_options.render_plot=self.menu_view_plot.isChecked()
 		self.view_options.transparent_objects=self.menu_view_transparent_objects.isChecked()
+		self.view_options.enable_draw_light_source=self.menu_view_light_source.isChecked()
+		self.view_options.draw_rays=self.menu_view_draw_rays.isChecked()
 
 		if text==_("Ray tracing mesh"):
-			self.enable_draw_ray_mesh= not self.enable_draw_ray_mesh
+			self.view_options.draw_rays= not self.view_options.draw_rays
 			if self.enable_draw_ray_mesh==False:
 				self.gl_objects_remove_regex("ray_mesh")
 		if text==_("Device view"):
 			self.enable_draw_device = not self.enable_draw_device
-		if text==_("Light source"):
-			self.enable_draw_light_source = not self.enable_draw_light_source
-		if text==_("Rays"):
-			self.enable_draw_rays = not self.enable_draw_rays
 		if text==_("Font"):
 			diag=QFontDialog()
 			font, ok = QFontDialog.getFont(self.font)
@@ -199,4 +199,5 @@ class gl_main_menu():
 		self.menu_view_text.setChecked(self.view_options.text)
 		self.menu_view_plot.setChecked(self.view_options.render_plot)
 		self.menu_view_transparent_objects.setChecked(self.view_options.transparent_objects)
-
+		self.menu_view_light_source.setChecked(self.view_options.enable_draw_light_source)
+		self.menu_view_draw_rays.setChecked(self.view_options.draw_rays)

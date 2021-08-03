@@ -263,10 +263,28 @@ for (l=0;l<dim->llen;l++)
 
 void light_calculate_complex_n(struct light *li)
 {
-int x=0;
-int y=0;
-int z=0;
 int l=0;
+int x=0;
+int z=0;
+struct dim_light *dim=&li->dim;
+	for (z=0;z<dim->zlen;z++)
+	{
+		for (x=0;x<dim->xlen;x++)
+		{
+
+			for (l=0;l<dim->llen;l++)
+			{
+				light_calculate_complex_n_zxl(li,z,x,l);
+			}
+		}
+	}
+
+}
+
+
+void light_calculate_complex_n_zxl(struct light *li, int z, int x,  int l)
+{
+int y=0;
 
 struct dim_light *dim=&li->dim;
 
@@ -278,44 +296,34 @@ long double kr=0.0;
 long double complex n0=0.0+0.0*I;
 long double complex n1=0.0+0.0*I;
 
-	for (l=0;l<dim->llen;l++)
+	for (y=0;y<dim->ylen;y++)
 	{
-		for (z=0;z<dim->zlen;z++)
+
+		if (y==dim->ylen-1)
 		{
-			for (x=0;x<dim->xlen;x++)
-			{
-				for (y=0;y<dim->ylen;y++)
-				{
-
-					if (y==dim->ylen-1)
-					{
-						nr=li->n[z][x][y][l];
-						kr=li->alpha[z][x][y][l]*(dim->l[l]/(PI*4.0));
-					}else
-					{
-						nr=li->n[z][x][y+1][l];
-						kr=li->alpha[z][x][y+1][l]*(dim->l[l]/(PI*4.0));
-					}
-
-					nc=li->n[z][x][y][l];
-					kc=li->alpha[z][x][y][l]*(dim->l[l]/(PI*4.0));
-
-					n0=nc-kc*I;
-					n1=nr-kr*I;
-
-					li->nbar[z][x][y][l]=n0;
-
-					li->r[z][x][y][l]=(n0-n1)/(n0+n1);
-					li->t[z][x][y][l]=(2.0*n0)/(n0+n1);
-				}
-			}
+			nr=li->n[z][x][y][l];
+			kr=li->alpha[z][x][y][l]*(dim->l[l]/(PI*4.0));
+		}else
+		{
+			nr=li->n[z][x][y+1][l];
+			kr=li->alpha[z][x][y+1][l]*(dim->l[l]/(PI*4.0));
 		}
+
+		nc=li->n[z][x][y][l];
+		kc=li->alpha[z][x][y][l]*(dim->l[l]/(PI*4.0));
+
+		n0=nc-kc*I;
+		n1=nr-kr*I;
+
+		li->nbar[z][x][y][l]=n0;
+
+		li->r[z][x][y][l]=(n0-n1)/(n0+n1);
+		li->t[z][x][y][l]=(2.0*n0)/(n0+n1);
 	}
 
 
+
 }
-
-
 
 void light_set_sun_power(struct light *li,long double power, long double laser_eff)
 {
@@ -324,6 +332,14 @@ int l;
 struct dim_light *dim=&li->dim;
 long double E=0.0;
 long double laser_photons=0.0;
+long double nl=0.0;
+long double nr=0.0;
+long double complex n0=0.0+0.0*I;
+long double complex n1=0.0+0.0*I;
+long double complex t0_complex=0.0+0.0*I;
+long double complex t1_complex=0.0+0.0*I;
+long double t0=0.0;
+long double t1=0.0;
 //long double tot=0.0;
 
 for (l=0;l<dim->llen;l++)
@@ -355,11 +371,37 @@ for (l=0;l<dim->llen;l++)
 
 	}
 
-	li->sun_E_y0[l]=gpow(2.0*(li->sun_photons_y0[l]*E)/(epsilon0*cl*li->n[0][0][0][l]),0.5);
-	li->sun_E_y1[l]=gpow(2.0*(li->sun_photons_y1[l]*E)/(epsilon0*cl*li->n[0][0][dim->ylen-1][l]),0.5);
+	nl=li->n[0][0][0][l];
+	nr=li->n[0][0][dim->ylen-1][l];
+	t0=1.0;
+	t1=1.0;
 
+	if (li->light_src_y0.external_interface_enabled==TRUE)
+	{
+		nl=li->light_src_y0.n;
+		n0=nl-0.0*I;
+		n1=li->nbar[0][0][0][l];
+
+		t0_complex=(2.0*n0)/(n0+n1);
+		t0=cabs(t0_complex);
+		//printf("%e + i%e %e\n", creal(t0_complex), cimag(t0_complex),cabs(t0_complex));
+	}
+
+	if (li->light_src_y1.external_interface_enabled==TRUE)
+	{
+		nr=li->light_src_y1.n;
+		n0=nr-0.0*I;
+		n1=li->nbar[0][0][dim->ylen-1][l];
+
+		t1_complex=(2.0*n0)/(n0+n1);
+		t1=cabs(t1_complex);
+		//printf("%e + i%e %e\n", creal(t1_complex), cimag(t1_complex),cabs(t1_complex));
+	}
+
+	li->sun_E_y0[l]=gpow(2.0*(li->sun_photons_y0[l]*E)/(epsilon0*cl*nl),0.5)*t0;
+	li->sun_E_y1[l]=gpow(2.0*(li->sun_photons_y1[l]*E)/(epsilon0*cl*nr),0.5)*t1;
+	//printf("%Le %Le\n",li->sun_E_y0[l],li->sun_E_y1[l]);
 }
-
 
 }
 

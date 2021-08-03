@@ -63,6 +63,7 @@
 #include <light_fun.h>
 #include <epitaxy.h>
 #include <enabled_libs.h>
+#include <light_srcs.h>
 
 static int unused __attribute__((unused));
 static char* unused_pchar __attribute__((unused));
@@ -490,6 +491,8 @@ void device_cpy(struct simulation *sim,struct device *out,struct device *in)
 //		light_init(sim,&(out->mylight));	//we are going to try to not to copy the light structure
 		light_init(sim,&(out->probe_modes));
 		inter_init(sim,&(out->steady_stark));
+
+		light_srcs_cpy(sim,&(out->lights),&(in->lights));
 
 	//Emission
 		out->emission_enabled=in->emission_enabled;

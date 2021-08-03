@@ -57,10 +57,11 @@
 	@brief Loads the light configuration files.
 */
 
-void light_src_dump(struct simulation *sim,char *path,struct light_src *in,char *file_name)
+void light_src_dump(struct simulation *sim,char *path,struct light_src *in)
 {
 	struct dat_file buf;
-
+	char file_name[200];
+	sprintf(file_name,"light_src_%s.dat",in->id);
 	buffer_init(&buf);
 
 	buffer_malloc(&buf);
@@ -105,15 +106,16 @@ void light_src_cpy(struct simulation *sim,struct light_src *out, struct light_sr
 	strcpy(out->filter_path,in->filter_path);
 	inter_copy(&(out->filter_read),&(in->filter_read),TRUE);
 
+	//external interface
+	out->n=in->n;
+	out->external_interface_enabled=in->external_interface_enabled;
+	strcpy(out->id,in->id);
 }
 
 void light_src_build_spectra_tot(struct simulation *sim,struct light_src *in, long double min, long double max, int len)
 {
 	int i;
 	int l;
-	//inter_dump(sim,&(in->spectra[i]));
-	//printf("%Le %Le %d\n",min,max,len);
-	//getchar();
 
 	inter_init_mesh(&(in->spectra_tot),len,min,max);
 
@@ -176,7 +178,9 @@ void light_src_init(struct simulation *sim,struct light_src *in)
 	strcpy(in->filter_path,"");
 	inter_init(sim,&(in->filter_read));
 	in->filter_dB=-1.0;
-
+	in->n=-1.0;
+	in->external_interface_enabled=FALSE;
+	strcpy(in->id,"");
 }
 
 void light_src_free(struct simulation *sim, struct light_src *in)
@@ -197,6 +201,9 @@ void light_src_free(struct simulation *sim, struct light_src *in)
 	strcpy(in->filter_path,"");
 	inter_free(&(in->filter_read));
 	in->filter_dB=-1.0;
+	in->n=-1.0;
+	in->external_interface_enabled=FALSE;
+	strcpy(in->id,"");
 
 }
 
@@ -206,6 +213,7 @@ void light_src_load(struct simulation *sim,struct light_src *in, struct json_obj
 	int x;
 	char filter_path[PATH_MAX];
 	struct json_obj *json_filter;
+	struct json_obj *json_external_interface;
 	int i;
 	struct json_obj *obj;
 	struct json_obj *json_light_spectra;
@@ -213,14 +221,11 @@ void light_src_load(struct simulation *sim,struct light_src *in, struct json_obj
 	char temp_str[100];
 	char spectrum_name[200];
 	char file_path[PATH_MAX];
-	DIR *theFolder;
 
-	theFolder = opendir(get_spectra_path(sim));
-	if (theFolder==NULL)
-	{
-		ewe(sim,_("Optical spectra directory not found\n"));
-	}
-	closedir (theFolder);
+	json_get_string(sim, json_light_src, in->id,"id");
+
+	json_get_long_double(sim, json_light_src, &(in->lstart),"lstart");
+	json_get_long_double(sim, json_light_src, &(in->lstop),"lstop");
 
 	json_light_spectra=json_obj_find(json_light_src, "light_spectra");
 
@@ -296,7 +301,16 @@ void light_src_load(struct simulation *sim,struct light_src *in, struct json_obj
 		}
 	}
 
+	//Reflection of external interface
 
+	json_external_interface=json_obj_find(json_light_src, "external_interface");
+	if (json_external_interface==NULL)
+	{
+		ewe(sim,"json_external_interface not found\n");
+	}
+
+	json_get_english(sim, json_external_interface, &(in->external_interface_enabled),"enabled");
+	json_get_long_double(sim, json_external_interface, &(in->n),"light_external_n");
 
 }
 

@@ -103,10 +103,9 @@ class display_mesh(QWidget):
 			#self.data.load(os.path.join(get_sim_path(),"electrical_mesh.dat")
 			#self.display.pre_built_scene=gl_scale.project_base_objects_from_m_2_screen(self.data.data)
 			self.display.draw_electrical_mesh=False
-			self.display.view.draw_device=False
+			self.display.view_options.draw_device=False
 			self.display.enable_draw_ray_mesh=False
-			self.display.enable_draw_light_source=False
-			self.display.enable_draw_rays=False
+			self.display.view_options.draw_rays=False
 			self.display.view.render_photons=False
 
 

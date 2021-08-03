@@ -544,6 +544,7 @@ struct device
 		struct light probe_modes;
 
 		struct math_xy steady_stark;
+		struct light_sources lights;
 
 	//Emission
 		int emission_enabled;

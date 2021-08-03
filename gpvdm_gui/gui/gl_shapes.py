@@ -276,15 +276,16 @@ class gl_shapes:
 
 
 	def box(self,o,cut_through=False):
-		#btm
 
+		#btm
 		dx=o.dxyz.x
 		dy=o.dxyz.y
 		dz=o.dxyz.z
 
-		self.set_color(o)
 		glPushMatrix()
 		glTranslatef(o.xyz.x,o.xyz.y,o.xyz.z)
+
+		self.set_color(o)
 
 		glBegin(GL_QUADS)
 		if cut_through==False:
@@ -329,6 +330,7 @@ class gl_shapes:
 
 		glEnd()
 		glPopMatrix()
+
 
 	def plane(self,o):
 		dx=o.dxyz.x

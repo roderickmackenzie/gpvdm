@@ -157,7 +157,6 @@ void light_zx_lambda_solver(struct simulation *sim, struct light *li, struct dev
 	int x;
 	char temp[200];
 	struct dim_light *dim=&li->dim;
-	int y;
 
 	for (z=0;z<dim->zlen;z++)
 	{
@@ -313,24 +312,24 @@ int light_solve_lam_slice(struct simulation *sim, struct device *dev, struct lig
 
 	if (flip_material==TRUE)
 	{
-		light_flip_y_float_complex(dim,li->r,z,x,l);
-		light_flip_y_float_complex(dim,li->t,z,x,l);
-		light_flip_y_float_complex(dim,li->nbar,z,x,l);
+		//light_flip_y_float_complex(dim,li->r,z,x,l);
+		//light_flip_y_float_complex(dim,li->t,z,x,l);
+		//light_flip_y_float_complex(dim,li->nbar,z,x,l);
 
 		light_flip_y_float(dim,li->n,z,x,l);
 		light_flip_y_float(dim,li->alpha,z,x,l);
+		light_calculate_complex_n_zxl(li, z, x, l);
 	}
+
 
 	ret= (*li->fn_solve_lam_slice)(sim,dev,li,sun_E,z,x,l,w);
 
 	if (flip_material==TRUE)
 	{
-		light_flip_y_float_complex(dim,li->r,z,x,l);
-		light_flip_y_float_complex(dim,li->t,z,x,l);
-		light_flip_y_float_complex(dim,li->nbar,z,x,l);
 
 		light_flip_y_float(dim,li->n,z,x,l);
 		light_flip_y_float(dim,li->alpha,z,x,l);
+		light_calculate_complex_n_zxl(li, z, x, l);
 
 		light_flip_y_float(dim,li->Ep,z,x,l);
 		light_flip_y_float(dim,li->Epz,z,x,l);

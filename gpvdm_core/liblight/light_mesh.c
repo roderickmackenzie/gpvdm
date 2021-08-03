@@ -298,15 +298,6 @@ void light_build_materials_arrays(struct simulation *sim,struct light *li, struc
 	light_build_obj_pointer_array(sim,li, dev);
 
 
-
-	/*if (li->flip_field==TRUE)
-	{
-		flip_light_zxyl_long_double_y(sim, dim,li->alpha);
-		flip_light_zxyl_long_double_y(sim, dim,li->alpha0);
-		flip_light_zxyl_long_double_y(sim, dim,li->n);
-	}*/
-
-
 	//light_calculate_complex_n(li);
 
 	memset_light_zxyl_float(dim, li->En,0);

@@ -212,7 +212,9 @@ class gl_view_options():
 		self.render_plot=True
 		self.draw_device=True
 		self.optical_mode=True
+		self.enable_draw_light_source=True
 		self.text=True
 		self.bg_color=[0.0,0.0,0.0]
 		self.stars_distance=60
 		self.transparent_objects=False
+		self.draw_rays=True

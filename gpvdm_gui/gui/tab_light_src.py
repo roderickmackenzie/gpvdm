@@ -21,28 +21,30 @@
 #
 # 
 
-## @package fxexperiment_tab
-#  fx experiment tab widget
+## @package tab_light_src
+#  A tab to hold diffent types of JV experiments.
 #
 
 import os
-from numpy import *
-from fxexperiment_mesh_tab import fxexperiment_mesh_tab
-from circuit import circuit
-
 import i18n
 _ = i18n.language.gettext
 
 #qt
 from PyQt5.QtCore import QSize, Qt 
-from PyQt5.QtWidgets import QWidget,QTabWidget,QTabWidget
+from PyQt5.QtWidgets import QWidget,QVBoxLayout,QToolBar,QSizePolicy,QAction,QTabWidget,QTabWidget
 from PyQt5.QtGui import QPainter,QIcon
-
 from tab import tab_class
 from css import css_apply
+from optics_sources_tab import optics_light_src
+from cal_path import get_sim_path
 from gpvdm_json import gpvdm_data
 
-class fxexperiment_tab(QTabWidget):
+class tab_light_src(QTabWidget):
+
+	def get_json_obj(self):
+		data=gpvdm_data()
+		data_obj=data.light_sources.lights.find_object_by_id(self.uid)
+		return data_obj
 
 	def update(self):
 		self.fxmesh.update()
@@ -51,30 +53,25 @@ class fxexperiment_tab(QTabWidget):
 		self.fxmesh.image_save()
 
 	def __init__(self,data):
+		#print("RRRR",type(data))
 		QTabWidget.__init__(self)
 		css_apply(self ,"tab_default.css")
-		self.data=data
+		self.uid=data.id
+		#print("bbb",type(self.get_json_obj()),data.id,self.get_json_obj())
 
 		self.setMovable(True)
+		print(self.get_json_obj().virtual_spectra)
+		virt_spectra_id=self.get_json_obj().virtual_spectra.id
+		print(virt_spectra_id,self.uid)
+		self.light_src=optics_light_src("gpvdm_data().light_sources.lights",virt_spectra_id,_("Light source (y0)"))
+		self.addTab(self.light_src,_("Light source"))
 
-		#self.tmesh = tab_time_mesh(self.data)
-		#self.addTab(self.tmesh,_("time mesh"))
-		self.tmesh = fxexperiment_mesh_tab(self.data.id)
-		self.addTab(self.tmesh,_("Frequency mesh"))
+		tab=tab_class(self.get_json_obj())
+		self.addTab(tab,_("Configure"))
 
-		self.config_tab=tab_class(self.data.config)
-		self.addTab(self.config_tab,_("Configure"))
-
-		if gpvdm_data().electrical_solver.solver_type!="circuit":
-			self.circuit=circuit(self.data)
-			self.addTab(self.circuit,_("Circuit"))
-			self.circuit.load_type.changed.connect(self.config_tab.tab.hide_show_widgets)
 
 	def rename(self,tab_name):
-		self.data.english_name=tab_name
+		self.get_json_obj().english_name=tab_name
 		gpvdm_data().save()
-
-	def get_json_obj(self):
-		return self.data
 
 

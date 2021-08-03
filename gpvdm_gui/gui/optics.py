@@ -63,7 +63,6 @@ from optics_ribbon import optics_ribbon
 from css import css_apply
 from gui_util import yes_no_dlg
 from gpvdm_json import gpvdm_data
-from optics_sources_tab import optics_sources_tab
 
 class class_optical(QWidgetSavePos):
 
@@ -128,9 +127,6 @@ class class_optical(QWidgetSavePos):
 		self.notebook.addTab(self.fig_gen_rate,_("Generation rate"))
 
 
-		self.light_sources = optics_sources_tab()
-		self.notebook.addTab(self.light_sources,_("Light sources"))
-
 		self.fig_gen_rate.draw_graph()
 		self.progress_window.stop()
 
@@ -176,6 +172,7 @@ class class_optical(QWidgetSavePos):
 		self.force_redraw()
 
 	def force_redraw(self):
+		self.fig_gen_rate.build_bands()
 		self.fig_gen_rate.draw_graph()
 
 		#print("redraw optics3")
@@ -183,10 +180,6 @@ class class_optical(QWidgetSavePos):
 			self.plot_widgets[i].update()
 		#print("redraw optics4")			
 		self.ribbon.update()
-		
-		self.light_sources.update()
-
-		#print("redraw optics5")
 		
 	def callback_run(self):
 		data=gpvdm_data()

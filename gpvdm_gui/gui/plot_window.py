@@ -130,8 +130,8 @@ class plot_window(QWidget):
 			self.plot.draw_electrical_mesh=False
 			self.plot.view.draw_device=False
 			self.plot.enable_draw_ray_mesh=False
-			self.plot.enable_draw_light_source=False
-			self.plot.enable_draw_rays=False
+			self.plot.view_options.enable_draw_light_source=False
+			self.plot.view_options.draw_rays=False
 			self.plot.view.render_photons=False
 			self.plot.view.optical_mode=False
 
@@ -165,8 +165,8 @@ class plot_window(QWidget):
 			self.plot.draw_electrical_mesh=False
 			self.plot.view.draw_device=False
 			self.plot.enable_draw_ray_mesh=False
-			self.plot.enable_draw_light_source=False
-			self.plot.enable_draw_rays=False
+			self.plot.view_options.enable_draw_light_source=False
+			self.plot.view_options.draw_rays=False
 			self.plot.plot_graph=False
 			self.plot.plot_circuit=True
 			self.plot.view.render_photons=False
@@ -187,8 +187,8 @@ class plot_window(QWidget):
 			self.plot.draw_electrical_mesh=False
 			self.plot.view.draw_device=False
 			self.plot.enable_draw_ray_mesh=True
-			self.plot.enable_draw_light_source=False
-			self.plot.enable_draw_rays=False
+			self.plot.view_options.enable_draw_light_source=False
+			self.plot.view_options.draw_rays=False
 			self.plot.scene_built=True
 			self.plot.view.render_photons=False
 

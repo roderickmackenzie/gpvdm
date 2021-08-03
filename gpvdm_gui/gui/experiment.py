@@ -45,6 +45,7 @@ from fxexperiment_tab import fxexperiment_tab
 from cvexperiment_tab import cvexperiment_tab
 from jvexperiment_tab import jvexperiment_tab
 from plexperiment_tab import plexperiment_tab
+from tab_light_src import tab_light_src
 from cluster_tab import cluster_tab
 
 from QHTabBar import QHTabBar
@@ -126,10 +127,6 @@ class experiment(QWidgetSavePos):
 
 		#self.ribbon.tb_start.triggered.connect(self.callback_start_time)
 
-		self.ribbon.tb_clone.triggered.connect(self.callback_clone_page)
-		self.ribbon.tb_rename.triggered.connect(self.callback_rename_page)
-		self.ribbon.tb_delete.triggered.connect(self.callback_delete_page)
-		self.ribbon.tb_new.triggered.connect(self.callback_add_page)
 
 		self.main_vbox.addWidget(self.ribbon)
 
@@ -153,19 +150,26 @@ class experiment(QWidgetSavePos):
 
 		self.load_tabs()
 
+		self.ribbon.tb_clone.triggered.connect(self.callback_clone_page)
+		self.ribbon.tb_rename.triggered.connect(self.callback_rename_page)
+		self.tab_bar.rename.connect(self.callback_rename_page)
+		self.ribbon.tb_delete.triggered.connect(self.callback_delete_page)
+		self.tab_bar.delete.connect(self.callback_delete_page)
+		self.ribbon.tb_new.triggered.connect(self.callback_add_page)
+
 		self.notebook.currentChanged.connect(self.update_interface)
 
 
 	def callback_rename_page(self):
 		tab = self.notebook.currentWidget()
 		data=gpvdm_data()
-		new_sim_name=dlg_get_text( _("Rename the experiment:"), tab.data.english_name,"rename.png")
+		new_sim_name=dlg_get_text( _("Rename:"), tab.get_json_obj().english_name,"rename.png")
 
 		new_sim_name=new_sim_name.ret
 
 		if new_sim_name!=None:
 			
-			tab.data.english_name=new_sim_name
+			tab.get_json_obj().english_name=new_sim_name
 			self.notebook.setTabText(self.notebook.currentIndex(), new_sim_name)
 			data.save()
 			global_object_run("ribbon_sim_mode_update")
@@ -173,20 +177,20 @@ class experiment(QWidgetSavePos):
 	def callback_clone_page(self):
 		tab = self.notebook.currentWidget()
 		data=gpvdm_data()
-		new_sim_name=dlg_get_text( _("Clone the experiment:"), tab.data.english_name+"_new","clone.png")
+		new_sim_name=dlg_get_text( _("Clone:"), tab.get_json_obj().english_name+"_new","clone.png")
 
 		new_sim_name=new_sim_name.ret
 
 		if new_sim_name!=None:
 			
-			a=copy.deepcopy(tab.data)
+			a=copy.deepcopy(tab.get_json_obj())
 			a.english_name=new_sim_name
 			data=self.get_json_obj()
 			data.segments.append(a)
-			tab=eval(self.name_of_tab_class+"(data.segments[-1])")
+			tab=eval(self.name_of_tab_class+"(tab.get_json_obj().segments[-1])")
 			#tab=time_domain_experiment_tab(data.segments[-1])
 			self.notebook.addTab(tab,new_sim_name)
-			data.save()
+			gpvdm_data().save()
 			global_object_run("ribbon_sim_mode_update")
 
 	def callback_delete_page(self):
@@ -194,7 +198,7 @@ class experiment(QWidgetSavePos):
 		if len(data.segments)>1:
 			tab = self.notebook.currentWidget()
 			obj=data.find_object_by_id(tab.uid)
-			response=yes_no_dlg(self,_("Are you sure you want to delete the experiment: ")+tab.data.english_name)
+			response=yes_no_dlg(self,_("Are you sure you want to delete : ")+tab.get_json_obj().english_name)
 			if response == True:
 				index=self.notebook.currentIndex()
 				data.segments.remove(obj)
@@ -205,26 +209,30 @@ class experiment(QWidgetSavePos):
 	def callback_add_page(self):
 		tab = self.notebook.currentWidget()
 		data=gpvdm_data()
-		new_sim_name=dlg_get_text( _("Make a new experiment:"), tab.data.english_name+"_new","document-new.png")
+		new_sim_name=dlg_get_text( _("Make a new:"), tab.get_json_obj().english_name+"_new","document-new.png")
 
 		new_sim_name=new_sim_name.ret
 
 		if new_sim_name!=None:
 			
-			a=copy.deepcopy(tab.data)
+			a=copy.deepcopy(tab.get_json_obj())
 			a.english_name=new_sim_name
+			a.update_random_ids()
 			data=self.get_json_obj()
 			data.segments.append(a)
+			#print(type(data),data.segments,data.segments[-1].id)
+			#adads
+			#print(">>>>>>>",type(data.segments[-1]),data.segments[-1].id)
 			tab=eval(self.name_of_tab_class+"(data.segments[-1])")
-			#tab=time_domain_experiment_tab(data.segments[-1])
+			tab.uid=a.id
 			self.notebook.addTab(tab,new_sim_name)
-			data.save()
+			gpvdm_data().save()
 			global_object_run("ribbon_sim_mode_update")
 
 	def update_interface(self):
 		data=self.get_json_obj()
 		tab = self.notebook.currentWidget()
-		self.status_bar.showMessage(tab.data.english_name+", segment"+str(data.segments.index(tab.data)))
+		self.status_bar.showMessage(tab.get_json_obj().english_name+", segment"+str(data.segments.index(tab.get_json_obj())))
 		self.tab_bar.obj_search_path=self.json_search_path
 		self.tab_bar.obj_id=tab.uid
 

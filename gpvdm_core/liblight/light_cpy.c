@@ -160,7 +160,6 @@ void light_cpy_memory(struct simulation *sim,struct light *out,struct light *in)
 
 	//Config values
 	out->align_mesh=in->align_mesh;
-	out->flip_field=in->flip_field;
 	out->disable_transfer_to_electrical_mesh=in->disable_transfer_to_electrical_mesh;
 	out->disable_cal_photon_density=in->disable_cal_photon_density;
 	out->light_file_generation_shift=in->light_file_generation_shift;

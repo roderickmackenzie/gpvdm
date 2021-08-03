@@ -101,11 +101,11 @@ class json_base():
 					return ret
 
 		for s in self.segments:
-			val=getattr(s, "id",None)
+			val=getattr(s, "id","not found")
 			if val==want_id:
 				return s
-			elif isclass(val)==True:
-				ret=val.find_object_by_id(want_id)
+			elif isclass(s)==True:
+				ret=s.find_object_by_id(want_id)
 				if ret!=None:
 					return ret
 		return None
@@ -136,6 +136,18 @@ class json_base():
 
 	def update_random_ids(self):
 		for item in self.var_list:
+			m=item[0]
+			val=getattr(self, m)
+			if m=="id":
+				#print(self)
+				setattr(self, m, self.random_id()	)
+			elif isclass(val)==True:
+				try:
+					val.update_random_ids()
+				except:
+					pass
+
+		for item in self.segments:
 			m=item[0]
 			val=getattr(self, m)
 			if m=="id":

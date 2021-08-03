@@ -263,11 +263,11 @@ class shape_editor(QWidgetSavePos):
 		self.three_d_shape.triangle_file=""
 
 		self.three_d_shape.draw_electrical_mesh=False
-		self.three_d_shape.view.draw_device=False
+		self.three_d_shape.view_options.draw_device=False
 		self.three_d_shape.enable_draw_ray_mesh=True
 		self.three_d_shape.enable_draw_light_source=False
-		self.three_d_shape.enable_draw_rays=False
-		self.three_d_shape.view.render_photons=False
+		self.three_d_shape.view_options.draw_rays=False
+		self.three_d_shape.view_options.render_photons=False
 
 		self.notebook.addTab(self.three_d_shape,_("Shape"))
 

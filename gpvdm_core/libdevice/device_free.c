@@ -64,6 +64,7 @@
 #include <perovskite.h>
 #include <epitaxy.h>
 #include <enabled_libs.h>
+#include <light_srcs.h>
 
 static int unused __attribute__((unused));
 static char* unused_pchar __attribute__((unused));
@@ -420,6 +421,7 @@ void device_free(struct simulation *sim,struct device *dev)
 		light_free(sim,&(dev->probe_modes));
 		inter_free(&(dev->steady_stark));
 
+		light_srcs_free(sim,&(dev->lights));
 	//Emission
 		//none
 

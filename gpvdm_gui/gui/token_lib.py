@@ -67,7 +67,6 @@ def build_token_lib():
 
 	lib.append(my_data("Dphotoneff","0-1",_("Photon efficiency"),"e",1.0,"QLineEdit",min=0.001,max=1.2))
 	lib.append(my_data("light_file_qe_spectra","au",_("QE spectra file"),"e",1.0,"QLineEdit"))
-	lib.append(my_data("light_illuminate_from","au",_("Illuminate from"),"e",1.0,"QComboBoxLang",defaults=[[("top"),_("Top")],[("bottom"),_("Bottom")]]))
 	lib.append(my_data("meshpoints","au",_("Mesh points (x)"),"e",1.0,"QLineEdit"))
 
 	lib.append(my_data("light_spectrum","au",_("Light spectrum"),"e",1.0,"tb_spectrum"))
@@ -82,13 +81,16 @@ def build_token_lib():
 	lib.append(my_data("filter_material","...",_("Optical filter material"),"e",1.0,"gpvdm_select_material" ,units_widget="QPushButton"))
 	lib.append(my_data("filter_db","0-1000dB",_("dB"),"e",1.0,"QLineEdit"))
 
+	#light sources
+	lib.append(my_data("light_external_n","Refractive index",_("n"),"e",1.0,"QLineEdit"))
+	lib.append(my_data("light_illuminate_from","au",_("Illuminate from"),"e",1.0,"QComboBoxLang",defaults=[[("y0"),_("Top")],[("y1"),_("Bottom")],[("x0"),_("Left")],[("x1"),_("Right")],[("xyz"),_("xyz")]]))
 	#generic
 	lib.append(my_data("log_fit",_("True/False"),_("Log fit"),"e",1.0,"gtkswitch"))
 	lib.append(my_data("human_var",_("Select"),_("Select"),"e",1.0,"gpvdm_select"))
 	lib.append(my_data("fit_var_enabled",_("True/False"),_("Enable fit variable"),"e",1.0,"gtkswitch"))
 
 	#fit duplicate
-	lib.append(my_data("enabled",_("True/False"),_("Enabled"),"e",1.0,"gtkswitch"))
+	#lib.append(my_data("enabled",_("True/False"),_("Enabled"),"e",1.0,"gtkswitch"))
 	lib.append(my_data("human_src",_("Select"),_("Select"),"e",1.0,"gpvdm_select"))
 	lib.append(my_data("human_dest",_("Select"),_("Select"),"e",1.0,"gpvdm_select"))
 	lib.append(my_data("multiplier",_("multiplier"),_("Multiplier"),"e",1.0,"QLineEdit"))
@@ -633,7 +635,6 @@ def build_token_lib():
 	lib.append(my_data("fxdomain_delta_i","s",_("di"),"e",1.0,"QLineEdit"))
 	lib.append(my_data("fxdomain_delta_g","s",_("dmodulation"),"e",1.0,"QLineEdit"))
 	lib.append(my_data("fxdomain_delta_phase","rads",_("dphase"),"e",1.0,"QLineEdit"))
-
 	lib.append(my_data("fxdomain_large_signal","au",_("Simulation type"),"e",1.0,"QComboBoxLang",defaults=[[("large_signal"),_("Large signal")],[("fourier"),_("Fourier")]]))		#,[("small_signal"),_("Small signal")]
 
 

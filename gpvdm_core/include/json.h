@@ -118,4 +118,5 @@ int json_obj_save_as(struct simulation *sim,char *file_name,struct json_obj *j);
 void json_string_init(struct json_string *in);
 void json_string_free(struct json_string *in);
 void json_cat_str(struct json_string *buf,char *data);
+int json_is_token(struct simulation *sim,struct json_obj *obj,char *name);
 #endif

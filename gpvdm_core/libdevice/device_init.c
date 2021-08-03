@@ -62,6 +62,7 @@
 #include <light_fun.h>
 #include <enabled_libs.h>
 #include <lock.h>
+#include <light_srcs.h>
 
 static int unused __attribute__((unused));
 static char* unused_pchar __attribute__((unused));
@@ -480,6 +481,8 @@ void device_init(struct simulation *sim,struct device *dev)
 		light_init(sim,&(dev->mylight));
 		light_init(sim,&(dev->probe_modes));
 		inter_init(sim,&(dev->steady_stark));
+
+		light_srcs_init(sim,&(dev->lights));
 
 	//Emission
 		dev->emission_enabled=-1;

@@ -61,7 +61,6 @@ class gl_graph():
 		self.graph_data=[]
 
 	def draw_graph(self):
-
 		for data in self.graph_data:
 			if data.valid_data==True:
 				if data.type=="3d":

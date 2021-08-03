@@ -98,6 +98,7 @@ void light_src_free(struct simulation *sim, struct light_src *in);
 void light_src_load(struct simulation *sim,struct light_src *in, struct json_obj *json_light_src);
 void light_src_cpy(struct simulation *sim,struct light_src *out, struct light_src *in);
 void light_src_build_spectra_tot(struct simulation *sim,struct light_src *in, long double min, long double max, int len);
-void light_src_dump(struct simulation *sim,char *path,struct light_src *in,char *file_name);
+void light_src_dump(struct simulation *sim,char *path,struct light_src *in);
 void light_src_cal_min_max(struct simulation *sim,long double  *min,long double  *max,struct light_src *in);
+void light_calculate_complex_n_zxl(struct light *li, int z, int x, int l);
 #endif

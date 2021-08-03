@@ -82,4 +82,5 @@ char *get_output_path(struct device *dev);
 void set_input_path(struct device *dev,char *in);
 void set_output_path(struct device *dev,char *in);
 void device_to_dim(struct simulation *sim,struct dimensions *dim,struct device *dev);
+
 #endif

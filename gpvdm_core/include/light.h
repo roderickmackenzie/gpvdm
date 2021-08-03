@@ -51,6 +51,15 @@
 #include <dat_file_struct.h>
 #include <dim.h>
 
+struct light_sources
+{
+	int nlight_sources;
+	struct light_src *light_sources;
+	long double lstart;
+	long double lstop;
+
+};
+
 struct light_src
 {
 	int nspectra;
@@ -63,6 +72,14 @@ struct light_src
 	char filter_path[PATH_MAX];
 	struct math_xy filter_read;
 	long double filter_dB;
+
+	//external interface
+	long double n;
+	int external_interface_enabled;
+	char id[100];
+	long double lstart;
+	long double lstop;
+
 };
 
 struct light
@@ -159,7 +176,6 @@ struct light
 
 	//Config values
 	int align_mesh;
-	int flip_field;
 	int disable_transfer_to_electrical_mesh;
 	int disable_cal_photon_density;
 	long double light_file_generation_shift;

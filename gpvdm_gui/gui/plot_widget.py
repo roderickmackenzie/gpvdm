@@ -524,10 +524,10 @@ class plot_widget(plot_widget_menu,plot_widget_matplotlib):
 				from gl import glWidget
 				self.gl_plot=glWidget(self)
 				self.gl_plot.draw_electrical_mesh=False
-				self.gl_plot.view.draw_device=True
+				self.gl_plot.view_options.draw_device=True
 				self.gl_plot.enable_draw_ray_mesh=True
-				self.gl_plot.enable_draw_light_source=False
-				self.gl_plot.enable_draw_rays=False
+				self.gl_plot.view_options.enable_draw_light_source=False
+				self.gl_plot.view_options.draw_rays=False
 				self.gl_plot.scene_built=True
 				self.gl_plot.plot_graph=True
 				self.main_vbox.insertWidget(1,self.gl_plot)

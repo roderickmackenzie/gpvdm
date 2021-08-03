@@ -63,9 +63,7 @@ static int unused __attribute__((unused));
 
 void light_load_config_file(struct simulation *sim,struct light *li, struct json_obj *json_config)
 {
-	struct json_obj *json_spectra;
 	struct json_obj *json_light;
-	char temp_str[100];
 
 	struct dim_light *dim=&(li->dim);
 
@@ -83,22 +81,10 @@ void light_load_config_file(struct simulation *sim,struct light *li, struct json
 
 	json_get_int(sim, json_light, &dim->ylen,"meshpoints");
 
-	json_get_string(sim, json_light, temp_str,"light_illuminate_from");
-
-	if (strcmp(temp_str,"bottom")==0)
-	{
-		li->flip_field=TRUE;
-	}else
-	{
-		li->flip_field=FALSE;
-	}
-
 	json_get_english(sim,json_light, &(li->light_wavelength_auto_mesh),"light_wavelength_auto_mesh");
 
 	json_get_int(sim, json_light, &dim->llen,"lpoints");
 
-	json_get_long_double(sim, json_light, &li->lstart,"lstart");
-	json_get_long_double(sim, json_light, &li->lstop,"lstop");
 
 	json_get_long_double(sim, json_light, &li->electron_eff,"electron_eff");
 	li->electron_eff=fabs(li->electron_eff);
@@ -131,24 +117,65 @@ void light_load_config_file(struct simulation *sim,struct light *li, struct json
 	//printf("yes'%d'\n",li->dump_verbosity);
 	//getchar();
 
-	json_spectra=json_obj_find(json_light, "light_source_obj_y0");
+}
 
-	if (json_spectra==NULL)
+void light_load_light_sources(struct simulation *sim,struct light *li, struct json_obj *json_config)
+{
+	int segs;
+	int i;
+	char temp[200];
+	int y0_found=FALSE;
+	int y1_found=FALSE;
+
+	struct json_obj *json_light_sources;
+	struct json_obj *json_seg;
+	struct json_obj *json_virtual_spectra;
+
+	char illuminate_from[200];
+
+	json_light_sources=json_obj_find(json_config, "light_sources");
+
+	if (json_light_sources==NULL)
 	{
-		ewe(sim,"Object light_source_obj_y0 not found\n");
+		ewe(sim,"Object json_light_sources not found\n");
 	}
 
-	light_src_load(sim,&(li->light_src_y0), json_spectra);
+	json_get_int(sim, json_light_sources, &segs,"segments");
 
-
-	json_spectra=json_obj_find(json_light, "light_source_obj_y1");
-
-	if (json_spectra==NULL)
+	for (i=0;i<segs;i++)
 	{
-		ewe(sim,"Object light_source_obj_y1 not found\n");
+		sprintf(temp,"segment%d",i);
+		json_seg=json_obj_find(json_light_sources, temp);
+		json_get_string(sim, json_seg, illuminate_from,"light_illuminate_from");
+		if (strcmp(illuminate_from,"y0")==0)
+		{
+			if (y0_found==FALSE)
+			{
+				y0_found=TRUE;
+				json_virtual_spectra=json_obj_find(json_seg, "virtual_spectra");
+				if (json_virtual_spectra==NULL)
+				{
+					ewe(sim,"Object virtual_spectra not found\n");
+				}
+				light_src_load(sim,&(li->light_src_y0), json_virtual_spectra);
+			}
+		}
+
+		if (strcmp(illuminate_from,"y1")==0)
+		{
+			if (y1_found==FALSE)
+			{
+				y1_found=TRUE;
+				json_virtual_spectra=json_obj_find(json_seg, "virtual_spectra");
+				if (json_virtual_spectra==NULL)
+				{
+					ewe(sim,"Object virtual_spectra not found\n");
+				}
+				light_src_load(sim,&(li->light_src_y1), json_virtual_spectra);
+			}
+		}
 	}
 
-	light_src_load(sim,&(li->light_src_y1), json_spectra);
 
 }
 
@@ -164,7 +191,13 @@ void light_load_config(struct simulation *sim,struct light *li, struct device *d
 	join_path(2,path_temp,get_output_path(dev),"optical_output");
 	remove_dir(sim,path_temp);
 
+
 	light_load_config_file(sim,li,&(dev->config.obj));
+	li->lstart=dev->lights.lstart;
+	li->lstop=dev->lights.lstop;
+
+	light_load_light_sources(sim,li, &(dev->config.obj));
+
 	light_load_materials(sim,li,dev);
 	light_malloc(sim,li);
 	light_build_mesh(sim,li,dim);

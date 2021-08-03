@@ -860,7 +860,7 @@ class dat_file():
 						a2=s[2]
 						self.data[z][x][y]=float(s[3])
 
-					if l==3:
+					elif l==3:
 						line_found=True
 						if self.type=="rgb":
 							r=float(int(s[2][0:2], 16)/255)
@@ -887,22 +887,20 @@ class dat_file():
 						a1=0.0
 						a2=0.0
 
-	#				else:
-	#					print("skip")
 
 					if line_found==True:
 						if l==2:
 							if x==0 and z==0:
 								self.y_scale[y]=float(a0)+self.y_offset
 
-						if l==3:
+						elif l==3:
 							if x==0 and z==0:
 								self.y_scale[y]=float(a1)+self.y_offset
 								
 							if z==0 and y==0:
 								self.x_scale[x]=float(a0)
 
-						if l==4:
+						elif l==4:
 							if x==0 and y==0:
 								self.z_scale[z]=float(a0)
 
