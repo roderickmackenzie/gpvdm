@@ -48,8 +48,11 @@ from process_events import process_events
 from global_objects import global_object_run
 from experiment import experiment
 from gpvdm_json import gpvdm_data
-class window_light_src(experiment):
+from play import play
+from server import server_get
+from cal_path import get_sim_path
 
+class window_light_src(experiment):
 
 	def __init__(self,data=None):
 		experiment.__init__(self,window_save_name="window_light_src", window_title=_("Light source editor"),name_of_tab_class="tab_light_src",json_search_path="gpvdm_data().light_sources.lights")
@@ -60,6 +63,10 @@ class window_light_src(experiment):
 		self.tb_configure = QAction(icon_get("cog"), _("Configure"), self)
 		self.tb_configure.triggered.connect(self.callback_configwindow)
 		self.ribbon.file.insertAction(self.ribbon.tb_rename,self.tb_configure)
+
+		self.run = play(self,"optics_ribbon_run",run_text=_("Rebuild"))
+		self.ribbon.file.insertAction(self.ribbon.tb_rename,self.run)
+		self.run.start_sim.connect(self.callback_run)
 
 		self.switch_page()
 
@@ -72,3 +79,14 @@ class window_light_src(experiment):
 		data=gpvdm_data()
 		self.configure_widget=tab_class(gpvdm_data().light_sources.config)
 		self.configure_widget.show()
+
+	def callback_run(self):
+		data=gpvdm_data()
+		self.my_server=server_get()
+		self.my_server.clear_cache()
+		self.my_server.add_job(get_sim_path(),"--simmode opticalmodel@optics")
+		self.my_server.sim_finished.connect(self.callback_sim_finished)
+		self.my_server.start()
+
+	def callback_sim_finished(self):
+		self.update()

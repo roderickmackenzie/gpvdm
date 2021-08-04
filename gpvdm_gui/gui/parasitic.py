@@ -103,7 +103,6 @@ class parasitic(QWidgetSavePos):
 		data=gpvdm_data()
 		for i in range(0,self.notebook.count()):
 			w=self.notebook.widget(i)
-			print(data.parasitic)
 			w.tab.template_widget=data.parasitic
 			w.tab.update_values()
 

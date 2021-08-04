@@ -51,9 +51,6 @@ class json_ray_config(json_base):
 		self.var_list.append(["ray_auto_run","ray_run_once"])
 		self.var_list.append(["ray_emission_source","ray_emission_single_point"])
 		self.var_list.append(["ray_escape_bins",20])
-		self.var_list.append(["ray_xsrc",-1.0])
-		self.var_list.append(["ray_ysrc",-1.0])
-		self.var_list.append(["ray_zsrc",-1.0])
 		self.var_list_build()
 
 class json_ray_view_point(json_base):

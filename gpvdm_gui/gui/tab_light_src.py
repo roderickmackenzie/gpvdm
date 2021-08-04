@@ -47,17 +47,12 @@ class tab_light_src(QTabWidget):
 		return data_obj
 
 	def update(self):
-		self.fxmesh.update()
-
-	def image_save(self):
-		self.fxmesh.image_save()
+		self.light_src.update()
 
 	def __init__(self,data):
-		#print("RRRR",type(data))
 		QTabWidget.__init__(self)
 		css_apply(self ,"tab_default.css")
 		self.uid=data.id
-		#print("bbb",type(self.get_json_obj()),data.id,self.get_json_obj())
 
 		self.setMovable(True)
 		self.light_src=optics_light_src("gpvdm_data().light_sources.lights",self.uid,_("Light source (y0)"))

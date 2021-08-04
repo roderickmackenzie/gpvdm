@@ -48,7 +48,8 @@ from PyQt5.QtCore import QTimer
 from PyQt5.QtCore import Qt
 from PyQt5 import QtGui
 import time
-
+from math import cos
+from math import sin
 
 from epitaxy import get_epi
 from gl_lib import gl_obj_id_starts_with
@@ -144,7 +145,10 @@ class gl_input():
 				self.active_view.x_pos =self.active_view.x_pos + 0.1 * dx
 				self.active_view.y_pos =self.active_view.y_pos - 0.1 * dy
 		else:
-			self.gl_objects_move(dx*0.05,-dy*0.05)
+			dx_=dx*cos(2.0*3.14159*self.active_view.yRot/360)+dy*sin(2.0*3.14159*self.active_view.yRot/360)
+			dz_=dx*sin(2.0*3.14159*self.active_view.yRot/360)
+			dy_=dy*cos(2.0*3.14159*self.active_view.xRot/360)
+			self.gl_objects_move(dx_*0.2/self.active_view.zoom,-dy_*0.2/self.active_view.zoom,dz_*0.2/self.active_view.zoom)
 		
 		self.lastPos=event.pos()
 		self.setFocusPolicy(Qt.StrongFocus)

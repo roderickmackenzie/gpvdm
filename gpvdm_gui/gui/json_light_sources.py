@@ -51,6 +51,9 @@ class json_light_source(json_base):
 		self.var_list.append(["lstart",270e-9])
 		self.var_list.append(["lstop",1600e-9])
 		self.var_list.append(["virtual_spectra",json_virtual_spectra("virtual_spectra")])
+		self.var_list.append(["x0",-1.0])
+		self.var_list.append(["z0",-1.0])
+		self.var_list.append(["y0",-1.0])
 		self.var_list.append(["id",self.random_id()])
 		self.var_list_build()
 

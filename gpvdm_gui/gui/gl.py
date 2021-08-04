@@ -454,32 +454,33 @@ if open_gl_ok==True:
 				self.draw_rays(self.ray_file)
 
 			if self.view_options.enable_draw_light_source==True:
+				for source in data.light_sources.lights.segments:
+					if source.light_illuminate_from=="xyz":
+						point_x=float(source.x0)
+						point_y=float(source.y0)
+						if point_x==-1.0:
+							point_x=0.0
+							point_y=0.0
+						else:
+							point_x=gl_scale.project_m2screen_x(point_x)
+							point_y=gl_scale.project_m2screen_y(point_y)
+						#print(point_x,point_y)
+						a=gl_base_object()
+						a.id=[source.id]
+						a.type="box"
+						a.xyz.x=point_x
+						a.xyz.y=point_y
+						a.xyz.z=0.0
+						a.dxyz.x=0.1
+						a.dxyz.y=0.1
+						a.dxyz.z=0.1
+						a.r=0.0
+						a.g=0.0
+						a.b=1.0
 
-				point_x=float(data.ray.segments[0].config.ray_xsrc)
-				point_y=float(data.ray.segments[0].config.ray_ysrc)
-				if point_x==-1.0:
-					point_x=0.0
-					point_y=0.0
-				else:
-					point_x=gl_scale.project_m2screen_x(point_x)
-					point_y=gl_scale.project_m2screen_y(point_y)
-				print(point_x,point_y)
-				a=gl_base_object()
-				a.id=["ray_src"]
-				a.type="box"
-				a.xyz.x=point_x
-				a.xyz.y=point_y
-				a.xyz.z=0.0
-				a.dxyz.x=0.1
-				a.dxyz.y=0.1
-				a.dxyz.z=0.1
-				a.r=0.0
-				a.g=0.0
-				a.b=1.0
-
-				a.moveable=True
-				a.selectable=True
-				self.gl_objects_add(a)
+						a.moveable=True
+						a.selectable=True
+						self.gl_objects_add(a)
 
 			if self.draw_electrical_mesh==True:
 				self.draw_mesh()

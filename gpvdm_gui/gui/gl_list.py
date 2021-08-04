@@ -44,6 +44,7 @@ from mesh import get_mesh
 from gl_scale import scale_get_xmul
 from gl_scale import scale_get_ymul
 from gl_scale import scale_get_zmul
+from gpvdm_json import gpvdm_data
 import numpy as np
 
 class gl_objects():
@@ -90,46 +91,46 @@ class gl_objects():
 		max.y=-1
 		max.z=-1
 
-		for i in range(0,len(self.objects)):
-			if self.objects[i].selected==True:
+		for o in self.objects:
+			if o.selected==True:
 				#min
-				if self.objects[i].xyz.x<min.x:
-					min.x=self.objects[i].xyz.x
+				if o.xyz.x<min.x:
+					min.x=o.xyz.x
 
-				if self.objects[i].xyz.x+self.objects[i].dxyz.x<min.x:
-					min.x=self.objects[i].xyz.x+self.objects[i].dxyz.x
+				if o.xyz.x+o.dxyz.x<min.x:
+					min.x=o.xyz.x+o.dxyz.x
 
-				if self.objects[i].xyz.y<min.y:
-					min.y=self.objects[i].xyz.y
+				if o.xyz.y<min.y:
+					min.y=o.xyz.y
 
-				#print("screen",self.objects[i].dxyz.y)
-				if self.objects[i].xyz.y+self.objects[i].dxyz.y<min.y:
-					min.y=self.objects[i].xyz.y+self.objects[i].dxyz.y
+				#print("screen",o.dxyz.y)
+				if o.xyz.y+o.dxyz.y<min.y:
+					min.y=o.xyz.y+o.dxyz.y
 
-				if self.objects[i].xyz.z<min.z:
-					min.z=self.objects[i].xyz.z
+				if o.xyz.z<min.z:
+					min.z=o.xyz.z
 
-				if self.objects[i].xyz.z+self.objects[i].dxyz.z<min.z:
-					min.z=self.objects[i].xyz.z+self.objects[i].dxyz.z
+				if o.xyz.z+o.dxyz.z<min.z:
+					min.z=o.xyz.z+o.dxyz.z
 
 				#max
-				if self.objects[i].xyz.x>max.x:
-					max.x=self.objects[i].xyz.x
+				if o.xyz.x>max.x:
+					max.x=o.xyz.x
 
-				if self.objects[i].xyz.x+self.objects[i].dxyz.x>max.x:
-					max.x=self.objects[i].xyz.x+self.objects[i].dxyz.x
+				if o.xyz.x+o.dxyz.x>max.x:
+					max.x=o.xyz.x+o.dxyz.x
 
-				if self.objects[i].xyz.y>max.y:
-					max.y=self.objects[i].xyz.y
+				if o.xyz.y>max.y:
+					max.y=o.xyz.y
 
-				if self.objects[i].xyz.y+self.objects[i].dxyz.y>max.y:
-					max.y=self.objects[i].xyz.y+self.objects[i].dxyz.y
+				if o.xyz.y+o.dxyz.y>max.y:
+					max.y=o.xyz.y+o.dxyz.y
 
-				if self.objects[i].xyz.z>max.z:
-					max.z=self.objects[i].xyz.z
+				if o.xyz.z>max.z:
+					max.z=o.xyz.z
 
-				if self.objects[i].xyz.z+self.objects[i].dxyz.z>max.z:
-					max.z=self.objects[i].xyz.z+self.objects[i].dxyz.z
+				if o.xyz.z+o.dxyz.z>max.z:
+					max.z=o.xyz.z+o.dxyz.z
 
 		return min,max
 
@@ -153,7 +154,7 @@ class gl_objects():
 			print(o.type)
 		print(len(self.objects))
 
-	def gl_objects_move(self,dx,dy):
+	def gl_objects_move(self,dx,dy,dz):
 		i=0
 		epi=get_epi()
 
@@ -173,16 +174,18 @@ class gl_objects():
 
 		move_x=True
 		move_y=True
+		move_z=True
+		for v in self.views:
+			if v.enabled==True:
+				print(v.xRot,v.yRot,v.zRot)
 
 		for obj in self.objects:
 			if obj.selected==True:
 				s=None
 
 				if len(obj.id)>0:
-					s=epi.find_object_by_id(obj.id[0])
-
+					s=gpvdm_data().find_object_by_id(obj.id[0])
 					if type(s)==shape:
-
 						nl=epi.find_layer_by_id(obj.id[0])
 
 						y_start=epi.get_layer_start(nl)
@@ -205,24 +208,22 @@ class gl_objects():
 					move_x=False
 					move_y=False
 
-		if move_y==True:
 			for obj in self.objects:
 				if obj.selected==True:
-					s=epi.find_object_by_id(obj.id[0])
-					if type(s)==shape:
-						obj.xyz.y=obj.xyz.y+dy
-						s.y0=gl_scale.project_screen_y_to_m(obj.xyz.y)
+					if obj.moveable==True:
+						s=gpvdm_data().find_object_by_id(obj.id[0])
+						if move_y==True:
+							obj.xyz.y=obj.xyz.y+dy
+							s.y0=gl_scale.project_screen_y_to_m(obj.xyz.y)
 
-		if move_x==True:
-			for obj in self.objects:
-				if obj.selected==True:
-					s=epi.find_object_by_id(obj.id[0])
-					if type(s)==shape:
-						obj.xyz.x=obj.xyz.x+dx
+						if move_x==True:
+							obj.xyz.x=obj.xyz.x+dx
+							if obj.origonal_object==True:
+								s.x0=gl_scale.project_screen_x_to_m(obj.xyz.x)
 
-						if obj.origonal_object==True:
-							s.x0=gl_scale.project_screen_x_to_m(obj.xyz.x)
-							#print(s.x0)
+						if move_z==True:
+							obj.xyz.z=obj.xyz.z+dz
+							s.z0=gl_scale.project_screen_z_to_m(obj.xyz.z)
 
 	def gl_objects_save_selected(self):
 		epi=get_epi()

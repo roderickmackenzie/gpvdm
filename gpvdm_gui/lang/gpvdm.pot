@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gpvdm 5.0\n"
 "Report-Msgid-Bugs-To: roderick.mackenzie@nottingham.ac.uk\n"
-"POT-Creation-Date: 2021-08-03 14:55+0100\n"
+"POT-Creation-Date: 2021-08-04 07:55+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -291,7 +291,7 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/fit_ribbon.py:116
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_thermal.py:176
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/experiment_tab.py:81
-#: ../../gpvdm_gui/gui/tab_light_src.py:67
+#: ../../gpvdm_gui/gui/tab_light_src.py:64
 #: ../../gpvdm_gui/gui/shape_editor.py:295
 #: ../../gpvdm_gui/gui/optics_ribbon.py:72
 #: ../../gpvdm_gui/gui/ribbon_shape_import.py:184
@@ -303,7 +303,7 @@ msgstr ""
 #: ../../gpvdm_gui/gui/jvexperiment_tab.py:55 ../../gpvdm_gui/gui/ribbon.py:203
 #: ../../gpvdm_gui/gui/fit_ribbon.py:100
 #: ../../gpvdm_gui/gui/fxexperiment_tab.py:66
-#: ../../gpvdm_gui/gui/window_light_src.py:60
+#: ../../gpvdm_gui/gui/window_light_src.py:63
 #: ../../gpvdm_gui/gui/ribbon_thermal.py:196
 #: ../../gpvdm_gui/gui/ribbon_electrical.py:88
 #: ../../gpvdm_gui/gui/ribbon_electrical.py:192
@@ -6580,7 +6580,7 @@ msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_main_menu.py:105
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_main_menu.py:165
-#: ../../gpvdm_gui/gui/tab_light_src.py:64
+#: ../../gpvdm_gui/gui/tab_light_src.py:61
 #: ../../gpvdm_gui/gui/gl_main_menu.py:112
 msgid "Light source"
 msgstr ""
@@ -9637,7 +9637,7 @@ msgstr ""
 msgid "Laser editor"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/tab_light_src.py:63
+#: ../../gpvdm_gui/gui/tab_light_src.py:60
 msgid "Light source (y0)"
 msgstr ""
 
@@ -10604,8 +10604,12 @@ msgstr ""
 msgid "Reflective interface editor"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/window_light_src.py:55
+#: ../../gpvdm_gui/gui/window_light_src.py:58
 msgid "Light source editor"
+msgstr ""
+
+#: ../../gpvdm_gui/gui/window_light_src.py:67
+msgid "Rebuild"
 msgstr ""
 
 #: ../../gpvdm_gui/gui/ribbon_thermal.py:68

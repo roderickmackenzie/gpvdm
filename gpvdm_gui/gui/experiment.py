@@ -68,8 +68,9 @@ class experiment(QWidgetSavePos):
 	changed = pyqtSignal()
 
 	def update(self):
-		for item in self.notebook.get_children():
-			item.update()
+		for i in range(0,self.notebook.count()):
+			w=self.notebook.widget(i)
+			w.update()
 
 	def callback_help(self):
 		webbrowser.open('http://www.gpvdm.com/man/index.html')
