@@ -74,6 +74,16 @@ void epitaxy_load_pl_file(struct simulation *sim, struct epi_layer *layer,struct
 
 	json_get_english(sim,pl_json, &(layer->pl_enabled),"pl_emission_enabled");
 
+	//ray tracing
+	json_get_int(sim,pl_json, &(layer->theta_steps),"ray_theta_steps");
+	json_get_long_double(sim,pl_json, &(layer->theta_start),"ray_theta_start");
+	json_get_long_double(sim,pl_json, &(layer->theta_stop),"ray_theta_stop");
+
+	json_get_int(sim,pl_json, &(layer->phi_steps),"ray_phi_steps");
+	json_get_long_double(sim,pl_json, &(layer->phi_start),"ray_phi_start");
+	json_get_long_double(sim,pl_json, &(layer->phi_stop),"ray_phi_stop");
+
+
 	json_get_english(sim,pl_json, &(layer->pl_use_experimental_emission_spectra),"pl_use_experimental_emission_spectra");
 
 	json_get_long_double(sim,pl_json, &(layer->pl_experimental_emission_efficiency),"pl_experimental_emission_efficiency");

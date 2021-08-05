@@ -80,6 +80,20 @@ struct light_src
 	long double lstart;
 	long double lstop;
 
+	//config
+	char illuminate_from[20];
+	long double x0;
+	long double y0;
+	long double z0;
+
+	int theta_steps;
+	long double theta_start;
+	long double theta_stop;
+
+	int phi_steps;
+	long double phi_start;
+	long double phi_stop;
+
 };
 
 struct light

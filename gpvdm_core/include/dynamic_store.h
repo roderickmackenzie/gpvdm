@@ -80,6 +80,11 @@ struct dynamic_store
 	struct math_xy mu_p;
 	struct math_xy mu_n_p_avg;
 
+	//Thermal
+	struct math_xy H_joule;
+	struct math_xy H_recombination;
+	struct math_xy H_parasitic;
+
 	//srh rates
 	struct math_xy srh_n_r1;
 	struct math_xy srh_n_r2;

@@ -400,7 +400,7 @@ class json_viewer(QWidget,tab_base):
 					a.edit_box=shape_electrical_switch()
 					a.edit_box.setFixedSize(300, 25)
 					a.edit_box.changed.connect(functools.partial(self.callback_edit,token,a.edit_box,unit,result))
-				else:
+				elif result.widget=="QComboBox":
 					a.edit_box=QComboBox()
 					a.edit_box.setFixedSize(300, 25)
 					for i in range(0,len(result.defaults)):
@@ -438,45 +438,46 @@ class json_viewer(QWidget,tab_base):
 		self.refind_template_widget()
 		for item in self.widget_list:
 			w=item.edit_box
-			w.blockSignals(True)
-			value=self.get_easy_value(item.token)
+			if w!=None:
+				w.blockSignals(True)
+				value=self.get_easy_value(item.token)
 
-			if type(item.edit_box)==generic_switch:
-				if value=="exponential":
-					item.units.setEnabled(False)
-				else:
-					item.units.setEnabled(True)
-			elif item.widget=="mobility_widget":
-				if item.token=="symmetric_mobility_e":
-					value = []
-					value.append(self.template_widget.symmetric_mobility_e)
-					value.append(self.template_widget.mue_z)
-					value.append(self.template_widget.mue_x)
-					value.append(self.template_widget.mue_y)
-				if item.token=="symmetric_mobility_h":
-					value = []
-					value.append(self.template_widget.symmetric_mobility_h)
-					value.append(self.template_widget.muh_z)
-					value.append(self.template_widget.muh_x)
-					value.append(self.template_widget.muh_y)
+				if type(item.edit_box)==generic_switch:
+					if value=="exponential":
+						item.units.setEnabled(False)
+					else:
+						item.units.setEnabled(True)
+				elif item.widget=="mobility_widget":
+					if item.token=="symmetric_mobility_e":
+						value = []
+						value.append(self.template_widget.symmetric_mobility_e)
+						value.append(self.template_widget.mue_z)
+						value.append(self.template_widget.mue_x)
+						value.append(self.template_widget.mue_y)
+					if item.token=="symmetric_mobility_h":
+						value = []
+						value.append(self.template_widget.symmetric_mobility_h)
+						value.append(self.template_widget.muh_z)
+						value.append(self.template_widget.muh_x)
+						value.append(self.template_widget.muh_y)
 
-				if item.token=="electrical_symmetrical_resistance":
-					value = []
-					value.append(self.template_widget.electrical_symmetrical_resistance)
-					value.append(self.template_widget.electrical_series_z)
-					value.append(self.template_widget.electrical_series_x)
-					value.append(self.template_widget.electrical_series_y)
+					if item.token=="electrical_symmetrical_resistance":
+						value = []
+						value.append(self.template_widget.electrical_symmetrical_resistance)
+						value.append(self.template_widget.electrical_series_z)
+						value.append(self.template_widget.electrical_series_x)
+						value.append(self.template_widget.electrical_series_y)
 
-			elif type(item.edit_box)==shape_dos_switch:
-				value=value.enabled
-				item.units.setEnabled(value)
-			elif type(item.edit_box)==shape_electrical_switch:
-				value=value.enabled
-				item.units.setEnabled(value)
-			#print(item.token)
-			widget_set_value(item.edit_box,value)
+				elif type(item.edit_box)==shape_dos_switch:
+					value=value.enabled
+					item.units.setEnabled(value)
+				elif type(item.edit_box)==shape_electrical_switch:
+					value=value.enabled
+					item.units.setEnabled(value)
+				#print(item.token)
+				widget_set_value(item.edit_box,value)
 
-			w.blockSignals(False)
+				w.blockSignals(False)
 
 
 
@@ -516,7 +517,8 @@ class json_viewer(QWidget,tab_base):
 
 	def hide_show_widgets(self):
 		for w in self.widget_list:
-			w.edit_box.setVisible(True)
+			if w.edit_box!=None:
+				w.edit_box.setVisible(True)
 			w.units.setVisible(True)
 			w.label.setVisible(True)
 

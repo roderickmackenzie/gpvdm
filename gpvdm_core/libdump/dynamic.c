@@ -385,6 +385,8 @@ if (get_dump_status(sim,dump_dynamic)==TRUE)
 	buffer_dump_path(sim,out_dir,"mu_n_p_avg.dat",&buf);
 	buffer_free(&buf);
 
+	//Thermal
+	dump_dynamic_save_thermal(sim,in,outputpath,store);
 
 	//////////////////////////////////////////srh rates
 

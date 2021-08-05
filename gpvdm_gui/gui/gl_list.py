@@ -211,19 +211,19 @@ class gl_objects():
 			for obj in self.objects:
 				if obj.selected==True:
 					if obj.moveable==True:
-						s=gpvdm_data().find_object_by_id(obj.id[0])
-						if move_y==True:
-							obj.xyz.y=obj.xyz.y+dy
-							s.y0=gl_scale.project_screen_y_to_m(obj.xyz.y)
+						if obj.origonal_object==True:
+							s=gpvdm_data().find_object_by_id(obj.id[0])
+							if move_y==True:
+								obj.xyz.y=obj.xyz.y+dy
+								s.y0=gl_scale.project_screen_y_to_m(obj.xyz.y)
 
-						if move_x==True:
-							obj.xyz.x=obj.xyz.x+dx
-							if obj.origonal_object==True:
+							if move_x==True:
+								obj.xyz.x=obj.xyz.x+dx
 								s.x0=gl_scale.project_screen_x_to_m(obj.xyz.x)
 
-						if move_z==True:
-							obj.xyz.z=obj.xyz.z+dz
-							s.z0=gl_scale.project_screen_z_to_m(obj.xyz.z)
+							if move_z==True:
+								obj.xyz.z=obj.xyz.z+dz
+								s.z0=gl_scale.project_screen_z_to_m(obj.xyz.z)
 
 	def gl_objects_save_selected(self):
 		epi=get_epi()

@@ -69,8 +69,12 @@ void ray_read_config(struct simulation *sim,struct image *my_image,struct json_o
 
 	json_get_int(sim, json_ray, &(my_image->escape_bins),"ray_escape_bins");
 
-	json_get_double(sim, json_ray, &(my_image->ray_xsrc),"ray_xsrc");
-	json_get_double(sim, json_ray, &(my_image->ray_ysrc),"ray_ysrc");
+	my_image->ray_xsrc=-1.0;
+	my_image->ray_ysrc=-1.0;
+	my_image->ray_zsrc=-1.0;
+
+	//json_get_double(sim, json_ray, &(my_image->ray_xsrc),"ray_xsrc");
+	//json_get_double(sim, json_ray, &(my_image->ray_ysrc),"ray_ysrc");
 	//inp_search_double(sim,&inp,&(my_image->ray_zsrc),"#ray_zsrc");
 
 	json_get_int(sim, json_ray, &(my_image->theta_steps),"ray_theta_steps");

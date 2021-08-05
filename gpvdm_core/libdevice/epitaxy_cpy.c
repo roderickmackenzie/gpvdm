@@ -76,6 +76,16 @@ void epi_layer_cpy(struct simulation *sim,struct epi_layer *out,struct epi_layer
 	out->pl_te_fh=in->pl_te_fh;
 	out->pl_th_fe=in->pl_th_fe;
 	out->pl_fh_th=in->pl_fh_th;
+
+	//ray tracing
+	out->theta_steps=in->theta_steps;
+	out->ray_theta_start=in->ray_theta_start;
+	out->ray_theta_stop=in->ray_theta_stop
+
+	out->phi_steps=in->phi_steps;
+	out->ray_phi_start=in->ray_phi_start;
+	out->ray_phi_stop=in->ray_phi_stop;
+
 	strcpy(out->pl_spectrum_file,in->pl_spectrum_file);
 	inter_copy(&(out->pl_spectrum),&(in->pl_spectrum),TRUE);
 

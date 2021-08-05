@@ -78,4 +78,5 @@ void buffer_add_yl_light_data(struct simulation *sim,struct dat_file *buf,struct
 void buffer_add_yl_light_data_float(struct simulation *sim,struct dat_file *buf,struct dim_light *dim,float ****data,long double shift, int z, int x);
 void buffer_add_yl_light_data_double(struct simulation *sim,struct dat_file *buf,struct dim_light *dim,double ****data,long double shift, int z, int x);
 int dump_can_i_dump(struct simulation *sim,struct device *dev, char *file_name);
+void dump_dynamic_save_thermal(struct simulation *sim,struct device *dev,char *outputpath,struct dynamic_store *store);
 #endif

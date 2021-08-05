@@ -58,12 +58,23 @@ struct epi_layer
 	long double width;
 	int pl_use_experimental_emission_spectra;
 	long double pl_experimental_emission_efficiency;
+
 	int pl_enabled;
 	long double pl_fe_fh;
 	long double pl_fe_te;
 	long double pl_te_fh;
 	long double pl_th_fe;
 	long double pl_fh_th;
+
+	//ray tracing
+	int theta_steps;
+	double ray_theta_start;
+	double ray_theta_stop;
+
+	int phi_steps;
+	double ray_phi_start;
+	double ray_phi_stop;
+
 	char pl_spectrum_file[PATH_MAX];
 	struct math_xy pl_spectrum;
 	double *photon_extract_eff;

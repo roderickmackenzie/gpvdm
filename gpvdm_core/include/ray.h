@@ -77,13 +77,29 @@ struct ray_worker
 	int worker_n;
 };
 
+struct ray_src
+{
+	long double x;
+	long double y;
+	long double z;
+
+	int theta_steps;
+	double theta_start;
+	double theta_stop;
+
+	int phi_steps;
+	double phi_start;
+	double phi_stop;
+
+};
+
 struct image
 {
 	int worker_max;
 	struct ray_worker *worker;
 
-	struct vec start_rays[100];
-	int n_start_rays;
+	struct ray_src *ray_srcs;
+	int n_ray_srcs;
 
 	double y_escape_level;
 	long double *angle;
@@ -91,18 +107,6 @@ struct image
 	int ray_wavelength_points;
 	double *lam;
 	int escape_bins;
-	double ray_xsrc;
-	double ray_ysrc;
-	double ray_zsrc;
-
-	int theta_steps;
-	double ray_theta_start;
-	double ray_theta_stop;
-
-
-	int phi_steps;
-	double ray_phi_start;
-	double ray_phi_stop;
 
 	double ray_lambda_start;
 	double ray_lambda_stop;

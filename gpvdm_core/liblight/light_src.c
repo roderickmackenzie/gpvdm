@@ -110,6 +110,20 @@ void light_src_cpy(struct simulation *sim,struct light_src *out, struct light_sr
 	out->n=in->n;
 	out->external_interface_enabled=in->external_interface_enabled;
 	strcpy(out->id,in->id);
+
+	//config
+	strcpy(out->illuminate_from,in->illuminate_from);
+	out->x0=in->x0;
+	out->y0=in->y0;
+	out->z0=in->z0;
+
+	out->theta_steps=in->theta_steps;
+	out->theta_start=in->theta_start;
+	out->theta_stop=in->theta_stop;
+
+	out->phi_steps=in->phi_steps;
+	out->phi_start=in->phi_start;
+	out->phi_stop=in->phi_stop;
 }
 
 void light_src_build_spectra_tot(struct simulation *sim,struct light_src *in, long double min, long double max, int len)
@@ -181,6 +195,20 @@ void light_src_init(struct simulation *sim,struct light_src *in)
 	in->n=-1.0;
 	in->external_interface_enabled=FALSE;
 	strcpy(in->id,"");
+
+	strcpy(in->illuminate_from,"");
+	in->x0=-1.0;
+	in->y0=-1.0;
+	in->z0=-1.0;
+
+	in->theta_steps=-1;
+	in->theta_start=-1.0;
+	in->theta_stop=-1.0;
+
+	in->phi_steps=-1;
+	in->phi_start=-1.0;
+	in->phi_stop=-1.0;
+
 }
 
 void light_src_free(struct simulation *sim, struct light_src *in)
@@ -197,13 +225,7 @@ void light_src_free(struct simulation *sim, struct light_src *in)
 		in->spectra=NULL;
 	}
 
-	in->nspectra=-1;
-	strcpy(in->filter_path,"");
-	inter_free(&(in->filter_read));
-	in->filter_dB=-1.0;
-	in->n=-1.0;
-	in->external_interface_enabled=FALSE;
-	strcpy(in->id,"");
+	light_src_init(sim,in);
 
 }
 
@@ -227,6 +249,21 @@ void light_src_load(struct simulation *sim,struct light_src *in, struct json_obj
 
 	json_get_long_double(sim, json_light_src, &(in->lstart),"lstart");
 	json_get_long_double(sim, json_light_src, &(in->lstop),"lstop");
+	json_get_string(sim, json_light_src, &(in->illuminate_from),"light_illuminate_from");
+
+	json_get_long_double(sim, json_light_src, &(in->x0),"x0");
+	json_get_long_double(sim, json_light_src, &(in->y0),"y0");
+	json_get_long_double(sim, json_light_src, &(in->z0),"z0");
+
+
+	json_get_int(sim, json_light_src, &(in->theta_steps),"ray_theta_steps");
+	json_get_long_double(sim, json_light_src, &(in->theta_start),"ray_theta_start");
+	json_get_long_double(sim, json_light_src, &(in->theta_stop),"ray_theta_stop");
+
+	json_get_int(sim, json_light_src, &(in->phi_steps),"ray_phi_steps");
+	json_get_long_double(sim, json_light_src, &(in->phi_start),"ray_phi_start");
+	json_get_long_double(sim, json_light_src, &(in->phi_stop),"ray_phi_stop");
+
 
 	virtual_spectra=json_obj_find(json_light_src, "virtual_spectra");
 

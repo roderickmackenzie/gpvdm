@@ -53,7 +53,7 @@
 #include "contacts.h"
 #include <lang.h>
 #include <cal_path.h>
-
+#include <heat_fun.h>
 
 static int unused __attribute__((unused));
 
@@ -71,6 +71,10 @@ long double s1=0.0;
 gdouble Vapplied=0.0;
 struct newton_state *ns=&(dev->ns);
 struct dimensions *dim=&dev->ns.dim;
+struct heat *thermal=&(dev->thermal);
+long double H_joule=0.0;
+long double H_recombination=0.0;
+long double H_parasitic=0.0;
 
 if (dev->circuit_simulation==TRUE)
 {
@@ -128,6 +132,16 @@ if (get_dump_status(sim,dump_dynamic)==TRUE)
 	inter_append(&(store->mu_n),x_value,fabs(get_avg_mue(dev)));
 	inter_append(&(store->mu_p),x_value,fabs(get_avg_muh(dev)));
 	inter_append(&(store->mu_n_p_avg),x_value,(fabs(get_avg_mue(dev))+fabs(get_avg_muh(dev)))/2.0);
+
+	//Thermal
+	if (thermal->newton_enable_external_thermal==TRUE)
+	{
+		heat_cal_get_heating_sources_percent(sim,dev,&(dev->thermal),&H_joule,&H_recombination,&H_parasitic);
+		inter_append(&(store->H_joule),x_value,fabs(H_joule));
+		inter_append(&(store->H_recombination),x_value,fabs(H_recombination));
+		inter_append(&(store->H_parasitic),x_value,fabs(H_parasitic));
+	}
+	//getchar();
 
 	//printf(">>%Le %Le\n",1.0000e-5*get_free_n_charge(dev)/(get_free_n_charge(dev)+get_n_trapped_charge(dev)),get_avg_mue(dev));
 	//srh rates
@@ -244,6 +258,7 @@ if (get_dump_status(sim,dump_dynamic)==TRUE)
 
 	tot/=(gdouble)(dim->ylen);
 	inter_append(&(store->band_bend),x_value,tot);
+
 
 }
 

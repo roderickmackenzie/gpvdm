@@ -474,6 +474,7 @@ if open_gl_ok==True:
 						a.dxyz.x=0.1
 						a.dxyz.y=0.1
 						a.dxyz.z=0.1
+						a.origonal_object=True
 						a.r=0.0
 						a.g=0.0
 						a.b=1.0

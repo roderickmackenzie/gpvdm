@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gpvdm 5.0\n"
 "Report-Msgid-Bugs-To: roderick.mackenzie@nottingham.ac.uk\n"
-"POT-Creation-Date: 2021-08-04 07:55+0100\n"
+"POT-Creation-Date: 2021-08-05 13:56+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -235,7 +235,7 @@ msgstr ""
 #: ../../gpvdm_core/old/lock_py/gpvdm_viewer.py:321
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gpvdm_viewer.py:321
 #: ../../gpvdm_gui/gui/gpvdm_viewer.py:342
-#: ../../gpvdm_gui/gui/experiment.py:166
+#: ../../gpvdm_gui/gui/experiment.py:167
 msgid "Rename:"
 msgstr ""
 
@@ -291,7 +291,7 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/fit_ribbon.py:116
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_thermal.py:176
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/experiment_tab.py:81
-#: ../../gpvdm_gui/gui/tab_light_src.py:64
+#: ../../gpvdm_gui/gui/tab_light_src.py:62
 #: ../../gpvdm_gui/gui/shape_editor.py:295
 #: ../../gpvdm_gui/gui/optics_ribbon.py:72
 #: ../../gpvdm_gui/gui/ribbon_shape_import.py:184
@@ -651,7 +651,7 @@ msgstr ""
 #: ../../gpvdm_core/libdump/dump_contacts.c:119
 #: ../../gpvdm_core/libdump/dump_contacts.c:147
 #: ../../gpvdm_core/libdump/dump_contacts.c:196
-#: ../../gpvdm_core/libdump/dynamic.c:74 ../../gpvdm_core/libdump/dynamic.c:533
+#: ../../gpvdm_core/libdump/dynamic.c:74 ../../gpvdm_core/libdump/dynamic.c:535
 #: ../../gpvdm_core/libfxdomain/fxdomain_dump.c:84
 #: ../../gpvdm_core/libfxdomain/fxdomain_dump.c:85
 #: ../../gpvdm_core/libfxdomain/fxdomain_dump.c:117
@@ -804,7 +804,7 @@ msgstr ""
 #: ../../gpvdm_core/plugins/ce/ce.c:414 ../../gpvdm_core/plugins/ce/ce.c:416
 #: ../../gpvdm_core/libdump/dump_contacts.c:174
 #: ../../gpvdm_core/libdump/dump_contacts.c:194
-#: ../../gpvdm_core/libdump/dynamic.c:68 ../../gpvdm_core/libdump/dynamic.c:408
+#: ../../gpvdm_core/libdump/dynamic.c:68 ../../gpvdm_core/libdump/dynamic.c:410
 #: ../../gpvdm_core/libfxdomain/fxdomain_dump.c:78
 #: ../../gpvdm_core/libfxdomain/fxdomain_dump.c:84
 #: ../../gpvdm_core/libfxdomain/fxdomain_dump.c:95
@@ -1276,6 +1276,21 @@ msgstr ""
 
 #: ../../gpvdm_core/libdump/dynamic_dump_j.c:318
 msgid "Current density at contacts"
+msgstr ""
+
+#: ../../gpvdm_core/libdump/dynamic_dump_thermal.c:91
+#: ../../gpvdm_core/libdump/dynamic_dump_thermal.c:92
+msgid "H_joule"
+msgstr ""
+
+#: ../../gpvdm_core/libdump/dynamic_dump_thermal.c:102
+#: ../../gpvdm_core/libdump/dynamic_dump_thermal.c:103
+msgid "H_recombination"
+msgstr ""
+
+#: ../../gpvdm_core/libdump/dynamic_dump_thermal.c:113
+#: ../../gpvdm_core/libdump/dynamic_dump_thermal.c:114
+msgid "H_parasitic"
 msgstr ""
 
 #: ../../gpvdm_core/libdump/dump_zx.c:85
@@ -2009,16 +2024,16 @@ msgstr ""
 #: ../../gpvdm_core/libdump/dynamic.c:129
 #: ../../gpvdm_core/libdump/dynamic.c:141
 #: ../../gpvdm_core/libdump/dynamic.c:152
-#: ../../gpvdm_core/libdump/dynamic.c:394
-#: ../../gpvdm_core/libdump/dynamic.c:406
-#: ../../gpvdm_core/libdump/dynamic.c:419
-#: ../../gpvdm_core/libdump/dynamic.c:431
-#: ../../gpvdm_core/libdump/dynamic.c:442
-#: ../../gpvdm_core/libdump/dynamic.c:453
-#: ../../gpvdm_core/libdump/dynamic.c:465
-#: ../../gpvdm_core/libdump/dynamic.c:476
-#: ../../gpvdm_core/libdump/dynamic.c:543
-#: ../../gpvdm_core/libdump/dynamic.c:544
+#: ../../gpvdm_core/libdump/dynamic.c:396
+#: ../../gpvdm_core/libdump/dynamic.c:408
+#: ../../gpvdm_core/libdump/dynamic.c:421
+#: ../../gpvdm_core/libdump/dynamic.c:433
+#: ../../gpvdm_core/libdump/dynamic.c:444
+#: ../../gpvdm_core/libdump/dynamic.c:455
+#: ../../gpvdm_core/libdump/dynamic.c:467
+#: ../../gpvdm_core/libdump/dynamic.c:478
+#: ../../gpvdm_core/libdump/dynamic.c:545
+#: ../../gpvdm_core/libdump/dynamic.c:546
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/plot_widget.py:474
 #: ../../gpvdm_gui/gui/plot_widget_matplotlib.py:267
 msgid "time"
@@ -2070,7 +2085,7 @@ msgid "Change in charge distribution"
 msgstr ""
 
 #: ../../gpvdm_core/libdump/dynamic.c:339
-#: ../../gpvdm_core/libdump/dynamic.c:546
+#: ../../gpvdm_core/libdump/dynamic.c:548
 msgid "percent"
 msgstr ""
 
@@ -2078,39 +2093,39 @@ msgstr ""
 msgid "Average electron and hole mobility"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dynamic.c:497
+#: ../../gpvdm_core/libdump/dynamic.c:499
 msgid "Total PL intensity"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dynamic.c:498
+#: ../../gpvdm_core/libdump/dynamic.c:500
 msgid "Total PL Intensity"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dynamic.c:509
+#: ../../gpvdm_core/libdump/dynamic.c:511
 msgid "PL intensity at given energy"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dynamic.c:511
+#: ../../gpvdm_core/libdump/dynamic.c:513
 msgid "PL Intensity"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dynamic.c:532
+#: ../../gpvdm_core/libdump/dynamic.c:534
 msgid "Voltage applied to diode"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dynamic.c:544
+#: ../../gpvdm_core/libdump/dynamic.c:546
 msgid "band bend (percent)"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dynamic.c:545
+#: ../../gpvdm_core/libdump/dynamic.c:547
 msgid "band bend"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dynamic.c:557
+#: ../../gpvdm_core/libdump/dynamic.c:559
 msgid "Dynamic quantum efficiency"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dynamic.c:558
+#: ../../gpvdm_core/libdump/dynamic.c:560
 msgid "Percent"
 msgstr ""
 
@@ -3210,7 +3225,7 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/fxexperiment.py:107
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/cv_editor.py:106
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/experiment.py:126
-#: ../../gpvdm_gui/gui/experiment.py:103
+#: ../../gpvdm_gui/gui/experiment.py:104
 msgid "Loading"
 msgstr ""
 
@@ -6580,7 +6595,7 @@ msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_main_menu.py:105
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_main_menu.py:165
-#: ../../gpvdm_gui/gui/tab_light_src.py:61
+#: ../../gpvdm_gui/gui/tab_light_src.py:59
 #: ../../gpvdm_gui/gui/gl_main_menu.py:112
 msgid "Light source"
 msgstr ""
@@ -8920,7 +8935,7 @@ msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/experiment.py:150
 #: ../../gpvdm_gui/gui/time_domain_experiment.py:77
-#: ../../gpvdm_gui/gui/experiment.py:113
+#: ../../gpvdm_gui/gui/experiment.py:114
 msgid "Time domain experiment window"
 msgstr ""
 
@@ -9637,7 +9652,7 @@ msgstr ""
 msgid "Laser editor"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/tab_light_src.py:60
+#: ../../gpvdm_gui/gui/tab_light_src.py:58
 msgid "Light source (y0)"
 msgstr ""
 
@@ -10678,15 +10693,15 @@ msgstr ""
 msgid "Show key"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/experiment.py:180
+#: ../../gpvdm_gui/gui/experiment.py:181
 msgid "Clone:"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/experiment.py:201
+#: ../../gpvdm_gui/gui/experiment.py:202
 msgid "Are you sure you want to delete : "
 msgstr ""
 
-#: ../../gpvdm_gui/gui/experiment.py:212
+#: ../../gpvdm_gui/gui/experiment.py:213
 msgid "Make a new:"
 msgstr ""
 

@@ -145,6 +145,7 @@ class shape_dos(json_base):
 		self.var_list.append(["id",self.random_id()])
 		self.var_list_build()
 
+
 class shape_pl(json_base):
 	def __init__(self):
 		json_base.__init__(self,"shape_pl")
@@ -158,6 +159,14 @@ class shape_pl(json_base):
 		self.var_list.append(["pl_te_fh",1.0])
 		self.var_list.append(["pl_th_fe",1.0])
 		self.var_list.append(["pl_fh_th",1.0])
+		self.var_list.append(["text_ray_tracing",False])
+		self.var_list.append(["ray_theta_steps",200])
+		self.var_list.append(["ray_theta_start",0])
+		self.var_list.append(["ray_theta_stop",360])
+		self.var_list.append(["ray_phi_steps",5])
+		self.var_list.append(["ray_phi_start",0])
+		self.var_list.append(["ray_phi_stop",360])
+		self.var_list.append(["ray_emission_source","ray_emission_single_point"])
 		self.var_list_build()
 
 class shape_heat(json_base):

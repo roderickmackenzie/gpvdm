@@ -84,4 +84,5 @@ void heat_material_init(struct heat_material *mat);
 void heat_material_cpy(struct heat_material *out,struct heat_material *in);
 void heat_material_free(struct heat_material *mat);
 void heat_material_load_from_json(struct simulation *sim,struct heat_material *mat, struct json_obj *json_heat_material);
+void heat_cal_get_heating_sources_percent(struct simulation *sim,struct device *dev,struct heat *thermal,long double *H_joule,long double *H_recombination,long double *H_parasitic);
 #endif

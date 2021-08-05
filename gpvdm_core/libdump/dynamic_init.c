@@ -104,6 +104,11 @@ if (get_dump_status(sim,dump_dynamic)==TRUE)
 	inter_init(sim,&(store->mu_p));
 	inter_init(sim,&(store->mu_n_p_avg));
 
+	//Thermal
+	inter_init(sim,&(store->H_joule));
+	inter_init(sim,&(store->H_recombination));
+	inter_init(sim,&(store->H_parasitic));
+
 	//srh rates
 
 	inter_init(sim,&(store->srh_n_r1));

@@ -38,18 +38,11 @@ class json_ray_config(json_base):
 	def __init__(self):
 		json_base.__init__(self,"config")
 		self.var_list=[]
-		self.var_list.append(["ray_theta_steps",200])
-		self.var_list.append(["ray_theta_start",0])
-		self.var_list.append(["ray_theta_stop",360])
-		self.var_list.append(["ray_phi_steps",5])
-		self.var_list.append(["ray_phi_start",0])
-		self.var_list.append(["ray_phi_stop",360])
 		self.var_list.append(["ray_wavelength_points",100])
 		self.var_list.append(["ray_auto_wavelength_range","true"])
 		self.var_list.append(["ray_lambda_start",300e-9])
 		self.var_list.append(["ray_lambda_stop",700e-9])
 		self.var_list.append(["ray_auto_run","ray_run_once"])
-		self.var_list.append(["ray_emission_source","ray_emission_single_point"])
 		self.var_list.append(["ray_escape_bins",20])
 		self.var_list_build()
 

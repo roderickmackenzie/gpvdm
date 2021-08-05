@@ -101,6 +101,11 @@ if (get_dump_status(sim,dump_dynamic)==TRUE)
 	inter_free(&(store->mu_p));
 	inter_free(&(store->mu_n_p_avg));
 
+	//Thermal
+	inter_free(&(store->H_joule));
+	inter_free(&(store->H_recombination));
+	inter_free(&(store->H_parasitic));
+
 	//srh rates
 	inter_free(&(store->srh_n_r1));
 	inter_free(&(store->srh_n_r2));

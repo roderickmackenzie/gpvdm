@@ -33,106 +33,72 @@
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
 
-/** @file epitaxy.c
-	@brief Load the epitaxy structure.
+/** @file heat_stats.c
+	@brief Gets stats about the termal model
 */
 
-#include <string.h>
-#include "epitaxy.h"
-#include "inp.h"
 #include "util.h"
 #include "gpvdm_const.h"
-#include <cal_path.h>
-#include <shape.h>
+#include "heat.h"
+#include "device.h"
+#include "gpvdm_const.h"
+#include "dump.h"
+#include "config.h"
+#include "inp.h"
+#include "util.h"
+#include "hard_limit.h"
+#include "lang.h"
+#include "log.h"
+#include "memory.h"
+#include <heat_fun.h>
 #include <contacts.h>
-#include <component.h>
-#include <component_fun.h>
-#include <dos.h>
+#include <exp.h>
 
-void epi_layer_init(struct simulation *sim,struct epi_layer *layer)
+static int unused __attribute__((unused));
+
+
+void heat_cal_get_heating_sources_percent(struct simulation *sim,struct device *dev,struct heat *thermal,long double *H_joule,long double *H_recombination,long double *H_parasitic)
 {
-	int i;
+	int z=0;
+	int x=0;
+	int y=0;
 
-	layer->layer_number=-1;
-	layer->y_start=-1;
-	layer->y_stop=-1;
-	shape_init(sim,&(layer->s));
-	for (i=0;i<10;i++)
+	struct dim_heat *dim_t=&(thermal->dim);
+
+	long double H_tot=0.0;
+
+	long double dy=0.0;
+	long double dx=0.0;
+	long double dz=0.0;
+
+
+	for (z=0;z<dim_t->zlen;z++)
 	{
-		shape_init(sim,&(layer->shapes[i]));
+		for (x=0;x<dim_t->xlen;x++)
+		{
+			for (y=0;y<dim_t->ylen;y++)
+			{
+				dx=dim_t->dx[x];
+				dy=dim_t->dy[y];
+				dz=dim_t->dz[z];
+
+				//if (thermal->H_joule[z][x][y]>0.0)
+				//{
+					*H_joule+=thermal->H_joule[z][x][y]*dx*dy*dz;
+				//}
+				*H_recombination+=thermal->H_recombination[z][x][y]*dx*dy*dz;
+				*H_parasitic+=thermal->H_parasitic[z][x][y]*dx*dy*dz;
+			}
+		}
 	}
 
-	layer->nshape=-1;
-	layer->width=-1;
-	layer->pl_use_experimental_emission_spectra=-1;
-	layer->pl_experimental_emission_efficiency=-1;
-	layer->pl_enabled=-1;
-	layer->pl_fe_fh=-1;
-	layer->pl_fe_te=-1;
-	layer->pl_te_fh=-1;
-	layer->pl_th_fe=-1;
-	layer->pl_fh_th=-1;
+//printf("sum: %Le %Le %Le\n",H_joule,H_recombination,H_parasitic);
+H_tot=*H_joule+*H_recombination+*H_parasitic;
+//*H_joule/=H_tot;
+//*H_recombination/=H_tot;
+//*H_parasitic/=H_tot;
 
-	//ray tracing
-	layer->theta_steps=-1;
-	layer->ray_theta_start=-1.0;
-	layer->ray_theta_stop=-1.0;
-
-	layer->phi_steps=-1;
-	layer->ray_phi_start=-1.0;
-	layer->ray_phi_stop=-1.0;
-
-	strcpy(layer->pl_spectrum_file,"none");
-	inter_init(sim,&(layer->pl_spectrum));
-	layer->photon_extract_eff=NULL;
-	layer->photon_extract_eff_count=NULL;
-	layer->avg_photon_extract_eff=-1;
-	layer->peak_wavelength=-1;
-
-	//struct component com;		not initing this one
-
-	layer->electrical_layer=-1;
-
-	//strcpy(layer->dos_file,"none");
-	layer->layer_type=-1;
-	layer->interface_type=0;
-	layer->interface_R=0.0;
-
-	layer->interface_left_doping_enabled=-1;
-	layer->interface_left_doping=0.0;
-
-	layer->interface_right_doping_enabled=-1;
-	layer->interface_right_doping=0.0;
-
-	layer->rgb[0]=-1;
-	layer->rgb[1]=-1;
-	layer->rgb[2]=-1;
-
-	layer->G_percent=-1;
-
-	layer->solve_optical_problem=-1;
-	layer->solve_thermal_problem=-1;
-}
-
-
-void epitaxy_init(struct simulation *sim,struct epitaxy *epi)
-{
-	int i;
-	int l;
-	int layer_max=20;
-
-	epi->layers=-1;
-	epi->device_start=-1;
-	epi->device_stop=-1;
-
-	//electrical layres including shapes
-
-
-	for (l=0;l<layer_max;l++)
-	{
-		//strcpy(epi->shape_file[l],"");
-		epi_layer_init(sim,&(epi->layer[l]));
-	}
+//printf("p: %Le %Le %Le\n",H_joule,H_recombination,H_parasitic);
 
 }
 
