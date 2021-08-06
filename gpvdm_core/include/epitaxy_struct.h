@@ -68,12 +68,12 @@ struct epi_layer
 
 	//ray tracing
 	int theta_steps;
-	double ray_theta_start;
-	double ray_theta_stop;
-
+	double theta_start;
+	double theta_stop;
 	int phi_steps;
-	double ray_phi_start;
-	double ray_phi_stop;
+	double phi_start;
+	double phi_stop;
+	int emission_source;
 
 	char pl_spectrum_file[PATH_MAX];
 	struct math_xy pl_spectrum;

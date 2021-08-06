@@ -249,7 +249,7 @@ void light_src_load(struct simulation *sim,struct light_src *in, struct json_obj
 
 	json_get_long_double(sim, json_light_src, &(in->lstart),"lstart");
 	json_get_long_double(sim, json_light_src, &(in->lstop),"lstop");
-	json_get_string(sim, json_light_src, &(in->illuminate_from),"light_illuminate_from");
+	json_get_string(sim, json_light_src, in->illuminate_from,"light_illuminate_from");
 
 	json_get_long_double(sim, json_light_src, &(in->x0),"x0");
 	json_get_long_double(sim, json_light_src, &(in->y0),"y0");

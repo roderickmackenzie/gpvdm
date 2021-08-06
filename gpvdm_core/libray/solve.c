@@ -73,44 +73,53 @@ void ray_benchmark_print(struct simulation *sim,struct image *in)
 	printf_log(sim,"rays %le rays/s\n",((double)in->tot_rays)/dt);
 }
 
-int get_next_worker_threads(struct image *my_image)
-{
-	return -1;
-}
-
-void wait_for_threads(struct image *my_image)
-{
-}
 
 
-struct thread_data
-{
-	struct simulation *sim;
-	struct device *dev;
-	double z;
-	double mag;
-	struct ray_worker *worker;
-};
 
+/*#ifdef windows
+DWORD WINAPI ray_thread_solve(void *in_data)
+#else
 void *ray_thread_solve(void *in_data)
+#endif
 {
 	//printf("I get to here!!!\n");
+	#ifndef gpvdm_open
+
+	struct thread_data *tdata=in_data;
+	struct simulation *sim=tdata->sim;
+	struct device *dev=tdata->dev;
+	struct dimensions *dim=&dev->ns.dim;
+	struct image *my_image=&(dev->my_image);
+	double mag=0.0;
+	long double max=0;
+	long double min=0;
+	int x=0;
+	int y=0;
+	int z=0;
+
+	min=zxy_min_gdouble(dim, dev->Rnet);
+	max=zxy_max_gdouble(dim, dev->Rnet);
+
+	for (x=0;x<dim->xlen;x++)
+	{
+		for (y=0;y<dim->ylen;y++)
+		{
+			mag=(double)(dev->Rnet[z][x][y]-min)/max;
+			ray_solve(sim,dev,dim->xmesh[x],dim->ymesh[y],tdata->z, mag,tdata->worker);
+		}
+	}
+	ray_dump_shapshots(sim,dev, my_image ,tdata->worker,0);
+	ray_reset(tdata->worker);
+	tdata->worker->working=FALSE;
+	#endif
 	return 0;
-}
+}*/
 
 void ray_solve_all(struct simulation *sim,struct device *dev)
 {
 }
 
-double get_rand()
-{
-	double r=0.0;
-	r = rand();
-	r=(double)r/(double)RAND_MAX;
-	return r;
-}
-
-void ray_solve(struct simulation *sim,struct device *dev, double x0, double y0, double z0,double mag,struct ray_worker *worker)
+void ray_solve(struct simulation *sim,struct device *dev, struct ray_src *raysrc,double mag,struct ray_worker *worker)
 {
 
 

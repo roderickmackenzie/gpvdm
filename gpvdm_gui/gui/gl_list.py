@@ -227,12 +227,13 @@ class gl_objects():
 
 	def gl_objects_save_selected(self):
 		epi=get_epi()
+		moved=False
 		for obj in self.objects:
 			if obj.selected==True:
 				if len(obj.id)>0:
-					s=epi.find_object_by_id(obj.id[0])
-					if type(s)==shape:
-						s.save()
+					moved=True
+		if moved==True:
+			gpvdm_data().save()
 
 	def gl_objects_count_regex(self,in_id):
 		count=0

@@ -67,6 +67,7 @@ class gl_input():
 
 	def __init__(self):
 		self.cursor=None
+		self.objects_moved=False
 
 	def keyPressEvent(self, event):
 		if type(event) == QtGui.QKeyEvent:
@@ -149,7 +150,8 @@ class gl_input():
 			dz_=dx*sin(2.0*3.14159*self.active_view.yRot/360)
 			dy_=dy*cos(2.0*3.14159*self.active_view.xRot/360)
 			self.gl_objects_move(dx_*0.2/self.active_view.zoom,-dy_*0.2/self.active_view.zoom,dz_*0.2/self.active_view.zoom)
-		
+			self.objects_moved=True
+
 		self.lastPos=event.pos()
 		self.setFocusPolicy(Qt.StrongFocus)
 		self.setFocus()
@@ -213,6 +215,7 @@ class gl_input():
 
 		if event.button()==Qt.LeftButton:
 			self.gl_objects_save_selected()
+				
 
 
 	def wheelEvent(self,event):

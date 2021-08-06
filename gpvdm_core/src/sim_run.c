@@ -276,6 +276,15 @@ int device_run_simulation(struct simulation *sim, struct device *dev)
 
 	}
 
+	//Load light sources
+	json_light_sources=json_obj_find(&(dev->config.obj), "light_sources");
+
+	if (json_light_sources==NULL)
+	{
+		ewe(sim,"Object json_light_sources not found\n");
+	}
+
+	light_srcs_load(sim,&(dev->lights),json_light_sources);
 
 
 	dev->mun_symmetric=TRUE;
@@ -292,16 +301,6 @@ int device_run_simulation(struct simulation *sim, struct device *dev)
 	{
 		strcpy(dev->newton_name,"newton_simple");
 	}
-
-	//Load light sources
-	json_light_sources=json_obj_find(&(dev->config.obj), "light_sources");
-
-	if (json_light_sources==NULL)
-	{
-		ewe(sim,"Object json_light_sources not found\n");
-	}
-
-	light_srcs_load(sim,&(dev->lights),json_light_sources);
 
 
 	if (dev->electrical_simulation_enabled==TRUE)

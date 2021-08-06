@@ -75,12 +75,12 @@ void epi_layer_init(struct simulation *sim,struct epi_layer *layer)
 
 	//ray tracing
 	layer->theta_steps=-1;
-	layer->ray_theta_start=-1.0;
-	layer->ray_theta_stop=-1.0;
-
+	layer->theta_start=-1.0;
+	layer->theta_stop=-1.0;
 	layer->phi_steps=-1;
-	layer->ray_phi_start=-1.0;
-	layer->ray_phi_stop=-1.0;
+	layer->phi_start=-1.0;
+	layer->phi_stop=-1.0;
+	layer->emission_source=-1;
 
 	strcpy(layer->pl_spectrum_file,"none");
 	inter_init(sim,&(layer->pl_spectrum));

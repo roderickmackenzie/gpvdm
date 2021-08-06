@@ -45,4 +45,5 @@
 void randomize_input_files(struct simulation *sim);
 int random_int(struct simulation *sim, int in);
 int random_int_range(struct simulation *sim,int start_in,int stop_in);
+double random_double();
 #endif

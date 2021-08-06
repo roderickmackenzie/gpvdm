@@ -68,6 +68,14 @@ ret=random_int(sim,delta);
 return start+ret;
 }
 
+double random_double()
+{
+	double r=0.0;
+	r = rand();
+	r=(double)r/(double)RAND_MAX;
+	return r;
+}
+
 int random_int(struct simulation *sim, int in)
 {
 if (in==0) return 0;

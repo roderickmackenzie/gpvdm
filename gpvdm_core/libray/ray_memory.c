@@ -66,9 +66,9 @@ void ray_malloc(struct simulation *sim,struct device *dev,struct image *my_image
 		object_nalpha_malloc(&(dev->obj[o]),my_image->ray_wavelength_points);
 	}
 
-	if (dev->emission_enabled==FALSE)
+	if (my_image->enabled==FALSE)
 	{
-		ewe(sim,"don't run the ray tracer with no emission layers");
+		ewe(sim,"Ray not enabled");
 	}
 
 	my_image->worker=malloc(sizeof(struct ray_worker)*my_image->worker_max);

@@ -65,7 +65,7 @@ void heat_cal_get_heating_sources_percent(struct simulation *sim,struct device *
 
 	struct dim_heat *dim_t=&(thermal->dim);
 
-	long double H_tot=0.0;
+	//long double H_tot=0.0;
 
 	long double dy=0.0;
 	long double dx=0.0;
@@ -93,7 +93,7 @@ void heat_cal_get_heating_sources_percent(struct simulation *sim,struct device *
 	}
 
 //printf("sum: %Le %Le %Le\n",H_joule,H_recombination,H_parasitic);
-H_tot=*H_joule+*H_recombination+*H_parasitic;
+//H_tot=*H_joule+*H_recombination+*H_parasitic;
 //*H_joule/=H_tot;
 //*H_recombination/=H_tot;
 //*H_parasitic/=H_tot;

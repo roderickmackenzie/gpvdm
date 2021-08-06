@@ -57,14 +57,8 @@
 
 void ray_build_scene(struct simulation *sim,struct device *dev,struct image *my_image,struct epitaxy *my_epitaxy)
 {
-
-	int layer;
 	double xlen=dev->xlen;
-	double zlen=dev->zlen;
 	double dx=xlen*0.01;
-
-	double start_z=zlen/2.0;
-	double start_x=xlen/2.0;
 
 	double device_height=epitaxy_get_optical_length(my_epitaxy);
 	double sim_window_top=device_height*2.0;
@@ -88,16 +82,14 @@ void ray_build_scene(struct simulation *sim,struct device *dev,struct image *my_
 
 	my_image->n_ray_srcs=ray_src_add_emitters(sim,dev,TRUE);
 
-	if (my_image->n_ray_srcs==0)
+	if (my_image->n_ray_srcs!=0)
 	{
-		ewe(sim,"No light sources defined");
+		my_image->ray_srcs=malloc(sizeof(struct ray_src)*my_image->n_ray_srcs);
+		ray_src_add_emitters(sim,dev,FALSE);
+
+		ray_src_dump(sim,dev);
 	}
 
-	my_image->ray_srcs=malloc(sizeof(struct ray_src)*my_image->n_ray_srcs);
-	ray_src_add_emitters(sim,dev,FALSE);
-
-	ray_src_dump(sim,dev);
-	getchar();
 
 	if (my_image->viewpoint_enabled==TRUE)
 	{

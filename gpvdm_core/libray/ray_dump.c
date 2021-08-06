@@ -261,10 +261,7 @@ void dump_plane(struct simulation *sim,struct device *dev,struct image *in)
 	struct ray_worker *worker;
 
 	printf_log(sim,"start:\n");
-	for (i=0;i<in->n_start_rays;i++)
-	{
-		printf_log(sim,"%le %le %le\n",in->start_rays[i].x,in->start_rays[i].y,in->start_rays[i].z);
-	}
+	ray_src_dump(sim,dev);
 
 	printf_log(sim,"triangles:\n");
 	int o=0;

@@ -76,7 +76,7 @@ double get_eff(struct image *in);
 void ray_build_scene(struct simulation *sim,struct device *cell,struct image *my_image,struct epitaxy *my_epitaxy);
 void ray_free(struct simulation *sim,struct device *in,struct image *my_image);
 void ray_read_config(struct simulation *sim,struct image *my_image,struct json_obj *json_config);
-void ray_solve(struct simulation *sim,struct device *dev, double x0, double y0, double z0,double mag,struct ray_worker *worker);
+void ray_solve(struct simulation *sim,struct device *dev, struct ray_src *raysrc,double mag,struct ray_worker *worker);
 void ray_solve_all(struct simulation *sim,struct device *dev);
 void dump_extraction_efficiency(struct simulation *sim,struct device *dev,struct image *in);
 void dump_ang_escape(struct simulation *sim,struct image *in);
@@ -119,4 +119,8 @@ void ray_viewpoint_reset(struct simulation *sim,struct image *my_image);
 void ray_read_viewpoint(struct simulation *sim,struct image *my_image, struct json_obj *json_config);
 void ray_dump_shapshots(struct simulation *sim,struct device *dev, struct image *my_image ,struct ray_worker *worker,int layer);
 
+//ray_src
+void ray_src_dump(struct simulation *sim,struct device *dev);
+int ray_src_add_emitters(struct simulation *sim,struct device *dev, int just_count);
+void ray_check_if_needed(struct simulation *sim,struct device *dev);
 #endif

@@ -51,15 +51,12 @@
 
 void ray_engine_init(struct image *in)
 {
-	in->n_start_rays=0;
+	in->enabled=FALSE;
+	in->n_ray_srcs=0;
+	in->ray_srcs=NULL;
 	in->ray_wavelength_points=-1;
 	in->ray_auto_run=FALSE;
 	in->escape_bins=0;
-	in->ray_xsrc=-1.0;
-	in->ray_ysrc=-1.0;
-	in->ray_zsrc=-1.0;
-	in->ray_theta_start=0.0;
-	in->ray_theta_stop=360.0;
 	in->dump_snapshots=FALSE;
 
 		in->worker_max=sysconf(_SC_NPROCESSORS_CONF);

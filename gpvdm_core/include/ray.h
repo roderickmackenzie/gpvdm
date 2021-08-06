@@ -79,9 +79,9 @@ struct ray_worker
 
 struct ray_src
 {
-	long double x;
-	long double y;
-	long double z;
+	double x;
+	double y;
+	double z;
 
 	int theta_steps;
 	double theta_start;
@@ -91,10 +91,16 @@ struct ray_src
 	double phi_start;
 	double phi_stop;
 
+	int epi_layer;		//epi layer
+	int light;			//light source
+	int emission_source;	//single point or mesh
+
+
 };
 
 struct image
 {
+	int enabled;
 	int worker_max;
 	struct ray_worker *worker;
 
@@ -125,7 +131,6 @@ struct image
 
 	//run control
 	int ray_auto_run;
-	int ray_emission_source;
 	int dump_snapshots;
 
 };

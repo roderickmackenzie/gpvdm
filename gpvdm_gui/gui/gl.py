@@ -458,19 +458,22 @@ if open_gl_ok==True:
 					if source.light_illuminate_from=="xyz":
 						point_x=float(source.x0)
 						point_y=float(source.y0)
+						point_z=float(source.z0)
 						if point_x==-1.0:
 							point_x=0.0
 							point_y=0.0
+							point_z=0.0
 						else:
 							point_x=gl_scale.project_m2screen_x(point_x)
 							point_y=gl_scale.project_m2screen_y(point_y)
+							point_z=gl_scale.project_m2screen_z(point_z)
 						#print(point_x,point_y)
 						a=gl_base_object()
 						a.id=[source.id]
 						a.type="box"
 						a.xyz.x=point_x
 						a.xyz.y=point_y
-						a.xyz.z=0.0
+						a.xyz.z=point_z
 						a.dxyz.x=0.1
 						a.dxyz.y=0.1
 						a.dxyz.z=0.1

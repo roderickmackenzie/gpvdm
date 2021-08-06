@@ -69,31 +69,12 @@ void ray_read_config(struct simulation *sim,struct image *my_image,struct json_o
 
 	json_get_int(sim, json_ray, &(my_image->escape_bins),"ray_escape_bins");
 
-	my_image->ray_xsrc=-1.0;
-	my_image->ray_ysrc=-1.0;
-	my_image->ray_zsrc=-1.0;
-
-	//json_get_double(sim, json_ray, &(my_image->ray_xsrc),"ray_xsrc");
-	//json_get_double(sim, json_ray, &(my_image->ray_ysrc),"ray_ysrc");
-	//inp_search_double(sim,&inp,&(my_image->ray_zsrc),"#ray_zsrc");
-
-	json_get_int(sim, json_ray, &(my_image->theta_steps),"ray_theta_steps");
-	json_get_double(sim, json_ray, &(my_image->ray_theta_start),"ray_theta_start");
-	json_get_double(sim, json_ray, &(my_image->ray_theta_stop),"ray_theta_stop");
-
-	json_get_int(sim, json_ray, &(my_image->phi_steps),"ray_phi_steps");
-	json_get_double(sim, json_ray, &(my_image->ray_phi_start),"ray_phi_start");
-	json_get_double(sim, json_ray, &(my_image->ray_phi_stop),"ray_phi_stop");
-
 	json_get_double(sim, json_ray, &(my_image->ray_lambda_start),"ray_lambda_start");
 	json_get_double(sim, json_ray, &(my_image->ray_lambda_stop),"ray_lambda_stop");
 
 	json_get_english(sim, json_ray,&(my_image->ray_auto_wavelength_range),"ray_auto_wavelength_range");
 
 	json_get_english(sim, json_ray, &(my_image->ray_auto_run),"ray_auto_run");
-
-	json_get_english(sim, json_ray, &(my_image->ray_emission_source),"ray_emission_source");
-
 
 	ray_read_viewpoint(sim,my_image, json_config);
 }
