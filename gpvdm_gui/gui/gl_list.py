@@ -187,23 +187,23 @@ class gl_objects():
 					s=gpvdm_data().find_object_by_id(obj.id[0])
 					if type(s)==shape:
 						nl=epi.find_layer_by_id(obj.id[0])
+						if nl!=None:
+							y_start=epi.get_layer_start(nl)
+							y_stop=epi.get_layer_end(nl)
 
-						y_start=epi.get_layer_start(nl)
-						y_stop=epi.get_layer_end(nl)
+							x_stop=get_mesh().x.get_len()
 
-						x_stop=get_mesh().x.get_len()
+							if x_min_new_m<0:
+								move_x=False
 
-						if x_min_new_m<0:
-							move_x=False
+							if y_min_new_m<y_start:
+								move_y=False
 
-						if y_min_new_m<y_start:
-							move_y=False
+							if y_max_new_m>=y_stop:
+								move_y=False
 
-						if y_max_new_m>=y_stop:
-							move_y=False
-
-						if x_max_new_m>=x_stop:
-							move_x=False
+							if x_max_new_m>=x_stop:
+								move_x=False
 				else:
 					move_x=False
 					move_y=False
@@ -305,7 +305,7 @@ class gl_objects():
 				self.paint_from_array_cut_through(o)
 			elif o.type=="solid_and_mesh_color":
 				self.paint_from_array(o)
-				self.paint_open_triangles_from_array(o,colored=True)
+				self.paint_open_triangles_from_array(o)
 			elif o.type=="box":
 				self.box(o)
 				#self.paint_marker(o)

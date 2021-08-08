@@ -311,3 +311,11 @@ class json_base():
 			self.f.save()
 			self.last_time=self.f.time()
 
+	def load_triagles(self):
+		for l in self.epi.layers:
+			l.load_triangles()
+			for s in l.shapes:
+				s.load_triangles()
+
+		for obj in self.world.world_data.segments:
+			obj.load_triangles()

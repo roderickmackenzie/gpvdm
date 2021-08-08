@@ -56,12 +56,18 @@ from backup import backup
 from scripts import scripts
 from cite_me import cite_me
 from ribbon_page import ribbon_page
+from play import play
+from server import server_get
 
 class ribbon_file(ribbon_page):
 	used_files_click= pyqtSignal(str)
 	def __init__(self):
 		ribbon_page.__init__(self)
-		
+		self.scan_window=None
+		self.fit_window=None
+
+		self.myserver=server_get()
+
 		self.home_new = QAction_lock("document-new", _("New simulation").replace(" ","\n"), self,"main_new")
 		#self.home_new.setText(_("New\nsimulation"))
 		self.addAction(self.home_new)
@@ -88,6 +94,28 @@ class ribbon_file(ribbon_page):
 		self.tb_script_editor.clicked.connect(self.callback_script)
 		self.addAction(self.tb_script_editor)
 
+		self.addSeparator()
+
+		self.run = play(self,"main_play_button",run_text=wrap_text(_("Run\nsimulation"),2))#QAction(icon_get("media-playback-start"), _("Run simulation"), self)
+		server_get().sim_finished.connect(self.run.stop)
+		server_get().sim_started.connect(self.run.start)
+
+		self.addAction(self.run)
+
+		self.scan = QAction_lock("scan", _("Parameter\nscan"), self,"ribbon_home_scan")
+		self.scan.clicked.connect(self.callback_scan)
+		self.addAction(self.scan)
+
+		self.addSeparator()
+
+		self.fit = QAction_lock("fit", _("Fit to\nexperimental data"), self,"ribbon_home_fit")
+		self.fit.clicked.connect(self.callback_run_fit)
+		self.addAction(self.fit)
+
+		self.plot = QAction_lock("plot", _("Plot\nFile"), self,"ribbon_home_plot")
+		self.plot.clicked.connect(self.callback_plot_select)
+		self.addAction(self.plot)
+
 		spacer = QWidget()
 		spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 		self.addWidget(spacer)
@@ -112,6 +140,16 @@ class ribbon_file(ribbon_page):
 		self.used_files_click.emit(action.text())
 
 	def update(self):
+		if self.fit_window!=None:
+			del self.fit_window
+			self.fit_window=None
+
+		self.fit.setVisible(True)
+
+		if self.scan_window!=None:
+			del self.scan_window
+			self.scan_window=None
+
 		self.populate_used_file_menu()
 
 
@@ -120,11 +158,14 @@ class ribbon_file(ribbon_page):
 		self.home_open.setEnabled(val)
 		self.home_backup.setEnabled(val)
 		self.home_export.setEnabled(val)
+		self.plot.setEnabled(val)
 
 	def setEnabled_other(self,val):
 		self.home_backup.setEnabled(val)
 		self.home_export.setEnabled(val)
 		self.tb_script_editor.setEnabled(val)
+		self.fit.setEnabled(val)
+		self.scan.setEnabled(val)
 
 	def on_new_backup(self):
 		new_backup_name=dlg_get_text( _("New backup:"), _("New backup name"),"add_backup")
@@ -155,9 +196,52 @@ class ribbon_file(ribbon_page):
 		ret=self.dialog.exec_()
 
 	def callback_script(self):
-
 		self.scripts=scripts()
-
 		self.scripts.show()
+
+	def callback_scan(self, widget):
+		help_window().help_set_help(["scan.png",_("<big><b>The scan window</b></big><br> Very often it is useful to be able to systematically very a device parameter such as mobility or density of trap states.  This window allows you to do just that."),"list-add.png",_("Use the plus icon to add a new scan line to the list."),"youtube",_("<big><b><a href=\"https://www.youtube.com/watch?v=cpkPht-CKeE\">Tutorial video</b></big><br>Using the parameter scan window.")])
+		#self.tb_run_scan.setEnabled(True)
+
+		if self.scan_window==None:
+			from scan import scan_class
+			self.scan_window=scan_class(server_get())
+
+
+		if self.scan_window.isVisible()==True:
+			self.scan_window.hide()
+		else:
+			self.scan_window.show()
+
+	def callback_run_fit(self, widget):
+		if self.fit_window==None:
+			from fit_window import fit_window
+			self.fit_window=fit_window("fit")
+
+		help_window().help_set_help(["fit.png",_("<big><b>Fit window</b></big><br> Use this window to fit the simulation to experimental data.  Gpvdm uses advanced and optimized fitting algorithms to fit the model to your experimental data, so that material parameters such as mobilities and recombination rates can be extracted."),"youtube",_("<big><b><a href=\"https://www.youtube.com/watch?v=61umU4hrsqk\">Watch the tutorial video 1</b></big><br>Fitting gpvdm to experimental data to extract mobility and recombination rate parameters."),"youtube",_("<big><b><a href=\"https://www.youtube.com/watch?v=_cm3Cb3kzUg\">Watch the tutorial video 2</b></big><br>Fitting gpvdm to large area solar cells")])
+		if self.fit_window.isVisible()==True:
+			self.fit_window.hide()
+		else:
+			self.fit_window.show()
+
+	def callback_plot_select(self):
+		help_window().help_set_help(["dat_file.png",_("<big>Select a file to plot</big><br>Single clicking shows you the content of the file")])
+
+		dialog=gpvdm_open(get_sim_path(),show_inp_files=False)
+		dialog.show_directories=False
+		ret=dialog.exec_()
+		if ret==QDialog.Accepted:
+			file_name=dialog.get_filename()
+
+			if os.path.basename(dialog.get_filename())=="sim_info.dat":
+				self.sim_info_window=window_json_ro_viewer(dialog.get_filename())
+				self.sim_info_window.show()
+				return
+			from plot_gen import plot_gen
+			plot_gen([dialog.get_filename()],[],"auto")
+
+			#self.plotted_graphs.refresh()
+			#self.plot_after_run_file=dialog.get_filename()
+
 
 

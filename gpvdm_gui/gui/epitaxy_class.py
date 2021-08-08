@@ -370,7 +370,6 @@ class epitaxy(json_base):
 			a=epi_layer()
 
 			a.decode_from_json(layer_json)
-			#a.shape_flip_y=False
 
 			if a.layer_type=="active":
 				a.shape_dos.enabled=True

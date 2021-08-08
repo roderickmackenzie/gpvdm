@@ -107,9 +107,6 @@ class display_widget(QWidget):
 		
 	def update(self):
 		self.display.reset()
-#		print("recalculate")
-	#	self.display.update()
-	#	self.fx_box.update()
 
 
 	#def callback_layer_editor(self):

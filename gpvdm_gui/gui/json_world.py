@@ -22,53 +22,51 @@
 # 
 
 
-## @package dir_decode
-#  Functions to find out what type of directory we have
+## @package json_world
+#  Store the cv domain json data
 #
 
 
-
+import sys
 import os
 import shutil
-import re
-import hashlib
-import glob
-from inp import inp
-from inp import inp_get_token_value
 import json
+from json_base import json_base
+from shape import shape
 
-def get_dir_type(path):
+class json_world_config(json_base):
 
-	if os.path.isfile(path)==True:
-		return "file"
+	def __init__(self):
+		json_base.__init__(self,"config")
+		self.var_list=[]
+		self.var_list.append(["world_x",1.0])
+		self.var_list.append(["world_y",1.0])
+		self.var_list.append(["world_z",1.0])
+		self.var_list_build()
 
-	if os.path.isdir(path)==True:
-		file_name=os.path.join(path,"data.json")
-		f=inp()
-		try:
-			if f.load(file_name)!=False:
-				json_data="\n".join(f.lines)
-				decode=json.loads(json_data)
-				return decode['item_type']
-		except:
-			pass
+class json_world_data(json_base):
 
-		if os.path.isfile(os.path.join(path,"wavelengths.dat"))==True:
-			return "light"
+	def __init__(self):
+		json_base.__init__(self,"world_data",segment_class=True)
 
-		if os.path.isfile(os.path.join(path,"scan_config.inp"))==True:
-			return "scan_dir"
+	def load_from_json(self,json):
+		self.segments=[]
+		segs=json['segments']
+		for i in range(0,segs):
+			a=shape()
+			simulation_name="segment"+str(i)
+			a.load_from_json(json[simulation_name])
+			self.segments.append(a)
 
-		mat_file=os.path.join(path,"mat.inp")
-		token=inp_get_token_value(os.path.join(path,"mat.inp"), "#gpvdm_file_type")
-		if token=="backup_main":
-			return "backup_main"
-		elif token=="backup":
-			return "backup"
-		elif token=="cache":
-			return "cache"
-		elif token=="multi_plot_dir":
-			return "multi_plot_dir"
+		if len(self.segments)==0:
+			self.segments.append(shape())
 
+class json_world(json_base):
 
-		return "dir"
+	def __init__(self):
+		json_base.__init__(self,"world")
+		self.var_list=[]
+		self.var_list.append(["config",json_world_config()])
+		self.var_list.append(["world_data",json_world_data()])
+		self.var_list_build()
+

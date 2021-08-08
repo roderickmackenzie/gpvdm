@@ -63,6 +63,7 @@ from json_opengl_config import json_opengl_config
 from json_gl import json_gl
 from json_light import json_light
 from json_light_sources import json_light_sources
+from json_world import json_world
 
 class json_dump(json_base):
 
@@ -166,7 +167,7 @@ class all_gpvdm_data(json_base):
 		self.var_list.append(["lasers",json_lasers()])
 		self.var_list.append(["circuit",json_circuit()])
 		self.var_list.append(["gl",json_gl()])
-
+		self.var_list.append(["world",json_world()])
 		self.var_list.append(["icon","icon"])
 		self.var_list.append(["english_name","Simulation"])
 		self.var_list.append(["hidden",False])

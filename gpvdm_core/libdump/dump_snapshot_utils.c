@@ -103,10 +103,11 @@ void dump_make_snapshot_dir(struct simulation *sim,char *ret_path,char *base_dir
 	buffer_malloc(&buf);
 
 	buffer_add_string(&buf,"{\n");
-	buffer_add_string(&buf," \"icon\":\"snapshots\"\n");
+	buffer_add_string(&buf," \"icon\":\"snapshots\",\n");
+	buffer_add_string(&buf," \"item_type\":\"snapshots\"\n");
 	buffer_add_string(&buf,"}\n");
 
-	buffer_dump_path(sim,main_snapshots_dir,"snapshots.inp",&buf);
+	buffer_dump_path(sim,main_snapshots_dir,"data.json",&buf);
 	buffer_free(&buf);
 
 

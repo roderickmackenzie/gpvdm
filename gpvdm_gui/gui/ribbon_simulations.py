@@ -35,15 +35,13 @@ from cal_path import get_css_path
 #qt
 from PyQt5.QtWidgets import   QAction
 from PyQt5.QtCore import QSize, Qt
-from PyQt5.QtWidgets import QWidget,QVBoxLayout,QHBoxLayout,QToolBar, QToolButton,QDialog
+from PyQt5.QtWidgets import QWidget,QVBoxLayout,QSizePolicy,QHBoxLayout,QToolBar, QToolButton,QDialog
 
 from help import help_window
 
 #experiments
 from sunsvoc import sunsvoc
 from sunsjsc import sunsjsc
-
-from ray_trace_editor import ray_trace_editor
 
 from qe import qe_window
 from cost import cost
@@ -76,11 +74,11 @@ class ribbon_simulations(ribbon_page):
 		self.qe_window=None
 		self.solar_spectrum_window=None
 		self.cost_window=None
-		self.ray_trace_window=None
 		self.fdtd_window=None
 
 		self.plexperiment_window=None
 		self.spm_window=None
+		self.server_config_window=None
 
 		self.jv = QAction_lock("jv", _("Steady state\nsimulation editor"), self,"ribbon_simulations_jv")
 		self.jv.clicked.connect(self.callback_jv_window)
@@ -119,11 +117,6 @@ class ribbon_simulations(ribbon_page):
 			self.addAction(self.ce)
 
 
-		self.ray_trace = QAction_lock("ray", wrap_text(_("Ray tracing\neditor"),8), self,"ribbon_simulations_ray")
-		self.ray_trace.clicked.connect(self.callback_ray_tracing_window)
-		if gpvdm_paths.is_plugin("trace")==True:
-			self.addAction(self.ray_trace)
-
 		self.pl = QAction_lock("pl", _("PL\neditor"), self,"ribbon_simulations_pl")
 		self.pl.clicked.connect(self.callback_pl_window)
 		if gpvdm_paths.is_plugin("pl_ss")==True:
@@ -152,6 +145,14 @@ class ribbon_simulations(ribbon_page):
 		self.spm.clicked.connect(self.callback_spm_window)
 		if gpvdm_paths.is_plugin("spm")==True:
 			self.addAction(self.spm)
+
+		spacer = QWidget()
+		spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+		self.addWidget(spacer)
+
+		self.server_config = QAction_lock("cpu", _("Simulation\nHardware"), self,"server_config")
+		self.server_config.clicked.connect(self.callback_server_config)
+		self.addAction(self.server_config)
 
 	def callback_experiments_changed(self):
 		self.experiments_changed.emit()
@@ -204,10 +205,10 @@ class ribbon_simulations(ribbon_page):
 		self.sunsjsc.setEnabled(val)
 		self.ce.setEnabled(val)
 		self.fdtd.setEnabled(val)
-		self.ray_trace.setEnabled(val)
 		self.pl.setEnabled(val)
 		self.spm.setEnabled(val)
 		self.jv.setEnabled(val)
+		self.server_config.setEnabled(val)
 
 	def callback_edit_experiment_window(self):
 		from time_domain_experiment import time_domain_experiment
@@ -300,18 +301,6 @@ class ribbon_simulations(ribbon_page):
 		else:
 			self.ce_experiment_window.show()
 
-	def callback_ray_tracing_window(self):
-
-		if self.ray_trace_window==None:
-			self.ray_trace_window=ray_trace_editor()
-
-		help_window().help_set_help(["ray.png",_("<big><b>The ray tracing editor</b></big><br> Use this window to configure ray tracing.")])
-		if self.ray_trace_window.isVisible()==True:
-			self.ray_trace_window.hide()
-		else:
-			self.ray_trace_window.show()
-
-
 
 	def callback_fdtd(self):
 
@@ -358,3 +347,16 @@ class ribbon_simulations(ribbon_page):
 			self.jvexperiment_window.hide()
 		else:
 			self.jvexperiment_window.show()
+
+	def callback_server_config(self):
+		help_window().help_set_help(["cpu.png",_("<big><b>Simulation hardware</b></big><br>Use this window to change how the model uses the computer's hardware.")])
+
+
+		if self.server_config_window==None:
+			from server_config import server_config
+			self.server_config_window=server_config()
+
+		if self.server_config_window.isVisible()==True:
+			self.server_config_window.hide()
+		else:
+			self.server_config_window.show()

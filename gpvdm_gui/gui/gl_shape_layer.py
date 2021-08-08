@@ -57,57 +57,73 @@ from gl_scale import scale_get_device_z
 from mesh import get_mesh
 
 class shape_layer():
-	def shape_to_screen(self,a,pos,s):
-		if s.shape_enabled==True:
+
+	#place a shape on the screen at vector pos
+	def shape_to_screen(self,a,pos,shape0):
+		if shape0.shape_enabled==True:
 			a.type="solid_and_mesh"
-			if self.draw_device_cut_through==True:	# and l!=len(epi.layers)-1
+			if self.draw_device_cut_through==True:
 					a.type="box_cut_through"
 		else:
 			a.type="marker"
 
-		a.id=[s.id]
+		a.id=[shape0.id]
 		a.xyz.x=gl_scale.project_m2screen_x(pos.x)
-		#a.xyz.y=gl_scale.project_m2screen_y(pos.y)
-		if s.shape_flip_y==False:
+
+		if shape0.shape_flip_y==False:
 			a.xyz.y=gl_scale.project_m2screen_y(pos.y)
 		else:
-			a.xyz.y=gl_scale.project_m2screen_y(pos.y+s.dy)
+			a.xyz.y=gl_scale.project_m2screen_y(pos.y+shape0.dy)
 
 		a.xyz.z=gl_scale.project_m2screen_z(pos.z)
 
-		a.dxyz.x=s.dx*scale_get_xmul()
-		a.dxyz.y=s.dy*scale_get_ymul()
-		a.dxyz.z=s.dz*scale_get_zmul()
-		if s.shape_flip_y==False:
+		a.dxyz.x=shape0.dx*scale_get_xmul()
+		a.dxyz.y=shape0.dy*scale_get_ymul()
+		a.dxyz.z=shape0.dz*scale_get_zmul()
+		#print(a.xyz,a.dxyz)
+		if shape0.shape_flip_y==False:
 			a.dxyz.y=a.dxyz.y*-1.0
 
-		a.r=s.color_r
-		a.g=s.color_g
-		a.b=s.color_b
+		a.r=shape0.color_r
+		a.g=shape0.color_g
+		a.b=shape0.color_b
 
 		a.alpha=1.0
-		if len(s.shapes)>0:
+		if len(shape0.shapes)>0:
 			a.alpha=0.5
 
 		a.allow_cut_view=True
 		a.selectable=True
 		v=vec()
-		v.x=s.dx
-		v.y=s.dy
-		v.z=s.dz
+		v.x=shape0.dx
+		v.y=shape0.dy
+		v.z=shape0.dz
 
 		#resize the shape to the mesh
-		if s.triangles!=None:
-			a.triangles=triangles_mul_vec(s.triangles.data,v)
 
-			if s.shape_flip_y==True:
+		if shape0.triangles!=None:
+			a.triangles=triangles_mul_vec(shape0.triangles.data,v)
+
+			if shape0.shape_flip_y==True:
 				a.triangles=triangles_flip(a.triangles)
 
 			a.triangles=scale_trianges_m2screen(a.triangles)
 
 		self.gl_objects_add(a)
 
+		#now itterate over other shapes in this shape
+		for s in shape0.shapes:
+			n=0
+			for pos in s.expand_xyz0(epi_layer):
+				
+				a=gl_base_object()
+				if n==0:
+					a.origonal_object=True
+				n=n+1
+				self.shape_to_screen(a,pos,s)
 
+
+	#This will place shape on the screen while enforcing the size of the epi
 	def shape_layer(self,epi_layer,y_padding=0.0, name="name"):
 		self.gl_objects_remove_regex(name)
 
@@ -123,15 +139,7 @@ class shape_layer():
 		a.origonal_object=True
 		self.shape_to_screen(a,pos,epi_layer)
 
-		for s in epi_layer.shapes:
-			n=0
-			for pos in s.expand_xyz0(epi_layer):
-				
-				a=gl_base_object()
-				if n==0:
-					a.origonal_object=True
-				n=n+1
-				self.shape_to_screen(a,pos,s)
+
 
 
 

@@ -69,20 +69,11 @@ import random
 
 from dat_file import dat_file
 
-import glob
-
 from global_objects import global_object_register
 
 from math import fabs
-
+from triangle import vec
 from gl_fallback import gl_fallback
-
-# Rotations for cube.
-cube_rotate_x_rate = 0.2
-cube_rotate_y_rate = 0.2
-cube_rotate_z_rate = 0.2
-
-
 
 import copy
 
@@ -98,7 +89,7 @@ from gl_mesh import gl_mesh
 
 from mesh import get_mesh
 
-from gl_layer_editor import gl_layer_editor
+from gl_object_editor import gl_object_editor
 
 from gl_cords import gl_cords
 
@@ -149,7 +140,7 @@ class open_gl_light:
 		self.number=GL_LIGHT0
 
 if open_gl_ok==True:		
-	class glWidget(QGLWidget,shape_layer, gl_lib_ray,gl_objects, gl_text,gl_views,gl_mesh,gl_layer_editor,gl_cords,gl_base_widget,gl_main_menu,gl_input, gl_contacts, gl_draw_light_profile, gl_graph, gl_draw_circuit, gl_color, gl_shapes, gl_render_obj, gl_photons, gl_toolbar):
+	class glWidget(QGLWidget,shape_layer, gl_lib_ray,gl_objects, gl_text,gl_views,gl_mesh,gl_object_editor,gl_cords,gl_base_widget,gl_main_menu,gl_input, gl_contacts, gl_draw_light_profile, gl_graph, gl_draw_circuit, gl_color, gl_shapes, gl_render_obj, gl_photons, gl_toolbar):
 
 
 		text_output = pyqtSignal(str)
@@ -258,6 +249,16 @@ if open_gl_ok==True:
 			#print(contact_layers)
 			l=0
 			btm_layer=len(epitaxy_get_epi())-1
+
+			for obj in gpvdm_data().world.world_data.segments:
+				a=gl_base_object()
+				pos=vec()
+				pos.x=obj.x0
+				pos.y=obj.y0
+				pos.z=obj.z0
+				a.origonal_object=True
+				a.moveable=True
+				self.shape_to_screen(a,pos,obj)
 
 			for obj in epi.layers:
 				y_len=obj.dy*scale_get_ymul()

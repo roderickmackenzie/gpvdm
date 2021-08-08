@@ -286,7 +286,7 @@ class gpvdm_main_window(QMainWindow):
 
 		if self.notebook.is_loaded()==True:
 			self.ribbon.file.setEnabled_other(True)
-			self.ribbon.home.setEnabled(True)
+			#self.ribbon.home.setEnabled(True)
 			self.ribbon.simulations.setEnabled(True)
 			self.ribbon.database.setEnabled(True)
 			#self.save_sim.setEnabled(True)
@@ -313,6 +313,7 @@ class gpvdm_main_window(QMainWindow):
 		used_files_add(os.path.join(new_dir,"sim.gpvdm"))
 		a=gpvdm_data()
 		a.load(os.path.join(new_dir,"json.inp"))
+		a.load_triagles()
 		a.sim.version=const_ver()
 		a.save()
 		#get_watch().reset()
@@ -516,17 +517,17 @@ class gpvdm_main_window(QMainWindow):
 		self.ribbon.file.home_export.clicked.connect(self.callback_export)
 
 		self.ribbon.file.used_files_click.connect(self.load_sim)
-		self.ribbon.home.undo.triggered.connect(self.callback_undo)
-		self.ribbon.home.run.start_sim.connect(self.callback_simulate)
+		#self.ribbon.home.undo.triggered.connect(self.callback_undo)
+		self.ribbon.file.run.start_sim.connect(self.callback_simulate)
 		self.splash.inc_value()
 
 		#self.ribbon.home.stop.setEnabled(False)
 
-		self.ribbon.home.scan.setEnabled(False)
+		self.ribbon.file.scan.setEnabled(False)
 		self.ribbon.thermal.setEnabled(False)
 
 		
-		self.ribbon.home.help.triggered.connect(self.callback_on_line_help)
+		#self.ribbon.home.help.triggered.connect(self.callback_on_line_help)
 
 		resize_window_to_be_sane(self,0.7,0.75)
 
@@ -573,12 +574,14 @@ class gpvdm_main_window(QMainWindow):
 
 		check_lib_in_bash_rc()
 
+		self.ribbon.optical.fx_box.cb.currentIndexChanged.connect(self.notebook.tab_main.three_d.fx_box_changed)
+
+		self.notebook.tab_main.three_d.fx_box=self.ribbon.optical.fx_box
+
 		self.timer=QTimer()		
 		self.timer.timeout.connect(gpvdm_data().check_reload)
 		self.timer.start(1000)
-		#from msg_dlg import msg_dlg
-		#self.a=msg_dlg()
-		#self.a.open()
+
 		
 	def dragEnterEvent(self, event):
 		if event.mimeData().hasUrls:

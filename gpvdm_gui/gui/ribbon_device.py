@@ -45,7 +45,6 @@ from dim_editor import dim_editor
 from global_objects import global_object_register
 from pl_main import pl_main
 from QAction_lock import QAction_lock
-from fx_selector import fx_selector
 from gpvdm_json import gpvdm_data
 
 class ribbon_device(QToolBar):
@@ -80,17 +79,11 @@ class ribbon_device(QToolBar):
 		self.tb_emission_editor.clicked.connect(self.callback_emission_editor)
 		self.addAction(self.tb_emission_editor)
 
-		self.tb_dimension_editor = QAction_lock("dimensions", _("xz-size"), self,"ribbon_device_dim")
+		self.tb_dimension_editor = QAction_lock("dimensions", _("Substrate\nxz-size"), self,"ribbon_device_dim")
 		self.tb_dimension_editor.clicked.connect(self.callback_dimension_editor)
 		self.addAction(self.tb_dimension_editor)
 
 		self.callback_circuit_diagram()
-
-
-
-		self.fx_box=fx_selector()
-		self.fx_box.update()
-
 
 
 	def callback_circuit_diagram(self):

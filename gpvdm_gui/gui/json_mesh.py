@@ -47,10 +47,10 @@ class json_mesh_segment(json_base):
 		self.start=0.0
 		self.end=0.0
 
-class json_mesh_xyz:
+class json_mesh_xyz(json_base):
 
 	def __init__(self,xyz):
-		self.segments=[]
+		json_base.__init__(self,"mesh",segment_class=True)
 		self.xyz=xyz
 		self.segments.append(json_mesh_segment())
 		#self.segments.append(json_mesh_segment())

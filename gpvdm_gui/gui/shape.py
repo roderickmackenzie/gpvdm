@@ -232,15 +232,12 @@ class shape(json_base):
 	def decode_from_json(self,json):
 		self.load_from_json(json)
 		self.shape_enabled=str2bool(self.shape_enabled)
-		#print(self.shape_enabled)
-		self.load_triangles()
 		self.loaded_from_json=True
 		if self.triangles==None:
 			self.shape_enabled=False
 
 
 	def load_triangles(self):
-		#print("reload")
 		self.shape_path=os.path.join(gpvdm_paths.get_shape_path(),self.shape_type,"shape.inp")
 		if os.path.isfile(self.shape_path)==True:
 			self.triangles=dat_file()
@@ -254,16 +251,6 @@ class shape(json_base):
 				max_vec=triangles_get_max(self.triangles.data)
 
 				self.triangles.data=triangles_div_vec(self.triangles.data,max_vec)
-
-	def load(self,file_name):
-		if file_name=="none":
-			return
-
-		if file_name.endswith(".inp")==True:
-			file_name=file_name[:-4]
-
-		self.file_name=os.path.basename(file_name)
-		self.do_load()
 
 	def find_object_by_id(self,id):
 		if self.id==id:

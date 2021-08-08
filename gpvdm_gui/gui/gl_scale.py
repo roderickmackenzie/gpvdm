@@ -33,6 +33,7 @@ from epitaxy import get_epi
 import math
 
 from triangle import triangle
+from gpvdm_json import gpvdm_data
 
 x_mul=1.0
 y_mul=1.0
@@ -147,18 +148,24 @@ def set_m2screen():
 	global y_start
 	global z_start
 
-
+	world_view=True
+	epi=get_epi()
+	if epi.ylen()>0:
+		world_view=False
 
 	mesh_max=30
 
-	epi=get_epi()
-	x_len= get_mesh().x.get_len()
-	z_len= get_mesh().z.get_len() 
+	if world_view==False:
+		x_len= get_mesh().x.get_len()
+		z_len= get_mesh().z.get_len() 
+	else:
+		x_len=gpvdm_data().world.config.world_x
+		z_len=gpvdm_data().world.config.world_y
+		device_z=gpvdm_data().world.config.world_z
 
 	z_mul=scale(z_len)
 	x_mul=scale(x_len)
 
-	#print(x_mul,z_mul)
 	mul=x_mul
 	if z_len<x_len:
 		mul=z_mul
@@ -166,21 +173,21 @@ def set_m2screen():
 	x_mul=mul
 	z_mul=mul
 
-	#print("m",mul)
-	#z_mul=mul
-	#x_mul=mul
-
-	#print(x_len*x_mul,z_len*z_mul)
 	if z_len*z_mul>mesh_max:
 		z_mul=mesh_max/z_len
 
 	if x_len*x_mul>mesh_max:
 		x_mul=mesh_max/x_len
 
-	y_mul=device_y/epi.ylen()
+	if world_view==False:
+		y_mul=device_y/epi.ylen()
 
-	device_x=get_mesh().x.get_len()*x_mul
-	device_z=get_mesh().z.get_len()*z_mul
+		device_x=x_len*x_mul
+		device_z=z_len*z_mul
+	else:
+		device_x=gpvdm_data().world.config.world_x
+		device_y=gpvdm_data().world.config.world_y
+		device_z=gpvdm_data().world.config.world_z
 
 	x_start=-device_x/2.0
 	z_start=-device_z/2.0

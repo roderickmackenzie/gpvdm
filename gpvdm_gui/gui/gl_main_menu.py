@@ -130,6 +130,13 @@ class gl_main_menu():
 		action=edit.addAction(_("Backgroud color"))
 		action.triggered.connect(self.menu_background_color)
 
+		objects=self.main_menu.addMenu(_("Objects"))
+		action=objects.addAction(_("Add"))
+		action.triggered.connect(self.callback_add_object)
+
+	def callback_add_object(self):
+		print("add object")
+
 	def menu(self,event):
 		self.main_menu.exec_(event.globalPos())
 

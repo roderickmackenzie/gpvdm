@@ -61,9 +61,6 @@ void add_triangle(struct device *dev, double x0,double y0,double z0,double x1,do
 void ray_reset(struct ray_worker *worker);
 int add_ray(struct simulation *sim,struct ray_worker *worker,struct vec *start,struct vec *dir,double mag,int obj_uid,int parent);
 void ray_populate_with_shapes(struct simulation *sim,struct device *dev,struct epitaxy *in);
-void dump_plane_to_file(struct simulation *sim,char *file_name,struct image *in,struct device *dev);
-void dump_plane(struct simulation *sim,struct device *dev,struct image *in);
-double get_rand();
 void obj_norm(struct vec *ret,struct triangle *my_obj);
 int ray_intersect(struct vec *ret,struct triangle *my_obj,struct ray *my_ray);
 int search_obj(struct simulation *sim,struct image *in,struct ray *my_ray);
@@ -78,11 +75,8 @@ void ray_free(struct simulation *sim,struct device *in,struct image *my_image);
 void ray_read_config(struct simulation *sim,struct image *my_image,struct json_obj *json_config);
 void ray_solve(struct simulation *sim,struct device *dev, struct ray_src *raysrc,double mag,struct ray_worker *worker);
 void ray_solve_all(struct simulation *sim,struct device *dev);
-void dump_extraction_efficiency(struct simulation *sim,struct device *dev,struct image *in);
-void dump_ang_escape(struct simulation *sim,struct image *in);
 double ray_cal_escape_angle(struct image *in, struct ray_worker *worker);
 void ray_escape_angle_reset(struct image *in,int l);
-void dump_ang_escape_as_rgb(struct simulation *sim,struct image *in);
 int search_object(struct simulation *sim,struct device *dev,struct ray *my_ray);
 void ray_malloc(struct simulation *sim,struct device *in,struct image *my_image);
 void ray_escape_angle_norm(struct image *in);
@@ -98,13 +92,9 @@ struct object *add_dome(struct image *in,double x0,double y0,double z0,double dx
 
 struct object *ray_add_object(struct device *dev,struct triangles *tri);
 void ray_cpy(struct ray *a,struct ray *b);
-void ray_dump_triangle(struct simulation *sim,struct device *dev,struct image *in,struct triangle *tri);
-void dump_ray_to_file(struct simulation *sim,struct image *in,struct ray *my_ray,struct device *dev);
 
 
 struct object *add_plane(struct device *dev,double x0,double y0,double z0,double dx,double dz,int object_type);
-void dump_rendered_image(struct simulation *sim,char *out_dir,struct image *in);
-void dump_rendered_cross_section(struct simulation *sim,char *out_dir, struct image *in);
 
 void ray_label_triangles(struct simulation *sim,struct device *dev);
 //search
@@ -123,4 +113,16 @@ void ray_dump_shapshots(struct simulation *sim,struct device *dev, struct image 
 void ray_src_dump(struct simulation *sim,struct device *dev);
 int ray_src_add_emitters(struct simulation *sim,struct device *dev, int just_count);
 void ray_check_if_needed(struct simulation *sim,struct device *dev);
+
+//dump
+void ray_dump_triangle(struct simulation *sim,struct device *dev,struct image *in,struct triangle *tri);
+void dump_ray_to_file(struct simulation *sim,struct image *in,struct ray *my_ray,struct device *dev);
+void dump_rendered_image(struct simulation *sim,char *out_dir,struct image *in);
+void dump_rendered_cross_section(struct simulation *sim,char *out_dir, struct image *in);
+void dump_extraction_efficiency(struct simulation *sim,struct device *dev,struct image *in);
+void dump_ang_escape(struct simulation *sim,struct image *in);
+void dump_plane_to_file(struct simulation *sim,char *file_name,struct image *in,struct device *dev);
+void dump_plane(struct simulation *sim,struct device *dev,struct image *in);
+void dump_ang_escape_as_rgb(struct simulation *sim,struct image *in);
+void ray_dump_shapshots(struct simulation *sim,struct device *dev, struct image *my_image ,struct ray_worker *worker,int layer);
 #endif

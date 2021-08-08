@@ -44,8 +44,8 @@ from PyQt5.QtWidgets import QTabWidget
 from ribbon_database import ribbon_database
 from ribbon_simulations import ribbon_simulations
 from ribbon_electrical import ribbon_electrical
+from ribbon_optical import ribbon_optical
 from ribbon_information import ribbon_information
-from ribbon_home import ribbon_home
 from ribbon_sim_mode import ribbon_sim_mode
 from icon_lib import icon_get
 
@@ -86,11 +86,11 @@ class ribbon(ribbon_base):
 		self.database.update()
 		self.simulations.update()
 		self.electrical.update()
+		self.optical.update()
 		self.information.update()
-		self.home.update()
+		#self.home.update()
 		self.ribbon_sim_mode.update()
 		self.thermal.update()
-		#self.electrical.update()
 
 
 	def callback_about_dialog(self):
@@ -134,9 +134,6 @@ class ribbon(ribbon_base):
 		self.file=ribbon_file()
 		self.addTab(self.file,_("File"))
 		
-		self.home=ribbon_home()
-		self.addTab(self.home,_("Home"))
-
 		self.ribbon_sim_mode=ribbon_sim_mode()
 		self.addTab(self.ribbon_sim_mode,_("Simulation type"))
 		
@@ -148,12 +145,9 @@ class ribbon(ribbon_base):
 		self.electrical=ribbon_electrical()
 		self.addTab(self.electrical,_("Electrical"))
 
-		#self.device=ribbon_device()
-		#self.addTab(self.device,_("Device"))
+		self.optical=ribbon_optical()
+		self.addTab(self.optical,_("Optical"))
 
-		#self.electrical=ribbon_electrical()
-		#self.addTab(self.electrical,_("Electrical"))
-		
 		self.thermal=ribbon_thermal()
 		self.addTab(self.thermal,_("Thermal"))
 

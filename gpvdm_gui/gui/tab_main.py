@@ -60,10 +60,6 @@ class tab_main(QWidget,tab_base):
 		self.ribbon=ribbon_device()
 		self.ribbon.addWidget(self.three_d.display.toolbar0)
 		self.ribbon.addWidget(self.three_d.display.toolbar1)
-		self.ribbon.addWidget(self.ribbon.fx_box)
-		self.ribbon.fx_box.cb.currentIndexChanged.connect(self.three_d.fx_box_changed)
-
-		self.three_d.fx_box=self.ribbon.fx_box
 
 		mainLayout.addWidget(self.ribbon)
 		self.ribbon.setMinimumSize(100, 0)

@@ -21,15 +21,12 @@
 #
 # 
 
-## @package gl_layer_editor
-#  An OpenGL layer editor.
+## @package gl_object_editor
+#  An OpenGL object editor.
 #
 
 import sys
 import os
-#from OpenGL.GL import *
-#from OpenGL.GLU import *
-#from PyQt5 import QtOpenGL
 from PyQt5.QtOpenGL import QGLWidget
 from PyQt5.QtWidgets import QMenu
 from object_editor import object_editor
@@ -42,25 +39,29 @@ from shape import shape
 from contacts_io import contact
 from gpvdm_json import gpvdm_data
 
-class gl_layer_editor():
+class gl_object_editor():
 
-	def menu_layer(self,event):
+	def menu_obj(self,event,obj):
 		view_menu = QMenu(self)
-		
 
 		menu = QMenu(self)
+		
+		is_epi_layer=False
+		if obj in gpvdm_data().epi.layers:
+			is_epi_layer=True
 
-		action=menu.addAction(icon_get("go-up"),_("Move up"))
-		action.triggered.connect(self.layer_move_up)
+		if is_epi_layer==True:
+			action=menu.addAction(icon_get("go-up"),_("Move up"))
+			action.triggered.connect(self.layer_move_up)
 
-		action=menu.addAction(_("Move down"))
-		action.triggered.connect(self.layer_move_down)
+			action=menu.addAction(_("Move down"))
+			action.triggered.connect(self.layer_move_down)
+
+			action=menu.addAction(icon_get("list-add"),_("Add layer"))
+			action.triggered.connect(self.layer_add)
 
 		action=menu.addAction(icon_get("list-remove"),_("Delete"))
 		action.triggered.connect(self.layer_delete)
-
-		action=menu.addAction(icon_get("list-add"),_("Add layer"))
-		action.triggered.connect(self.layer_add)
 
 		action=menu.addAction(icon_get("rename"),_("Rename"))
 		action.triggered.connect(self.layer_rename)
@@ -70,16 +71,6 @@ class gl_layer_editor():
 
 		menu.addSeparator()
 
-		#action=menu.addAction(_("Set layer active"))
-		#action=menu.addAction(_("Thickness"))
-
-		#action=menu.addAction(_("Optical properties"))
-		#action=menu.addAction(_("Electrical properties"))
-
-
-		#action.triggered.connect(self.layer_move_down)
-
-		#menu.addSeparator()
 		menu.exec_(event.globalPos())
 
 	def layer_move_up(self):
@@ -128,7 +119,7 @@ class gl_layer_editor():
 		epi=get_epi()
 		obj=self.gl_objects_get_first_selected()
 		if obj!=None:
-			s=epi.find_object_by_id(obj.id[0])
+			s=data.find_object_by_id(obj.id[0])
 			if s!=None:
 				response=yes_no_dlg(self,"Do you really want to delete the object: "+s.shape_name)
 				if response == True:
@@ -139,10 +130,9 @@ class gl_layer_editor():
 
 	def layer_rename(self):
 		data=gpvdm_data()
-		epi=get_epi()
 		obj=self.gl_objects_get_first_selected()
 		if obj!=None:
-			s=epi.find_object_by_id(obj.id[0])
+			s=data.find_object_by_id(obj.id[0])
 			if s!=None:
 				old_name=s.shape_name
 				name=dlg_get_text( _("Rename the layer:"), old_name,"rename.png")
@@ -158,9 +148,11 @@ class gl_layer_editor():
 		obj=self.gl_objects_get_first_selected()
 		if obj!=None:
 			epi=get_epi()
-			s=epi.find_object_by_id(obj.id[0])
+			data=gpvdm_data()
+			s=data.find_object_by_id(obj.id[0])
 			if type(s)==shape or type(s)==contact:
 				self.shape_edit=object_editor()
+				print(obj.id[0])
 				self.shape_edit.load(obj.id[0])
 				self.shape_edit.show()
 			elif type(s)==epi_layer:

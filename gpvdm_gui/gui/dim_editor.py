@@ -41,7 +41,7 @@ from error_dlg import error_dlg
 #qt
 from PyQt5.QtCore import QSize, Qt
 from PyQt5.QtGui import QIcon,QPalette
-from PyQt5.QtWidgets import QWidget, QVBoxLayout,QProgressBar,QLineEdit,QLabel,QDesktopWidget,QToolBar,QHBoxLayout,QAction, QSizePolicy, QTableWidget, QTableWidgetItem,QComboBox,QDialog,QAbstractItemView
+from PyQt5.QtWidgets import QWidget, QVBoxLayout,QProgressBar,QLineEdit,QLabel,QToolBar,QHBoxLayout,QAction, QSizePolicy, QTableWidget, QTableWidgetItem,QComboBox,QDialog, QTabWidget
 
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QWidget
@@ -64,17 +64,17 @@ from QWidgetSavePos import QWidgetSavePos
 
 from mesh import get_mesh
 from gpvdm_json import gpvdm_data
+from tab import tab_class
 
 class dim_editor(QWidgetSavePos):
 
 	def __init__(self):
 		QWidgetSavePos.__init__(self,"dim_editor")
 
-		self.setWindowTitle(_("xz dimension editor")+" https://www.gpvdm.com")
+		self.setWindowTitle(_("Dimension editor")+" https://www.gpvdm.com")
 		self.setWindowIcon(icon_get("dimensions"))
-		self.resize(400,200)
+		self.setMinimumSize(600, 200)
 
-		self.cost_window=False
 
 		self.main_vbox=QVBoxLayout()
 
@@ -91,8 +91,14 @@ class dim_editor(QWidgetSavePos):
 		self.help = QAction(icon_get("internet-web-browser"), _("Help"), self)
 		self.toolbar.addAction(self.help)
 
-		self.main_vbox.addWidget(self.toolbar)
+		#self.main_vbox.addWidget(self.toolbar)
 
+		#notebook
+		self.notebook = QTabWidget()
+
+		#device page
+		self.xz_widget=QWidget()
+		self.xz_vbox=QVBoxLayout()
 		self.widget0 = QWidget()
 		self.widget0_hbox=QHBoxLayout()
 		self.widget0.setLayout(self.widget0_hbox)
@@ -107,7 +113,7 @@ class dim_editor(QWidgetSavePos):
 		self.widget0_label=QLabel("m")
 		self.widget0_hbox.addWidget(self.widget0_label)
 
-		self.main_vbox.addWidget(self.widget0)
+		self.xz_vbox.addWidget(self.widget0)
 
 		self.widget1 = QWidget()
 		self.widget1_hbox=QHBoxLayout()
@@ -120,13 +126,19 @@ class dim_editor(QWidgetSavePos):
 		self.widget1_hbox.addWidget(self.widget1_edit)
 		self.widget1_label=QLabel("m")
 		self.widget1_hbox.addWidget(self.widget1_label)
-		self.main_vbox.addWidget(self.widget1)
+		self.xz_vbox.addWidget(self.widget1)
 
+		self.xz_widget.setLayout(self.xz_vbox)
+		self.notebook.addTab(self.xz_widget,_("Substrate xz size"))
 
-		#self.tab.itemSelectionChanged.connect(self.callback_tab_selection_changed)
+		#World size
+		self.world_widget=tab_class(gpvdm_data().world.config)
+		self.notebook.addTab(self.world_widget,_("World size"))
 
-
+		self.main_vbox.addWidget(self.notebook)
 		self.setLayout(self.main_vbox)
+
+
 
 		#self.tab.itemSelectionChanged.connect(self.layer_selection_changed)
 

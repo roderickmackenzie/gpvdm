@@ -105,7 +105,7 @@ class script_ribbon(ribbon_base):
 		ret=dialog.exec_()		
 
 	def update(self):
-		self.fx_box.update()
+		return
 
 	def callback_about_dialog(self):
 		dlg=about_dlg()

@@ -53,8 +53,18 @@ from ribbon_page import ribbon_page
 class ribbon_information(ribbon_page):
 	def __init__(self):
 		ribbon_page.__init__(self)
+		self.simulation_notes_window=None
+
 		self.setToolButtonStyle( Qt.ToolButtonTextUnderIcon)
 		self.setIconSize(QSize(42, 42))
+
+		self.simulation_notes = QAction(icon_get("text-x-generic"), _("Simulation\nNotes"), self)
+		self.simulation_notes.triggered.connect(self.callback_simulation_notes)
+		self.addAction(self.simulation_notes)
+
+		spacer = QWidget()
+		spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+		self.addWidget(spacer)
 
 		self.ref = QAction(icon_get("ref"), _("How to\ncite"), self)
 		self.ref.triggered.connect(self.callback_ref)
@@ -72,9 +82,6 @@ class ribbon_information(ribbon_page):
 		#self.addAction(self.about)
 
 
-		spacer = QWidget()
-		spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-		self.addWidget(spacer)
 
 		self.paper = QAction(icon_get("pdf"), wrap_text(_("Assosiated paper"),8), self)
 		self.paper.triggered.connect(self.callback_paper)
@@ -150,4 +157,15 @@ class ribbon_information(ribbon_page):
 		self.config_window.notebook.addTab(lang_tab,_("Language"))
 		self.config_window.show()
 
-		return
+	def callback_simulation_notes(self, widget, data=None):
+		help_window().help_set_help(["si.png",_("<big><b>Record notes about the simulation here</b></big><br>Use this window to make notes about the simulation.")])
+
+
+		if self.simulation_notes_window==None:
+			from window_simulation_notes import window_simulation_notes
+			self.simulation_notes_window=window_simulation_notes()
+
+		if self.simulation_notes_window.isVisible()==True:
+			self.simulation_notes_window.hide()
+		else:
+			self.simulation_notes_window.show()

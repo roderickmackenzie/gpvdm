@@ -53,6 +53,7 @@ from math import sin
 
 from epitaxy import get_epi
 from gl_lib import gl_obj_id_starts_with
+from gpvdm_json import gpvdm_data
 
 class mouse_event():
 	def __init__(self):
@@ -67,7 +68,6 @@ class gl_input():
 
 	def __init__(self):
 		self.cursor=None
-		self.objects_moved=False
 
 	def keyPressEvent(self, event):
 		if type(event) == QtGui.QKeyEvent:
@@ -150,8 +150,7 @@ class gl_input():
 			dz_=dx*sin(2.0*3.14159*self.active_view.yRot/360)
 			dy_=dy*cos(2.0*3.14159*self.active_view.xRot/360)
 			self.gl_objects_move(dx_*0.2/self.active_view.zoom,-dy_*0.2/self.active_view.zoom,dz_*0.2/self.active_view.zoom)
-			self.objects_moved=True
-
+		
 		self.lastPos=event.pos()
 		self.setFocusPolicy(Qt.StrongFocus)
 		self.setFocus()
@@ -203,11 +202,9 @@ class gl_input():
 			#print(self.obj)
 			if (delta)<3:
 				if obj!=None:
-					epi=get_epi()
-					#print(obj.id[0])
-					if epi.find_object_by_id(obj.id[0])!=None:
-						#self.update()
-						self.menu_layer(event)
+					obj=gpvdm_data().find_object_by_id(obj.id[0])
+					if obj!=None:
+						self.menu_obj(event,obj)
 					elif gl_obj_id_starts_with(obj.id,"mesh")==True:
 						self.mesh_menu(event)
 				else:
@@ -215,7 +212,6 @@ class gl_input():
 
 		if event.button()==Qt.LeftButton:
 			self.gl_objects_save_selected()
-				
 
 
 	def wheelEvent(self,event):
