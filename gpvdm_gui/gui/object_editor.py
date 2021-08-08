@@ -130,19 +130,16 @@ class object_editor(QWidgetSavePos):
 		if type(ids)==str:
 			ids=[ids]
 
-		self.layer_index=self.epi.find_layer_by_id(ids[0])
+		self.root_id=ids[0]
 
 		for id in ids:
-			s=self.epi.find_object_by_id(id)
+			s=gpvdm_data().find_object_by_id(id)
 			my_tab=json_viewer()
 			my_tab.populate(s)
 
 			my_tab.changed.connect(self.callback_edit)
 
-			if i==0:
-				name=_("Layer: ")+s.shape_name
-			else:
-				name=s.shape_name
+			name=s.shape_name
 
 			self.notebook.addTab(my_tab,name)	
 			i=i+1
@@ -182,12 +179,12 @@ class object_editor(QWidgetSavePos):
 
 	def callback_add_shape(self):
 		data=gpvdm_data()
-		layer=get_epi().layers[self.layer_index]
+		obj=gpvdm_data().find_object_by_id(self.root_id)
 		s=shape()
-		s.dx=layer.dx/2.0
-		s.dy=layer.dy/2.0
-		s.dz=layer.dz/2.0
-		layer.shapes.append(s)
+		s.dx=obj.dx/2.0
+		s.dy=obj.dy/2.0
+		s.dz=obj.dz/2.0
+		obj.shapes.append(s)
 		my_tab=json_viewer()
 		my_tab.populate(s)
 		my_tab.changed.connect(self.callback_edit)
@@ -221,12 +218,13 @@ class object_editor(QWidgetSavePos):
 		new_sim_name=new_sim_name.ret
 
 		if new_sim_name!=None:
-			for s in get_epi().layers[self.layer_index].shapes:
+			obj=gpvdm_data().find_object_by_id(self.root_id)
+			for s in obj.shapes:
 				if s.shape_name==tab.template_widget.shape_name:
 					my_shape=copy.deepcopy(s)
 					my_shape.shape_name=new_sim_name
 					my_shape.update_random_ids()
-					get_epi().layers[self.layer_index].shapes.append(my_shape)
+					obj.shapes.append(my_shape)
 					
 					my_tab=json_viewer()
 					my_tab.populate(my_shape)
@@ -245,10 +243,10 @@ class object_editor(QWidgetSavePos):
 
 			index=self.notebook.currentIndex() 
 			self.notebook.removeTab(index)
-
-			for i in range(0,len(get_epi().layers[self.layer_index].shapes)):
-				if get_epi().layers[self.layer_index].shapes[i].shape_name==tab.template_widget.shape_name:
-					get_epi().layers[self.layer_index].shapes.pop(i)
+			obj=gpvdm_data().find_object_by_id(self.root_id)
+			for i in range(0,len(obj.shapes)):
+				if obj.shapes[i].shape_name==tab.template_widget.shape_name:
+					obj.shapes.pop(i)
 					data.save()
 					break
 

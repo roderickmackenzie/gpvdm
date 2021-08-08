@@ -116,15 +116,14 @@ class gl_object_editor():
 
 	def layer_delete(self):
 		data=gpvdm_data()
-		epi=get_epi()
+
 		obj=self.gl_objects_get_first_selected()
 		if obj!=None:
 			s=data.find_object_by_id(obj.id[0])
 			if s!=None:
 				response=yes_no_dlg(self,"Do you really want to delete the object: "+s.shape_name)
 				if response == True:
-					epi=get_epi()
-					epi.remove_by_id(s.id)
+					data.pop_object_by_id(s.id)
 					data.save()
 					self.force_redraw() 
 
@@ -150,13 +149,8 @@ class gl_object_editor():
 			epi=get_epi()
 			data=gpvdm_data()
 			s=data.find_object_by_id(obj.id[0])
-			if type(s)==shape or type(s)==contact:
-				self.shape_edit=object_editor()
-				print(obj.id[0])
-				self.shape_edit.load(obj.id[0])
-				self.shape_edit.show()
-			elif type(s)==epi_layer:
-				ids=[]
+			if type(s)==shape or type(s)==contact or type(s)==epi_layer:
+				ids=[obj.id[0]]
 				sub_shapes=epi.get_all_sub_shapes(obj.id[0])
 
 				for sub in sub_shapes:

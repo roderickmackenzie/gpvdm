@@ -91,14 +91,6 @@ class contacts_io(json_base):
 	def clear():
 		self.segments=[]
 
-	def remove_by_id(self,ids):
-		if type(ids)==str:
-			ids=[ids]
-
-		for c in self.segments[:]:
-			if c.id in ids:
-				self.segments.remove(c)
-
 	def get_layers_with_contacts(self):
 		layers=[]
 		for c in self.segments:

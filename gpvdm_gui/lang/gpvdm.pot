@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gpvdm 5.0\n"
 "Report-Msgid-Bugs-To: roderick.mackenzie@nottingham.ac.uk\n"
-"POT-Creation-Date: 2021-08-08 12:54+0100\n"
+"POT-Creation-Date: 2021-08-08 15:21+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,7 +35,7 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/update.py:178
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/layer_widget.py:189
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/contacts.py:298
-#: ../../gpvdm_gui/gui/layer_widget.py:115 ../../gpvdm_gui/gui/contacts.py:302
+#: ../../gpvdm_gui/gui/layer_widget.py:115 ../../gpvdm_gui/gui/contacts.py:303
 msgid "ID"
 msgstr ""
 
@@ -175,9 +175,9 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gpvdm_viewer.py:249
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_layer_editor.py:76
 #: ../../gpvdm_gui/gui/script_ribbon.py:73
+#: ../../gpvdm_gui/gui/gl_object_editor.py:66
 #: ../../gpvdm_gui/gui/ribbon_experiment.py:64
-#: ../../gpvdm_gui/gui/gpvdm_viewer.py:262
-#: ../../gpvdm_gui/gui/gl_layer_editor.py:65 ../../gpvdm_gui/gui/QHTabBar.py:55
+#: ../../gpvdm_gui/gui/gpvdm_viewer.py:262 ../../gpvdm_gui/gui/QHTabBar.py:55
 msgid "Rename"
 msgstr ""
 
@@ -2957,7 +2957,7 @@ msgstr ""
 #: ../../gpvdm_gui/gui/parasitic.py:70 ../../gpvdm_gui/gui/pl_main.py:68
 #: ../../gpvdm_gui/gui/pl_main.py:69
 #: ../../gpvdm_gui/gui/ribbon_emission_db.py:77
-#: ../../gpvdm_gui/gui/ribbon_file.py:126 ../../gpvdm_gui/gui/contacts.py:347
+#: ../../gpvdm_gui/gui/ribbon_file.py:126 ../../gpvdm_gui/gui/contacts.py:348
 #: ../../gpvdm_gui/gui/interface_editor.py:73
 #: ../../gpvdm_gui/gui/interface_editor.py:74 ../../gpvdm_gui/gui/qe.py:73
 #: ../../gpvdm_gui/gui/sunsjsc.py:71
@@ -3131,7 +3131,7 @@ msgstr ""
 #: ../../gpvdm_gui/gui/sunsvoc.py:80 ../../gpvdm_gui/gui/help.py:144
 #: ../../gpvdm_gui/gui/ray_trace_editor.py:70
 #: ../../gpvdm_gui/gui/object_editor.py:107 ../../gpvdm_gui/gui/fdtd.py:72
-#: ../../gpvdm_gui/gui/parasitic.py:71 ../../gpvdm_gui/gui/contacts.py:348
+#: ../../gpvdm_gui/gui/parasitic.py:71 ../../gpvdm_gui/gui/contacts.py:349
 #: ../../gpvdm_gui/gui/qe.py:74 ../../gpvdm_gui/gui/sunsjsc.py:72
 msgid "Close"
 msgstr ""
@@ -3530,9 +3530,9 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/fit_vars.py:236
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/fit_patch.py:162
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/fxmesh.py:364
+#: ../../gpvdm_gui/gui/gl_object_editor.py:57
 #: ../../gpvdm_gui/gui/equation_editor.py:319
 #: ../../gpvdm_gui/gui/gpvdm_tab2.py:81 ../../gpvdm_gui/gui/gpvdm_tab2.py:106
-#: ../../gpvdm_gui/gui/gl_layer_editor.py:56
 #: ../../gpvdm_gui/gui/gpvdm_tab.py:70
 msgid "Move down"
 msgstr ""
@@ -3548,9 +3548,9 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/fit_vars.py:240
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/fit_patch.py:166
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/fxmesh.py:368
+#: ../../gpvdm_gui/gui/gl_object_editor.py:54
 #: ../../gpvdm_gui/gui/equation_editor.py:323
 #: ../../gpvdm_gui/gui/gpvdm_tab2.py:85 ../../gpvdm_gui/gui/gpvdm_tab2.py:102
-#: ../../gpvdm_gui/gui/gl_layer_editor.py:53
 #: ../../gpvdm_gui/gui/gpvdm_tab.py:73
 msgid "Move up"
 msgstr ""
@@ -3737,7 +3737,7 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:229
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:466
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/contacts.py:298
-#: ../../gpvdm_gui/gui/token_lib.py:586 ../../gpvdm_gui/gui/contacts.py:302
+#: ../../gpvdm_gui/gui/token_lib.py:586 ../../gpvdm_gui/gui/contacts.py:303
 msgid "Shunt resistance"
 msgstr ""
 
@@ -4463,13 +4463,13 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/optics_ribbon.py:180
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_main_menu.py:120
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_layer_editor.py:79
+#: ../../gpvdm_gui/gui/gl_object_editor.py:69
 #: ../../gpvdm_gui/gui/token_lib.py:194 ../../gpvdm_gui/gui/token_lib.py:213
 #: ../../gpvdm_gui/gui/token_lib.py:214 ../../gpvdm_gui/gui/token_lib.py:215
 #: ../../gpvdm_gui/gui/token_lib.py:606 ../../gpvdm_gui/gui/token_lib.py:607
 #: ../../gpvdm_gui/gui/gl_main_menu.py:125
 #: ../../gpvdm_gui/gui/ribbon_shape_import.py:163
 #: ../../gpvdm_gui/gui/ribbon_shape_import.py:173
-#: ../../gpvdm_gui/gui/gl_layer_editor.py:68
 #: ../../gpvdm_gui/gui/optics_sources_tab.py:98
 #: ../../gpvdm_gui/gui/optics_sources_tab.py:113
 msgid "Edit"
@@ -8037,8 +8037,9 @@ msgid "Enter the license key below:"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_layer_editor.py:70
+#: ../../gpvdm_gui/gui/gl_object_editor.py:63
 #: ../../gpvdm_gui/gui/ribbon_experiment.py:58
-#: ../../gpvdm_gui/gui/gl_layer_editor.py:59 ../../gpvdm_gui/gui/QHTabBar.py:52
+#: ../../gpvdm_gui/gui/QHTabBar.py:52
 msgid "Delete"
 msgstr ""
 
@@ -8047,7 +8048,7 @@ msgid "Add shape"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_layer_editor.py:171
-#: ../../gpvdm_gui/gui/gl_layer_editor.py:148
+#: ../../gpvdm_gui/gui/gl_object_editor.py:137
 msgid "Rename the layer:"
 msgstr ""
 
@@ -8355,7 +8356,7 @@ msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/doping.py:133
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/contacts.py:298
-#: ../../gpvdm_gui/gui/doping.py:130 ../../gpvdm_gui/gui/contacts.py:302
+#: ../../gpvdm_gui/gui/doping.py:130 ../../gpvdm_gui/gui/contacts.py:303
 msgid "Width"
 msgstr ""
 
@@ -8419,7 +8420,6 @@ msgid ""
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/object_editor.py:148
-#: ../../gpvdm_gui/gui/object_editor.py:143
 msgid "Layer: "
 msgstr ""
 
@@ -9187,65 +9187,65 @@ msgid "Schottky"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/contacts.py:298
-#: ../../gpvdm_gui/gui/contacts.py:302
+#: ../../gpvdm_gui/gui/contacts.py:303
 msgid "Name"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/contacts.py:298
-#: ../../gpvdm_gui/gui/contacts.py:302
+#: ../../gpvdm_gui/gui/contacts.py:303
 msgid "Top/Bottom"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/contacts.py:298
-#: ../../gpvdm_gui/gui/contacts.py:302
+#: ../../gpvdm_gui/gui/contacts.py:303
 msgid ""
 "Applied\n"
 "voltage"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/contacts.py:298
-#: ../../gpvdm_gui/gui/contacts.py:302
+#: ../../gpvdm_gui/gui/contacts.py:303
 msgid "Start"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/contacts.py:298
-#: ../../gpvdm_gui/gui/contacts.py:302
+#: ../../gpvdm_gui/gui/contacts.py:303
 msgid "Contact resistance\n"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/contacts.py:298
-#: ../../gpvdm_gui/gui/contacts.py:302
+#: ../../gpvdm_gui/gui/contacts.py:303
 msgid ""
 "Charge density/\n"
 "Fermi-offset"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/contacts.py:298
-#: ../../gpvdm_gui/gui/contacts.py:302
+#: ../../gpvdm_gui/gui/contacts.py:303
 msgid ""
 "Majority\n"
 "carrier"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/contacts.py:298
-#: ../../gpvdm_gui/gui/contacts.py:302
+#: ../../gpvdm_gui/gui/contacts.py:303
 msgid "ve0 (m/s)"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/contacts.py:298
-#: ../../gpvdm_gui/gui/contacts.py:302
+#: ../../gpvdm_gui/gui/contacts.py:303
 msgid "vh0 (m/s)"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/contacts.py:298
-#: ../../gpvdm_gui/gui/contacts.py:302
+#: ../../gpvdm_gui/gui/contacts.py:303
 msgid ""
 "Physical\n"
 "model"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/contacts.py:335
-#: ../../gpvdm_gui/gui/contacts.py:326
+#: ../../gpvdm_gui/gui/contacts.py:327
 msgid "Edit contacts"
 msgstr ""
 
@@ -9748,6 +9748,10 @@ msgstr ""
 
 #: ../../gpvdm_gui/gui/fit_configure_window.py:105
 msgid "Fit rules"
+msgstr ""
+
+#: ../../gpvdm_gui/gui/gl_object_editor.py:60
+msgid "Add layer"
 msgstr ""
 
 #: ../../gpvdm_gui/gui/window_simulation_notes.py:66
@@ -10577,10 +10581,6 @@ msgstr ""
 
 #: ../../gpvdm_gui/gui/pl_experiment.py:65
 msgid "PL experiment window"
-msgstr ""
-
-#: ../../gpvdm_gui/gui/gl_layer_editor.py:62
-msgid "Add layer"
 msgstr ""
 
 #: ../../gpvdm_gui/gui/time_domain_mesh_tab.py:283

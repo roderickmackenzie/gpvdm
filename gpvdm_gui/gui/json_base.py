@@ -110,6 +110,23 @@ class json_base():
 					return ret
 		return None
 
+	def pop_object_by_id(self,want_id):
+		items=[attr for attr in dir(self) if not callable(getattr(self, attr)) and not attr.startswith("__")]
+		for item in items:
+			val=getattr(self, item)
+			if isclass(val)==True:
+				if getattr(val, "pop_object_by_id", None)!=None:
+					val.pop_object_by_id(want_id)
+			elif type(val)==list:
+				for i in range(0,len(val)):
+					if isclass(val[i])==True:
+						item_id=getattr(val[i], "id", None)
+						if item_id==want_id:
+							val.pop(i)
+							return
+						if getattr(val[i], "pop_object_by_id", None)!=None:
+							val[i].pop_object_by_id(want_id)
+
 	def fix_identical_uids(self,found):
 		for item in self.var_list:
 			m=item[0]
@@ -316,6 +333,11 @@ class json_base():
 			l.load_triangles()
 			for s in l.shapes:
 				s.load_triangles()
+				if s.triangles==None:
+					s.shape_enabled=False
 
 		for obj in self.world.world_data.segments:
 			obj.load_triangles()
+			if obj.triangles==None:
+				obj.shape_enabled=False
+

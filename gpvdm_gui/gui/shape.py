@@ -233,8 +233,6 @@ class shape(json_base):
 		self.load_from_json(json)
 		self.shape_enabled=str2bool(self.shape_enabled)
 		self.loaded_from_json=True
-		if self.triangles==None:
-			self.shape_enabled=False
 
 
 	def load_triangles(self):

@@ -227,7 +227,8 @@ class contacts_window(QWidgetSavePos):
 			ids.append(self.tab.get_value(r.row(), 12))
 
 		self.tab.remove()
-		self.contacts.remove_by_id(ids)			
+		#self.contacts.remove_by_id(ids)
+		gpvdm_data().pop_object_by_id(ids[0])	
 		self.save_and_redraw()
 
 	def show_hide_cols(self):

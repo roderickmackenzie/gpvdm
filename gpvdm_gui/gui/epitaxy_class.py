@@ -149,21 +149,6 @@ class epitaxy(json_base):
 			self.layers.insert(pos, a)
 		return a
 
-	def remove_by_id(self,ids):
-		if type(ids)==str:
-			ids=[ids]
-
-		for l in self.layers[:]:
-			for s in l.shapes[:]:
-				if s.id in ids:
-					l.shapes.remove(s)
-
-			if l.id in ids:
-				self.layers.remove(l)
-
-		for c in self.contacts.segments:
-			if c.id in ids:
-				self.contacts.segments.remove(c)
 
 	def move_up(self,pos):
 		pos=self.layer_to_index(pos)

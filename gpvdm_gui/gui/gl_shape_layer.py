@@ -114,7 +114,7 @@ class shape_layer():
 		#now itterate over other shapes in this shape
 		for s in shape0.shapes:
 			n=0
-			for pos in s.expand_xyz0(epi_layer):
+			for pos in s.expand_xyz0(shape0):
 				
 				a=gl_base_object()
 				if n==0:
