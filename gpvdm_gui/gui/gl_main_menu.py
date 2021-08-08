@@ -51,6 +51,7 @@ from dat_file_math import dat_file_max_min
 from open_save_dlg import save_as_filter
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtGui import QImage
+from gpvdm_json import gpvdm_data
 
 class gl_main_menu():
 	def build_main_menu(self):
@@ -135,7 +136,21 @@ class gl_main_menu():
 		action.triggered.connect(self.callback_add_object)
 
 	def callback_add_object(self):
-		print("add object")
+		from shape import shape
+		a=shape()
+		a.dy=0.5
+		a.dx=0.5
+		a.dz=0.5
+
+		a.shape_name="object"
+		a.shapes=[]
+		a.color_r=1.0
+		a.color_g=0
+		a.color_b=0
+		a.color_alpha=0.5
+		a.load_triangles()
+		gpvdm_data().world.world_data.segments.append(a)
+		self.force_redraw()
 
 	def menu(self,event):
 		self.main_menu.exec_(event.globalPos())
