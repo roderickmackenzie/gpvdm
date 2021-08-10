@@ -280,6 +280,8 @@ if open_gl_ok==True:
 
 				if l==btm_contact_layer:
 					contact_layer=True
+
+				print(l,top_contact_layer,btm_contact_layer)
 				#print(">>>>",l,contact_layer,contact_layers)
 #				print(obj.shape_name)
 				if contact_layer==False:

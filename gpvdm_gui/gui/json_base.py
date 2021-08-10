@@ -336,6 +336,9 @@ class json_base():
 				if s.triangles==None:
 					s.shape_enabled=False
 
+		for c in self.epi.contacts.segments:
+			c.load_triangles()
+
 		for obj in self.world.world_data.segments:
 			obj.load_triangles()
 			if obj.triangles==None:

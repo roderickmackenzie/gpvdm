@@ -1,7 +1,7 @@
-Licensing
-=========
+Licensing/Usage of gpvdm
+==============
+The gpvdm package as distributed from www.gpvdm.com bundles four independent packages.  The license for each package is described below:
 
-gpvdm comes in four independent parts each with a different license.
 
 - gpvdm_core: This is the mathematical core of the model, it can be used as a stand alone application. It is licensed under a 3-clause BSD license.
 ~~~~
@@ -9,7 +9,7 @@ Copyright (c) 2012-2019, Roderick C. I. MacKenzie
 All rights reserved.
 
 	https://www.gpvdm.com
-	Room B86 Coates, University Park, Nottingham, NG7 2RD, UK
+	r.c.i.mackenzie at googlemail.com
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
@@ -41,7 +41,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   Copyright (C) 2012-2017 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
 
   https://www.gpvdm.com
-  Room B86 Coates, University Park, Nottingham, NG7 2RD, UK
+  r.c.i.mackenzie at googlemail.com
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License v2.0, as published by
@@ -63,7 +63,7 @@ Copyright (c) 2012-2019, Roderick C. I. MacKenzie
 All rights reserved.
 
 	https://www.gpvdm.com
-	Room B86 Coates, University Park, Nottingham, NG7 2RD, UK
+	r.c.i.mackenzie at googlemail.com
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:

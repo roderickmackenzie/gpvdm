@@ -268,7 +268,6 @@ class gpvdm_main_window(QMainWindow):
 
 	def disable_interface(self):
 		self.ribbon.file.setEnabled(False,do_all=True)
-		self.ribbon.home.setEnabled(False)
 
 		self.ribbon.simulations.setEnabled(False)
 		self.ribbon.database.setEnabled(False)
@@ -286,7 +285,6 @@ class gpvdm_main_window(QMainWindow):
 
 		if self.notebook.is_loaded()==True:
 			self.ribbon.file.setEnabled_other(True)
-			#self.ribbon.home.setEnabled(True)
 			self.ribbon.simulations.setEnabled(True)
 			self.ribbon.database.setEnabled(True)
 			#self.save_sim.setEnabled(True)
@@ -299,7 +297,6 @@ class gpvdm_main_window(QMainWindow):
 
 		else:
 			self.ribbon.file.setEnabled_other(False)
-			self.ribbon.home.setEnabled(False)
 
 			self.ribbon.simulations.setEnabled(False)
 			self.ribbon.database.setEnabled(False)

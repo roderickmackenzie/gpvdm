@@ -38,11 +38,6 @@ except:
 	
 import random
 import os
-from math import sqrt
-from math import fabs
-from lines import lines_read
-from util import wavelength_to_rgb
-from util import isnumber
 from gl_scale import gl_scale
 from gl_scale import scale_trianges_m2screen
 
@@ -119,6 +114,7 @@ class gl_contacts():
 				elif c.position=="top":
 					if top_contact_layer!=-1:
 						#if epi.layers[0].name!="air":
+
 						box=vec()
 						if x_mesh.get_points()==1 and z_mesh.get_points()==1:
 							xstart=0
@@ -127,7 +123,7 @@ class gl_contacts():
 							xstart=c.x0
 							box.x=c.dx
 
-						box.y=epi.layers[0].dy#+c.ingress
+						box.y=epi.layers[0].dy
 						box.z=get_mesh().z.get_len()
 
 						if self.draw_device_cut_through==False:
@@ -153,7 +149,6 @@ class gl_contacts():
 						a.g=c.color_g
 						a.b=c.color_b
 						a.color_alpha=1.0
-
 						if c.triangles!=None:
 							a.triangles=triangles_mul_vec(c.triangles.data,box)
 							if c.shape_flip_y==True:
