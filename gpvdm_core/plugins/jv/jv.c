@@ -575,10 +575,10 @@ if (power_den.len>0)
 	}
 
 }
-
+printf_log(sim,"Max possible Jsc = %Lf\n",get_max_Jsc(in));
 if (get_dump_status(sim,dump_print_text)==TRUE)
 {
-	printf_log(sim,"Max possible Jsc = %Lf\n",get_max_Jsc(in));
+	
 	if (Voc!=-1.0)
 	{
 		printf_log(sim,"Voc= %Lf (V)\n",Voc);

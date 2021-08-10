@@ -245,7 +245,7 @@ do
 	//int r;
 	//for (r=0;r<dim->ylen;r++)
 	//{
-	//	printf("%d %Le\n",r, in->Gn[0][0][r]);
+	//printf("%Le\n", in->Gn[0][0][0]);
 	//}
 	
 	//getchar();

@@ -58,6 +58,7 @@ from cite_me import cite_me
 from ribbon_page import ribbon_page
 from play import play
 from server import server_get
+from help import help_window
 
 class ribbon_file(ribbon_page):
 	used_files_click= pyqtSignal(str)

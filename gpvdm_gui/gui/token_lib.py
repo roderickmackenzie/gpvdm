@@ -87,6 +87,7 @@ def build_token_lib():
 	lib.append(my_data("log_fit",_("True/False"),_("Log fit"),1.0,"gtkswitch"))
 	lib.append(my_data("human_var",_("Select"),_("Select"),1.0,"gpvdm_select"))
 	lib.append(my_data("fit_var_enabled",_("True/False"),_("Enable fit variable"),1.0,"gtkswitch"))
+	lib.append(my_data("duplicate_var_enabled",_("True/False"),_("Enable fit variable"),1.0,"gtkswitch"))
 
 	#fit duplicate
 	#lib.append(my_data("enabled",_("True/False"),_("Enabled"),1.0,"gtkswitch"))

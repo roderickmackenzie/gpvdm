@@ -296,10 +296,10 @@ void light_solve_all(struct simulation *sim,struct device *cell,struct light *li
 		}
 	}
 
-	if (slices_solved==0)
+	/*if (slices_solved==0)
 	{
 		printf_log(sim,_("It was dark I did not solve any slices\n"));
-	}
+	}*/
 
 }
 

@@ -299,6 +299,8 @@ class import_data_json(QDialog):
 		self.items.append([_("Suns"),"percent",_("Suns"),"Suns","val/100.0",1.0,False])
 		self.items.append([_("Charge"),"C",_("Charge"),"C","val*1.0",1.0,False])
 
+		self.items.append([_("mA"),"mA",_("J"),"A/m2","val*1e-3/(self.get_area())",1.0,True])
+
 		i=0
 		self.x_label=self.items[i][2]
 		self.x_units=self.items[i][3]

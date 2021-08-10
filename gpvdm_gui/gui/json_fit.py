@@ -186,7 +186,7 @@ class json_duplicate_line(json_base):
 	def __init__(self):
 		json_base.__init__(self,"segment")
 		self.var_list=[]
-		self.var_list.append(["enabled",True])
+		self.var_list.append(["duplicate_var_enabled",True])
 		self.var_list.append(["human_src","one/two/three"])
 		self.var_list.append(["human_dest","one/two/three"])
 		self.var_list.append(["multiplier","x"])

@@ -293,7 +293,7 @@ class fit_window(QWidgetSavePos):
 			
 			a=copy.deepcopy(data_obj)
 			a.config.fit_name=new_sim_name
-			a.id=a.random_id()
+			a.update_random_ids()
 			#print(a.import_config.data_file)
 			a.import_config.data_file=self.get_new_data_file()
 			copyfile(os.path.join(get_sim_path(),data_obj.import_config.data_file),os.path.join(get_sim_path(),a.import_config.data_file))
@@ -306,7 +306,7 @@ class fit_window(QWidgetSavePos):
 		data=gpvdm_data()
 		if len(data.fits.fits.segments)>1:
 			tab = self.notebook.currentWidget()
-			print(tab.uid)
+			#print(tab.uid)
 			data_obj=data.fits.fits.find_object_by_id(tab.uid)
 			response=yes_no_dlg(self,_("Are you sure you want to delete the experiment: ")+data_obj.config.fit_name)
 			if response == True:
@@ -325,6 +325,7 @@ class fit_window(QWidgetSavePos):
 
 		if new_sim_name!=None:
 			a=copy.deepcopy(data_obj)
+			a.update_random_ids()
 			a.config.fit_name=new_sim_name
 			a.import_config.data_file=self.get_new_data_file()
 			data.fits.fits.segments.append(a)

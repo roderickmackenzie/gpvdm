@@ -400,7 +400,11 @@ for (l=0;l<dim->llen;l++)
 
 	li->sun_E_y0[l]=gpow(2.0*(li->sun_photons_y0[l]*E)/(epsilon0*cl*nl),0.5)*t0;
 	li->sun_E_y1[l]=gpow(2.0*(li->sun_photons_y1[l]*E)/(epsilon0*cl*nr),0.5)*t1;
-	//printf("%Le %Le\n",li->sun_E_y0[l],li->sun_E_y1[l]);
+	/*if (l==li->laser_pos)
+	{
+		printf("%Le %Le\n",li->sun_E_y0[l],li->sun_E_y1[l]);
+
+	}*/
 }
 
 }

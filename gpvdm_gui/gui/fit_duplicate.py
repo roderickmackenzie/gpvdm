@@ -67,7 +67,7 @@ class fit_duplicate(QWidget):
 		self.vbox.addWidget(toolbar)
 
 		self.tab = gpvdm_tab2(toolbar=toolbar)
-		self.tab.set_tokens(["enabled","human_src","human_dest","multiplier","json_src","json_dest"])
+		self.tab.set_tokens(["duplicate_var_enabled","human_src","human_dest","multiplier","json_src","json_dest"])
 		self.tab.set_labels([_("Enabled"),_("Source")+" (x)", _("Destination")+" (y)", _("Function")+" y=f(x)", _("Source (JSON)"), _("Destination (JSON)")])
 		self.tab.json_search_path="gpvdm_data().fits.duplicate.segments"
 		self.tab.fixup_new_row=self.fixup_new_row
