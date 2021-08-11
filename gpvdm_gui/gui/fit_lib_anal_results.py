@@ -71,7 +71,7 @@ class fit_lib_anal_results:
 		data=all_gpvdm_data()
 		data.load(os.path.join(simulation_paths[0],"json.inp"))
 		for v in data.fits.vars.segments:
-			if v.enabled==True:
+			if v.fit_var_enabled==True:
 				vars_from_file[v.json_var]=[]
 
 		for p in aditional_vars:

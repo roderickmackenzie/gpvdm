@@ -50,6 +50,8 @@ from gpvdm_json import gpvdm_data
 from json_base import isclass
 from token_lib import tokens
 from json_base import json_base
+import copy
+import json
 
 class gpvdm_tab2(QTableWidget):
 
@@ -62,7 +64,7 @@ class gpvdm_tab2(QTableWidget):
 		self.uid=None
 		self.postfix=None
 		self.json_tokens=[]
-
+		self.base_obj=None
 		self.toolbar=toolbar
 		self.paste_callback=None
 		self.setSelectionBehavior(QAbstractItemView.SelectItems)
@@ -115,7 +117,17 @@ class gpvdm_tab2(QTableWidget):
 		self.fixup_new_row=None
 
 	def callback_add_row(self):
-		self.new_row_clicked.emit(self.get_new_row_pos())
+		if self.base_obj==None:
+			print("Update to use self.base_obj")
+			self.new_row_clicked.emit(self.get_new_row_pos())
+			return
+		row=self.get_new_row_pos()
+		obj=copy.deepcopy(self.base_obj)
+		obj.update_random_ids()
+		path=self.get_json_obj()
+		path.insert(row,obj)
+		self.insert_row(obj,row)
+
 
 	def set_tokens(self,tokens):
 		self.json_tokens=tokens
@@ -231,7 +243,7 @@ class gpvdm_tab2(QTableWidget):
 		if self.rowCount()==0:
 			return
 		path=self.get_json_obj()
-		b=json_base("gpvdm_tab2",segment_class=True)
+		b=json_base("",segment_class=True)
 
 		rows=self.selectionModel().selectedRows()
 
@@ -241,34 +253,28 @@ class gpvdm_tab2(QTableWidget):
 
 		cb = QApplication.clipboard()
 		cb.clear(mode=cb.Clipboard )
-		cb.setText("\n".join(b.gen_json()), mode=cb.Clipboard)
+		cb.setText("\n".join(b.gen_json())[3:], mode=cb.Clipboard)
 
 
 	def callback_menu_paste(self):
 		self.blockSignals(True)
 		cb = QApplication.clipboard()
 		text=cb.text()
-		print(text)
-		return
-		lines=text.rstrip().split()
-		item=self.selectedIndexes()[0]
-		y=item.row()
-		#x_start=item.column()
-		
-		for l in lines:
-			if (y==self.rowCount()):
-				self.insertRow(y)
-			x=0
-			for s in l.split(";"):
-
-				self.set_value(y,x,s)
-				x=x+1
-			y=y+1
+		json_data=json.loads(text)
+		for n in range(0,json_data['segments']):
+			row=self.get_new_row_pos()
+			obj=copy.deepcopy(self.base_obj)
+			obj.load_from_json(json_data["segment"+str(n)])
+			obj.update_random_ids()
+			path=self.get_json_obj()
+			path.insert(row,obj)
+			self.insert_row(obj,row)
 
 		self.blockSignals(False)
 
 	def contextMenuEvent(self, event):
 		self.menu.popup(QCursor.pos())
+
 
 	def set_value(self,y,x,value):
 		if type(self.cellWidget(y, x))==QComboBox:

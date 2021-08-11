@@ -49,6 +49,7 @@ from gpvdm_tab2 import gpvdm_tab2
 from gpvdm_json import gpvdm_data
 from json_fit import json_duplicate_line
 
+
 class fit_duplicate(QWidget):
 
 	def __init__(self):
@@ -72,7 +73,7 @@ class fit_duplicate(QWidget):
 		self.tab.json_search_path="gpvdm_data().fits.duplicate.segments"
 		self.tab.fixup_new_row=self.fixup_new_row
 		self.tab.populate()
-		self.tab.new_row_clicked.connect(self.callback_new_row_clicked)
+		self.tab.base_obj=json_duplicate_line()
 		self.tab.changed.connect(self.callback_save)
 		self.tab.callback_a=self.callback_show_list_a
 		self.tab.callback_b=self.callback_show_list_b
@@ -113,7 +114,3 @@ class fit_duplicate(QWidget):
 		self.tab.cellWidget(row, 1).button.clicked.connect(self.callback_show_list_a)
 		self.tab.cellWidget(row, 2).button.clicked.connect(self.callback_show_list_b)
 
-	def callback_new_row_clicked(self,row):
-		obj=json_duplicate_line()
-		gpvdm_data().fits.duplicate.segments.insert(row,obj)
-		self.tab.insert_row(obj,row)

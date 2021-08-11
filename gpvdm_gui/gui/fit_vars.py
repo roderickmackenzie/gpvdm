@@ -71,8 +71,8 @@ class fit_vars(QWidget):
 		self.tab2.setColumnWidth(4, 100)
 		self.tab2.setColumnWidth(5, 100)
 		self.tab2.setColumnWidth(6, 20)
+		self.tab2.base_obj=json_fit_vars_line()
 		self.tab2.populate()
-		self.tab2.new_row_clicked.connect(self.callback_new_row_clicked)
 		self.tab2.changed.connect(self.callback_save)
 		self.tab2.callback_a=self.callback_show_list
 
@@ -91,10 +91,6 @@ class fit_vars(QWidget):
 	def fixup_new_row(self,row):
 		self.tab2.cellWidget(row, 1).button.clicked.connect(self.callback_show_list)
 
-	def callback_new_row_clicked(self,row):
-		obj=json_fit_vars_line()
-		gpvdm_data().fits.vars.segments.insert(row,obj)
-		self.tab2.insert_row(obj,row)
 
 	def callback_save(self):
 		gpvdm_data().save()

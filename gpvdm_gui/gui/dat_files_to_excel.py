@@ -51,7 +51,7 @@ def dat_files_to_excel(output_file,dat_files):
 	#chart
 	c1 = LineChart()
 	c1.title = dat_files[0].title
-	c1.style = 13
+	#c1.style = 13
 	c1.height=20
 	c1.width=20
 
@@ -66,11 +66,11 @@ def dat_files_to_excel(output_file,dat_files):
 			ws_data.cell(column=start_col, row=row_pos, value=data.y_scale[i])
 			ws_data.cell(column=start_col+1, row=row_pos, value=data.data[0][0][i])
 
+		data = Reference(ws_data, min_col=start_col, max_col=start_col+1, min_row=1, max_row=row_pos)
+		c1.add_data(data, titles_from_data=True)
+
 		data_set=data_set+1
 
-	data = Reference(ws_data, min_col=2, max_col=start_col+1, min_row=1, max_row=row_pos)
-
-	c1.add_data(data, titles_from_data=True)
 
 	c1.y_axis.title = dat_files[0].data_label+" ("+dat_files[0].data_units+") "
 	c1.x_axis.title = dat_files[0].y_label+" ("+dat_files[0].y_units+") "

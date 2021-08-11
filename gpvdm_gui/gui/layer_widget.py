@@ -39,7 +39,6 @@ from inp import inp_update_token_value
 from epitaxy import epitaxy_get_layers
 
 #windows
-from gpvdm_tab import gpvdm_tab
 from gpvdm_tab2 import gpvdm_tab2
 
 from error_dlg import error_dlg

@@ -92,7 +92,10 @@ class fit_ribbon(ribbon_base):
 
 		toolbar.addSeparator()
 
-		self.import_data= QAction(icon_get("import"), wrap_text(_("Import experimental data"),8), self)
+		self.export_zip = QAction_lock("zip", _("Export\nData"), self,"main_zip")
+		toolbar.addAction(self.export_zip)
+
+		self.import_data= QAction(icon_get("import"), wrap_text(_("Import data"),4), self)
 		toolbar.addAction(self.import_data)
 
 		toolbar.addSeparator()
@@ -114,6 +117,8 @@ class fit_ribbon(ribbon_base):
 
 		self.enable=tick_cross(enable_text=_("Fit this\ndata set"),disable_text=_("Dont' fit this\ndata set"))
 		toolbar.addAction(self.enable)
+
+
 
 		spacer = QWidget()
 		spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)

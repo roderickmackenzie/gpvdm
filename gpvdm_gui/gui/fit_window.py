@@ -43,7 +43,7 @@ from fit_configure_window import fit_configure_window
 
 #qt
 from PyQt5.QtCore import QSize, Qt
-from PyQt5.QtWidgets import QWidget,QVBoxLayout,QToolBar,QSizePolicy,QAction,QTabWidget,QStatusBar, QTableWidget, QAbstractItemView
+from PyQt5.QtWidgets import QWidget,QVBoxLayout,QToolBar,QSizePolicy,QAction,QTabWidget,QStatusBar, QTableWidget, QAbstractItemView,QFileDialog,QDialog
 from PyQt5.QtGui import QPainter,QIcon,QCursor
 
 #windows
@@ -62,6 +62,7 @@ from gpvdm_json import gpvdm_data
 import copy
 from shutil import copyfile
 from global_objects import global_object_run
+import zipfile
 
 class fit_window(QWidgetSavePos):
 
@@ -178,6 +179,7 @@ class fit_window(QWidgetSavePos):
 		toolbar.setIconSize(QSize(48, 48))
 		toolbar.setToolButtonStyle( Qt.ToolButtonTextUnderIcon)
 
+
 		self.tab_bar=QHTabBar()
 
 		self.main_vbox.addWidget(toolbar)
@@ -198,6 +200,7 @@ class fit_window(QWidgetSavePos):
 		self.tab_bar.delete.connect(self.callback_delete_page)
 		self.ribbon.tb_clone.triggered.connect(self.callback_clone_page)
 		self.ribbon.tb_new.triggered.connect(self.callback_add_page)
+		self.ribbon.export_zip.triggered.connect(self.callback_export)
 
 		self.ribbon.tb_refresh.triggered.connect(self.update)
 		self.main_vbox.addWidget(self.ribbon)
@@ -301,6 +304,47 @@ class fit_window(QWidgetSavePos):
 			tab=fit_tab(a.id)
 			self.notebook.addTab(tab,new_sim_name)
 			data.save()
+
+	def callback_export(self):
+		types=[]
+		dialog = QFileDialog(self)
+		dialog.setDirectory(get_sim_path())
+		dialog.selectFile(os.path.basename(get_sim_path()))
+		dialog.setWindowTitle(_("Export the simulation"))
+		dialog.setAcceptMode(QFileDialog.AcceptSave)
+		types.append(_("Zip file")+" (*.zip)")
+
+		dialog.setNameFilters(types)
+		dialog.setFileMode(QFileDialog.ExistingFile)
+		dialog.setAcceptMode(QFileDialog.AcceptSave)
+
+		if dialog.exec_() == QDialog.Accepted:
+			file_name = dialog.selectedFiles()[0]
+			if file_name.endswith(".zip")==False:
+				file_name=file_name+".zip"
+
+			zf = zipfile.ZipFile(file_name, 'a',zipfile.ZIP_DEFLATED)
+
+			data=gpvdm_data()
+			for fit in data.fits.fits.segments:
+				if fit.config.enabled==True:
+					file_name=os.path.join(os.getcwd(), "sim",fit.config.fit_name,fit.config.sim_data)
+					if os.path.isfile(file_name):
+						f=open(file_name, mode='rb')
+						lines = f.read()
+						f.close()
+
+						zf.writestr(os.path.join(fit.config.fit_name,fit.config.sim_data), lines)
+
+					file_name=os.path.join(os.getcwd(), fit.import_config.data_file)
+					if os.path.isfile(file_name):
+						f=open(file_name, mode='rb')
+						lines = f.read()
+						f.close()
+
+						zf.writestr(os.path.join(fit.config.fit_name,fit.import_config.data_file), lines)
+
+			zf.close()
 
 	def callback_delete_page(self):
 		data=gpvdm_data()
