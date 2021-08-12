@@ -92,9 +92,6 @@ class fit_configure_window(QWidgetSavePos):
 
 		data=gpvdm_data()
 
-		tab=tab_class(data.fits.fit_config)
-		self.notebook.addTab(tab,_("Configure minimizer"))
-
 		self.duplicate_window=fit_duplicate()
 		self.notebook.addTab(self.duplicate_window,_("Duplicate window"))
 
@@ -103,6 +100,9 @@ class fit_configure_window(QWidgetSavePos):
 
 		self.fit_rules_window=fit_rules()
 		self.notebook.addTab(self.fit_rules_window,_("Fit rules"))
+
+		tab=tab_class(data.fits.fit_config)
+		self.notebook.addTab(tab,_("Configure minimizer"))
 	
 		self.setLayout(self.main_vbox)
 

@@ -287,10 +287,10 @@ class tab_time_mesh(QWidget):
 		data=gpvdm_data().time_domain.find_object_by_id(self.uid)
 		index=gpvdm_data().time_domain.segments.index(data)
 		self.tab.json_search_path="gpvdm_data().time_domain.segments["+str(index)+"].mesh.segments"
+		self.tab.base_obj=json_time_domain_mesh_segment()
 
 		self.tab.populate()
-
-		self.tab.new_row_clicked.connect(self.callback_new_row_clicked)
+		
 		self.tab.changed.connect(self.on_cell_edited)
 
 		self.build_mesh()
@@ -300,11 +300,6 @@ class tab_time_mesh(QWidget):
 
 
 		self.setLayout(self.main_vbox)
-
-	def callback_new_row_clicked(self,row):
-		obj=json_time_domain_mesh_segment()
-		data=gpvdm_data().time_domain.find_object_by_id(self.uid).mesh.segments.insert(row,obj)
-		self.tab.insert_row(obj,row)
 
 
 

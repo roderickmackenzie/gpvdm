@@ -97,6 +97,10 @@ def build_token_lib():
 	lib.append(my_data("json_src",_("json_src"),_("json_src"),1.0,"QLineEdit"))
 	lib.append(my_data("json_dest",_("json_dest"),_("json_dest"),1.0,"QLineEdit"))
 
+	#fit rules
+	lib.append(my_data("human_x",_("Select"),_("Select"),1.0,"gpvdm_select"))
+	lib.append(my_data("human_y",_("Select"),_("Select"),1.0,"gpvdm_select"))
+	lib.append(my_data("fit_rule_enabled",_("Select"),_("Select"),1.0,"gtkswitch"))
 	#laser?.inp
 	lib.append(my_data("laserwavelength","m",_("Laser wavelength"),1.0,"QLineEdit"))
 	lib.append(my_data("laser_pulse_width","s",_("Length of pulse"),1.0,"QLineEdit"))

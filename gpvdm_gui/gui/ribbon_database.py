@@ -102,6 +102,10 @@ class ribbon_database(ribbon_page):
 		self.shape.clicked.connect(self.callback_configure_shape)
 		self.addAction(self.shape)
 
+		self.home_backup = QAction_lock("backup", _("Backup\nSimulaion"), self,"ribbion_db_backup")
+		self.home_backup.clicked.connect(self.callback_home_backup)
+		self.addAction(self.home_backup)
+
 		self.solar = QAction_lock("weather-few-clouds", _("Solar spectrum\ngenerator"), self,"solar_spectrum_tool")
 		self.solar.clicked.connect(self.callback_solar)
 		if get_lock().is_gpvdm_next()==True:
@@ -123,6 +127,7 @@ class ribbon_database(ribbon_page):
 		self.emission.setEnabled(val)
 		self.user.setEnabled(val)
 		self.shape.setEnabled(val)
+		self.home_backup.setEnabled(val)
 
 
 	def on_new_shape_clicked(self):
@@ -187,4 +192,26 @@ class ribbon_database(ribbon_page):
 		self.solar_window=solar_spectrum_gen_window()
 
 		self.solar_window.show()
+
+	def callback_home_backup(self):
+		from cal_path import get_backup_path
+		from util_zip import write_lines_to_archive
+		backup_path=get_backup_path()
+		if os.path.isdir(backup_path)==False:
+			os.makedirs(backup_path)
+
+		lines=[]
+		lines.append("#gpvdm_file_type")
+		lines.append("backup_main")
+		lines.append("#end")
+
+		write_lines_to_archive(os.path.join(backup_path,"sim.gpvdm"),"mat.inp",lines,mode="l",dest="file")
+
+		self.dialog=gpvdm_open(backup_path,big_toolbar=True)
+		self.new_backup = QAction_lock("add_backup", wrap_text(_("New backup"),2), self,"add_backup")
+		self.new_backup.clicked.connect(self.on_new_backup)
+		self.dialog.toolbar.addAction(self.new_backup)
+
+		self.dialog.viewer.show_inp_files=False
+		ret=self.dialog.exec_()
 

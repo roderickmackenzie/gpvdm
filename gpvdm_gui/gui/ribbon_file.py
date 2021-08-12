@@ -45,12 +45,10 @@ from used_files import used_files_load
 from PyQt5.QtCore import pyqtSignal
 
 from gpvdm_open import gpvdm_open
-from cal_path import get_backup_path
 from cal_path import get_sim_path
 
 from util import wrap_text
 
-from util_zip import write_lines_to_archive
 from gui_util import dlg_get_text
 from backup import backup
 from scripts import scripts
@@ -86,10 +84,6 @@ class ribbon_file(ribbon_page):
 
 		self.home_export = QAction_lock("zip", _("Export\nZip"), self,"main_zip")
 		self.addAction(self.home_export)
-
-		self.home_backup = QAction_lock("backup", _("Backup\nSimulaion"), self,"ribbion_db_backup")
-		self.home_backup.clicked.connect(self.callback_home_backup)
-		self.addAction(self.home_backup)
 
 		self.tb_script_editor = QAction_lock("script", _("Script\nEditor"), self,"script_editor")
 		self.tb_script_editor.clicked.connect(self.callback_script)
@@ -157,12 +151,10 @@ class ribbon_file(ribbon_page):
 	def setEnabled(self,val,do_all=False):
 		self.home_new.setEnabled(val)
 		self.home_open.setEnabled(val)
-		self.home_backup.setEnabled(val)
 		self.home_export.setEnabled(val)
 		self.plot.setEnabled(val)
 
 	def setEnabled_other(self,val):
-		self.home_backup.setEnabled(val)
 		self.home_export.setEnabled(val)
 		self.tb_script_editor.setEnabled(val)
 		self.fit.setEnabled(val)
@@ -175,26 +167,6 @@ class ribbon_file(ribbon_page):
 			new_backup=os.path.join(self.dialog.viewer.path,new_backup_name)
 			backup(new_backup,get_sim_path())
 			self.dialog.viewer.fill_store()
-
-	def callback_home_backup(self):
-		backup_path=get_backup_path()
-		if os.path.isdir(backup_path)==False:
-			os.makedirs(backup_path)
-
-		lines=[]
-		lines.append("#gpvdm_file_type")
-		lines.append("backup_main")
-		lines.append("#end")
-
-		write_lines_to_archive(os.path.join(backup_path,"sim.gpvdm"),"mat.inp",lines,mode="l",dest="file")
-
-		self.dialog=gpvdm_open(backup_path,big_toolbar=True)
-		self.new_backup = QAction_lock("add_backup", wrap_text(_("New backup"),2), self,"add_backup")
-		self.new_backup.clicked.connect(self.on_new_backup)
-		self.dialog.toolbar.addAction(self.new_backup)
-
-		self.dialog.viewer.show_inp_files=False
-		ret=self.dialog.exec_()
 
 	def callback_script(self):
 		self.scripts=scripts()

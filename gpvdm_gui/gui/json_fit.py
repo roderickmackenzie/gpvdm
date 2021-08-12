@@ -157,7 +157,7 @@ class json_fit_rules_line(json_base):
 	def __init__(self):
 		json_base.__init__(self,"segment")
 		self.var_list=[]
-		self.var_list.append(["enabled",False])
+		self.var_list.append(["fit_rule_enabled",False])
 		self.var_list.append(["human_x","one/two/three"])
 		self.var_list.append(["human_y","one/two/three"])
 		self.var_list.append(["function","x>y"])
