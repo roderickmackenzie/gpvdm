@@ -28,15 +28,15 @@
 import sys
 import glob
 from triangle import vec
+import numpy as np
+from OpenGL.GL import *
+from OpenGL.GLU import *
 
 class gl_base_object():
 	def __init__(self,x=0.0,y=0.0,z=0.0,dx=0.0,dy=0.0,dz=0.0,r=1.0,g=1.0,b=1.0):
 		self.id=[]
 		self.type=""
-		self.xyz=vec()
-		self.xyz.x=x
-		self.xyz.y=y
-		self.xyz.z=z
+		self.xyz=[]
 
 		self.dxyz=vec()
 		self.dxyz.x=dx
@@ -58,18 +58,24 @@ class gl_base_object():
 		self.allow_cut_view=True
 		self.triangles=[]
 		self.points=[]
-		self.gl_array=None	#remove
-		self.gl_array_done=False
 		self.text=""
 		self.texture=None
 
-		self.origonal_object=False
+		self.gl_array_types=[]
+		self.gl_array_float32=[]
+		self.gl_array_colors_float32=[]
+		self.gl_array_points=[]
+		self.gl_array_false_colors_float32=[]
+
+		self.rotate_y=0.0
+		self.rotate_x=0.0
 
 	def copy(self,obj):
 		self.id=obj.id
 		self.type=obj.type
 
-		self.xyz.cpy(obj.xyz)
+		self.xyz=[]
+		self.xyz.extend(obj.xyz)
 
 		self.dxyz.cpy(obj.dxyz)
 
@@ -89,6 +95,9 @@ class gl_base_object():
 		self.triangles=obj.triangles
 		self.points=obj.points
 
+		self.rotate_y=obj.rotate_y
+		self.rotate_x=obj.rotate_x
+
 	def match_false_color(self,r,g,b):
 		rf=int(self.r_false*255)
 		gf=int(self.g_false*255)
@@ -105,9 +114,8 @@ class gl_base_object():
 	def dump(self):
 		print(self.id)
 		print(self.type)
-		print("x: "+str(self.xyz.x))
-		print("y: "+str(self.xyz.y))
-		print("z: "+str(self.xyz.z))
+		for v in self.xyz:
+			print("xyz: "+str(v))
 		print("dx: "+str(self.xyz.dx))
 		print("dy: "+str(self.xyz.dy))
 		print("dz: "+str(self.xyz.dz))
@@ -132,9 +140,10 @@ class gl_base_object():
 		ret=""
 		ret=ret+self.type
 
-		ret=ret+";;"+str(self.xyz.x)
-		ret=ret+";;"+str(self.xyz.y)
-		ret=ret+";;"+str(self.xyz.z)
+		for v in self.xyz:
+			ret=ret+";;"+str(v.x)
+			ret=ret+";;"+str(v.y)
+			ret=ret+";;"+str(v.z)
 
 		ret=ret+";;"+str(self.dxyz.x)
 		ret=ret+";;"+str(self.dxyz.y)
@@ -152,6 +161,55 @@ class gl_base_object():
 
 		ret=ret+";;"+str(self.text)
 
-		ret=ret+";;"+str(self.origonal_object)
 
 		return ret
+
+	def compile(self,gl_render_type,color,false_color):
+		self.gl_array_types.append(gl_render_type)
+		points=[]
+		colors=[]
+		false_colors=[]
+		points_per_tri=3
+		if gl_render_type==GL_TRIANGLES:
+			points_per_tri=3
+			for t in self.triangles:
+				points.append([t.xyz0.x,t.xyz0.y,t.xyz0.z])
+				colors.append(color)
+				false_colors.append(false_color)
+				points.append([t.xyz1.x,t.xyz1.y,t.xyz1.z])
+				colors.append(color)
+				false_colors.append(false_color)
+				points.append([t.xyz2.x,t.xyz2.y,t.xyz2.z])
+				colors.append(color)
+				false_colors.append(false_color)
+		elif gl_render_type==GL_LINES:
+			points_per_tri=6
+			for t in self.triangles:
+				points.append([t.xyz0.x,t.xyz0.y,t.xyz0.z])
+				colors.append(color)
+				false_colors.append(false_color)
+				points.append([t.xyz1.x,t.xyz1.y,t.xyz1.z])
+				colors.append(color)
+				false_colors.append(false_color)
+
+				points.append([t.xyz1.x,t.xyz1.y,t.xyz1.z])
+				colors.append(color)
+				false_colors.append(false_color)
+				points.append([t.xyz2.x,t.xyz2.y,t.xyz2.z])
+				colors.append(color)
+				false_colors.append(false_color)
+
+				points.append([t.xyz2.x,t.xyz2.y,t.xyz2.z])
+				colors.append(color)
+				false_colors.append(false_color)
+				points.append([t.xyz0.x,t.xyz0.y,t.xyz0.z])
+				colors.append(color)
+				false_colors.append(false_color)
+
+
+		self.gl_array_points.append(len(self.triangles)*points_per_tri)
+		self.gl_array_float32.append(np.array(points, dtype='float32'))
+		self.gl_array_colors_float32.append(np.array(colors, dtype='float32'))
+		self.gl_array_false_colors_float32.append(np.array(false_colors, dtype='float32'))
+
+

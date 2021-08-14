@@ -148,6 +148,7 @@ class gl_main_menu():
 		a.color_g=0
 		a.color_b=0
 		a.color_alpha=0.5
+		a.moveable=True
 		a.load_triangles()
 		gpvdm_data().world.world_data.segments.append(a)
 		self.force_redraw()

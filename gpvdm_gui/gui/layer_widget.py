@@ -67,7 +67,7 @@ from epitaxy import get_epi
 
 from error_dlg import error_dlg
 from gpvdm_json import gpvdm_data
-
+from mesh import get_mesh
 
 
 class layer_widget(QWidgetSavePos):
@@ -81,12 +81,7 @@ class layer_widget(QWidgetSavePos):
 		global_object_run("gl_force_redraw")
 		
 	def emit_structure_changed(self):
-		data=gpvdm_data()
-		for l in gpvdm_data().epitaxy.layers:
-			l.shape_dos.enabled=False
-			if l.layer_type=="active":
-				l.shape_dos.enabled=True
-
+		epi=get_epi()
 		self.save_model()
 		global_object_run("dos_update")
 		global_object_run("pl_update")
@@ -149,4 +144,6 @@ class layer_widget(QWidgetSavePos):
 			if global_isobject("display_set_selected_obj")==True:
 				global_object_get("display_set_selected_obj")(epi.layers[y].id)
 			global_object_run("gl_do_draw")
+
+
 

@@ -133,17 +133,14 @@ class gl_contacts():
 
 
 						a.xyz.x=gl_scale.project_m2screen_x(xstart)
-						if c.shape_flip_y==False:
-							a.xyz.y=gl_scale.project_m2screen_y(epi.get_layer_start(0))
-						else:
-							a.xyz.y=gl_scale.project_m2screen_y(epi.get_layer_end(0))
+						a.xyz.y=gl_scale.project_m2screen_y(epi.get_layer_start(0))
+
 						a.xyz.z=gl_scale.project_m2screen_z(0.0)
 
 						a.dxyz.x=box.x*scale_get_xmul()
 						a.dxyz.y=box.y*scale_get_ymul()
 						a.dxyz.z=scale_get_device_z()
-						if c.shape_flip_y==False:
-							a.dxyz.y=a.dxyz.y*-1.0
+						a.dxyz.y=a.dxyz.y*-1.0
 
 						a.r=c.color_r
 						a.g=c.color_g
@@ -151,8 +148,6 @@ class gl_contacts():
 						a.color_alpha=1.0
 						if c.triangles!=None:
 							a.triangles=triangles_mul_vec(c.triangles.data,box)
-							if c.shape_flip_y==True:
-								a.triangles=triangles_flip(a.triangles)
 
 							a.triangles=scale_trianges_m2screen(a.triangles)
 							self.gl_objects_add(a)

@@ -249,15 +249,6 @@ def scale_trianges_m2screen(triangles):
 
 	return ret
 
-def scale_screen_x2m(x):
-	global x_mul
-	global x_start
-	return (x-x_start)/x_mul
-
-def scale_screen_y2m(y):
-	global y_mul
-	global y_start
-	return -(y-y_start)/y_mul
 
 def scale_get_xmul():
 	global x_mul

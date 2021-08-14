@@ -635,7 +635,6 @@ class dat_file():
 				o.allow_cut_view=str2bool(l[14])
 
 				o.text=l[15]
-				o.origonal_object=str2bool(l[16])
 
 				self.data.append(o)
 				nobj=nobj+1

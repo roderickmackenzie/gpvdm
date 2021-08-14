@@ -186,6 +186,8 @@ class shape(json_base):
 		self.var_list.append(["shape_enabled",True])
 		self.var_list.append(["shape_type","box"])
 		self.var_list.append(["rotate_y",0])
+		self.var_list.append(["rotate_x",0])
+
 
 		self.var_list.append(["dx",1e-9])
 		self.var_list.append(["dy",1e-9])
@@ -212,14 +214,12 @@ class shape(json_base):
 		self.var_list.append(["color_b",0.8])
 		self.var_list.append(["color_alpha",0.8])
 
-		self.var_list.append(["shape_flip_y",False])
-		self.var_list.append(["shape_flip_x",False])
-
 		self.var_list.append(["optical_material","blends/p3htpcbm"])
 		self.var_list.append(["shape_pl",shape_pl()])
 		self.var_list.append(["shape_heat",shape_heat()])
 		self.var_list.append(["shape_name","none"])
 		self.var_list.append(["Gnp",0.0])
+		self.var_list.append(["moveable",False])
 		self.var_list.append(["id",self.random_id()])
 		self.var_list_build()
 		self.loaded_from_json=False
@@ -249,7 +249,7 @@ class shape(json_base):
 				max_vec=triangles_get_max(self.triangles.data)
 
 				self.triangles.data=triangles_div_vec(self.triangles.data,max_vec)
-
+				
 	def find_object_by_id(self,id):
 		if self.id==id:
 			return self
@@ -271,18 +271,14 @@ class shape(json_base):
 		for x in range(0,self.shape_nx):
 			for y in range(0,self.shape_ny):
 				for z in range(0,self.shape_nz):
-					if self.shape_enabled==True:
 						pos=vec()
-						if self.shape_flip_y==True:
-							pos.x=(self.x0+(self.dx+self.dx_padding)*x)
-							pos.y=epi_layer.end-(self.y0+(self.dy+self.dy_padding)*y)
-							pos.z=(self.z0+(self.dz+self.dz_padding)*z)
-						else:
-							pos.x=(self.x0+(self.dx+self.dx_padding)*x)
-							pos.y=(self.y0+(self.dy+self.dy_padding)*y)+epi_layer.start
-							pos.z=(self.z0+(self.dz+self.dz_padding)*z)
+						pos.x=(self.x0+(self.dx+self.dx_padding)*x)
+						pos.y=(self.y0+(self.dy+self.dy_padding)*y)
+						pos.z=(self.z0+(self.dz+self.dz_padding)*z)
 
 						vectors.append(pos)
+						if self.shape_enabled==False:
+							break
 		return vectors
 
 	def shape_gen_json(self):

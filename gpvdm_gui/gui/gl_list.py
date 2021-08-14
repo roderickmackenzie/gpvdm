@@ -28,9 +28,6 @@
 import sys
 import glob
 
-from gl_scale import scale_screen_x2m
-from gl_scale import scale_screen_y2m
-
 from OpenGL.GLU import *
 from OpenGL.GL import *
 from gl_lib import gl_obj_id_starts_with
@@ -94,43 +91,44 @@ class gl_objects():
 		for o in self.objects:
 			if o.selected==True:
 				#min
-				if o.xyz.x<min.x:
-					min.x=o.xyz.x
+				for xyz in o.xyz:
+					if xyz.x<min.x:
+						min.x=xyz.x
 
-				if o.xyz.x+o.dxyz.x<min.x:
-					min.x=o.xyz.x+o.dxyz.x
+					if xyz.x+o.dxyz.x<min.x:
+						min.x=xyz.x+o.dxyz.x
 
-				if o.xyz.y<min.y:
-					min.y=o.xyz.y
+					if xyz.y<min.y:
+						min.y=xyz.y
 
-				#print("screen",o.dxyz.y)
-				if o.xyz.y+o.dxyz.y<min.y:
-					min.y=o.xyz.y+o.dxyz.y
+					#print("screen",o.dxyz.y)
+					if xyz.y+o.dxyz.y<min.y:
+						min.y=xyz.y+o.dxyz.y
 
-				if o.xyz.z<min.z:
-					min.z=o.xyz.z
+					if xyz.z<min.z:
+						min.z=xyz.z
 
-				if o.xyz.z+o.dxyz.z<min.z:
-					min.z=o.xyz.z+o.dxyz.z
+					if xyz.z+o.dxyz.z<min.z:
+						min.z=xyz.z+o.dxyz.z
 
-				#max
-				if o.xyz.x>max.x:
-					max.x=o.xyz.x
+					#max
+					if xyz.x>max.x:
+						max.x=xyz.x
 
-				if o.xyz.x+o.dxyz.x>max.x:
-					max.x=o.xyz.x+o.dxyz.x
+					if xyz.x+o.dxyz.x>max.x:
+						max.x=xyz.x+o.dxyz.x
 
-				if o.xyz.y>max.y:
-					max.y=o.xyz.y
+					if xyz.y>max.y:
+						max.y=xyz.y
 
-				if o.xyz.y+o.dxyz.y>max.y:
-					max.y=o.xyz.y+o.dxyz.y
+					if xyz.y+o.dxyz.y>max.y:
+						max.y=xyz.y+o.dxyz.y
 
-				if o.xyz.z>max.z:
-					max.z=o.xyz.z
+					if xyz.z>max.z:
+						max.z=xyz.z
 
-				if o.xyz.z+o.dxyz.z>max.z:
-					max.z=o.xyz.z+o.dxyz.z
+					if xyz.z+o.dxyz.z>max.z:
+						max.z=xyz.z+o.dxyz.z
 
 		return min,max
 
@@ -211,19 +209,19 @@ class gl_objects():
 			for obj in self.objects:
 				if obj.selected==True:
 					if obj.moveable==True:
-						if obj.origonal_object==True:
-							s=gpvdm_data().find_object_by_id(obj.id[0])
+						s=gpvdm_data().find_object_by_id(obj.id[0])
+						for xyz in obj.xyz:
 							if move_y==True:
-								obj.xyz.y=obj.xyz.y+dy
-								s.y0=gl_scale.project_screen_y_to_m(obj.xyz.y)
+								xyz.y=xyz.y+dy
+								s.y0=gl_scale.project_screen_y_to_m(xyz.y)
 
 							if move_x==True:
-								obj.xyz.x=obj.xyz.x+dx
-								s.x0=gl_scale.project_screen_x_to_m(obj.xyz.x)
+								xyz.x=xyz.x+dx
+								s.x0=gl_scale.project_screen_x_to_m(xyz.x)
 
 							if move_z==True:
-								obj.xyz.z=obj.xyz.z+dz
-								s.z0=gl_scale.project_screen_z_to_m(obj.xyz.z)
+								xyz.z=xyz.z+dz
+								s.z0=gl_scale.project_screen_z_to_m(xyz.z)
 
 	def gl_objects_save_selected(self):
 		epi=get_epi()
@@ -298,7 +296,7 @@ class gl_objects():
 				#print("solid_and_mesh>>",o.z)
 				if self.view_options.transparent_objects==False:
 					self.paint_from_array(o)
-					self.paint_open_triangles_from_array(o)
+					#self.paint_open_triangles_from_array(o)
 				else:
 					self.paint_open_triangles_from_array(o,false_color=False,line_width=2)
 			elif o.type=="solid_and_mesh_cut_through":
@@ -332,15 +330,7 @@ class gl_objects():
 				sel.g=0.0
 				sel.b=0.0
 
-				#sel.dy=sel.dy*1.1
-				#sel.dz=sel.dz*1.1
-				#print(sel.dxyz.z,sel.dxyz.x,sel.dxyz.y)
-				#print(sel.text)
 				self.gl_render_box_lines(sel)
-				#print("!!!!!!!!!!")
-			#if o.text!="":
-				#print(o.type,o.xyz.y)
-				#self.gl_render_text(o)
 
 
 		if len(self.gl_array_lines_float32)==0:
@@ -358,11 +348,10 @@ class gl_objects():
 			glColorPointer(4, GL_FLOAT, 0, self.gl_array_colors_float32)
 			glDrawArrays(GL_LINES, 0, len(self.gl_array_lines))
 
-		#self.gl_objects_save("out.dat")
-		#self.gl_objects_load("out.dat")
+
 	def gl_objects_search_by_color(self,r,g,b):
 		for o in self.objects:
-			#print(o.r_false,r,o.g_false,g,o.b_false,b)
+			#print(o.type,o.id,o.r_false,o.g_false,o.b_false)
 			if o.match_false_color(r,g,b)==True:
 				return o
 		return None
@@ -399,7 +388,6 @@ class gl_objects():
 
 			ret=ret+";;"+str(o.text)
 
-			ret=ret+";;"+str(o.origonal_object)
 			f.write(ret+"\n")
 
 		f.close()

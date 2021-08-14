@@ -152,7 +152,9 @@ class gl_text():
 		glDisable(GL_BLEND)
 
 	def gl_render_text(self,o):
-		self.text(o.xyz.x,o.xyz.y,o.xyz.z,o.text)
+		for xyz in o.xyz:
+			self.text(xyz.x,xyz.y,xyz.z,o.text)
+			break
 
 	def render_text(self,x,y,z,text):
 		self.text(x,y,z,text)

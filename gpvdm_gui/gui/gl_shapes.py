@@ -62,54 +62,67 @@ class gl_shapes:
 		self.set_color(o)
 
 		#top
-		glPushMatrix()
-		glTranslatef(o.xyz.x,o.xyz.y,o.xyz.z)
 
-		glBegin(GL_TRIANGLES)
-		glVertex3f(0.0,0.0,0.0)
-		glVertex3f(dx,0.0,0.0)
-		glVertex3f(dx/2,dy,dz/2)
-		glEnd()
+		for xyz in o.xyz:
+			glPushMatrix()
+			glTranslatef(xyz.x,xyz.y,xyz.z)
 
-		glBegin(GL_TRIANGLES)
-		glVertex3f(dx,0.0,0.0)
-		glVertex3f(dx,y,dz)
-		glVertex3f(dx/2,dy,dz/2)
-		glEnd()
+			glBegin(GL_TRIANGLES)
+			glVertex3f(0.0,0.0,0.0)
+			glVertex3f(dx,0.0,0.0)
+			glVertex3f(dx/2,dy,dz/2)
+			glEnd()
 
-		glBegin(GL_TRIANGLES)
-		glVertex3f(dx,0.0,dz)
-		glVertex3f(0.0,0.0,dz)
-		glVertex3f(dx/2,dy,dz/2)
-		glEnd()
+			glBegin(GL_TRIANGLES)
+			glVertex3f(dx,0.0,0.0)
+			glVertex3f(dx,y,dz)
+			glVertex3f(dx/2,dy,dz/2)
+			glEnd()
 
-		glBegin(GL_TRIANGLES)
-		glVertex3f(0.0,0.0,0.0)
-		glVertex3f(0.0,0.0,dz)
-		glVertex3f(dx/2,dy,dz/2)
-		glEnd()
-		glPopMatrix()
+			glBegin(GL_TRIANGLES)
+			glVertex3f(dx,0.0,dz)
+			glVertex3f(0.0,0.0,dz)
+			glVertex3f(dx/2,dy,dz/2)
+			glEnd()
+
+			glBegin(GL_TRIANGLES)
+			glVertex3f(0.0,0.0,0.0)
+			glVertex3f(0.0,0.0,dz)
+			glVertex3f(dx/2,dy,dz/2)
+			glEnd()
+			glPopMatrix()
 
 	def paint_from_array(self,o):
-		self.set_color(o)
-		#glMaterialfv(GL_FRONT, GL_SPECULAR, 0.5);
-		#glMaterialf(GL_FRONT, GL_SHININESS, 128)
+		#self.set_color(o)
+		glEnableClientState(GL_VERTEX_ARRAY)
+		if self.false_color==True:
+			glColor3f(o.r_false,o.g_false,o.b_false)
+		else:
+			glEnable(GL_BLEND)
+			glEnableClientState(GL_COLOR_ARRAY)
 
-		glPushMatrix()
-		glTranslatef(o.xyz.x,o.xyz.y,o.xyz.z)
+		for xyz in o.xyz:
+			glPushMatrix()
+			glTranslatef(xyz.x,xyz.y,xyz.z)
+			glRotatef(o.rotate_x, 1.0, 0.0, 0)
+			glRotatef(o.rotate_y, 0.0, 1.0, 0)
 
+			for n in range(0,len(o.gl_array_types)):
+				glLineWidth(5)
+				glVertexPointer(3, GL_FLOAT, 0, o.gl_array_float32[n])
 
-		glBegin(GL_TRIANGLES)
-		#for t in o.triangles:
+				if self.false_color==False:
+					glColorPointer(4, GL_FLOAT, 0, o.gl_array_colors_float32[n])
 
-		for t in o.triangles:
-			#print(o.x,o.y,o.z)
-			glVertex3f(t.xyz0.x,t.xyz0.y,t.xyz0.z)
-			glVertex3f(t.xyz1.x,t.xyz1.y,t.xyz1.z)
-			glVertex3f(t.xyz2.x,t.xyz2.y,t.xyz2.z)
+				glDrawArrays(o.gl_array_types[n], 0, o.gl_array_points[n])
 
-		glEnd()
-		glPopMatrix()
+			glPopMatrix()
+
+		glDisableClientState(GL_VERTEX_ARRAY)
+
+		if self.false_color==False:
+			glDisableClientState(GL_COLOR_ARRAY)
+			glDisable(GL_BLEND)
 
 	def paint_from_array_cut_through(self,o):
 		self.set_color(o)
@@ -119,32 +132,34 @@ class gl_shapes:
 
 
 		i=0
-		glPushMatrix()
-		glTranslatef(o.xyz.x,o.xyz.y,o.xyz.z)
-		glBegin(GL_TRIANGLES)
-		#for t in o.triangles:
 
-		for t in o.triangles:
-			plot=True
-			if t.xyz0.x==min_vec.x and t.xyz1.x==min_vec.x and t.xyz2.x==min_vec.x:
-				plot=False
+		for xyz in o.xyz:
+			glPushMatrix()
+			glTranslatef(xyz.x,xyz.y,xyz.z)
+			glBegin(GL_TRIANGLES)
+			#for t in o.triangles:
 
-			if t.xyz0.y==max_vec.y and t.xyz1.y==max_vec.y and t.xyz2.y==max_vec.y:
-				plot=False
+			for t in o.triangles:
+				plot=True
+				if t.xyz0.x==min_vec.x and t.xyz1.x==min_vec.x and t.xyz2.x==min_vec.x:
+					plot=False
 
-			if t.xyz0.y==min_vec.y and t.xyz1.y==min_vec.y and t.xyz2.y==min_vec.y:
-				plot=False
+				if t.xyz0.y==max_vec.y and t.xyz1.y==max_vec.y and t.xyz2.y==max_vec.y:
+					plot=False
 
-			if t.xyz0.z==min_vec.z and t.xyz1.z==min_vec.z and t.xyz2.z==min_vec.z:
-				plot=False
+				if t.xyz0.y==min_vec.y and t.xyz1.y==min_vec.y and t.xyz2.y==min_vec.y:
+					plot=False
 
-			if plot==True:
-				glVertex3f(t.xyz0.x,t.xyz0.y,t.xyz0.z)
-				glVertex3f(t.xyz1.x,t.xyz1.y,t.xyz1.z)
-				glVertex3f(t.xyz2.x,t.xyz2.y,t.xyz2.z)
+				if t.xyz0.z==min_vec.z and t.xyz1.z==min_vec.z and t.xyz2.z==min_vec.z:
+					plot=False
 
-		glEnd()
-		glPopMatrix()
+				if plot==True:
+					glVertex3f(t.xyz0.x,t.xyz0.y,t.xyz0.z)
+					glVertex3f(t.xyz1.x,t.xyz1.y,t.xyz1.z)
+					glVertex3f(t.xyz2.x,t.xyz2.y,t.xyz2.z)
+
+			glEnd()
+			glPopMatrix()
 
 	def paint_open_triangles_from_array(self,o,false_color=True,line_width=5):
 		
@@ -154,39 +169,40 @@ class gl_shapes:
 		dz=o.dxyz.z/2
 
 		glLineWidth(line_width)
+		
+		for xyz in o.xyz:
+			glPushMatrix()
+			glTranslatef(xyz.x,xyz.y,xyz.z)
 
-		glPushMatrix()
-		glTranslatef(o.xyz.x,o.xyz.y,o.xyz.z)
+			glBegin(GL_LINES)
 
-		glBegin(GL_LINES)
-
-		n=1.0
-		for t in o.triangles:
-			glVertex3f(t.xyz0.x,t.xyz0.y,t.xyz0.z)
-			glVertex3f(t.xyz1.x,t.xyz1.y,t.xyz1.z)
-
-			if o.r==None:
-				o.r=1.0
-				o.g=0.0
-				o.b=0.0
-
-			if t.points==3:
-				if false_color==True:
-					self.set_color(o,r_override=o.r*0.1+o.r*0.9*n, g_override=o.g*0.1+o.g*0.9*n, b_override=o.b*0.1+o.b*0.9*n)
-				else:
-					self.set_color(o)
-
-				glVertex3f(t.xyz1.x,t.xyz1.y,t.xyz1.z)
-				glVertex3f(t.xyz2.x,t.xyz2.y,t.xyz2.z)
-
-				glVertex3f(t.xyz2.x,t.xyz2.y,t.xyz2.z)
+			n=1.0
+			for t in o.triangles:
 				glVertex3f(t.xyz0.x,t.xyz0.y,t.xyz0.z)
+				glVertex3f(t.xyz1.x,t.xyz1.y,t.xyz1.z)
 
-				n=n+0.01
-				if n>1.0:
-					n=0.0
-		glEnd()
-		glPopMatrix()
+				if o.r==None:
+					o.r=1.0
+					o.g=0.0
+					o.b=0.0
+
+				if t.points==3:
+					if false_color==True:
+						self.set_color(o,r_override=o.r*0.1+o.r*0.9*n, g_override=o.g*0.1+o.g*0.9*n, b_override=o.b*0.1+o.b*0.9*n)
+					else:
+						self.set_color(o)
+
+					glVertex3f(t.xyz1.x,t.xyz1.y,t.xyz1.z)
+					glVertex3f(t.xyz2.x,t.xyz2.y,t.xyz2.z)
+
+					glVertex3f(t.xyz2.x,t.xyz2.y,t.xyz2.z)
+					glVertex3f(t.xyz0.x,t.xyz0.y,t.xyz0.z)
+
+					n=n+0.01
+					if n>1.0:
+						n=0.0
+			glEnd()
+			glPopMatrix()
 
 	def half_cyl(self,o,colored=False):
 		
@@ -282,53 +298,54 @@ class gl_shapes:
 		dy=o.dxyz.y
 		dz=o.dxyz.z
 
-		glPushMatrix()
-		glTranslatef(o.xyz.x,o.xyz.y,o.xyz.z)
+		for xyz in o.xyz:
+			glPushMatrix()
+			glTranslatef(xyz.x,xyz.y,xyz.z)
 
-		self.set_color(o)
+			self.set_color(o)
 
-		glBegin(GL_QUADS)
-		if cut_through==False:
-			glVertex3f(0.0,	0.0,	0.0)
-			glVertex3f(dx,	 0.0,	0.0)
-			glVertex3f(dx,	 0.0,	dz)
-			glVertex3f(0.0,	0.0,	 dz) 
-		
-		#top
-		if cut_through==False:
-			glVertex3f(0.0,	 dy,		 0.0)
-			glVertex3f(dx, dy,	 0.0)
-			glVertex3f(dx,	 dy,	 dz)
-			glVertex3f( 0.0,	 dy,	 dz) 
+			glBegin(GL_QUADS)
+			if cut_through==False:
+				glVertex3f(0.0,	0.0,	0.0)
+				glVertex3f(dx,	 0.0,	0.0)
+				glVertex3f(dx,	 0.0,	dz)
+				glVertex3f(0.0,	0.0,	 dz) 
+			
+			#top
+			if cut_through==False:
+				glVertex3f(0.0,	 dy,		 0.0)
+				glVertex3f(dx, dy,	 0.0)
+				glVertex3f(dx,	 dy,	 dz)
+				glVertex3f( 0.0,	 dy,	 dz) 
 
-		#right
+			#right
 
-		glVertex3f(dx,	0.0,			0.0)
-		glVertex3f(dx,	dy,	0.0)
-		glVertex3f(dx,	dy,	dz)
-		glVertex3f(dx,	0.0,			dz) 
+			glVertex3f(dx,	0.0,			0.0)
+			glVertex3f(dx,	dy,	0.0)
+			glVertex3f(dx,	dy,	dz)
+			glVertex3f(dx,	0.0,			dz) 
 
-		#left
-		if cut_through==False:
-			glVertex3f(0.0,0.0,			0.0)
-			glVertex3f(0.0, dy,	0.0)
-			glVertex3f(0.0, dy,	dz)
-			glVertex3f(0.0, 0.0,		dz) 
-		
-		#back
-		glVertex3f(0.0,0.0,dz)
-		glVertex3f(dx,0.0,dz)
-		glVertex3f(dx,dy,dz)
-		glVertex3f(0.0, dy,dz) 
+			#left
+			if cut_through==False:
+				glVertex3f(0.0,0.0,			0.0)
+				glVertex3f(0.0, dy,	0.0)
+				glVertex3f(0.0, dy,	dz)
+				glVertex3f(0.0, 0.0,		dz) 
+			
+			#back
+			glVertex3f(0.0,0.0,dz)
+			glVertex3f(dx,0.0,dz)
+			glVertex3f(dx,dy,dz)
+			glVertex3f(0.0, dy,dz) 
 
-		#front
-		if cut_through==False:
-			glVertex3f(0.0,0.0,0.0)
-			glVertex3f(0.0, dy,0.0)
-			glVertex3f(dx,dy,0.0)
-			glVertex3f(dx, 0.0,0.0)
+			#front
+			if cut_through==False:
+				glVertex3f(0.0,0.0,0.0)
+				glVertex3f(0.0, dy,0.0)
+				glVertex3f(dx,dy,0.0)
+				glVertex3f(dx, 0.0,0.0)
 
-		glEnd()
+			glEnd()
 		glPopMatrix()
 
 
@@ -338,17 +355,19 @@ class gl_shapes:
 		dz=o.dxyz.z
 
 		self.set_color(o)
-		glPushMatrix()
-		glTranslatef(o.xyz.x,o.xyz.y,o.xyz.z)
 
-		glBegin(GL_QUADS)
+		for xyz in o.xyz:
+			glPushMatrix()
+			glTranslatef(xyz.x,xyz.y,xyz.z)
 
-		glVertex3f(0.0, 0.0, 0.0)
-		glVertex3f(dx, 0.0, 0.0)
+			glBegin(GL_QUADS)
 
-		glVertex3f(dx, dy, 0.0)
-		glVertex3f(0.0, dy, 0.0)
+			glVertex3f(0.0, 0.0, 0.0)
+			glVertex3f(dx, 0.0, 0.0)
 
-		glEnd()
-		glPopMatrix()
+			glVertex3f(dx, dy, 0.0)
+			glVertex3f(0.0, dy, 0.0)
+
+			glEnd()
+			glPopMatrix()
 

@@ -112,9 +112,6 @@ from gl_main_menu import gl_main_menu
 
 from gl_list import gl_objects
 
-from gl_scale import scale_screen_x2m
-from gl_scale import scale_screen_y2m
-
 #from file_watch import get_watch
 from gl_input import gl_input
 
@@ -240,6 +237,22 @@ if open_gl_ok==True:
 		#	for zz in range(0,10):
 		#		self.box(0,0,0+zz,0.5,0.5,0.5,0.0,0,1,0.5)
 
+		#this may not be the best place for this
+		def epitaxy_enforce_rules(self):
+			y_pos=0.0
+			epi=get_epi()
+			for l in epi.layers:
+				l.shape_dos.enabled=False
+				if l.layer_type=="active":
+					l.shape_dos.enabled=True
+				l.x0=0.0
+				l.z0=0.0
+				l.y0=y_pos
+
+				l.dx=get_mesh().x.get_len()
+				l.dz=get_mesh().z.get_len()
+				y_pos=y_pos+l.dy
+
 		def draw_device2(self,x,z):
 			y=scale_get_device_y()
 			epi=get_epi()
@@ -251,23 +264,11 @@ if open_gl_ok==True:
 			btm_layer=len(epitaxy_get_epi())-1
 
 			for obj in gpvdm_data().world.world_data.segments:
-				a=gl_base_object()
-				pos=vec()
-				pos.x=obj.x0
-				pos.y=obj.y0
-				pos.z=obj.z0
-				a.origonal_object=True
-				a.moveable=True
-				self.shape_to_screen(a,pos,obj)
+				self.shape_to_screen(obj)
+
+			self.epitaxy_enforce_rules()
 
 			for obj in epi.layers:
-				y_len=obj.dy*scale_get_ymul()
-				y=y-y_len
-
-				obj.z0=0.0
-				obj.x0=0.0
-				obj.y0=epi.get_layer_start(l)
-				#print(obj.shape_name,epi.get_layer_start(l))
 				name=obj.shape_name
 				display_name=name
 				#alpha=obj.alpha
@@ -281,18 +282,21 @@ if open_gl_ok==True:
 				if l==btm_contact_layer:
 					contact_layer=True
 
-				print(l,top_contact_layer,btm_contact_layer)
+				#print(l,top_contact_layer,btm_contact_layer)
 				#print(">>>>",l,contact_layer,contact_layers)
 #				print(obj.shape_name)
 				if contact_layer==False:
-					self.shape_layer(obj)			
+					print(obj.id,name,obj.y0,obj.dy)
+					self.shape_to_screen(obj)			
 
 				if obj.layer_type=="active":
 					if self.view_options.render_text==True:
 						o=gl_base_object()
-						o.xyz.x=x+scale_get_device_x()+0.1
-						o.xyz.y=y
-						o.xyz.z=z
+						xyz=vec()
+						xyz.x=x+scale_get_device_x()+0.1
+						xyz.y=gl_scale.project_m2screen_y(obj.y0+obj.dy)
+						xyz.z=z						
+						o.xyz.append(xyz)
 
 						o.dxyz.x=0.1
 						o.dxyz.y=y_len
@@ -313,9 +317,10 @@ if open_gl_ok==True:
 							o.r=1.0
 							o.g=1.0
 							o.b=1.0
-							o.xyz.x=x+scale_get_device_x()+0.2
-							o.xyz.y=y#+y_len/2
-							o.xyz.z=z+(len(epi.layers)-l)*0.1
+							xyz=vec()
+							xyz.x=x+scale_get_device_x()+0.2
+							xyz.y=gl_scale.project_m2screen_y(obj.y0+obj.dy)
+							xyz.z=z+(len(epi.layers)-l)*0.1
 							o.id=["text"]
 							o.type="text"
 							o.text=display_name
@@ -411,7 +416,7 @@ if open_gl_ok==True:
 		def paintGL(self):
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 			glLoadIdentity()
-			glScalef(1.0, 1.0, -1.0) 
+			glScalef(-1.0, 1.0, -1.0) 
 
 			if self.failed==False:
 				self.do_draw()
@@ -474,13 +479,15 @@ if open_gl_ok==True:
 						a=gl_base_object()
 						a.id=[source.id]
 						a.type="box"
-						a.xyz.x=point_x
-						a.xyz.y=point_y
-						a.xyz.z=point_z
+						xyz=vec()
+						xyz.x=point_x
+						xyz.y=point_y
+						xyz.z=point_z
+						a.xyz.append(xyz)
+
 						a.dxyz.x=0.1
 						a.dxyz.y=0.1
 						a.dxyz.z=0.1
-						a.origonal_object=True
 						a.r=0.0
 						a.g=0.0
 						a.b=1.0
@@ -516,9 +523,12 @@ if open_gl_ok==True:
 					a=gl_base_object()
 					a.id=["rod"]
 					a.type="box"
-					a.xyz.x=l.xyz[0]
-					a.xyz.y=l.xyz[1]
-					a.xyz.z=l.xyz[2]
+					xyz=vec()
+					xyz.x=l.xyz[0]
+					xyz.y=l.xyz[1]
+					xyz.z=l.xyz[2]
+					a.xyz.append(xyz)
+
 					a.dxyz.x=0.4
 					a.dxyz.y=0.4
 					a.dxyz.z=0.4

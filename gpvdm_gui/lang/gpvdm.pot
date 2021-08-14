@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gpvdm 5.0\n"
 "Report-Msgid-Bugs-To: roderick.mackenzie@nottingham.ac.uk\n"
-"POT-Creation-Date: 2021-08-12 09:04+0100\n"
+"POT-Creation-Date: 2021-08-14 07:49+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,7 +35,7 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/update.py:178
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/layer_widget.py:189
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/contacts.py:298
-#: ../../gpvdm_gui/gui/layer_widget.py:114 ../../gpvdm_gui/gui/contacts.py:303
+#: ../../gpvdm_gui/gui/layer_widget.py:109 ../../gpvdm_gui/gui/contacts.py:303
 msgid "ID"
 msgstr ""
 
@@ -1987,33 +1987,32 @@ msgstr ""
 #: ../../gpvdm_gui/gui/token_lib.py:58 ../../gpvdm_gui/gui/token_lib.py:87
 #: ../../gpvdm_gui/gui/token_lib.py:89 ../../gpvdm_gui/gui/token_lib.py:90
 #: ../../gpvdm_gui/gui/token_lib.py:163 ../../gpvdm_gui/gui/token_lib.py:187
-#: ../../gpvdm_gui/gui/token_lib.py:217 ../../gpvdm_gui/gui/token_lib.py:221
-#: ../../gpvdm_gui/gui/token_lib.py:228 ../../gpvdm_gui/gui/token_lib.py:231
-#: ../../gpvdm_gui/gui/token_lib.py:269 ../../gpvdm_gui/gui/token_lib.py:288
-#: ../../gpvdm_gui/gui/token_lib.py:289 ../../gpvdm_gui/gui/token_lib.py:371
-#: ../../gpvdm_gui/gui/token_lib.py:425 ../../gpvdm_gui/gui/token_lib.py:428
-#: ../../gpvdm_gui/gui/token_lib.py:434 ../../gpvdm_gui/gui/token_lib.py:449
-#: ../../gpvdm_gui/gui/token_lib.py:498 ../../gpvdm_gui/gui/token_lib.py:499
-#: ../../gpvdm_gui/gui/token_lib.py:500 ../../gpvdm_gui/gui/token_lib.py:505
-#: ../../gpvdm_gui/gui/token_lib.py:506 ../../gpvdm_gui/gui/token_lib.py:520
-#: ../../gpvdm_gui/gui/token_lib.py:524 ../../gpvdm_gui/gui/token_lib.py:525
-#: ../../gpvdm_gui/gui/token_lib.py:526 ../../gpvdm_gui/gui/token_lib.py:527
-#: ../../gpvdm_gui/gui/token_lib.py:528 ../../gpvdm_gui/gui/token_lib.py:529
-#: ../../gpvdm_gui/gui/token_lib.py:530 ../../gpvdm_gui/gui/token_lib.py:531
-#: ../../gpvdm_gui/gui/token_lib.py:532 ../../gpvdm_gui/gui/token_lib.py:533
-#: ../../gpvdm_gui/gui/token_lib.py:534 ../../gpvdm_gui/gui/token_lib.py:535
-#: ../../gpvdm_gui/gui/token_lib.py:536 ../../gpvdm_gui/gui/token_lib.py:537
-#: ../../gpvdm_gui/gui/token_lib.py:538 ../../gpvdm_gui/gui/token_lib.py:539
-#: ../../gpvdm_gui/gui/token_lib.py:540 ../../gpvdm_gui/gui/token_lib.py:541
-#: ../../gpvdm_gui/gui/token_lib.py:544 ../../gpvdm_gui/gui/token_lib.py:545
-#: ../../gpvdm_gui/gui/token_lib.py:546 ../../gpvdm_gui/gui/token_lib.py:565
-#: ../../gpvdm_gui/gui/token_lib.py:574 ../../gpvdm_gui/gui/token_lib.py:605
-#: ../../gpvdm_gui/gui/token_lib.py:617 ../../gpvdm_gui/gui/token_lib.py:682
-#: ../../gpvdm_gui/gui/token_lib.py:762 ../../gpvdm_gui/gui/token_lib.py:763
-#: ../../gpvdm_gui/gui/token_lib.py:765 ../../gpvdm_gui/gui/token_lib.py:784
-#: ../../gpvdm_gui/gui/token_lib.py:785 ../../gpvdm_gui/gui/token_lib.py:786
-#: ../../gpvdm_gui/gui/token_lib.py:788 ../../gpvdm_gui/gui/token_lib.py:789
-#: ../../gpvdm_gui/gui/token_lib.py:790
+#: ../../gpvdm_gui/gui/token_lib.py:218 ../../gpvdm_gui/gui/token_lib.py:228
+#: ../../gpvdm_gui/gui/token_lib.py:231 ../../gpvdm_gui/gui/token_lib.py:269
+#: ../../gpvdm_gui/gui/token_lib.py:288 ../../gpvdm_gui/gui/token_lib.py:289
+#: ../../gpvdm_gui/gui/token_lib.py:371 ../../gpvdm_gui/gui/token_lib.py:425
+#: ../../gpvdm_gui/gui/token_lib.py:428 ../../gpvdm_gui/gui/token_lib.py:434
+#: ../../gpvdm_gui/gui/token_lib.py:449 ../../gpvdm_gui/gui/token_lib.py:498
+#: ../../gpvdm_gui/gui/token_lib.py:499 ../../gpvdm_gui/gui/token_lib.py:500
+#: ../../gpvdm_gui/gui/token_lib.py:505 ../../gpvdm_gui/gui/token_lib.py:506
+#: ../../gpvdm_gui/gui/token_lib.py:520 ../../gpvdm_gui/gui/token_lib.py:524
+#: ../../gpvdm_gui/gui/token_lib.py:525 ../../gpvdm_gui/gui/token_lib.py:526
+#: ../../gpvdm_gui/gui/token_lib.py:527 ../../gpvdm_gui/gui/token_lib.py:528
+#: ../../gpvdm_gui/gui/token_lib.py:529 ../../gpvdm_gui/gui/token_lib.py:530
+#: ../../gpvdm_gui/gui/token_lib.py:531 ../../gpvdm_gui/gui/token_lib.py:532
+#: ../../gpvdm_gui/gui/token_lib.py:533 ../../gpvdm_gui/gui/token_lib.py:534
+#: ../../gpvdm_gui/gui/token_lib.py:535 ../../gpvdm_gui/gui/token_lib.py:536
+#: ../../gpvdm_gui/gui/token_lib.py:537 ../../gpvdm_gui/gui/token_lib.py:538
+#: ../../gpvdm_gui/gui/token_lib.py:539 ../../gpvdm_gui/gui/token_lib.py:540
+#: ../../gpvdm_gui/gui/token_lib.py:541 ../../gpvdm_gui/gui/token_lib.py:544
+#: ../../gpvdm_gui/gui/token_lib.py:545 ../../gpvdm_gui/gui/token_lib.py:546
+#: ../../gpvdm_gui/gui/token_lib.py:565 ../../gpvdm_gui/gui/token_lib.py:574
+#: ../../gpvdm_gui/gui/token_lib.py:605 ../../gpvdm_gui/gui/token_lib.py:617
+#: ../../gpvdm_gui/gui/token_lib.py:682 ../../gpvdm_gui/gui/token_lib.py:762
+#: ../../gpvdm_gui/gui/token_lib.py:763 ../../gpvdm_gui/gui/token_lib.py:765
+#: ../../gpvdm_gui/gui/token_lib.py:784 ../../gpvdm_gui/gui/token_lib.py:785
+#: ../../gpvdm_gui/gui/token_lib.py:786 ../../gpvdm_gui/gui/token_lib.py:788
+#: ../../gpvdm_gui/gui/token_lib.py:789 ../../gpvdm_gui/gui/token_lib.py:790
 msgid "True/False"
 msgstr ""
 
@@ -2958,7 +2957,7 @@ msgstr ""
 #: ../../gpvdm_gui/gui/parasitic.py:70 ../../gpvdm_gui/gui/pl_main.py:68
 #: ../../gpvdm_gui/gui/pl_main.py:69
 #: ../../gpvdm_gui/gui/ribbon_emission_db.py:77
-#: ../../gpvdm_gui/gui/ribbon_file.py:127 ../../gpvdm_gui/gui/contacts.py:348
+#: ../../gpvdm_gui/gui/ribbon_file.py:121 ../../gpvdm_gui/gui/contacts.py:348
 #: ../../gpvdm_gui/gui/interface_editor.py:73
 #: ../../gpvdm_gui/gui/interface_editor.py:74 ../../gpvdm_gui/gui/qe.py:73
 #: ../../gpvdm_gui/gui/sunsjsc.py:71
@@ -3333,7 +3332,7 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/script_ribbon.py:88
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_home.py:116
 #: ../../gpvdm_gui/gui/script_ribbon.py:82
-#: ../../gpvdm_gui/gui/ribbon_file.py:116
+#: ../../gpvdm_gui/gui/ribbon_file.py:110
 msgid ""
 "Plot\n"
 "File"
@@ -3658,7 +3657,7 @@ msgid "Associated paper"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_configure.py:85
-#: ../../gpvdm_gui/gui/ribbon_database.py:105
+#: ../../gpvdm_gui/gui/ribbon_database.py:109
 msgid ""
 "Solar spectrum\n"
 "generator"
@@ -4395,67 +4394,67 @@ msgid "Shape type"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:146
-#: ../../gpvdm_gui/gui/token_lib.py:202
+#: ../../gpvdm_gui/gui/token_lib.py:203
 msgid "dx of the object"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:147
-#: ../../gpvdm_gui/gui/token_lib.py:203
+#: ../../gpvdm_gui/gui/token_lib.py:204
 msgid "dy of the object"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:148
-#: ../../gpvdm_gui/gui/token_lib.py:204
+#: ../../gpvdm_gui/gui/token_lib.py:205
 msgid "dz of the object"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:150
-#: ../../gpvdm_gui/gui/token_lib.py:206
+#: ../../gpvdm_gui/gui/token_lib.py:207
 msgid "dx padding"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:151
-#: ../../gpvdm_gui/gui/token_lib.py:207
+#: ../../gpvdm_gui/gui/token_lib.py:208
 msgid "dy padding"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:152
-#: ../../gpvdm_gui/gui/token_lib.py:208
+#: ../../gpvdm_gui/gui/token_lib.py:209
 msgid "dz padding"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:155
-#: ../../gpvdm_gui/gui/token_lib.py:211
+#: ../../gpvdm_gui/gui/token_lib.py:212
 msgid "Number of objects x"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:156
-#: ../../gpvdm_gui/gui/token_lib.py:212
+#: ../../gpvdm_gui/gui/token_lib.py:213
 msgid "Number of objects y"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:157
-#: ../../gpvdm_gui/gui/token_lib.py:213
+#: ../../gpvdm_gui/gui/token_lib.py:214
 msgid "Number of objects z"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:158
-#: ../../gpvdm_gui/gui/token_lib.py:214
+#: ../../gpvdm_gui/gui/token_lib.py:215
 msgid "x offset"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:159
-#: ../../gpvdm_gui/gui/token_lib.py:215
+#: ../../gpvdm_gui/gui/token_lib.py:216
 msgid "y offset"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:160
-#: ../../gpvdm_gui/gui/token_lib.py:216
+#: ../../gpvdm_gui/gui/token_lib.py:217
 msgid "z offset"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:161
-#: ../../gpvdm_gui/gui/token_lib.py:217
+#: ../../gpvdm_gui/gui/token_lib.py:218
 msgid "Remove layer"
 msgstr ""
 
@@ -4466,8 +4465,8 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_main_menu.py:120
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_layer_editor.py:79
 #: ../../gpvdm_gui/gui/gl_object_editor.py:69
-#: ../../gpvdm_gui/gui/token_lib.py:199 ../../gpvdm_gui/gui/token_lib.py:218
-#: ../../gpvdm_gui/gui/token_lib.py:219 ../../gpvdm_gui/gui/token_lib.py:220
+#: ../../gpvdm_gui/gui/token_lib.py:199 ../../gpvdm_gui/gui/token_lib.py:219
+#: ../../gpvdm_gui/gui/token_lib.py:220 ../../gpvdm_gui/gui/token_lib.py:221
 #: ../../gpvdm_gui/gui/token_lib.py:611 ../../gpvdm_gui/gui/token_lib.py:612
 #: ../../gpvdm_gui/gui/gl_main_menu.py:126
 #: ../../gpvdm_gui/gui/ribbon_shape_import.py:163
@@ -4483,12 +4482,11 @@ msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:163
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/layer_widget.py:189
-#: ../../gpvdm_gui/gui/token_lib.py:220 ../../gpvdm_gui/gui/layer_widget.py:114
+#: ../../gpvdm_gui/gui/token_lib.py:221 ../../gpvdm_gui/gui/layer_widget.py:109
 msgid "Optical material"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:164
-#: ../../gpvdm_gui/gui/token_lib.py:221
 msgid "Flip y"
 msgstr ""
 
@@ -6584,7 +6582,7 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_main_menu.py:102
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_main_menu.py:159
 #: ../../gpvdm_gui/gui/gl_main_menu.py:110
-#: ../../gpvdm_gui/gui/gl_main_menu.py:191
+#: ../../gpvdm_gui/gui/gl_main_menu.py:192
 msgid "Ray tracing mesh"
 msgstr ""
 
@@ -6614,7 +6612,7 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_main_menu.py:122
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_main_menu.py:169
 #: ../../gpvdm_gui/gui/gl_main_menu.py:128
-#: ../../gpvdm_gui/gui/gl_main_menu.py:197
+#: ../../gpvdm_gui/gui/gl_main_menu.py:198
 msgid "Font"
 msgstr ""
 
@@ -6624,7 +6622,7 @@ msgid "Backgroud color"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_main_menu.py:163
-#: ../../gpvdm_gui/gui/gl_main_menu.py:195
+#: ../../gpvdm_gui/gui/gl_main_menu.py:196
 msgid "Device view"
 msgstr ""
 
@@ -6751,7 +6749,7 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/electrical_mesh_editor.py:164
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/layer_widget.py:189
 #: ../../gpvdm_gui/gui/electrical_mesh_editor_tab.py:164
-#: ../../gpvdm_gui/gui/layer_widget.py:114
+#: ../../gpvdm_gui/gui/layer_widget.py:109
 msgid "Thicknes"
 msgstr ""
 
@@ -6845,7 +6843,7 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_file.py:72
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_file.py:76
 #: ../../gpvdm_gui/gui/new_simulation.py:139
-#: ../../gpvdm_gui/gui/ribbon_file.py:72 ../../gpvdm_gui/gui/ribbon_file.py:76
+#: ../../gpvdm_gui/gui/ribbon_file.py:70 ../../gpvdm_gui/gui/ribbon_file.py:74
 msgid "New simulation"
 msgstr ""
 
@@ -7188,7 +7186,7 @@ msgid "Detailed dump control"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl.py:293
-#: ../../gpvdm_gui/gui/gl.py:306
+#: ../../gpvdm_gui/gui/gl.py:310
 msgid "active"
 msgstr ""
 
@@ -7310,21 +7308,21 @@ msgid "Undo"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_home.py:92
-#: ../../gpvdm_gui/gui/ribbon_file.py:100
+#: ../../gpvdm_gui/gui/ribbon_file.py:94
 msgid ""
 "Run\n"
 "simulation"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_home.py:104
-#: ../../gpvdm_gui/gui/ribbon_file.py:106
+#: ../../gpvdm_gui/gui/ribbon_file.py:100
 msgid ""
 "Parameter\n"
 "scan"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_home.py:110
-#: ../../gpvdm_gui/gui/ribbon_file.py:112
+#: ../../gpvdm_gui/gui/ribbon_file.py:106
 msgid ""
 "Fit to\n"
 "experimental data"
@@ -7344,14 +7342,14 @@ msgid ""
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_home.py:175
-#: ../../gpvdm_gui/gui/ribbon_file.py:229
+#: ../../gpvdm_gui/gui/ribbon_file.py:201
 msgid ""
 "<big>Select a file to plot</big><br>Single clicking shows you the content of "
 "the file"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_home.py:194
-#: ../../gpvdm_gui/gui/ribbon_file.py:204
+#: ../../gpvdm_gui/gui/ribbon_file.py:176
 msgid ""
 "<big><b>The scan window</b></big><br> Very often it is useful to be able to "
 "systematically very a device parameter such as mobility or density of trap "
@@ -7359,19 +7357,19 @@ msgid ""
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_home.py:194
-#: ../../gpvdm_gui/gui/ribbon_file.py:204
+#: ../../gpvdm_gui/gui/ribbon_file.py:176
 msgid "Use the plus icon to add a new scan line to the list."
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_home.py:194
-#: ../../gpvdm_gui/gui/ribbon_file.py:204
+#: ../../gpvdm_gui/gui/ribbon_file.py:176
 msgid ""
 "<big><b><a href=\"https://www.youtube.com/watch?v=cpkPht-CKeE\">Tutorial "
 "video</b></big><br>Using the parameter scan window."
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_home.py:214
-#: ../../gpvdm_gui/gui/ribbon_file.py:222
+#: ../../gpvdm_gui/gui/ribbon_file.py:194
 msgid ""
 "<big><b>Fit window</b></big><br> Use this window to fit the simulation to "
 "experimental data.  Gpvdm uses advanced and optimized fitting algorithms to "
@@ -7380,7 +7378,7 @@ msgid ""
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_home.py:214
-#: ../../gpvdm_gui/gui/ribbon_file.py:222
+#: ../../gpvdm_gui/gui/ribbon_file.py:194
 msgid ""
 "<big><b><a href=\"https://www.youtube.com/watch?v=61umU4hrsqk\">Watch the "
 "tutorial video 1</b></big><br>Fitting gpvdm to experimental data to extract "
@@ -7388,7 +7386,7 @@ msgid ""
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_home.py:214
-#: ../../gpvdm_gui/gui/ribbon_file.py:222
+#: ../../gpvdm_gui/gui/ribbon_file.py:194
 msgid ""
 "<big><b><a href=\"https://www.youtube.com/watch?v=_cm3Cb3kzUg\">Watch the "
 "tutorial video 2</b></big><br>Fitting gpvdm to large area solar cells"
@@ -7736,19 +7734,19 @@ msgid "Reference manager"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/layer_widget.py:141
-#: ../../gpvdm_gui/gui/layer_widget.py:102
+#: ../../gpvdm_gui/gui/layer_widget.py:97
 msgid "Layer editor"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/layer_widget.py:189
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/generation_rate_editor.py:111
-#: ../../gpvdm_gui/gui/layer_widget.py:114
+#: ../../gpvdm_gui/gui/layer_widget.py:109
 #: ../../gpvdm_gui/gui/generation_rate_editor.py:110
 msgid "Layer name"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/layer_widget.py:189
-#: ../../gpvdm_gui/gui/token_lib.py:115 ../../gpvdm_gui/gui/layer_widget.py:114
+#: ../../gpvdm_gui/gui/token_lib.py:115 ../../gpvdm_gui/gui/layer_widget.py:109
 msgid "Layer type"
 msgstr ""
 
@@ -7777,14 +7775,14 @@ msgid ""
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/layer_widget.py:189
-#: ../../gpvdm_gui/gui/layer_widget.py:114
+#: ../../gpvdm_gui/gui/layer_widget.py:109
 msgid ""
 "Solve optical\n"
 "problem"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/layer_widget.py:189
-#: ../../gpvdm_gui/gui/layer_widget.py:114
+#: ../../gpvdm_gui/gui/layer_widget.py:109
 msgid ""
 "Solve thermal\n"
 "problem"
@@ -8947,14 +8945,14 @@ msgid "Solar Spectrum Generator"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_file.py:79
-#: ../../gpvdm_gui/gui/ribbon_file.py:79
+#: ../../gpvdm_gui/gui/ribbon_file.py:77
 msgid ""
 "Open\n"
 "simulation"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_file.py:88
-#: ../../gpvdm_gui/gui/ribbon_file.py:90
+#: ../../gpvdm_gui/gui/ribbon_database.py:105
 msgid ""
 "Backup\n"
 "Simulaion"
@@ -8967,24 +8965,24 @@ msgid ""
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_file.py:98
-#: ../../gpvdm_gui/gui/ribbon_file.py:94
+#: ../../gpvdm_gui/gui/ribbon_file.py:88
 msgid ""
 "Script\n"
 "Editor"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_file.py:152
-#: ../../gpvdm_gui/gui/ribbon_file.py:172
+#: ../../gpvdm_gui/gui/ribbon_file.py:164
 msgid "New backup:"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_file.py:152
-#: ../../gpvdm_gui/gui/ribbon_file.py:172
+#: ../../gpvdm_gui/gui/ribbon_file.py:164
 msgid "New backup name"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_file.py:172
-#: ../../gpvdm_gui/gui/ribbon_file.py:192
+#: ../../gpvdm_gui/gui/ribbon_database.py:211
 msgid "New backup"
 msgstr ""
 
@@ -9380,25 +9378,25 @@ msgid "New shape name"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_database.py:177
-#: ../../gpvdm_gui/gui/ribbon_database.py:133
+#: ../../gpvdm_gui/gui/ribbon_database.py:138
 msgid "Add Material"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_database.py:187
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_database.py:211
-#: ../../gpvdm_gui/gui/ribbon_database.py:143
-#: ../../gpvdm_gui/gui/ribbon_database.py:167
+#: ../../gpvdm_gui/gui/ribbon_database.py:148
+#: ../../gpvdm_gui/gui/ribbon_database.py:172
 msgid "Add Spectra"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_database.py:203
-#: ../../gpvdm_gui/gui/ribbon_database.py:159
+#: ../../gpvdm_gui/gui/ribbon_database.py:164
 msgid ""
 "<big><b>Laser setup</b></big><br> Use this window to set up your lasers."
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_database.py:219
-#: ../../gpvdm_gui/gui/ribbon_database.py:175
+#: ../../gpvdm_gui/gui/ribbon_database.py:180
 msgid "Add Shape"
 msgstr ""
 
@@ -9891,12 +9889,16 @@ msgstr ""
 msgid "Rotate around y-axis"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:218
+#: ../../gpvdm_gui/gui/token_lib.py:201
+msgid "Rotate around x-axis"
+msgstr ""
+
+#: ../../gpvdm_gui/gui/token_lib.py:219
 #: ../../gpvdm_gui/gui/tb_item_solvers.py:70
 msgid "Drift diffusion"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:219
+#: ../../gpvdm_gui/gui/token_lib.py:220
 msgid ""
 "Circuit model\n"
 "parameters"
@@ -10774,7 +10776,7 @@ msgstr ""
 msgid "Electrical boundary conditions"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/ribbon_file.py:87
+#: ../../gpvdm_gui/gui/ribbon_file.py:85
 msgid ""
 "Export\n"
 "Zip"

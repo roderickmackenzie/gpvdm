@@ -439,5 +439,3 @@ class epitaxy(json_base):
 		if len(mesh_y.segments)==1:
 			mesh_y.segments[0].len=tot_dy
 
-
-			

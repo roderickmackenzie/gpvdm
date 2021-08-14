@@ -198,6 +198,7 @@ def build_token_lib():
 	#shape?.inp
 	lib.append(my_data("shape_type",_("Edit"),_("Shape type"),1.0,"gpvdm_select_shape",units_widget="QPushButton"))
 	lib.append(my_data("rotate_y","degrees",_("Rotate around y-axis"),1.0,"QLineEdit"))
+	lib.append(my_data("rotate_x","degrees",_("Rotate around x-axis"),1.0,"QLineEdit"))
 
 	lib.append(my_data("dx","m",_("dx of the object"),1.0,"QLineEdit"))
 	lib.append(my_data("dy","m",_("dy of the object"),1.0,"QLineEdit"))
@@ -218,7 +219,6 @@ def build_token_lib():
 	lib.append(my_data("shape_dos",_("Edit"),_("Drift diffusion"),1.0,"shape_dos_switch",units_widget="QPushButton"))
 	lib.append(my_data("shape_electrical",_("Edit"),_("Circuit model\nparameters"),1.0,"shape_electrical_switch",units_widget="QPushButton"))
 	lib.append(my_data("optical_material",_("Edit"),_("Optical material"),1.0,"gpvdm_select_material" ,units_widget="QPushButton"))
-	lib.append(my_data("shape_flip_y",_("True/False"),_("Flip y"),1.0,"gtkswitch"))
 	lib.append(my_data("color_r","rgb",_("Color"),1.0,"QColorPicker"))
 
 	#interface?.inp
