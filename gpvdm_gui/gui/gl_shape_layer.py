@@ -97,10 +97,6 @@ class shape_layer():
 
 		a.allow_cut_view=True
 		a.selectable=True
-		v=vec()
-		v.x=shape0.dx
-		v.y=shape0.dy
-		v.z=shape0.dz
 
 		a.rotate_x=shape0.rotate_x
 		a.rotate_y=shape0.rotate_y
@@ -109,8 +105,10 @@ class shape_layer():
 		a.triangles=[]
 
 		if shape0.triangles!=None:
-			a.triangles=triangles_mul_vec(shape0.triangles.data,v)
-			a.triangles=scale_trianges_m2screen(a.triangles)
+			a.triangles.extend(shape0.triangles.data)
+			#if shape0.shape_name=="dome":
+			#	for t in shape0.triangles.data:
+			#		print(t)
 		self.gl_objects_add(a)
 		#shape0.color_alpha
 		self.objects[-1].compile("triangles_solid",[shape0.color_r,shape0.color_g,shape0.color_b,0.5],[self.objects[-1].r_false,self.objects[-1].g_false,self.objects[-1].b_false])

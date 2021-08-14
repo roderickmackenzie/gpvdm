@@ -133,7 +133,7 @@ class gl_cords():
 		xyz=vec()
 		xyz.x=-18.0
 		xyz.z=-18.0
-		xyz.y=0.0
+		xyz.y=y_pos
 		o.xyz.append(xyz)
 
 		n=int(stop_x-start_x)
@@ -141,16 +141,16 @@ class gl_cords():
 		pos=start_x
 
 		for i in range(0,n+1):
-			o.triangles.append([start_x, y_pos, pos])
-			o.triangles.append([stop_x, y_pos, pos])
+			o.triangles.append([start_x, 0.0, pos])
+			o.triangles.append([stop_x, 0.0, pos])
 			pos=pos+dx
 
 
 		dz=1.0
 		pos=start_z
 		for i in range(0,n+1):
-			o.triangles.append([pos, y_pos, start_z])
-			o.triangles.append([pos, y_pos, stop_z])
+			o.triangles.append([pos, 0.0, start_z])
+			o.triangles.append([pos, 0.0, stop_z])
 			pos=pos+dz
 
 		self.gl_objects_add(o)

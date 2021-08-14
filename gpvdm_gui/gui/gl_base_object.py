@@ -39,9 +39,9 @@ class gl_base_object():
 		self.xyz=[]
 
 		self.dxyz=vec()
-		self.dxyz.x=dx
-		self.dxyz.y=dy
-		self.dxyz.z=dz
+		self.dxyz.x=-1.0
+		self.dxyz.y=-1.0
+		self.dxyz.z=-1.0
 
 		self.r=r
 		self.g=g

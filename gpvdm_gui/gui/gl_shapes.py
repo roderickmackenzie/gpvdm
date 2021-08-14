@@ -103,12 +103,17 @@ class gl_shapes:
 
 		for xyz in o.xyz:
 			glPushMatrix()
+			#glScalef(1.0, 1.0, 1.0) 
 			#print(o.id,xyz.x,xyz.y,xyz.z)
-			
 			glTranslatef(xyz.x,xyz.y,xyz.z)
-			glRotatef(o.rotate_x, 1.0, 0.0, 0)
+			glTranslatef(o.dxyz.x/2.0,o.dxyz.y/2.0,o.dxyz.z/2.0)
 			glRotatef(o.rotate_y, 0.0, 1.0, 0)
+			glRotatef(o.rotate_x, 1.0, 0.0, 0)
+			glTranslatef(-o.dxyz.x/2.0,-o.dxyz.y/2.0,-o.dxyz.z/2.0)
+			
 
+			if o.dxyz.x!=-1:
+				glScaled(o.dxyz.x,o.dxyz.y,o.dxyz.z)
 			for n in range(0,len(o.gl_array_types)):
 				if o.gl_array_line_width[n]!=None:
 					glLineWidth(o.gl_array_line_width[n])
@@ -118,6 +123,7 @@ class gl_shapes:
 					glColorPointer(4, GL_FLOAT, 0, o.gl_array_colors_float32[n])
 
 				glDrawArrays(o.gl_array_types[n], 0, o.gl_array_points[n])
+
 
 			glPopMatrix()
 

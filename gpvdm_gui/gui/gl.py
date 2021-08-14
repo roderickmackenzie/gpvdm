@@ -299,7 +299,7 @@ if open_gl_ok==True:
 						o.xyz.append(xyz)
 
 						o.dxyz.x=0.1
-						o.dxyz.y=y_len
+						o.dxyz.y=obj.dy*scale_get_ymul()
 
 						o.r=0.0
 						o.g=0.0

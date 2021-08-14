@@ -62,11 +62,11 @@ class gl_scale:
 		global y_mul
 		global y_start
 		if type(y)==float or type(y)==int:
-			return -(y-y_start)/y_mul
+			return (y-y_start)/y_mul
 		elif type(y)==list:
 			ret=[]
 			for val in y:
-				ret.append(-(val-y_start)/y_mul)
+				ret.append((val-y_start)/y_mul)
 			return ret
 
 	def project_screen_z_to_m(z):
@@ -96,11 +96,11 @@ class gl_scale:
 		global y_mul
 		global y_start
 		if type(y)==float or type(y)==int :
-			return y_start-y_mul*y
+			return y_start+y_mul*y
 		elif type(y)==list:
 			ret=[]
 			for val in y:
-				ret.append(y_start-y_mul*val)
+				ret.append(y_start+y_mul*val)
 			return ret
 
 		
@@ -191,7 +191,7 @@ def set_m2screen():
 
 	x_start=-device_x/2.0
 	z_start=-device_z/2.0
-	y_start=device_y
+	y_start=0.0
 
 
 def scale_get_start_x():
@@ -235,15 +235,15 @@ def scale_trianges_m2screen(triangles):
 		t0=triangle()
 		t0.points=t.points
 		t0.xyz0.x=t.xyz0.x*x_mul
-		t0.xyz0.y=-t.xyz0.y*y_mul
+		t0.xyz0.y=t.xyz0.y*y_mul
 		t0.xyz0.z=t.xyz0.z*z_mul
 
 		t0.xyz1.x=t.xyz1.x*x_mul
-		t0.xyz1.y=-t.xyz1.y*y_mul
+		t0.xyz1.y=t.xyz1.y*y_mul
 		t0.xyz1.z=t.xyz1.z*z_mul
 
 		t0.xyz2.x=t.xyz2.x*x_mul
-		t0.xyz2.y=-t.xyz2.y*y_mul
+		t0.xyz2.y=t.xyz2.y*y_mul
 		t0.xyz2.z=t.xyz2.z*z_mul
 		ret.append(t0)
 
