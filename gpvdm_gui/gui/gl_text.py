@@ -131,16 +131,16 @@ class gl_text():
 		dy=size
 
 		glBegin(GL_QUADS)
-		glTexCoord(0,1) 
+		glTexCoord(0,0) 
 		glVertex3f(x, y, z)
 
-		glTexCoord(1,1) 
+		glTexCoord(1,0) 
 		glVertex3f(x+dx, y, z)
 
-		glTexCoord(1,0)
+		glTexCoord(1,1)
 		glVertex3f(x+dx, y+dy, z)
 
-		glTexCoord(0,0)
+		glTexCoord(0,1)
 
 		glVertex3f(x, y+dy, z)
 

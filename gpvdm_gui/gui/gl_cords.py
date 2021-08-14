@@ -44,6 +44,9 @@ from PyQt5.QtCore import QTimer
 
 from gl_scale import scale_get_start_x
 from gl_scale import scale_get_start_z
+from gl_base_object import gl_base_object
+from triangle import vec
+from gl_scale import scale_get_device_y
 
 class gl_cords():
 	def draw_cords(self):
@@ -77,11 +80,11 @@ class gl_cords():
 
 		glPushMatrix()
 		glTranslatef(start_x,start_y,start_z)
-		self.render_text (0.0,-leng-0.4,0.0, "y")
+		self.render_text (0.0,leng+0.4,0.0, "y")
 		glColor4f(0.7,0.7,0.7, 1.0)
 		quad=gluNewQuadric()
 		#glTranslatef(0.0,0.0,0.0)
-		glRotatef(270, -1.0, 0.0, 0.0)
+		glRotatef(270, 1.0, 0.0, 0.0)
 		gluCylinder(quad, width, width, leng, 10, 1)
 		glTranslatef(0.0,0.0,leng)
 		gluCylinder(quad, 0.1, 0.00, 0.2, 10, 1)
@@ -115,5 +118,42 @@ class gl_cords():
 		self.render_text (1.0,0.0,0.0, "(1,0,0)")
 		self.render_text (0.0,2.0,0.0, "(0,1,0)")
 		self.render_text (0.0,0.0,1.0, "(0,0,1)")
+
+	def gl_objects_add_grid(self):
+		o=gl_base_object()
+		o.id=["grid"]
+		o.type="solid_and_mesh"
+
+		y_pos=scale_get_device_y()
+		start_x=0
+		stop_x=20.0+18.0
+		start_z=0
+		stop_z=20.0+18.0
+
+		xyz=vec()
+		xyz.x=-18.0
+		xyz.z=-18.0
+		xyz.y=0.0
+		o.xyz.append(xyz)
+
+		n=int(stop_x-start_x)
+		dx=1.0#(stop_x-start_x)/n
+		pos=start_x
+
+		for i in range(0,n+1):
+			o.triangles.append([start_x, y_pos, pos])
+			o.triangles.append([stop_x, y_pos, pos])
+			pos=pos+dx
+
+
+		dz=1.0
+		pos=start_z
+		for i in range(0,n+1):
+			o.triangles.append([pos, y_pos, start_z])
+			o.triangles.append([pos, y_pos, stop_z])
+			pos=pos+dz
+
+		self.gl_objects_add(o)
+		self.objects[-1].compile("lines",[0.8,0.8,0.8,1.0],[self.objects[-1].r_false,self.objects[-1].g_false,self.objects[-1].b_false],line_width=1)
 
 

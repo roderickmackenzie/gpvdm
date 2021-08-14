@@ -113,8 +113,8 @@ class shape_layer():
 			a.triangles=scale_trianges_m2screen(a.triangles)
 		self.gl_objects_add(a)
 		#shape0.color_alpha
-		self.objects[-1].compile(GL_TRIANGLES,[shape0.color_r,shape0.color_g,shape0.color_b,0.5],[self.objects[-1].r_false,self.objects[-1].g_false,self.objects[-1].b_false])
-		self.objects[-1].compile(GL_LINES,[shape0.color_r*0.9,shape0.color_g*0.9,shape0.color_b*0.9,shape0.color_alpha],[self.objects[-1].r_false,self.objects[-1].g_false,self.objects[-1].b_false])
+		self.objects[-1].compile("triangles_solid",[shape0.color_r,shape0.color_g,shape0.color_b,0.5],[self.objects[-1].r_false,self.objects[-1].g_false,self.objects[-1].b_false])
+		self.objects[-1].compile("triangles_open",[shape0.color_r*0.9,shape0.color_g*0.9,shape0.color_b*0.9,shape0.color_alpha],[self.objects[-1].r_false,self.objects[-1].g_false,self.objects[-1].b_false],line_width=5)
 		#print(self.objects[-1].r_false,self.objects[-1].g_false,self.objects[-1].b_false)
 
 		

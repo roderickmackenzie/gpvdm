@@ -762,12 +762,6 @@ def build_token_lib():
 	lib.append(my_data("#gui_config_3d_enabled",_("True/False"),_("Enable 3d effects"),1.0,"gtkswitch"))
 	lib.append(my_data("#gui_use_icon_theme",_("True/False"),_("Use icons from OS"),1.0,"gtkswitch"))
 	lib.append(my_data("#matlab_interpreter",_("au"),_("Matlab interpreter"),1.0,"QLineEdit"))
-	lib.append(my_data("#gl_render_grid",_("True/False"),_("Render grid"),1.0,"gtkswitch"))
-	lib.append(my_data("#gl_bg_color",_("rgb"),_("Color used for 3d background"),1.0,"QColorPicker"))
-	lib.append(my_data("#gl_render_text",_("au"),_("Render text in 3d"),1.0,"gtkswitch"))
-	lib.append(my_data("#gl_device_height",_("au"),_("Device Heigh (display only)"),1.0,"QLineEdit"))
-	lib.append(my_data("#gl_dy_layer_offset",_("au"),_("Layer offset (display only)"),1.0,"QLineEdit"))
-
 
 	#ce
 	lib.append(my_data("ce_start_sun",_("au"),_("Start light intensity"),1.0,"QLineEdit"))

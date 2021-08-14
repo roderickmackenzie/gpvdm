@@ -296,7 +296,6 @@ class gl_objects():
 				#print("solid_and_mesh>>",o.z)
 				if self.view_options.transparent_objects==False:
 					self.paint_from_array(o)
-					#self.paint_open_triangles_from_array(o)
 				else:
 					self.paint_open_triangles_from_array(o,false_color=False,line_width=2)
 			elif o.type=="solid_and_mesh_cut_through":
@@ -313,8 +312,6 @@ class gl_objects():
 				self.paint_marker_small(o)
 			elif o.type=="box_cut_through":
 				self.box(o,cut_through=True)
-			elif o.type=="grid":
-				self.gl_render_grid(o)
 			elif o.type=="text":
 				self.gl_render_text(o)
 			else:

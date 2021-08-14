@@ -45,7 +45,7 @@ from gl_scale import scale_get_ymul
 from gl_scale import scale_get_zmul
 
 from gl_base_object import gl_base_object
-
+from triangle import vec
 
 class gl_render_obj:
 
@@ -279,7 +279,7 @@ class gl_render_obj:
 		w=o.dxyz.x
 		h=o.dxyz.y
 		d=o.dxyz.z
-		print("l",o.xyz[0].y,o.dxyz.y)
+		#print("l",o.xyz[0].y,o.dxyz.y)
 		for xyz in o.xyz:
 			glPushMatrix()
 			glTranslatef(xyz.x,xyz.y,xyz.z)
@@ -356,28 +356,5 @@ class gl_render_obj:
 			glPopMatrix()
 
 
-	def gl_render_grid(self,o):
-		glLineWidth(1)
-		self.set_color(o)
-		start_x=-18.0
-		stop_x=20.0
-		n=int(stop_x-start_x)
-		dx=1.0#(stop_x-start_x)/n
-		pos=start_x
-		glBegin(GL_LINES)
-		for i in range(0,n+1):
-			glVertex3f(start_x, 0.0, pos)
-			glVertex3f(stop_x, 0.0, pos)
-			pos=pos+dx
 
 
-		start_z=-18.0
-		stop_z=20.0
-		dz=1.0
-		pos=start_z
-		for i in range(0,n+1):
-			glVertex3f(pos, 0.0, start_z)
-			glVertex3f(pos, 0.0, stop_z)
-			pos=pos+dz
-
-		glEnd()

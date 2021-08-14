@@ -138,13 +138,13 @@ class gl_input():
 		if obj==False:
 			if event.buttons()==Qt.LeftButton:
 				if self.active_view.enable_view_move==True:
-					self.active_view.xRot =self.active_view.xRot - 1 * dy
+					self.active_view.xRot =self.active_view.xRot + 1 * dy
 					self.active_view.yRot =self.active_view.yRot - 1 * dx
 
 			if event.buttons()==Qt.RightButton:
 				self.set_cursor(QCursor(Qt.SizeAllCursor))
 				self.active_view.x_pos =self.active_view.x_pos + 0.1 * dx
-				self.active_view.y_pos =self.active_view.y_pos - 0.1 * dy
+				self.active_view.y_pos =self.active_view.y_pos + 0.1 * dy
 		else:
 			dx_=dx*cos(2.0*3.14159*self.active_view.yRot/360)+dy*sin(2.0*3.14159*self.active_view.yRot/360)
 			dz_=dx*sin(2.0*3.14159*self.active_view.yRot/360)

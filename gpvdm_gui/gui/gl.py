@@ -286,7 +286,7 @@ if open_gl_ok==True:
 				#print(">>>>",l,contact_layer,contact_layers)
 #				print(obj.shape_name)
 				if contact_layer==False:
-					print(obj.id,name,obj.y0,obj.dy)
+					#print(obj.id,name,obj.y0,obj.dy)
 					self.shape_to_screen(obj)			
 
 				if obj.layer_type=="active":
@@ -367,7 +367,7 @@ if open_gl_ok==True:
 					
 
 			glLoadIdentity()
-			glScalef(1.0, 1.0, -1.0) 
+			glScalef(1.0, -1.0, -1.0) 
 
 			glTranslatef(view.x_pos, view.y_pos, view.zoom) # Move Into The Screen
 			
@@ -510,13 +510,7 @@ if open_gl_ok==True:
 				self.draw_light_profile()
 
 			if self.view_options.render_grid==True:
-				o=gl_base_object()
-				o.id=["grid"]
-				o.r=0.5
-				o.g=0.5
-				o.b=0.5
-				o.type="grid"
-				self.gl_objects_add(o)
+				self.gl_objects_add_grid()
 
 			if 1==0:
 				for l in self.lights:

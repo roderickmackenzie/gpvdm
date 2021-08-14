@@ -66,6 +66,7 @@ class gl_base_object():
 		self.gl_array_colors_float32=[]
 		self.gl_array_points=[]
 		self.gl_array_false_colors_float32=[]
+		self.gl_array_line_width=[]
 
 		self.rotate_y=0.0
 		self.rotate_x=0.0
@@ -164,13 +165,14 @@ class gl_base_object():
 
 		return ret
 
-	def compile(self,gl_render_type,color,false_color):
-		self.gl_array_types.append(gl_render_type)
+	def compile(self,gl_render_type,color,false_color,line_width=3):
 		points=[]
 		colors=[]
 		false_colors=[]
 		points_per_tri=3
-		if gl_render_type==GL_TRIANGLES:
+		if gl_render_type=="triangles_solid":
+			self.gl_array_types.append(GL_TRIANGLES)
+			self.gl_array_line_width.append(None)
 			points_per_tri=3
 			for t in self.triangles:
 				points.append([t.xyz0.x,t.xyz0.y,t.xyz0.z])
@@ -182,7 +184,9 @@ class gl_base_object():
 				points.append([t.xyz2.x,t.xyz2.y,t.xyz2.z])
 				colors.append(color)
 				false_colors.append(false_color)
-		elif gl_render_type==GL_LINES:
+		elif gl_render_type=="triangles_open":
+			self.gl_array_types.append(GL_LINES)
+			self.gl_array_line_width.append(line_width)
 			points_per_tri=6
 			for t in self.triangles:
 				points.append([t.xyz0.x,t.xyz0.y,t.xyz0.z])
@@ -205,7 +209,14 @@ class gl_base_object():
 				points.append([t.xyz0.x,t.xyz0.y,t.xyz0.z])
 				colors.append(color)
 				false_colors.append(false_color)
-
+		elif gl_render_type=="lines":
+			self.gl_array_types.append(GL_LINES)
+			self.gl_array_line_width.append(line_width)
+			points_per_tri=1
+			for t in self.triangles:
+				points.append(t)
+				colors.append(color)
+				false_colors.append(false_color)
 
 		self.gl_array_points.append(len(self.triangles)*points_per_tri)
 		self.gl_array_float32.append(np.array(points, dtype='float32'))

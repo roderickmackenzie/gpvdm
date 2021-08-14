@@ -40,7 +40,7 @@ import os
 
 class view_point():
 	def __init__(self):
-		self.xRot =-25.0
+		self.xRot =25.0
 		self.yRot =1.0
 		self.zRot =0.0
 		self.x_pos=0.0
