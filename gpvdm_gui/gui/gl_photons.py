@@ -48,15 +48,51 @@ from gpvdm_json import gpvdm_data
 
 class gl_photons():
 
+	def draw_photon(self,x,y,z,up,r,g,b):
+
+		length=0.9
+		glColor4f(r, g, b, 1.0)
+
+		glLineWidth(3)
+		wx=np.arange(0, length , 0.025)
+		wy=np.sin(wx*3.14159*8)*0.2
+		
+		start_y=y+length
+		stop_y=y
+
+		glBegin(GL_LINES)
+		for i in range(1,len(wx)):
+			glVertex3f(x, start_y-wx[i-1], z+wy[i-1])
+			glVertex3f(x, start_y-wx[i], z+wy[i])
+
+		glEnd()
+
+		if up==False:
+			glBegin(GL_TRIANGLES)
+
+			glVertex3f(x-0.1, stop_y,z)
+			glVertex3f(x+0.1, stop_y ,z)
+			glVertex3f(x,stop_y-0.1 ,z)
+
+			glEnd()
+		else:
+			glBegin(GL_TRIANGLES)
+
+			glVertex3f(x-0.1, start_y,z)
+			glVertex3f(x+0.1, start_y ,z)
+			glVertex3f(x,start_y+0.1 ,z)
+
+			glEnd()
+
 	def draw_photon_sheet(self,source,x0,z0):
 		up_photons=False
 		device_top=scale_get_device_y()
 		dx=scale_get_device_x()
 
 		if source.light_illuminate_from=="y0":
-			y=device_top+0.5
+			y=-1.0
 		elif source.light_illuminate_from=="y1":
-			y=-1.5
+			y=device_top+0.5
 			up_photons=True
 		else:
 			return
@@ -79,7 +115,7 @@ class gl_photons():
 
 			for i in range(0,len(x)):
 				for ii in range(0,len(z)):
-					self.draw_photon(x[i],y,z[ii],up_photons,0.0,1.0,0.0)
+					self.draw_photon(x[i],y,z[ii],not up_photons,0.0,1.0,0.0)
 
 	def draw_photons(self,x0,z0):
 		if self.false_color==True:
@@ -92,8 +128,6 @@ class gl_photons():
 
 		if self.emission==True and self.ray_model==False:
 			den=1.2
-			#x=np.arange(0, max_gui_device_x , den)
-			#y=np.arange(0, max_gui_device_z , den)
 			x=np.arange(x0, x0+scale_get_device_x() , den)
 			z=np.arange(z0, z0+scale_get_device_z() , den)
 

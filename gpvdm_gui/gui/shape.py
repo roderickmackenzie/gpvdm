@@ -226,7 +226,6 @@ class shape(json_base):
 		self.triangles=None
 		self.file_name=None
 		self.shape_path=""
-
 		self.shapes=[]
 
 	def decode_from_json(self,json):

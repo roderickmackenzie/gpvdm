@@ -310,7 +310,7 @@ class gpvdm_main_window(QMainWindow):
 		used_files_add(os.path.join(new_dir,"sim.gpvdm"))
 		a=gpvdm_data()
 		a.load(os.path.join(new_dir,"json.inp"))
-		a.load_triagles()
+
 		a.sim.version=const_ver()
 		a.save()
 		#get_watch().reset()
@@ -355,6 +355,7 @@ class gpvdm_main_window(QMainWindow):
 			self.ribbon.electrical.tb_solvers.changed.connect(self.notebook.tab_main.ribbon.callback_circuit_diagram)
 		except:
 			pass
+
 
 	def load_sim(self,filename):
 		new_path=os.path.dirname(filename)

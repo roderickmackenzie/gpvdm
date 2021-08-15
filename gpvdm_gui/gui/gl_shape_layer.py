@@ -103,7 +103,7 @@ class shape_layer():
 
 		#resize the shape to the mesh
 		a.triangles=[]
-
+		#print(shape0.triangles)
 		if shape0.triangles!=None:
 			a.triangles.extend(shape0.triangles.data)
 			#if shape0.shape_name=="dome":

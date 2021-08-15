@@ -111,12 +111,13 @@ class gl_shapes:
 			glRotatef(o.rotate_x, 1.0, 0.0, 0)
 			glTranslatef(-o.dxyz.x/2.0,-o.dxyz.y/2.0,-o.dxyz.z/2.0)
 			
-
+			print(o.id)
 			if o.dxyz.x!=-1:
 				glScaled(o.dxyz.x,o.dxyz.y,o.dxyz.z)
 			for n in range(0,len(o.gl_array_types)):
 				if o.gl_array_line_width[n]!=None:
 					glLineWidth(o.gl_array_line_width[n])
+				#print(o.gl_array_float32)
 				glVertexPointer(3, GL_FLOAT, 0, o.gl_array_float32[n])
 
 				if self.false_color==False:

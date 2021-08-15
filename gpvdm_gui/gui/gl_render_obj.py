@@ -86,46 +86,6 @@ class gl_render_obj:
 			#glVertex3f(-1.0,-1.0,0.0)
 		
 
-
-
-
-
-	def draw_photon(self,x,y,z,up,r,g,b):
-
-		length=0.9
-		glColor4f(r, g, b, 1.0)
-
-		glLineWidth(3)
-		wx=np.arange(0, length , 0.025)
-		wy=np.sin(wx*3.14159*8)*0.2
-		
-		start_y=y+length
-		stop_y=y
-
-		glBegin(GL_LINES)
-		for i in range(1,len(wx)):
-			glVertex3f(x, start_y-wx[i-1], z+wy[i-1])
-			glVertex3f(x, start_y-wx[i], z+wy[i])
-
-		glEnd()
-
-		if up==False:
-			glBegin(GL_TRIANGLES)
-
-			glVertex3f(x-0.1, stop_y,z)
-			glVertex3f(x+0.1, stop_y ,z)
-			glVertex3f(x,stop_y-0.1 ,z)
-
-			glEnd()
-		else:
-			glBegin(GL_TRIANGLES)
-
-			glVertex3f(x-0.1, start_y,z)
-			glVertex3f(x+0.1, start_y ,z)
-			glVertex3f(x,start_y+0.1 ,z)
-
-			glEnd()
-
 	def raw_ray(self,o):
 		glLineWidth(5)
 		self.set_color(o)

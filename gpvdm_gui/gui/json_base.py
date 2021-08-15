@@ -64,7 +64,7 @@ class json_base():
 		self.loaded=False
 		self.latex_allowed=[]
 		self.latex_banned=[]
-
+		self.triangles_loaded=False
 
 		self.f=inp()
 
@@ -300,8 +300,10 @@ class json_base():
 			self.load_from_json(self.f.json)
 			self.last_time=self.f.time()
 			self.loaded=True
+			self.triangles_loaded=False
 
 	def load(self,file_name):
+		#print("gpvdm _load")
 		self.f.set_file_name(file_name)
 		self.file_name=file_name
 		self.reload()
@@ -344,3 +346,4 @@ class json_base():
 			if obj.triangles==None:
 				obj.shape_enabled=False
 
+		self.triangles_loaded=True

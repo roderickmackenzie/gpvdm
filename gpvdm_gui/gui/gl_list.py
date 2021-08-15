@@ -272,9 +272,6 @@ class gl_objects():
 				obj.selected=True
 
 	def gl_objects_render(self):
-		#print("----")
-		#self.gl_objects_dump()
-		#print(len(self.objects))
 		for o in self.objects:
 			if o.type=="plane":
 				self.plane(o)
@@ -295,6 +292,7 @@ class gl_objects():
 			elif o.type=="solid_and_mesh":
 				#print("solid_and_mesh>>",o.z)
 				if self.view_options.transparent_objects==False:
+					#print(o.id)
 					self.paint_from_array(o)
 				else:
 					self.paint_open_triangles_from_array(o,false_color=False,line_width=2)
@@ -314,9 +312,9 @@ class gl_objects():
 				self.box(o,cut_through=True)
 			elif o.type=="text":
 				self.gl_render_text(o)
-			else:
-				self.paint_from_array(o)
-				self.paint_open_triangles_from_array(o)
+			#else:
+			#	self.paint_from_array(o)
+			#	self.paint_open_triangles_from_array(o)
 
 			#print(o.selected,o.selectable,o.id)
 

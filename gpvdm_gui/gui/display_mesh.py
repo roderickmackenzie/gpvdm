@@ -106,10 +106,10 @@ class display_mesh(QWidget):
 			self.display.view_options.draw_device=False
 			self.display.enable_draw_ray_mesh=False
 			self.display.view_options.draw_rays=False
-			self.display.view.render_photons=False
+			self.display.view_options.render_photons=False
 
 
-			self.display.force_redraw()
+			#self.display.force_redraw()
 			#global_object_register("display_mesh_recalculate",self.recalculate)
 
 		self.hbox.addWidget(self.display)

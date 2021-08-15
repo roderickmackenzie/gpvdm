@@ -254,6 +254,7 @@ if open_gl_ok==True:
 				y_pos=y_pos+l.dy
 
 		def draw_device2(self,x,z):
+			print(">>>>>>>>>>")
 			y=scale_get_device_y()
 			epi=get_epi()
 			contact_layers=epi.contacts.get_layers_with_contacts()
@@ -294,7 +295,7 @@ if open_gl_ok==True:
 						o=gl_base_object()
 						xyz=vec()
 						xyz.x=x+scale_get_device_x()+0.1
-						xyz.y=gl_scale.project_m2screen_y(obj.y0+obj.dy)
+						xyz.y=gl_scale.project_m2screen_y(obj.y0)
 						xyz.z=z						
 						o.xyz.append(xyz)
 
@@ -319,8 +320,9 @@ if open_gl_ok==True:
 							o.b=1.0
 							xyz=vec()
 							xyz.x=x+scale_get_device_x()+0.2
-							xyz.y=gl_scale.project_m2screen_y(obj.y0+obj.dy)
+							xyz.y=gl_scale.project_m2screen_y(obj.y0)
 							xyz.z=z+(len(epi.layers)-l)*0.1
+							o.xyz.append(xyz)
 							o.id=["text"]
 							o.type="text"
 							o.text=display_name
@@ -388,7 +390,7 @@ if open_gl_ok==True:
 
 			if self.enable_draw_ray_mesh==True:
 				self.draw_ray_mesh()
-				
+			
 			if self.view_options.optical_mode==True:
 				self.draw_mode()
 
@@ -455,6 +457,9 @@ if open_gl_ok==True:
 			self.menu_update()
 			self.text_clear_lib()
 			data=gpvdm_data()
+			if data.triangles_loaded==False:
+				data.load_triagles()
+
 			x=gl_scale.project_m2screen_x(0)
 			z=gl_scale.project_m2screen_z(0)
 

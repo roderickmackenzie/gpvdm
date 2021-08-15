@@ -154,7 +154,8 @@ class gl_object_editor():
 				sub_shapes=epi.get_all_sub_shapes(obj.id[0])
 
 				for sub in sub_shapes:
-					ids.append(sub.id)
+					if sub.id not in ids:
+						ids.append(sub.id)
 
 				self.shape_edit=object_editor()
 				self.shape_edit.load(ids)
