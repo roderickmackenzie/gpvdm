@@ -211,9 +211,12 @@ void epitaxy_load(struct simulation *sim,struct epitaxy *in, struct json_obj *ob
 		}
 
 		in->layer[i].y_start=y_pos;
+		s->y0=in->layer[i].y_start;
+		//printf("%Le %Le %Le\n",in->layer[i].y_start,in->layer[i].width,s->dy);
 		y_pos+=in->layer[i].width;
 		in->layer[i].y_stop=y_pos;
 	}
+	//getchar();
 
 	in->device_stop=epitaxy_get_device_stop(in);
 

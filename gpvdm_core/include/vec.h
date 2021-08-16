@@ -64,6 +64,7 @@ void vec_mul_vec(struct vec *my_vec1,struct vec *my_vec2);
 double vec_fabs(struct vec *my_vec);
 void vec_rotate(struct vec *my_vec,double ang);
 void vec_rotate_y(struct vec *my_vec,double ang);
+void vec_rotate_x(struct vec *my_vec,double ang);
 double vec_dot(struct vec *a,struct vec *b);
 double vec_dist(struct vec *a,struct vec *b);
 double vec_dist_zx(struct vec *a,struct vec *b);

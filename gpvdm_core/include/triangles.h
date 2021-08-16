@@ -81,6 +81,7 @@ void triangles_cal_angles(struct vectors* out,struct triangles* in);
 void triangles_remove_y_zero_triangles(struct triangles *in);
 void triangles_make_btm_layer_from_top(struct triangles *in);
 void triangles_rotate_y(struct triangles *in,double ang);
+void triangles_rotate_x(struct triangles *in,double ang);
 
 //flags
 void triangles_set_flag(struct triangles *obj,int flag);

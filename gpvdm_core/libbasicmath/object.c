@@ -52,10 +52,6 @@ void object_cal_min_max(struct object *obj)
 {
 	triangles_find_min(&(obj->min),&(obj->tri));
 	triangles_find_max(&(obj->max),&(obj->tri));
-
-	//vec_print(&(obj->min));
-	//vec_print(&(obj->max));
-	//getchar();
 }
 
 void object_init(struct object *obj)

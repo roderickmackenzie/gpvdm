@@ -71,6 +71,9 @@ class gl_base_object():
 		self.rotate_y=0.0
 		self.rotate_x=0.0
 
+		#remove later maybe used for circuit
+		self.gl_array_done=False
+
 	def copy(self,obj):
 		self.id=obj.id
 		self.type=obj.type

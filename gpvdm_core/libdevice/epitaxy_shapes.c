@@ -92,13 +92,8 @@ void epitaxy_shapes_load(struct simulation *sim,struct epitaxy *in, struct json_
 			{
 				s=&(in->layer[l].shapes[ns]);
 				s->epi_index=l;
-				if (s->flip_y==FALSE)
-				{
-					s->y0=in->layer[l].y_start+s->y0;		//Starting from zero
-				}else
-				{
-					s->y0=in->layer[l].y_stop-s->y0;		//Starting from top of layer
-				}
+				s->y0=in->layer[l].y_start+s->y0;		//Starting from zero
+
 
 				if (s!=NULL)
 				{

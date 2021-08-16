@@ -41,6 +41,7 @@ from gl_scale import project_trianges_m2screen
 from gl_scale import gl_scale
 
 from gl import glWidget
+from triangle import vec
 
 class dissection(QWidget):
 	def __init__(self):
@@ -128,12 +129,12 @@ class plot_window(QWidget):
 			#self.plot.triangle_file=input_files[0]
 
 			self.plot.draw_electrical_mesh=False
-			self.plot.view.draw_device=False
+			self.plot.view_options.draw_device=False
 			self.plot.enable_draw_ray_mesh=False
 			self.plot.view_options.enable_draw_light_source=False
 			self.plot.view_options.draw_rays=False
-			self.plot.view.render_photons=False
-			self.plot.view.optical_mode=False
+			self.plot.view_options.render_photons=False
+			self.plot.view_options.optical_mode=False
 
 			if data_type=="zxy-d":
 				self.plot.plot_graph=True
@@ -163,13 +164,13 @@ class plot_window(QWidget):
 			self.setLayout(self.main_vbox)
 
 			self.plot.draw_electrical_mesh=False
-			self.plot.view.draw_device=False
+			self.plot.view_options.draw_device=False
 			self.plot.enable_draw_ray_mesh=False
 			self.plot.view_options.enable_draw_light_source=False
 			self.plot.view_options.draw_rays=False
 			self.plot.plot_graph=False
 			self.plot.plot_circuit=True
-			self.plot.view.render_photons=False
+			self.plot.view_options.render_photons=False
 			self.plot.graph_data.load(input_files[0])
 			self.show()
 
@@ -185,12 +186,12 @@ class plot_window(QWidget):
 			#self.plot.triangle_file=input_files[0]
 
 			self.plot.draw_electrical_mesh=False
-			self.plot.view.draw_device=False
+			self.plot.view_options.draw_device=False
 			self.plot.enable_draw_ray_mesh=True
 			self.plot.view_options.enable_draw_light_source=False
 			self.plot.view_options.draw_rays=False
 			self.plot.scene_built=True
-			self.plot.view.render_photons=False
+			self.plot.view_options.render_photons=False
 
 			if self.data.load(input_files[0])==True:
 				a=gl_base_object()
@@ -199,6 +200,11 @@ class plot_window(QWidget):
 				a.r=self.data.r
 				a.g=self.data.g
 				a.b=self.data.b
+				xyz=vec()
+				xyz.x=0.0
+				xyz.y=0.0
+				xyz.z=0.0
+				a.xyz.append(xyz)
 				a.triangles=project_trianges_m2screen(self.data.data)
 				self.plot.gl_objects_add(a)
 

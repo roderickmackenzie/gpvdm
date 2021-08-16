@@ -170,6 +170,21 @@ void vec_rotate_y(struct vec *my_vec,double ang)
 	my_vec->z=z;
 }
 
+//Rotate arround the x-axis
+void vec_rotate_x(struct vec *my_vec,double ang)
+{
+	double x=0.0;
+	double y=0.0;
+	double z=0.0;
+	x = my_vec->x;
+	y = my_vec->y*cos(ang) - my_vec->z*sin(ang);
+	z = my_vec->y*sin(ang) + my_vec->z*cos(ang);
+
+	my_vec->x=x;
+	my_vec->y=y;
+	my_vec->z=z;
+}
+
 ///Perform a dot product between two vectors
 double vec_dot(struct vec *a,struct vec *b)
 {

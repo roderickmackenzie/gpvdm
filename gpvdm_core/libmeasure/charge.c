@@ -302,13 +302,15 @@ long double cal_contact_charge(struct device *in)
 	long double charge=0.0;
 	long double sum=0.0;
 
-	for (y=0;y<dim->ylen;y++)
+	if (in->drift_diffision_simulations_enabled==TRUE)
 	{
-		charge=in->p[z][x][y]+in->pt_all[z][x][y];
-		charge-=in->n[z][x][y]+in->nt_all[z][x][y];
-		sum+=(dim->ymesh[y]-(in->ylen/2.0))*charge*dim->dy[y];
+		for (y=0;y<dim->ylen;y++)
+		{
+			charge=in->p[z][x][y]+in->pt_all[z][x][y];
+			charge-=in->n[z][x][y]+in->nt_all[z][x][y];
+			sum+=(dim->ymesh[y]-(in->ylen/2.0))*charge*dim->dy[y];
+		}
 	}
-
 	return sum/in->ylen/in->ylen;
 }
 

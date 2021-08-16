@@ -290,7 +290,6 @@ class gl_objects():
 			elif o.type=="solid":
 				self.paint_from_array(o)
 			elif o.type=="solid_and_mesh":
-				#print("solid_and_mesh>>",o.z)
 				if self.view_options.transparent_objects==False:
 					#print(o.id)
 					self.paint_from_array(o)
@@ -326,7 +325,6 @@ class gl_objects():
 				sel.b=0.0
 
 				self.gl_render_box_lines(sel)
-
 
 		if len(self.gl_array_lines_float32)==0:
 			self.gl_array_lines_float32=np.array(self.gl_array_lines, dtype='float32')
@@ -386,6 +384,7 @@ class gl_objects():
 			f.write(ret+"\n")
 
 		f.close()
+
 
 	def gl_objects_load(self,objs):
 		#self.objects=[]

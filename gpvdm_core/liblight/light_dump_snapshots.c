@@ -83,7 +83,7 @@ void light_dump_snapshots(struct simulation *sim,char *output_path,struct light 
 	int b;
 	int y;
 	double max=0.0;
-
+	int made_dir=FALSE;
 
 	for (l=0;l<dim->llen;l++)
 	{
@@ -91,7 +91,7 @@ void light_dump_snapshots(struct simulation *sim,char *output_path,struct light 
 		if (dump_number>=li->dump_verbosity)
 		{
 			dump_make_snapshot_dir(sim,out_dir,output_path ,"optical_snapshots", tot_dump_number);
-
+			made_dir=TRUE;
 			buffer_malloc(&info_file);
 
 			sprintf(temp,"{\n");
@@ -204,9 +204,11 @@ void light_dump_snapshots(struct simulation *sim,char *output_path,struct light 
 
 
 
-
-	join_path(2,snapshots_path,output_path,"optical_snapshots");
-	buffer_dump_path(sim,snapshots_path,"wavelengths.dat",&wavelengths_buffer);
+	if (made_dir==TRUE)
+	{
+		join_path(2,snapshots_path,output_path,"optical_snapshots");
+		buffer_dump_path(sim,snapshots_path,"wavelengths.dat",&wavelengths_buffer);
+	}
 	buffer_free(&wavelengths_buffer);
 
 }

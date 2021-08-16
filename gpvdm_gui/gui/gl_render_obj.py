@@ -131,105 +131,62 @@ class gl_render_obj:
 			glEnd()
 
 	def paint_resistor(self,o):
-		#glPushMatrix()
-		#glTranslatef(o.xyz.x,o.xyz.y,o.xyz.z)
+		for xyz in o.xyz:
+			glPushMatrix()
+			glTranslatef(xyz.x,xyz.y,xyz.z)
 
-		#glLineWidth(2)
-		#self.set_color(o)
-		if o.gl_array_done==False:
-			c=self.cal_color(o)
-			#print(c)
-			#c=[1.0,0.0,0.0,1.0]
-			for xyz in o.xyz:
-				self.gl_array_lines.append([xyz.x+0.0, 			xyz.y+0.0, 			xyz.z+0.0])
-				self.gl_array_colors.append(c)
-				self.gl_array_lines.append([xyz.x+o.dxyz.x, 		xyz.y+o.dxyz.y, 		xyz.z+o.dxyz.z])
-				self.gl_array_colors.append(c)
-				self.gl_array_lines.append([xyz.x+o.dxyz.x*0.3, 	xyz.y+o.dxyz.y*0.3, 	xyz.z+o.dxyz.z*0.3])
-				self.gl_array_colors.append(c)
-				self.gl_array_lines.append([xyz.x+o.dxyz.x*0.7, 	xyz.y+o.dxyz.y*0.7, 	xyz.z+o.dxyz.z*0.7])
-				self.gl_array_colors.append(c)
-			o.gl_array_done=True
-			#o.gl_array2=np.array(o.gl_array, dtype='float32')
-		#glVertexPointer(3, GL_FLOAT, 0, o.gl_array2)
-		#glDrawArrays(GL_LINES, 0, 4)
-
-		#glBegin(GL_LINES)
-		#glVertex3f(0.0, 0.0, 0.0)
-		#glVertex3f(o.dxyz.x, o.dxyz.y, o.dxyz.z)
-		#glEnd()
+			glLineWidth(2)
+			self.set_color(o)
+			glBegin(GL_LINES)
+			glVertex3f(0.0, 0.0, 0.0)
+			glVertex3f(o.dxyz.x, o.dxyz.y, o.dxyz.z)
+			glEnd()
 
 
-		#glLineWidth(5)
-		#glBegin(GL_LINES)
-		#glVertex3f(o.dxyz.x*0.3, o.dxyz.y*0.3, o.dxyz.z*0.3)
-		#glVertex3f(o.dxyz.x*0.7, o.dxyz.y*0.7, o.dxyz.z*0.7)
-		#glEnd()
+			glLineWidth(5)
+			glBegin(GL_LINES)
+			glVertex3f(o.dxyz.x*0.3, o.dxyz.y*0.3, o.dxyz.z*0.3)
+			glVertex3f(o.dxyz.x*0.7, o.dxyz.y*0.7, o.dxyz.z*0.7)
+			glEnd()
 
-		#glPopMatrix()
+			glPopMatrix()
 
 	def paint_diode(self,o):
-		diode_max=0.7
-		#glPushMatrix()
-		#glTranslatef(o.xyz.x,o.xyz.y,o.xyz.z)
-		
-		#self.set_color(o)
-		#glBegin(GL_LINES)
-		#glVertex3f(0.0, 0.0, 0.0)
-		#glVertex3f(o.dxyz.x, o.dxyz.y, o.dxyz.z)
-		#glEnd()
+		diode_min=0.7
+		diode_max=0.3
+		for xyz in o.xyz:
+			glPushMatrix()
+			glTranslatef(xyz.x,xyz.y,xyz.z)
+			glLineWidth(2)
+			self.set_color(o)
+			glBegin(GL_LINES)
+			glVertex3f(0.0, 0.0, 0.0)
+			glVertex3f(o.dxyz.x, o.dxyz.y, o.dxyz.z)
+			glEnd()
 
-		if o.gl_array_done==False:
-			c=self.cal_color(o)
-			#c=[1.0,0.0,0.0,1.0]
-			for xyz in o.xyz:
-				self.gl_array_lines.append([xyz.x,			xyz.y,					xyz.z])
-				self.gl_array_colors.append(c)
-				self.gl_array_lines.append([xyz.x+o.dxyz.x, 	xyz.y+o.dxyz.y, 			xyz.z+o.dxyz.z])
-				self.gl_array_colors.append(c)
 
-				self.gl_array_lines.append([xyz.x-0.1, 		xyz.y+o.dxyz.y*0.3, 		xyz.z+0.0])
-				self.gl_array_colors.append(c)
-				self.gl_array_lines.append([xyz.x+0.1, 		xyz.y+o.dxyz.y*0.3, 		xyz.z+0.0])
-				self.gl_array_colors.append(c)
+			glLineWidth(2)
+			glBegin(GL_LINES)
+			#arrow btm
+			glVertex3f(-0.1, o.dxyz.y*diode_min, 0.0)
+			glVertex3f(0.1, o.dxyz.y*diode_min, 0.0)
+			#bar top
+			glVertex3f(-0.1, o.dxyz.y*diode_max, 0.0)
+			glVertex3f(0.1, o.dxyz.y*diode_max, 0.0)
 
-				#bar top
-				self.gl_array_lines.append([xyz.x-0.1, 		xyz.y+o.dxyz.y*diode_max, xyz.z+0.0])
-				self.gl_array_colors.append(c)
-				self.gl_array_lines.append([xyz.x+0.1, 		xyz.y+o.dxyz.y*diode_max, xyz.z+0.0])
-				self.gl_array_colors.append(c)
+			#arrow left
+			glVertex3f(-0.1, o.dxyz.y*diode_min, 0.0)
+			glVertex3f(0.0, o.dxyz.y*diode_max, 0.0)
 
-				#arrow left`
-				self.gl_array_lines.append([xyz.x-0.1, 		xyz.y+o.dxyz.y*0.3, 		xyz.z+0.0])
-				self.gl_array_colors.append(c)
-				self.gl_array_lines.append([xyz.x+0.0, 		xyz.y+o.dxyz.y*diode_max, xyz.z+0.0])
-				self.gl_array_colors.append(c)
+			#arrow right
+			glVertex3f(+0.1, o.dxyz.y*diode_min, 0.0)
+			glVertex3f(0.0, o.dxyz.y*diode_max, 0.0)
 
-				#arrow right
-				self.gl_array_lines.append([xyz.x+0.1, 		xyz.y+o.dxyz.y*0.3, 		xyz.z+0.0])
-				self.gl_array_colors.append(c)
-				self.gl_array_lines.append([xyz.x+0.0, 		xyz.y+o.dxyz.y*diode_max, xyz.z+0.0])
-				self.gl_array_colors.append(c)
-			o.gl_array_done=True
+			glEnd()
+			glPopMatrix()
 
-		#glBegin(GL_LINES)
-		#arrow btm
-		#glVertex3f(-0.1, o.dxyz.y*0.3, 0.0)
-		#glVertex3f(0.1, o.dxyz.y*0.3, 0.0)
-		#bar top
-		#glVertex3f(-0.1, o.dxyz.y*diode_max, 0.0)
-		#glVertex3f(0.1, o.dxyz.y*diode_max, 0.0)
 
-		#arrow left
-		#glVertex3f(-0.1, o.dxyz.y*0.3, 0.0)
-		#glVertex3f(0.0, o.dxyz.y*diode_max, 0.0)
 
-		#arrow right
-		#glVertex3f(+0.1, o.dxyz.y*0.3, 0.0)
-		#glVertex3f(0.0, o.dxyz.y*diode_max, 0.0)
-
-		#glEnd()
-		#glPopMatrix()
 
 	def gl_render_box_lines(self,o):
 		self.set_color(o)

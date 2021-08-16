@@ -65,12 +65,6 @@ int shape_load_from_json(struct simulation *sim,struct epitaxy *in,struct shape 
 	//printf_log(sim,"Loading shape file form json: %s\n",obj->name);
 
 	json_get_english(sim,obj, &(s->enabled),"shape_enabled");
-	json_get_double(sim,obj, &s->rotate_y,"rotate_y");
-
-	if (s->enabled==FALSE)
-	{
-		return FALSE;
-	}
 
 	json_get_long_double(sim,obj, &s->dx,"dx");
 	json_get_long_double(sim,obj, &s->dy,"dy");
@@ -108,9 +102,8 @@ int shape_load_from_json(struct simulation *sim,struct epitaxy *in,struct shape 
 	json_get_long_double(sim,obj, &(s->z0),"z0");
 	json_get_long_double(sim,obj, &(s->y0),"y0");
 
-	json_get_english(sim,obj, &(s->flip_y),"shape_flip_y");
-	json_get_english(sim,obj, &(s->flip_x),"shape_flip_x");
-
+	json_get_long_double(sim,obj, &s->rotate_y,"rotate_y");
+	json_get_long_double(sim,obj, &s->rotate_x,"rotate_x");
 
 	json_get_long_double(sim,obj, &(s->color_r),"color_r");
 	json_get_long_double(sim,obj, &(s->color_g),"color_g");
@@ -120,13 +113,13 @@ int shape_load_from_json(struct simulation *sim,struct epitaxy *in,struct shape 
 
 	json_get_string(sim, obj, s->id,"id");
 
-	if (s->flip_y==FALSE)
-	{
-		s->y0=y_pos+s->y0;
-	}else
-	{
-		s->y0=y_pos;//-s->y0;
-	}
+	//if (s->flip_y==FALSE)
+	//{
+	//	s->y0=y_pos+s->y0;
+	//}else
+	//{
+	//	s->y0=y_pos;//-s->y0;
+	//}
 
 	if (s->enabled==TRUE)
 	{

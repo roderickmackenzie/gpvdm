@@ -65,6 +65,10 @@ void device_add_shape_to_world(struct simulation *sim,struct device *dev,struct 
 
 	char name[200];
 
+	if (s->enabled==FALSE)
+	{
+		return;
+	}
 
 	for (x=0;x<s->nx;x++)
 	{
@@ -75,35 +79,25 @@ void device_add_shape_to_world(struct simulation *sim,struct device *dev,struct 
 
 			x_pos=s->x0+(s->dx+s->dx_padding)*(double)x;
 			y_pos=s->y0+s->dy_padding;
-			//printf("%Le %s\n",s->dy_padding,s->name);
-			//getchar();
+			//printf("%le %s\n",y_pos,s->name);
 			z_pos=s->z0+(s->dz+s->dz_padding)*(double)z;
 
 			//printf("%p\n",&(s->tri));
+			//printf(">>>>>\n");
+			//triangles_dump(&(s->tri));
 			triangles_cpy(&tri,&(s->tri));
-
 			triangles_find_min(&v,&tri);
-
 			triangles_sub_vec(&tri,&v);
-
 			triangles_find_max(&v,&tri);
-
 			triangles_div_vec(&tri,&v);
 
-			if (s->flip_y==TRUE)
-			{
-				v.x=1.0;
-				v.y=-1.0;
-				v.z=1.0;
+			vec_set(&v,0.5, 0.5, 0.5);
 
-				triangles_mul_vec(&tri,&v);
+			triangles_sub_vec(&tri,&v);
+			triangles_rotate_x(&tri,(s->rotate_x/360.0)*2.0*M_PI);
+			triangles_rotate_y(&tri,(s->rotate_y/360.0)*2.0*M_PI);
+			triangles_add_vec(&tri,&v);
 
-				//v.x=0.0;
-				//v.y=1.0;
-				//v.z=0.0;
-
-				//triangles_add_vec(&tri,&v);
-			}
 
 			v.x=s->dx;
 			v.y=s->dy;
@@ -129,6 +123,7 @@ void device_add_shape_to_world(struct simulation *sim,struct device *dev,struct 
 
 		}
 	}
+
 
 }
 

@@ -235,6 +235,22 @@ void get_initial(struct simulation *sim,struct device *in,int guess)
 	Eg=in->Eg[0][0][0];
 	Xi=in->Xi[0][0][0];
 
+	for (z=0;z<dim->zlen;z++)
+	{
+		for (x=0;x<dim->xlen;x++)
+		{
+			for (y=0;y<dim->ylen;y++)
+			{
+				s=in->obj_zxy[z][x][y]->s;
+				if (s->dosn.enabled==FALSE)
+				{
+					ewe(sim,"There is a shape (%s) covering the electrical mesh with no electrical parameters enabled",s->name);
+				}
+			}
+		}
+	}
+
+	//getchar();
 	charge_right=contacts_get_rcharge(sim,in);
 
 	if (contacts_get_rcharge_type(sim,in)==ELECTRON)

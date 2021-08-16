@@ -49,7 +49,8 @@
 #include <epitaxy_struct.h>
 #include <epitaxy.h>
 #include <device_fun.h>
-
+#include <dat_file.h>
+#include <dump.h>
 
 /** @file ray_snapshots.c
 	@brief Set up the simulation window for the ray tracer

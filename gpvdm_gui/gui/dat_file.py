@@ -38,6 +38,7 @@ from quiver import quiver
 from json_circuit import json_component
 from gl_base_object import gl_base_object
 from util_text import is_number
+from triangle import vec
 
 #search first 40 lines for dims
 def dat_file_load_info(output,lines):
@@ -615,9 +616,11 @@ class dat_file():
 			if len(l)>1:
 				o.type=l[0]
 				o.id=["obj"+str(nobj)]
-				o.xyz.x=float(l[1])
-				o.xyz.y=float(l[2])
-				o.xyz.z=float(l[3])
+				xyz=vec()
+				xyz.x=float(l[1])
+				xyz.y=float(l[2])
+				xyz.z=float(l[3])
+				o.xyz.append(xyz)
 
 				o.dxyz.x=float(l[4])
 				o.dxyz.y=float(l[5])
@@ -635,6 +638,7 @@ class dat_file():
 				o.allow_cut_view=str2bool(l[14])
 
 				o.text=l[15]
+				o.origonal_object=str2bool(l[16])
 
 				self.data.append(o)
 				nobj=nobj+1

@@ -69,14 +69,14 @@ int nx=0;
 			//printf("%Le\n",);
 			for (ny=0;ny<s->ny;ny++)
 			{
-				if (s->flip_y==FALSE)
+				/*if (s->flip_y==FALSE)
 				{
 					if ((y>s->y0+(s->dy+s->dy_padding)*ny)&&(y<(s->y0+s->dy+(s->dy+s->dy_padding)*ny)))
 					{
 						return 0;
 					}
 				}else
-				{
+				{*/
 					if (y<s->y0-(s->dy+s->dy_padding)*ny)
 					{
 						if (y>(s->y0-s->dy+(s->dy+s->dy_padding)*ny))
@@ -84,7 +84,7 @@ int nx=0;
 							return 0;
 						}
 					}
-				}
+				//}
 			}
 		}
 	}
@@ -131,7 +131,6 @@ void shape_free(struct simulation *sim,struct shape *s)
 void shape_init(struct simulation *sim,struct shape *s)
 {
 	s->enabled=-1;
-	s->rotate_y=0.0;
 
 	s->dz=0.0;
 	s->dx=0.0;
@@ -154,8 +153,8 @@ void shape_init(struct simulation *sim,struct shape *s)
 	s->x0=0.0;
 	s->y0=0.0;
 
-	s->flip_y=FALSE;
-	s->flip_x=FALSE;
+	s->rotate_x=0.0;
+	s->rotate_y=0.0;
 
 	s->Gnp=0.0;
 
@@ -203,6 +202,9 @@ void shape_load_materials(struct simulation *sim,struct shape *s)
 	printf("wait2 %s\n",s->name);
 	getchar();*/
 
+	struct vec my_min;
+	struct vec my_max;
+
 	char file_path[PATH_MAX];
 
 	if (strcmp(s->optical_material,"none")!=0)
@@ -240,8 +242,8 @@ void shape_load_materials(struct simulation *sim,struct shape *s)
 			printf("Could not load: %s",file_path);
 			join_path(3,file_path,get_shape_path(sim),"box","shape.inp");
 		}
-		triangle_load_from_file(sim,(&s->tri),file_path);
-		triangles_rotate_y((&s->tri),(s->rotate_y/360.0)*2.0*M_PI);
+		triangle_load_from_file(sim,&s->tri,file_path);
+
 	}
 
 

@@ -148,6 +148,7 @@ class object_editor(QWidgetSavePos):
 		data=gpvdm_data()
 		tab = self.notebook.currentWidget()
 		data.save()
+		data.load_triagles()
 		global_object_run("gl_force_redraw")
 
 	def callback_enable_disable(self):
@@ -157,7 +158,6 @@ class object_editor(QWidgetSavePos):
 			tab.setEnabled(self.enable.enabled)
 			s=tab.template_widget
 			s.shape_enabled=self.enable.enabled
-			print("save")
 			data.save()
 			global_object_run("gl_force_redraw")
 			
@@ -206,8 +206,6 @@ class object_editor(QWidgetSavePos):
 			index=self.notebook.currentIndex() 
 			self.notebook.setTabText(index, new_sim_name)
 			data.save()
-
-
 
 
 	def callback_clone_shape(self):

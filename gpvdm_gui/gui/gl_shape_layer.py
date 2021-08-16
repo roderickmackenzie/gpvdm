@@ -75,9 +75,9 @@ class shape_layer():
 				vec_base.x=base_obj.x0
 				vec_base.y=base_obj.y0
 				vec_base.z=base_obj.z0
-				#print("a",pos)
+				print("a",pos)
 				pos=pos+vec_base
-				#print("b",pos,vec_base)
+				print("b",pos,vec_base)
 			xyz.x=gl_scale.project_m2screen_x(pos.x)
 			xyz.y=gl_scale.project_m2screen_y(pos.y)
 			xyz.z=gl_scale.project_m2screen_z(pos.z)

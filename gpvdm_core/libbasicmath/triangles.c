@@ -265,6 +265,18 @@ void triangles_rotate_y(struct triangles *in,double ang)
 		vec_rotate_y(&(in->data[i].xy2), ang);
 	}
 }
+
+void triangles_rotate_x(struct triangles *in,double ang)
+{
+	int i;
+	for (i=0;i<in->len;i++)
+	{
+		vec_rotate_x(&(in->data[i].xy0), ang);
+		vec_rotate_x(&(in->data[i].xy1), ang);
+		vec_rotate_x(&(in->data[i].xy2), ang);
+	}
+}
+
 void triangles_add_vec(struct triangles *in,struct vec *v)
 {
 	int i;

@@ -71,8 +71,8 @@ struct shape
 	struct math_xy alpha;
 	struct math_xy n;
 	struct triangles tri;
-	int flip_y;
-	int flip_x;
+	long double rotate_x;
+	long double rotate_y;
 	#ifdef libcircuit_enabled
 		struct component com;
 	#endif
@@ -83,7 +83,6 @@ struct shape
 	struct dos dosp;
 	struct heat_material heat;
 	long double Gnp;
-	double rotate_y;
 
 	long double color_r;
 	long double color_g;

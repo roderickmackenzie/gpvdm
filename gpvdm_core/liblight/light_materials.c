@@ -92,8 +92,7 @@ void light_load_materials(struct simulation *sim,struct light *li, struct device
 		triangles_find_min(&my_vec,&li->light_profile_tri);
 		triangles_sub_vec(&li->light_profile_tri,&my_vec);
 		triangles_find_max(&my_vec,&li->light_profile_tri);
-		//printf("%Le\n",li->dim.xlen);
-		//printf("%Le\n",li->dim.zlen);
+
 		my_vec.x=my_vec.x/dev->xlen;
 		my_vec.z=my_vec.z/dev->zlen;
 		triangles_div_vec(&li->light_profile_tri,&my_vec);

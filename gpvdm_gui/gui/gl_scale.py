@@ -119,13 +119,16 @@ class gl_scale:
 	def project_base_objects_from_m_2_screen(objs):
 		ret=[]
 		for o in objs:
-			o.xyz.x=gl_scale.project_m2screen_x(o.xyz.x)
-			o.xyz.y=gl_scale.project_m2screen_y(o.xyz.y)
-			o.xyz.z=gl_scale.project_m2screen_z(o.xyz.z)
+			for xyz in o.xyz:
+				xyz.x=gl_scale.project_m2screen_x(xyz.x)
+				xyz.y=gl_scale.project_m2screen_y(xyz.y)
+				xyz.z=gl_scale.project_m2screen_z(xyz.z)
+				break
 
 			o.dxyz.x=o.dxyz.x*scale_get_xmul()
 			o.dxyz.y=-o.dxyz.y*scale_get_ymul()
 			o.dxyz.z=o.dxyz.z*scale_get_zmul()
+
 			ret.append(o)
 		return ret
 

@@ -111,7 +111,6 @@ class gl_shapes:
 			glRotatef(o.rotate_x, 1.0, 0.0, 0)
 			glTranslatef(-o.dxyz.x/2.0,-o.dxyz.y/2.0,-o.dxyz.z/2.0)
 			
-			print(o.id)
 			if o.dxyz.x!=-1:
 				glScaled(o.dxyz.x,o.dxyz.y,o.dxyz.z)
 			for n in range(0,len(o.gl_array_types)):
@@ -356,7 +355,7 @@ class gl_shapes:
 				glVertex3f(dx, 0.0,0.0)
 
 			glEnd()
-		glPopMatrix()
+			glPopMatrix()
 
 
 	def plane(self,o):

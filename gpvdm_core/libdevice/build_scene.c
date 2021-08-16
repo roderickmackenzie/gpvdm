@@ -150,13 +150,13 @@ void device_build_scene(struct simulation *sim,struct device *dev)
 						contact_shape->nx=1;
 						contact_shape->nz=1;
 						contact_shape->epi_index=l;
-						if (contact_shape->flip_y==FALSE)
-						{
+						//if (contact_shape->flip_y==FALSE)
+						//{
 							contact_shape->y0=layer->y_start;		//Starting from zero
-						}else
-						{
-							contact_shape->y0=layer->y_stop;		//Starting from top of layer
-						}
+						//}else
+						//{
+						//	contact_shape->y0=layer->y_stop;		//Starting from top of layer
+						//}
 						//printf("%d\n",dev->contacts[c].shape.flip_y);
 						//getchar();
 						//dev->contacts[c].shape.flip_y=FALSE;
@@ -181,21 +181,15 @@ void device_build_scene(struct simulation *sim,struct device *dev)
 						contact_shape->nx=1;
 						contact_shape->nz=1;
 						contact_shape->epi_index=l;
-						if (contact_shape->flip_y==FALSE)
-						{
-							contact_shape->y0=layer->y_start;		//Starting from zero
-						}else
-						{
-							contact_shape->y0=layer->y_stop;		//Starting from top of layer
-						}
-						//dev->contacts[c].shape.flip_y=FALSE;
+
+						contact_shape->y0=layer->y_start;		//Starting from zero
+
 
 						contact_shape->dy_padding=0.0;
 						contact_shape->dx_padding=0.0;
 						contact_shape->dz_padding=0.0;
 
 						device_add_shape_to_world(sim,dev,contact_shape);	//,epi->layer[l].y_stop
-
 						add_layer=FALSE;
 					}
 
@@ -219,16 +213,17 @@ void device_build_scene(struct simulation *sim,struct device *dev)
 			s->nz=1;
 
 			s->epi_index=l;
-			if (s->flip_y==FALSE)
-			{
+			//if (s->flip_y==FALSE)
+			//{
 				s->y0=layer->y_start;		//Starting from zero
-			}else
-			{
-				s->y0=layer->y_stop;		//Starting from top of layer
-			}
+			//}else
+			//{
+			//	s->y0=layer->y_stop;		//Starting from top of layer
+			//}
 			//printf("name= %s %s %d %d %d\n",s->name,s->shape_type,add_layer,l,s->enabled);
 			//getchar();
 			device_add_shape_to_world(sim,dev,s);
+
 		}
 	}
 	
@@ -249,12 +244,16 @@ void device_build_scene(struct simulation *sim,struct device *dev)
 		}
 	}
 
+	//printf(">>>>>>>>>>>>>>>>>>>\n");
 
 	for (l=0;l<epi->layers;l++)
 	{
 		for (i=0;i<epi->layer[l].nshape;i++)
 		{
+			//printf("%d %d %d\n",l,i,epi->layer[l].nshape);
+
 			s=&epi->layer[l].shapes[i];
+			//printf("%d\n",s->enabled);
 			//s->x0=0.0;
 			s->epi_index=l;
 			device_add_shape_to_world(sim,dev,s);

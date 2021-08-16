@@ -82,6 +82,10 @@ class window_light_src(experiment):
 
 	def callback_run(self):
 		data=gpvdm_data()
+		self.dump_verbosity=data.light.dump_verbosity
+		data.light.dump_verbosity=1
+		data.save()
+
 		self.my_server=server_get()
 		self.my_server.clear_cache()
 		self.my_server.add_job(get_sim_path(),"--simmode opticalmodel@optics")
@@ -89,4 +93,7 @@ class window_light_src(experiment):
 		self.my_server.start()
 
 	def callback_sim_finished(self):
+		data=gpvdm_data()
+		data.light.dump_verbosity=self.dump_verbosity
+		data.save()
 		self.update()
