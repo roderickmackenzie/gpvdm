@@ -33,75 +33,58 @@
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
 
-#include <stdio.h>
-#include <ray.h>
-#include <ray_fun.h>
-#include <gpvdm_const.h>
-#include <math.h>
-#include <stdlib.h>
-#include <cal_path.h>
-#include <log.h>
-#include <device.h>
-#include <inp.h>
-#include <util.h>
-#include <triangles.h>
-#include <memory.h>
-#include <epitaxy_struct.h>
-#include <epitaxy.h>
-#include <dat_file.h>
-
-/** @file scene_dump.c
-	@brief Dump the scene to file
+/** @file world_load.c
+	@brief Load the world
 */
 
+#include <epitaxy.h>
+#include <sim_struct.h>
+#include <shape.h>
+#include <string.h>
+#include <inp.h>
+#include <util.h>
+#include <cal_path.h>
+#include <i.h>
+#include <triangles.h>
+#include <triangle.h>
+#include <world_struct.h>
+#include <world.h>
 
-void device_dump_world_to_file(struct simulation *sim,struct device *dev,char *file_name)
+int world_load(struct simulation *sim,struct world *w, struct json_obj *json_world)
 {
-	//int i;
+	int l=0;
+	struct shape *s;
+	char item_id[100];
+	struct json_obj *json_world_data;
+	struct json_obj *obj_item;
 
-	char temp[200];
+	json_world_data=json_obj_find(json_world, "world_data");
 
-	//printf("file dump\n");
-	struct dat_file buf;
-	buffer_init(&buf);
-
-	buffer_malloc(&buf);
-	buf.y_mul=1.0;
-	buf.x_mul=1e9;
-	strcpy(buf.title,"Ray trace triange file");
-	strcpy(buf.type,"poly");
-	strcpy(buf.y_label,"Position");
-	strcpy(buf.x_label,"Position");
-	strcpy(buf.data_label,"Position");
-
-	strcpy(buf.y_units,"m");
-	strcpy(buf.x_units,"m");
-	strcpy(buf.data_units,"m");
-	buf.logscale_x=0;
-	buf.logscale_y=0;
-	buf.x=1;
-	buf.y=dev->triangles;
-	buf.z=1;
-	buffer_add_info(sim,&buf);
-	struct object *obj;
-	//struct triangle *tri;
-
-
-	int o=0;
-	for (o=0;o<dev->objects;o++)
+	if (json_world_data==NULL)
 	{
-		obj=&(dev->obj[o]);
-
-		sprintf(temp,"#name %s\n",obj->name);
-		buffer_add_string(&buf,temp);
-
-		triangles_to_dat_file(&buf,&(obj->tri));
-		//printf("wait %s\n",obj->name);
-		//getchar();
+		ewe(sim,"world_data not found\n");
 	}
 
-	buffer_dump_path(sim,"",file_name,&buf);
-	buffer_free(&buf);
+	json_get_int(sim, json_world_data, &(w->items),"segments");
 
+	w->shapes=(struct shape *)malloc(sizeof(struct shape)*w->items);
+
+	for (l=0;l<w->items;l++)
+	{
+		sprintf(item_id,"segment%d",l);
+		obj_item=json_obj_find(json_world_data, item_id);
+
+		if (obj_item==NULL)
+		{
+			ewe(sim,"Object %s not found\n",item_id);
+		}
+
+		shape_load_from_json(sim,&(w->shapes[l]), obj_item ,0.0);
+		s=&(w->shapes[l]);
+		s->epi_index=-1;
+	}
+
+	return w->items;
 }
+
 

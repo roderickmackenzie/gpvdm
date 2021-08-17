@@ -45,9 +45,6 @@ from triangle_io import triangles_print
 from triangle_io import triangles_add_vec
 from triangle_io import triangles_sub_vec
 from triangle_io import triangles_get_min
-from gl_scale import scale_trianges_m2screen
-
-from gl_scale import gl_scale
 
 from epitaxy import get_epi
 
@@ -75,12 +72,10 @@ class shape_layer():
 				vec_base.x=base_obj.x0
 				vec_base.y=base_obj.y0
 				vec_base.z=base_obj.z0
-				print("a",pos)
 				pos=pos+vec_base
-				print("b",pos,vec_base)
-			xyz.x=gl_scale.project_m2screen_x(pos.x)
-			xyz.y=gl_scale.project_m2screen_y(pos.y)
-			xyz.z=gl_scale.project_m2screen_z(pos.z)
+			xyz.x=self.scale.project_m2screen_x(pos.x)
+			xyz.y=self.scale.project_m2screen_y(pos.y)
+			xyz.z=self.scale.project_m2screen_z(pos.z)
 			a.xyz.append(xyz)
 
 		a.dxyz.x=shape0.dx*scale_get_xmul()

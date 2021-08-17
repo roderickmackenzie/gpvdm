@@ -45,7 +45,6 @@ from util import wavelength_to_rgb
 from util import isnumber
 from gl_scale import gl_scale
 from gl_scale import project_trianges_m2screen
-from gl_scale import scale_trianges_m2screen
 
 from gl_scale import scale_get_device_y
 from gl_scale import scale_get_device_x
@@ -119,7 +118,7 @@ class gl_draw_light_profile():
 
 			t=triangles_add_vec(t,my_vec)
 
-			a.triangles=scale_trianges_m2screen(t)
+			a.triangles=self.scale.scale_trianges_m2screen(t)
 			#triangles_mul_vec(triangles_flip_in_box(s.triangles.data),my_vec)
 			#print("bing!",gl_scale.project_m2screen_x(0))
 			self.gl_objects_add(a)

@@ -145,7 +145,7 @@ void contacts_load(struct simulation *sim,struct device *in)
 
 		//printf("%d %Le\n",in->contacts[i].position,y_pos);
 		//getchar();
-		shape_load_from_json(sim,&(in->my_epitaxy),&(in->contacts[i].shape), obj_contact ,y_pos);
+		shape_load_from_json(sim,&(in->contacts[i].shape), obj_contact ,y_pos);
 		//shape_load_file(sim,&(in->my_epitaxy),&(in->contacts[i].shape),in->contacts[i].shape_file_name,y_pos);
 		s=&(in->contacts[i].shape);
 		s->nx=1;

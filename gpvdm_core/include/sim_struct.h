@@ -65,12 +65,7 @@
 #include <gpvdm_const.h>
 //</strip>
 
-/*struct dumpfiles_struct
-{
-char file_name[100];
-char path_name[100];
-int write_out;
-};*/
+
 
 struct logging
 {

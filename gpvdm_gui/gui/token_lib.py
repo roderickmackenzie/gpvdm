@@ -785,10 +785,14 @@ def build_token_lib():
 	lib.append(my_data("fit_against", "au", _("Fit against simulation"),1.0,"QComboBoxLang"))
 
 
-	#epitaxy.inp
-	lib.append(my_data("world_x","m",_("World size x"),1.0,"QLineEdit"))
-	lib.append(my_data("world_y","m",_("World size y"),1.0,"QLineEdit"))
-	lib.append(my_data("world_z","m",_("World size z"),1.0,"QLineEdit"))
+	#world
+	lib.append(my_data("world_margin_x0","decimal",_("margin x0"),1.0,"QLineEdit"))
+	lib.append(my_data("world_margin_x1","decimal",_("margin x1"),1.0,"QLineEdit"))
+	lib.append(my_data("world_margin_y0","decimal",_("margin y0"),1.0,"QLineEdit"))
+	lib.append(my_data("world_margin_y1","decimal",_("margin y1"),1.0,"QLineEdit"))
+	lib.append(my_data("world_margin_z0","decimal",_("margin z0"),1.0,"QLineEdit"))
+	lib.append(my_data("world_margin_z1","decimal",_("margin z1"),1.0,"QLineEdit"))
+
 	#
 	lib.append(my_data("#layer0","m",_("Active layer width"),1.0,"QLineEdit"))
 	lib.append(my_data("#stark_saturate","au","Stark saturate",1.0,"QLineEdit"))

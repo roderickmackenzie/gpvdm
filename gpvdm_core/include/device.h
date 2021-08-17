@@ -56,6 +56,7 @@
 #include <time_mesh.h>
 #include <matrix_solver_memory.h>
 #include <json.h>
+#include <world_struct.h>
 
 struct solver_cache
 {
@@ -613,6 +614,9 @@ struct device
 		int (*dll_solver_free_memory)();
 		void *dll_solver_handle;
 		int solver_verbosity;
+
+	//the world
+	struct world w;
 };
 
 

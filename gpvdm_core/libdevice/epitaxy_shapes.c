@@ -53,9 +53,9 @@ void epitaxy_shapes_load(struct simulation *sim,struct epitaxy *in, struct json_
 {
 	int l=0;
 	int ns;
-	int len=0;
+	//int len=0;
 	struct shape *s;
-	long double y_pos=0.0;
+	//long double y_pos=0.0;
 	int shape_max=0;
 	int nshape=0;
 
@@ -88,7 +88,7 @@ void epitaxy_shapes_load(struct simulation *sim,struct epitaxy *in, struct json_
 				ewe(sim,"Object %s not found\n",shape_id);
 			}
 
-			if (shape_load_from_json(sim,in,&(in->layer[l].shapes[ns]), obj_shape ,0.0)==TRUE)
+			if (shape_load_from_json(sim,&(in->layer[l].shapes[ns]), obj_shape ,0.0)==TRUE)
 			{
 				s=&(in->layer[l].shapes[ns]);
 				s->epi_index=l;

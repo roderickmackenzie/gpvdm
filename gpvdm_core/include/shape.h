@@ -52,5 +52,5 @@ int shape_in_shape(struct simulation *sim,struct shape *s,long double z,long dou
 void shape_init(struct simulation *sim,struct shape *s);
 void shape_load_materials(struct simulation *sim,struct shape *s);
 void shape_cpy(struct simulation *sim,struct shape *out,struct shape *in);
-int shape_load_from_json(struct simulation *sim,struct epitaxy *in,struct shape *s, struct json_obj *obj ,long double y_pos);
+int shape_load_from_json(struct simulation *sim,struct shape *s, struct json_obj *obj ,long double y_pos);
 #endif

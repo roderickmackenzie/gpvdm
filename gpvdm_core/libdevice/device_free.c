@@ -66,13 +66,16 @@
 #include <enabled_libs.h>
 #include <light_srcs.h>
 
+#include <world_struct.h>
+#include <world.h>
+
 static int unused __attribute__((unused));
 static char* unused_pchar __attribute__((unused));
 
 
 void device_free(struct simulation *sim,struct device *dev)
 {
-	int i;
+	//int i;
 	struct dimensions *dim=&dev->ns.dim;
 
 	
@@ -478,6 +481,9 @@ void device_free(struct simulation *sim,struct device *dev)
 
 	//json
 		json_free(&(dev->config));
+
+	//world	
+		world_free(sim,&(dev->w));
 
 }
 

@@ -240,13 +240,10 @@ class shape(json_base):
 			self.triangles=dat_file()
 			self.triangles.load(self.shape_path)
 			if self.triangles.data!=None:
-				self.triangles.data=triangles_rotate_y(self.triangles.data,self.rotate_y)
+				#self.triangles.data=triangles_rotate_y(self.triangles.data,self.rotate_y)
 				min_vec=triangles_get_min(self.triangles.data)
-
 				self.triangles.data=triangles_sub_vec(self.triangles.data,min_vec)
-
 				max_vec=triangles_get_max(self.triangles.data)
-
 				self.triangles.data=triangles_div_vec(self.triangles.data,max_vec)
 				
 	def find_object_by_id(self,id):
@@ -286,4 +283,41 @@ class shape(json_base):
 		lines=self.gen_json()
 
 		return lines
+
+	def get_min_max(self,my_min,my_max):
+		#x
+		if self.x0<my_min.x:
+			my_min.x=self.x0
+		if self.x0>my_max.x:
+			my_max.x=self.x0
+
+		if self.x0+self.dx<my_min.x:
+			my_min.x=self.x0+self.dx
+		if self.x0+self.dx>my_max.x:
+			my_max.x=self.x0+self.dx
+
+		#y
+		if self.y0<my_min.y:
+			my_min.y=self.y0
+		if self.y0>my_max.y:
+			my_max.y=self.y0
+
+		if self.y0+self.dy<my_min.y:
+			my_min.y=self.y0+self.dy
+		if self.y0+self.dy>my_max.y:
+			my_max.y=self.y0+self.dy
+
+		#z
+		if self.z0<my_min.z:
+			my_min.z=self.z0
+		if self.z0>my_max.z:
+			my_max.z=self.z0
+
+		if self.z0+self.dz<my_min.z:
+			my_min.z=self.z0+self.dz
+		if self.z0+self.dz>my_max.z:
+			my_max.z=self.z0+self.dz
+
+		return my_min,my_max
+
 

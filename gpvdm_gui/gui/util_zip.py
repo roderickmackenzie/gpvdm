@@ -534,35 +534,6 @@ def archive_isfile(zip_file_name,file_name):
 
 	return ret
 
-## Merge a file into an archive.
-def archive_merge_file(dest_archive,src_archive,dest_file_name,src_file_name):
-	if dest_archive==src_archive:
-		print("I can't opperate on the same .gpvdm file")
-		return
-
-	src_lines=[]
-	dest_lines=[]
-
-	src_lines=read_lines_from_archive(src_archive,src_file_name)
-
-	if src_lines==False:
-		print("Warning: ",src_archive,src_file_name," no origonal file to copy")
-		return False
-
-	dest_lines=read_lines_from_archive(dest_archive,dest_file_name)
-
-	if dest_lines==False:
-		print("Warning: ",dest_archive,dest_file_name," no final copy found")
-		return False
-
-	dest_lines=inp_merge2(dest_lines,src_lines)
-
-	#if len(errors)!=0:
-	#	print("File ",dest_file_name,errors)
-
-	write_lines_to_archive(dest_archive,dest_file_name,dest_lines)
-
-	return True
 
 ## Zip up an entire directory.
 def archive_zip_dir(path,extentions=[]):

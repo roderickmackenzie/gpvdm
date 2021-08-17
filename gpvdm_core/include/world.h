@@ -33,75 +33,21 @@
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
 
-#include <stdio.h>
-#include <ray.h>
-#include <ray_fun.h>
-#include <gpvdm_const.h>
-#include <math.h>
-#include <stdlib.h>
-#include <cal_path.h>
-#include <log.h>
-#include <device.h>
-#include <inp.h>
-#include <util.h>
-#include <triangles.h>
-#include <memory.h>
-#include <epitaxy_struct.h>
-#include <epitaxy.h>
-#include <dat_file.h>
 
-/** @file scene_dump.c
-	@brief Dump the scene to file
+/** @file world.h
+	@brief Functions for the world
 */
 
 
-void device_dump_world_to_file(struct simulation *sim,struct device *dev,char *file_name)
-{
-	//int i;
+#ifndef world_h
+#define world_h
+#include "advmath.h"
+#include <sim_struct.h>
+#include <shape_struct.h>
+#include <world_struct.h>
 
-	char temp[200];
-
-	//printf("file dump\n");
-	struct dat_file buf;
-	buffer_init(&buf);
-
-	buffer_malloc(&buf);
-	buf.y_mul=1.0;
-	buf.x_mul=1e9;
-	strcpy(buf.title,"Ray trace triange file");
-	strcpy(buf.type,"poly");
-	strcpy(buf.y_label,"Position");
-	strcpy(buf.x_label,"Position");
-	strcpy(buf.data_label,"Position");
-
-	strcpy(buf.y_units,"m");
-	strcpy(buf.x_units,"m");
-	strcpy(buf.data_units,"m");
-	buf.logscale_x=0;
-	buf.logscale_y=0;
-	buf.x=1;
-	buf.y=dev->triangles;
-	buf.z=1;
-	buffer_add_info(sim,&buf);
-	struct object *obj;
-	//struct triangle *tri;
-
-
-	int o=0;
-	for (o=0;o<dev->objects;o++)
-	{
-		obj=&(dev->obj[o]);
-
-		sprintf(temp,"#name %s\n",obj->name);
-		buffer_add_string(&buf,temp);
-
-		triangles_to_dat_file(&buf,&(obj->tri));
-		//printf("wait %s\n",obj->name);
-		//getchar();
-	}
-
-	buffer_dump_path(sim,"",file_name,&buf);
-	buffer_free(&buf);
-
-}
-
+void world_init(struct simulation *sim,struct world *w);
+void world_cpy(struct simulation *sim,struct world *out,struct world *in);
+int world_load(struct simulation *sim,struct world *w, struct json_obj *json_world);
+void world_free(struct simulation *sim,struct world *w);
+#endif

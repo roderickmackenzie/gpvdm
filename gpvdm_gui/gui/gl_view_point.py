@@ -33,7 +33,6 @@ from PyQt5.QtCore import QTimer
 
 from epitaxy import get_epi
 
-from gl_scale import set_m2screen
 from gl_scale import scale_get_xmul
 from gl_scale import scale_get_zmul
 import os

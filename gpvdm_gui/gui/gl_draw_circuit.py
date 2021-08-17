@@ -62,12 +62,12 @@ class gl_draw_circuit():
 			elif c.name=="D":
 				a.type="diode"
 			#print(c.z0,c.x0,c.y0,c.z1,c.x1,c.y1)
-			a.x=gl_scale.project_m2screen_x(c.x0)
-			a.y=gl_scale.project_m2screen_y(c.y0)
-			a.z=gl_scale.project_m2screen_z(c.z0)
-			a.dx=gl_scale.project_m2screen_x(c.x1)-a.x
-			a.dy=gl_scale.project_m2screen_y(c.y1)-a.y
-			a.dz=gl_scale.project_m2screen_z(c.z1)-a.z
+			a.x=self.scale.project_m2screen_x(c.x0)
+			a.y=self.scale.project_m2screen_y(c.y0)
+			a.z=self.scale.project_m2screen_z(c.z0)
+			a.dx=self.scale.project_m2screen_x(c.x1)-a.x
+			a.dy=self.scale.project_m2screen_y(c.y1)-a.y
+			a.dz=self.scale.project_m2screen_z(c.z1)-a.z
 			a.r=1.0
 			a.g=0.0
 			a.b=0.0

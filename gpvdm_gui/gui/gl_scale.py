@@ -46,8 +46,8 @@ y_start=0.0
 z_start=0.0
 
 
-class gl_scale:
-	def project_screen_x_to_m(x):
+class gl_scale():
+	def project_screen_x_to_m(self,x):
 		global x_mul
 		global x_start
 		if type(x)==float or type(x)==int:
@@ -58,7 +58,7 @@ class gl_scale:
 				ret.append((val-x_start)/x_mul)
 			return ret
 
-	def project_screen_y_to_m(y):
+	def project_screen_y_to_m(self,y):
 		global y_mul
 		global y_start
 		if type(y)==float or type(y)==int:
@@ -69,7 +69,7 @@ class gl_scale:
 				ret.append((val-y_start)/y_mul)
 			return ret
 
-	def project_screen_z_to_m(z):
+	def project_screen_z_to_m(self,z):
 		global z_mul
 		global z_start
 		if type(z)==float or type(z)==int:
@@ -80,7 +80,7 @@ class gl_scale:
 				ret.append((val-z_start)/z_mul)
 			return ret
 
-	def project_m2screen_x(x):
+	def project_m2screen_x(self,x):
 		global x_mul
 		global x_start
 		if type(x)==float or type(x)==int:
@@ -92,7 +92,7 @@ class gl_scale:
 			return ret
 
 
-	def project_m2screen_y(y):
+	def project_m2screen_y(self,y):
 		global y_mul
 		global y_start
 		if type(y)==float or type(y)==int :
@@ -104,7 +104,7 @@ class gl_scale:
 			return ret
 
 		
-	def project_m2screen_z(z):
+	def project_m2screen_z(self,z):
 		global z_mul
 		global z_start
 
@@ -116,13 +116,13 @@ class gl_scale:
 				ret.append(z_start+z_mul*val)
 			return ret
 
-	def project_base_objects_from_m_2_screen(objs):
+	def project_base_objects_from_m_2_screen(self,objs):
 		ret=[]
 		for o in objs:
 			for xyz in o.xyz:
-				xyz.x=gl_scale.project_m2screen_x(xyz.x)
-				xyz.y=gl_scale.project_m2screen_y(xyz.y)
-				xyz.z=gl_scale.project_m2screen_z(xyz.z)
+				xyz.x=self.project_m2screen_x(xyz.x)
+				xyz.y=self.project_m2screen_y(xyz.y)
+				xyz.z=self.project_m2screen_z(xyz.z)
 				break
 
 			o.dxyz.x=o.dxyz.x*scale_get_xmul()
@@ -132,6 +132,71 @@ class gl_scale:
 			ret.append(o)
 		return ret
 
+	def set_m2screen(self):
+		global x_mul
+		global y_mul
+		global z_mul
+		global device_x
+		global device_y
+		global device_z
+		global x_start
+		global y_start
+		global z_start
+
+		my_min,my_max=gpvdm_data().get_world_size()
+
+		mesh_max=30
+
+		x_len= my_max.x-my_min.x
+		z_len= my_max.z-my_min.z 
+
+		z_mul=scale(z_len)
+		x_mul=scale(x_len)
+
+		mul=x_mul
+		if z_len<x_len:
+			mul=z_mul
+
+		x_mul=mul
+		z_mul=mul
+
+		if z_len*z_mul>mesh_max:
+			z_mul=mesh_max/z_len
+
+		if x_len*x_mul>mesh_max:
+			x_mul=mesh_max/x_len
+
+		y_mul=device_y/(my_max.y-my_min.y)
+
+		device_x=x_len*x_mul
+		device_z=z_len*z_mul
+
+		x_start=-device_x/2.0
+		z_start=-device_z/2.0
+		y_start=0.0
+
+	def scale_trianges_m2screen(self,triangles):
+		global x_mul
+		global y_mul
+		global z_mul
+		ret=[]
+		for t in triangles:
+			t0=triangle()
+			t0.points=t.points
+			t0.xyz0.x=t.xyz0.x*x_mul
+			t0.xyz0.y=t.xyz0.y*y_mul
+			t0.xyz0.z=t.xyz0.z*z_mul
+
+			t0.xyz1.x=t.xyz1.x*x_mul
+			t0.xyz1.y=t.xyz1.y*y_mul
+			t0.xyz1.z=t.xyz1.z*z_mul
+
+			t0.xyz2.x=t.xyz2.x*x_mul
+			t0.xyz2.y=t.xyz2.y*y_mul
+			t0.xyz2.z=t.xyz2.z*z_mul
+			ret.append(t0)
+
+		return ret
 def scale(length):
 	mul=1
 	while((length*mul)<5):
@@ -139,62 +204,6 @@ def scale(length):
 
 	#print(mul)
 	return mul
-
-def set_m2screen():
-	global x_mul
-	global y_mul
-	global z_mul
-	global device_x
-	global device_y
-	global device_z
-	global x_start
-	global y_start
-	global z_start
-
-	world_view=True
-	epi=get_epi()
-	if epi.ylen()>0:
-		world_view=False
-
-	mesh_max=30
-
-	if world_view==False:
-		x_len= get_mesh().x.get_len()
-		z_len= get_mesh().z.get_len() 
-	else:
-		x_len=gpvdm_data().world.config.world_x
-		z_len=gpvdm_data().world.config.world_y
-		device_z=gpvdm_data().world.config.world_z
-
-	z_mul=scale(z_len)
-	x_mul=scale(x_len)
-
-	mul=x_mul
-	if z_len<x_len:
-		mul=z_mul
-
-	x_mul=mul
-	z_mul=mul
-
-	if z_len*z_mul>mesh_max:
-		z_mul=mesh_max/z_len
-
-	if x_len*x_mul>mesh_max:
-		x_mul=mesh_max/x_len
-
-	if world_view==False:
-		y_mul=device_y/epi.ylen()
-
-		device_x=x_len*x_mul
-		device_z=z_len*z_mul
-	else:
-		device_x=gpvdm_data().world.config.world_x
-		device_y=gpvdm_data().world.config.world_y
-		device_z=gpvdm_data().world.config.world_z
-
-	x_start=-device_x/2.0
-	z_start=-device_z/2.0
-	y_start=0.0
 
 
 def scale_get_start_x():
@@ -229,28 +238,7 @@ def project_trianges_m2screen(triangles):
 
 	return ret
 
-def scale_trianges_m2screen(triangles):
-	global x_mul
-	global y_mul
-	global z_mul
-	ret=[]
-	for t in triangles:
-		t0=triangle()
-		t0.points=t.points
-		t0.xyz0.x=t.xyz0.x*x_mul
-		t0.xyz0.y=t.xyz0.y*y_mul
-		t0.xyz0.z=t.xyz0.z*z_mul
 
-		t0.xyz1.x=t.xyz1.x*x_mul
-		t0.xyz1.y=t.xyz1.y*y_mul
-		t0.xyz1.z=t.xyz1.z*z_mul
-
-		t0.xyz2.x=t.xyz2.x*x_mul
-		t0.xyz2.y=t.xyz2.y*y_mul
-		t0.xyz2.z=t.xyz2.z*z_mul
-		ret.append(t0)
-
-	return ret
 
 
 def scale_get_xmul():

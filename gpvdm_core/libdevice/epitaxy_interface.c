@@ -51,11 +51,6 @@
 
 void epitaxy_load_interface_file(struct simulation *sim, struct epi_layer *layer,struct json_obj *interface_json)
 {
-	struct inp_file inp;
-	char full_path[PATH_MAX];
-	char temp_path[PATH_MAX];
-	char temp[100];
-
 	if (interface_json==NULL)
 	{
 		ewe(sim,"interface file does not exist\n");

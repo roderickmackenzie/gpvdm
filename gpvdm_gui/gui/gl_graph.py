@@ -74,14 +74,14 @@ class gl_graph():
 			return
 
 		for t in data.data:
-			z=gl_scale.project_m2screen_z(t.xyz0.z)
-			dz=gl_scale.project_m2screen_z(t.xyz1.z)-gl_scale.project_m2screen_z(t.xyz0.z)
+			z=self.scale.project_m2screen_z(t.xyz0.z)
+			dz=self.scale.project_m2screen_z(t.xyz1.z)-self.scale.project_m2screen_z(t.xyz0.z)
 
-			x=gl_scale.project_m2screen_x(t.xyz0.x)
-			dx=gl_scale.project_m2screen_x(t.xyz1.x)-gl_scale.project_m2screen_x(t.xyz0.x)
+			x=self.scale.project_m2screen_x(t.xyz0.x)
+			dx=self.scale.project_m2screen_x(t.xyz1.x)-self.scale.project_m2screen_x(t.xyz0.x)
 
-			y=gl_scale.project_m2screen_y(t.xyz0.y)
-			dy=gl_scale.project_m2screen_y(t.xyz1.y)-gl_scale.project_m2screen_y(t.xyz0.y)
+			y=self.scale.project_m2screen_y(t.xyz0.y)
+			dy=self.scale.project_m2screen_y(t.xyz1.y)-self.scale.project_m2screen_y(t.xyz0.y)
 
 			self.gl_array_lines.append([x, 			y, 			z])
 			self.gl_array_colors.append([data.r,data.g,data.b,1.0])
@@ -132,20 +132,20 @@ class gl_graph():
 		for zi in zi_list:
 			#for xi in range(0,len(data.x_scale)):
 			if len(zi_list)>1:
-				z0=gl_scale.project_m2screen_z(data.z_scale[zi])
-				z1=gl_scale.project_m2screen_z(data.z_scale[zi])
+				z0=self.scale.project_m2screen_z(data.z_scale[zi])
+				z1=self.scale.project_m2screen_z(data.z_scale[zi])
 			else:
-				z0=gl_scale.project_m2screen_z(data.z_scale[0])
-				z1=gl_scale.project_m2screen_z(data.z_scale[0])
+				z0=self.scale.project_m2screen_z(data.z_scale[0])
+				z1=self.scale.project_m2screen_z(data.z_scale[0])
 				z0=z0+z0*0.1
 				z1=z1+z1*0.1
 
 			for yi in range(0,len(data.y_scale)-1):
 				for xi in range(0,len(data.x_scale)-1):
-					x0=gl_scale.project_m2screen_x(data.x_scale[xi])
-					y0=gl_scale.project_m2screen_y(data.y_scale[yi])
-					x1=gl_scale.project_m2screen_x(data.x_scale[xi+1])
-					y1=gl_scale.project_m2screen_y(data.y_scale[yi+1])
+					x0=self.scale.project_m2screen_x(data.x_scale[xi])
+					y0=self.scale.project_m2screen_y(data.y_scale[yi])
+					x1=self.scale.project_m2screen_x(data.x_scale[xi+1])
+					y1=self.scale.project_m2screen_y(data.y_scale[yi+1])
 
 					if data.r==None:
 						d0=data.data[zi][xi][yi]
@@ -174,12 +174,12 @@ class gl_graph():
 		for xi in [0, len(data.x_scale)-1]:
 			for zi in range(0,len(data.z_scale)):
 				for yi in range(min_y_pos,max_y_pos):
-					x0=gl_scale.project_m2screen_x(data.x_scale[xi])
-					y0=gl_scale.project_m2screen_y(data.y_scale[yi])
-					z0=gl_scale.project_m2screen_z(data.z_scale[zi])
-					x1=gl_scale.project_m2screen_x(data.x_scale[xi])
-					y1=gl_scale.project_m2screen_y(data.y_scale[yi]+dy)
-					z1=gl_scale.project_m2screen_z(data.z_scale[zi]+dz)
+					x0=self.scale.project_m2screen_x(data.x_scale[xi])
+					y0=self.scale.project_m2screen_y(data.y_scale[yi])
+					z0=self.scale.project_m2screen_z(data.z_scale[zi])
+					x1=self.scale.project_m2screen_x(data.x_scale[xi])
+					y1=self.scale.project_m2screen_y(data.y_scale[yi]+dy)
+					z1=self.scale.project_m2screen_z(data.z_scale[zi]+dz)
 					if data.r==None:
 						r,g,b=val_to_rgb((data.data[zi][xi][yi]-my_min)/(my_max-my_min),grey=True)
 					else:
@@ -199,12 +199,12 @@ class gl_graph():
 		for yi in [min_y_pos,max_y_pos-1]:
 			for zi in range(0,len(data.z_scale)):
 				for xi in range(0,len(data.x_scale)):
-					x0=gl_scale.project_m2screen_x(data.x_scale[xi])
-					y0=gl_scale.project_m2screen_y(data.y_scale[yi])
-					z0=gl_scale.project_m2screen_z(data.z_scale[zi])
-					x1=gl_scale.project_m2screen_x(data.x_scale[xi]+dx)
-					y1=gl_scale.project_m2screen_y(data.y_scale[yi])
-					z1=gl_scale.project_m2screen_z(data.z_scale[zi]+dz)
+					x0=self.scale.project_m2screen_x(data.x_scale[xi])
+					y0=self.scale.project_m2screen_y(data.y_scale[yi])
+					z0=self.scale.project_m2screen_z(data.z_scale[zi])
+					x1=self.scale.project_m2screen_x(data.x_scale[xi]+dx)
+					y1=self.scale.project_m2screen_y(data.y_scale[yi])
+					z1=self.scale.project_m2screen_z(data.z_scale[zi]+dz)
 					if data.r==None:
 						r,g,b=val_to_rgb((data.data[zi][xi][yi]-my_min)/(my_max-my_min),grey=True)
 					else:
@@ -244,13 +244,13 @@ class gl_graph():
 			#print(path)
 			#print(data.data)
 			for i in range(1,array_len):
-				x=gl_scale.project_m2screen_x(0)
-				y=gl_scale.project_m2screen_y(data.y_scale[i-1])
-				z=gl_scale.project_m2screen_z(0)-s[i-1]*0.5
+				x=self.scale.project_m2screen_x(0)
+				y=self.scale.project_m2screen_y(data.y_scale[i-1])
+				z=self.scale.project_m2screen_z(0)-s[i-1]*0.5
 				glVertex3f(x, y, z)
 
-				y=gl_scale.project_m2screen_y(data.y_scale[i])
-				z=gl_scale.project_m2screen_z(0)-s[i]*0.5
+				y=self.scale.project_m2screen_y(data.y_scale[i])
+				z=self.scale.project_m2screen_z(0)-s[i]*0.5
 				glVertex3f(x, y, z)
 
 			glEnd()

@@ -73,6 +73,13 @@ from bibtex import bibtex
 from json_shape_db_item import shape_db_item
 from shape_editor_io import shape_editor_io
 
+from triangle_io import triangles_get_min
+from triangle_io import triangles_get_max
+from triangle_io import triangles_sub_vec
+from triangle_io import triangles_div_vec
+from triangle_io import triangles_mul_vec
+from triangle_io import triangles_rotate_y
+from triangle import vec
 
 class shape_editor(QWidgetSavePos):
 
@@ -94,19 +101,34 @@ class shape_editor(QWidgetSavePos):
 		data=dat_file()
 
 		if data.load(os.path.join(self.path,"shape.inp"))==True:
+			plot_size=5
+			min_vec=triangles_get_min(data.data)
+			data.data=triangles_sub_vec(data.data,min_vec)
+			max_vec=triangles_get_max(data.data)
+			data.data=triangles_div_vec(data.data,max_vec)
 			self.three_d_shape.gl_objects_remove_regex("bing")
 			a=gl_base_object()
 			a.id=["bing"]
-			a.type="solid_and_mesh_color"
+			a.type="solid_and_mesh"
 			a.r=data.r
 			a.g=data.g
 			a.b=data.b
-
-			a.triangles=triangles_scale_for_gl(data.data)
-			if a.triangles!=False:
-				self.three_d_shape.gl_objects_add(a)
-				self.three_d_shape.scene_built=True
-
+			xyz=vec()
+			xyz.x=-plot_size/2.0
+			xyz.y=-plot_size
+			xyz.z=-plot_size/2.0
+			a.xyz.append(xyz)
+			a.dxyz.x=plot_size
+			a.dxyz.y=plot_size
+			a.dxyz.z=plot_size
+			a.rotate_x=180
+			a.triangles.extend(data.data)
+			self.three_d_shape.gl_objects_add(a)
+			last_obj=self.three_d_shape.objects[-1]
+			self.three_d_shape.objects[-1].compile("triangles_solid",[1.0,0.0,0.0,0.5],[last_obj.r_false,last_obj.g_false,last_obj.b_false])
+			self.three_d_shape.objects[-1].compile("triangles_open",[0.9,0.0,0.0,1.0],[last_obj.r_false,last_obj.g_false,last_obj.b_false],line_width=5)
+			self.three_d_shape.scene_built=True
+			self.three_d_shape.gl_objects_add_grid()
 
 	def callback_help(self):
 		webbrowser.open("https://www.gpvdm.com/docs.html")

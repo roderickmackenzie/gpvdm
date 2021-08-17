@@ -64,6 +64,9 @@
 #include <lock.h>
 #include <light_srcs.h>
 
+#include <world_struct.h>
+#include <world.h>
+
 static int unused __attribute__((unused));
 static char* unused_pchar __attribute__((unused));
 
@@ -560,6 +563,9 @@ void device_init(struct simulation *sim,struct device *dev)
 		dev->dll_solver_free_memory=NULL;
 		dev->dll_solver_handle=NULL;
 		dev->solver_verbosity=-1;
+
+	//world
+	world_init(sim,&(dev->w));
 }
 
 void stop_if_not_registered_and_gpvdm_next(struct simulation *sim)

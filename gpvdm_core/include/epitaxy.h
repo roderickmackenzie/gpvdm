@@ -51,7 +51,7 @@
 void epitaxy_init(struct simulation *sim,struct epitaxy *epi);
 void epi_layer_init(struct simulation *sim,struct epi_layer *layer);
 void epitaxy_cpy(struct simulation *sim,struct epitaxy *out,struct epitaxy *in);
-void epitaxy_load(struct simulation *sim,struct epitaxy *in, struct json_obj *obj_epi);
+int epitaxy_load(struct simulation *sim,struct epitaxy *in, struct json_obj *obj_epi);
 gdouble epitaxy_get_electrical_length(struct epitaxy *in);
 gdouble epitaxy_get_optical_length(struct epitaxy *in);
 int epitaxy_get_layer(struct epitaxy *in,gdouble pos);

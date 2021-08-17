@@ -42,14 +42,12 @@ from clone import gpvdm_clone
 from util_zip import zip_remove_file
 from util_zip import archive_copy_file
 from util_zip import archive_isfile
-from util_zip import archive_merge_file
 from util_zip import read_lines_from_file
 
 from cal_path import get_materials_path
 from util_zip import archive_compress
 from util_zip import extract_file_from_archive
 
-from inp_util import inp_merge2
 from cal_path import get_default_material_path
 
 from progress_class import progress_class
@@ -60,7 +58,6 @@ from inp import inp
 
 class file_type():
 	JUST_COPY=0
-	MERGE=2
 	IGNORE=3
 
 	
@@ -86,7 +83,7 @@ file_list.append(file_type(name="fit_error_exp",dest="file",copy_opp=file_type()
 file_list.append(file_type(name="fit_error_sim",dest="file",copy_opp=file_type().JUST_COPY))
 file_list.append(file_type(name="fit_data",dest="file",copy_opp=file_type().JUST_COPY))
 file_list.append(file_type(name="json.bib",copy_opp=file_type().JUST_COPY))
-file_list.append(file_type(name="server.inp",copy_opp=file_type().MERGE))
+file_list.append(file_type(name="server.inp",copy_opp=file_type().JUST_COPY))
 
 def get_file_info(file_name):
 	match = re.match(r"([a-z_]+)([0-9]+)(.inp)", file_name, re.I)
@@ -130,17 +127,6 @@ def merge_archives(src_archive,dest_archive,only_over_write):
 				#print(ls[i])
 				archive_copy_file(dest_archive,ls[i],src_archive,ls[i],dest=info.dest)
 
-
-			if info.copy_opp==file_type().MERGE:
-				if only_over_write==False:
-					if archive_isfile(dest_archive,ls[i])==False:
-						if archive_copy_file(dest_archive,ls[i],template_archive,info.base_file)==False:
-							print("problem copying",template_archive,info.base_file)
-							#if info.base_file=="dump.inp":
-							#	sys.exit(0)
-						#print("made new file",dest_archive,ls[i])
-
-				ret=archive_merge_file(dest_archive,src_archive,ls[i],ls[i])
 		
 		progress_window.set_fraction(float(i)/float(len(ls)))
 		progress_window.set_text("Importing "+ls[i])

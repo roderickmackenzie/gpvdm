@@ -121,7 +121,7 @@ void epi_layer_cpy(struct simulation *sim,struct epi_layer *out,struct epi_layer
 
 void epitaxy_cpy(struct simulation *sim,struct epitaxy *out,struct epitaxy *in)
 {
-	int i;
+	//int i;
 	int l;
 	int layer_max=20;
 

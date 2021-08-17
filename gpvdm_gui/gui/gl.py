@@ -212,11 +212,7 @@ if open_gl_ok==True:
 			self.plot_graph=False
 			self.plot_circuit=False
 
-			#For image
-			#self.render_grid=False
-			#self.render_text=False
-			#self.tab_active_layers=False
-			#self.dy_layer_offset=0.1
+			self.scale=gl_scale()
 			self.font = QFont("Arial")
 			self.font.setPointSize(15)
 			self.called=False
@@ -295,7 +291,7 @@ if open_gl_ok==True:
 						o=gl_base_object()
 						xyz=vec()
 						xyz.x=x+scale_get_device_x()+0.1
-						xyz.y=gl_scale.project_m2screen_y(obj.y0)
+						xyz.y=self.scale.project_m2screen_y(obj.y0)
 						xyz.z=z						
 						o.xyz.append(xyz)
 
@@ -320,7 +316,7 @@ if open_gl_ok==True:
 							o.b=1.0
 							xyz=vec()
 							xyz.x=x+scale_get_device_x()+0.2
-							xyz.y=gl_scale.project_m2screen_y(obj.y0)
+							xyz.y=self.scale.project_m2screen_y(obj.y0)
 							xyz.z=z+(len(epi.layers)-l)*0.1
 							o.xyz.append(xyz)
 							o.id=["text"]
@@ -333,7 +329,7 @@ if open_gl_ok==True:
 
 
 		def reset(self):
-			self.update_real_to_gl_mul()
+			self.scale.set_m2screen()
 			self.rebuild_scene()
 
 		def render(self):
@@ -351,11 +347,11 @@ if open_gl_ok==True:
 
 		def render_view(self,view):
 			data=gpvdm_data()
-			self.update_real_to_gl_mul()
+			self.scale.set_m2screen()
 
-			x=gl_scale.project_m2screen_x(0)
+			x=self.scale.project_m2screen_x(0)
 			y=0.0#project_m2screen_y(0)
-			z=gl_scale.project_m2screen_z(0)
+			z=self.scale.project_m2screen_z(0)
 			#print(">>>>>>22",project_m2screen_z(0))
 
 			self.dos_start=-1
@@ -460,8 +456,8 @@ if open_gl_ok==True:
 			if data.triangles_loaded==False:
 				data.load_triagles()
 
-			x=gl_scale.project_m2screen_x(0)
-			z=gl_scale.project_m2screen_z(0)
+			x=self.scale.project_m2screen_x(0)
+			z=self.scale.project_m2screen_z(0)
 
 			if self.view_options.draw_rays==True:
 				self.draw_rays(self.ray_file)
@@ -477,9 +473,9 @@ if open_gl_ok==True:
 							point_y=0.0
 							point_z=0.0
 						else:
-							point_x=gl_scale.project_m2screen_x(point_x)
-							point_y=gl_scale.project_m2screen_y(point_y)
-							point_z=gl_scale.project_m2screen_z(point_z)
+							point_x=self.scale.project_m2screen_x(point_x)
+							point_y=self.scale.project_m2screen_y(point_y)
+							point_z=self.scale.project_m2screen_z(point_z)
 						#print(point_x,point_y)
 						a=gl_base_object()
 						a.id=[source.id]
@@ -544,7 +540,7 @@ if open_gl_ok==True:
 
 
 		def build_scene(self):
-			self.update_real_to_gl_mul()
+			self.scale.set_m2screen()
 			self.scene_built=True
 			self.load_data()
 			self.update()

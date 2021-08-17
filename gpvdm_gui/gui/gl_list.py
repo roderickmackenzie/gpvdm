@@ -159,23 +159,23 @@ class gl_objects():
 		min,max=self.gl_objects_selected_min_max_vec()
 
 		x_min_new_screen=min.x+dx
-		x_min_new_m=gl_scale.project_screen_x_to_m(x_min_new_screen)
+		x_min_new_m=self.scale.project_screen_x_to_m(x_min_new_screen)
 
 		x_max_new_screen=max.x+dx
-		x_max_new_m=gl_scale.project_screen_x_to_m(x_max_new_screen)
+		x_max_new_m=self.scale.project_screen_x_to_m(x_max_new_screen)
 
 		y_min_new_screen=min.y+dy
-		y_max_new_m=gl_scale.project_screen_y_to_m(y_min_new_screen)
+		y_max_new_m=self.scale.project_screen_y_to_m(y_min_new_screen)
 
 		y_max_new_screen=max.y+dy
-		y_min_new_m=gl_scale.project_screen_y_to_m(y_max_new_screen)
+		y_min_new_m=self.scale.project_screen_y_to_m(y_max_new_screen)
 
 		move_x=True
 		move_y=True
 		move_z=True
-		for v in self.views:
-			if v.enabled==True:
-				print(v.xRot,v.yRot,v.zRot)
+		#for v in self.views:
+		#	if v.enabled==True:
+		#		print(v.xRot,v.yRot,v.zRot)
 
 		for obj in self.objects:
 			if obj.selected==True:
@@ -213,15 +213,15 @@ class gl_objects():
 						for xyz in obj.xyz:
 							if move_y==True:
 								xyz.y=xyz.y+dy
-								s.y0=gl_scale.project_screen_y_to_m(xyz.y)
+								s.y0=self.scale.project_screen_y_to_m(xyz.y)
 
 							if move_x==True:
 								xyz.x=xyz.x+dx
-								s.x0=gl_scale.project_screen_x_to_m(xyz.x)
+								s.x0=self.scale.project_screen_x_to_m(xyz.x)
 
 							if move_z==True:
 								xyz.z=xyz.z+dz
-								s.z0=gl_scale.project_screen_z_to_m(xyz.z)
+								s.z0=self.scale.project_screen_z_to_m(xyz.z)
 
 	def gl_objects_save_selected(self):
 		epi=get_epi()
@@ -297,9 +297,6 @@ class gl_objects():
 					self.paint_open_triangles_from_array(o,false_color=False,line_width=2)
 			elif o.type=="solid_and_mesh_cut_through":
 				self.paint_from_array_cut_through(o)
-			elif o.type=="solid_and_mesh_color":
-				self.paint_from_array(o)
-				self.paint_open_triangles_from_array(o)
 			elif o.type=="box":
 				self.box(o)
 				#self.paint_marker(o)
@@ -311,11 +308,6 @@ class gl_objects():
 				self.box(o,cut_through=True)
 			elif o.type=="text":
 				self.gl_render_text(o)
-			#else:
-			#	self.paint_from_array(o)
-			#	self.paint_open_triangles_from_array(o)
-
-			#print(o.selected,o.selectable,o.id)
 
 			if o.selected==True:
 				sel=gl_base_object()
@@ -362,9 +354,9 @@ class gl_objects():
 			ret=""
 			ret=ret+o.type
 
-			ret=ret+";;"+"{:e}".format(gl_scale.project_screen_x_to_m(o.xyz.x))
-			ret=ret+";;"+"{:e}".format(gl_scale.project_screen_y_to_m(o.xyz.y))
-			ret=ret+";;"+"{:e}".format(gl_scale.project_screen_z_to_m(o.xyz.z))
+			ret=ret+";;"+"{:e}".format(self.scale.project_screen_x_to_m(o.xyz.x))
+			ret=ret+";;"+"{:e}".format(self.scale.project_screen_y_to_m(o.xyz.y))
+			ret=ret+";;"+"{:e}".format(self.scale.project_screen_z_to_m(o.xyz.z))
 			ret=ret+";;"+"{:e}".format(o.dxyz.x/scale_get_xmul())
 			ret=ret+";;"+"{:e}".format(o.dxyz.y/scale_get_ymul())
 			ret=ret+";;"+"{:e}".format(o.dxyz.z/scale_get_zmul())

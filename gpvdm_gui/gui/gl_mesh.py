@@ -35,7 +35,6 @@ try:
 	from PyQt5.QtOpenGL import QGLWidget
 	from gl_lib import val_to_rgb
 	from PyQt5.QtWidgets import QMenu
-	from gl_scale import gl_scale
 
 except:
 	pass
@@ -64,9 +63,9 @@ class gl_mesh():
 		x,temp=mesh.x.calculate_points()
 		z,temp=mesh.z.calculate_points()
 
-		x=gl_scale.project_m2screen_x(x)
-		y=gl_scale.project_m2screen_y(y)
-		z=gl_scale.project_m2screen_z(z)
+		x=self.scale.project_m2screen_x(x)
+		y=self.scale.project_m2screen_y(y)
+		z=self.scale.project_m2screen_z(z)
 
 		glLineWidth(3)
 		if mesh.y.circuit_model==False:
@@ -88,9 +87,9 @@ class gl_mesh():
 		for i in range(0,len(y)):
 			y[i]=y[i]+device_start
 
-		x=gl_scale.project_m2screen_x(x)
-		y=gl_scale.project_m2screen_y(y)
-		z=gl_scale.project_m2screen_z(z)
+		x=self.scale.project_m2screen_x(x)
+		y=self.scale.project_m2screen_y(y)
+		z=self.scale.project_m2screen_z(z)
 
 
 		glLineWidth(3)
@@ -306,7 +305,7 @@ class gl_mesh():
 					new_obj=gl_base_object()
 					new_obj.copy(o)
 					#print(layer,l.start,l.end-l.start)
-					new_obj.xyz.x=gl_scale.project_m2screen_x(l.start)
+					new_obj.xyz.x=self.scale.project_m2screen_x(l.start)
 					new_obj.dxyz.x=(l.end-l.start)*scale_get_xmul()
 					#print(layer,o.xyz.x,o.dxyz.x)
 					self.gl_objects_add(new_obj)

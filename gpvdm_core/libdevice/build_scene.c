@@ -68,8 +68,8 @@ void device_build_scene(struct simulation *sim,struct device *dev)
 	struct epitaxy *epi = &(dev->my_epitaxy);
 	//double dz=zlen*0.01;
 
-	double start_z=zlen/2.0;
-	double start_x=xlen/2.0;
+	//double start_z=zlen/2.0;
+	//double start_x=xlen/2.0;
 
 	double device_height=epitaxy_get_optical_length(epi);
 	double sim_window_top=device_height*2.0;
@@ -78,7 +78,7 @@ void device_build_scene(struct simulation *sim,struct device *dev)
 
 	struct shape *s;
 	struct shape *contact_shape;
-	struct object *obj;
+	//struct object *obj;
 
 	double scene_dx=xlen+dx*2.0;
 	double scene_dy=(sim_window_top-scene_y0);

@@ -70,6 +70,7 @@
 #include <json.h>
 #include <server.h>
 #include <light_srcs.h>
+#include <world.h>
 
 int device_run_simulation(struct simulation *sim, struct device *dev)
 {
@@ -81,8 +82,12 @@ int device_run_simulation(struct simulation *sim, struct device *dev)
 	struct stat st = {0};
 	char temp[PATH_MAX];
 	char json_path[PATH_MAX];
+	int layers;
+	int world_items;
+
 	FILE *file;
 
+	struct json_obj *json_world;
 	struct json_obj *json_epi;
 	struct json_obj *json_layer;
 	struct json_obj *json_dos;
@@ -199,19 +204,56 @@ int device_run_simulation(struct simulation *sim, struct device *dev)
 	json_epi=json_obj_find(&(dev->config.obj), "epitaxy");
 	if (json_epi==NULL)
 	{
-		ewe(sim,"Object sim not found\n");
+		ewe(sim,"Object epitaxy not found\n");
 	}
 	epi=&(dev->my_epitaxy);
-	epitaxy_load(sim,epi,json_epi);
+	layers=epitaxy_load(sim,epi,json_epi);
 
-
-	if (dev->drift_diffision_simulations_enabled==TRUE)
+	if (layers>0)
 	{
-		dos_cache_setup(sim,&(sim->doscache),&(dev->config.obj));
-		gen_dos_fd_gaus_fd(sim,epi,json_epi);
+		if (dev->drift_diffision_simulations_enabled==TRUE)
+		{
+			dos_cache_setup(sim,&(sim->doscache),&(dev->config.obj));
+			gen_dos_fd_gaus_fd(sim,epi,json_epi);
+		}
+
+		mesh_obj_load(sim,&(dev->mesh_data),json_mesh);
+
+		contacts_load(sim,dev);
+		mesh_obj_apply_srh_contacts(sim,&(dev->mesh_data),dev);
+
+		device_to_dim(sim,dim,dev);
+
+
+
+		mesh_build(sim,dev);
+		//mesh_dump_y(sim,dim);
+		//getchar();
+		device_get_memory(sim,dev);
+
+
+		mesh_numerate_points(sim,dev);
+
+		load_config(sim,dev);
+
+		contacts_setup(sim,dev);
+		contacts_cal_std_resistance(sim,dev);
+
+
+		epitaxy_mask(sim,dev);
 	}
 
+	json_world=json_obj_find(&(dev->config.obj), "world");
+	if (json_world==NULL)
+	{
+		ewe(sim,"Object world not found\n");
+	}
+	world_items=world_load(sim,&(dev->w),json_world);
 
+	if (layers+world_items<1)
+	{
+		ewe(sim,"Object no objects in the world\n");
+	}
 
 	json_mesh=json_obj_find(&(dev->config.obj), "mesh");
 	if (json_mesh==NULL)
@@ -219,30 +261,6 @@ int device_run_simulation(struct simulation *sim, struct device *dev)
 		ewe(sim,"Mesh object not found\n");
 	}
 
-	mesh_obj_load(sim,&(dev->mesh_data),json_mesh);
-
-	contacts_load(sim,dev);
-	mesh_obj_apply_srh_contacts(sim,&(dev->mesh_data),dev);
-
-	device_to_dim(sim,dim,dev);
-
-
-
-	mesh_build(sim,dev);
-	//mesh_dump_y(sim,dim);
-	//getchar();
-	device_get_memory(sim,dev);
-
-
-	mesh_numerate_points(sim,dev);
-
-	load_config(sim,dev);
-
-	contacts_setup(sim,dev);
-	contacts_cal_std_resistance(sim,dev);
-
-
-	epitaxy_mask(sim,dev);
 	state_cache_init(sim,dev);
 	state_cache_enable(sim,dev);
 

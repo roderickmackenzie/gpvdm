@@ -47,7 +47,6 @@ from global_objects import global_object_register
 from global_objects import global_object_run
 
 from mesh import get_mesh
-from gl_scale import gl_scale
 from dat_file import dat_file
 from server import server_get
 from gpvdm_json import gpvdm_data

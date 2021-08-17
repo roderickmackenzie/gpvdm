@@ -117,7 +117,7 @@ void epi_layer_init(struct simulation *sim,struct epi_layer *layer)
 
 void epitaxy_init(struct simulation *sim,struct epitaxy *epi)
 {
-	int i;
+	//int i;
 	int l;
 	int layer_max=20;
 

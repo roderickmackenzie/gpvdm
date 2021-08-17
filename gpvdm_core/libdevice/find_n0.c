@@ -52,16 +52,12 @@
 
 void find_n0(struct simulation *sim,struct device *in)
 {
-int x;
-int y;
-int z;
 struct newton_state *ns=&in->ns;
 long double ***Bfree_bk=NULL;
 long double ***Binterface_bk=NULL;
 long double ***Bt_interface_bk=NULL;
 
 struct dimensions *dim=&in->ns.dim;
-struct epitaxy *epi=&(in->my_epitaxy);
 printf_log(sim,"%s\n",_("Finding equilibrium conditions"));
 gdouble oldsun=light_get_sun(&(in->mylight));
 

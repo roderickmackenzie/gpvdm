@@ -157,3 +157,4 @@ class gl_cords():
 		self.objects[-1].compile("lines",[0.8,0.8,0.8,1.0],[self.objects[-1].r_false,self.objects[-1].g_false,self.objects[-1].b_false],line_width=1)
 
 
+

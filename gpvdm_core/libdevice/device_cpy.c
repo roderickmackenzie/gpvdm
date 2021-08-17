@@ -65,6 +65,9 @@
 #include <enabled_libs.h>
 #include <light_srcs.h>
 
+#include <world_struct.h>
+#include <world.h>
+
 static int unused __attribute__((unused));
 static char* unused_pchar __attribute__((unused));
 
@@ -567,6 +570,9 @@ void device_cpy(struct simulation *sim,struct device *out,struct device *in)
 		out->dll_solver_free_memory=in->dll_solver_free_memory;
 		out->dll_solver_handle=in->dll_solver_handle;
 		out->solver_verbosity=in->solver_verbosity;
+
+	//world
+		world_cpy(sim,&(out->w),&(in->w));
 }
 
 

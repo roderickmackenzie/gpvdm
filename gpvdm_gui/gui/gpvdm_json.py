@@ -64,6 +64,7 @@ from json_gl import json_gl
 from json_light import json_light
 from json_light_sources import json_light_sources
 from json_world import json_world
+from json_world_stats import json_world_stats
 
 class json_dump(json_base):
 
@@ -130,10 +131,11 @@ class json_sim(json_base):
 		self.var_list.append(["opengl",json_opengl_config()])
 		self.var_list_build()
 
-class all_gpvdm_data(json_base):
+class all_gpvdm_data(json_base,json_world_stats):
 	def __init__(self):
 		self.loaded=False
 		json_base.__init__(self,"main")
+		json_world_stats.__init__(self)
 		self.var_list=[]
 		self.var_list.append(["sim",json_sim()])
 		self.var_list.append(["jv",json_jv()])

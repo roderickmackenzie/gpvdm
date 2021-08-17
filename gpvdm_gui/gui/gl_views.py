@@ -33,7 +33,6 @@ from PyQt5.QtCore import QTimer
 
 from epitaxy import get_epi
 
-from gl_scale import set_m2screen
 from gl_scale import scale_get_xmul
 from gl_scale import scale_get_zmul
 from gl_view_point import view_point
@@ -191,8 +190,6 @@ class gl_views():
 		self.timer.timeout.connect(self.my_timer)
 		self.timer.start(50)
 
-	def update_real_to_gl_mul(self):
-		set_m2screen()
 
 	def view_dump(self):
 		for v in self.views:

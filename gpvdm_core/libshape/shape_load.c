@@ -53,7 +53,7 @@
 #include <heat.h>
 #include <heat_fun.h>
 
-int shape_load_from_json(struct simulation *sim,struct epitaxy *in,struct shape *s, struct json_obj *obj ,long double y_pos)
+int shape_load_from_json(struct simulation *sim,struct shape *s, struct json_obj *obj ,long double y_pos)
 {
 	int enabled;
 	struct json_obj *shape_electrical;
@@ -131,7 +131,6 @@ int shape_load_from_json(struct simulation *sim,struct epitaxy *in,struct shape 
 			if (enabled==TRUE)
 			{
 				sprintf(s->dos_file,"dos_%s",dos_id);
-				//epitaxy_load_dos_files(sim,in, s);
 			}
 		}
 		shape_load_materials(sim,s);

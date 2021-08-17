@@ -38,8 +38,6 @@ except:
 	
 import random
 import os
-from gl_scale import gl_scale
-from gl_scale import scale_trianges_m2screen
 
 from gl_scale import scale_get_device_y
 from gl_scale import scale_get_device_x
@@ -88,9 +86,9 @@ class gl_contacts():
 					if x_mesh.get_points()>1:
 						sticking_out_bit=0.2
 						a.type="solid_and_mesh"
-						a.xyz.x=gl_scale.project_m2screen_x(0)-sticking_out_bit
-						a.xyz.y=gl_scale.project_m2screen_y(c.y0)
-						a.xyz.z=gl_scale.project_m2screen_z(0)
+						a.xyz.x=self.scale.project_m2screen_x(0)-sticking_out_bit
+						a.xyz.y=self.scale.project_m2screen_y(c.y0)
+						a.xyz.z=self.scale.project_m2screen_z(0)
 						a.dxyz.x=1.0
 						a.dxyz.y=scale_get_ymul()*c.dy
 						a.dxyz.z=scale_get_device_z()
@@ -109,7 +107,7 @@ class gl_contacts():
 							a.triangles=triangles_flip_in_box(c.triangles.data)
 							a.triangles=triangles_mul_vec(a.triangles,box)
 							a.triangles=triangles_add_vec(a.triangles,pos)
-							a.triangles=scale_trianges_m2screen(a.triangles)
+							a.triangles=self.scale.scale_trianges_m2screen(a.triangles)
 							self.gl_objects_add(a)
 
 				elif c.position=="top" or c.position=="bottom":
@@ -117,10 +115,10 @@ class gl_contacts():
 
 						xyz=vec()
 						if x_mesh.get_points()==1 and z_mesh.get_points()==1:
-							xyz.x=gl_scale.project_m2screen_x(0.0)
+							xyz.x=self.scale.project_m2screen_x(0.0)
 							a.dxyz.x=get_mesh().x.get_len()*scale_get_xmul()
 						else:
-							xyz.x=gl_scale.project_m2screen_x(c.x0)
+							xyz.x=self.scale.project_m2screen_x(c.x0)
 							a.dxyz.x=c.dx*scale_get_xmul()
 
 						a.dxyz.z=scale_get_device_z()
