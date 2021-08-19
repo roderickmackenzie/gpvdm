@@ -101,14 +101,11 @@ class shape_layer():
 		#print(shape0.triangles)
 		if shape0.triangles!=None:
 			a.triangles.extend(shape0.triangles.data)
-			#if shape0.shape_name=="dome":
-			#	for t in shape0.triangles.data:
-			#		print(t)
+
 		self.gl_objects_add(a)
-		#shape0.color_alpha
-		self.objects[-1].compile("triangles_solid",[shape0.color_r,shape0.color_g,shape0.color_b,0.5],[self.objects[-1].r_false,self.objects[-1].g_false,self.objects[-1].b_false])
-		self.objects[-1].compile("triangles_open",[shape0.color_r*0.9,shape0.color_g*0.9,shape0.color_b*0.9,shape0.color_alpha],[self.objects[-1].r_false,self.objects[-1].g_false,self.objects[-1].b_false],line_width=5)
-		#print(self.objects[-1].r_false,self.objects[-1].g_false,self.objects[-1].b_false)
+
+		self.objects[-1].compile("triangles_solid",[shape0.color_r,shape0.color_g,shape0.color_b,0.5])
+		self.objects[-1].compile("triangles_open",[shape0.color_r*0.9,shape0.color_g*0.9,shape0.color_b*0.9,shape0.color_alpha],line_width=5)
 
 		
 		#now itterate over other shapes in this shape

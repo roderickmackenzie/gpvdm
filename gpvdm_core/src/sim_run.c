@@ -217,6 +217,11 @@ int device_run_simulation(struct simulation *sim, struct device *dev)
 			gen_dos_fd_gaus_fd(sim,epi,json_epi);
 		}
 
+		json_mesh=json_obj_find(&(dev->config.obj), "mesh");
+		if (json_mesh==NULL)
+		{
+			ewe(sim,"Mesh object not found\n");
+		}
 		mesh_obj_load(sim,&(dev->mesh_data),json_mesh);
 
 		contacts_load(sim,dev);
@@ -255,11 +260,6 @@ int device_run_simulation(struct simulation *sim, struct device *dev)
 		ewe(sim,"Object no objects in the world\n");
 	}
 
-	json_mesh=json_obj_find(&(dev->config.obj), "mesh");
-	if (json_mesh==NULL)
-	{
-		ewe(sim,"Mesh object not found\n");
-	}
 
 	state_cache_init(sim,dev);
 	state_cache_enable(sim,dev);

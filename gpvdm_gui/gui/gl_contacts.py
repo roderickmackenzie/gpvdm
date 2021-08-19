@@ -125,12 +125,12 @@ class gl_contacts():
 
 						if c.position=="top":
 							a.dxyz.y=epi.layers[0].dy*scale_get_ymul()
-							xyz.y=gl_scale.project_m2screen_y(epi.get_layer_start(0))
+							xyz.y=self.scale.project_m2screen_y(epi.get_layer_start(0))
 						else:
 							a.dxyz.y=epi.layers[len(epi.layers)-1].dy*scale_get_ymul()
-							xyz.y=gl_scale.project_m2screen_y(epi.get_layer_start(len(epi.layers)-1))
+							xyz.y=self.scale.project_m2screen_y(epi.get_layer_start(len(epi.layers)-1))
 
-						xyz.z=gl_scale.project_m2screen_z(0.0)
+						xyz.z=self.scale.project_m2screen_z(0.0)
 
 						a.xyz.append(xyz)
 
@@ -152,8 +152,8 @@ class gl_contacts():
 
 						self.gl_objects_add(a)
 
-						self.objects[-1].compile("triangles_solid",[a.r,a.g,a.b,0.5],[self.objects[-1].r_false, self.objects[-1].g_false, self.objects[-1].b_false])
-						self.objects[-1].compile("triangles_open",[a.r*0.9, a.g*0.9, a.b*0.9, a.color_alpha],[self.objects[-1].r_false,self.objects[-1].g_false,self.objects[-1].b_false],line_width=5)
+						self.objects[-1].compile("triangles_solid",[a.r,a.g,a.b,0.5])
+						self.objects[-1].compile("triangles_open",[a.r*0.9, a.g*0.9, a.b*0.9, a.color_alpha],line_width=5)
 
 
 

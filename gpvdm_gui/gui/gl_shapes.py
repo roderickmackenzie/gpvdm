@@ -48,6 +48,7 @@ from gl_scale import scale_get_zmul
 from gl_lib import val_to_rgb
 from triangle_io import triangles_get_min
 from triangle_io import triangles_get_max
+from triangle import triangle
 
 class gl_shapes:
 	def pyrmid(self,o):
@@ -92,6 +93,7 @@ class gl_shapes:
 			glEnd()
 			glPopMatrix()
 
+
 	def paint_from_array(self,o):
 		#self.set_color(o)
 		glEnableClientState(GL_VERTEX_ARRAY)
@@ -113,17 +115,19 @@ class gl_shapes:
 			
 			if o.dxyz.x!=-1:
 				glScaled(o.dxyz.x,o.dxyz.y,o.dxyz.z)
-			for n in range(0,len(o.gl_array_types)):
-				if o.gl_array_line_width[n]!=None:
-					glLineWidth(o.gl_array_line_width[n])
+			n=0
+			for b in o.blocks:
+				if b.gl_line_width!=None:
+					glLineWidth(b.gl_line_width)
 				#print(o.gl_array_float32)
-				glVertexPointer(3, GL_FLOAT, 0, o.gl_array_float32[n])
+				glVertexPointer(3, GL_FLOAT, 0, b.gl_array_float32)
 
+				#print(b.gl_array_float32[n])
 				if self.false_color==False:
-					glColorPointer(4, GL_FLOAT, 0, o.gl_array_colors_float32[n])
+					glColorPointer(4, GL_FLOAT, 0, b.gl_array_colors_float32)
 
-				glDrawArrays(o.gl_array_types[n], 0, o.gl_array_points[n])
-
+				glDrawArrays(b.gl_array_type, 0, b.gl_array_points)
+				n=n+1
 
 			glPopMatrix()
 

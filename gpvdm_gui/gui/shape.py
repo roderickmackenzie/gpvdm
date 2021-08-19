@@ -38,7 +38,6 @@ from triangle_io import triangles_get_max
 from triangle_io import triangles_sub_vec
 from triangle_io import triangles_div_vec
 from triangle_io import triangles_mul_vec
-from triangle_io import triangles_rotate_y
 
 from triangle import vec
 from triangle_io import triangles_print 
@@ -240,7 +239,6 @@ class shape(json_base):
 			self.triangles=dat_file()
 			self.triangles.load(self.shape_path)
 			if self.triangles.data!=None:
-				#self.triangles.data=triangles_rotate_y(self.triangles.data,self.rotate_y)
 				min_vec=triangles_get_min(self.triangles.data)
 				self.triangles.data=triangles_sub_vec(self.triangles.data,min_vec)
 				max_vec=triangles_get_max(self.triangles.data)

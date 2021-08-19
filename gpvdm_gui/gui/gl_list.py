@@ -53,6 +53,7 @@ class gl_objects():
 
 		self.gl_array_colors=[]
 		self.gl_array_colors_float32=[]
+		self.gl_compiled=False
 
 	def gl_objects_clear(self):
 		self.objects=[]
@@ -146,6 +147,7 @@ class gl_objects():
 		my_object.g_false=my_object.g_false/255
 		my_object.b_false=my_object.b_false/255
 		self.objects.append(my_object)
+		self.gl_compiled=False
 
 	def gl_objects_dump(self):
 		for o in self.objects:
@@ -271,7 +273,13 @@ class gl_objects():
 			if obj.id==in_id:
 				obj.selected=True
 
+	def gl_compile(self):
+		pass
+
 	def gl_objects_render(self):
+		if self.gl_compiled==False:
+			self.gl_compile()
+
 		for o in self.objects:
 			if o.type=="plane":
 				self.plane(o)

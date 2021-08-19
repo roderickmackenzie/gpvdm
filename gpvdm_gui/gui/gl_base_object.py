@@ -61,11 +61,9 @@ class gl_base_object():
 		self.text=""
 		self.texture=None
 
-		self.gl_array_types=[]
 		self.gl_array_float32=[]
-		self.gl_array_colors_float32=[]
 		self.gl_array_points=[]
-		self.gl_array_false_colors_float32=[]
+		#self.gl_array_false_colors_float32=[]
 		self.gl_array_line_width=[]
 
 		self.rotate_y=0.0
@@ -73,6 +71,7 @@ class gl_base_object():
 
 		#remove later maybe used for circuit
 		self.gl_array_done=False
+		self.blocks=[]
 
 	def copy(self,obj):
 		self.id=obj.id
@@ -101,6 +100,7 @@ class gl_base_object():
 
 		self.rotate_y=obj.rotate_y
 		self.rotate_x=obj.rotate_x
+
 
 	def match_false_color(self,r,g,b):
 		rf=int(self.r_false*255)
@@ -168,14 +168,25 @@ class gl_base_object():
 
 		return ret
 
-	def compile(self,gl_render_type,color,false_color,line_width=3):
+	class code_block():
+		def __init__(self):
+			self.gl_array_type=None
+			self.gl_array_points=0
+			self.gl_array_colors_float32=[]
+			self.gl_array_float32=[]
+			self.gl_line_width=[]
+			#self.gl_array_false_colors_float32=[]
+
+	def compile(self,gl_render_type,color,line_width=3):
 		points=[]
 		colors=[]
 		false_colors=[]
+		false_color=[self.r_false,self.g_false,self.b_false]
 		points_per_tri=3
+		b=self.code_block()
+
 		if gl_render_type=="triangles_solid":
-			self.gl_array_types.append(GL_TRIANGLES)
-			self.gl_array_line_width.append(None)
+			b.gl_array_type=GL_TRIANGLES
 			points_per_tri=3
 			for t in self.triangles:
 				points.append([t.xyz0.x,t.xyz0.y,t.xyz0.z])
@@ -188,8 +199,7 @@ class gl_base_object():
 				colors.append(color)
 				false_colors.append(false_color)
 		elif gl_render_type=="triangles_open":
-			self.gl_array_types.append(GL_LINES)
-			self.gl_array_line_width.append(line_width)
+			b.gl_array_type=GL_LINES
 			points_per_tri=6
 			for t in self.triangles:
 				points.append([t.xyz0.x,t.xyz0.y,t.xyz0.z])
@@ -213,17 +223,17 @@ class gl_base_object():
 				colors.append(color)
 				false_colors.append(false_color)
 		elif gl_render_type=="lines":
-			self.gl_array_types.append(GL_LINES)
-			self.gl_array_line_width.append(line_width)
+			b.gl_array_type=GL_LINES
 			points_per_tri=1
 			for t in self.triangles:
 				points.append(t)
 				colors.append(color)
 				false_colors.append(false_color)
+		b.gl_line_width=line_width
+		b.gl_array_points=len(self.triangles)*points_per_tri
+		b.gl_array_colors_float32=np.array(colors, dtype='float32')
+		b.gl_array_float32=np.array(points, dtype='float32')
+		self.blocks.append(b)
 
-		self.gl_array_points.append(len(self.triangles)*points_per_tri)
-		self.gl_array_float32.append(np.array(points, dtype='float32'))
-		self.gl_array_colors_float32.append(np.array(colors, dtype='float32'))
-		self.gl_array_false_colors_float32.append(np.array(false_colors, dtype='float32'))
 
 

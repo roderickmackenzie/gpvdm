@@ -154,7 +154,37 @@ class gl_cords():
 			pos=pos+dz
 
 		self.gl_objects_add(o)
-		self.objects[-1].compile("lines",[0.8,0.8,0.8,1.0],[self.objects[-1].r_false,self.objects[-1].g_false,self.objects[-1].b_false],line_width=1)
+		self.objects[-1].compile("lines",[0.8,0.8,0.8,1.0],line_width=1)
 
 
+	def world_box(self):
+		a=gl_base_object()
+		a.type="solid_and_mesh"
+		a.id=["world_box"]
+
+		xyz=vec()
+		xyz.x=-4.0
+		xyz.y=-4.0
+		xyz.z=-4.0
+		a.xyz.append(xyz)
+
+		a.dxyz.x=8.0
+		a.dxyz.y=8.0
+		a.dxyz.z=8.0
+
+		a.r=1.0
+		a.g=0.0
+		a.b=0.0
+
+		a.alpha=1.0
+
+		a.allow_cut_view=True
+
+		#resize the shape to the mesh
+		a.triangles=[]
+		#print(shape0.triangles)
+		a.triangles.extend(self.default_shapes.box.data)
+
+		self.gl_objects_add(a)
+		self.objects[-1].compile("triangles_open",[1.0,0.0,0.0,1.0],line_width=5)
 

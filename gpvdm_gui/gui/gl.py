@@ -130,6 +130,7 @@ from gl_scale import gl_scale
 from PyQt5.QtCore import pyqtSignal
 from gpvdm_json import gpvdm_data
 from gl_toolbar import gl_toolbar
+from gl_default_shapes import gl_default_shapes
 
 class open_gl_light:
 	def __init__(self):
@@ -220,7 +221,7 @@ if open_gl_ok==True:
 			self.build_main_menu()
 			self.pre_built_scene=None
 			self.open_gl_working=True
-
+			self.default_shapes=gl_default_shapes()
 
 		#def bix_axis(self):
 		#	for xx in range(0,10):
@@ -512,6 +513,8 @@ if open_gl_ok==True:
 
 			if self.view_options.render_grid==True:
 				self.gl_objects_add_grid()
+
+			self.world_box()
 
 			if 1==0:
 				for l in self.lights:

@@ -197,6 +197,7 @@ class gl_scale():
 			ret.append(t0)
 
 		return ret
+
 def scale(length):
 	mul=1
 	while((length*mul)<5):
