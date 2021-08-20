@@ -118,6 +118,10 @@ class gl_main_menu():
 		self.menu_view_draw_rays.triggered.connect(self.menu_toggle_view)
 		self.menu_view_draw_rays.setCheckable(True)
 
+		self.menu_show_world_box=view.addAction(_("Show world box"))
+		self.menu_show_world_box.triggered.connect(self.menu_toggle_view)
+		self.menu_show_world_box.setCheckable(True)
+
 		action=view.addAction(_("Stars"))
 		action.triggered.connect(self.menu_stars)
 
@@ -188,6 +192,7 @@ class gl_main_menu():
 		self.view_options.transparent_objects=self.menu_view_transparent_objects.isChecked()
 		self.view_options.enable_draw_light_source=self.menu_view_light_source.isChecked()
 		self.view_options.draw_rays=self.menu_view_draw_rays.isChecked()
+		self.view_options.show_world_box=self.menu_show_world_box.isChecked()
 
 		if text==_("Ray tracing mesh"):
 			self.view_options.draw_rays= not self.view_options.draw_rays
@@ -224,3 +229,5 @@ class gl_main_menu():
 		self.menu_view_transparent_objects.setChecked(self.view_options.transparent_objects)
 		self.menu_view_light_source.setChecked(self.view_options.enable_draw_light_source)
 		self.menu_view_draw_rays.setChecked(self.view_options.draw_rays)
+		self.menu_show_world_box.setChecked(self.view_options.show_world_box)
+

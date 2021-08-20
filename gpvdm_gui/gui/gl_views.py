@@ -210,6 +210,7 @@ class gl_view_options():
 		self.draw_device=True
 		self.optical_mode=True
 		self.enable_draw_light_source=True
+		self.show_world_box=False
 		self.text=True
 		self.bg_color=[0.0,0.0,0.0]
 		self.stars_distance=60

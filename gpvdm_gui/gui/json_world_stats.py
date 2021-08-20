@@ -45,7 +45,24 @@ class json_world_stats():
 
 		for l in self.world.world_data.segments:
 			my_min,my_max=l.get_min_max(my_min,my_max)
-			
+
+		dx0=(self.world.config.world_margin_x0-1.0)*(my_max.x-my_min.x)
+		dx1=(self.world.config.world_margin_x1-1.0)*(my_max.x-my_min.x)
+
+		dy0=(self.world.config.world_margin_y0-1.0)*(my_max.y-my_min.y)
+		dy1=(self.world.config.world_margin_y1-1.0)*(my_max.y-my_min.y)
+
+		dz0=(self.world.config.world_margin_z0-1.0)*(my_max.z-my_min.z)
+		dz1=(self.world.config.world_margin_z1-1.0)*(my_max.z-my_min.z)
+
+		my_min.x=my_min.x-dx0
+		my_min.y=my_min.y-dy0
+		my_min.z=my_min.z-dz0
+
+		my_max.x=my_max.x+dx0+dx1
+		my_max.y=my_max.y+dy0+dy1
+		my_max.z=my_max.z+dz0+dz1
+
 		return my_min,my_max
 
 

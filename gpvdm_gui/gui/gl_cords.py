@@ -44,9 +44,13 @@ from PyQt5.QtCore import QTimer
 
 from gl_scale import scale_get_start_x
 from gl_scale import scale_get_start_z
+from gl_scale import scale_get_xmul
+from gl_scale import scale_get_ymul
+from gl_scale import scale_get_zmul
 from gl_base_object import gl_base_object
 from triangle import vec
 from gl_scale import scale_get_device_y
+from gpvdm_json import gpvdm_data
 
 class gl_cords():
 	def draw_cords(self):
@@ -156,21 +160,22 @@ class gl_cords():
 		self.gl_objects_add(o)
 		self.objects[-1].compile("lines",[0.8,0.8,0.8,1.0],line_width=1)
 
-
 	def world_box(self):
+		self.gl_objects_remove_regex("world_box")
+		my_min,my_max=gpvdm_data().get_world_size()
 		a=gl_base_object()
 		a.type="solid_and_mesh"
 		a.id=["world_box"]
 
 		xyz=vec()
-		xyz.x=-4.0
-		xyz.y=-4.0
-		xyz.z=-4.0
+		xyz.x=self.scale.project_m2screen_x(my_min.x)
+		xyz.y=self.scale.project_m2screen_y(my_min.y)
+		xyz.z=self.scale.project_m2screen_z(my_min.z)
 		a.xyz.append(xyz)
 
-		a.dxyz.x=8.0
-		a.dxyz.y=8.0
-		a.dxyz.z=8.0
+		a.dxyz.x=fabs(my_max.x-my_min.x)*scale_get_xmul()
+		a.dxyz.y=fabs(my_max.y-my_min.y)*scale_get_ymul()
+		a.dxyz.z=fabs(my_max.z-my_min.z)*scale_get_zmul()
 
 		a.r=1.0
 		a.g=0.0
@@ -178,11 +183,6 @@ class gl_cords():
 
 		a.alpha=1.0
 
-		a.allow_cut_view=True
-
-		#resize the shape to the mesh
-		a.triangles=[]
-		#print(shape0.triangles)
 		a.triangles.extend(self.default_shapes.box.data)
 
 		self.gl_objects_add(a)

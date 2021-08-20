@@ -62,9 +62,6 @@ class json_world_data(json_base):
 			a.load_from_json(json[simulation_name])
 			self.segments.append(a)
 
-		if len(self.segments)==0:
-			self.segments.append(shape())
-
 class json_world(json_base):
 
 	def __init__(self):

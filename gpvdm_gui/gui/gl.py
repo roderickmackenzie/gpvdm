@@ -348,7 +348,7 @@ if open_gl_ok==True:
 
 		def render_view(self,view):
 			data=gpvdm_data()
-			self.scale.set_m2screen()
+			#self.scale.set_m2screen()
 
 			x=self.scale.project_m2screen_x(0)
 			y=0.0#project_m2screen_y(0)
@@ -400,6 +400,8 @@ if open_gl_ok==True:
 
 			if self.view_options.render_photons==True:
 				self.draw_photons(x,z)
+			if self.view_options.show_world_box==True:
+				self.world_box()
 
 			self.gl_objects_render()
 
@@ -514,7 +516,6 @@ if open_gl_ok==True:
 			if self.view_options.render_grid==True:
 				self.gl_objects_add_grid()
 
-			self.world_box()
 
 			if 1==0:
 				for l in self.lights:

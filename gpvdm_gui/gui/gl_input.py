@@ -146,8 +146,8 @@ class gl_input():
 				self.active_view.x_pos =self.active_view.x_pos + 0.1 * dx
 				self.active_view.y_pos =self.active_view.y_pos + 0.1 * dy
 		else:
-			dx_=dx*cos(2.0*3.14159*self.active_view.yRot/360)+dy*sin(2.0*3.14159*self.active_view.yRot/360)
-			dz_=dx*sin(2.0*3.14159*self.active_view.yRot/360)
+			dx_=dx*cos(2.0*3.14159*self.active_view.yRot/360)+dy*sin(2.0*3.14159*self.active_view.xRot/360)
+			dz_=dx*sin(2.0*3.14159*self.active_view.yRot/360)-dy*sin(2.0*3.14159*self.active_view.xRot/360)
 			dy_=dy*cos(2.0*3.14159*self.active_view.xRot/360)
 			self.gl_objects_move(dx_*0.2/self.active_view.zoom,dy_*0.2/self.active_view.zoom,dz_*0.2/self.active_view.zoom)
 		
