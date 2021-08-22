@@ -103,11 +103,11 @@ light_solve_and_update(sim,in,&(in->mylight),0.0);
 			in->mobileion.full_newton=TRUE;
 			solve_all(sim,in);
 
-			int y=0;
+			/*int y=0;
 			for (y=0;y<dim->ylen;y++)
 			{
 				in->Nad[0][0][y]-=in->Nion[0][0][y];
-			}
+			}*/
 			/*int y=0;
 			long double orig=in->Nion[0][0][10];
 			long double mul=1e-5;

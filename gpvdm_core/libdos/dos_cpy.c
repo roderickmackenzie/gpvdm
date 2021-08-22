@@ -126,8 +126,10 @@ void dos_cpy(struct dos *out,struct dos *in)
 	config_out->Eg=config_in->Eg;
 	config_out->Xi=config_in->Xi;
 	config_out->epsilonr=config_in->epsilonr;
-	config_out->doping_start=config_in->doping_start;
-	config_out->doping_stop=config_in->doping_stop;
+	config_out->Na0=config_in->Na0;
+	config_out->Na0=config_in->Na0;
+	config_out->Nd0=config_in->Nd0;
+	config_out->Nd0=config_in->Nd0;
 
 	config_out->Esteps=config_in->Esteps;
 

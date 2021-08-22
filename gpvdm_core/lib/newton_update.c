@@ -253,13 +253,20 @@ struct shape* s;
 					in->tt[z][x][y]=in->Xi[z][x][y];
 					in->tpt[z][x][y]=in->Xi[z][x][y]+in->Eg[z][x][y];
 
-					Nad0=get_dos_doping_start(s);
-					Nad1=get_dos_doping_stop(s);
-					
+				
 					dy=epi->layer[in->imat_epitaxy[z][x][y]].width;
 					pos=in->ns.dim.ymesh[y]-in->layer_start[in->imat_epitaxy[z][x][y]];
 
+					Nad0=s->dosn.config.Nd0;
+					Nad1=s->dosn.config.Nd1;
 					in->Nad[z][x][y]=Nad0+(Nad1-Nad0)*(pos/dy);
+
+					Nad0=s->dosn.config.Na0;
+					Nad1=s->dosn.config.Na1;
+					in->Nad[z][x][y]-=Nad0+(Nad1-Nad0)*(pos/dy);
+
+					in->Nad[z][x][y]-=s->dosn.config.ion_density;
+					 //printf("%Le\n",in->Nad[z][x][y]);
 				}
 			}
 			//getchar();

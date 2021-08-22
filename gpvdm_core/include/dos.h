@@ -93,8 +93,6 @@ void load_txt_dos_from_json(struct simulation *sim,struct dos *dos_n,struct dos 
 void load_binary_dos_file(struct simulation *sim,struct dos *mydos,char *file);
 long double get_dos_ion_density(struct shape *s);
 long double get_dos_ion_mobility(struct shape *s);
-long double get_dos_doping_start(struct shape *s);
-long double get_dos_doping_stop(struct shape *s);
 long double get_dos_epsilonr(struct shape *s);
 long double dos_get_band_energy_n(struct shape *s,int band);
 long double dos_get_band_energy_p(struct shape *s,int band);

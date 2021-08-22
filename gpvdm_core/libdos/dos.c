@@ -257,8 +257,10 @@ printf_log(sim,"%s %s\n",_("Loading file"),file);
 	mydos->tlen=(int)buf[buf_pos++];
 	mydos->srh_bands=(int)buf[buf_pos++];
 	mydos->config.epsilonr=buf[buf_pos++];
-	mydos->config.doping_start=buf[buf_pos++];
-	mydos->config.doping_stop=buf[buf_pos++];
+	mydos->config.Na0=buf[buf_pos++];
+	mydos->config.Na1=buf[buf_pos++];
+	mydos->config.Nd0=buf[buf_pos++];
+	mydos->config.Nd1=buf[buf_pos++];
 	mydos->config.ion_density=buf[buf_pos++];
 	mydos->config.ion_mobility=buf[buf_pos++];
 	mydos->config.srh_vth=buf[buf_pos++];
@@ -356,16 +358,6 @@ long double get_dos_ion_mobility(struct shape *s)
 return s->dosn.config.ion_mobility;
 }
 
-
-long double get_dos_doping_start(struct shape *s)
-{
-return s->dosn.config.doping_start;
-}
-
-long double get_dos_doping_stop(struct shape *s)
-{
-return s->dosn.config.doping_stop;
-}
 
 long double get_dos_epsilonr(struct shape *s)
 {

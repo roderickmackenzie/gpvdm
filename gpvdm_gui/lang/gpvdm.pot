@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gpvdm 5.0\n"
 "Report-Msgid-Bugs-To: roderick.mackenzie@nottingham.ac.uk\n"
-"POT-Creation-Date: 2021-08-22 15:54+0100\n"
+"POT-Creation-Date: 2021-08-22 17:06+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2185,7 +2185,7 @@ msgstr ""
 msgid "Loading file"
 msgstr ""
 
-#: ../../gpvdm_core/libdos/gendosfdgaus.c:741
+#: ../../gpvdm_core/libdos/gendosfdgaus.c:743
 #, python-format
 msgid "Expected dos size is different from generated %d %d\n"
 msgstr ""
@@ -2950,7 +2950,7 @@ msgstr ""
 #: ../../gpvdm_gui/gui/dim_editor.py:91 ../../gpvdm_gui/gui/ref.py:69
 #: ../../gpvdm_gui/gui/ref.py:70 ../../gpvdm_gui/gui/scan_ribbon.py:82
 #: ../../gpvdm_gui/gui/ray_trace_editor.py:69
-#: ../../gpvdm_gui/gui/fit_ribbon.py:128 ../../gpvdm_gui/gui/doping.py:163
+#: ../../gpvdm_gui/gui/fit_ribbon.py:128 ../../gpvdm_gui/gui/doping.py:164
 #: ../../gpvdm_gui/gui/object_editor.py:106
 #: ../../gpvdm_gui/gui/ribbon_shape.py:68 ../../gpvdm_gui/gui/fdtd.py:71
 #: ../../gpvdm_gui/gui/parasitic.py:70 ../../gpvdm_gui/gui/pl_main.py:68
@@ -3324,7 +3324,7 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ref.py:99
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/doping.py:244
 #: ../../gpvdm_gui/gui/ribbon_simulation_notes.py:70
-#: ../../gpvdm_gui/gui/script_ribbon.py:79 ../../gpvdm_gui/gui/doping.py:154
+#: ../../gpvdm_gui/gui/script_ribbon.py:79 ../../gpvdm_gui/gui/doping.py:155
 msgid "Save"
 msgstr ""
 
@@ -3746,7 +3746,7 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/scan_human_labels.py:140
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/scan_human_labels.py:141
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/doping.py:133
-#: ../../gpvdm_gui/gui/token_lib.py:826 ../../gpvdm_gui/gui/doping.py:183
+#: ../../gpvdm_gui/gui/token_lib.py:826 ../../gpvdm_gui/gui/doping.py:184
 msgid "Layer"
 msgstr ""
 
@@ -8333,17 +8333,16 @@ msgid "Frequency mesh"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/doping.py:102
-#: ../../gpvdm_gui/gui/doping.py:80
 msgid "Doping (m^{-3})"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/doping.py:109
 #: ../../gpvdm_gui/gui/doping.py:87 ../../gpvdm_gui/gui/doping.py:90
+#: ../../gpvdm_gui/gui/doping.py:93
 msgid "Position (nm)"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/doping.py:112
-#: ../../gpvdm_gui/gui/doping.py:93
 msgid "Mobile ion density (m^{-3})"
 msgstr ""
 
@@ -8374,7 +8373,7 @@ msgid " is not a valid number."
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/doping.py:235
-#: ../../gpvdm_gui/gui/doping.py:145
+#: ../../gpvdm_gui/gui/doping.py:146
 msgid "Doping/Mobilie ion profile editor"
 msgstr ""
 
@@ -10628,6 +10627,10 @@ msgstr ""
 msgid ""
 "Export\n"
 "Data"
+msgstr ""
+
+#: ../../gpvdm_gui/gui/doping.py:80
+msgid "Charge denisty (m^{-3})"
 msgstr ""
 
 #: ../../gpvdm_gui/gui/optics_sources_tab.py:78

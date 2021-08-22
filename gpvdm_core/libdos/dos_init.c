@@ -112,8 +112,10 @@ void dos_init(struct dos *mydos)
 	config->Eg=-1.0;
 	config->Xi=-1.0;
 	config->epsilonr=-1.0;
-	config->doping_start=-1.0;
-	config->doping_stop=-1.0;
+	config->Na0=-1.0;
+	config->Na1=-1.0;
+	config->Nd0=-1.0;
+	config->Nd1=-1.0;
 
 	config->Esteps=-1;
 

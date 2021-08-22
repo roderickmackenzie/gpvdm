@@ -108,11 +108,21 @@ void dos_config_load(struct simulation *sim,struct dosconfig *confige,struct dos
 	confige->epsilonr=fabs(confige->epsilonr);
 	configh->epsilonr=fabs(confige->epsilonr);
 
-	json_get_long_double(sim,json_dos, &(confige->doping_start),"doping_start");
-	configh->doping_start=confige->doping_start;
+	json_get_long_double(sim,json_dos, &(confige->Na0),"Na0");
+	confige->Na0=fabs(confige->Na0);
+	configh->Na0=confige->Na0;
 
-	json_get_long_double(sim,json_dos, &(confige->doping_stop),"doping_stop");
-	configh->doping_stop=confige->doping_stop;
+	json_get_long_double(sim,json_dos, &(confige->Na1),"Na1");
+	confige->Na1=fabs(confige->Na1);
+	configh->Na1=confige->Na1;
+
+	json_get_long_double(sim,json_dos, &(confige->Nd0),"Nd0");
+	confige->Nd0=fabs(confige->Nd0);
+	configh->Nd0=confige->Nd0;
+
+	json_get_long_double(sim,json_dos, &(confige->Nd1),"Nd1");
+	confige->Nd1=fabs(confige->Nd1);
+	configh->Nd1=confige->Nd1;
 
 	json_get_long_double(sim,json_dos, &(confige->Tstart),"Tstart");
 	json_get_long_double(sim,json_dos, &(confige->Tstop),"Tstop");

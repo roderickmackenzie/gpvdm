@@ -93,8 +93,10 @@ struct dosconfig
 	long double Eg;
 	long double Xi;
 	long double epsilonr;
-	long double doping_start;
-	long double doping_stop;
+	long double Na0;
+	long double Na1;
+	long double Nd0;
+	long double Nd1;
 
 	int Esteps;
 
