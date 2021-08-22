@@ -77,22 +77,23 @@ class doping_window(QWidgetSavePos):
 		self.ax1 = self.fig.add_subplot(111)
 		self.ax1.ticklabel_format(useOffset=False)
 
-		self.ax1.set_ylabel(_("Doping (m^{-3})"))
+		self.ax1.set_ylabel(_("Charge denisty (m^{-3})"))
 		x_plot=[]
 		for i in range(0,len(self.x_pos)):
 			x_plot.append(self.x_pos[i]*1e9)
 
-
+		self.ax1.set_yscale('symlog')
 		frequency, = self.ax1.plot(x_plot,self.doping_Na, 'ro-', linewidth=3 ,alpha=1.0)
 		self.ax1.set_xlabel(_("Position (nm)"))
 
 		frequency, = self.ax1.plot(x_plot,self.doping_Nd, 'go-', linewidth=3 ,alpha=1.0)
 		self.ax1.set_xlabel(_("Position (nm)"))
 
-		self.ax2 = self.ax1.twinx()
-		self.ax2.set_ylabel(_("Mobile ion density (m^{-3})"))
+		frequency, = self.ax1.plot(x_plot,self.ions, 'bo-', linewidth=3 ,alpha=1.0)
+		self.ax1.set_xlabel(_("Position (nm)"))
 
-		self.ax2.plot(x_plot,self.ions, 'bo-', linewidth=3 ,alpha=1.0)
+		self.ax1.legend(["Na","Nd","Nion"])
+
 
 	def save_image(self,file_name):
 		self.fig.savefig(file_name)

@@ -163,7 +163,7 @@ class gpvdm_tab2(QTableWidget):
 					widget_name="none"
 					item1 = QTableWidgetItem()
 					if self.check_enabled_callback!=None:
-						if self.check_enabled_callback(s,token)==False:
+						if self.check_enabled_callback(s,t)==False:
 							item1.setFlags(item1.flags() ^ Qt.ItemIsEnabled)
 					self.setItem(y,x,item1)
 				
