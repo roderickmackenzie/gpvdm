@@ -1389,8 +1389,9 @@ struct shape *s;
 
 			build= -(deriv);
 
-			build+= -(-(pc-nc+Nad-pci)*Qe);	//+Nion 
-
+			build+= -(-(pc-nc+Nad+pci)*Qe);	//+Nion 
+			//printf("%Le\n",in->mobileion.Nion_mul);
+			//getchar();
 			for (band=0;band<dim->srh_bands;band++)
 			{
 				build+= -(-Qe*(in->pt[z][x][i][band]-in->nt[z][x][i][band]));

@@ -117,11 +117,12 @@ class gl_contacts():
 						if x_mesh.get_points()==1 and z_mesh.get_points()==1:
 							xyz.x=self.scale.project_m2screen_x(0.0)
 							a.dxyz.x=get_mesh().x.get_len()*scale_get_xmul()
+							a.dxyz.z=get_mesh().z.get_len()*scale_get_zmul()
 						else:
 							xyz.x=self.scale.project_m2screen_x(c.x0)
 							a.dxyz.x=c.dx*scale_get_xmul()
+							a.dxyz.z=scale_get_device_z()
 
-						a.dxyz.z=scale_get_device_z()
 
 						if c.position=="top":
 							a.dxyz.y=epi.layers[0].dy*scale_get_ymul()

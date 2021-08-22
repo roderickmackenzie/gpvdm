@@ -57,31 +57,12 @@ from epitaxy import epitaxy_get_epi
 from error_dlg import error_dlg
 
 #from file_watch import get_watch
-from gpvdm_tab import gpvdm_tab
+from gpvdm_tab2 import gpvdm_tab2
 from epitaxy import get_epi
 from gpvdm_json import gpvdm_data
 
 class doping_window(QWidgetSavePos):
-	lines=[]
 
-
-	def save_data(self):
-		data=gpvdm_data()
-		epi=data.epi
-		start=0
-		for l in epi.layers:
-			if l.layer_type=="active":
-				break
-			start=start+1
-
-		for i in range(0,self.tab.rowCount()):
-			epi.layers[i+start].shape_dos.doping_start=float(self.tab.item(i, 2).text())
-			epi.layers[i+start].shape_dos.doping_stop=float(self.tab.item(i, 3).text())
-
-			epi.layers[i+start].shape_dos.ion_density=float(self.tab.item(i, 4).text())
-			epi.layers[i+start].shape_dos.ion_mobility=float(self.tab.item(i, 5).text())
-
-		data.save()
 
 	def update(self):
 		self.build_mesh()
@@ -102,13 +83,17 @@ class doping_window(QWidgetSavePos):
 			x_plot.append(self.x_pos[i]*1e9)
 
 
-		frequency, = self.ax1.plot(x_plot,self.doping, 'ro-', linewidth=3 ,alpha=1.0)
+		frequency, = self.ax1.plot(x_plot,self.doping_Na, 'ro-', linewidth=3 ,alpha=1.0)
+		self.ax1.set_xlabel(_("Position (nm)"))
+
+		frequency, = self.ax1.plot(x_plot,self.doping_Nd, 'go-', linewidth=3 ,alpha=1.0)
 		self.ax1.set_xlabel(_("Position (nm)"))
 
 		self.ax2 = self.ax1.twinx()
 		self.ax2.set_ylabel(_("Mobile ion density (m^{-3})"))
 
 		self.ax2.plot(x_plot,self.ions, 'bo-', linewidth=3 ,alpha=1.0)
+
 	def save_image(self,file_name):
 		self.fig.savefig(file_name)
 
@@ -124,74 +109,20 @@ class doping_window(QWidgetSavePos):
 	def callback_help(self):
 		webbrowser.open("https://www.gpvdm.com/man/index.html")
 
-	def load(self):
-		self.tab.blockSignals(True)
-		self.tab.clear()
-		self.tab.setHorizontalHeaderLabels([_("Layer"), _("Width"), _("Doping Start (m-3)"), _("Doping Stop (m-3)"), _("Mobile ion density (m-3)"), _("Mobile ion mobility (m-3)")])
-		layers=epitaxy_get_layers()
-
-		row=0
-		data=gpvdm_data()
-		epi=data.epi
-		for l in epi.layers:
-			if l.layer_type=="active":
-				row=row+1
-		self.tab.setRowCount(row)
-		row=0
-		for l in epi.layers:
-			dy=l.dy
-			if l.layer_type=="active":
-
-				doping_start=l.shape_dos.doping_start
-				doping_stop=l.shape_dos.doping_stop
-
-				ion_density=l.shape_dos.ion_density
-				ion_mobility=l.shape_dos.ion_mobility
-
-				item = QTableWidgetItem(l.shape_name)
-				item.setFlags(item.flags() ^ Qt.ItemIsEnabled)
-				self.tab.setItem(row,0,item)
-
-				item = QTableWidgetItem(str(dy))
-				item.setFlags(item.flags() ^ Qt.ItemIsEnabled)
-				self.tab.setItem(row,1,item)
-
-				item = QTableWidgetItem(str(doping_start))
-				self.tab.setItem(row,2,item)
-
-				item = QTableWidgetItem(str(doping_stop))
-				self.tab.setItem(row,3,item)
-
-				item = QTableWidgetItem(str(ion_density))
-				self.tab.setItem(row,4,item)
-
-				item = QTableWidgetItem(str(ion_mobility))
-				self.tab.setItem(row,5,item)
-				row=row+1
-
-		self.tab.blockSignals(False)
-
-		return
-
-	def project(self,col0,col1):
+	def project(self,token0,token1):
 		data=gpvdm_data()
 		mesh=get_mesh().y
 		x,y =	mesh.calculate_points()
 		device_start=self.epi.get_device_start(data)
-		line=0
+
 		layer=self.epi.get_next_dos_layer(-1)
 
 		for i in range(0,len(x)):
+			Nad0=getattr(self.epi.layers[layer].shape_dos,token0)
+			Nad1=getattr(self.epi.layers[layer].shape_dos,token1)
+
 			if x[i]+device_start>self.epi.layers[layer].end:
 				layer=layer+1
-				line=line+1
-
-			try:
-				Nad0=float(self.tab.item(line, col0).text())
-				Nad1=float(self.tab.item(line, col1).text())
-			except:
-				Nad0=0.0
-				Nad1=0.0
 
 			dy=self.epi.layers[layer].dy
 			y[i]=Nad0+(Nad1-Nad0)*(x[i]-self.epi.layers[layer].start+device_start)/dy
@@ -200,27 +131,16 @@ class doping_window(QWidgetSavePos):
 
 	def build_mesh(self):
 
-		self.x_pos,self.doping=self.project(2,3)
-		self.x_pos,self.ions=self.project(4,4)
+		self.x_pos,self.doping_Na=self.project("Na0","Na1")
+		self.x_pos,self.doping_Nd=self.project("Nd0","Nd1")
+		self.x_pos,self.ions=self.project("ion_density","ion_density")
 
 		return True
 
 
-	def tab_changed(self, y,x):
-		val=self.tab.get_value(y,x)
-		try:
-			val=float(val)
-		except:
-			error_dlg(self,_(val+" is not a valid number."))
-			return
-		self.build_mesh()
-		self.draw_graph()
-		self.fig.canvas.draw()
-		self.save_data()
-
 	def __init__(self):
 		QWidgetSavePos.__init__(self,"doping")
-		self.setMinimumSize(900, 600)
+		self.setMinimumSize(1000, 600)
 		self.setWindowIcon(icon_get("doping"))
 		self.setWindowTitle(_("Doping/Mobilie ion profile editor")+" (https://www.gpvdm.com)")
 
@@ -257,31 +177,37 @@ class doping_window(QWidgetSavePos):
 
 		self.main_vbox.addWidget(canvas)
 
-		self.tab = gpvdm_tab()
-		self.tab.resizeColumnsToContents()
-
-		self.tab.verticalHeader().setVisible(False)
-
-		self.tab.clear()
-		self.tab.setColumnCount(6)
-		self.tab.setSelectionBehavior(QAbstractItemView.SelectRows)
-
-		self.load()
-		self.build_mesh()
-
-		self.tab.cellChanged.connect(self.tab_changed)
-
-		self.tab.setColumnWidth(2, 150)
-		self.tab.setColumnWidth(3, 150)
-		self.tab.setColumnWidth(4, 180)
-		self.tab.setColumnWidth(5, 180)
+		#tab2
+		self.tab2 = gpvdm_tab2()
+		self.tab2.set_tokens(["shape_name","shape_dos.Na0","shape_dos.Na1","shape_dos.Nd0","shape_dos.Nd1","shape_dos.ion_density","shape_dos.ion_mobility"])
+		self.tab2.set_labels([_("Layer"),"Na0 (m^{-3})","Na1 (m^{-3})","Nd0 (m^{-3})","Nd1 (m^{-3})","Nion(+) (m^{-3})","Nion mu (m2 V^{-1}s^{-1})"])
+		self.tab2.json_search_path="gpvdm_data().epi.layers"
+		self.tab2.setColumnWidth(1, 120)
+		self.tab2.setColumnWidth(2, 120)
+		self.tab2.setColumnWidth(3, 120)
+		self.tab2.setColumnWidth(4, 120)
+		self.tab2.setColumnWidth(5, 140)
+		self.tab2.setColumnWidth(6, 240)
+		self.tab2.menu_disabled=True
+		self.tab2.check_enabled_callback=self.check_enabled
+		self.tab2.populate()
+		self.tab2.changed.connect(self.callback_save)
 
 
-		self.main_vbox.addWidget(self.tab)
-
-
-		self.draw_graph()
+		self.main_vbox.addWidget(self.tab2)
+		self.update()
 
 		self.setLayout(self.main_vbox)
 
+	def callback_save(self):
+		self.update()
+		gpvdm_data().save()
+
+	def check_enabled(self,s,token):
+		if s.shape_dos.enabled==False:
+			return False
+		if token=="shape_name":
+			return False
+
+		return True
 

@@ -59,7 +59,7 @@ long double get_top_from_ion(long double n)
 {
 long double ret=0.0;
 long double T=300.0;
-	ret=(kb*T/Qe)*log((fabs(n))/5.0000e25);
+	ret=(kb*T/Qe)*log((fabs(n))/1.0000e30);
 
 return ret;
 }
@@ -69,7 +69,7 @@ void get_ion_den(long double top,long double *n, long double *dn)
 {
 	long double T=300.0;
 	long double Tkb=T*kb;
-	*n=5.0000e25*gexp((Qe*top)/(Tkb));
+	*n=1.0000e30*gexp((Qe*top)/(Tkb));
 
 	if (dn!=NULL)
 	{

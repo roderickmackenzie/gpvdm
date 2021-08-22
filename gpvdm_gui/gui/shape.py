@@ -44,6 +44,7 @@ from triangle_io import triangles_print
 from inp import inp
 from json_base import json_base
 from json_electrical import json_electrical
+from math import fabs
 
 class shape_homo_lumo_item(json_base):
 	def __init__(self):
@@ -231,6 +232,26 @@ class shape(json_base):
 		self.load_from_json(json)
 		self.shape_enabled=str2bool(self.shape_enabled)
 		self.loaded_from_json=True
+		#backwards compatability take out after 22/08/22
+		if self.shape_dos.doping_start>0.0:
+			self.shape_dos.Nd0=fabs(self.shape_dos.doping_start)
+			self.shape_dos.Na0=0.0
+
+		if self.shape_dos.doping_stop>0.0:
+			self.shape_dos.Nd1=fabs(self.shape_dos.doping_stop)
+			self.shape_dos.Na1=0.0
+
+		if self.shape_dos.doping_start<0.0:
+			self.shape_dos.Na0=fabs(self.shape_dos.doping_start)
+			self.shape_dos.Nd0=0.0
+			
+
+		if self.shape_dos.doping_stop<0.0:
+			self.shape_dos.Na1=fabs(self.shape_dos.doping_stop)
+			self.shape_dos.Nd1=0.0
+
+		self.shape_dos.doping_start=0.0
+		self.shape_dos.doping_stop=0.0
 
 
 	def load_triangles(self):

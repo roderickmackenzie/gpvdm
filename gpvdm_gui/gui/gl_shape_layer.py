@@ -55,6 +55,8 @@ from mesh import get_mesh
 class shape_layer():
 
 	def shape_to_screen(self,shape0,base_obj=None):
+		z_mesh=get_mesh().z
+		x_mesh=get_mesh().x
 		a=gl_base_object()
 		a.moveable=shape0.moveable
 		if shape0.shape_enabled==True:
@@ -78,9 +80,14 @@ class shape_layer():
 			xyz.z=self.scale.project_m2screen_z(pos.z)
 			a.xyz.append(xyz)
 
-		a.dxyz.x=shape0.dx*scale_get_xmul()
-		a.dxyz.y=shape0.dy*scale_get_ymul()
-		a.dxyz.z=shape0.dz*scale_get_zmul()
+		if x_mesh.get_points()==1 and z_mesh.get_points()==1:
+			a.dxyz.x=get_mesh().x.get_len()*scale_get_xmul()
+			a.dxyz.y=shape0.dy*scale_get_ymul()
+			a.dxyz.z=get_mesh().z.get_len()*scale_get_zmul()
+		else:
+			a.dxyz.x=shape0.dx*scale_get_xmul()
+			a.dxyz.y=shape0.dy*scale_get_ymul()
+			a.dxyz.z=shape0.dz*scale_get_zmul()
 
 		a.r=shape0.color_r
 		a.g=shape0.color_g

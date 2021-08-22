@@ -67,6 +67,9 @@ class gpvdm_tab2(QTableWidget):
 		self.base_obj=None
 		self.toolbar=toolbar
 		self.paste_callback=None
+		self.check_enabled_callback=None
+		self.disable_callbacks=False
+		self.menu_disabled=False
 		self.setSelectionBehavior(QAbstractItemView.SelectItems)
 		self.SelectionMode (QAbstractItemView.SingleSelection)
 		
@@ -148,39 +151,37 @@ class gpvdm_tab2(QTableWidget):
 			self.insertRow(y)
 			for t in self.json_tokens:
 				token=self.my_token_lib.find_json(t)
+				added=False
 				if token!=False:
-					widget_name=token.widget
-					if widget_name=="QLineEdit":
-						item1 = QTableWidgetItem()
-						self.setItem(y,x,item1)
-					else:
+					if token.widget!="QLineEdit":
+						widget_name=token.widget
 						item1=eval(widget_name+"()")
 						self.setCellWidget(y,x, item1)
-						if widget_name=="QComboBoxLang":
-							for i in range(0,len(token.defaults)):
-								item1.addItemLang(token.defaults[i][0],token.defaults[i][1])
-							item1.currentIndexChanged.connect(self.callback_value_changed)
-						elif widget_name=="gpvdm_select_material":
-							item1.changed.connect(self.callback_value_changed)
-						elif widget_name=="gpvdm_select":
-							item1.edit.textChanged.connect(self.callback_value_changed)
-							if self.callback_a!=None:
-								item1.button.clicked.connect(self.callback_a)
-						elif widget_name=="gtkswitch":
-							item1.changed.connect(self.callback_value_changed)
-						elif widget_name=="tb_spectrum":
-							item1.currentIndexChanged.connect(self.callback_value_changed)
-					#elif widget_name=="QTableWidgetItem":
-					#	item1.textChanged.connect(self.callback_value_changed)
+						added=True
 
-				else:
-					#item1 = QLineEdit()
-					#self.setCellWidget(y,x,item1)
+				if added==False:
+					widget_name="none"
 					item1 = QTableWidgetItem()
+					if self.check_enabled_callback!=None:
+						if self.check_enabled_callback(s,token)==False:
+							item1.setFlags(item1.flags() ^ Qt.ItemIsEnabled)
 					self.setItem(y,x,item1)
-					#item1.textChanged.connect(self.callback_value_changed)
+				
+				if widget_name=="QComboBoxLang":
+					for i in range(0,len(token.defaults)):
+						item1.addItemLang(token.defaults[i][0],token.defaults[i][1])
+					item1.currentIndexChanged.connect(self.callback_value_changed)
+				elif widget_name=="gpvdm_select_material":
+					item1.changed.connect(self.callback_value_changed)
+				elif widget_name=="gpvdm_select":
+					item1.edit.textChanged.connect(self.callback_value_changed)
+					if self.callback_a!=None:
+						item1.button.clicked.connect(self.callback_a)
+				elif widget_name=="gtkswitch":
+					item1.changed.connect(self.callback_value_changed)
+				elif widget_name=="tb_spectrum":
+					item1.currentIndexChanged.connect(self.callback_value_changed)
 
-				#self.set_value(y,x,str(getattr(s,t)))
 
 				x=x+1
 			self.update_row(y)
@@ -189,27 +190,40 @@ class gpvdm_tab2(QTableWidget):
 				self.fixup_new_row(y)
 
 	def update_row(self,y):
-		path=self.get_json_obj()
-		s=path[y]
+		segments=self.get_json_obj()
+
 		x=0
 		for t in self.json_tokens:
-			self.set_value(y,x,str(getattr(s,t)))
+			s=segments[y]
+			#print(type(s),segments[0].shape_name,segments[1].shape_name)
+			for a in t.split("."):
+				
+				s=getattr(s, a,None)
+			#if t=="shape_name":
+			#	print(t,str(s))
+			self.set_value(y,x,str(s))
 			x=x+1
 
 	def callback_value_changed(self):
-		path=self.get_json_obj()
+		segments=self.get_json_obj()
 		y=0
-		for s in path:
+		for segment in segments:
 			x=0
 			for t in self.json_tokens:
-				orig_json_type=type(getattr(s,t))
+				s=segment
+				for a in t.split("."):
+					s_last=s
+					t_last=a
+					s=getattr(s,a)
+				orig_json_type=type(s)
+
 				if orig_json_type==str:
-					setattr(s,t,str(self.get_value(y,x)))
+					setattr(s_last,t_last,str(self.get_value(y,x)))
 				if orig_json_type==bool:
-					setattr(s,t,bool(self.get_value(y,x)))
+					setattr(s_last,t_last,bool(self.get_value(y,x)))
 				elif orig_json_type==float:
 					try:
-						setattr(s,t,float(self.get_value(y,x)))
+						setattr(s_last,t_last,float(self.get_value(y,x)))
 					except:
 						pass
 				x=x+1
@@ -273,49 +287,57 @@ class gpvdm_tab2(QTableWidget):
 		self.blockSignals(False)
 
 	def contextMenuEvent(self, event):
-		self.menu.popup(QCursor.pos())
+		if self.menu_disabled==False:
+			self.menu.popup(QCursor.pos())
 
 
 	def set_value(self,y,x,value):
-		if type(self.cellWidget(y, x))==QComboBox:
-			self.cellWidget(y, x).blockSignals(True)
-			self.cellWidget(y, x).setCurrentIndex(self.cellWidget(y, x).findText(value))
-			self.cellWidget(y, x).blockSignals(False)
-		elif type(self.cellWidget(y, x))==QComboBoxLang:
-			self.cellWidget(y, x).blockSignals(True)
-			self.cellWidget(y, x).setValue_using_english(value)
-			self.cellWidget(y, x).blockSignals(False)
-		elif type(self.cellWidget(y,x))==gpvdm_select:
-			self.cellWidget(y, x).blockSignals(True)
-			self.cellWidget(y, x).setText(value)
-			self.cellWidget(y, x).blockSignals(False)
-		elif type(self.cellWidget(y,x))==energy_to_charge:
-			self.cellWidget(y, x).blockSignals(True)
-			self.cellWidget(y, x).updateValue(value)
-			self.cellWidget(y, x).blockSignals(False)
-		elif type(self.cellWidget(y,x))==gpvdm_select_material:
-			self.cellWidget(y, x).blockSignals(True)
-			self.cellWidget(y, x).setText(value)
-			self.cellWidget(y, x).blockSignals(False)
-		elif type(self.cellWidget(y,x))==QLineEdit:
-			self.cellWidget(y, x).blockSignals(True)
-			self.cellWidget(y, x).setText(value)
-			self.cellWidget(y, x).blockSignals(False)
-		elif type(self.cellWidget(y,x))==gpvdm_applied_voltage:
-			self.cellWidget(y, x).blockSignals(True)
-			self.cellWidget(y, x).setText(value)
-			self.cellWidget(y, x).blockSignals(False)
-		elif type(self.cellWidget(y,x))==gtkswitch:
-			self.cellWidget(y, x).blockSignals(True)
-			self.cellWidget(y, x).set_value(str2bool(value))
-			self.cellWidget(y, x).blockSignals(False)
-		elif type(self.cellWidget(y,x))==tb_spectrum:
-			self.cellWidget(y, x).blockSignals(True)
-			self.cellWidget(y, x).set_value(value)
-			self.cellWidget(y, x).blockSignals(False)
-		else:
-			item = QTableWidgetItem(str(value))
-			self.setItem(y,x,item)
+
+		self.setUpdatesEnabled(False)
+		if 1==1:
+			if type(self.cellWidget(y, x))==QComboBox:
+				self.cellWidget(y, x).blockSignals(True)
+				self.cellWidget(y, x).setCurrentIndex(self.cellWidget(y, x).findText(value))
+				self.cellWidget(y, x).blockSignals(False)
+			elif type(self.cellWidget(y, x))==QComboBoxLang:
+				self.cellWidget(y, x).blockSignals(True)
+				self.cellWidget(y, x).setValue_using_english(value)
+				self.cellWidget(y, x).blockSignals(False)
+			elif type(self.cellWidget(y,x))==gpvdm_select:
+				self.cellWidget(y, x).blockSignals(True)
+				self.cellWidget(y, x).setText(value)
+				self.cellWidget(y, x).blockSignals(False)
+			elif type(self.cellWidget(y,x))==energy_to_charge:
+				self.cellWidget(y, x).blockSignals(True)
+				self.cellWidget(y, x).updateValue(value)
+				self.cellWidget(y, x).blockSignals(False)
+			elif type(self.cellWidget(y,x))==gpvdm_select_material:
+				self.cellWidget(y, x).blockSignals(True)
+				self.cellWidget(y, x).setText(value)
+				self.cellWidget(y, x).blockSignals(False)
+			elif type(self.cellWidget(y,x))==QLineEdit:
+				self.cellWidget(y, x).blockSignals(True)
+				self.cellWidget(y, x).setText(value)
+				self.cellWidget(y, x).blockSignals(False)
+			elif type(self.cellWidget(y,x))==gpvdm_applied_voltage:
+				self.cellWidget(y, x).blockSignals(True)
+				self.cellWidget(y, x).setText(value)
+				self.cellWidget(y, x).blockSignals(False)
+			elif type(self.cellWidget(y,x))==gtkswitch:
+				self.cellWidget(y, x).blockSignals(True)
+				self.cellWidget(y, x).set_value(str2bool(value))
+				self.cellWidget(y, x).blockSignals(False)
+			elif type(self.cellWidget(y,x))==tb_spectrum:
+				self.cellWidget(y, x).blockSignals(True)
+				self.cellWidget(y, x).set_value(value)
+				self.cellWidget(y, x).blockSignals(False)
+			else:
+				item = self.item(y, x)
+				if type(item)==QTableWidgetItem:
+					item.setText(value)
+
+		self.setUpdatesEnabled(True)
+
 
 	def callback_move_down(self):
 		ret=-1
@@ -364,7 +386,11 @@ class gpvdm_tab2(QTableWidget):
 		elif type(self.cellWidget(y,x))==gpvdm_applied_voltage:
 			return self.cellWidget(y, x).text()
 		else:
-			return self.item(y, x).text()
+			item = self.item(y, x)
+			if type(item)==QTableWidgetItem:
+				return item.text()
+
+		return None
 
 	def get_new_row_pos(self):
 		index = self.selectionModel().selectedRows()

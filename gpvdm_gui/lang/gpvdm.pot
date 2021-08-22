@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gpvdm 5.0\n"
 "Report-Msgid-Bugs-To: roderick.mackenzie@nottingham.ac.uk\n"
-"POT-Creation-Date: 2021-08-20 15:00+0100\n"
+"POT-Creation-Date: 2021-08-22 15:54+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -186,7 +186,7 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/scan_tab.py:552
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/image_discretizer.py:447
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gpvdm_tab.py:78
-#: ../../gpvdm_gui/gui/gpvdm_viewer.py:263 ../../gpvdm_gui/gui/gpvdm_tab2.py:92
+#: ../../gpvdm_gui/gui/gpvdm_viewer.py:263 ../../gpvdm_gui/gui/gpvdm_tab2.py:95
 #: ../../gpvdm_gui/gui/image_discretizer.py:199
 #: ../../gpvdm_gui/gui/QHTabBar.py:46 ../../gpvdm_gui/gui/QHTabBar.py:113
 #: ../../gpvdm_gui/gui/gpvdm_tab.py:77
@@ -2399,7 +2399,7 @@ msgstr ""
 msgid "Finding equilibrium conditions"
 msgstr ""
 
-#: ../../gpvdm_core/libdevice/find_n0.c:129
+#: ../../gpvdm_core/libdevice/find_n0.c:175
 msgid "Finished finding equilibrium conditions"
 msgstr ""
 
@@ -2950,7 +2950,7 @@ msgstr ""
 #: ../../gpvdm_gui/gui/dim_editor.py:91 ../../gpvdm_gui/gui/ref.py:69
 #: ../../gpvdm_gui/gui/ref.py:70 ../../gpvdm_gui/gui/scan_ribbon.py:82
 #: ../../gpvdm_gui/gui/ray_trace_editor.py:69
-#: ../../gpvdm_gui/gui/fit_ribbon.py:128 ../../gpvdm_gui/gui/doping.py:243
+#: ../../gpvdm_gui/gui/fit_ribbon.py:128 ../../gpvdm_gui/gui/doping.py:163
 #: ../../gpvdm_gui/gui/object_editor.py:106
 #: ../../gpvdm_gui/gui/ribbon_shape.py:68 ../../gpvdm_gui/gui/fdtd.py:71
 #: ../../gpvdm_gui/gui/parasitic.py:70 ../../gpvdm_gui/gui/pl_main.py:68
@@ -3324,7 +3324,7 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ref.py:99
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/doping.py:244
 #: ../../gpvdm_gui/gui/ribbon_simulation_notes.py:70
-#: ../../gpvdm_gui/gui/script_ribbon.py:79 ../../gpvdm_gui/gui/doping.py:234
+#: ../../gpvdm_gui/gui/script_ribbon.py:79 ../../gpvdm_gui/gui/doping.py:154
 msgid "Save"
 msgstr ""
 
@@ -3531,7 +3531,7 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/fxmesh.py:364
 #: ../../gpvdm_gui/gui/gl_object_editor.py:57
 #: ../../gpvdm_gui/gui/equation_editor.py:319
-#: ../../gpvdm_gui/gui/gpvdm_tab2.py:83 ../../gpvdm_gui/gui/gpvdm_tab2.py:108
+#: ../../gpvdm_gui/gui/gpvdm_tab2.py:86 ../../gpvdm_gui/gui/gpvdm_tab2.py:111
 #: ../../gpvdm_gui/gui/gpvdm_tab.py:70
 msgid "Move down"
 msgstr ""
@@ -3549,7 +3549,7 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/fxmesh.py:368
 #: ../../gpvdm_gui/gui/gl_object_editor.py:54
 #: ../../gpvdm_gui/gui/equation_editor.py:323
-#: ../../gpvdm_gui/gui/gpvdm_tab2.py:87 ../../gpvdm_gui/gui/gpvdm_tab2.py:104
+#: ../../gpvdm_gui/gui/gpvdm_tab2.py:90 ../../gpvdm_gui/gui/gpvdm_tab2.py:107
 #: ../../gpvdm_gui/gui/gpvdm_tab.py:73
 msgid "Move up"
 msgstr ""
@@ -3746,7 +3746,7 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/scan_human_labels.py:140
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/scan_human_labels.py:141
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/doping.py:133
-#: ../../gpvdm_gui/gui/token_lib.py:826 ../../gpvdm_gui/gui/doping.py:130
+#: ../../gpvdm_gui/gui/token_lib.py:826 ../../gpvdm_gui/gui/doping.py:183
 msgid "Layer"
 msgstr ""
 
@@ -4467,7 +4467,7 @@ msgstr ""
 #: ../../gpvdm_gui/gui/token_lib.py:199 ../../gpvdm_gui/gui/token_lib.py:219
 #: ../../gpvdm_gui/gui/token_lib.py:220 ../../gpvdm_gui/gui/token_lib.py:221
 #: ../../gpvdm_gui/gui/token_lib.py:611 ../../gpvdm_gui/gui/token_lib.py:612
-#: ../../gpvdm_gui/gui/gl_main_menu.py:126
+#: ../../gpvdm_gui/gui/gl_main_menu.py:130
 #: ../../gpvdm_gui/gui/ribbon_shape_import.py:163
 #: ../../gpvdm_gui/gui/ribbon_shape_import.py:173
 #: ../../gpvdm_gui/gui/optics_sources_tab.py:98
@@ -6575,7 +6575,7 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_main_menu.py:102
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_main_menu.py:159
 #: ../../gpvdm_gui/gui/gl_main_menu.py:110
-#: ../../gpvdm_gui/gui/gl_main_menu.py:192
+#: ../../gpvdm_gui/gui/gl_main_menu.py:197
 msgid "Ray tracing mesh"
 msgstr ""
 
@@ -6593,7 +6593,7 @@ msgid "Rays"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_main_menu.py:111
-#: ../../gpvdm_gui/gui/gl_main_menu.py:121
+#: ../../gpvdm_gui/gui/gl_main_menu.py:125
 msgid "Stars"
 msgstr ""
 
@@ -6604,18 +6604,18 @@ msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_main_menu.py:122
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_main_menu.py:169
-#: ../../gpvdm_gui/gui/gl_main_menu.py:128
-#: ../../gpvdm_gui/gui/gl_main_menu.py:198
+#: ../../gpvdm_gui/gui/gl_main_menu.py:132
+#: ../../gpvdm_gui/gui/gl_main_menu.py:203
 msgid "Font"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_main_menu.py:125
-#: ../../gpvdm_gui/gui/gl_main_menu.py:131
+#: ../../gpvdm_gui/gui/gl_main_menu.py:135
 msgid "Backgroud color"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_main_menu.py:163
-#: ../../gpvdm_gui/gui/gl_main_menu.py:196
+#: ../../gpvdm_gui/gui/gl_main_menu.py:201
 msgid "Device view"
 msgstr ""
 
@@ -7555,7 +7555,7 @@ msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/scan_tab.py:556
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gpvdm_tab.py:82
-#: ../../gpvdm_gui/gui/gpvdm_tab2.py:96 ../../gpvdm_gui/gui/QHTabBar.py:49
+#: ../../gpvdm_gui/gui/gpvdm_tab2.py:99 ../../gpvdm_gui/gui/QHTabBar.py:49
 #: ../../gpvdm_gui/gui/QHTabBar.py:116 ../../gpvdm_gui/gui/gpvdm_tab.py:81
 #: ../../gpvdm_gui/gui/json_viewer.py:149
 msgid "Paste"
@@ -8333,53 +8333,48 @@ msgid "Frequency mesh"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/doping.py:102
-#: ../../gpvdm_gui/gui/doping.py:99
+#: ../../gpvdm_gui/gui/doping.py:80
 msgid "Doping (m^{-3})"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/doping.py:109
-#: ../../gpvdm_gui/gui/doping.py:106
+#: ../../gpvdm_gui/gui/doping.py:87 ../../gpvdm_gui/gui/doping.py:90
 msgid "Position (nm)"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/doping.py:112
-#: ../../gpvdm_gui/gui/doping.py:109
+#: ../../gpvdm_gui/gui/doping.py:93
 msgid "Mobile ion density (m^{-3})"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/doping.py:133
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/contacts.py:298
-#: ../../gpvdm_gui/gui/doping.py:130 ../../gpvdm_gui/gui/contacts.py:303
+#: ../../gpvdm_gui/gui/contacts.py:303
 msgid "Width"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/doping.py:133
-#: ../../gpvdm_gui/gui/doping.py:130
 msgid "Doping Start (m-3)"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/doping.py:133
-#: ../../gpvdm_gui/gui/doping.py:130
 msgid "Doping Stop (m-3)"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/doping.py:133
-#: ../../gpvdm_gui/gui/doping.py:130
 msgid "Mobile ion density (m-3)"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/doping.py:133
-#: ../../gpvdm_gui/gui/doping.py:130
 msgid "Mobile ion mobility (m-3)"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/doping.py:224
-#: ../../gpvdm_gui/gui/doping.py:214
 msgid " is not a valid number."
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/doping.py:235
-#: ../../gpvdm_gui/gui/doping.py:225
+#: ../../gpvdm_gui/gui/doping.py:145
 msgid "Doping/Mobilie ion profile editor"
 msgstr ""
 
@@ -8571,7 +8566,7 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gpvdm_tab.py:64
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/duplicate.py:216
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/fit_patch.py:154
-#: ../../gpvdm_gui/gui/gl_main_menu.py:135 ../../gpvdm_gui/gui/gpvdm_tab2.py:75
+#: ../../gpvdm_gui/gui/gl_main_menu.py:139 ../../gpvdm_gui/gui/gpvdm_tab2.py:78
 #: ../../gpvdm_gui/gui/gpvdm_tab.py:63
 msgid "Add"
 msgstr ""
@@ -8684,7 +8679,7 @@ msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gpvdm_tab.py:67
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gpvdm_tab.py:86
-#: ../../gpvdm_gui/gui/gpvdm_tab2.py:79 ../../gpvdm_gui/gui/gpvdm_tab2.py:100
+#: ../../gpvdm_gui/gui/gpvdm_tab2.py:82 ../../gpvdm_gui/gui/gpvdm_tab2.py:103
 #: ../../gpvdm_gui/gui/gpvdm_tab.py:66 ../../gpvdm_gui/gui/gpvdm_tab.py:85
 msgid "Delete row"
 msgstr ""
@@ -10333,7 +10328,11 @@ msgstr ""
 msgid "Transparent objects"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/gl_main_menu.py:134
+#: ../../gpvdm_gui/gui/gl_main_menu.py:121
+msgid "Show world box"
+msgstr ""
+
+#: ../../gpvdm_gui/gui/gl_main_menu.py:138
 msgid "Objects"
 msgstr ""
 
