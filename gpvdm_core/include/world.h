@@ -50,4 +50,7 @@ void world_init(struct simulation *sim,struct world *w);
 void world_cpy(struct simulation *sim,struct world *out,struct world *in);
 int world_load(struct simulation *sim,struct world *w, struct json_obj *json_world);
 void world_free(struct simulation *sim,struct world *w);
+void world_size(struct simulation *sim,struct vec *min,struct vec *max,struct world *w, struct device *dev);
+void world_objects_free(struct simulation *sim,struct world *w);
+
 #endif

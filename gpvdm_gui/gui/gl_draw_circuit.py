@@ -48,7 +48,6 @@ from PyQt5.QtCore import QTimer
 from inp import inp
 
 from epitaxy import get_epi
-from mesh import get_mesh
 from gl_base_object import gl_base_object
 
 class gl_draw_circuit():

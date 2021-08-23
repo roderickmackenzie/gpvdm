@@ -37,7 +37,6 @@ from gl_scale import gl_scale
 from shape import shape
 from triangle import vec
 
-from mesh import get_mesh
 from gl_scale import scale_get_xmul
 from gl_scale import scale_get_ymul
 from gl_scale import scale_get_zmul
@@ -191,7 +190,7 @@ class gl_objects():
 							y_start=epi.get_layer_start(nl)
 							y_stop=epi.get_layer_end(nl)
 
-							x_stop=get_mesh().x.get_len()
+							x_stop=gpvdm_data().mesh.mesh_x.get_len()
 
 							if x_min_new_m<0:
 								move_x=False

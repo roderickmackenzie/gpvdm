@@ -69,13 +69,14 @@ vec_init(&tmp);
 struct vec store;
 vec_init(&store);
 struct object *obj;
+struct world *w=&(dev->w);
 struct triangle *tri_ret;
 int search=TRUE;
 tri_ret=NULL;
 
-	for (o=0;o<dev->objects;o++)
+	for (o=0;o<w->objects;o++)
 	{
-		obj=&(dev->obj[o]);
+		obj=&(w->obj[o]);
 		search=TRUE;
 		if ((obj->min.y>my_ray->xy.y)&&(obj->max.y>my_ray->xy.y))
 		{
@@ -151,12 +152,13 @@ struct triangle *tri;
 struct object *obj;
 struct object *obj0;
 struct object *obj1;
+struct world *w=&(dev->w);
 
 //struct ray my_ray;
 
-	for (o=0;o<dev->objects;o++)
+	for (o=0;o<w->objects;o++)
 	{
-		obj=&(dev->obj[o]);
+		obj=&(w->obj[o]);
 
 		for (i=0;i<obj->tri.len;i++)
 		{
@@ -220,6 +222,7 @@ int found=-1;
 //printf("%le %le %le\n",xyz->x,xyz->y,xyz->z);
 //objects_dump(sim,in);
 struct object *obj;
+struct world *w=&(dev->w);
 int min_dist_index=-1;
 //double min_dist=1000.0;
 
@@ -247,9 +250,9 @@ vec_cpy(&(my_ray.xy),xyz);
 vec_cpy(&(my_ray.dir),&tmp);
 int test=0;
 
-	for (o=0;o<dev->objects;o++)
+	for (o=0;o<w->objects;o++)
 	{
-		obj=&(dev->obj[o]);
+		obj=&(w->obj[o]);
 
 		//printf("%s\n",obj->name);
 		//getchar();
@@ -368,7 +371,7 @@ int test=0;
 	//printf(">>>>>>>>>>>>> %s %s\n",dev->obj[min_dist_index].name,dev->obj[min_dist2].name);
 	//getchar();
 
-return &dev->obj[min_dist_index];
+return &w->obj[min_dist_index];
 }
 
 //Which object does a ray start within
@@ -389,6 +392,7 @@ int nfound=0;
 int uids[100];
 struct vec points[100];
 int intersections[100];
+struct world *w=&(dev->w);
 //double dist[100];
 int uid=0;
 int ii;
@@ -401,9 +405,9 @@ struct vec tmp;
 vec_init(&tmp);
 
 
-	for (o=0;o<dev->objects;o++)
+	for (o=0;o<w->objects;o++)
 	{
-		obj=&(dev->obj[o]);
+		obj=&(w->obj[o]);
 		//vec_print(&(in_ray->xy));
 		//vec_print(&(obj->min));
 		//vec_print(&(obj->max));
@@ -499,7 +503,7 @@ vec_init(&tmp);
 
 	//printf(">>>>>>>>>>>>> %s %s\n",dev->obj[min_dist_index].name,dev->obj[min_dist2].name);
 	//getchar();
-return &dev->obj[min_dist_index];
+return &w->obj[min_dist_index];
 }
 
 int search_object(struct simulation *sim,struct device *dev,struct ray *my_ray)
@@ -519,10 +523,11 @@ struct object *ray_obj_search_by_name(struct simulation *sim,struct device *dev,
 {
 int o;
 struct object *obj;
+struct world *w=&(dev->w);
 
-	for (o=0;o<dev->objects;o++)
+	for (o=0;o<w->objects;o++)
 	{
-		obj=&(dev->obj[o]);
+		obj=&(w->obj[o]);
 		if (strcmp(obj->name,serach_name)==0)
 		{
 			return obj;

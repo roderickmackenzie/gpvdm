@@ -54,8 +54,22 @@ void world_free(struct simulation *sim,struct world *w)
 		shape_free(sim,&(w->shapes[l]));
 	}
 	free(w->shapes);
+	world_objects_free(sim,w);
 
 	world_init(sim,w);
 }
 
+void world_objects_free(struct simulation *sim,struct world *w)
+{
+	int i;
+	//world made from triangles
+	for (i=0;i<w->objects;i++)
+	{
+		object_free(&(w->obj[i]));
+	}
 
+	free(w->obj);
+
+	w->obj=NULL;
+	w->objects=0;
+}

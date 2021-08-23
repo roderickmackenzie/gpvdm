@@ -33,73 +33,60 @@
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
 
-#include <stdio.h>
-#include <ray.h>
-#include <ray_fun.h>
-#include <gpvdm_const.h>
-#include <math.h>
-#include <stdlib.h>
-#include <cal_path.h>
-#include <log.h>
-#include <device.h>
-#include <util.h>
-#include <triangles.h>
-#include <memory.h>
-#include <epitaxy_struct.h>
-#include <epitaxy.h>
-#include <dat_file.h>
-
-/** @file scene_dump.c
-	@brief Dump the scene to file
+/** @file world_load.c
+	@brief Load the world
 */
 
+#include <epitaxy.h>
+#include <sim_struct.h>
+#include <shape.h>
+#include <string.h>
+#include <util.h>
+#include <cal_path.h>
+#include <triangles.h>
+#include <triangle.h>
+#include <world_struct.h>
+#include <world.h>
 
-void device_dump_world_to_file(struct simulation *sim,struct device *dev,char *file_name)
+void world_size(struct simulation *sim,struct vec *min,struct vec *max,struct world *w, struct device *dev)
 {
-	//int i;
+	int l=0;
+	long double dx=0.0;
+	long double dy=0.0;
+	long double dz=0.0;
 
-	char temp[200];
-	struct dat_file buf;
-	struct world *w=&(dev->w);
-	buffer_init(&buf);
+	struct shape *s;
+	struct epi_layer *layer;
+	struct epitaxy *epi=&(dev->my_epitaxy);
+	vec_set(min,1e6,1e6,1e6);
+	vec_set(max,-1e6,-1e6,-1e6);
 
-	buffer_malloc(&buf);
-	buf.y_mul=1.0;
-	buf.x_mul=1e9;
-	strcpy(buf.title,"Ray trace triange file");
-	strcpy(buf.type,"poly");
-	strcpy(buf.y_label,"Position");
-	strcpy(buf.x_label,"Position");
-	strcpy(buf.data_label,"Position");
-
-	strcpy(buf.y_units,"m");
-	strcpy(buf.x_units,"m");
-	strcpy(buf.data_units,"m");
-	buf.logscale_x=0;
-	buf.logscale_y=0;
-	buf.x=1;
-	buf.y=w->triangles;
-	buf.z=1;
-	buffer_add_info(sim,&buf);
-	struct object *obj;
-	//struct triangle *tri;
-
-
-	int o=0;
-	for (o=0;o<w->objects;o++)
+	for (l=0;l<w->items;l++)
 	{
-		obj=&(w->obj[o]);
-
-		sprintf(temp,"#name %s\n",obj->name);
-		buffer_add_string(&buf,temp);
-
-		triangles_to_dat_file(&buf,&(obj->tri));
-		//printf("wait %s\n",obj->name);
-		//getchar();
+		s=&(w->shapes[l]);
+		shape_cal_min_max(sim,min,max,s);
 	}
 
-	buffer_dump_path(sim,"",file_name,&buf);
-	buffer_free(&buf);
+	for (l=0;l<epi->layers;l++)
+	{
+		s=&(w->shapes[l]);
+		layer=&(epi->layer[l]);
+		s=&(layer->s);
+		shape_cal_min_max(sim,min,max,s);
+	}
 
+	dx=max->x-min->x;
+	dy=max->y-min->y;
+	dz=max->z-min->z;
+
+	min->x=min->x-dx*(w->x0-1.0);
+	max->x=max->x+dx*(w->x1-1.0);
+
+	min->y=min->y-dy*(w->y0-1.0);
+	max->y=max->y+dy*(w->y1-1.0);
+
+	min->z=min->z-dz*(w->z0-1.0);
+	max->z=max->z+dz*(w->z1-1.0);
 }
+
 

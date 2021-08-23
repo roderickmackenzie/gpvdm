@@ -209,6 +209,11 @@ int device_run_simulation(struct simulation *sim, struct device *dev)
 	epi=&(dev->my_epitaxy);
 	layers=epitaxy_load(sim,epi,json_epi);
 
+	if (layers==0)
+	{
+		dev->electrical_simulation_enabled=FALSE;
+	}
+
 	if (layers>0)
 	{
 		if (dev->drift_diffision_simulations_enabled==TRUE)

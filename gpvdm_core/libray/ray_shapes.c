@@ -51,6 +51,7 @@
 void add_triangle(struct device *dev, double x0,double y0,double z0,double x1,double y1,double z1,double x2,double y2,double z2,int obect_uid,int edge)
 {
 	struct triangle tri;
+	struct world *w=&(dev->w);
 
 	triangle_init(&tri);
 	vec_set(&(tri.xy0),x0,y0,z0);
@@ -60,18 +61,19 @@ void add_triangle(struct device *dev, double x0,double y0,double z0,double x1,do
 	tri.object_uid=obect_uid;
 	tri.object_type=edge;
 
-	triangles_add_triangle(&(dev->obj[obect_uid].tri), &tri);
+	triangles_add_triangle(&(w->obj[obect_uid].tri), &tri);
 
-	dev->triangles++;
+	w->triangles++;
 }
 
 struct object *ray_add_object(struct device *dev,struct triangles *tri)
 {
 	//btm
 	int i;
-	object_init(&(dev->obj[dev->objects]));
-	object_malloc(&(dev->obj[dev->objects]));
-	dev->obj[dev->objects].uid=dev->objects;
+	struct world *w=&(dev->w);
+	object_init(&(w->obj[w->objects]));
+	object_malloc(&(w->obj[w->objects]));
+	w->obj[w->objects].uid=w->objects;
 
 	for (i=0;i<tri->len;i++)
 	{
@@ -79,133 +81,135 @@ struct object *ray_add_object(struct device *dev,struct triangles *tri)
 						tri->data[i].xy0.x,tri->data[i].xy0.y,tri->data[i].xy0.z,
 						tri->data[i].xy1.x,tri->data[i].xy1.y,tri->data[i].xy1.z,
 						tri->data[i].xy2.x,tri->data[i].xy2.y,tri->data[i].xy2.z,
-						dev->objects,
+						w->objects,
 						tri->data[i].object_type);
 	}
 
 
-	object_cal_min_max(&(dev->obj[dev->objects]));
+	object_cal_min_max(&(w->obj[w->objects]));
 
-	triangles_cal_edges(&(dev->obj[dev->objects].tri));
+	triangles_cal_edges(&(w->obj[w->objects].tri));
 
-	dev->objects++;
+	w->objects++;
 
-	return &(dev->obj[dev->objects-1]);
+	return &(w->obj[w->objects-1]);
 }
 
 struct object *add_box(struct device *dev, double x0,double y0,double z0,double dx,double dy,double dz,int object_type)
 {
-	object_init(&(dev->obj[dev->objects]));
-	object_malloc(&(dev->obj[dev->objects]));
-	dev->obj[dev->objects].uid=dev->objects;
+	struct world *w=&(dev->w);
+	object_init(&(w->obj[w->objects]));
+	object_malloc(&(w->obj[w->objects]));
+	w->obj[w->objects].uid=w->objects;
 
 	//btm
 	add_triangle(dev,
 					x0,y0,z0,
 					x0+dx,y0,
 					z0,x0,y0,z0+dz,
-													dev->objects,object_type);
+													w->objects,object_type);
 	add_triangle(dev,
 					x0+dx	,	y0,z0,
 					x0+dx	,	y0,z0+dz,
 					x0   	,	y0,z0+dz,
-													dev->objects,object_type);
+													w->objects,object_type);
 
 	//top
 	add_triangle(dev,
 					x0		,y0+dy	,	z0		,
 					x0+dx	,y0+dy	,	z0		,
 					x0		,y0+dy	,	z0+dz	,
-													dev->objects,object_type);
+													w->objects,object_type);
 	add_triangle(dev,
 					x0+dx	,y0+dy	,z0			,
 					x0+dx	,y0+dy	,z0+dz		,
 					x0   	,y0+dy	,z0+dz		,
-													dev->objects,object_type);
+													w->objects,object_type);
 
 	//left
 	add_triangle(dev,
 					x0		,y0		,z0			,
 					x0		,y0+dy	,z0			,
 					x0   	,y0		,z0+dz		,
-													dev->objects,object_type);
+													w->objects,object_type);
 
 	add_triangle(dev,
 					x0		,y0+dy	,z0			,
 					x0		,y0+dy	,z0+dz		,
 					x0   	,y0		,z0+dz		,
-													dev->objects,object_type);
+													w->objects,object_type);
 
 	//right
 	add_triangle(dev,
 					x0+dx		,y0		,z0			,
 					x0+dx		,y0+dy	,z0			,
 					x0+dx   	,y0		,z0+dz		,
-													dev->objects,object_type);
+													w->objects,object_type);
 
 	add_triangle(dev,
 					x0+dx	,y0+dy	,z0			,
 					x0+dx	,y0+dy	,z0+dz		,
 					x0+dx  	,y0		,z0+dz		,
-													dev->objects,object_type);
+													w->objects,object_type);
 
 	//front
 	add_triangle(dev,
 					x0			,y0		,z0		,
 					x0+dx		,y0		,z0		,
 					x0   		,y0+dy	,z0		,
-													dev->objects,object_type);
+													w->objects,object_type);
 
 	add_triangle(dev,
 					x0			,y0+dy	,z0		,
 					x0+dx		,y0+dy	,z0		,
 					x0+dx   	,y0		,z0		,
-													dev->objects,object_type);
+													w->objects,object_type);
 
 	//back
 	add_triangle(dev,
 					x0			,y0		,z0+dz		,
 					x0+dx		,y0		,z0+dz		,
 					x0   		,y0+dy	,z0+dz		,
-													dev->objects,object_type);
+													w->objects,object_type);
 
 	add_triangle(dev,
 					x0			,y0+dy	,z0+dz		,
 					x0+dx		,y0+dy	,z0+dz		,
 					x0+dx   	,y0		,z0+dz		,
-													dev->objects,object_type);
+													w->objects,object_type);
 
-	object_cal_min_max(&(dev->obj[dev->objects]));
+	object_cal_min_max(&(w->obj[w->objects]));
 
-	triangles_cal_edges(&(dev->obj[dev->objects].tri));
+	triangles_cal_edges(&(w->obj[w->objects].tri));
 
-	dev->objects++;
-	return &(dev->obj[dev->objects-1]);
+	w->objects++;
+	return &(w->obj[w->objects-1]);
 }
 
 struct object *add_plane(struct device *dev,double x0,double y0,double z0,double dx,double dz,int object_type)
 {
-	object_init(&(dev->obj[dev->objects]));
-	object_malloc(&(dev->obj[dev->objects]));
-	dev->obj[dev->objects].uid=dev->objects;
+	struct world *w=&(dev->w);
+	object_init(&(w->obj[w->objects]));
+	object_malloc(&(w->obj[w->objects]));
+	w->obj[w->objects].uid=w->objects;
 
 	//btm
 	add_triangle(dev,
 					x0,y0,z0,
 					x0+dx,y0,
 					z0,x0,y0,z0+dz,
-													dev->objects,object_type);
+													w->objects,object_type);
 	add_triangle(dev,
 					x0+dx	,	y0,z0,
 					x0+dx	,	y0,z0+dz,
 					x0   	,	y0,z0+dz,
-													dev->objects,object_type);
+													w->objects,object_type);
 
-	object_cal_min_max(&(dev->obj[dev->objects]));
+	object_cal_min_max(&(w->obj[w->objects]));
 
-	triangles_cal_edges(&(dev->obj[dev->objects].tri));
+	triangles_cal_edges(&(w->obj[w->objects].tri));
 
-	dev->objects++;
-	return &(dev->obj[dev->objects-1]);
+	w->objects++;
+	return &(w->obj[w->objects-1]);
 }
 

@@ -37,7 +37,6 @@ from dat_file import dat_file
 from icon_lib import icon_get
 
 from gl_base_object import gl_base_object
-from gl_scale import project_trianges_m2screen
 from gl_scale import gl_scale
 
 from gl import glWidget
@@ -205,7 +204,7 @@ class plot_window(QWidget):
 				xyz.y=0.0
 				xyz.z=0.0
 				a.xyz.append(xyz)
-				a.triangles=project_trianges_m2screen(self.data.data)
+				a.triangles=self.plot.scale.project_trianges_m2screen(self.data.data)
 				self.plot.gl_objects_add(a)
 
 			self.main_vbox.addWidget(self.status_bar)

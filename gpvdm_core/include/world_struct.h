@@ -49,6 +49,19 @@ struct world
 {
 	int items;
 	struct shape *shapes;
+
+	long double x0;
+	long double x1;
+	long double y0;
+	long double y1;
+	long double z0;
+	long double z1;
+
+	//objects
+		struct object *obj;		//This is the scene built from triangles
+		int objects;
+		int triangles;
+
 };
 
 #endif

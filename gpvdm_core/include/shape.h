@@ -53,4 +53,5 @@ void shape_init(struct simulation *sim,struct shape *s);
 void shape_load_materials(struct simulation *sim,struct shape *s);
 void shape_cpy(struct simulation *sim,struct shape *out,struct shape *in);
 int shape_load_from_json(struct simulation *sim,struct shape *s, struct json_obj *obj ,long double y_pos);
+void shape_cal_min_max(struct simulation *sim,struct vec *min,struct vec *max,struct shape *s);
 #endif

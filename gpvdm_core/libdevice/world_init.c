@@ -40,7 +40,6 @@
 #include <epitaxy.h>
 #include <sim_struct.h>
 #include <shape.h>
-#include <inp.h>
 #include <cal_path.h>
 #include <world.h>
 #include <world_struct.h>
@@ -52,6 +51,19 @@ void world_init(struct simulation *sim,struct world *w)
 {
 	w->items=-1;
 	w->shapes=NULL;
+
+	w->x0=-1.0;
+	w->x1=-1.0;
+	w->y0=-1.0;
+	w->y1=-1.0;
+	w->z0=-1.0;
+	w->z1=-1.0;
+
+	w->obj=NULL;
+	w->objects=0;
+	w->triangles=0;
+
+
 }
 
 

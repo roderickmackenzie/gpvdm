@@ -577,12 +577,8 @@ struct device
 		long double flip_current;
 
 	//objects
-		struct object *obj;		//This is the scene built from triangles
 		struct object ****obj_zxy;
 		struct object ****obj_zx_layer;
-
-		int objects;
-		int triangles;
 
 	//time mesh
 		struct time_mesh tm;

@@ -109,9 +109,8 @@ class gl_photons():
 				den=dx/20
 			else:
 				den=dx/25
-
-			x=np.arange(x0+den/2.0, x0+scale_get_device_x() , den)
-			z=np.arange(z0+den/2.0, z0+scale_get_device_z() , den)
+			x=np.arange(x0+den/2.0, x0+gpvdm_data().mesh.mesh_x.get_len()*scale_get_xmul() , den)
+			z=np.arange(z0+den/2.0, z0+gpvdm_data().mesh.mesh_z.get_len()*scale_get_zmul() , den)
 
 			for i in range(0,len(x)):
 				for ii in range(0,len(z)):

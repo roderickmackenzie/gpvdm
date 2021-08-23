@@ -28,7 +28,6 @@
 import os
 from token_lib import tokens
 from epitaxy import get_epi
-from mesh import get_mesh
 
 import re
 import json

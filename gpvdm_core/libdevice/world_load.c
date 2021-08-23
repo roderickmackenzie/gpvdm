@@ -41,7 +41,6 @@
 #include <sim_struct.h>
 #include <shape.h>
 #include <string.h>
-#include <inp.h>
 #include <util.h>
 #include <cal_path.h>
 #include <i.h>
@@ -56,6 +55,8 @@ int world_load(struct simulation *sim,struct world *w, struct json_obj *json_wor
 	struct shape *s;
 	char item_id[100];
 	struct json_obj *json_world_data;
+	struct json_obj *json_world_config;
+
 	struct json_obj *obj_item;
 
 	json_world_data=json_obj_find(json_world, "world_data");
@@ -78,11 +79,29 @@ int world_load(struct simulation *sim,struct world *w, struct json_obj *json_wor
 		{
 			ewe(sim,"Object %s not found\n",item_id);
 		}
-
-		shape_load_from_json(sim,&(w->shapes[l]), obj_item ,0.0);
 		s=&(w->shapes[l]);
+		shape_init(sim,s);
+		shape_load_from_json(sim,s, obj_item ,0.0);
 		s->epi_index=-1;
 	}
+
+	json_world_config=json_obj_find(json_world, "config");
+
+	if (json_world_config==NULL)
+	{
+		ewe(sim,"world.config not found\n");
+	}
+
+	json_get_long_double(sim, json_world_config, &(w->x0),"world_margin_x0");
+	json_get_long_double(sim, json_world_config, &(w->x1),"world_margin_x1");
+
+	json_get_long_double(sim, json_world_config, &(w->y0),"world_margin_y0");
+	json_get_long_double(sim, json_world_config, &(w->y1),"world_margin_y1");
+
+	json_get_long_double(sim, json_world_config, &(w->z0),"world_margin_z0");
+	json_get_long_double(sim, json_world_config, &(w->z1),"world_margin_z1");
+
+	w->obj=malloc(sizeof(struct object)*1000);
 
 	return w->items;
 }

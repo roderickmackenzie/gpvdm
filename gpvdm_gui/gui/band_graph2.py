@@ -183,19 +183,19 @@ class band_graph2(gpvdm_graph):
 				b.name=layer.shape_name
 				b.cal_min_max()
 				self.bands.append(b)
+		if len(self.bands)>0:
+			self.E_max=self.bands[0].E_max
+			self.E_min=self.bands[0].E_min
 
-		self.E_max=self.bands[0].E_max
-		self.E_min=self.bands[0].E_min
+			for b in self.bands:
+				if b.E_max>self.E_max:
+					self.E_max=b.E_max
 
-		for b in self.bands:
-			if b.E_max>self.E_max:
-				self.E_max=b.E_max
+				if b.E_min<self.E_min:
+					self.E_min=b.E_min
 
-			if b.E_min<self.E_min:
-				self.E_min=b.E_min
-
-		self.E_min=self.E_min-1.0
-		self.E_max=self.E_max+0.5
+			self.E_min=self.E_min-1.0
+			self.E_max=self.E_max+0.5
 
 	def draw_overlay(self,qp,svg=False):
 		x=0.0

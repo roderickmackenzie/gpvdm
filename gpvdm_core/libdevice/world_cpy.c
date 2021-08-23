@@ -40,7 +40,6 @@
 #include <epitaxy.h>
 #include <sim_struct.h>
 #include <shape.h>
-#include <inp.h>
 #include <cal_path.h>
 #include <world.h>
 #include <world_struct.h>
@@ -60,6 +59,18 @@ void world_cpy(struct simulation *sim,struct world *out,struct world *in)
 		shape_init(sim,&(out->shapes[i]));
 		shape_cpy(sim,&(out->shapes[i]),&(in->shapes[i]));
 	}
+
+	out->x0=in->x0;
+	out->x1=in->x1;
+	out->y0=in->y0;
+	out->y1=in->y1;
+	out->z0=in->z0;
+	out->z1=in->z1;
+
+	out->obj=NULL;			//We are not going to copy this
+	out->objects=0;
+	out->triangles=0;
+
 }
 
 

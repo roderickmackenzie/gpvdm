@@ -50,13 +50,14 @@ from epitaxy import get_epi
 
 from gl_scale import scale_get_device_x
 from gl_scale import scale_get_device_z
-from mesh import get_mesh
+
+from gpvdm_json import gpvdm_data
 
 class shape_layer():
 
-	def shape_to_screen(self,shape0,base_obj=None):
-		z_mesh=get_mesh().z
-		x_mesh=get_mesh().x
+	def shape_to_screen(self,shape0,base_obj=None,epitaxy=False):
+		z_mesh=gpvdm_data().mesh.mesh_z
+		x_mesh=gpvdm_data().mesh.mesh_x
 		a=gl_base_object()
 		a.moveable=shape0.moveable
 		if shape0.shape_enabled==True:
@@ -80,10 +81,10 @@ class shape_layer():
 			xyz.z=self.scale.project_m2screen_z(pos.z)
 			a.xyz.append(xyz)
 
-		if x_mesh.get_points()==1 and z_mesh.get_points()==1:
-			a.dxyz.x=get_mesh().x.get_len()*scale_get_xmul()
+		if x_mesh.get_points()==1 and z_mesh.get_points()==1 and epitaxy==True:
+			a.dxyz.x=gpvdm_data().mesh.mesh_x.get_len()*scale_get_xmul()
 			a.dxyz.y=shape0.dy*scale_get_ymul()
-			a.dxyz.z=get_mesh().z.get_len()*scale_get_zmul()
+			a.dxyz.z=gpvdm_data().mesh.mesh_z.get_len()*scale_get_zmul()
 		else:
 			a.dxyz.x=shape0.dx*scale_get_xmul()
 			a.dxyz.y=shape0.dy*scale_get_ymul()

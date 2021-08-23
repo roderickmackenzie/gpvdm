@@ -522,11 +522,8 @@ void device_init(struct simulation *sim,struct device *dev)
 		dev->flip_current=1.0;
 
 	//Objects
-		dev->obj=NULL;
 		dev->obj_zxy=NULL;
 		dev->obj_zx_layer=NULL;
-		dev->objects=0;
-		dev->triangles=0;
 
 	//Time mesh
 		time_mesh_init(&(dev->tm));

@@ -88,7 +88,7 @@ class ribbon_optical(ribbon_page2):
 
 		self.detector = QAction_lock("ccd", _("Detector"), self,"ribbon_home_optics")
 		self.detector.clicked.connect(self.callback_optics_sim)
-		pan.addAction(self.detector)
+		#pan.addAction(self.detector)
 
 		self.fx_box=fx_selector()
 		self.fx_box.update()

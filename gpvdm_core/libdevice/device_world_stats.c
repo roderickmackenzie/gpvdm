@@ -56,23 +56,10 @@
 	@brief Dump stats about each object in the world
 */
 
-void device_objects_free(struct simulation *sim,struct device *dev)
-{
-	int i;
-	//world made from triangles
-	for (i=0;i<dev->objects;i++)
-	{
-		object_free(&(dev->obj[i]));
-	}
-
-	free(dev->obj);
-
-	dev->obj=NULL;
-	dev->objects=0;
-}
 
 void device_world_stats(struct simulation *sim,struct device *dev)
 {
+	struct world *w=&(dev->w);
 
 	if (sim->fitting!=FIT_NOT_FITTING)
 	{
@@ -89,9 +76,9 @@ void device_world_stats(struct simulation *sim,struct device *dev)
 	struct vec max;
 
 	out=fopena(get_output_path(dev),"object_stats.json","w");
-	for (o=0;o<dev->objects;o++)
+	for (o=0;o<w->objects;o++)
 	{
-		obj=&(dev->obj[o]);
+		obj=&(w->obj[o]);
 		Rq=triangle_Rq(sim,&(obj->tri));
 		if (Rq!=-1.0)
 		{
@@ -115,6 +102,5 @@ void device_world_stats(struct simulation *sim,struct device *dev)
 	fclose(out);
 
 
-//getchar();
 }
 

@@ -100,7 +100,7 @@ class gl_toolbar():
 		self.box1.addWidget(self.box_tb3)
 
 
-		self.tb_video = QAction(icon_get("video"), _("Save\nvideo"), self)
+		self.tb_video = QAction(icon_get("fly"), _("Save\nvideo"), self)
 		self.box_tb2.addAction(self.tb_video)
 		self.tb_video.triggered.connect(self.callback_videomaker)
 

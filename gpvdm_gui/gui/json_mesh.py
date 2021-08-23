@@ -79,6 +79,27 @@ class json_mesh_xyz(json_base):
 			a.load_from_json(json[segment_name])
 			self.segments.append(a)
 
+	def get_len(self):
+		tot=0.0
+		for l in self.segments:
+			tot=tot+l.len
+
+		return tot
+
+	def get_points(self):
+		tot=0.0
+		for l in self.segments:
+			tot=tot+l.points
+
+		return tot
+
+	def set_len(self,value):
+		if len(self.data.segments)==1:
+			self.data.segments[0].len=value
+			return True
+		else:
+			return False
+
 class json_mesh_config(json_base):
 
 	def __init__(self):

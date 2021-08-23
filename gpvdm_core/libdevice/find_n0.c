@@ -92,7 +92,7 @@ light_solve_and_update(sim,in,&(in->mylight),0.0);
 		//solve_all(sim,in);
 		//dim->Nion_enabled=Nion_enabled;
 		//getchar();
-		struct shape *s;
+		//struct shape *s;
 		if (ns->Nion_enabled==TRUE)
 		{
 			ns->Nion_enabled=FALSE;

@@ -38,8 +38,6 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import QSize, Qt 
 from PyQt5.QtWidgets import QWidget,QSizePolicy,QHBoxLayout,QPushButton,QDialog,QFileDialog,QToolBar,QMessageBox,QVBoxLayout
 
-#windows
-from mesh import get_mesh
 
 #matplotlib
 import matplotlib
@@ -92,7 +90,10 @@ class electrical_mesh_editor(QWidgetSavePos):
 
 
 	def update_dim(self):
-		if get_mesh().x.get_points()==1 and get_mesh().z.get_points()==1:
+		mesh_x=gpvdm_data().mesh.mesh_x
+		mesh_z=gpvdm_data().mesh.mesh_z
+
+		if mesh_x.get_points()==1 and mesh_z.get_points()==1:
 			self.one_d.setEnabled(False)
 			self.two_d.setEnabled(True)
 			self.three_d.setEnabled(True)
@@ -104,7 +105,7 @@ class electrical_mesh_editor(QWidgetSavePos):
 			self.emesh_editor_z.hide()
 
 
-		if get_mesh().x.get_points()>1 and get_mesh().z.get_points()==1:
+		if mesh_x.get_points()>1 and mesh_z.get_points()==1:
 			self.one_d.setEnabled(True)
 			self.two_d.setEnabled(False)
 			self.three_d.setEnabled(True)
@@ -115,7 +116,7 @@ class electrical_mesh_editor(QWidgetSavePos):
 			self.emesh_editor_x.show()
 			self.emesh_editor_z.hide()
 
-		if get_mesh().x.get_points()>1 and get_mesh().z.get_points()>1:
+		if mesh_x.get_points()>1 and mesh_z.get_points()>1:
 			self.one_d.setEnabled(True)
 			self.two_d.setEnabled(True)
 			self.three_d.setEnabled(False)

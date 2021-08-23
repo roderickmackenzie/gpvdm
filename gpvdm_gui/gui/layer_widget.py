@@ -67,7 +67,6 @@ from epitaxy import get_epi
 
 from error_dlg import error_dlg
 from gpvdm_json import gpvdm_data
-from mesh import get_mesh
 
 
 class layer_widget(QWidgetSavePos):

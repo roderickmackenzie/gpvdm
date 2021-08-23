@@ -50,7 +50,7 @@
 #include <epitaxy.h>
 #include <device_fun.h>
 #include <enabled_libs.h>
-
+#include <world.h>
 
 /** @file device_build_scene.c
 	@brief Build the scene with triangles.
@@ -64,25 +64,18 @@ void device_build_scene(struct simulation *sim,struct device *dev)
 	int add_layer;
 	double xlen=dev->xlen;
 	double zlen=dev->zlen;
-	double dx=xlen*0.01;
 	struct epitaxy *epi = &(dev->my_epitaxy);
-	//double dz=zlen*0.01;
-
-	//double start_z=zlen/2.0;
-	//double start_x=xlen/2.0;
-
-	double device_height=epitaxy_get_optical_length(epi);
-	double sim_window_top=device_height*2.0;
-	double scene_y0=device_height*-4.0;
+	struct world *w=&(dev->w);
+	struct vec min;
+	struct vec max;
+	world_size(sim,&min,&max,&(dev->w), dev);
+	vec_print(&min);
+	vec_print(&max);
 	int c;
 
 	struct shape *s;
 	struct shape *contact_shape;
-	//struct object *obj;
 
-	double scene_dx=xlen+dx*2.0;
-	double scene_dy=(sim_window_top-scene_y0);
-	double scene_dz=dev->zlen;
 	struct epi_layer *layer;
 
 	s=&(dev->big_box);
@@ -96,13 +89,13 @@ void device_build_scene(struct simulation *sim,struct device *dev)
 		strcpy(s->com.component,"none");
 	#endif
 
-	s->z0=0.0;
-	s->x0=-dx;
-	s->y0=scene_y0;
+	s->z0=min.z;
+	s->x0=min.x;
+	s->y0=min.y;
 
-	s->dz=scene_dz;
-	s->dx=scene_dx;
-	s->dy=scene_dy;
+	s->dz=max.z-min.z;
+	s->dx=max.x-min.x;
+	s->dy=max.y-min.y;
 
 	s->dy_padding=0.0;
 	s->dx_padding=0.0;
@@ -110,12 +103,6 @@ void device_build_scene(struct simulation *sim,struct device *dev)
 
 	shape_load_materials(sim,s);
 	device_add_shape_to_world(sim,dev,s);
-	//obj=add_box(dev,-dx,scene_y0, 0.0,  ,,,RAY_SIM_EDGE);
-
-
-	//strcpy(obj->name,"big_box");
-
-	//printf("here\n");
 
 	for (l=0;l<epi->layers;l++)
 	{
@@ -128,8 +115,6 @@ void device_build_scene(struct simulation *sim,struct device *dev)
 			add_layer=FALSE;			
 		}
 
-		//printf("%d %d %s\n",l,layer->layer_type,layer->s.optical_material);
-		//getchar();
 		if (layer->layer_type==LAYER_CONTACT)
 		{
 
@@ -260,6 +245,13 @@ void device_build_scene(struct simulation *sim,struct device *dev)
 		}
 	}
 
+
+	for (i=0;i<w->items;i++)
+	{
+		s=&(w->shapes[i]);
+		s->epi_index=-1.0;
+		device_add_shape_to_world(sim,dev,s);
+	}
 
 	if ((sim->log_level==log_level_disk)||(sim->log_level==log_level_screen_and_disk))
 	{

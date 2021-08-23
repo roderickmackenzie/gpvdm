@@ -44,7 +44,6 @@ from lines import lines_read
 from util import wavelength_to_rgb
 from util import isnumber
 from gl_scale import gl_scale
-from gl_scale import project_trianges_m2screen
 
 from gl_base_object import gl_base_object
 
@@ -78,7 +77,7 @@ class gl_lib_ray():
 				a.r=r
 				a.g=g
 				a.b=b
-				a.triangles=project_trianges_m2screen(self.ray_mesh_data.data)
+				a.triangles=self.scale.project_trianges_m2screen(self.ray_mesh_data.data)
 				self.gl_objects_add(a)
 
 

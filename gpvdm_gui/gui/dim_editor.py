@@ -62,7 +62,6 @@ from cal_path import get_sim_path
 from cal_path import get_default_material_path
 from QWidgetSavePos import QWidgetSavePos
 
-from mesh import get_mesh
 from gpvdm_json import gpvdm_data
 from tab import tab_class
 
@@ -107,7 +106,7 @@ class dim_editor(QWidgetSavePos):
 		self.widget0_hbox.addWidget(self.widget0_label)
 
 		self.widget0_edit=QLineEdit()
-		self.widget0_edit.setText(str(get_mesh().x.get_len()))
+		self.widget0_edit.setText(str(gpvdm_data().mesh.mesh_x.get_len()))
 		self.widget0_edit.textChanged.connect(self.apply)
 		self.widget0_hbox.addWidget(self.widget0_edit)
 		self.widget0_label=QLabel("m")
@@ -121,7 +120,7 @@ class dim_editor(QWidgetSavePos):
 		self.widget1_label=QLabel("z size")
 		self.widget1_hbox.addWidget(self.widget1_label)
 		self.widget1_edit=QLineEdit()
-		self.widget1_edit.setText(str(get_mesh().z.get_len()))
+		self.widget1_edit.setText(str(gpvdm_data().mesh.mesh_z.get_len()))
 		self.widget1_edit.textChanged.connect(self.apply)
 		self.widget1_hbox.addWidget(self.widget1_edit)
 		self.widget1_label=QLabel("m")
@@ -151,7 +150,7 @@ class dim_editor(QWidgetSavePos):
 				return
 		except:
 			return
-		get_mesh().x.set_len(val)
+		data.mesh.mesh_x.set_len(val)
 
 		try:
 			val=float(self.widget1_edit.text())
@@ -161,7 +160,7 @@ class dim_editor(QWidgetSavePos):
 		except:
 			return
 
-		get_mesh().z.set_len(val)
+		data.mesh.mesh_z.set_len(val)
 
 		data.save()
 

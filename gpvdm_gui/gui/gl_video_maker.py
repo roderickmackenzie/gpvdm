@@ -52,6 +52,7 @@ from error_dlg import error_dlg
 
 from json_viewer import json_viewer
 from gpvdm_json import gpvdm_data
+from json_gl import json_gl_view
 
 class gl_video_maker(QWidget,tab_base):
 
@@ -62,17 +63,18 @@ class gl_video_maker(QWidget,tab_base):
 		self.gl_widget=gl_widget
 		self.main_box_widget=QWidget()
 		self.vbox=QVBoxLayout()
-
+		self.setWindowTitle("Flyby video maker (https://www.gpvdm.com)")
+		self.setWindowIcon(icon_get("fly"))	
 		#toolbar
 		self.toolbar=QToolBar()
 		self.toolbar.setToolButtonStyle( Qt.ToolButtonTextUnderIcon)
 		self.toolbar.setIconSize(QSize(42, 42))
 
-		self.tb_start = QAction(icon_get("xy"), _("Start\nposition"), self)
+		self.tb_start = QAction(icon_get("fly_a"), _("Set start\nposition"), self)
 		self.toolbar.addAction(self.tb_start)
 		self.tb_start.triggered.connect(self.callback_set_start_pos)
 
-		self.tb_stop = QAction(icon_get("yz"), _("Stop\nposition"), self)
+		self.tb_stop = QAction(icon_get("fly_b"), _("Set stop\nposition"), self)
 		self.toolbar.addAction(self.tb_stop)
 		self.tb_stop.triggered.connect(self.callback_set_stop_pos)
 
@@ -82,6 +84,10 @@ class gl_video_maker(QWidget,tab_base):
 
 		self.vbox.addWidget(self.toolbar)
 
+		if len(gpvdm_data().gl.segments)<2:
+			gpvdm_data().gl.segments=[]
+			gpvdm_data().gl.segments.append(json_gl_view())
+			gpvdm_data().gl.segments.append(json_gl_view())
 
 		#tab0
 		self.label0=QLabel(_("Start position"))
@@ -125,23 +131,23 @@ class gl_video_maker(QWidget,tab_base):
 
 	def callback_set_start_pos(self):
 		data=gpvdm_data()
-		data.gl.segments[0].xRot=self.gl_widget.view.xRot
-		data.gl.segments[0].yRot=self.gl_widget.view.yRot
-		data.gl.segments[0].zRot=self.gl_widget.view.zRot
-		data.gl.segments[0].x_pos=self.gl_widget.view.x_pos
-		data.gl.segments[0].y_pos=self.gl_widget.view.y_pos
-		data.gl.segments[0].zoom=self.gl_widget.view.zoom
+		data.gl.segments[0].xRot=self.gl_widget.views[0].xRot
+		data.gl.segments[0].yRot=self.gl_widget.views[0].yRot
+		data.gl.segments[0].zRot=self.gl_widget.views[0].zRot
+		data.gl.segments[0].x_pos=self.gl_widget.views[0].x_pos
+		data.gl.segments[0].y_pos=self.gl_widget.views[0].y_pos
+		data.gl.segments[0].zoom=self.gl_widget.views[0].zoom
 		data.save()
 		self.tab0.update_values()
 
 	def callback_set_stop_pos(self):
 		data=gpvdm_data()
-		data.gl.segments[1].xRot=self.gl_widget.view.xRot
-		data.gl.segments[1].yRot=self.gl_widget.view.yRot
-		data.gl.segments[1].zRot=self.gl_widget.view.zRot
-		data.gl.segments[1].x_pos=self.gl_widget.view.x_pos
-		data.gl.segments[1].y_pos=self.gl_widget.view.y_pos
-		data.gl.segments[1].zoom=self.gl_widget.view.zoom
+		data.gl.segments[1].xRot=self.gl_widget.views[0].xRot
+		data.gl.segments[1].yRot=self.gl_widget.views[0].yRot
+		data.gl.segments[1].zRot=self.gl_widget.views[0].zRot
+		data.gl.segments[1].x_pos=self.gl_widget.views[0].x_pos
+		data.gl.segments[1].y_pos=self.gl_widget.views[0].y_pos
+		data.gl.segments[1].zoom=self.gl_widget.views[0].zoom
 		data.save()
 		self.tab1.update_values()
 
@@ -149,13 +155,13 @@ class gl_video_maker(QWidget,tab_base):
 		data=gpvdm_data()
 		if (self.gl_widget.width() % 2) != 0:
 			return
-		self.gl_widget.view.xRot=data.gl.segments[0].xRot
-		self.gl_widget.view.yRot=data.gl.segments[0].yRot
-		self.gl_widget.view.zRot=data.gl.segments[0].zRot
-		self.gl_widget.view.x_pos=data.gl.segments[0].x_pos
-		self.gl_widget.view.y_pos=data.gl.segments[0].y_pos
-		self.gl_widget.view.zoom=data.gl.segments[0].zoom
-		self.gl_widget.view.max_angle_shift=1.0
+		self.gl_widget.views[0].xRot=data.gl.segments[0].xRot
+		self.gl_widget.views[0].yRot=data.gl.segments[0].yRot
+		self.gl_widget.views[0].zRot=data.gl.segments[0].zRot
+		self.gl_widget.views[0].x_pos=data.gl.segments[0].x_pos
+		self.gl_widget.views[0].y_pos=data.gl.segments[0].y_pos
+		self.gl_widget.views[0].zoom=data.gl.segments[0].zoom
+		self.gl_widget.views[0].max_angle_shift=1.0
 
 		self.gl_widget.viewtarget.xRot=data.gl.segments[1].xRot
 		self.gl_widget.viewtarget.yRot=data.gl.segments[1].yRot

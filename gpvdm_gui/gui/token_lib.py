@@ -863,9 +863,7 @@ class tokens:
 		search_token=token.strip()
 
 		for line in lib:
-			#if line.file_name=="json.inp":
 			split_token=line.token.split('.')
-			#print(split_token,search_token)
 			if split_token[-1]==search_token:
 				return line
 

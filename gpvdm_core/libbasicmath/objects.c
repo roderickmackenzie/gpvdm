@@ -55,10 +55,10 @@ void objects_dump(struct simulation *sim,struct device *dev)
 int o=0;
 
 struct object *obj;
-
-	for (o=0;o<dev->objects;o++)
+struct world *w=&(dev->w);
+	for (o=0;o<w->objects;o++)
 	{
-		obj=&(dev->obj[o]);
+		obj=&(w->obj[o]);
 		printf("%d:%s %d",o,obj->name,obj->tri.len);
 		printf("\t(%le,%le,%le)",obj->min.x,obj->min.y,obj->min.z);
 		printf("\t(%le,%le,%le)\n",obj->max.x,obj->max.y,obj->max.z);

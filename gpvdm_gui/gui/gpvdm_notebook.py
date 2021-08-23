@@ -58,7 +58,6 @@ from tab_view import tab_view
 from css import css_apply
 from circuit_editor import circuit_editor
 from display_mesh import display_mesh
-from mesh import get_mesh
 from gpvdm_json import gpvdm_data
 from gpvdm_local import gpvdm_local
 
@@ -170,10 +169,12 @@ class gpvdm_notebook(QTabWidget):
 
 	def update_circuit_window(self):
 		data=gpvdm_data()
-		mesh=get_mesh()
+		mesh_x=data.mesh.mesh_x
+		mesh_z=data.mesh.mesh_z
+
 		next_tab=None
 		if data.electrical_solver.solver_type=="circuit":
-			if  mesh.x.get_points()==1 and mesh.z.get_points()==1:
+			if  mesh_x.get_points()==1 and mesh_z.get_points()==1:
 				next_tab=circuit_editor()
 			else:
 				next_tab=display_mesh()

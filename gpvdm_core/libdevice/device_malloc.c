@@ -66,8 +66,6 @@ void device_get_memory(struct simulation *sim,struct device *in)
 	struct newton_state *ns=(&in->ns);
 	struct dimensions *dim=&in->ns.dim;
 
-	in->obj=malloc(sizeof(struct object)*1000);
-
 	if (in->electrical_simulation_enabled==FALSE)
 	{
 		return;

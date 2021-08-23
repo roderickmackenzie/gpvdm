@@ -80,7 +80,6 @@ from cal_path import get_videos_path
 from cal_path import get_downloads_path
 from cal_path import get_sim_path
 
-from config_window import class_config_window
 from win_lin import running_on_linux
 from util_zip import archive_compress
 from util_zip import archive_decompress
@@ -476,18 +475,8 @@ class gpvdm_viewer(QListWidget,gpvdm_viewer_new):
 				ret.append(itm)
 
 		elif self.path=="/gpvdmroot/gpvdm_configure":
+			pass
 
-			itm=file_store()
-			itm.file_name="gpvdm_dump_config"
-			itm.icon="hdd_custom"
-			itm.display_name=_("Output files")
-			ret.append(itm)
-
-			itm=file_store()
-			itm.file_name="gpvdm_gui_config"
-			itm.icon="applications-interfacedesign"
-			itm.display_name=_("GUI configuration")
-			ret.append(itm)
 
 		else:
 			files=os.listdir(self.path)
@@ -749,10 +738,6 @@ class gpvdm_viewer(QListWidget,gpvdm_viewer_new):
 			point=decode.file_name.split("::::")
 			self.set_path(point[1])
 			self.fill_store()
-			return
-		elif decode.file_name=="gpvdm_dump_config":
-			self.config_window=class_config_window([data.dump],[_("Output files")])
-			self.config_window.show()
 			return
 		elif decode.type=="scan_dir":
 			from scan_tab import scan_vbox

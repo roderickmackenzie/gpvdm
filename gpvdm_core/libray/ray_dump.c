@@ -56,7 +56,7 @@ void ray_dump_triangle(struct simulation *sim,struct device *dev,struct image *i
 {
 
 	char temp[200];
-
+	struct world *my_world=&(dev->w);
 	//printf("file dump\n");
 	struct dat_file buf;
 	buffer_init(&buf);
@@ -80,7 +80,7 @@ void ray_dump_triangle(struct simulation *sim,struct device *dev,struct image *i
 	buf.z=1;
 	buffer_add_info(sim,&buf);
 
-	sprintf(temp,"#name %s\n",dev->obj[tri->object_uid].name);
+	sprintf(temp,"#name %s\n",my_world->obj[tri->object_uid].name);
 	buffer_add_string(&buf,temp);
 
 
@@ -118,10 +118,10 @@ void dump_plane_to_file(struct simulation *sim,char *file_name,struct image *in,
 
 	char temp[200];
 
-	int w=0;
+	int iw=0;
 
 	struct ray_worker *worker;
-
+	struct world *w=&(dev->w);
 	//printf("file dump\n");
 	struct dat_file buf;
 	buffer_init(&buf);
@@ -145,13 +145,13 @@ void dump_plane_to_file(struct simulation *sim,char *file_name,struct image *in,
 	buf.logscale_x=0;
 	buf.logscale_y=0;
 	buf.x=1;
-	buf.y=dev->triangles;
+	buf.y=w->triangles;
 	buf.z=1;
 	buffer_add_info(sim,&buf);
 
-	for (w=0;w<in->worker_max;w++)
+	for (iw=0;iw<in->worker_max;iw++)
 	{
-		worker=&(in->worker[w]);
+		worker=&(in->worker[iw]);
 
 		//printf("%d %d\n",w,worker->nrays);
 		for (i=0;i<worker->nrays;i++)
@@ -190,8 +190,8 @@ void dump_ray_to_file(struct simulation *sim,struct image *in,struct ray *my_ray
 	int b;
 
 	char temp[200];
+	struct world *w=&(dev->w);
 
-	//printf("file dump\n");
 	struct dat_file buf;
 	buffer_init(&buf);
 
@@ -214,7 +214,7 @@ void dump_ray_to_file(struct simulation *sim,struct image *in,struct ray *my_ray
 	buf.logscale_x=0;
 	buf.logscale_y=0;
 	buf.x=1;
-	buf.y=dev->triangles;
+	buf.y=w->triangles;
 	buf.z=1;
 	buffer_add_info(sim,&buf);
 
@@ -260,6 +260,7 @@ void dump_plane(struct simulation *sim,struct device *dev,struct image *in)
 	printf_log(sim,"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
 	struct object *obj;
 	struct ray_worker *worker;
+	struct world *my_world=&(dev->w);
 
 	printf_log(sim,"start:\n");
 	ray_src_dump(sim,dev);
@@ -268,9 +269,9 @@ void dump_plane(struct simulation *sim,struct device *dev,struct image *in)
 	int o=0;
 
 	//int n=0;
-	for (o=0;o<dev->objects;o++)
+	for (o=0;o<my_world->objects;o++)
 	{
-		obj=&(dev->obj[o]);
+		obj=&(my_world->obj[o]);
 		printf_log(sim,"%s\n",obj->name);
 		for (i=0;i<obj->tri.len;i++)
 		{

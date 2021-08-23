@@ -57,13 +57,14 @@ void ray_malloc(struct simulation *sim,struct device *dev,struct image *my_image
 {
 	int y=0;
 	int i=0;
-	int w=0;
+	int iw=0;
 	struct ray_worker *worker;
+	struct world *w=&(dev->w);
 
 	int o;
-	for (o=0;o<dev->objects;o++)
+	for (o=0;o<w->objects;o++)
 	{
-		object_nalpha_malloc(&(dev->obj[o]),my_image->ray_wavelength_points);
+		object_nalpha_malloc(&(w->obj[o]),my_image->ray_wavelength_points);
 	}
 
 	if (my_image->enabled==FALSE)
@@ -73,9 +74,9 @@ void ray_malloc(struct simulation *sim,struct device *dev,struct image *my_image
 
 	my_image->worker=malloc(sizeof(struct ray_worker)*my_image->worker_max);
 
-	for (w=0;w<my_image->worker_max;w++)
+	for (iw=0;iw<my_image->worker_max;iw++)
 	{
-		worker=&(my_image->worker[w]);
+		worker=&(my_image->worker[iw]);
 		worker->nray_max=1000;
 		worker->top_of_done_rays=0;
 		worker->nrays=0;
@@ -174,17 +175,18 @@ void ray_free(struct simulation *sim,struct device *dev,struct image *my_image)
 {
 	int i=0;
 	int layer;
-	int w=0;
+	int iw=0;
 	struct ray_worker *worker;
+	struct world *w=&(dev->w);
 
 	if (my_image->worker==NULL)
 	{
 		return;
 	}
 
-	for (w=0;w<my_image->worker_max;w++)
+	for (iw=0;iw<my_image->worker_max;iw++)
 	{
-		worker=&(my_image->worker[w]);
+		worker=&(my_image->worker[iw]);
 		worker->nray_max=-1;
 		worker->top_of_done_rays=-1;
 		worker->nrays=-1;
@@ -228,9 +230,9 @@ void ray_free(struct simulation *sim,struct device *dev,struct image *my_image)
 	dim_free(&(my_image->viewpoint_dim));
 
 
-	for (i=0;i<dev->objects;i++)
+	for (i=0;i<w->objects;i++)
 	{
-		object_nalpha_free(&(dev->obj[i]));
+		object_nalpha_free(&(w->obj[i]));
 	}
 
 }

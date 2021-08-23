@@ -108,26 +108,6 @@ class mesh_zxy:
 
 			return True
 
-	def get_len(self):
-		tot=0.0
-		for l in self.data.segments:
-			tot=tot+l.len
-
-		return tot
-
-	def get_points(self):
-		tot=0.0
-		for l in self.data.segments:
-			tot=tot+l.points
-
-		return tot
-
-	def set_len(self,value):
-		if len(self.data.segments)==1:
-			self.data.segments[0].len=value
-			return True
-		else:
-			return False
 
 class mesh:
 	def __init__(self):

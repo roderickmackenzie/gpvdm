@@ -56,11 +56,10 @@ from triangle_io import triangles_mul_vec
 
 from triangle import vec
 
-from mesh import get_mesh
-
 from triangle_io import triangles_flip_in_box
 from triangle_io import triangles_add_vec
 from triangle_io import triangles_flip
+from gpvdm_json import gpvdm_data
 
 class gl_contacts():
 
@@ -69,9 +68,9 @@ class gl_contacts():
 		epi=get_epi()
 		box=vec()
 		pos=vec()
-		y_mesh=get_mesh().y
-		x_mesh=get_mesh().x
-		z_mesh=get_mesh().z
+		mesh_y=gpvdm_data().mesh.mesh_y
+		mesh_x=gpvdm_data().mesh.mesh_x
+		mesh_z=gpvdm_data().mesh.mesh_z
 
 		self.gl_objects_remove_regex("contact")
 		top_contact_layer=epi.get_top_contact_layer()
@@ -83,7 +82,7 @@ class gl_contacts():
 				a.id=[c.id]
 
 				if c.position=="left":
-					if x_mesh.get_points()>1:
+					if mesh_x.get_points()>1:
 						sticking_out_bit=0.2
 						a.type="solid_and_mesh"
 						a.xyz.x=self.scale.project_m2screen_x(0)-sticking_out_bit
@@ -101,7 +100,7 @@ class gl_contacts():
 						my_vec=vec()
 						my_vec.x=sticking_out_bit/scale_get_xmul()#+c.ingress
 						my_vec.y=c.dy
-						my_vec.z=get_mesh().z.get_len()
+						my_vec.z=mesh_z.get_len()
 
 						if c.triangles!=None:
 							a.triangles=triangles_flip_in_box(c.triangles.data)
@@ -114,10 +113,10 @@ class gl_contacts():
 					if top_contact_layer!=-1:
 
 						xyz=vec()
-						if x_mesh.get_points()==1 and z_mesh.get_points()==1:
+						if mesh_x.get_points()==1 and mesh_z.get_points()==1:
 							xyz.x=self.scale.project_m2screen_x(0.0)
-							a.dxyz.x=get_mesh().x.get_len()*scale_get_xmul()
-							a.dxyz.z=get_mesh().z.get_len()*scale_get_zmul()
+							a.dxyz.x=mesh_x.get_len()*scale_get_xmul()
+							a.dxyz.z=mesh_z.get_len()*scale_get_zmul()
 						else:
 							xyz.x=self.scale.project_m2screen_x(c.x0)
 							a.dxyz.x=c.dx*scale_get_xmul()

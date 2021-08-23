@@ -60,10 +60,11 @@ void light_update_ray_mat(struct simulation *sim,struct device *dev,struct image
 	//int epi_layer=-1;
 	double lambda=0.0;
 	int l;
+	struct world *w=&(dev->w);
 
-		for (i=0;i<dev->objects;i++)
+		for (i=0;i<w->objects;i++)
 		{
-			s=dev->obj[i].s;
+			s=w->obj[i].s;
 
 			if (s!=NULL)		//It's a shape
 			{
@@ -81,8 +82,8 @@ void light_update_ray_mat(struct simulation *sim,struct device *dev,struct image
 						alpha=1e-3;
 					}
 
-					dev->obj[i].n[l]=n;
-					dev->obj[i].alpha[l]=alpha;
+					w->obj[i].n[l]=n;
+					w->obj[i].alpha[l]=alpha;
 				}
 				//printf("object %s\n",my_image->obj[i].name);
 

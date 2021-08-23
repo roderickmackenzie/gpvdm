@@ -55,7 +55,6 @@
 
 void load_sim_file(struct simulation *sim,struct device *in);
 void device_init(struct simulation *sim,struct device *in);
-void device_objects_free(struct simulation *sim,struct device *dev);
 void device_alloc_traps(struct device *in);
 void device_get_memory(struct simulation *sim,struct device *in);
 void device_cpy(struct simulation *sim,struct device *out,struct device *in);

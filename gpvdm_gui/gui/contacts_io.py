@@ -59,6 +59,7 @@ class contacts_io(json_base):
 	def __init__(self):
 		self.this_is_the_contact_class=None
 		json_base.__init__(self,"contacts",segment_class=True)
+		self.segments_name="contacts"
 
 	def em(self):
 		self.load()
@@ -98,22 +99,6 @@ class contacts_io(json_base):
 				layers.append(c.position)
 
 		return layers
-
-	def gen_json(self):
-		out=[]
-		n=0
-		out.append("\"contacts\": {")
-		out.append("\"segments\":"+str(len(self.segments))+",")
-		for c in self.segments:
-			c.include_name=False
-			gen=c.gen_json()
-			gen[0]="\"segment"+str(n)+"\": {"
-			gen[len(gen)-1]="},"
-			out.extend(gen)
-			n=n+1
-		out[len(out)-1]="}"
-		out.append("}")
-		return out
 
 	def insert(self,pos):
 		s=contact()

@@ -39,8 +39,6 @@ from PyQt5.QtCore import QSize, Qt,QFile,QIODevice
 from PyQt5.QtWidgets import QWidget,QSizePolicy,QVBoxLayout,QHBoxLayout,QPushButton,QDialog,QFileDialog,QToolBar,QMessageBox, QLineEdit, QToolButton
 from PyQt5.QtWidgets import QTabWidget
 
-from config_window import class_config_window
-
 from help import help_window
 
 from global_objects import global_object_register
@@ -54,6 +52,7 @@ from gpvdm_json import gpvdm_data
 from cal_path import gpvdm_paths
 from tb_item_solvers import tb_item_solvers
 from ribbon_page import ribbon_page
+from config_window import class_config_window
 
 class ribbon_page2(QWidget):
 	def __init__(self):
@@ -84,12 +83,9 @@ class ribbon_electrical(ribbon_page2):
 		self.parasitic=None
 		self.parasitic_window=None
 		
+
+
 		pan=self.add_panel()
-		self.configwindow = QAction_lock("preferences-system", _("Configure"), self,"ribbon_config_config")
-		self.configwindow.triggered.connect(self.callback_config_window)
-		pan.addAction(self.configwindow)
-
-
 		self.mesh = QAction_lock("mesh", _("Electrical\nmesh"), self,"ribbon_config_mesh")
 		self.mesh.triggered.connect(self.callback_edit_mesh)
 		pan.addAction(self.mesh)
@@ -120,6 +116,10 @@ class ribbon_electrical(ribbon_page2):
 		self.perovskite.clicked.connect(self.callback_perovskite)
 		self.perovskite.setCheckable(True)
 		pan.addAction(self.perovskite)
+
+		self.configwindow = QAction_lock("preferences-system", _("Configure"), self,"ribbon_config_config")
+		self.configwindow.triggered.connect(self.callback_config_window)
+		pan.addAction(self.configwindow)
 
 		#a.setStyleSheet("QToolBar {margin-top: 0px;margin-bottom: 0px; padding 0px;}")
 #		spacer = QWidget()
@@ -189,13 +189,16 @@ class ribbon_electrical(ribbon_page2):
 		self.perovskite.setEnabled(val)
 
 	def callback_config_window(self):
-		self.config_window=gpvdm_open("/gpvdmroot/gpvdm_configure",show_inp_files=False,title=_("Configure"))
-		self.config_window.toolbar.hide()
-		self.config_window.show_directories=False
-		ret=self.config_window.exec_()
+		self.config_window=class_config_window([gpvdm_data().dump],[_("Output files")])
+		self.config_window.show()
+
+		#self.config_window=gpvdm_open("/gpvdmroot/gpvdm_configure",show_inp_files=False,title=_("Configure"))
+		#self.config_window.toolbar.hide()
+		#self.config_window.show_directories=False
+		#ret=self.config_window.exec_()
 
 
-		help_window().help_set_help(["preferences-system.png",_("<big><b>Configuration editor</b></big><br> Use this window to control advanced simulation parameters.")])
+		#help_window().help_set_help(["preferences-system.png",_("<big><b>Configuration editor</b></big><br> Use this window to control advanced simulation parameters.")])
 
 
 

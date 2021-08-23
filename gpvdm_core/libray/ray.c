@@ -116,38 +116,40 @@ return changed;
 
 int get_objects_from_tri(struct simulation *sim,struct device *dev,struct image *in,struct object **obj0,struct object **obj1,struct triangle *tri,struct ray *my_ray)
 {
-if ((my_ray->obj_uid_start==tri->obj_left)||(my_ray->obj_uid_start==tri->obj_right))
-{
-	if (tri->obj_left==-1)
-	{
-		return -1;
-	}
+	struct world *w=&(dev->w);
 
-	if (tri->obj_right==-1)
+	if ((my_ray->obj_uid_start==tri->obj_left)||(my_ray->obj_uid_start==tri->obj_right))
 	{
-		return -1;
-	}
+		if (tri->obj_left==-1)
+		{
+			return -1;
+		}
 
-	if (my_ray->obj_uid_start==tri->obj_left)
-	{
-		*obj0=&(dev->obj[tri->obj_left]);
-		*obj1=&(dev->obj[tri->obj_right]);
+		if (tri->obj_right==-1)
+		{
+			return -1;
+		}
+
+		if (my_ray->obj_uid_start==tri->obj_left)
+		{
+			*obj0=&(w->obj[tri->obj_left]);
+			*obj1=&(w->obj[tri->obj_right]);
+		}else
+		{
+			*obj0=&(w->obj[tri->obj_right]);
+			*obj1=&(w->obj[tri->obj_left]);
+		}
 	}else
 	{
-		*obj0=&(dev->obj[tri->obj_right]);
-		*obj1=&(dev->obj[tri->obj_left]);
-	}
-}else
-{
-	printf("%s %s %s\n",dev->obj[my_ray->obj_uid_start].name,dev->obj[tri->obj_left].name,dev->obj[tri->obj_right].name);
-	triangle_print(tri);
+		printf("%s %s %s\n",w->obj[my_ray->obj_uid_start].name,w->obj[tri->obj_left].name,w->obj[tri->obj_right].name);
+		triangle_print(tri);
 
-	triangle_dump("tri.dat",tri);
-	getchar();
-	//ewe(sim,"oops\n");
-}
-//printf("%d %d\n",tri->obj_left,tri->obj_right);
-//printf("%d\n",my_ray->obj_uid_start);
+		triangle_dump("tri.dat",tri);
+		getchar();
+		//ewe(sim,"oops\n");
+	}
+	//printf("%d %d\n",tri->obj_left,tri->obj_right);
+	//printf("%d\n",my_ray->obj_uid_start);
 
 return 0;
 }
@@ -157,7 +159,7 @@ int get_objects(struct simulation *sim,struct device *dev,struct image *in,struc
 	//printf("in\n");
 	struct vec tmp;
 	vec_init(&tmp);
-
+	struct world *w=&(dev->w);
 	//struct ray back;
 	/*if (my_ray->obj_uid_start==-1)		//If the ray does not know where it is don't search
 	{
@@ -176,7 +178,7 @@ int get_objects(struct simulation *sim,struct device *dev,struct image *in,struc
 	}
 	else
 	{*/
-		*obj0=&(dev->obj[my_ray->obj_uid_start]);
+		*obj0=&(w->obj[my_ray->obj_uid_start]);
 	//}
 
 	struct ray fwd;

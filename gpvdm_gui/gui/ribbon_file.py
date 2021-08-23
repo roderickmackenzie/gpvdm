@@ -85,10 +85,6 @@ class ribbon_file(ribbon_page):
 		self.home_export = QAction_lock("zip", _("Export\nZip"), self,"main_zip")
 		self.addAction(self.home_export)
 
-		self.tb_script_editor = QAction_lock("script", _("Script\nEditor"), self,"script_editor")
-		self.tb_script_editor.clicked.connect(self.callback_script)
-		self.addAction(self.tb_script_editor)
-
 		self.addSeparator()
 
 		self.run = play(self,"main_play_button",run_text=wrap_text(_("Run\nsimulation"),2))#QAction(icon_get("media-playback-start"), _("Run simulation"), self)
@@ -118,9 +114,11 @@ class ribbon_file(ribbon_page):
 		self.cite_me=cite_me()
 		self.addWidget(self.cite_me)
 
-		self.home_help = QAction(icon_get("internet-web-browser"), _("Help"), self)
-		self.addAction(self.home_help)
-
+		#self.home_help = QAction(icon_get("internet-web-browser"), _("Help"), self)
+		#self.addAction(self.home_help)
+		self.tb_script_editor = QAction_lock("script", _("Script\nEditor"), self,"script_editor")
+		self.tb_script_editor.clicked.connect(self.callback_script)
+		self.addAction(self.tb_script_editor)
 
 	def populate_used_file_menu(self):
 		self.used_files_menu.clear()

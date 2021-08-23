@@ -65,7 +65,7 @@ class json_base():
 		self.latex_allowed=[]
 		self.latex_banned=[]
 		self.triangles_loaded=False
-
+		self.segments_name="segments"
 		self.f=inp()
 
 	def import_from_list(self,lines):
@@ -212,7 +212,7 @@ class json_base():
 				out.append("\t}")
 		else:
 			out.append("\""+self.base_name+"\": {")
-			out.append("\"segments\":"+str(len(self.segments))+",")
+			out.append("\""+self.segments_name+"\":"+str(len(self.segments))+",")
 			i=0
 			for s in self.segments:
 				s.base_name="segment"+str(i)

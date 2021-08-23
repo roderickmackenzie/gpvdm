@@ -46,7 +46,6 @@ from cal_path import get_sim_path
 from global_objects import global_object_register
 from global_objects import global_object_run
 
-from mesh import get_mesh
 from dat_file import dat_file
 from server import server_get
 from gpvdm_json import gpvdm_data
@@ -62,7 +61,6 @@ class display_mesh(QWidget):
 		self.data=dat_file()
 		self.my_server=server_get()
 		data=gpvdm_data()
-		mesh=get_mesh()
 
 		if data.electrical_solver.solver_type=="circuit":
 			toolbar=QToolBar()

@@ -59,7 +59,6 @@ from gpvdm_tab import gpvdm_tab
 
 #from file_watch import get_watch
 
-from mesh import get_mesh
 from energy_to_charge import energy_to_charge
 
 from gpvdm_select_material import gpvdm_select_material
@@ -307,7 +306,7 @@ class contacts_window(QWidgetSavePos):
 		self.tab.horizontalHeader().setFixedHeight(60)
 		#self.contacts.load()
 
-		if get_mesh().z.get_points()!=1 or get_mesh().x.get_points()!=1: 
+		if gpvdm_data().mesh.mesh_z.get_points()!=1 or gpvdm_data().mesh.mesh_x.get_points()!=1: 
 			self.hide_cols(False)
 		else:
 			self.hide_cols(True)

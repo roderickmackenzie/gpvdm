@@ -532,11 +532,9 @@ void device_cpy(struct simulation *sim,struct device *out,struct device *in)
 		out->flip_current=in->flip_current;
 
 	//Objects
-		out->obj=NULL;			//We are not going to copy this
 		cpy_zxy_p_object(dim, &(out->obj_zxy), &(in->obj_zxy));
 		cpy_zx_layer_p_object(&(in->dim_epitaxy), &(out->obj_zx_layer), &(in->obj_zx_layer));
-		out->objects=0;
-		out->triangles=0;
+
 
 	//Time mesh
 		time_mesh_cpy(&(out->tm),&(in->tm));

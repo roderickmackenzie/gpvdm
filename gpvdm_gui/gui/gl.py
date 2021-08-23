@@ -87,8 +87,6 @@ from gl_lib import val_to_rgb
 from gl_mesh import gl_mesh
 
 
-from mesh import get_mesh
-
 from gl_object_editor import gl_object_editor
 
 from gl_cords import gl_cords
@@ -246,12 +244,11 @@ if open_gl_ok==True:
 				l.z0=0.0
 				l.y0=y_pos
 
-				l.dx=get_mesh().x.get_len()
-				l.dz=get_mesh().z.get_len()
+				l.dx=gpvdm_data().mesh.mesh_x.get_len()
+				l.dz=gpvdm_data().mesh.mesh_z.get_len()
 				y_pos=y_pos+l.dy
 
 		def draw_device2(self,x,z):
-			print(">>>>>>>>>>")
 			y=scale_get_device_y()
 			epi=get_epi()
 			contact_layers=epi.contacts.get_layers_with_contacts()
@@ -285,13 +282,13 @@ if open_gl_ok==True:
 #				print(obj.shape_name)
 				if contact_layer==False:
 					#print(obj.id,name,obj.y0,obj.dy)
-					self.shape_to_screen(obj)			
+					self.shape_to_screen(obj,epitaxy=True)			
 
 				if obj.layer_type=="active":
 					if self.view_options.render_text==True:
 						o=gl_base_object()
 						xyz=vec()
-						xyz.x=x+scale_get_device_x()+0.1
+						xyz.x=self.scale.project_m2screen_x(gpvdm_data().mesh.mesh_x.get_len())+0.1
 						xyz.y=self.scale.project_m2screen_y(obj.y0)
 						xyz.z=z						
 						o.xyz.append(xyz)
@@ -316,14 +313,13 @@ if open_gl_ok==True:
 							o.g=1.0
 							o.b=1.0
 							xyz=vec()
-							xyz.x=x+scale_get_device_x()+0.2
+							xyz.x=self.scale.project_m2screen_x(gpvdm_data().mesh.mesh_x.get_len())+0.2
 							xyz.y=self.scale.project_m2screen_y(obj.y0)
 							xyz.z=z+(len(epi.layers)-l)*0.1
 							o.xyz.append(xyz)
 							o.id=["text"]
 							o.type="text"
 							o.text=display_name
-							#self.set_color(o)
 							self.gl_objects_add(o)
 
 				l=l+1
@@ -440,11 +436,7 @@ if open_gl_ok==True:
 			except:
 				self.suns=0.0
 
-			#self.y_mesh=get_mesh().y
-			#self.x_mesh=get_mesh().x
-			#self.z_mesh=get_mesh().z
-
-			self.x_len=get_mesh().x.get_len()
+			self.x_len=gpvdm_data().mesh.mesh_x.get_len()
 			if os.path.isdir(os.path.join(os.path.join(get_sim_path(),"ray_trace")))==True:
 				for v in self.views:
 					v.render_photons=False

@@ -44,7 +44,6 @@ from lines import lines_read
 from util import wavelength_to_rgb
 from util import isnumber
 from gl_scale import gl_scale
-from gl_scale import project_trianges_m2screen
 
 from gl_scale import scale_get_device_y
 from gl_scale import scale_get_device_x
@@ -105,9 +104,9 @@ class gl_draw_light_profile():
 			a.alpha=1.0
 
 			my_vec=vec()
-			my_vec.x=get_mesh().z.get_len()
+			my_vec.x=gpvdm_data().mesh.mesh_z.get_len()
 			my_vec.y=epi.ylen()*1.0
-			my_vec.z=get_mesh().z.get_len()
+			my_vec.z=gpvdm_data().mesh.mesh_z.get_len()
 
 			t=triangles_mul_vec(s.triangles.data,my_vec)
 

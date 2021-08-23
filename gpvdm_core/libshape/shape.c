@@ -249,5 +249,36 @@ void shape_load_materials(struct simulation *sim,struct shape *s)
 
 }
 
+void shape_cal_min_max(struct simulation *sim,struct vec *min,struct vec *max,struct shape *s)
+{
+		if (s->x0<min->x)
+		{
+			min->x=s->x0;
+		}
 
+		if (s->x0+s->dx>max->x)
+		{
+			max->x=s->x0+s->dx;
+		}
+
+		if (s->y0<min->y)
+		{
+			min->y=s->y0;
+		}
+
+		if (s->y0+s->dy>max->y)
+		{
+			max->y=s->y0+s->dy;
+		}
+
+		if (s->z0<min->z)
+		{
+			min->z=s->z0;
+		}
+
+		if (s->z0+s->dz>max->z)
+		{
+			max->z=s->z0+s->dz;
+		}
+}
 

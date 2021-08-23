@@ -453,9 +453,6 @@ void device_free(struct simulation *sim,struct device *dev)
 	//Contacts
 		contacts_free(sim,dev);
 
-
-
-		device_objects_free(sim,dev);
 	//Time mesh
 		time_memory_free(&(dev->tm));
 

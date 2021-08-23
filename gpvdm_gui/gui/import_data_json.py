@@ -48,8 +48,6 @@ from dat_file import dat_file
 
 from PyQt5.QtCore import pyqtSignal
 
-from mesh import get_mesh
-
 from QWidgetSavePos import QWidgetSavePos
 
 from util import wrap_text
@@ -384,7 +382,7 @@ class import_data_json(QDialog):
 		self.area_label=QLabel(_("device area:"))
 		self.area_hbox.addWidget(self.area_label)
 		self.area_entry=QLineEdit()
-		self.area_entry.setText(str(round(get_mesh().x.get_len()*get_mesh().z.get_len()*100*100, 3)))
+		self.area_entry.setText(str(round(gpvdm_data().mesh.mesh_x.get_len()*gpvdm_data().mesh.mesh_z.get_len()*100*100, 3)))
 		self.area_hbox.addWidget(self.area_entry)
 		self.area_units=QLabel("cm2")
 		self.area_hbox.addWidget(self.area_units)
