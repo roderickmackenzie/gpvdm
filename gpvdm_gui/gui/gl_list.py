@@ -342,8 +342,13 @@ class gl_objects():
 
 
 	def gl_objects_search_by_color(self,r,g,b):
+		#i=0
+		#for o in self.objects:
+		#	print(">>>>",i,o.type,o.id,o.r_false,o.g_false,o.b_false,r,g,b)
+		#	i=i+1
+		#print("")
+
 		for o in self.objects:
-			#print(o.type,o.id,o.r_false,o.g_false,o.b_false)
 			if o.match_false_color(r,g,b)==True:
 				return o
 		return None

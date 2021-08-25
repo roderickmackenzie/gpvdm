@@ -593,96 +593,105 @@ void dump_ang_escape_as_rgb(struct simulation *sim,struct image *in)
 	buffer_free(&buf_z);
 }
 
-void dump_rendered_image(struct simulation *sim,char *out_dir, struct image *in)
+void dump_rendered_image(struct simulation *sim,char *out_dir, struct world *w, struct image *in)
 {
-	if (in->viewpoint_enabled==FALSE)
-	{
-		return;
-	}
-
+	int d;
+	char temp[100];
+	struct detector *det;
 	struct dat_file buf;
-	buffer_init(&buf);
 
-	//printf("%s\n",out_dir);
-	//getchar();
+	for (d=0;d<w->detectors;d++)
+	{
+		det=&(w->det[d]);
+		if (det->viewpoint_enabled==TRUE)
+		{
 
-	buffer_malloc(&buf);
-	buf.y_mul=1.0;
-	buf.x_mul=1.0;
-	strcpy(buf.title,"Rendered image");
-	strcpy(buf.type,"rgb");
-	strcpy(buf.y_label,"x");
-	strcpy(buf.x_label,"no used");
-	strcpy(buf.data_label,"y");
+			buffer_init(&buf);
 
-	strcpy(buf.y_units,"Camera pixels");
-	strcpy(buf.x_units,"Camera pixels");
-	strcpy(buf.data_units,"Camera pixels");
+			buffer_malloc(&buf);
+			buf.y_mul=1.0;
+			buf.x_mul=1.0;
+			strcpy(buf.title,"Rendered image");
+			strcpy(buf.type,"rgb");
+			strcpy(buf.y_label,"x");
+			strcpy(buf.x_label,"no used");
+			strcpy(buf.data_label,"y");
 
-	buf.logscale_x=0;
-	buf.logscale_y=0;
-	buf.x=in->viewpoint_dim.zlen;
-	buf.y=in->viewpoint_dim.xlen;
-	buf.z=1;
-	buffer_add_info(sim,&buf);
+			strcpy(buf.y_units,"Camera pixels");
+			strcpy(buf.x_units,"Camera pixels");
+			strcpy(buf.data_units,"Camera pixels");
 
-	buffer_add_zxy_rgb_data(sim,&buf,(&in->viewpoint_dim),in->viewpoint_image);
+			buf.logscale_x=0;
+			buf.logscale_y=0;
+			buf.x=in->viewpoint_dim.zlen;
+			buf.y=in->viewpoint_dim.xlen;
+			buf.z=1;
+			buffer_add_info(sim,&buf);
 
+			buffer_add_zxy_rgb_data(sim,&buf,(&in->viewpoint_dim),in->viewpoint_image);
 
-	buffer_dump_path(sim,out_dir,"RAY_image.dat",&buf);
-	buffer_free(&buf);
+			sprintf(temp,"RAY_image%d.dat",d);
+			buffer_dump_path(sim,out_dir,temp,&buf);
+			buffer_free(&buf);
+		}
+	}
 }
 
-void dump_rendered_cross_section(struct simulation *sim,char *out_dir, struct image *in)
+void dump_rendered_cross_section(struct simulation *sim,char *out_dir, struct world *w, struct image *in)
 {
-	if (in->viewpoint_enabled==FALSE)
-	{
-		return;
-	}
+
 
 	int l;
 	char file_name[100];
 	char unit[10];
 	long double mul;
+	int d;
+	struct detector *det;
 	struct dat_file buf;
-	buffer_init(&buf);
 
-	//printf("%s\n",out_dir);
-	//getchar();
-
-	for (l=0;l<in->viewpoint_dim.ylen;l++)
+	for (d=0;d<w->detectors;d++)
 	{
-		get_wavelength_dim(unit,&mul,in->viewpoint_dim.ymesh[l]);
+		det=&(w->det[d]);
+		if (det->viewpoint_enabled==TRUE)
+		{
 
-		buffer_malloc(&buf);
+			buffer_init(&buf);
 
-		dim_info_to_buf(&buf,&(in->viewpoint_dim));
-		sprintf(buf.title,"Emission profile for %.0Lf %s",in->viewpoint_dim.ymesh[l]*mul,unit);
-		strcpy(buf.type,"3d");
-		strcpy(buf.y_label,"x");
-		strcpy(buf.x_label,"no used");
-		strcpy(buf.data_units,"?");
-		strcpy(buf.data_label,"Emission intensity");
+			for (l=0;l<in->viewpoint_dim.ylen;l++)
+			{
+				get_wavelength_dim(unit,&mul,in->viewpoint_dim.ymesh[l]);
+
+				buffer_malloc(&buf);
+
+				dim_info_to_buf(&buf,&(in->viewpoint_dim));
+				sprintf(buf.title,"Emission profile for %.0Lf %s",in->viewpoint_dim.ymesh[l]*mul,unit);
+				strcpy(buf.type,"3d");
+				strcpy(buf.y_label,"x");
+				strcpy(buf.x_label,"no used");
+				strcpy(buf.data_units,"?");
+				strcpy(buf.data_label,"Emission intensity");
 
 
 
-		//strcpy(buf.y_units,"Camera pixels");
-		//strcpy(buf.x_units,"Camera pixels");
-		//strcpy(buf.data_units,"Camera pixels");
+				//strcpy(buf.y_units,"Camera pixels");
+				//strcpy(buf.x_units,"Camera pixels");
+				//strcpy(buf.data_units,"Camera pixels");
 
-		buf.logscale_x=0;
-		buf.logscale_y=0;
-		buf.x=1;
-		buf.y=in->viewpoint_dim.xlen;
-		buf.z=1;
-		buffer_add_info(sim,&buf);
+				buf.logscale_x=0;
+				buf.logscale_y=0;
+				buf.x=1;
+				buf.y=in->viewpoint_dim.xlen;
+				buf.z=1;
+				buffer_add_info(sim,&buf);
 
-		//buffer_add_zxy_rgb_data(sim,&buf,(&in->viewpoint_dim),in->viewpoint_image);
-		buffer_add_zxy_data_y_slice(sim,&buf,(&in->viewpoint_dim),in->viewpoint_image,0);
+				//buffer_add_zxy_rgb_data(sim,&buf,(&in->viewpoint_dim),in->viewpoint_image);
+				buffer_add_zxy_data_y_slice(sim,&buf,(&in->viewpoint_dim),in->viewpoint_image,0);
 
-		sprintf(file_name,"RAY_cross_section_x_%.0Lf%s.dat",in->viewpoint_dim.ymesh[l]*mul,unit);
-		buffer_dump_path(sim,out_dir,file_name,&buf);
+				sprintf(file_name,"RAY_cross_section%d_x_%.0Lf%s.dat",d,in->viewpoint_dim.ymesh[l]*mul,unit);
+				buffer_dump_path(sim,out_dir,file_name,&buf);
 
-		buffer_free(&buf);
+				buffer_free(&buf);
+			}
+		}
 	}
 }

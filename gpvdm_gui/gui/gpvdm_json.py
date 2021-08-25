@@ -65,7 +65,7 @@ from json_light import json_light
 from json_light_sources import json_light_sources
 from json_world import json_world
 from json_world_stats import json_world_stats
-
+from json_detectors import json_detectors
 class json_dump(json_base):
 
 	def __init__(self):
@@ -143,6 +143,7 @@ class all_gpvdm_data(json_base,json_world_stats):
 		self.var_list.append(["math",json_math()])
 		self.var_list.append(["light",json_light()])
 		self.var_list.append(["light_sources",json_light_sources()])
+		self.var_list.append(["detectors",json_detectors()])
 		self.var_list.append(["server",json_server()])
 		self.var_list.append(["epitaxy",epitaxy()])
 		self.var_list.append(["thermal",json_thermal()])

@@ -59,23 +59,17 @@
 void ray_dump_shapshots(struct simulation *sim,struct device *dev, struct image *my_image ,struct ray_worker *worker,int layer)
 {
 	struct dat_file buf;
-	int ret=0;
-	char name[PATH_MAX];
 	char out_dir[PATH_MAX];
+	char file_name[200];
+	char full_path[PATH_MAX];
 	char temp[200];
-
-	join_path(2, out_dir, get_output_path(dev),"ray_trace");
-	ret=snprintf(name,PATH_MAX,"%s/light_ray_%d_%.0f.dat",out_dir,layer,(my_image->lam[worker->l]*1e9));
-	if (ret<0)
+	//if (my_image->dump_snapshots==TRUE)
 	{
-		ewe(sim,"lib ray solve.c: sprintf error\n");
-	}
-	dump_plane_to_file(sim,name,my_image,dev);
 
-	if (my_image->dump_snapshots==TRUE)
-	{
-	
-		dump_make_snapshot_dir(sim,out_dir,dev->output_path ,"snapshots", dev->snapshot_number);
+		dump_make_snapshot_dir(sim,out_dir,get_output_path(dev) ,"ray_trace", worker->l,"3d");
+
+
+		sprintf(file_name,"ray_%d.dat",layer);
 
 		buffer_init(&buf);
 		buffer_malloc(&buf);
@@ -83,7 +77,7 @@ void ray_dump_shapshots(struct simulation *sim,struct device *dev, struct image 
 		sprintf(temp,"{\n");
 		buffer_add_string(&buf,temp);
 
-		sprintf(temp,"\t\"wavelength\":%le,\n",my_image->lam[worker->l]);
+		sprintf(temp,"\t\"wavelength\":%Le\n",(long double )my_image->lam[worker->l]);
 		buffer_add_string(&buf,temp);
 
 		sprintf(temp,"}");
@@ -92,14 +86,11 @@ void ray_dump_shapshots(struct simulation *sim,struct device *dev, struct image 
 		buffer_dump_path(sim,out_dir,"data.json",&buf);
 		buffer_free(&buf);
 
-		ret=snprintf(name,PATH_MAX,"%s/RAY_light_beams_%d_%.0f.dat",out_dir,layer,(my_image->lam[worker->l]*1e9));
-		if (ret<0)
-		{
-			ewe(sim,"lib ray solve.c: sprintf error\n");
-		}
+		join_path(2,full_path,out_dir,file_name);
 
-		dump_plane_to_file(sim,name,my_image,dev);
+		dump_plane_to_file(sim,full_path,my_image,dev);
 	}
+
 }
 
 

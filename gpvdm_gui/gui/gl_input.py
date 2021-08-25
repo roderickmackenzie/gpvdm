@@ -177,7 +177,6 @@ class gl_input():
 
 		if event.buttons()==Qt.LeftButton or event.buttons()==Qt.RightButton:
 			obj=self.event_to_3d_obj(event)
-
 			if obj!=None:
 				self.gl_object_deselect_all()
 				self.gl_objects_select_by_id(obj.id)

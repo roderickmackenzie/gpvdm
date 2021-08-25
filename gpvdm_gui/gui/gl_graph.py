@@ -32,6 +32,7 @@ from cal_path import get_sim_path
 
 from dat_file import dat_file
 from dat_file_math import dat_file_max_min
+from triangle import vec
 
 try:
 	from OpenGL.GL import *
@@ -73,20 +74,34 @@ class gl_graph():
 		if data.plotted==True:
 			return
 
+		o=gl_base_object()
+		o.id=["ray_trace"]
+		o.type="solid_and_mesh"
+
+		xyz=vec()
+		xyz.x=0.0#self.scale.project_m2screen_x(0.0)
+		xyz.y=0.0#self.scale.project_m2screen_y(0.0)
+		xyz.z=0.0#self.scale.project_m2screen_z(0.0)
+
+		o.xyz.append(xyz)
+
 		for t in data.data:
-			z=self.scale.project_m2screen_z(t.xyz0.z)
-			dz=self.scale.project_m2screen_z(t.xyz1.z)-self.scale.project_m2screen_z(t.xyz0.z)
 
-			x=self.scale.project_m2screen_x(t.xyz0.x)
-			dx=self.scale.project_m2screen_x(t.xyz1.x)-self.scale.project_m2screen_x(t.xyz0.x)
+			x0=self.scale.project_m2screen_x(t.xyz0.x)
+			x1=self.scale.project_m2screen_x(t.xyz1.x)
 
-			y=self.scale.project_m2screen_y(t.xyz0.y)
-			dy=self.scale.project_m2screen_y(t.xyz1.y)-self.scale.project_m2screen_y(t.xyz0.y)
+			y0=self.scale.project_m2screen_y(t.xyz0.y)
+			y1=self.scale.project_m2screen_y(t.xyz1.y)
 
-			self.gl_array_lines.append([x, 			y, 			z])
-			self.gl_array_colors.append([data.r,data.g,data.b,1.0])
-			self.gl_array_lines.append([x+dx, 			y+dy, 			z+dz])
-			self.gl_array_colors.append([data.r,data.g,data.b,1.0])
+			z0=self.scale.project_m2screen_z(t.xyz0.z)
+			z1=self.scale.project_m2screen_z(t.xyz1.z)
+
+			o.triangles.append([x0, y0, z0])
+			o.triangles.append([x1, y1, z1])
+
+		self.gl_objects_add(o)
+		self.objects[-1].compile("lines",[data.r,data.g,data.b,1.0],line_width=1)
+
 		data.plotted=True
 
 	def draw_graph_3d(self,data):

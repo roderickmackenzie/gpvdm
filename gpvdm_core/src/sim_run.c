@@ -71,6 +71,7 @@
 #include <server.h>
 #include <light_srcs.h>
 #include <world.h>
+#include <detector.h>
 
 int device_run_simulation(struct simulation *sim, struct device *dev)
 {
@@ -88,6 +89,7 @@ int device_run_simulation(struct simulation *sim, struct device *dev)
 	FILE *file;
 
 	struct json_obj *json_world;
+	struct json_obj *json_detectors;
 	struct json_obj *json_epi;
 	struct json_obj *json_layer;
 	struct json_obj *json_dos;
@@ -265,14 +267,22 @@ int device_run_simulation(struct simulation *sim, struct device *dev)
 		ewe(sim,"Object no objects in the world\n");
 	}
 
+	json_detectors=json_obj_find(&(dev->config.obj), "detectors");
+	if (json_detectors==NULL)
+	{
+		ewe(sim,"Object detectors not found\n");
+	}
+
+	detectors_load(sim,&(dev->w),json_detectors);
 
 	state_cache_init(sim,dev);
 	state_cache_enable(sim,dev);
 
+
 	complex_solver_get_mem(sim,&(dev->msm));
 
 	json_ray=json_obj_find_by_path(sim,&(dev->config.obj), "ray.segment0");
-	ray_read_config(sim,&(dev->my_image),json_ray);
+	ray_read_config(sim,&(dev->my_image),&(dev->w),json_ray);
 
 	device_build_scene(sim,dev);
 

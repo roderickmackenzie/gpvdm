@@ -82,8 +82,8 @@ class ray_trace_editor(QWidgetSavePos):
 
 		data=gpvdm_data()
 		if len(data.ray.segments)>0:
-			files=[data.ray.segments[0].config,data.ray.segments[0].viewpoint]
-			description=[_("Ray trace"),_("Observer viewpoint")]
+			files=[data.ray.segments[0].config]
+			description=[_("Ray trace")]
 
 
 		for i in range(0,len(files)):

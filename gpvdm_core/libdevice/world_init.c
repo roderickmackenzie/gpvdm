@@ -45,7 +45,7 @@
 #include <world_struct.h>
 #include <triangles.h>
 #include <triangle.h>
-
+#include <detector.h>
 
 void world_init(struct simulation *sim,struct world *w)
 {
@@ -63,7 +63,7 @@ void world_init(struct simulation *sim,struct world *w)
 	w->objects=0;
 	w->triangles=0;
 
-
+	detectors_init(sim,w);
 }
 
 

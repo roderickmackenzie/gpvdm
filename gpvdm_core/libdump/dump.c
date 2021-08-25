@@ -753,6 +753,7 @@ char sim_name[PATH_MAX];
 char out_dir[PATH_MAX];
 struct dat_file buf;
 buffer_init(&buf);
+struct world *w=&(in->w);
 struct heat *thermal=&(in->thermal);
 
 strextract_name(sim_name,in->simmode);
@@ -777,7 +778,7 @@ FILE* out;
 	}
 
 	//make the snapshots dir
-	dump_make_snapshot_dir(sim,out_dir,in->output_path ,"snapshots", in->snapshot_number);
+	dump_make_snapshot_dir(sim,out_dir,in->output_path ,"snapshots", in->snapshot_number,"2d3d");
 
 	buffer_init(&buf);
 	buffer_malloc(&buf);

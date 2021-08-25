@@ -59,7 +59,6 @@ class contacts_io(json_base):
 	def __init__(self):
 		self.this_is_the_contact_class=None
 		json_base.__init__(self,"contacts",segment_class=True)
-		self.segments_name="contacts"
 
 	def em(self):
 		self.load()

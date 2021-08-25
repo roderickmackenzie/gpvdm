@@ -74,19 +74,19 @@ class QWidgetSavePos(QWidget):
 		sain_y=desktop_h/2-h/2
 
 		for seg in data.windows.segments:
-			print(seg.name,window_name)
+			#print(seg.name,window_name)
 			if seg.name==window_name:
 
 				x=int(seg.x)
 				y=int(seg.y)
 				if (x+w>desktop_w) or x<0:
 					x=sain_x
-					print("Reset with",x,desktop_w)
+					#print("Reset with",x,desktop_w)
 				if (y+h>desktop_h) or y<0:
 					y=sain_y
-					print("Reset height",y)
+					#print("Reset height",y)
 				self.move(x,y)
-				print("moving to",x,y)
+				#print("moving to",x,y)
 				found=True
 				break
 

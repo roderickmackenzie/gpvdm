@@ -51,6 +51,7 @@
 #include <device_fun.h>
 #include <enabled_libs.h>
 #include <world.h>
+#include <detector.h>
 
 /** @file device_build_scene.c
 	@brief Build the scene with triangles.
@@ -218,13 +219,6 @@ void device_build_scene(struct simulation *sim,struct device *dev)
 	{
 		if ((dev->contacts[c].position==LEFT))
 		{
-		//	printf("a> %d %s %d\n",l,dev->contacts[c].name,dev->contacts[c].position);
-			//dev->contacts[c].shape.dy=epi->layer[l].width;
-			//dev->contacts[c].shape.z0=0.0;
-			//dev->contacts[c].shape.x0=1e-5;
-			//dev->contacts[c].shape.nx=1;
-			//dev->contacts[c].shape.nz=1;
-
 			device_add_shape_to_world(sim,dev,&(dev->contacts[c].shape));
 		}
 	}
@@ -235,11 +229,7 @@ void device_build_scene(struct simulation *sim,struct device *dev)
 	{
 		for (i=0;i<epi->layer[l].nshape;i++)
 		{
-			//printf("%d %d %d\n",l,i,epi->layer[l].nshape);
-
 			s=&epi->layer[l].shapes[i];
-			//printf("%d\n",s->enabled);
-			//s->x0=0.0;
 			s->epi_index=l;
 			device_add_shape_to_world(sim,dev,s);
 		}
@@ -258,5 +248,6 @@ void device_build_scene(struct simulation *sim,struct device *dev)
 		device_dump_world_to_file(sim,dev,"device.dat");
 		device_world_stats(sim,dev);
 	}
-	//getchar();
+
+	dectors_add_to_scene(sim,w,&(dev->my_image),&min, &max);
 }

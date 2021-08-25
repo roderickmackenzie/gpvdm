@@ -43,6 +43,7 @@
 #include <cal_path.h>
 #include <world.h>
 #include <world_struct.h>
+#include <detector.h>
 
 
 void world_free(struct simulation *sim,struct world *w)
@@ -55,6 +56,8 @@ void world_free(struct simulation *sim,struct world *w)
 	}
 	free(w->shapes);
 	world_objects_free(sim,w);
+
+	detectors_free(sim,w);
 
 	world_init(sim,w);
 }

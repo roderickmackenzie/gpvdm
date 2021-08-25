@@ -63,9 +63,6 @@ void ray_engine_init(struct image *in)
 	in->worker=NULL;
 	//in->triangles_max=1000;
 
-	in->viewpoint_enabled=FALSE;
-	in->viewpoint_size=-1.0;
-	in->viewpoint_dz=-1.0;
 	in->viewpoint_image=NULL;
 	dim_init(&(in->viewpoint_dim));
 }

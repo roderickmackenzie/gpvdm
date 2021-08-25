@@ -117,7 +117,6 @@ class server_base():
 
 		data=gpvdm_data()
 		max=data.server.max_gpvdm_instances
-		print("CPUS!!!",max)
 		if max==False or str(max)=="none" or max==0:
 			return
 

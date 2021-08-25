@@ -133,7 +133,7 @@ class view_point():
 		self.name="xy"
 
 	def set_xz(self):
-		self.xRot=-90.0
+		self.xRot=90.0
 		self.yRot=90.0
 		self.zRot=0.0
 		self.x_pos=0.0

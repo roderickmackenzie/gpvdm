@@ -55,9 +55,11 @@
 
 void ray_malloc(struct simulation *sim,struct device *dev,struct image *my_image)
 {
+	int d;
 	int y=0;
 	int i=0;
 	int iw=0;
+	struct detector *det;
 	struct ray_worker *worker;
 	struct world *w=&(dev->w);
 
@@ -132,7 +134,7 @@ void ray_malloc(struct simulation *sim,struct device *dev,struct image *my_image
 		}
 	}
 
-	if (my_image->ray_auto_wavelength_range==FALSE)
+	//if (my_image->ray_auto_wavelength_range==FALSE)
 	{
 		min=my_image->ray_lambda_start;
 		max=my_image->ray_lambda_stop;
@@ -149,24 +151,23 @@ void ray_malloc(struct simulation *sim,struct device *dev,struct image *my_image
 		lam+=dl;
 	}
 
+	//getchar();
 
-	if (my_image->viewpoint_enabled==TRUE)
+	for (d=0;d<w->detectors;d++)
 	{
-		dim_alloc_xyz(&(my_image->viewpoint_dim),'x');
-		dim_alloc_xyz(&(my_image->viewpoint_dim),'z');
-		dim_alloc_xyz(&(my_image->viewpoint_dim),'y');
-
-		//dim_alloc_gen_untiy_mesh_x(&(my_image->viewpoint_dim));	//This is now done when we add the object to the scene
-		//dim_alloc_gen_untiy_mesh_z(&(my_image->viewpoint_dim));
-
-		for (y=0;y<my_image->ray_wavelength_points;y++)
+		det=&(w->det[d]);
+		if (det->viewpoint_enabled==TRUE)
 		{
-			my_image->viewpoint_dim.ymesh[y]=my_image->lam[y];
-		}
+			dim_alloc_xyz(&(my_image->viewpoint_dim),'y');
 
-		malloc_zxy_gdouble(&(my_image->viewpoint_dim),&(my_image->viewpoint_image));
-		//printf("one\n");
-		//getchar();
+			for (y=0;y<my_image->ray_wavelength_points;y++)
+			{
+				my_image->viewpoint_dim.ymesh[y]=my_image->lam[y];
+			}
+
+			malloc_zxy_gdouble(&(my_image->viewpoint_dim),&(my_image->viewpoint_image));
+			break;
+		}
 	}
 
 }

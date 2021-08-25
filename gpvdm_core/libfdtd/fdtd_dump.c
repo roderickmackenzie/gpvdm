@@ -77,7 +77,7 @@ void fdtd_dump(struct simulation *sim,char *output_path,struct fdtd_data *data)
 	//strcpy(out_dir,get_output_path(sim));
 	//dump_make_snapshot_dir_with_name(sim,out_dir ,(double)data->time, 0.0, (long double )(1.0/data->lambda),data->step,lambda_name);
 
-	dump_make_snapshot_dir(sim,out_dir,output_path ,lambda_name, data->step);
+	dump_make_snapshot_dir(sim,out_dir,output_path ,lambda_name, data->step,"2d");
 
 	buffer_init(&buf);
 	buffer_malloc(&buf);

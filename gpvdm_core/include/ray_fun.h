@@ -57,7 +57,7 @@
 void light_update_ray_mat(struct simulation *sim,struct device *dev,struct image *my_image);
 void ray_engine_init(struct image *in);
 int between(double v, double x0, double x1);
-void add_triangle(struct device *dev, double x0,double y0,double z0,double x1,double y1,double z1,double x2,double y2,double z2,int object_uid,int edge);
+void add_triangle(struct world *w, double x0,double y0,double z0,double x1,double y1,double z1,double x2,double y2,double z2,int object_uid,int edge);
 void ray_reset(struct ray_worker *worker);
 int add_ray(struct simulation *sim,struct ray_worker *worker,struct vec *start,struct vec *dir,double mag,int obj_uid,int parent);
 void ray_populate_with_shapes(struct simulation *sim,struct device *dev,struct epitaxy *in);
@@ -72,7 +72,7 @@ int propergate_next_ray(struct simulation *sim,struct device *dev,struct image *
 double get_eff(struct image *in);
 void ray_build_scene(struct simulation *sim,struct device *cell,struct image *my_image,struct epitaxy *my_epitaxy);
 void ray_free(struct simulation *sim,struct device *in,struct image *my_image);
-void ray_read_config(struct simulation *sim,struct image *my_image,struct json_obj *json_config);
+void ray_read_config(struct simulation *sim,struct image *my_image,struct world *w,struct json_obj *json_config);
 void ray_solve(struct simulation *sim,struct device *dev, struct ray_src *raysrc,double mag,struct ray_worker *worker);
 void ray_solve_all(struct simulation *sim,struct device *dev);
 double ray_cal_escape_angle(struct image *in, struct ray_worker *worker);
@@ -94,7 +94,7 @@ struct object *ray_add_object(struct device *dev,struct triangles *tri);
 void ray_cpy(struct ray *a,struct ray *b);
 
 
-struct object *add_plane(struct device *dev,double x0,double y0,double z0,double dx,double dz,int object_type);
+struct object *add_plane(struct world *w,double x0,double y0,double z0,double dx,double dz,int object_type);
 
 void ray_label_triangles(struct simulation *sim,struct device *dev);
 //search
@@ -105,8 +105,7 @@ struct object *ray_obj_search_by_name(struct simulation *sim,struct device *dev,
 void ray_init(struct ray *a);
 
 //Viewpoint
-void ray_viewpoint_reset(struct simulation *sim,struct image *my_image);
-void ray_read_viewpoint(struct simulation *sim,struct image *my_image, struct json_obj *json_config);
+void ray_viewpoint_reset(struct simulation *sim,struct image *my_image,struct world *w);
 void ray_dump_shapshots(struct simulation *sim,struct device *dev, struct image *my_image ,struct ray_worker *worker,int layer);
 
 //ray_src
@@ -117,8 +116,8 @@ void ray_check_if_needed(struct simulation *sim,struct device *dev);
 //dump
 void ray_dump_triangle(struct simulation *sim,struct device *dev,struct image *in,struct triangle *tri);
 void dump_ray_to_file(struct simulation *sim,struct image *in,struct ray *my_ray,struct device *dev);
-void dump_rendered_image(struct simulation *sim,char *out_dir,struct image *in);
-void dump_rendered_cross_section(struct simulation *sim,char *out_dir, struct image *in);
+void dump_rendered_image(struct simulation *sim,char *out_dir, struct world *w,struct image *in);
+void dump_rendered_cross_section(struct simulation *sim,char *out_dir, struct world *w, struct image *in);
 void dump_extraction_efficiency(struct simulation *sim,struct device *dev,struct image *in);
 void dump_ang_escape(struct simulation *sim,struct image *in);
 void dump_plane_to_file(struct simulation *sim,char *file_name,struct image *in,struct device *dev);

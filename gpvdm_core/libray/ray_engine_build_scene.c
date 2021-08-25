@@ -57,28 +57,9 @@
 
 void ray_build_scene(struct simulation *sim,struct device *dev,struct image *my_image,struct epitaxy *my_epitaxy)
 {
-	double xlen=dev->xlen;
-	double dx=xlen*0.01;
-
 	double device_height=epitaxy_get_optical_length(my_epitaxy);
-	double sim_window_top=device_height*2.0;
-	double scene_y0=device_height*-4.0;
-
-	struct object *obj;
 
 	my_image->y_escape_level=-device_height*1.1;
-
-	double scene_dx=xlen+dx*2.0;
-	double scene_dy=(sim_window_top-scene_y0);
-	double scene_dz=dev->zlen;
-
-	double camera_dx=0.0;
-	double camera_dz=0.0;
-
-	double camera_y=0.0;
-	double camera_x=0.0;
-	double camera_z=0.0;
-
 
 	my_image->n_ray_srcs=ray_src_add_emitters(sim,dev,TRUE);
 
@@ -91,39 +72,6 @@ void ray_build_scene(struct simulation *sim,struct device *dev,struct image *my_
 	}
 
 
-	if (my_image->viewpoint_enabled==TRUE)
-	{
-		//double camera_dy=scene_dy*0.05;
-		camera_dx=scene_dx*0.9;
-		camera_dz=scene_dz*0.9;
-
-		camera_y=scene_y0+scene_dy*0.1;
-		camera_x=camera_dx*0.05;
-		camera_z=camera_dz*0.05;
-
-		obj=add_plane(dev,camera_x,camera_y, camera_z, camera_dx,camera_dz,RAY_VIEWPOINT);
-
-		obj->epi_layer=-1;
-		strcpy(obj->name,"viewpoint");
-
-		dim_set_simple_mesh_z(&(my_image->viewpoint_dim), camera_z, camera_z+camera_dz);
-		dim_set_simple_mesh_x(&(my_image->viewpoint_dim), camera_x, camera_x+camera_dx);
-
-	}
-
-
-	//struct shape *s;
-
-	//for (i=0;i<dev->ncontacts;i++)
-	//{
-	//	ray_add_shape_to_scene(struct simulation *sim,struct image *my_image,struct shape *s,double y_stop);
-	//	//&(in->contacts[i].shape)
-	//}
-
 	device_dump_world_to_file(sim,dev,"all_triangles.dat");
-	//printf("%le %le %le\n",my_image->start_rays[0].x,my_image->start_rays[0].y,my_image->start_rays[0].z);
-	//getchar();
-	//dump_plane(my_image);
-	//dump_plane_to_file(my_image);
-	//exit(0);
+
 }

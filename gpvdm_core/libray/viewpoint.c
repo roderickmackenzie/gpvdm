@@ -50,36 +50,16 @@
 	@brief Read the config file for the ray tracer
 */
 
-void ray_read_viewpoint(struct simulation *sim,struct image *my_image, struct json_obj *json_config)
+void ray_viewpoint_reset(struct simulation *sim,struct image *my_image, struct world *w)
 {
-	struct json_obj *json_viewpoint;
-
-	if (json_config==NULL)
+	int d;
+	struct detector *det;
+	for (d=0;d<w->detectors;d++)
 	{
-		ewe(sim,"json_config null\n");
+		det=&(w->det[d]);
+		if (det->viewpoint_enabled==TRUE)
+		{
+			zxy_set_gdouble(&(my_image->viewpoint_dim),my_image->viewpoint_image,0.0);
+		}
 	}
-
-	json_viewpoint=json_obj_find(json_config, "viewpoint");
-	if (json_viewpoint==NULL)
-	{
-		ewe(sim,"Object json_viewpoint not found\n");
-	}
-
-	json_get_english(sim, json_viewpoint, &(my_image->viewpoint_enabled),"viewpoint_enabled");
-
-	json_get_double(sim, json_viewpoint, &(my_image->viewpoint_size),"viewpoint_size");
-	json_get_double(sim, json_viewpoint,&(my_image->viewpoint_dz),"viewpoint_dz");
-
-	json_get_int(sim, json_viewpoint, &(my_image->viewpoint_dim.xlen),"viewpoint_nx");
-	json_get_int(sim, json_viewpoint, &(my_image->viewpoint_dim.zlen),"viewpoint_nz");
-	my_image->viewpoint_dim.ylen=my_image->ray_wavelength_points;
-
-}
-
-void ray_viewpoint_reset(struct simulation *sim,struct image *my_image)
-{
-	if (my_image->viewpoint_enabled==TRUE)
-	{
-		zxy_set_gdouble(&(my_image->viewpoint_dim),my_image->viewpoint_image,0.0);
-	}
-}
+}	

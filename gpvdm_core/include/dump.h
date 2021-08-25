@@ -67,7 +67,7 @@ void buffer_add_zx_data(struct simulation *sim,struct dat_file *buf,struct dimen
 void buffer_add_zxy_data_y_slice(struct simulation *sim,struct dat_file *buf,struct dimensions *dim,long double ***data,int y);
 
 void dump_clean_cache_files(struct simulation* sim);
-void dump_make_snapshot_dir(struct simulation *sim,char *ret_path,char *base_dir ,char *snapshot_name, int number);
+void dump_make_snapshot_dir(struct simulation *sim,char *ret_path,char *base_dir ,char *snapshot_name, int number,char *default_plot_type);
 void buffer_add_3d_device_data_int(struct simulation *sim,struct dat_file *buf,struct device *in,int ***data);
 void buffer_add_3d_to_2d_projection(struct simulation *sim,struct dat_file *buf,struct device *in,gdouble ***data);
 void buffer_add_zxy_rgb_data(struct simulation *sim,struct dat_file *buf,struct dimensions *dim,gdouble ***data);

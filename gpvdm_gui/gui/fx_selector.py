@@ -37,17 +37,19 @@ from PyQt5.QtGui import QIcon
 import operator
 
 from cal_path import get_sim_path
+from inp import inp
 
 class lam_file():
 	def __init__(self):
 		self.file=""
 		self.lam=0.0
 		self.layer=0
+
 	def __str__(self):
-		return str(self.lam)+"nm: layer "+str(self.layer)
+		return str(self.lam*1e9)+"nm "#layer "+str(self.layer)
 
 	def text(self):
-		return str(self.lam)+"nm: layer "+str(self.layer)
+		return str(self.lam*1e9)+"nm "#layer "+str(self.layer)
 		
 
 class fx_selector(QWidget):
@@ -99,13 +101,20 @@ class fx_selector(QWidget):
 			files=os.listdir(dump_dir)
 			files.sort()
 			for f in files:
-				if f.startswith("light_ray_"):
-					a=lam_file()
-					a.layer=f[10:11]
-					a.lam=f[12:-4]
-					a.file_name=f
-					
-					result.append(a)
+				sub_dir=os.path.join(dump_dir,f)
+				if os.path.isdir(sub_dir)==True:
+					json_file_name=os.path.join(sub_dir,"data.json")
+					json_file=inp()
+					json_file.load_json(json_file_name)
+					sub_files=os.listdir(sub_dir)
+					for sf in sub_files:
+						if sf.startswith("ray_"):
+							a=lam_file()
+							a.layer=0#f[10:11]
+							a.lam=json_file.json["wavelength"]
+							a.file_name=os.path.join(sub_dir,sf)
+							
+							result.append(a)
 
 		return result
 
@@ -123,7 +132,6 @@ class fx_selector(QWidget):
 
 		for i in range(0, len(self.thefiles)):
 			path=os.path.join(self.dump_dir,self.thefiles[i].file_name)
-			#print(path)
 			if os.path.isfile(path):
 				self.cb.addItem(str(self.thefiles[i]))
 		self.cb.setCurrentIndex(0)

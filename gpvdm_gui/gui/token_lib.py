@@ -572,8 +572,12 @@ def build_token_lib():
 
 	#viewpoint.inp
 	lib.append(my_data("viewpoint_enabled",_("True/False"),_("Enable viewpoint"),1.0,"gtkswitch"))
-	lib.append(my_data("viewpoint_size","au",_("View point size"),1.0,"QLineEdit"))
-	lib.append(my_data("viewpoint_dz","au",_("View point dz"),1.0,"QLineEdit"))
+	lib.append(my_data("viewpoint_x0","fraction",_("View point x0"),1.0,"QLineEdit"))
+	lib.append(my_data("viewpoint_y0","fraction",_("View point y0"),1.0,"QLineEdit"))
+	lib.append(my_data("viewpoint_z0","fraction",_("View point z0"),1.0,"QLineEdit"))
+	lib.append(my_data("viewpoint_dx","fraction",_("View point dx"),1.0,"QLineEdit"))
+	lib.append(my_data("viewpoint_dz","fraction",_("View point dz"),1.0,"QLineEdit"))
+
 	lib.append(my_data("viewpoint_nx","au",_("Mesh points x"),1.0,"QLineEdit"))
 	lib.append(my_data("viewpoint_nz","au",_("Mesh points z"),1.0,"QLineEdit"))
 

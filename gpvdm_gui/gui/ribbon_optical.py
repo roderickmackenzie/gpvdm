@@ -65,6 +65,7 @@ class ribbon_optical(ribbon_page2):
 		self.light_sources_window=None
 		self.ray_trace_window=None
 		self.optics_window=None
+		self.detectors_window=None
 
 		pan=self.add_panel()
 		self.light_sources = QAction_lock("lighthouse", _("Light\nSources"), self,"ribbon_home_light_sources")
@@ -86,9 +87,9 @@ class ribbon_optical(ribbon_page2):
 		if gpvdm_paths.is_plugin("trace")==True:
 			pan.addAction(self.ray_trace)
 
-		self.detector = QAction_lock("ccd", _("Detector"), self,"ribbon_home_optics")
-		self.detector.clicked.connect(self.callback_optics_sim)
-		#pan.addAction(self.detector)
+		self.detector = QAction_lock("ccd", _("Optical\nDetectors"), self,"ribbon_home_optics")
+		self.detector.clicked.connect(self.callback_detector)
+		pan.addAction(self.detector)
 
 		self.fx_box=fx_selector()
 		self.fx_box.update()
@@ -152,3 +153,17 @@ class ribbon_optical(ribbon_page2):
 			global_object_register("optics_force_redraw",self.optics_window.force_redraw)
 			self.optics_window.ribbon.update()
 			self.optics_window.show()
+
+	def callback_detector(self):
+		help_window().help_set_help(["ccd.png",_("<big><b>The detectors window</b></big><br>Use this window to setup optical detectors.  These can be used for the ray tracing simulations.")])
+
+
+		if self.detectors_window==None:
+			from detectors_editor import detectors_editor
+			self.detectors_window=detectors_editor()
+
+		if self.detectors_window.isVisible()==True:
+			self.detectors_window.hide()
+		else:
+			self.detectors_window.ribbon.update()
+			self.detectors_window.show()

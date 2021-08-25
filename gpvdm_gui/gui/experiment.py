@@ -45,6 +45,7 @@ from fxexperiment_tab import fxexperiment_tab
 from cvexperiment_tab import cvexperiment_tab
 from jvexperiment_tab import jvexperiment_tab
 from plexperiment_tab import plexperiment_tab
+from detectors_tab import detectors_tab
 from tab_light_src import tab_light_src
 from cluster_tab import cluster_tab
 
@@ -121,7 +122,7 @@ class experiment(QWidgetSavePos):
 		self.setWindowIcon(icon_get(icon))
 
 		self.ribbon=ribbon_experiment()
-
+		self.base_json_obj=None
 		#self.ribbon.tb_save.triggered.connect(self.callback_save)
 
 		#self.ribbon.tb_laser_start_time.triggered.connect(self.callback_laser_start_time)
@@ -208,15 +209,24 @@ class experiment(QWidgetSavePos):
 				global_object_run("ribbon_sim_mode_update")
 
 	def callback_add_page(self):
-		tab = self.notebook.currentWidget()
 		data=gpvdm_data()
-		new_sim_name=dlg_get_text( _("Make a new:"), tab.get_json_obj().english_name+"_new","document-new.png")
+		tab = self.notebook.currentWidget()
+		if tab!=None:
+			new_name=tab.get_json_obj().english_name+"_new"
+		else:
+			new_name="new"
+
+		new_sim_name=dlg_get_text( _("Make a new:"), new_name,"document-new.png")
 
 		new_sim_name=new_sim_name.ret
 
 		if new_sim_name!=None:
-			
-			a=copy.deepcopy(tab.get_json_obj())
+			if self.base_json_obj==None:
+				a=copy.deepcopy(tab.get_json_obj())
+			else:
+				exec(self.base_json_obj)
+				a=eval(self.base_json_obj.split()[-1]+"()")		#split off yyy "from xxx import yyy"
+
 			a.english_name=new_sim_name
 			a.update_random_ids()
 			data=self.get_json_obj()
@@ -233,10 +243,17 @@ class experiment(QWidgetSavePos):
 	def update_interface(self):
 		data=self.get_json_obj()
 		tab = self.notebook.currentWidget()
-		self.status_bar.showMessage(tab.get_json_obj().english_name+", segment"+str(data.segments.index(tab.get_json_obj())))
-		self.tab_bar.obj_search_path=self.json_search_path
-		self.tab_bar.obj_id=tab.uid
-
+		if tab!=None:
+			self.status_bar.showMessage(tab.get_json_obj().english_name+", segment"+str(data.segments.index(tab.get_json_obj())))
+			self.tab_bar.obj_search_path=self.json_search_path
+			self.tab_bar.obj_id=tab.uid
+			self.ribbon.tb_clone.setEnabled(True)
+			self.ribbon.tb_rename.setEnabled(True)
+			self.ribbon.tb_delete.setEnabled(True)
+		else:
+			self.ribbon.tb_clone.setEnabled(False)
+			self.ribbon.tb_rename.setEnabled(False)
+			self.ribbon.tb_delete.setEnabled(False)
 
 	def get_json_obj(self):
 		return eval(self.json_search_path)

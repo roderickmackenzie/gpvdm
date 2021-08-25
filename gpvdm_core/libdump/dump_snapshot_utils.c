@@ -87,7 +87,7 @@ void dump_remove_snapshots(struct simulation* sim, char *output_path)
 
 }
 
-void dump_make_snapshot_dir(struct simulation *sim,char *ret_path,char *base_dir ,char *snapshot_name, int number)
+void dump_make_snapshot_dir(struct simulation *sim,char *ret_path,char *base_dir ,char *snapshot_name, int number,char *default_plot_type)
 {
 	struct dat_file buf;
 	char temp[200];
@@ -104,7 +104,9 @@ void dump_make_snapshot_dir(struct simulation *sim,char *ret_path,char *base_dir
 
 	buffer_add_string(&buf,"{\n");
 	buffer_add_string(&buf," \"icon\":\"snapshots\",\n");
-	buffer_add_string(&buf," \"item_type\":\"snapshots\"\n");
+	buffer_add_string(&buf," \"item_type\":\"snapshots\",\n");
+	sprintf(temp," \"default_plot_type\":\"%s\"\n",default_plot_type);
+	buffer_add_string(&buf,temp);
 	buffer_add_string(&buf,"}\n");
 
 	buffer_dump_path(sim,main_snapshots_dir,"data.json",&buf);

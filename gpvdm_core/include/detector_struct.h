@@ -1,4 +1,4 @@
-//
+// 
 // General-purpose Photovoltaic Device Model gpvdm.com - a drift diffusion
 // base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solarcells.
 // The model can simulate OLEDs, Perovskite cells, and OFETs.
@@ -33,62 +33,34 @@
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
 
-#include <stdio.h>
-#include <ray.h>
-#include <ray_fun.h>
-#include <gpvdm_const.h>
-#include <math.h>
-#include <stdlib.h>
-#include <cal_path.h>
-#include <log.h>
-#include <device.h>
-#include <json.h>
-#include <util.h>
-#include <triangles.h>
-
-/** @file ray_config.c
-	@brief Read the config file for the ray tracer
+/** @file detector.h
+@brief header file for the optical detectors
 */
+#ifndef detector_struct_h
+#define detector_struct_h
+#include <enabled_libs.h>
+#include <vec.h>
+#include <i.h>
+#include <sim_struct.h>
+#include <triangle.h>
+#include <dim.h>
+#include <shape_struct.h>
+#include <object.h>
 
-void ray_read_config(struct simulation *sim,struct image *my_image,struct world *w,struct json_obj *json_config)
+struct detector
 {
-	struct json_obj *json_ray;
+	int viewpoint_enabled;
+	double viewpoint_x0;
+	double viewpoint_y0;
+	double viewpoint_z0;
+	double viewpoint_dx;
+	double viewpoint_dz;
 
-	if (json_config==NULL)
-	{
-		ewe(sim,"json_config null\n");
-	}
+	int viewpoint_nx;
+	int viewpoint_nz;
 
-	json_ray=json_obj_find(json_config, "config");
-	if (json_ray==NULL)
-	{
-		ewe(sim,"Object config not found\n");
-	}
-
-	json_get_int(sim, json_ray, &(my_image->ray_wavelength_points),"ray_wavelength_points");
-
-	json_get_int(sim, json_ray, &(my_image->escape_bins),"ray_escape_bins");
-
-	json_get_double(sim, json_ray, &(my_image->ray_lambda_start),"ray_lambda_start");
-	json_get_double(sim, json_ray, &(my_image->ray_lambda_stop),"ray_lambda_stop");
-
-	json_get_english(sim, json_ray,&(my_image->ray_auto_wavelength_range),"ray_auto_wavelength_range");
-
-	json_get_english(sim, json_ray, &(my_image->ray_auto_run),"ray_auto_run");
-
-	int d;
-	struct detector *det;
-	for (d=0;d<w->detectors;d++)
-	{
-		det=&(w->det[d]);
-		if (det->viewpoint_enabled==TRUE)
-		{
-			my_image->viewpoint_dim.xlen=det->viewpoint_nx;
-			my_image->viewpoint_dim.zlen=det->viewpoint_nz;
-			my_image->viewpoint_dim.ylen=my_image->ray_wavelength_points;
-			break;
-		}
-	}
-}
+};
 
 
+
+#endif

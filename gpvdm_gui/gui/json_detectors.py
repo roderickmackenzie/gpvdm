@@ -22,8 +22,8 @@
 # 
 
 
-## @package json_ray
-#  Store the cv domain json data
+## @package json_detectors
+#  Store the information on the optical detectors
 #
 
 
@@ -33,42 +33,46 @@ import shutil
 import json
 from json_base import json_base
 
-class json_ray_config(json_base):
+
+class json_detectors_config(json_base):
 
 	def __init__(self):
-		json_base.__init__(self,"config")
+		json_base.__init__(self,"viewpoint")
 		self.var_list=[]
-		self.var_list.append(["ray_wavelength_points",100])
-		self.var_list.append(["ray_auto_wavelength_range","true"])
-		self.var_list.append(["ray_lambda_start",300e-9])
-		self.var_list.append(["ray_lambda_stop",700e-9])
-		self.var_list.append(["ray_auto_run","ray_run_once"])
-		self.var_list.append(["ray_escape_bins",20])
+		self.var_list.append(["viewpoint_enabled",False])
+		self.var_list.append(["viewpoint_x0",0.1])
+		self.var_list.append(["viewpoint_y0",0.1])
+		self.var_list.append(["viewpoint_z0",0.1])
+		self.var_list.append(["viewpoint_dx",0.8])
+		self.var_list.append(["viewpoint_dz",0.8])
+		self.var_list.append(["viewpoint_nx",20])
+		self.var_list.append(["viewpoint_nz",20])
 		self.var_list_build()
 
 
-class json_ray_simulation(json_base):
+
+class json_detector(json_base):
 
 	def __init__(self):
-		json_base.__init__(self,"ray_segment")
+		json_base.__init__(self,"detector")
 		self.var_list=[]
-		self.var_list.append(["english_name","Ray\ntrace"])
-		self.var_list.append(["icon","ray"])
-		self.var_list.append(["config",json_ray_config()])
+		self.var_list.append(["english_name","Detector"])
+		self.var_list.append(["icon","jv"])
+		self.var_list.append(["config",json_detectors_config()])
+		self.var_list.append(["id",self.random_id()])
 		self.var_list_build()
 
 
-class json_ray(json_base):
+class json_detectors(json_base):
 
 	def __init__(self):
-		json_base.__init__(self,"ray",segment_class=True)
-		self.segments.append(json_ray_simulation())
+		json_base.__init__(self,"detectors",segment_class=True)
 
 	def load_from_json(self,json):
 		self.segments=[]
 		segs=json['segments']
 		for i in range(0,segs):
-			a=json_ray_simulation()
+			a=json_detector()
 			simulation_name="segment"+str(i)
 			a.load_from_json(json[simulation_name])
 			self.segments.append(a)

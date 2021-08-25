@@ -48,6 +48,7 @@
 #include <triangle.h>
 #include <world_struct.h>
 #include <world.h>
+#include <detector.h>
 
 int world_load(struct simulation *sim,struct world *w, struct json_obj *json_world)
 {

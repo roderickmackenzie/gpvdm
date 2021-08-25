@@ -125,8 +125,8 @@ class shape_editor(QWidgetSavePos):
 			a.triangles.extend(data.data)
 			self.three_d_shape.gl_objects_add(a)
 			last_obj=self.three_d_shape.objects[-1]
-			self.three_d_shape.objects[-1].compile("triangles_solid",[1.0,0.0,0.0,0.5],[last_obj.r_false,last_obj.g_false,last_obj.b_false])
-			self.three_d_shape.objects[-1].compile("triangles_open",[0.9,0.0,0.0,1.0],[last_obj.r_false,last_obj.g_false,last_obj.b_false],line_width=5)
+			self.three_d_shape.objects[-1].compile("triangles_solid",[1.0,0.0,0.0,0.5])
+			self.three_d_shape.objects[-1].compile("triangles_open",[0.9,0.0,0.0,1.0],line_width=5)
 			self.three_d_shape.scene_built=True
 			self.three_d_shape.gl_objects_add_grid()
 

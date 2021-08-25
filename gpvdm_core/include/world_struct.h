@@ -44,6 +44,7 @@
 #include "advmath.h"
 #include <sim_struct.h>
 #include <shape_struct.h>
+#include <detector_struct.h>
 
 struct world
 {
@@ -61,6 +62,11 @@ struct world
 		struct object *obj;		//This is the scene built from triangles
 		int objects;
 		int triangles;
+
+	//detectors
+		struct detector *det;
+		int detectors;
+		
 
 };
 

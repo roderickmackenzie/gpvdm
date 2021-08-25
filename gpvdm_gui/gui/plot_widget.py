@@ -465,7 +465,7 @@ class plot_widget(plot_widget_menu,plot_widget_matplotlib):
 		return ribbon
 	#modes="matplotlib","gpvdm_graph", "band_graph"
 
-	def __init__(self,enable_toolbar=True,enable_3d=True,widget_mode="matplotlib"):
+	def __init__(self,enable_toolbar=True,enable_3d=True,widget_mode="matplotlib",force_2d3d=False):
 		QWidget.__init__(self)
 		self.setFocusPolicy(Qt.StrongFocus)
 		self.data=[]
@@ -477,6 +477,7 @@ class plot_widget(plot_widget_menu,plot_widget_matplotlib):
 		self.fix_scales=False
 		self.y1_y2=[]
 		self.setWindowIcon(icon_get("plot"))
+		self.force_2d3d=force_2d3d
 
 		self.ax=[]
 		self.last_plot=[]
@@ -506,6 +507,9 @@ class plot_widget(plot_widget_menu,plot_widget_matplotlib):
 			self.plot_ribbon=self.build_toolbar(enable_3d)
 			self.main_vbox.addWidget(self.plot_ribbon)
 
+		if force_2d3d=="3d":
+			self.open_gl_enabled=True
+			self.callback_3d_mode()
 
 		#self.canvas.setMinimumSize(800, 350)
 		self.canvas.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
@@ -516,7 +520,14 @@ class plot_widget(plot_widget_menu,plot_widget_matplotlib):
 
 
 	def callback_3d_mode(self):
-		self.open_gl_enabled=self.tb_3d_mode.isChecked()
+		self.open_gl_enabled=False
+
+		if self.tb_3d_mode.isChecked()==True:
+			self.open_gl_enabled=True
+
+		if self.force_2d3d=="3d":
+			self.open_gl_enabled=True
+
 		if self.open_gl_enabled==True:
 			self.canvas.setVisible(False)
 

@@ -21,8 +21,8 @@
 #
 #
 
-## @package jv_experiment
-#  JV experiment editor
+## @package detectors_editor
+#  Main window for settign up detectors
 #
 
 import i18n
@@ -30,13 +30,13 @@ _ = i18n.language.gettext
 
 from experiment import experiment
 
-class jv_experiment(experiment):
+class detectors_editor(experiment):
 
 
 	def __init__(self,data=None):
-		experiment.__init__(self,window_save_name="jvexperiment_editor", window_title=_("JV experiment window"),name_of_tab_class="jvexperiment_tab",json_search_path="gpvdm_data().jv")
+		experiment.__init__(self,window_save_name="detectors_editor", window_title=_("Optical detectors editor"),name_of_tab_class="detectors_tab",json_search_path="gpvdm_data().detectors")
 
-
+		self.base_json_obj="from json_detectors import json_detector"
 		self.notebook.currentChanged.connect(self.switch_page)
 		self.switch_page()
 

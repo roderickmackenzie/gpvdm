@@ -118,13 +118,6 @@ struct image
 	double ray_lambda_stop;
 	int ray_auto_wavelength_range;
 
-	//viewpoint
-	struct dimensions viewpoint_dim;
-	int viewpoint_enabled;
-	double viewpoint_size;
-	double viewpoint_dz;
-	long double ***viewpoint_image;
-
 	//benchmarking
 	int tot_rays;
 	double start_time;
@@ -132,6 +125,9 @@ struct image
 	//run control
 	int ray_auto_run;
 	int dump_snapshots;
+
+	struct dimensions viewpoint_dim;
+	long double ***viewpoint_image;
 
 };
 

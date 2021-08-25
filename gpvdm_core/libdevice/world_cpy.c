@@ -45,7 +45,7 @@
 #include <world_struct.h>
 #include <triangles.h>
 #include <triangle.h>
-
+#include <detector.h>
 
 void world_cpy(struct simulation *sim,struct world *out,struct world *in)
 {
@@ -71,6 +71,7 @@ void world_cpy(struct simulation *sim,struct world *out,struct world *in)
 	out->objects=0;
 	out->triangles=0;
 
+	detectors_cpy(sim,out,in);
 }
 
 

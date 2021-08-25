@@ -90,7 +90,7 @@ void light_dump_snapshots(struct simulation *sim,char *output_path,struct light 
 
 		if (dump_number>=li->dump_verbosity)
 		{
-			dump_make_snapshot_dir(sim,out_dir,output_path ,"optical_snapshots", tot_dump_number);
+			dump_make_snapshot_dir(sim,out_dir,output_path ,"optical_snapshots", tot_dump_number,"2d");
 			made_dir=TRUE;
 			buffer_malloc(&info_file);
 

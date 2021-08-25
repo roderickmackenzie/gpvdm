@@ -48,10 +48,9 @@
 	@brief Basic shapes for ray tracing
 */
 
-void add_triangle(struct device *dev, double x0,double y0,double z0,double x1,double y1,double z1,double x2,double y2,double z2,int obect_uid,int edge)
+void add_triangle(struct world *w, double x0,double y0,double z0,double x1,double y1,double z1,double x2,double y2,double z2,int obect_uid,int edge)
 {
 	struct triangle tri;
-	struct world *w=&(dev->w);
 
 	triangle_init(&tri);
 	vec_set(&(tri.xy0),x0,y0,z0);
@@ -77,7 +76,7 @@ struct object *ray_add_object(struct device *dev,struct triangles *tri)
 
 	for (i=0;i<tri->len;i++)
 	{
-		add_triangle(dev,
+		add_triangle(w,
 						tri->data[i].xy0.x,tri->data[i].xy0.y,tri->data[i].xy0.z,
 						tri->data[i].xy1.x,tri->data[i].xy1.y,tri->data[i].xy1.z,
 						tri->data[i].xy2.x,tri->data[i].xy2.y,tri->data[i].xy2.z,
@@ -103,76 +102,76 @@ struct object *add_box(struct device *dev, double x0,double y0,double z0,double 
 	w->obj[w->objects].uid=w->objects;
 
 	//btm
-	add_triangle(dev,
+	add_triangle(w,
 					x0,y0,z0,
 					x0+dx,y0,
 					z0,x0,y0,z0+dz,
 													w->objects,object_type);
-	add_triangle(dev,
+	add_triangle(w,
 					x0+dx	,	y0,z0,
 					x0+dx	,	y0,z0+dz,
 					x0   	,	y0,z0+dz,
 													w->objects,object_type);
 
 	//top
-	add_triangle(dev,
+	add_triangle(w,
 					x0		,y0+dy	,	z0		,
 					x0+dx	,y0+dy	,	z0		,
 					x0		,y0+dy	,	z0+dz	,
 													w->objects,object_type);
-	add_triangle(dev,
+	add_triangle(w,
 					x0+dx	,y0+dy	,z0			,
 					x0+dx	,y0+dy	,z0+dz		,
 					x0   	,y0+dy	,z0+dz		,
 													w->objects,object_type);
 
 	//left
-	add_triangle(dev,
+	add_triangle(w,
 					x0		,y0		,z0			,
 					x0		,y0+dy	,z0			,
 					x0   	,y0		,z0+dz		,
 													w->objects,object_type);
 
-	add_triangle(dev,
+	add_triangle(w,
 					x0		,y0+dy	,z0			,
 					x0		,y0+dy	,z0+dz		,
 					x0   	,y0		,z0+dz		,
 													w->objects,object_type);
 
 	//right
-	add_triangle(dev,
+	add_triangle(w,
 					x0+dx		,y0		,z0			,
 					x0+dx		,y0+dy	,z0			,
 					x0+dx   	,y0		,z0+dz		,
 													w->objects,object_type);
 
-	add_triangle(dev,
+	add_triangle(w,
 					x0+dx	,y0+dy	,z0			,
 					x0+dx	,y0+dy	,z0+dz		,
 					x0+dx  	,y0		,z0+dz		,
 													w->objects,object_type);
 
 	//front
-	add_triangle(dev,
+	add_triangle(w,
 					x0			,y0		,z0		,
 					x0+dx		,y0		,z0		,
 					x0   		,y0+dy	,z0		,
 													w->objects,object_type);
 
-	add_triangle(dev,
+	add_triangle(w,
 					x0			,y0+dy	,z0		,
 					x0+dx		,y0+dy	,z0		,
 					x0+dx   	,y0		,z0		,
 													w->objects,object_type);
 
 	//back
-	add_triangle(dev,
+	add_triangle(w,
 					x0			,y0		,z0+dz		,
 					x0+dx		,y0		,z0+dz		,
 					x0   		,y0+dy	,z0+dz		,
 													w->objects,object_type);
 
-	add_triangle(dev,
+	add_triangle(w,
 					x0			,y0+dy	,z0+dz		,
 					x0+dx		,y0+dy	,z0+dz		,
 					x0+dx   	,y0		,z0+dz		,
@@ -186,20 +185,19 @@ struct object *add_box(struct device *dev, double x0,double y0,double z0,double 
 	return &(w->obj[w->objects-1]);
 }
 
-struct object *add_plane(struct device *dev,double x0,double y0,double z0,double dx,double dz,int object_type)
+struct object *add_plane(struct world *w,double x0,double y0,double z0,double dx,double dz,int object_type)
 {
-	struct world *w=&(dev->w);
 	object_init(&(w->obj[w->objects]));
 	object_malloc(&(w->obj[w->objects]));
 	w->obj[w->objects].uid=w->objects;
 
 	//btm
-	add_triangle(dev,
+	add_triangle(w,
 					x0,y0,z0,
 					x0+dx,y0,
 					z0,x0,y0,z0+dz,
 													w->objects,object_type);
-	add_triangle(dev,
+	add_triangle(w,
 					x0+dx	,	y0,z0,
 					x0+dx	,	y0,z0+dz,
 					x0   	,	y0,z0+dz,

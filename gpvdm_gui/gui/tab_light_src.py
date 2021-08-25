@@ -38,6 +38,7 @@ from css import css_apply
 from optics_sources_tab import optics_light_src
 from cal_path import get_sim_path
 from gpvdm_json import gpvdm_data
+from global_objects import global_object_run
 
 class tab_light_src(QTabWidget):
 
@@ -58,12 +59,14 @@ class tab_light_src(QTabWidget):
 		self.light_src=optics_light_src("gpvdm_data().light_sources.lights",self.uid,_("Light source (y0)"))
 		self.addTab(self.light_src,_("Light source"))
 
-		tab=tab_class(self.get_json_obj())
-		self.addTab(tab,_("Configure"))
-
+		self.configure=tab_class(self.get_json_obj())
+		self.addTab(self.configure,_("Configure"))
+		self.configure.tab.changed.connect(self.callback_configure_changed)
 
 	def rename(self,tab_name):
 		self.get_json_obj().english_name=tab_name
 		gpvdm_data().save()
 
+	def callback_configure_changed(self):
+		global_object_run("gl_force_redraw")
 

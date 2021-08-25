@@ -161,27 +161,27 @@ if open_gl_ok==True:
 			self.view_options=gl_view_options()
 
 			l=open_gl_light()
-			l.xyz=[0, 5, -10, 1.0]
+			l.xyz=[0, 5, -10]
 			l.number=GL_LIGHT0
 			self.lights.append(l)
 
 			l=open_gl_light()
-			l.xyz=[0, 5, 10, 1.0]
+			l.xyz=[0, 5, 10]
 			l.number=GL_LIGHT1
 			self.lights.append(l)
 
 			l=open_gl_light()
-			l.xyz=[0, -5, 10, 1.0]
+			l.xyz=[0, -5, 10]
 			l.number=GL_LIGHT2
 			self.lights.append(l)
 
 			l=open_gl_light()
-			l.xyz=[-10, -5, 0, 1.0]
+			l.xyz=[-10, -5, 0]
 			l.number=GL_LIGHT3
 			self.lights.append(l)
 
 			l=open_gl_light()
-			l.xyz=[10, -5, 0, 1.0]
+			l.xyz=[10, -5, 0]
 			l.number=GL_LIGHT4
 			self.lights.append(l)
 
@@ -619,7 +619,7 @@ if open_gl_ok==True:
 					glEnable(GL_LIGHTING)
 					lightZeroColor = [1.0, 1.0, 1.0, 1.0]
 					#print(l.number,GL_LIGHT1)
-					glLightfv(l.number, GL_POSITION, [l.xyz[0],-l.xyz[1],-l.xyz[2] ])
+					glLightfv(l.number, GL_POSITION, [l.xyz[0],l.xyz[1],l.xyz[2] ])
 					glLightfv(l.number, GL_DIFFUSE, lightZeroColor)
 					#glLightfv(l.number, GL_SPOT_DIRECTION, [ 1,1,1]);
 					glLightf(l.number, GL_CONSTANT_ATTENUATION, 0.1)
