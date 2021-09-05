@@ -40,16 +40,8 @@ from gl_scale import scale_get_zmul
 
 from gl_base_object import gl_base_object
 from triangle import vec
-from triangle_io import triangles_mul_vec
-from triangle_io import triangles_print
-from triangle_io import triangles_add_vec
-from triangle_io import triangles_sub_vec
-from triangle_io import triangles_get_min
 
 from epitaxy import get_epi
-
-from gl_scale import scale_get_device_x
-from gl_scale import scale_get_device_z
 
 from gpvdm_json import gpvdm_data
 

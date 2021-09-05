@@ -41,9 +41,6 @@ from gl_scale import scale_get_zmul
 from gl_base_object import gl_base_object
 from triangle import vec
 
-from gl_scale import scale_get_device_y
-from gl_scale import scale_get_device_x
-from gl_scale import scale_get_device_z
 from gpvdm_json import gpvdm_data
 
 class gl_photons():
@@ -86,13 +83,12 @@ class gl_photons():
 
 	def draw_photon_sheet(self,source,x0,z0):
 		up_photons=False
-		device_top=scale_get_device_y()
-		dx=scale_get_device_x()
+		dx=gpvdm_data().mesh.mesh_x.get_len()*scale_get_xmul()
 
 		if source.light_illuminate_from=="y0":
 			y=-1.0
 		elif source.light_illuminate_from=="y1":
-			y=device_top+0.5
+			y=self.scale.project_m2screen_y(self.scale.world_min.y)+0.5
 			up_photons=True
 		else:
 			return
@@ -109,7 +105,7 @@ class gl_photons():
 				den=dx/20
 			else:
 				den=dx/25
-			x=np.arange(x0+den/2.0, x0+gpvdm_data().mesh.mesh_x.get_len()*scale_get_xmul() , den)
+			x=np.arange(x0+den/2.0, x0+dx , den)
 			z=np.arange(z0+den/2.0, z0+gpvdm_data().mesh.mesh_z.get_len()*scale_get_zmul() , den)
 
 			for i in range(0,len(x)):
@@ -127,8 +123,8 @@ class gl_photons():
 
 		if self.emission==True and self.ray_model==False:
 			den=1.2
-			x=np.arange(x0, x0+scale_get_device_x() , den)
-			z=np.arange(z0, z0+scale_get_device_z() , den)
+			x=np.arange(x0+den/2.0, x0+gpvdm_data().mesh.mesh_x.get_len()*scale_get_xmul() , den)
+			z=np.arange(z0+den/2.0, z0+gpvdm_data().mesh.mesh_z.get_len()*scale_get_zmul() , den)
 
 			for i in range(0,len(x)):
 				for ii in range(0,len(z)):

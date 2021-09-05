@@ -56,7 +56,7 @@ from json_server import json_server
 from json_thermal import json_thermal
 from json_thermal import json_thermal_boundary
 from json_electrical_solver import json_electrical_solver
-from json_spectral2 import json_spectral2
+from json_spctral2 import json_spctral2
 from json_lasers import json_lasers
 from json_circuit import json_circuit
 from json_opengl_config import json_opengl_config
@@ -166,7 +166,7 @@ class all_gpvdm_data(json_base,json_world_stats):
 		self.var_list.append(["hard_limit",json_hard_limit()])
 		self.var_list.append(["perovskite",json_perovskite()])
 		self.var_list.append(["electrical_solver",json_electrical_solver()])
-		self.var_list.append(["spectral2",json_spectral2()])
+		self.var_list.append(["spctral2",json_spctral2()])
 		self.var_list.append(["lasers",json_lasers()])
 		self.var_list.append(["circuit",json_circuit()])
 		self.var_list.append(["gl",json_gl()])

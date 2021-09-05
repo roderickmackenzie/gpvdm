@@ -121,6 +121,21 @@ class gl_render_obj:
 			gluSphere(quad,0.025,10,10)
 			glPopMatrix()
 
+	def paint_arrow(self,o):
+		width=0.04
+		leng=1.0
+		self.set_color(o)
+		for xyz in o.xyz:
+			glPushMatrix()
+			glTranslatef(xyz.x,xyz.y,xyz.z)
+			quad=gluNewQuadric()
+			glRotatef(o.rotate_y, 0.0, 1.0, 0)
+			glRotatef(o.rotate_x, 1.0, 0.0, 0)
+			gluCylinder(quad, width, width, leng, 10, 1)
+			glTranslatef(0.0,0.0,leng)
+			gluCylinder(quad, 0.1, 0.00, 0.2, 10, 1)
+			glPopMatrix()
+
 	def paint_line(self,o):
 		glLineWidth(1)
 		self.set_color(o)

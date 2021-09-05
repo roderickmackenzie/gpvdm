@@ -36,23 +36,13 @@ try:
 except:
 	print("opengl error from gl_lib",sys.exc_info()[0])
 	
-import random
 import os
-from math import sqrt
-from math import fabs
-from lines import lines_read
 from util import wavelength_to_rgb
-from util import isnumber
 from gl_scale import gl_scale
-
-from gl_scale import scale_get_device_y
-from gl_scale import scale_get_device_x
-from gl_scale import scale_get_device_z
 
 from gl_base_object import gl_base_object
 
 from dat_file import dat_file
-from epitaxy import epitaxy_get_epi
 from epitaxy import get_epi
 
 from gl_scale import scale_get_xmul
@@ -68,7 +58,6 @@ from mesh import get_mesh
 
 from triangle_io import triangles_flip_in_box
 from shape import shape
-from inp import inp_get_token_value
 from cal_path import get_sim_path
 from gpvdm_json import gpvdm_data
 

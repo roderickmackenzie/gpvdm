@@ -42,31 +42,28 @@ except:
 
 from PyQt5.QtCore import QTimer
 
-from gl_scale import scale_get_start_x
-from gl_scale import scale_get_start_z
 from gl_scale import scale_get_xmul
 from gl_scale import scale_get_ymul
 from gl_scale import scale_get_zmul
 from gl_base_object import gl_base_object
 from triangle import vec
-from gl_scale import scale_get_device_y
 from gpvdm_json import gpvdm_data
 
 class gl_cords():
+
 	def draw_cords(self):
 		if self.false_color==True:
 			return
 
-		#thse issue is that you should be using QOpenGLWidget and do the text rendering by hand
-		#font = QFont("Arial")
-		#font.setPointSize(18)
+
 
 		width=0.04
 		leng=1.0
-		start_x=scale_get_start_x()-2.0
-		start_z=scale_get_start_z()-2.0
-		start_y=1.0
-		quad=gluNewQuadric()
+		
+		start_x=self.scale.project_m2screen_x(self.scale.world_min.x)-2.0
+		start_z=self.scale.project_m2screen_z(self.scale.world_min.z)-2.0
+		start_y=self.scale.project_m2screen_y(self.scale.world_max.y)-2.0
+		#quad=gluNewQuadric()
 
 
 		glPushMatrix()
@@ -128,7 +125,6 @@ class gl_cords():
 		o.id=["grid"]
 		o.type="solid_and_mesh"
 
-		y_pos=scale_get_device_y()
 		start_x=0
 		stop_x=20.0+18.0
 		start_z=0
@@ -137,11 +133,11 @@ class gl_cords():
 		xyz=vec()
 		xyz.x=-18.0
 		xyz.z=-18.0
-		xyz.y=y_pos
+		xyz.y=self.scale.project_m2screen_y(self.scale.world_max.y)
 		o.xyz.append(xyz)
 
 		n=int(stop_x-start_x)
-		dx=1.0#(stop_x-start_x)/n
+		dx=1.0
 		pos=start_x
 
 		for i in range(0,n+1):
@@ -162,20 +158,19 @@ class gl_cords():
 
 	def world_box(self):
 		self.gl_objects_remove_regex("world_box")
-		my_min,my_max=gpvdm_data().get_world_size()
 		a=gl_base_object()
 		a.type="solid_and_mesh"
 		a.id=["world_box"]
 
 		xyz=vec()
-		xyz.x=self.scale.project_m2screen_x(my_min.x)
-		xyz.y=self.scale.project_m2screen_y(my_min.y)
-		xyz.z=self.scale.project_m2screen_z(my_min.z)
+		xyz.x=self.scale.project_m2screen_x(self.scale.world_min.x)
+		xyz.y=self.scale.project_m2screen_y(self.scale.world_min.y)
+		xyz.z=self.scale.project_m2screen_z(self.scale.world_min.z)
 		a.xyz.append(xyz)
 
-		a.dxyz.x=fabs(my_max.x-my_min.x)*scale_get_xmul()
-		a.dxyz.y=fabs(my_max.y-my_min.y)*scale_get_ymul()
-		a.dxyz.z=fabs(my_max.z-my_min.z)*scale_get_zmul()
+		a.dxyz.x=fabs(self.scale.world_max.x-self.scale.world_min.x)*scale_get_xmul()
+		a.dxyz.y=fabs(self.scale.world_max.y-self.scale.world_min.y)*scale_get_ymul()
+		a.dxyz.z=fabs(self.scale.world_max.z-self.scale.world_min.z)*scale_get_zmul()
 
 		a.r=1.0
 		a.g=0.0

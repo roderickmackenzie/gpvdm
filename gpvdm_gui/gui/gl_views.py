@@ -176,7 +176,14 @@ class gl_views():
 					self.timer_end_callback()
 				self.timer_save_files=False
 				self.timer_save_files_number=0
-			
+
+	def view_count_enabled(self):
+		enabled=0
+		for v in self.views:
+			if v.enabled==True:
+				enabled=enabled+1
+
+		return enabled
 
 	def fzoom_timer(self):
 		for v in self.views:

@@ -38,8 +38,6 @@ try:
 	from gl_scale import scale_get_xmul
 	from gl_scale import scale_get_ymul
 	from gl_scale import scale_get_zmul
-	from gl_scale import scale_get_start_x
-	from gl_scale import scale_get_start_z
 except:
 	pass
 

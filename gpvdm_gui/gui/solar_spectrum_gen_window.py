@@ -36,7 +36,7 @@ from ribbon_solar import ribbon_solar
 from icon_lib import icon_get
 from PyQt5.QtCore import pyqtSignal
 
-from spectral2_gui import spectral2_gui
+from spctral2_gui import spctral2_gui
 
 class solar_spectrum_gen_window(QWidget):
 
@@ -63,8 +63,8 @@ class solar_spectrum_gen_window(QWidget):
 		self.notebook = QTabWidget()
 
 		self.vbox.addWidget(self.notebook)
-		self.spectral2_gui=spectral2_gui()
-		self.notebook.addTab(self.spectral2_gui,"SPECTRAL2")
+		self.spctral2_gui=spctral2_gui()
+		self.notebook.addTab(self.spctral2_gui,"spctral2")
 		self.setLayout(self.vbox)
 
 

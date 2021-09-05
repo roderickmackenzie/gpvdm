@@ -42,7 +42,7 @@ from server import server_base
 from server import server_get
 from cal_path import get_sim_path
 from progress_class import progress_class
-from spectral2 import spectral2
+from spctral2 import spctral2
 from inp import inp
 
 #scan
@@ -167,9 +167,6 @@ class gpvdm_api():
 	def set_sim_path(self,path):
 		set_sim_path(path)
 
-	def spectral2(self):
-		s=spectral2()
-		s.calc()
 
 	def set_save_dir(self,path):
 		if os.path.isdir(path)==False:

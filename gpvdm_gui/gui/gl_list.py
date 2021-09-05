@@ -42,25 +42,17 @@ from gl_scale import scale_get_ymul
 from gl_scale import scale_get_zmul
 from gpvdm_json import gpvdm_data
 import numpy as np
+from json_light_sources import json_light_source
 
 class gl_objects():
 
 	def __init__(self):
 		self.objects=[]
-		self.gl_array_lines=[]
-		self.gl_array_lines_float32=[]
 
-		self.gl_array_colors=[]
-		self.gl_array_colors_float32=[]
 		self.gl_compiled=False
 
 	def gl_objects_clear(self):
 		self.objects=[]
-		self.gl_array_lines=[]
-		self.gl_array_lines_float32=[]
-
-		self.gl_array_colors=[]
-		self.gl_array_colors_float32=[]
 
 		for data in self.graph_data:
 			data.plotted=False
@@ -152,6 +144,19 @@ class gl_objects():
 		for o in self.objects:
 			print(o.type)
 		print(len(self.objects))
+
+	def gl_objects_rotate(self,rotate_x,rotate_y):
+		for obj in self.objects:
+			if obj.selected==True:
+				if obj.moveable==True:
+					s=gpvdm_data().find_object_by_id(obj.id[0])
+					if type(s)==shape or type(s)==json_light_source:
+						obj.rotate_x=obj.rotate_x+rotate_x
+						s.rotate_x=obj.rotate_x
+
+						obj.rotate_y=obj.rotate_y+rotate_y
+						s.rotate_y=obj.rotate_y
+						#print(obj.rotate_y)
 
 	def gl_objects_move(self,dx,dy,dz):
 		i=0
@@ -306,9 +311,10 @@ class gl_objects():
 				self.paint_from_array_cut_through(o)
 			elif o.type=="box":
 				self.box(o)
-				#self.paint_marker(o)
 			elif o.type=="marker":
 				self.paint_marker(o)
+			elif o.type=="arrow":
+				self.paint_arrow(o)
 			elif o.type=="marker_small":
 				self.paint_marker_small(o)
 			elif o.type=="box_cut_through":
@@ -322,23 +328,8 @@ class gl_objects():
 				sel.r=1.0
 				sel.g=0.0
 				sel.b=0.0
-
 				self.gl_render_box_lines(sel)
 
-		if len(self.gl_array_lines_float32)==0:
-			self.gl_array_lines_float32=np.array(self.gl_array_lines, dtype='float32')
-			#print(self.gl_array_colors)
-			self.gl_array_colors_float32=np.array(self.gl_array_colors, dtype='float32')
-			#print(self.gl_array_colors)
-
-		if len(self.gl_array_lines_float32)>0:
-			glLineWidth(2)
-			glEnableClientState(GL_VERTEX_ARRAY)
-			glVertexPointer(3, GL_FLOAT, 0, self.gl_array_lines_float32)
-
-			glEnableClientState(GL_COLOR_ARRAY)
-			glColorPointer(4, GL_FLOAT, 0, self.gl_array_colors_float32)
-			glDrawArrays(GL_LINES, 0, len(self.gl_array_lines))
 
 
 	def gl_objects_search_by_color(self,r,g,b):

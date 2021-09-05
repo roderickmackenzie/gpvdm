@@ -54,6 +54,8 @@ class json_light_source(json_base):
 		self.var_list.append(["x0",-1.0])
 		self.var_list.append(["z0",-1.0])
 		self.var_list.append(["y0",-1.0])
+		self.var_list.append(["rotate_x",0.0])
+		self.var_list.append(["rotate_y",0.0])
 		self.var_list.append(["ray_theta_steps",200])
 		self.var_list.append(["ray_theta_start",0])
 		self.var_list.append(["ray_theta_stop",360])

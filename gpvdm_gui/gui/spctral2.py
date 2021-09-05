@@ -22,7 +22,7 @@
 #
 # 
 
-## @package spectral2
+## @package spctral2
 #  After R. Bird and C. Riordan 1984
 #
 
@@ -34,9 +34,8 @@ from math import *
 from dat_file import dat_file
 from cal_path import get_atmosphere_path
 from zenith import zenith
-from gpvdm_json import gpvdm_data
 
-class spectral2():
+class spctral2():
 	def __init__(self):
 
 		self.day=80		#winter equinox
@@ -49,19 +48,8 @@ class spectral2():
 		self.W= 1.42	#precip water
 		self.No2_un=0.0
 
-		data=gpvdm_data()
-		self.lat=data.spectral2.spectral2_lat
-
-		self.day=data.spectral2.spectral2_day		#80 winter equinox
-		self.hour=data.spectral2.spectral2_hour
-		self.min=data.spectral2.spectral2_minute
-
-		self.P=data.spectral2.spectral2_preasure
-		self.aod=data.spectral2.spectral2_aod
-		self.W=data.spectral2.spectral2_water	#precip water
-		self.No2_un=data.spectral2.spectral2_no2
-
-		file_name = os.path.join(get_atmosphere_path(), "SPECTRAL2", "etr.inp")
+		file_name = os.path.join(get_atmosphere_path(), "spctral2", "etr.inp")
+		#print(file_name)
 		self.etr=dat_file()
 		self.etr.y_mul=1e9
 		self.etr.y_units="nm"
@@ -70,23 +58,34 @@ class spectral2():
 
 		self.etr.load(file_name)
 
-		file_name = os.path.join(get_atmosphere_path(), "SPECTRAL2", "h2o.inp")
+		file_name = os.path.join(get_atmosphere_path(), "spctral2", "h2o.inp")
 		self.aw=dat_file()
 		self.aw.load(file_name)
 
-		file_name = os.path.join(get_atmosphere_path(), "SPECTRAL2", "o3.inp")
+		file_name = os.path.join(get_atmosphere_path(), "spctral2", "o3.inp")
 		self.ao=dat_file()
 		self.ao.load(file_name)
 
-		file_name = os.path.join(get_atmosphere_path(), "SPECTRAL2", "uni_abs.inp")
+		file_name = os.path.join(get_atmosphere_path(), "spctral2", "uni_abs.inp")
 		self.au=dat_file()
 		self.au.load(file_name)
 
-		file_name = os.path.join(get_atmosphere_path(), "SPECTRAL2", "no2.inp")
+		file_name = os.path.join(get_atmosphere_path(), "spctral2", "no2.inp")
 		self.no2_data=dat_file()
 		self.no2_data.load(file_name)
 
-	def calc(self):
+	def calc(self,json_data):
+		self.lat=json_data.spctral2_lat
+
+		self.day=json_data.spctral2_day		#80 winter equinox
+		self.hour=json_data.spctral2_hour
+		self.min=json_data.spctral2_minute
+
+		self.P=json_data.spctral2_preasure
+		self.aod=json_data.spctral2_aod
+		self.W=json_data.spctral2_water	#precip water
+		self.No2_un=json_data.spctral2_no2
+
 		self.debug=True
 		self.cal_earth_sun_distance()
 		

@@ -54,6 +54,8 @@ from math import sin
 from epitaxy import get_epi
 from gl_lib import gl_obj_id_starts_with
 from gpvdm_json import gpvdm_data
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtCore import Qt
 
 class mouse_event():
 	def __init__(self):
@@ -124,6 +126,41 @@ class gl_input():
 			else:
 				QApplication.setOverrideCursor(cursor)
 			self.cursor=cursor
+
+	def get_3d_pos(self,event):
+		self.lastPos=event.pos()
+		modelview=self.active_view.modelview
+		projection=self.active_view.projection
+		viewport=self.active_view.viewport
+
+		winX = event.x()
+		#if winX>viewport[2]:
+		#	winX=winX-viewport[2]
+
+		y=event.y()
+
+		#if y>viewport[3]:
+		#	y=y-viewport[3]
+
+		#print(viewport,winX,y)
+
+		winY = viewport[3] - y
+
+		winZ=glReadPixels(winX, winY, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT)
+		x0,y0,z0=gluUnProject(winX, winY, winZ, modelview, projection, viewport)
+		x1,y1,z1=gluUnProject(winX+2, winY, winZ, modelview, projection, viewport)
+		dxdx=(x1-x0)/2.0
+		dydx=(y1-y0)/2.0
+		dzdx=(z1-z0)/2.0
+
+		#print(x0,y0,z0,x1,y1,z1)
+
+		x0,y0,z0=gluUnProject(winX, winY, winZ, modelview, projection, viewport)
+		x1,y1,z1=gluUnProject(winX, winY+2, winZ, modelview, projection, viewport)
+		dxdy=(x1-x0)/2.0
+		dydy=(y1-y0)/2.0
+		dzdy=(z1-z0)/2.0
+		return dxdx,dydx,dzdx,dxdy,dydy,dzdy 
 		
 	def mouseMoveEvent(self,event):
 		if 	self.timer!=None:
@@ -132,6 +169,7 @@ class gl_input():
 
 		if self.lastPos==None:
 			self.lastPos=event.pos()
+
 		dx = event.x() - self.lastPos.x();
 		dy = event.y() - self.lastPos.y();
 		obj=self.gl_objects_is_selected()
@@ -146,11 +184,23 @@ class gl_input():
 				self.active_view.x_pos =self.active_view.x_pos + 0.1 * dx
 				self.active_view.y_pos =self.active_view.y_pos + 0.1 * dy
 		else:
-			dx_=dx*cos(2.0*3.14159*self.active_view.yRot/360)+dy*sin(2.0*3.14159*self.active_view.xRot/360)
-			dz_=dx*sin(2.0*3.14159*self.active_view.yRot/360)-dy*sin(2.0*3.14159*self.active_view.xRot/360)
-			dy_=dy*cos(2.0*3.14159*self.active_view.xRot/360)
-			self.gl_objects_move(dx_*0.2/self.active_view.zoom,dy_*0.2/self.active_view.zoom,dz_*0.2/self.active_view.zoom)
-		
+			modifiers = QApplication.keyboardModifiers()
+			if modifiers == Qt.ShiftModifier:
+				dtheta=360*dx/self.width()
+				dphi=360*dy/self.height()
+				self.gl_objects_rotate(dphi,dtheta)
+			else:
+				if self.view_count_enabled()==1:
+					dx_=self.dxdx*dx-self.dxdy*dy
+					dy_=self.dydx*dy-self.dydy*dy
+					dz_=self.dzdx*dx-self.dzdy*dy
+					self.gl_objects_move(dx_/3,dy_/3,dz_/3)
+				else:
+					dx_=dx*cos(2.0*3.14159*self.active_view.yRot/360)+dy*sin(2.0*3.14159*self.active_view.xRot/360)
+					dz_=dx*sin(2.0*3.14159*self.active_view.yRot/360)-dy*sin(2.0*3.14159*self.active_view.xRot/360)
+					dy_=dy*cos(2.0*3.14159*self.active_view.xRot/360)
+					self.gl_objects_move(dx_*0.2/self.active_view.zoom,dy_*0.2/self.active_view.zoom,dz_*0.2/self.active_view.zoom)
+
 		self.lastPos=event.pos()
 		self.setFocusPolicy(Qt.StrongFocus)
 		self.setFocus()
@@ -169,6 +219,7 @@ class gl_input():
 
 	def mousePressEvent(self,event):
 		self.lastPos=None
+
 		self.mouse_click_event=mouse_event()
 		self.mouse_click_event.time=time.time()
 		self.mouse_click_event.x=event.x()
@@ -177,11 +228,13 @@ class gl_input():
 
 		if event.buttons()==Qt.LeftButton or event.buttons()==Qt.RightButton:
 			obj=self.event_to_3d_obj(event)
+
 			if obj!=None:
+				self.dxdx,self.dydx,self.dzdx,self.dxdy,self.dydy,self.dzdy = self.get_3d_pos(event)
+
 				self.gl_object_deselect_all()
 				self.gl_objects_select_by_id(obj.id)
 				self.set_cursor(QCursor(Qt.SizeAllCursor))
-
 				self.text_output.emit(obj.id[0]+" "+obj.text)
 				self.update()
 			else:

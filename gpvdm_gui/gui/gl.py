@@ -67,8 +67,6 @@ from str2bool import str2bool
 
 import random
 
-from dat_file import dat_file
-
 from global_objects import global_object_register
 
 from math import fabs
@@ -97,14 +95,6 @@ from gl_base_widget import gl_base_widget
 from gl_scale import scale_get_xmul
 from gl_scale import scale_get_ymul
 from gl_scale import scale_get_zmul
-
-from gl_scale import scale_get_device_y
-from gl_scale import scale_get_device_x
-from gl_scale import scale_get_device_z
-
-from gl_scale import scale_get_start_x
-from gl_scale import scale_get_start_z
-from gl_scale import scale_get_start_y
 
 from gl_main_menu import gl_main_menu
 
@@ -249,12 +239,11 @@ if open_gl_ok==True:
 				y_pos=y_pos+l.dy
 
 		def draw_device2(self,x,z):
-			y=scale_get_device_y()
 			epi=get_epi()
 			contact_layers=epi.contacts.get_layers_with_contacts()
 			top_contact_layer=epi.get_top_contact_layer()
 			btm_contact_layer=epi.get_btm_contact_layer()
-			#print(contact_layers)
+
 			l=0
 			btm_layer=len(epitaxy_get_epi())-1
 
@@ -340,6 +329,9 @@ if open_gl_ok==True:
 					x=int(self.width()*v.window_x)
 					y=int(self.height()*v.window_y)
 					glViewport(x, y, w, h)
+					v.projection = glGetDoublev(GL_PROJECTION_MATRIX)
+					v.modelview = glGetDoublev(GL_MODELVIEW_MATRIX)
+					v.viewport = glGetIntegerv(GL_VIEWPORT)
 					self.render_view(v)
 
 		def render_view(self,view):
@@ -474,19 +466,22 @@ if open_gl_ok==True:
 						#print(point_x,point_y)
 						a=gl_base_object()
 						a.id=[source.id]
-						a.type="box"
+						a.type="arrow"
 						xyz=vec()
 						xyz.x=point_x
 						xyz.y=point_y
 						xyz.z=point_z
 						a.xyz.append(xyz)
 
-						a.dxyz.x=0.1
-						a.dxyz.y=0.1
-						a.dxyz.z=0.1
-						a.r=0.0
+						a.dxyz.x=0.5
+						a.dxyz.y=0.5
+						a.dxyz.z=0.5
+						a.r=1.0
 						a.g=0.0
 						a.b=1.0
+						
+						a.rotate_x=source.rotate_x
+						a.rotate_y=source.rotate_y
 
 						a.moveable=True
 						a.selectable=True

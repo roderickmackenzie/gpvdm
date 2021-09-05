@@ -36,17 +36,10 @@ try:
 except:
 	print("opengl error from gl_lib",sys.exc_info()[0])
 	
-import random
 import os
-
-from gl_scale import scale_get_device_y
-from gl_scale import scale_get_device_x
-from gl_scale import scale_get_device_z
 
 from gl_base_object import gl_base_object
 
-from dat_file import dat_file
-from epitaxy import epitaxy_get_epi
 from epitaxy import get_epi
 
 from gl_scale import scale_get_xmul
@@ -90,7 +83,7 @@ class gl_contacts():
 						a.xyz.z=self.scale.project_m2screen_z(0)
 						a.dxyz.x=1.0
 						a.dxyz.y=scale_get_ymul()*c.dy
-						a.dxyz.z=scale_get_device_z()
+						a.dxyz.z=self.scale.project_m2screen_z(mesh_z.get_len())
 
 						a.r=c.color_r
 						a.g=c.color_g
@@ -120,7 +113,7 @@ class gl_contacts():
 						else:
 							xyz.x=self.scale.project_m2screen_x(c.x0)
 							a.dxyz.x=c.dx*scale_get_xmul()
-							a.dxyz.z=scale_get_device_z()
+							a.dxyz.z=self.scale.project_m2screen_z(mesh_z.get_len())
 
 
 						if c.position=="top":

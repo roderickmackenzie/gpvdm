@@ -37,14 +37,14 @@ from ribbon_solar import ribbon_solar
 from icon_lib import icon_get
 from PyQt5.QtCore import pyqtSignal
 from plot_widget import plot_widget
-from spectral2 import spectral2
+from spctral2 import spctral2
 from dat_file import dat_file
 from cal_path import get_spectra_path
 
 from gpvdm_json import gpvdm_data
 from gpvdm_local import gpvdm_local
  
-class spectral2_gui(QWidget):
+class spctral2_gui(QWidget):
 
 
 	def __init__(self):
@@ -126,11 +126,11 @@ class spectral2_gui(QWidget):
 		self.setLayout(top_hbox)
 
 		data=gpvdm_data()
-		self.water_edit.setText(str(data.spectral2.spectral2_water))
-		self.aod_edit.setText(str(data.spectral2.spectral2_aod))
-		self.preasure_edit.setText(str(data.spectral2.spectral2_preasure))
-		self.lat_edit.setText(str(data.spectral2.spectral2_lat))
-		self.no2_edit.setText(str(data.spectral2.spectral2_no2))
+		self.water_edit.setText(str(data.spctral2.spctral2_water))
+		self.aod_edit.setText(str(data.spctral2.spctral2_aod))
+		self.preasure_edit.setText(str(data.spctral2.spctral2_preasure))
+		self.lat_edit.setText(str(data.spctral2.spctral2_lat))
+		self.no2_edit.setText(str(data.spctral2.spctral2_no2))
 
 
 		self.calculate()
@@ -145,20 +145,20 @@ class spectral2_gui(QWidget):
 		hour=self.time.time().hour()
 		minute=self.time.time().minute()
 		data=gpvdm_data()
-		data.spectral2.spectral2_day=int(day)
-		data.spectral2.spectral2_hour=int(hour)
-		data.spectral2.spectral2_minute=int(minute)
+		data.spctral2.spctral2_day=int(day)
+		data.spctral2.spctral2_hour=int(hour)
+		data.spctral2.spctral2_minute=int(minute)
 		
-		data.spectral2.spectral2_lat=int(self.lat_edit.text())
+		data.spctral2.spctral2_lat=int(self.lat_edit.text())
 
-		data.spectral2.spectral2_aod=float(self.aod_edit.text())
-		data.spectral2.spectral2_preasure=float(self.preasure_edit.text())
-		data.spectral2.spectral2_water=float(self.water_edit.text())
-		data.spectral2.spectral2_no2=float(self.no2_edit.text())
+		data.spctral2.spctral2_aod=float(self.aod_edit.text())
+		data.spctral2.spctral2_preasure=float(self.preasure_edit.text())
+		data.spctral2.spctral2_water=float(self.water_edit.text())
+		data.spctral2.spctral2_no2=float(self.no2_edit.text())
 		data.save()
 
-		s=spectral2()
-		s.calc()
+		s=spctral2()
+		s.calc(data.spctral2)
 
 		am=dat_file()
 		am.load(os.path.join(get_spectra_path(),"AM1.5G","spectra.inp"))

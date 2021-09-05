@@ -22,7 +22,7 @@
 # 
 
 
-## @package json_spectral2
+## @package json_spctral2
 #  Store the cv domain json data
 #
 
@@ -34,18 +34,18 @@ import json
 from json_base import json_base
 
 
-class json_spectral2(json_base):
+class json_spctral2(json_base):
 
 	def __init__(self):
-		json_base.__init__(self,"spectral2")
-		self.var_list.append(["spectral2_lat",36])
-		self.var_list.append(["spectral2_day",322])
-		self.var_list.append(["spectral2_hour",12])
-		self.var_list.append(["spectral2_minute",30])
-		self.var_list.append(["spectral2_preasure",1.0133])
-		self.var_list.append(["spectral2_aod",0.27])
-		self.var_list.append(["spectral2_water",1.42])
-		self.var_list.append(["spectral2_no2",0.0])
+		json_base.__init__(self,"spctral2")
+		self.var_list.append(["spctral2_lat",36])
+		self.var_list.append(["spctral2_day",322])
+		self.var_list.append(["spctral2_hour",12])
+		self.var_list.append(["spctral2_minute",30])
+		self.var_list.append(["spctral2_preasure",1.0133])
+		self.var_list.append(["spctral2_aod",0.27])
+		self.var_list.append(["spctral2_water",1.42])
+		self.var_list.append(["spctral2_no2",0.0])
 		self.var_list_build()
 
 

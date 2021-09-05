@@ -37,9 +37,6 @@ from gpvdm_json import gpvdm_data
 x_mul=1.0
 y_mul=1.0
 z_mul=1.0
-device_x=2.0
-device_y=2.0
-device_z=2.0
 x_start=0.0
 y_start=0.0
 z_start=0.0
@@ -135,45 +132,41 @@ class gl_scale():
 		global x_mul
 		global y_mul
 		global z_mul
-		global device_x
-		global device_y
-		global device_z
 		global x_start
 		global y_start
 		global z_start
 
-		my_min,my_max=gpvdm_data().get_world_size()
+		self.world_min,self.world_max=gpvdm_data().get_world_size()
 
-		mesh_max=30
+		#print(my_min,my_max)
+		max_dist_x=10
+		max_dist_z=10
+		max_dist_y=10
 
-		x_len= my_max.x-my_min.x
-		z_len= my_max.z-my_min.z
-		y_len= my_max.z-my_min.z 
+		x_len= self.world_max.x-self.world_min.x
+		z_len= self.world_max.z-self.world_min.z
+		y_len= self.world_max.y-self.world_min.y 
 
-		
-		z_mul=scale(z_len)
-		x_mul=scale(x_len)
+		xyz_max=max([x_len,y_len,z_len])
 
-		mul=x_mul
-		if z_len<x_len:
-			mul=z_mul
+		#all the same
+		x_mul=max_dist_x/xyz_max
+		y_mul=max_dist_y/xyz_max
+		z_mul=max_dist_z/xyz_max
 
-		x_mul=mul
-		z_mul=mul
+		if y_len*100<xyz_max:		#rescale for thin devices
+			max_dist_y=2
+			y_mul=max_dist_y/y_len
 
-		if z_len*z_mul>mesh_max:
-			z_mul=mesh_max/z_len
+		size_x=x_len*x_mul
+		size_z=z_len*z_mul
 
-		if x_len*x_mul>mesh_max:
-			x_mul=mesh_max/x_len
+		#if size_x*10<size_z:		#rescale for thin devices
+		#	max_dist_y=2
+		#	y_mul=max_dist_y/y_len
 
-		y_mul=device_y/(my_max.y-my_min.y)
-
-		device_x=x_len*x_mul
-		device_z=z_len*z_mul
-
-		x_start=-device_x/2.0
-		z_start=-device_z/2.0
+		x_start=-size_x/2.0
+		z_start=-size_z/2.0
 		y_start=0.0
 
 	def scale_trianges_m2screen(self,triangles):
@@ -220,25 +213,6 @@ class gl_scale():
 			ret.append(t0)
 
 		return ret
-def scale(length):
-	mul=1
-	while((length*mul)<5):
-		mul=mul*5.0
-
-	#print(mul)
-	return mul
-
-
-def scale_get_start_x():
-	return x_start
-
-def scale_get_start_z():
-	return z_start
-
-def scale_get_start_y():
-	return 0.0
-
-
 
 
 
@@ -254,15 +228,4 @@ def scale_get_zmul():
 	global z_mul
 	return z_mul
 
-def scale_get_device_x():
-	global device_x
-	return device_x
-
-def scale_get_device_z():
-	global device_z
-	return device_z
-
-def scale_get_device_y():
-	global device_y
-	return device_y
 
