@@ -106,7 +106,7 @@ class display_widget(QWidget):
 		self.display.force_redraw()
 		
 	def update(self):
-		self.display.reset()
+		self.display.rebuild_scene()
 
 
 	#def callback_layer_editor(self):

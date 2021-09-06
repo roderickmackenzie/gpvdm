@@ -314,10 +314,6 @@ if open_gl_ok==True:
 				l=l+1
 
 
-		def reset(self):
-			self.scale.set_m2screen()
-			self.rebuild_scene()
-
 		def render(self):
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 			glClearColor(self.view_options.bg_color[0], self.view_options.bg_color[1], self.view_options.bg_color[2], 0.5)
@@ -336,7 +332,7 @@ if open_gl_ok==True:
 
 		def render_view(self,view):
 			data=gpvdm_data()
-			#self.scale.set_m2screen()
+			self.scale.set_m2screen()
 
 			x=self.scale.project_m2screen_x(0)
 			y=0.0#project_m2screen_y(0)
@@ -436,12 +432,14 @@ if open_gl_ok==True:
 
 		#This will rebuild the scene from scratch
 		def rebuild_scene(self):
+
 			self.gl_objects_clear()
 			self.menu_update()
 			self.text_clear_lib()
 			data=gpvdm_data()
 			if data.triangles_loaded==False:
 				data.load_triagles()
+			self.scale.set_m2screen()
 
 			x=self.scale.project_m2screen_x(0)
 			z=self.scale.project_m2screen_z(0)
@@ -531,7 +529,6 @@ if open_gl_ok==True:
 
 
 		def build_scene(self):
-			self.scale.set_m2screen()
 			self.scene_built=True
 			self.load_data()
 			self.update()
@@ -638,5 +635,5 @@ else:
 			self.failed=True
 			self.open_gl_working=False
 
-		def reset(self):
+		def rebuild_scene(self):
 			pass

@@ -83,14 +83,17 @@ class doping_window(QWidgetSavePos):
 			x_plot.append(self.x_pos[i]*1e9)
 
 		self.ax1.set_yscale('symlog')
-		frequency, = self.ax1.plot(x_plot,self.doping_Na, 'ro-', linewidth=3 ,alpha=1.0)
-		self.ax1.set_xlabel(_("Position (nm)"))
+		if self.Na_enabled==True:
+			frequency, = self.ax1.plot(x_plot,self.doping_Na, 'ro-', linewidth=3 ,alpha=1.0)
+			self.ax1.set_xlabel(_("Position (nm)"))
 
-		frequency, = self.ax1.plot(x_plot,self.doping_Nd, 'go-', linewidth=3 ,alpha=1.0)
-		self.ax1.set_xlabel(_("Position (nm)"))
+		if self.Nd_enabled==True:
+			frequency, = self.ax1.plot(x_plot,self.doping_Nd, 'go-', linewidth=3 ,alpha=1.0)
+			self.ax1.set_xlabel(_("Position (nm)"))
 
-		frequency, = self.ax1.plot(x_plot,self.ions, 'bo-', linewidth=3 ,alpha=1.0)
-		self.ax1.set_xlabel(_("Position (nm)"))
+		if self.nion_enabled==True:
+			frequency, = self.ax1.plot(x_plot,self.ions, 'bo-', linewidth=3 ,alpha=1.0)
+			self.ax1.set_xlabel(_("Position (nm)"))
 
 		self.ax1.legend(["Na","Nd","Nion"])
 
@@ -121,7 +124,6 @@ class doping_window(QWidgetSavePos):
 		for i in range(0,len(x)):
 			Nad0=getattr(self.epi.layers[layer].shape_dos,token0)
 			Nad1=getattr(self.epi.layers[layer].shape_dos,token1)
-
 			if x[i]+device_start>self.epi.layers[layer].end:
 				layer=layer+1
 
@@ -135,6 +137,20 @@ class doping_window(QWidgetSavePos):
 		self.x_pos,self.doping_Na=self.project("Na0","Na1")
 		self.x_pos,self.doping_Nd=self.project("Nd0","Nd1")
 		self.x_pos,self.ions=self.project("ion_density","ion_density")
+		self.nion_enabled=False
+		self.Nd_enabled=False
+		self.Na_enabled=False
+
+		for ion,Na,Nd in zip(self.ions,self.doping_Na,self.doping_Nd):
+			if ion>1.0:
+				self.nion_enabled=True
+
+			if Na>1.0:
+				self.Na_enabled=True
+
+			if Nd>1.0:
+				self.Nd_enabled=True
+			print(Nd)
 
 		return True
 

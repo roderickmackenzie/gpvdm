@@ -137,8 +137,7 @@ class gl_scale():
 		global z_start
 
 		self.world_min,self.world_max=gpvdm_data().get_world_size()
-
-		#print(my_min,my_max)
+		#print(">>>")
 		max_dist_x=10
 		max_dist_z=10
 		max_dist_y=10
@@ -154,7 +153,7 @@ class gl_scale():
 		y_mul=max_dist_y/xyz_max
 		z_mul=max_dist_z/xyz_max
 
-		if y_len*100<xyz_max:		#rescale for thin devices
+		if y_len<xyz_max:		#rescale for thin devices
 			max_dist_y=2
 			y_mul=max_dist_y/y_len
 

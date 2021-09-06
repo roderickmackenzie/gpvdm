@@ -94,8 +94,8 @@ class json_mesh_xyz(json_base):
 		return tot
 
 	def set_len(self,value):
-		if len(self.data.segments)==1:
-			self.data.segments[0].len=value
+		if len(self.segments)==1:
+			self.segments[0].len=value
 			return True
 		else:
 			return False

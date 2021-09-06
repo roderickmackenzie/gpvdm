@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gpvdm 5.0\n"
 "Report-Msgid-Bugs-To: roderick.mackenzie@nottingham.ac.uk\n"
-"POT-Creation-Date: 2021-09-05 15:19+0100\n"
+"POT-Creation-Date: 2021-09-06 09:24+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2948,7 +2948,7 @@ msgstr ""
 #: ../../gpvdm_gui/gui/dim_editor.py:90 ../../gpvdm_gui/gui/ref.py:69
 #: ../../gpvdm_gui/gui/ref.py:70 ../../gpvdm_gui/gui/scan_ribbon.py:82
 #: ../../gpvdm_gui/gui/ray_trace_editor.py:69
-#: ../../gpvdm_gui/gui/fit_ribbon.py:128 ../../gpvdm_gui/gui/doping.py:164
+#: ../../gpvdm_gui/gui/fit_ribbon.py:128 ../../gpvdm_gui/gui/doping.py:180
 #: ../../gpvdm_gui/gui/object_editor.py:106
 #: ../../gpvdm_gui/gui/ribbon_shape.py:68 ../../gpvdm_gui/gui/fdtd.py:71
 #: ../../gpvdm_gui/gui/parasitic.py:70 ../../gpvdm_gui/gui/pl_main.py:68
@@ -3322,7 +3322,7 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ref.py:99
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/doping.py:244
 #: ../../gpvdm_gui/gui/ribbon_simulation_notes.py:70
-#: ../../gpvdm_gui/gui/script_ribbon.py:79 ../../gpvdm_gui/gui/doping.py:155
+#: ../../gpvdm_gui/gui/script_ribbon.py:79 ../../gpvdm_gui/gui/doping.py:171
 msgid "Save"
 msgstr ""
 
@@ -3743,7 +3743,7 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/scan_human_labels.py:140
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/scan_human_labels.py:141
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/doping.py:133
-#: ../../gpvdm_gui/gui/token_lib.py:830 ../../gpvdm_gui/gui/doping.py:184
+#: ../../gpvdm_gui/gui/token_lib.py:830 ../../gpvdm_gui/gui/doping.py:200
 msgid "Layer"
 msgstr ""
 
@@ -8332,8 +8332,8 @@ msgid "Doping (m^{-3})"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/doping.py:109
-#: ../../gpvdm_gui/gui/doping.py:87 ../../gpvdm_gui/gui/doping.py:90
-#: ../../gpvdm_gui/gui/doping.py:93
+#: ../../gpvdm_gui/gui/doping.py:88 ../../gpvdm_gui/gui/doping.py:92
+#: ../../gpvdm_gui/gui/doping.py:96
 msgid "Position (nm)"
 msgstr ""
 
@@ -8368,7 +8368,7 @@ msgid " is not a valid number."
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/doping.py:235
-#: ../../gpvdm_gui/gui/doping.py:146
+#: ../../gpvdm_gui/gui/doping.py:162
 msgid "Doping/Mobilie ion profile editor"
 msgstr ""
 
