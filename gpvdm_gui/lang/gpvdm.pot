@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gpvdm 5.0\n"
 "Report-Msgid-Bugs-To: roderick.mackenzie@nottingham.ac.uk\n"
-"POT-Creation-Date: 2021-09-07 14:56+0100\n"
+"POT-Creation-Date: 2021-09-07 17:22+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3812,7 +3812,7 @@ msgid ""
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gpvdm.py:437
-#: ../../gpvdm_gui/gui/gpvdm.py:363
+#: ../../gpvdm_gui/gui/gpvdm.py:364
 msgid "You should not try to open simulations in the root gpvdm directory."
 msgstr ""
 
@@ -3823,17 +3823,17 @@ msgid ""
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gpvdm.py:452
-#: ../../gpvdm_gui/gui/gpvdm.py:370
+#: ../../gpvdm_gui/gui/gpvdm.py:371
 msgid "Open an existing gpvdm simulation"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gpvdm.py:489
-#: ../../gpvdm_gui/gui/gpvdm.py:416
+#: ../../gpvdm_gui/gui/gpvdm.py:417
 msgid "The simulation directory has been deleted."
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gpvdm.py:517
-#: ../../gpvdm_gui/gui/gpvdm.py:432
+#: ../../gpvdm_gui/gui/gpvdm.py:433
 msgid "I can't run from inside a zip file!"
 msgstr ""
 
@@ -9690,11 +9690,11 @@ msgstr ""
 msgid "Clone the experiment:"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/fit_window.py:313 ../../gpvdm_gui/gui/gpvdm.py:383
+#: ../../gpvdm_gui/gui/fit_window.py:313 ../../gpvdm_gui/gui/gpvdm.py:384
 msgid "Export the simulation"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/fit_window.py:315 ../../gpvdm_gui/gui/gpvdm.py:385
+#: ../../gpvdm_gui/gui/fit_window.py:315 ../../gpvdm_gui/gui/gpvdm.py:386
 msgid "Zip file"
 msgstr ""
 

@@ -573,9 +573,9 @@ class gpvdm_main_window(QMainWindow):
 
 		check_lib_in_bash_rc()
 
-		self.ribbon.optical.fx_box.cb.currentIndexChanged.connect(self.notebook.tab_main.three_d.fx_box_changed)
+		#self.ribbon.optical.fx_box.cb.currentIndexChanged.connect(self.notebook.tab_main.three_d.fx_box_changed)
 
-		self.notebook.tab_main.three_d.fx_box=self.ribbon.optical.fx_box
+		#self.notebook.tab_main.three_d.fx_box=self.ribbon.optical.fx_box
 
 		self.timer=QTimer()		
 		self.timer.timeout.connect(gpvdm_data().check_reload)
