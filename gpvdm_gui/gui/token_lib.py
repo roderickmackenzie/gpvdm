@@ -790,12 +790,19 @@ def build_token_lib():
 
 
 	#world
-	lib.append(my_data("world_margin_x0","decimal",_("margin x0"),1.0,"QLineEdit"))
-	lib.append(my_data("world_margin_x1","decimal",_("margin x1"),1.0,"QLineEdit"))
-	lib.append(my_data("world_margin_y0","decimal",_("margin y0"),1.0,"QLineEdit"))
-	lib.append(my_data("world_margin_y1","decimal",_("margin y1"),1.0,"QLineEdit"))
-	lib.append(my_data("world_margin_z0","decimal",_("margin z0"),1.0,"QLineEdit"))
-	lib.append(my_data("world_margin_z1","decimal",_("margin z1"),1.0,"QLineEdit"))
+	lib.append(my_data("world_automatic_size",_("True/False"),_("Automatic world size"),1.0,"gtkswitch"))
+	lib.append(my_data("world_x0","m",_("x0"),1.0,"QLineEdit",hide_on_token_eq=[["world_automatic_size",True]]))
+	lib.append(my_data("world_x1","m",_("x1"),1.0,"QLineEdit",hide_on_token_eq=[["world_automatic_size",True]]))
+	lib.append(my_data("world_y0","m",_("y0"),1.0,"QLineEdit",hide_on_token_eq=[["world_automatic_size",True]]))
+	lib.append(my_data("world_y1","m",_("y1"),1.0,"QLineEdit",hide_on_token_eq=[["world_automatic_size",True]]))
+	lib.append(my_data("world_z0","m",_("z0"),1.0,"QLineEdit",hide_on_token_eq=[["world_automatic_size",True]]))
+	lib.append(my_data("world_z1","m",_("z1"),1.0,"QLineEdit",hide_on_token_eq=[["world_automatic_size",True]]))
+	lib.append(my_data("world_margin_x0","decimal",_("margin x0"),1.0,"QLineEdit",hide_on_token_eq=[["world_automatic_size",False]]))
+	lib.append(my_data("world_margin_x1","decimal",_("margin x1"),1.0,"QLineEdit",hide_on_token_eq=[["world_automatic_size",False]]))
+	lib.append(my_data("world_margin_y0","decimal",_("margin y0"),1.0,"QLineEdit",hide_on_token_eq=[["world_automatic_size",False]]))
+	lib.append(my_data("world_margin_y1","decimal",_("margin y1"),1.0,"QLineEdit",hide_on_token_eq=[["world_automatic_size",False]]))
+	lib.append(my_data("world_margin_z0","decimal",_("margin z0"),1.0,"QLineEdit",hide_on_token_eq=[["world_automatic_size",False]]))
+	lib.append(my_data("world_margin_z1","decimal",_("margin z1"),1.0,"QLineEdit",hide_on_token_eq=[["world_automatic_size",False]]))
 
 	#
 	lib.append(my_data("#layer0","m",_("Active layer width"),1.0,"QLineEdit"))

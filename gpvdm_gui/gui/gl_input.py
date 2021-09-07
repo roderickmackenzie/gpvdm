@@ -194,7 +194,7 @@ class gl_input():
 					dx_=self.dxdx*dx-self.dxdy*dy
 					dy_=self.dydx*dy-self.dydy*dy
 					dz_=self.dzdx*dx-self.dzdy*dy
-					self.gl_objects_move(dx_/3,dy_/3,dz_/3)
+					self.gl_objects_move(dx_,dy_,dz_)
 				else:
 					dx_=dx*cos(2.0*3.14159*self.active_view.yRot/360)+dy*sin(2.0*3.14159*self.active_view.xRot/360)
 					dz_=dx*sin(2.0*3.14159*self.active_view.yRot/360)-dy*sin(2.0*3.14159*self.active_view.xRot/360)

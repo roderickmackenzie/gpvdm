@@ -60,6 +60,8 @@ void world_cpy(struct simulation *sim,struct world *out,struct world *in)
 		shape_cpy(sim,&(out->shapes[i]),&(in->shapes[i]));
 	}
 
+	out->world_automatic_size=in->world_automatic_size;
+
 	out->x0=in->x0;
 	out->x1=in->x1;
 	out->y0=in->y0;

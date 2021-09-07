@@ -68,6 +68,7 @@ from tab import tab_class
 class dim_editor(QWidgetSavePos):
 
 	def __init__(self):
+		#print("<<<<>>>>>>>")
 		QWidgetSavePos.__init__(self,"dim_editor")
 
 		self.setWindowTitle(_("Dimension editor")+" https://www.gpvdm.com")
@@ -133,7 +134,7 @@ class dim_editor(QWidgetSavePos):
 		#World size
 		self.world_widget=tab_class(gpvdm_data().world.config)
 		self.notebook.addTab(self.world_widget,_("World size"))
-
+		self.world_widget.changed.connect(self.callback_refresh_model)
 		self.main_vbox.addWidget(self.notebook)
 		self.setLayout(self.main_vbox)
 
@@ -163,9 +164,10 @@ class dim_editor(QWidgetSavePos):
 		data.mesh.mesh_z.set_len(val)
 
 		data.save()
-
 		global_object_run("mesh_update")
+		self.callback_refresh_model()
+
+	def callback_refresh_model(self):
+		global_object_run("gl_do_rescale")
 		global_object_run("gl_force_redraw")
-
-
 

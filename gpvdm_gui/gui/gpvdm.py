@@ -307,10 +307,11 @@ class gpvdm_main_window(QMainWindow):
 
 
 	def change_dir_and_refresh_interface(self,new_dir):
+		#print("WTF!!!!!!")
 		used_files_add(os.path.join(new_dir,"sim.gpvdm"))
 		a=gpvdm_data()
 		a.load(os.path.join(new_dir,"json.inp"))
-
+		#print("rod:",gpvdm_data().world.config.world_automatic_size)
 		a.sim.version=const_ver()
 		a.save()
 		#get_watch().reset()

@@ -106,6 +106,7 @@ from scan_io import scan_io
 from gpvdm_json import gpvdm_data
 from search import find_shapshots
 from gpvdm_viewer_new import gpvdm_viewer_new
+
 class file_store():
 	def __init__(self):
 		self.file_name=""
@@ -115,6 +116,9 @@ class file_store():
 		self.type=""
 		self.isdir=False
 		self.allow_navigation=False
+
+	def __str__(self):
+		return self.file_name+":"+self.display_name+":"+str(self.icon)+":"+str(self.type)
 
 class gpvdm_viewer(QListWidget,gpvdm_viewer_new):
 
@@ -487,7 +491,7 @@ class gpvdm_viewer(QListWidget,gpvdm_viewer_new):
 				itm.type=get_dir_type(os.path.join(self.path,f))
 				if itm.type!="scan_dir":
 					ret.append(itm)
-
+				
 			#print(get_sim_path(),self.path)
 			if get_sim_path()==self.path:
 				scan=scans_io(get_sim_path())
@@ -504,6 +508,7 @@ class gpvdm_viewer(QListWidget,gpvdm_viewer_new):
 					itm.file_name=os.path.basename(s.config_file)
 					itm.display_name=s.human_name
 					ret.append(itm)
+					
 		ret=sorted(ret, key=operator.attrgetter('display_name'))
 		#files = sorted(files, key=operator.attrgetter('file_name'))
 		return ret
@@ -655,6 +660,11 @@ class gpvdm_viewer(QListWidget,gpvdm_viewer_new):
 
 			if self.file_list[i].file_name=="oled.gpvdm":
 				self.file_list.insert(3, self.file_list.pop(i))
+
+		#print(">>>>>>")
+		#for r in self.file_list:
+		#	print(r)
+
 		self.paint()
 
 	def paint(self):

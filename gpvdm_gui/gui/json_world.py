@@ -39,6 +39,13 @@ class json_world_config(json_base):
 	def __init__(self):
 		json_base.__init__(self,"config")
 		self.var_list=[]
+		self.var_list.append(["world_automatic_size",True])
+		self.var_list.append(["world_x0",-1e-3])
+		self.var_list.append(["world_x1",1e-3])
+		self.var_list.append(["world_y0",-1e-3])
+		self.var_list.append(["world_y1",1e-3])
+		self.var_list.append(["world_z0",-1e-3])
+		self.var_list.append(["world_z1",1e-3])
 		self.var_list.append(["world_margin_x0",1.1])
 		self.var_list.append(["world_margin_x1",1.1])
 		self.var_list.append(["world_margin_y0",1.1])

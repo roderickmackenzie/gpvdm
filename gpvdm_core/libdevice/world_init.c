@@ -52,6 +52,8 @@ void world_init(struct simulation *sim,struct world *w)
 	w->items=-1;
 	w->shapes=NULL;
 
+	w->world_automatic_size=TRUE;
+
 	w->x0=-1.0;
 	w->x1=-1.0;
 	w->y0=-1.0;

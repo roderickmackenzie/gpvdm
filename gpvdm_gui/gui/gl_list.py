@@ -182,52 +182,60 @@ class gl_objects():
 		#for v in self.views:
 		#	if v.enabled==True:
 		#		print(v.xRot,v.yRot,v.zRot)
+		if 1==0:
+			for obj in self.objects:
+				if obj.selected==True:
+					s=None
+
+					if len(obj.id)>0:
+						s=gpvdm_data().find_object_by_id(obj.id[0])
+						if type(s)==shape:
+							nl=epi.find_layer_by_id(obj.id[0])
+							if nl!=None:
+								y_start=epi.get_layer_start(nl)
+								y_stop=epi.get_layer_end(nl)
+
+								x_stop=gpvdm_data().mesh.mesh_x.get_len()
+
+								if x_min_new_m<0:
+									move_x=False
+
+								if y_min_new_m<y_start:
+									move_y=False
+
+								if y_max_new_m>=y_stop:
+									move_y=False
+
+								if x_max_new_m>=x_stop:
+									move_x=False
+					else:
+						move_x=False
+						move_y=False
+
 
 		for obj in self.objects:
 			if obj.selected==True:
-				s=None
-
-				if len(obj.id)>0:
+				if obj.moveable==True:
 					s=gpvdm_data().find_object_by_id(obj.id[0])
-					if type(s)==shape:
-						nl=epi.find_layer_by_id(obj.id[0])
-						if nl!=None:
-							y_start=epi.get_layer_start(nl)
-							y_stop=epi.get_layer_end(nl)
 
-							x_stop=gpvdm_data().mesh.mesh_x.get_len()
+					for xyz in obj.xyz:
+						if move_y==True:
+							xyz.y=xyz.y+dy
 
-							if x_min_new_m<0:
-								move_x=False
+						if move_x==True:
+							xyz.x=xyz.x+dx
+	
+						if move_z==True:
+							xyz.z=xyz.z+dz
 
-							if y_min_new_m<y_start:
-								move_y=False
+					if move_y==True:
+						s.y0=s.y0+dy/scale_get_ymul()
 
-							if y_max_new_m>=y_stop:
-								move_y=False
+					if move_x==True:
+						s.x0=s.x0+dx/scale_get_xmul()
 
-							if x_max_new_m>=x_stop:
-								move_x=False
-				else:
-					move_x=False
-					move_y=False
-
-			for obj in self.objects:
-				if obj.selected==True:
-					if obj.moveable==True:
-						s=gpvdm_data().find_object_by_id(obj.id[0])
-						for xyz in obj.xyz:
-							if move_y==True:
-								xyz.y=xyz.y+dy
-								s.y0=self.scale.project_screen_y_to_m(xyz.y)
-
-							if move_x==True:
-								xyz.x=xyz.x+dx
-								s.x0=self.scale.project_screen_x_to_m(xyz.x)
-
-							if move_z==True:
-								xyz.z=xyz.z+dz
-								s.z0=self.scale.project_screen_z_to_m(xyz.z)
+					if move_z==True:
+						s.z0=s.z0+dz/scale_get_zmul()
 
 	def gl_objects_save_selected(self):
 		epi=get_epi()

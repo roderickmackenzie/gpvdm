@@ -43,6 +43,11 @@ z_start=0.0
 
 
 class gl_scale():
+
+	def __init__(self):
+		self.world_min=None
+		self.world_max=None
+
 	def project_screen_x_to_m(self,x):
 		global x_mul
 		global x_start
@@ -137,14 +142,14 @@ class gl_scale():
 		global z_start
 
 		self.world_min,self.world_max=gpvdm_data().get_world_size()
-		#print(">>>")
+		print(">>>>>>>>")
 		max_dist_x=10
 		max_dist_z=10
 		max_dist_y=10
 
 		x_len= self.world_max.x-self.world_min.x
-		z_len= self.world_max.z-self.world_min.z
 		y_len= self.world_max.y-self.world_min.y 
+		z_len= self.world_max.z-self.world_min.z
 
 		xyz_max=max([x_len,y_len,z_len])
 
@@ -160,12 +165,9 @@ class gl_scale():
 		size_x=x_len*x_mul
 		size_z=z_len*z_mul
 
-		#if size_x*10<size_z:		#rescale for thin devices
-		#	max_dist_y=2
-		#	y_mul=max_dist_y/y_len
-
 		x_start=-size_x/2.0
 		z_start=-size_z/2.0
+		print(x_start,self.project_m2screen_x(0.0))
 		y_start=0.0
 
 	def scale_trianges_m2screen(self,triangles):

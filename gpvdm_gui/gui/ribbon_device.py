@@ -40,8 +40,6 @@ from PyQt5.QtWidgets import QWidget,QSizePolicy,QVBoxLayout,QHBoxLayout,QPushBut
 from PyQt5.QtWidgets import QTabWidget
 from help import help_window
 
-from dim_editor import dim_editor
-
 from global_objects import global_object_register
 from pl_main import pl_main
 from QAction_lock import QAction_lock
@@ -150,6 +148,7 @@ class ribbon_device(QToolBar):
 		help_window().help_set_help(["dimension.png",_("<big><b>xz dimension editor</b></big>\nUse this window to configure the xz size of the device.")])
 
 		if self.dim_editor==None:
+			from dim_editor import dim_editor
 			self.dim_editor=dim_editor()
 
 		if self.dim_editor.isVisible()==True:

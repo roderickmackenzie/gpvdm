@@ -55,7 +55,7 @@ def global_object_get(name):
 			return global_objects[i].object_pointer
 
 	print("name",name,"not found")
-	sys.exit()
+	#sys.exit()
 
 def global_object_run(name):
 	global blocked

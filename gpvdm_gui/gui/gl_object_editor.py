@@ -28,7 +28,7 @@
 import sys
 import os
 from PyQt5.QtOpenGL import QGLWidget
-from PyQt5.QtWidgets import QMenu
+from PyQt5.QtWidgets import QMenu,QApplication
 from object_editor import object_editor
 from epitaxy import get_epi
 from epitaxy_class import epi_layer
@@ -38,6 +38,8 @@ from gui_util import yes_no_dlg
 from shape import shape
 from contacts_io import contact
 from gpvdm_json import gpvdm_data
+from json_base import json_base
+import json
 
 class gl_object_editor():
 
@@ -54,7 +56,7 @@ class gl_object_editor():
 			action=menu.addAction(icon_get("go-up"),_("Move up"))
 			action.triggered.connect(self.layer_move_up)
 
-			action=menu.addAction(_("Move down"))
+			action=menu.addAction(icon_get("go-down"),_("Move down"))
 			action.triggered.connect(self.layer_move_down)
 
 			action=menu.addAction(icon_get("list-add"),_("Add layer"))
@@ -66,12 +68,41 @@ class gl_object_editor():
 		action=menu.addAction(icon_get("rename"),_("Rename"))
 		action.triggered.connect(self.layer_rename)
 
+		action=menu.addAction(icon_get("edit-copy"),_("Copy"))
+		action.triggered.connect(self.object_copy)
+
+		action=menu.addAction(icon_get("edit-paste"),_("Paste"))
+		action.triggered.connect(self.object_paste)
+
 		action=menu.addAction(_("Edit"))
 		action.triggered.connect(self.layer_object_editor)
 
 		menu.addSeparator()
 
 		menu.exec_(event.globalPos())
+
+	def object_copy(self):
+		data=gpvdm_data()
+		obj=self.gl_objects_get_first_selected()
+		if obj!=None:
+			epi=get_epi()
+			s=data.find_object_by_id(obj.id[0])
+
+			b=json_base("",segment_class=True)
+
+			b.segments.append(s)
+
+			cb = QApplication.clipboard()
+			cb.clear(mode=cb.Clipboard )
+			cb.setText("\n".join(b.gen_json())[3:], mode=cb.Clipboard)
+
+	def object_paste(self):
+		cb = QApplication.clipboard()
+		text=cb.text()
+		json_data=json.loads(text)
+		for n in range(0,json_data['segments']):
+			print(json_data["segment"+str(n)])
+
 
 	def layer_move_up(self):
 		data=gpvdm_data()

@@ -32,36 +32,47 @@ class json_world_stats():
 
 	def get_world_size(self):
 		my_min=vec()
-		my_min.x=1e6
-		my_min.y=1e6
-		my_min.z=1e6
-
 		my_max=vec()
-		my_max.x=-1e6
-		my_max.y=-1e6
-		my_max.z=-1e6
-		for l in self.epi.layers:
-			my_min,my_max=l.get_min_max(my_min,my_max)
 
-		for l in self.world.world_data.segments:
-			my_min,my_max=l.get_min_max(my_min,my_max)
+		if self.world.config.world_automatic_size==False:
+			my_min.x=self.world.config.world_x0
+			my_min.y=self.world.config.world_y0
+			my_min.z=self.world.config.world_z0
 
-		dx0=(self.world.config.world_margin_x0-1.0)*(my_max.x-my_min.x)
-		dx1=(self.world.config.world_margin_x1-1.0)*(my_max.x-my_min.x)
+			my_max.x=self.world.config.world_x1
+			my_max.y=self.world.config.world_y1
+			my_max.z=self.world.config.world_z1
+		else:
 
-		dy0=(self.world.config.world_margin_y0-1.0)*(my_max.y-my_min.y)
-		dy1=(self.world.config.world_margin_y1-1.0)*(my_max.y-my_min.y)
+			my_min.x=1e6
+			my_min.y=1e6
+			my_min.z=1e6
 
-		dz0=(self.world.config.world_margin_z0-1.0)*(my_max.z-my_min.z)
-		dz1=(self.world.config.world_margin_z1-1.0)*(my_max.z-my_min.z)
+			my_max.x=-1e6
+			my_max.y=-1e6
+			my_max.z=-1e6
+			for l in self.epi.layers:
+				my_min,my_max=l.get_min_max(my_min,my_max)
 
-		my_min.x=my_min.x-dx0
-		my_min.y=my_min.y-dy0
-		my_min.z=my_min.z-dz0
+			for l in self.world.world_data.segments:
+				my_min,my_max=l.get_min_max(my_min,my_max)
 
-		my_max.x=my_max.x+dx0+dx1
-		my_max.y=my_max.y+dy0+dy1
-		my_max.z=my_max.z+dz0+dz1
+			dx0=(self.world.config.world_margin_x0-1.0)*(my_max.x-my_min.x)
+			dx1=(self.world.config.world_margin_x1-1.0)*(my_max.x-my_min.x)
+
+			dy0=(self.world.config.world_margin_y0-1.0)*(my_max.y-my_min.y)
+			dy1=(self.world.config.world_margin_y1-1.0)*(my_max.y-my_min.y)
+
+			dz0=(self.world.config.world_margin_z0-1.0)*(my_max.z-my_min.z)
+			dz1=(self.world.config.world_margin_z1-1.0)*(my_max.z-my_min.z)
+
+			my_min.x=my_min.x-dx0
+			my_min.y=my_min.y-dy0
+			my_min.z=my_min.z-dz0
+
+			my_max.x=my_max.x+dx0+dx1
+			my_max.y=my_max.y+dy0+dy1
+			my_max.z=my_max.z+dz0+dz1
 
 		return my_min,my_max
 

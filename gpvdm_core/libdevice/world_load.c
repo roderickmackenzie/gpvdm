@@ -93,14 +93,29 @@ int world_load(struct simulation *sim,struct world *w, struct json_obj *json_wor
 		ewe(sim,"world.config not found\n");
 	}
 
-	json_get_long_double(sim, json_world_config, &(w->x0),"world_margin_x0");
-	json_get_long_double(sim, json_world_config, &(w->x1),"world_margin_x1");
+	json_get_english(sim,json_world_config, &(w->world_automatic_size),"world_automatic_size");
 
-	json_get_long_double(sim, json_world_config, &(w->y0),"world_margin_y0");
-	json_get_long_double(sim, json_world_config, &(w->y1),"world_margin_y1");
+	if (w->world_automatic_size==TRUE)
+	{
+		json_get_long_double(sim, json_world_config, &(w->x0),"world_margin_x0");
+		json_get_long_double(sim, json_world_config, &(w->x1),"world_margin_x1");
 
-	json_get_long_double(sim, json_world_config, &(w->z0),"world_margin_z0");
-	json_get_long_double(sim, json_world_config, &(w->z1),"world_margin_z1");
+		json_get_long_double(sim, json_world_config, &(w->y0),"world_margin_y0");
+		json_get_long_double(sim, json_world_config, &(w->y1),"world_margin_y1");
+
+		json_get_long_double(sim, json_world_config, &(w->z0),"world_margin_z0");
+		json_get_long_double(sim, json_world_config, &(w->z1),"world_margin_z1");
+	}else
+	{
+		json_get_long_double(sim, json_world_config, &(w->x0),"world_x0");
+		json_get_long_double(sim, json_world_config, &(w->x1),"world_x1");
+
+		json_get_long_double(sim, json_world_config, &(w->y0),"world_y0");
+		json_get_long_double(sim, json_world_config, &(w->y1),"world_y1");
+
+		json_get_long_double(sim, json_world_config, &(w->z0),"world_z0");
+		json_get_long_double(sim, json_world_config, &(w->z1),"world_z1");
+	}
 
 	w->obj=malloc(sizeof(struct object)*1000);
 

@@ -124,7 +124,7 @@ class view_point():
 		self.zoom=data.zoom
 
 	def set_xy(self):
-		self.xRot=-7
+		self.xRot=3
 		self.yRot=0.0
 		self.zRot=0.0
 		self.x_pos=0.0
@@ -142,7 +142,7 @@ class view_point():
 		self.name="xz"
 
 	def set_yz(self):
-		self.xRot=-7
+		self.xRot=3
 		self.yRot=90
 		self.zRot=0.0
 		self.x_pos=0.0

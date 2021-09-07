@@ -70,8 +70,8 @@ void device_build_scene(struct simulation *sim,struct device *dev)
 	struct vec min;
 	struct vec max;
 	world_size(sim,&min,&max,&(dev->w), dev);
-	vec_print(&min);
-	vec_print(&max);
+	//vec_print(&min);
+	//vec_print(&max);
 	int c;
 
 	struct shape *s;

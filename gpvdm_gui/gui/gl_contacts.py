@@ -106,13 +106,16 @@ class gl_contacts():
 					if top_contact_layer!=-1:
 
 						xyz=vec()
-						if mesh_x.get_points()==1 and mesh_z.get_points()==1:
+						if mesh_x.get_points()==1:
 							xyz.x=self.scale.project_m2screen_x(0.0)
 							a.dxyz.x=mesh_x.get_len()*scale_get_xmul()
-							a.dxyz.z=mesh_z.get_len()*scale_get_zmul()
 						else:
 							xyz.x=self.scale.project_m2screen_x(c.x0)
 							a.dxyz.x=c.dx*scale_get_xmul()
+
+						if mesh_z.get_points()==1:
+							a.dxyz.z=mesh_z.get_len()*scale_get_zmul()
+						else:
 							a.dxyz.z=self.scale.project_m2screen_z(mesh_z.get_len())
 
 

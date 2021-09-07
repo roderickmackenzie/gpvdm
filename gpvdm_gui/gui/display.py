@@ -42,6 +42,7 @@ from icon_lib import icon_get
 from cal_path import get_sim_path
 from global_objects import global_object_register
 from global_objects import global_object_run
+from global_objects import global_object_get
 from gpvdm_local import gpvdm_local
 open_gl_working=False
 
@@ -62,7 +63,7 @@ class display_widget(QWidget):
 		self.hbox.addWidget(self.display)
 	
 	def update_ray_file(self):
-		self.display.ray_file=self.fx_box.get_file_name()
+		self.display.ray_file=global_object_get("fx_box_update").get_file_name()
 
 	def __init__(self):
 		QWidget.__init__(self)
@@ -100,7 +101,7 @@ class display_widget(QWidget):
 
 	#This will reclaculate all the display elements in the display widget.
 	def recalculate(self):
-		self.fx_box.update()
+		global_object_get("fx_box_update").update()
 		self.update_ray_file()
 			
 		self.display.force_redraw()

@@ -93,6 +93,8 @@ class ribbon_optical(ribbon_page2):
 
 		self.fx_box=fx_selector()
 		self.fx_box.update()
+		global_object_register("fx_box_update",self.fx_box)
+
 		pan.addWidget(self.fx_box)
 
 	def update(self):

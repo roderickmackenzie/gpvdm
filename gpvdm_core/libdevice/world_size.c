@@ -57,6 +57,18 @@ void world_size(struct simulation *sim,struct vec *min,struct vec *max,struct wo
 
 	struct shape *s;
 	struct epi_layer *layer;
+	if (w->world_automatic_size==FALSE)
+	{
+		min->x=w->x0;
+		min->y=w->y0;
+		min->z=w->z0;
+
+		max->x=w->x1;
+		max->y=w->y1;
+		max->z=w->z1;
+		return;
+	}
+
 	struct epitaxy *epi=&(dev->my_epitaxy);
 	vec_set(min,1e6,1e6,1e6);
 	vec_set(max,-1e6,-1e6,-1e6);

@@ -55,14 +55,15 @@ class gl_cords():
 		if self.false_color==True:
 			return
 
-
+		if self.scale.world_max==None:
+			return
 
 		width=0.04
 		leng=1.0
 		
-		start_x=self.scale.project_m2screen_x(self.scale.world_min.x)-2.0
-		start_z=self.scale.project_m2screen_z(self.scale.world_min.z)-2.0
-		start_y=self.scale.project_m2screen_y(self.scale.world_max.y)-2.0
+		start_x=self.scale.project_m2screen_x(0.0)-2.0
+		start_z=self.scale.project_m2screen_z(0.0)-2.0
+		start_y=self.scale.project_m2screen_y(self.scale.world_max.y)-1.0#  self.scale.project_m2screen_y(0.0)+1.0
 		#quad=gluNewQuadric()
 
 

@@ -50,6 +50,7 @@ from open_save_dlg import save_as_filter
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtGui import QImage
 from gpvdm_json import gpvdm_data
+from icon_lib import icon_get
 
 class gl_main_menu():
 	def build_main_menu(self):
@@ -134,8 +135,15 @@ class gl_main_menu():
 		action.triggered.connect(self.menu_background_color)
 
 		objects=self.main_menu.addMenu(_("Objects"))
-		action=objects.addAction(_("Add"))
+		action=objects.addAction(icon_get("list-add"),_("Add"))
 		action.triggered.connect(self.callback_add_object)
+
+		action=objects.addAction(icon_get("view-refresh"),_("Rescale"))
+		action.triggered.connect(self.callback_rescale)
+
+	def callback_rescale(self):
+		self.scale.set_m2screen()
+		self.build_scene()
 
 	def callback_add_object(self):
 		from shape import shape

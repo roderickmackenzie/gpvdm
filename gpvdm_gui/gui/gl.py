@@ -332,7 +332,6 @@ if open_gl_ok==True:
 
 		def render_view(self,view):
 			data=gpvdm_data()
-			self.scale.set_m2screen()
 
 			x=self.scale.project_m2screen_x(0)
 			y=0.0#project_m2screen_y(0)
@@ -439,7 +438,9 @@ if open_gl_ok==True:
 			data=gpvdm_data()
 			if data.triangles_loaded==False:
 				data.load_triagles()
-			self.scale.set_m2screen()
+
+			if self.scale.world_min==None:
+				self.scale.set_m2screen()
 
 			x=self.scale.project_m2screen_x(0)
 			z=self.scale.project_m2screen_z(0)
@@ -619,8 +620,10 @@ if open_gl_ok==True:
 					glEnable(l.number)
 
 			self.failed=False
+			global_object_register("gl_do_rescale",self.scale.set_m2screen)
 			global_object_register("gl_force_redraw",self.force_redraw)
 			global_object_register("gl_do_draw",self.do_draw)
+
 			get_epi().add_callback(self.force_redraw)
 
 		def boom(self):

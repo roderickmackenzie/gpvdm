@@ -188,7 +188,7 @@ class gl_video_maker(QWidget,tab_base):
 			f.write(os.path.join(os.getcwd(),"flyby",str(i)+".jpg"+"\n"))
 		f.close()
 		
-		fps=int(float(self.gl_widget.timer_save_files_number)/20.0)
+		fps=int(float(self.gl_widget.timer_save_files_number)/5.0)
 		encode_line="mencoder mf://@"+files_list_path+" -mf type=jpg:fps="+str(fps)+" -o "+out_file_name+" -ovc x264"
 
 		f=open(os.path.join(os.getcwd(),"flyby","encode.sh"),"w")
