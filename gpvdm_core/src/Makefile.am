@@ -1,5 +1,5 @@
 OBJS=  server.o sim_run.o pos.o config.o anal.o run_electrical_dll.o sim.o check_and_gen_dos.o
-# -pg  -lefence  -lefence   -lefence 
+# -pg  -lefence  -lefence -lefence 
 #echo 428000 > /proc/sys/vm/max_map_count  for when efence runs out of memroy 
 AROPT=
 

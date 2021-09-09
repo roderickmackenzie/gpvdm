@@ -453,6 +453,8 @@ char temp[400];
 
 void buffer_dump(struct simulation *sim,char * file,struct dat_file *in)
 {
+	int out_len;
+	char *out_data;
 	FILE *out;
 	sim->files_written++;
 	sim->bytes_written+=in->len;
@@ -463,27 +465,18 @@ void buffer_dump(struct simulation *sim,char * file,struct dat_file *in)
 		ewe(sim,"I can't make the file %s\n",file);
 	}
 
-	int out_len;
-	char *out_data;
+	//printf("file '%s %p'\n",file,out);
 
-	//<strip>
-	/*#ifdef liblock_enabled
-		if (sim->lock_data.encode_output==TRUE)
-		{
-			lock_ecrypt(&out_data,in->buf,&out_len,in->len,"hello");
-			fwrite(out_data, out_len, 1, out);
-			free(out_data);
-		}else
-		//</strip>
-	#endif*/
-	{
-		fwrite(in->buf, in->len, 1, out);
-	}
+	//printf("write '%d %d'\n",in->len,strlen(in->buf));
+	//printf(">>'%s'\n",in->buf);
+	fwrite(in->buf, in->len, 1, out);
 
 	fclose(out);
 
 
 	log_write_file_access(sim,file,'w');
+	//printf("wait\n");
+	//getchar();
 }
 
 void dat_file_dump_gnuplot_file(struct simulation *sim,char * path,char * file_name,struct dat_file *in)

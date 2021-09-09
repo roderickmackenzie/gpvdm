@@ -108,7 +108,6 @@ void dump_make_snapshot_dir(struct simulation *sim,char *ret_path,char *base_dir
 	sprintf(temp," \"default_plot_type\":\"%s\"\n",default_plot_type);
 	buffer_add_string(&buf,temp);
 	buffer_add_string(&buf,"}\n");
-
 	buffer_dump_path(sim,main_snapshots_dir,"data.json",&buf);
 	buffer_free(&buf);
 

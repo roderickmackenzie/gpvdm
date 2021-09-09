@@ -180,7 +180,7 @@ void light_zx_lambda_solver(struct simulation *sim, struct light *li, struct dev
 						if (li->dump_verbosity>=0)
 						{
 							sprintf(temp,"%s %Lf nm\n",_("Solve optical slice at"),dim->l[l]*1e9);
-							waveprint(sim,temp,dim->l[l]*1e9);
+							waveprint(sim,temp,dim->l[l]);
 						}
 					}
 				}

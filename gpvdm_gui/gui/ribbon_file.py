@@ -57,6 +57,7 @@ from ribbon_page import ribbon_page
 from play import play
 from server import server_get
 from help import help_window
+from global_objects import global_object_register
 
 class ribbon_file(ribbon_page):
 	used_files_click= pyqtSignal(str)
@@ -64,6 +65,7 @@ class ribbon_file(ribbon_page):
 		ribbon_page.__init__(self)
 		self.scan_window=None
 		self.fit_window=None
+		self.optics_window=None
 
 		self.myserver=server_get()
 
@@ -102,6 +104,10 @@ class ribbon_file(ribbon_page):
 		self.fit = QAction_lock("fit", _("Fit to\nexperimental data"), self,"ribbon_home_fit")
 		self.fit.clicked.connect(self.callback_run_fit)
 		self.addAction(self.fit)
+
+		self.optics = QAction_lock("optics", _("Optical\nSimulation"), self,"ribbon_home_optics")
+		self.optics.clicked.connect(self.callback_optics_sim)
+		self.addAction(self.optics)
 
 		self.plot = QAction_lock("plot", _("Plot\nFile"), self,"ribbon_home_plot")
 		self.plot.clicked.connect(self.callback_plot_select)
@@ -142,6 +148,10 @@ class ribbon_file(ribbon_page):
 		if self.scan_window!=None:
 			del self.scan_window
 			self.scan_window=None
+
+		if self.optics_window!=None:
+			del self.optics_window
+			self.optics_window=None
 
 		self.populate_used_file_menu()
 
@@ -215,4 +225,19 @@ class ribbon_file(ribbon_page):
 			#self.plot_after_run_file=dialog.get_filename()
 
 
+	def callback_optics_sim(self, widget, data=None):
+		help_window().help_set_help(["optics.png",_("<big><b>The optical simulation window</b></big><br>Use this window to perform optical simulations.  Click on the play button to run a simulation."),"media-playback-start",_("Click on the play button to run an optical simulation.  The results will be displayed in the tabs to the right."),"youtube",_("<big><b><a href=\"https://www.youtube.com/watch?v=A_3meKTBuWk\">Tutorial video</b></big><br>Designing optical filters and reflective coatings.")])
+
+
+		if self.optics_window==None:
+			from optics import class_optical
+			self.optics_window=class_optical()
+			#self.notebook.changed.connect(self.optics_window.update)
+
+		if self.optics_window.isVisible()==True:
+			self.optics_window.hide()
+		else:
+			global_object_register("optics_force_redraw",self.optics_window.force_redraw)
+			self.optics_window.ribbon.update()
+			self.optics_window.show()
 

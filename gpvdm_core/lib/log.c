@@ -273,32 +273,13 @@ void waveprint(struct simulation *sim,char *in,double wavelength)
 	{
 		if (sim->html==TRUE)
 		{
-			wavelength_to_rgb(&r,&g,&b,wavelength*1e-9);
+			wavelength_to_rgb(&r,&g,&b,wavelength);
 			printf_log(sim,"<font color=\"#%.2x%.2x%.2x\">",r,g,b);
 		}else
 		{
-			wavelength_to_rgb(&r,&g,&b,wavelength*1e-9);
+			wavelength_to_rgb(&r,&g,&b,wavelength);
 			textcolor_rgb(sim,r, g, b);
-			/*if (wavelength<400.0)
-			{
-				textcolor(sim,fg_purple);
-			}else
-			if (wavelength<500.0)
-			{
-				textcolor(sim,fg_blue);
-			}else
-			if (wavelength<575.0)
-			{
-				textcolor(sim,fg_green);
-			}else
-			if (wavelength<600.0)
-			{
-				textcolor(sim,fg_yellow);
-			}else
-			{
-				textcolor(sim,fg_red);
 
-			}*/
 		}
 	}
 

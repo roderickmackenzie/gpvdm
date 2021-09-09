@@ -90,6 +90,7 @@ class tab_line():
 		self.hide_on_true_token="none"
 		self.hide_on_false_token=[]
 		self.hide_on_token_eq=None
+		self.show_on_token_eq=None
 
 class json_viewer(QWidget,tab_base):
 
@@ -421,7 +422,7 @@ class json_viewer(QWidget,tab_base):
 					a.hide_on_true_token=result.hide_on_true_token
 					a.hide_on_false_token=result.hide_on_false_token
 					a.hide_on_token_eq=result.hide_on_token_eq
-
+					a.show_on_token_eq=result.show_on_token_eq
 					self.tab.addWidget(description,widget_number,0)
 					self.tab.addWidget(a.edit_box,widget_number,1)
 					self.tab.addWidget(unit,widget_number,2)
@@ -538,14 +539,11 @@ class json_viewer(QWidget,tab_base):
 					for item in self.template_widget.var_list:
 						json_token=item[0]
 						json_val=getattr(self.template_widget,json_token)
-						#if w.token=="is_Vexternal":
-						#	print(json_token,val[0],json_val,val[1])
 						if json_token==val[0]:
 							if json_val==val[1]:
 								w.edit_box.setVisible(False)
 								w.units.setVisible(False)
 								w.label.setVisible(False)
-								#print("hide!!")
 
 			if w.hide_on_false_token!=[]:			
 				for item in self.template_widget.var_list:
@@ -556,6 +554,18 @@ class json_viewer(QWidget,tab_base):
 							w.edit_box.setVisible(False)
 							w.units.setVisible(False)
 							w.label.setVisible(False)
+
+			if w.show_on_token_eq!=None:
+				do_hide=True
+				for val in w.show_on_token_eq:
+					json_val=getattr(self.template_widget,val[0],None)
+					if json_val==val[1]:
+						do_hide=False
+
+				if do_hide==True:			
+					w.edit_box.setVisible(False)
+					w.units.setVisible(False)
+					w.label.setVisible(False)
 
 	def callback_edit(self,token,widget,unit,token_class):
 		val=widget_get_value(widget)

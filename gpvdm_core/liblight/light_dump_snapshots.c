@@ -104,7 +104,8 @@ void light_dump_snapshots(struct simulation *sim,char *output_path,struct light 
 			buffer_add_string(&info_file,temp);
 
 
-			buffer_dump_path(sim,out_dir,"data.json",&buf);
+			//printf("intern: %s\n",info_file.buf);
+			buffer_dump_path(sim,out_dir,"data.json",&info_file);
 			buffer_free(&info_file);
 
 			wavelength_to_rgb(&r,&g,&b,dim->l[l]);

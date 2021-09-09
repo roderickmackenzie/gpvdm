@@ -51,13 +51,16 @@ void world_cpy(struct simulation *sim,struct world *out,struct world *in)
 {
 	int i;
 
-	out->shapes=(struct shape *)malloc(sizeof(struct shape)*in->items);
 	out->items=in->items;
-
-	for (i=0;i<in->items;i++)
+	if (in->items>0)
 	{
-		shape_init(sim,&(out->shapes[i]));
-		shape_cpy(sim,&(out->shapes[i]),&(in->shapes[i]));
+		out->shapes=(struct shape *)malloc(sizeof(struct shape)*in->items);
+
+		for (i=0;i<in->items;i++)
+		{
+			shape_init(sim,&(out->shapes[i]));
+			shape_cpy(sim,&(out->shapes[i]),&(in->shapes[i]));
+		}
 	}
 
 	out->world_automatic_size=in->world_automatic_size;

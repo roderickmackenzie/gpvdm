@@ -227,6 +227,7 @@ class cmp_class(QWidgetSavePos):
 
 		self.slider.changed.connect(self.update)
 		self.plot=plot_widget(enable_3d=True,widget_mode=widget_mode)
+		self.plot.setMaximumHeight(300)
 		#force_2d3d="3d"
 
 		self.plot.plot_ribbon.addTab(self.plot.plot_ribbon.tb_video,_("Video"))

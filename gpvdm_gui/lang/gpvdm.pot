@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gpvdm 5.0\n"
 "Report-Msgid-Bugs-To: roderick.mackenzie@nottingham.ac.uk\n"
-"POT-Creation-Date: 2021-09-07 17:22+0100\n"
+"POT-Creation-Date: 2021-09-09 09:27+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -192,7 +192,7 @@ msgstr ""
 #: ../../gpvdm_gui/gui/QHTabBar.py:46 ../../gpvdm_gui/gui/QHTabBar.py:113
 #: ../../gpvdm_gui/gui/gpvdm_tab.py:77
 #: ../../gpvdm_gui/gui/plot_widget_menu.py:44
-#: ../../gpvdm_gui/gui/json_viewer.py:138
+#: ../../gpvdm_gui/gui/json_viewer.py:139
 msgid "Copy"
 msgstr ""
 
@@ -726,6 +726,10 @@ msgstr ""
 msgid "no spm config file found"
 msgstr ""
 
+#: ../../gpvdm_core/plugins/eqe/eqe.c:138
+msgid "Solving EQE at"
+msgstr ""
+
 #: ../../gpvdm_core/plugins/fx_domain/is.c:406
 #: ../../gpvdm_core/plugins/fx_domain/is.c:409
 msgid "abs(i)"
@@ -893,7 +897,7 @@ msgstr ""
 #: ../../gpvdm_core/libdump/dump_zxy.c:776
 #: ../../gpvdm_core/libdump/dynamic.c:186
 #: ../../gpvdm_core/libdump/dynamic.c:197
-#: ../../gpvdm_core/liblight/light_dump_snapshots.c:116
+#: ../../gpvdm_core/liblight/light_dump_snapshots.c:117
 #: ../../gpvdm_core/liblight/light_dump.c:202
 #: ../../gpvdm_core/liblight/light_dump.c:310
 #: ../../gpvdm_core/liblight/light_dump.c:330
@@ -1090,7 +1094,7 @@ msgstr ""
 msgid "Time - Voltage"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dat_file.c:554
+#: ../../gpvdm_core/libdump/dat_file.c:547
 msgid "file name not set\n"
 msgstr ""
 
@@ -2245,11 +2249,11 @@ msgstr ""
 msgid "Light intensity"
 msgstr ""
 
-#: ../../gpvdm_core/liblight/light_dump_snapshots.c:114
+#: ../../gpvdm_core/liblight/light_dump_snapshots.c:115
 msgid "Absorbed photons at"
 msgstr ""
 
-#: ../../gpvdm_core/liblight/light_dump_snapshots.c:132
+#: ../../gpvdm_core/liblight/light_dump_snapshots.c:133
 msgid "Photons absorbed"
 msgstr ""
 
@@ -2768,7 +2772,7 @@ msgstr ""
 msgid "Equilibrium Fermi-level"
 msgstr ""
 
-#: ../../gpvdm_core/lib/initial.c:187 ../../gpvdm_gui/gui/token_lib.py:84
+#: ../../gpvdm_core/lib/initial.c:187 ../../gpvdm_gui/gui/token_lib.py:83
 msgid "n"
 msgstr ""
 
@@ -2835,8 +2839,8 @@ msgid "<big><b>Simulation mode changed</b></big><br>"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/inp_viewer.py:290
-#: ../../gpvdm_gui/gui/json_viewer.py:489
-#: ../../gpvdm_gui/gui/json_viewer.py:496
+#: ../../gpvdm_gui/gui/json_viewer.py:490
+#: ../../gpvdm_gui/gui/json_viewer.py:497
 msgid "Electrical parameter editor for shape"
 msgstr ""
 
@@ -3330,7 +3334,7 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/script_ribbon.py:88
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_home.py:116
 #: ../../gpvdm_gui/gui/script_ribbon.py:82
-#: ../../gpvdm_gui/gui/ribbon_file.py:106
+#: ../../gpvdm_gui/gui/ribbon_file.py:112
 msgid ""
 "Plot\n"
 "File"
@@ -3697,14 +3701,12 @@ msgid ""
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/leftright.py:92
-#: ../../gpvdm_gui/gui/leftright.py:92 ../../gpvdm_gui/gui/token_lib.py:73
-#: ../../gpvdm_gui/gui/token_lib.py:85
+#: ../../gpvdm_gui/gui/leftright.py:92 ../../gpvdm_gui/gui/token_lib.py:84
 msgid "Right"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/leftright.py:98
-#: ../../gpvdm_gui/gui/leftright.py:98 ../../gpvdm_gui/gui/token_lib.py:73
-#: ../../gpvdm_gui/gui/token_lib.py:85
+#: ../../gpvdm_gui/gui/leftright.py:98 ../../gpvdm_gui/gui/token_lib.py:84
 msgid "Left"
 msgstr ""
 
@@ -4175,12 +4177,12 @@ msgid "Profile of light beam"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:76
-#: ../../gpvdm_gui/gui/token_lib.py:80
+#: ../../gpvdm_gui/gui/token_lib.py:79
 msgid "Optical filter material"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:77
-#: ../../gpvdm_gui/gui/token_lib.py:81
+#: ../../gpvdm_gui/gui/token_lib.py:80
 msgid "dB"
 msgstr ""
 
@@ -6066,17 +6068,17 @@ msgid "External load resistor"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:740
-#: ../../gpvdm_gui/gui/token_lib.py:85
+#: ../../gpvdm_gui/gui/token_lib.py:84
 msgid "Illuminate from"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:740
-#: ../../gpvdm_gui/gui/token_lib.py:85
+#: ../../gpvdm_gui/gui/token_lib.py:84
 msgid "Top"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:740
-#: ../../gpvdm_gui/gui/token_lib.py:85
+#: ../../gpvdm_gui/gui/token_lib.py:84
 msgid "Bottom"
 msgstr ""
 
@@ -6519,7 +6521,7 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/fit_ribbon.py:162
 #: ../../gpvdm_gui/gui/gl_main_menu.py:62
 #: ../../gpvdm_gui/gui/image_discretizer.py:197
-#: ../../gpvdm_gui/gui/json_viewer.py:152
+#: ../../gpvdm_gui/gui/json_viewer.py:153
 msgid "Export"
 msgstr ""
 
@@ -6833,7 +6835,7 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_file.py:72
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_file.py:76
 #: ../../gpvdm_gui/gui/new_simulation.py:139
-#: ../../gpvdm_gui/gui/ribbon_file.py:70 ../../gpvdm_gui/gui/ribbon_file.py:74
+#: ../../gpvdm_gui/gui/ribbon_file.py:72 ../../gpvdm_gui/gui/ribbon_file.py:76
 msgid "New simulation"
 msgstr ""
 
@@ -7022,7 +7024,7 @@ msgid ""
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_simulations.py:117
-#: ../../gpvdm_gui/gui/ribbon_optical.py:85
+#: ../../gpvdm_gui/gui/ribbon_optical.py:80
 msgid ""
 "Ray tracing\n"
 "editor"
@@ -7125,7 +7127,7 @@ msgid ""
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_simulations.py:296
-#: ../../gpvdm_gui/gui/ribbon_optical.py:137
+#: ../../gpvdm_gui/gui/ribbon_optical.py:128
 msgid ""
 "<big><b>The ray tracing editor</b></big><br> Use this window to configure "
 "ray tracing."
@@ -7298,27 +7300,28 @@ msgid "Undo"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_home.py:92
-#: ../../gpvdm_gui/gui/ribbon_file.py:90
+#: ../../gpvdm_gui/gui/ribbon_file.py:92
 msgid ""
 "Run\n"
 "simulation"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_home.py:104
-#: ../../gpvdm_gui/gui/ribbon_file.py:96
+#: ../../gpvdm_gui/gui/ribbon_file.py:98
 msgid ""
 "Parameter\n"
 "scan"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_home.py:110
-#: ../../gpvdm_gui/gui/ribbon_file.py:102
+#: ../../gpvdm_gui/gui/ribbon_file.py:104
 msgid ""
 "Fit to\n"
 "experimental data"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_home.py:122
+#: ../../gpvdm_gui/gui/ribbon_file.py:108
 msgid ""
 "Optical\n"
 "Simulation"
@@ -7332,14 +7335,14 @@ msgid ""
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_home.py:175
-#: ../../gpvdm_gui/gui/ribbon_file.py:199
+#: ../../gpvdm_gui/gui/ribbon_file.py:209
 msgid ""
 "<big>Select a file to plot</big><br>Single clicking shows you the content of "
 "the file"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_home.py:194
-#: ../../gpvdm_gui/gui/ribbon_file.py:174
+#: ../../gpvdm_gui/gui/ribbon_file.py:184
 msgid ""
 "<big><b>The scan window</b></big><br> Very often it is useful to be able to "
 "systematically very a device parameter such as mobility or density of trap "
@@ -7347,19 +7350,19 @@ msgid ""
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_home.py:194
-#: ../../gpvdm_gui/gui/ribbon_file.py:174
+#: ../../gpvdm_gui/gui/ribbon_file.py:184
 msgid "Use the plus icon to add a new scan line to the list."
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_home.py:194
-#: ../../gpvdm_gui/gui/ribbon_file.py:174
+#: ../../gpvdm_gui/gui/ribbon_file.py:184
 msgid ""
 "<big><b><a href=\"https://www.youtube.com/watch?v=cpkPht-CKeE\">Tutorial "
 "video</b></big><br>Using the parameter scan window."
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_home.py:214
-#: ../../gpvdm_gui/gui/ribbon_file.py:192
+#: ../../gpvdm_gui/gui/ribbon_file.py:202
 msgid ""
 "<big><b>Fit window</b></big><br> Use this window to fit the simulation to "
 "experimental data.  Gpvdm uses advanced and optimized fitting algorithms to "
@@ -7368,7 +7371,7 @@ msgid ""
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_home.py:214
-#: ../../gpvdm_gui/gui/ribbon_file.py:192
+#: ../../gpvdm_gui/gui/ribbon_file.py:202
 msgid ""
 "<big><b><a href=\"https://www.youtube.com/watch?v=61umU4hrsqk\">Watch the "
 "tutorial video 1</b></big><br>Fitting gpvdm to experimental data to extract "
@@ -7376,28 +7379,28 @@ msgid ""
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_home.py:214
-#: ../../gpvdm_gui/gui/ribbon_file.py:192
+#: ../../gpvdm_gui/gui/ribbon_file.py:202
 msgid ""
 "<big><b><a href=\"https://www.youtube.com/watch?v=_cm3Cb3kzUg\">Watch the "
 "tutorial video 2</b></big><br>Fitting gpvdm to large area solar cells"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_home.py:221
-#: ../../gpvdm_gui/gui/ribbon_optical.py:144
+#: ../../gpvdm_gui/gui/ribbon_file.py:229
 msgid ""
 "<big><b>The optical simulation window</b></big><br>Use this window to "
 "perform optical simulations.  Click on the play button to run a simulation."
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_home.py:221
-#: ../../gpvdm_gui/gui/ribbon_optical.py:144
+#: ../../gpvdm_gui/gui/ribbon_file.py:229
 msgid ""
 "Click on the play button to run an optical simulation.  The results will be "
 "displayed in the tabs to the right."
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_home.py:221
-#: ../../gpvdm_gui/gui/ribbon_optical.py:144
+#: ../../gpvdm_gui/gui/ribbon_file.py:229
 msgid ""
 "<big><b><a href=\"https://www.youtube.com/watch?v=A_3meKTBuWk\">Tutorial "
 "video</b></big><br>Designing optical filters and reflective coatings."
@@ -7555,7 +7558,7 @@ msgstr ""
 #: ../../gpvdm_gui/gui/gl_object_editor.py:74
 #: ../../gpvdm_gui/gui/gpvdm_tab2.py:99 ../../gpvdm_gui/gui/QHTabBar.py:49
 #: ../../gpvdm_gui/gui/QHTabBar.py:116 ../../gpvdm_gui/gui/gpvdm_tab.py:81
-#: ../../gpvdm_gui/gui/json_viewer.py:149
+#: ../../gpvdm_gui/gui/json_viewer.py:150
 msgid "Paste"
 msgstr ""
 
@@ -8929,7 +8932,7 @@ msgid "Solar Spectrum Generator"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_file.py:79
-#: ../../gpvdm_gui/gui/ribbon_file.py:77
+#: ../../gpvdm_gui/gui/ribbon_file.py:79
 msgid ""
 "Open\n"
 "simulation"
@@ -8949,19 +8952,19 @@ msgid ""
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_file.py:98
-#: ../../gpvdm_gui/gui/ribbon_file.py:119
+#: ../../gpvdm_gui/gui/ribbon_file.py:125
 msgid ""
 "Script\n"
 "Editor"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_file.py:152
-#: ../../gpvdm_gui/gui/ribbon_file.py:162
+#: ../../gpvdm_gui/gui/ribbon_file.py:172
 msgid "New backup:"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_file.py:152
-#: ../../gpvdm_gui/gui/ribbon_file.py:162
+#: ../../gpvdm_gui/gui/ribbon_file.py:172
 msgid "New backup name"
 msgstr ""
 
@@ -9755,19 +9758,15 @@ msgstr ""
 msgid "Light multiplyer"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:73
-msgid "Iluminate from"
-msgstr ""
-
-#: ../../gpvdm_gui/gui/token_lib.py:76
+#: ../../gpvdm_gui/gui/token_lib.py:75
 msgid "Photo current density"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:77
+#: ../../gpvdm_gui/gui/token_lib.py:76
 msgid "Photo current"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:85
+#: ../../gpvdm_gui/gui/token_lib.py:84
 msgid "xyz"
 msgstr ""
 
@@ -10334,31 +10333,25 @@ msgstr ""
 msgid "Adds an inp file to a json file inp_file.inp"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/ribbon_optical.py:71
+#: ../../gpvdm_gui/gui/ribbon_optical.py:70
 msgid ""
 "Light\n"
 "Sources"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/ribbon_optical.py:76
-msgid ""
-"Transfer\n"
-"Matrix"
-msgstr ""
-
-#: ../../gpvdm_gui/gui/ribbon_optical.py:90
+#: ../../gpvdm_gui/gui/ribbon_optical.py:85
 msgid ""
 "Optical\n"
 "Detectors"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/ribbon_optical.py:118
+#: ../../gpvdm_gui/gui/ribbon_optical.py:109
 msgid ""
 "<big><b>The light sources window</b></big><br>Use this window to setup "
 "optical sources for the transfer matrix, ray tracing and FDTD simulations."
 msgstr ""
 
-#: ../../gpvdm_gui/gui/ribbon_optical.py:160
+#: ../../gpvdm_gui/gui/ribbon_optical.py:135
 msgid ""
 "<big><b>The detectors window</b></big><br>Use this window to setup optical "
 "detectors.  These can be used for the ray tracing simulations."
@@ -10672,7 +10665,7 @@ msgstr ""
 msgid "Free hand drawing"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/cmp_class.py:232
+#: ../../gpvdm_gui/gui/cmp_class.py:233
 msgid "Video"
 msgstr ""
 
@@ -10806,27 +10799,27 @@ msgstr ""
 msgid "Make a new:"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/json_viewer.py:140
+#: ../../gpvdm_gui/gui/json_viewer.py:141
 msgid "Copy as JSON"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/json_viewer.py:143
+#: ../../gpvdm_gui/gui/json_viewer.py:144
 msgid "Copy ObjID"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/json_viewer.py:146
+#: ../../gpvdm_gui/gui/json_viewer.py:147
 msgid "Copy as LaTex"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/json_viewer.py:153
+#: ../../gpvdm_gui/gui/json_viewer.py:154
 msgid "Copy as csv"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/json_viewer.py:157
+#: ../../gpvdm_gui/gui/json_viewer.py:158
 msgid "Reimport from database"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/json_viewer.py:352
+#: ../../gpvdm_gui/gui/json_viewer.py:353
 msgid "This simulation"
 msgstr ""
 
@@ -10840,7 +10833,7 @@ msgstr ""
 msgid "Electrical boundary conditions"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/ribbon_file.py:85
+#: ../../gpvdm_gui/gui/ribbon_file.py:87
 msgid ""
 "Export\n"
 "Zip"

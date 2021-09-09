@@ -340,10 +340,11 @@ long double complex t0_complex=0.0+0.0*I;
 long double complex t1_complex=0.0+0.0*I;
 long double t0=0.0;
 long double t1=0.0;
-//long double tot=0.0;
+long double lam=0.0;
 
 for (l=0;l<dim->llen;l++)
 {
+	lam=dim->l[l];
 	li->sun_y0[l]=li->light_src_y0.spectra_tot.data[l]*power;
 	li->sun_y1[l]=li->light_src_y1.spectra_tot.data[l]*power;
 
@@ -359,11 +360,27 @@ for (l=0;l<dim->llen;l++)
 
 			if (li->light_src_y0.nspectra>0)
 			{
+				if (li->light_src_y0.filter_enabled==TRUE)
+				{
+					if (li->light_src_y0.filter_read.len>0)
+					{
+						laser_photons*=inter_get_hard(&(li->light_src_y0.filter_read),lam);
+					}
+				}
+
 				li->sun_photons_y0[l]+=laser_photons;
 			}
 
 			if (li->light_src_y1.nspectra>0)
 			{
+				if (li->light_src_y1.filter_enabled==TRUE)
+				{
+					if (li->light_src_y1.filter_read.len>0)
+					{
+						laser_photons*=inter_get_hard(&(li->light_src_y1.filter_read),lam);
+					}
+				}
+
 				li->sun_photons_y1[l]+=laser_photons;
 			}
 
@@ -400,11 +417,7 @@ for (l=0;l<dim->llen;l++)
 
 	li->sun_E_y0[l]=gpow(2.0*(li->sun_photons_y0[l]*E)/(epsilon0*cl*nl),0.5)*t0;
 	li->sun_E_y1[l]=gpow(2.0*(li->sun_photons_y1[l]*E)/(epsilon0*cl*nr),0.5)*t1;
-	/*if (l==li->laser_pos)
-	{
-		printf("%Le %Le\n",li->sun_E_y0[l],li->sun_E_y1[l]);
 
-	}*/
 }
 
 }

@@ -69,21 +69,24 @@ int world_load(struct simulation *sim,struct world *w, struct json_obj *json_wor
 
 	json_get_int(sim, json_world_data, &(w->items),"segments");
 
-	w->shapes=(struct shape *)malloc(sizeof(struct shape)*w->items);
-
-	for (l=0;l<w->items;l++)
+	if (w->items>0)
 	{
-		sprintf(item_id,"segment%d",l);
-		obj_item=json_obj_find(json_world_data, item_id);
+		w->shapes=(struct shape *)malloc(sizeof(struct shape)*w->items);
 
-		if (obj_item==NULL)
+		for (l=0;l<w->items;l++)
 		{
-			ewe(sim,"Object %s not found\n",item_id);
+			sprintf(item_id,"segment%d",l);
+			obj_item=json_obj_find(json_world_data, item_id);
+
+			if (obj_item==NULL)
+			{
+				ewe(sim,"Object %s not found\n",item_id);
+			}
+			s=&(w->shapes[l]);
+			shape_init(sim,s);
+			shape_load_from_json(sim,s, obj_item ,0.0);
+			s->epi_index=-1;
 		}
-		s=&(w->shapes[l]);
-		shape_init(sim,s);
-		shape_load_from_json(sim,s, obj_item ,0.0);
-		s->epi_index=-1;
 	}
 
 	json_world_config=json_obj_find(json_world, "config");

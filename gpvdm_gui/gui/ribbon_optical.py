@@ -64,7 +64,6 @@ class ribbon_optical(ribbon_page2):
 		self.enabled=False
 		self.light_sources_window=None
 		self.ray_trace_window=None
-		self.optics_window=None
 		self.detectors_window=None
 
 		pan=self.add_panel()
@@ -72,10 +71,6 @@ class ribbon_optical(ribbon_page2):
 		self.light_sources.clicked.connect(self.callback_light_sources)
 		pan.addAction(self.light_sources)
 
-
-		self.optics = QAction_lock("optics", _("Transfer\nMatrix"), self,"ribbon_home_optics")
-		self.optics.clicked.connect(self.callback_optics_sim)
-		pan.addAction(self.optics)
 
 		self.sun=tb_item_sun()
 		pan.addWidget(self.sun)
@@ -101,10 +96,6 @@ class ribbon_optical(ribbon_page2):
 		if self.light_sources_window!=None:
 			del self.light_sources_window
 			self.light_sources_window=None
-
-		if self.optics_window!=None:
-			del self.optics_window
-			self.optics_window=None
 
 		self.sun.update()
 
@@ -139,22 +130,6 @@ class ribbon_optical(ribbon_page2):
 			self.ray_trace_window.hide()
 		else:
 			self.ray_trace_window.show()
-
-	def callback_optics_sim(self, widget, data=None):
-		help_window().help_set_help(["optics.png",_("<big><b>The optical simulation window</b></big><br>Use this window to perform optical simulations.  Click on the play button to run a simulation."),"media-playback-start",_("Click on the play button to run an optical simulation.  The results will be displayed in the tabs to the right."),"youtube",_("<big><b><a href=\"https://www.youtube.com/watch?v=A_3meKTBuWk\">Tutorial video</b></big><br>Designing optical filters and reflective coatings.")])
-
-
-		if self.optics_window==None:
-			from optics import class_optical
-			self.optics_window=class_optical()
-			#self.notebook.changed.connect(self.optics_window.update)
-
-		if self.optics_window.isVisible()==True:
-			self.optics_window.hide()
-		else:
-			global_object_register("optics_force_redraw",self.optics_window.force_redraw)
-			self.optics_window.ribbon.update()
-			self.optics_window.show()
 
 	def callback_detector(self):
 		help_window().help_set_help(["ccd.png",_("<big><b>The detectors window</b></big><br>Use this window to setup optical detectors.  These can be used for the ray tracing simulations.")])

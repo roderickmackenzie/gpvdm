@@ -265,7 +265,7 @@ buffer_init(&buf);
 		buffer_dump_path(sim,li->dump_dir,out_name,&buf);
 		buffer_free(&buf);
 
-		printf("Write.....%s %s\n",li->dump_dir,out_name);
+		//printf("Write.....%s %s\n",li->dump_dir,out_name);
 
 		buffer_malloc(&data_1d_photons_tot);
 		sprintf(temp_name,"light_1d_photons_tot%s.dat",ext);
