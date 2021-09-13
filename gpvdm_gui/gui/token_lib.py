@@ -552,13 +552,13 @@ def build_token_lib():
 	lib.append(my_data("ray_wavelength_points","au",_("Wavelength points"),"QLineEdit"))
 	lib.append(my_data("ray_auto_run","au",_("Run the ray tracer"),"QComboBoxLang",defaults=[[("ray_run_never"),_("Never")],["ray_run_once",_("Once per simulation")],["ray_run_step",_("Each simulation step")]]))
 
-	lib.append(my_data("ray_theta_steps","au",_("Theta steps"),"QLineEdit",show_on_token_eq=[["light_illuminate_from","xyz"]]))
-	lib.append(my_data("ray_theta_start","Degrees",_("Theta start"),"QLineEdit",show_on_token_eq=[["light_illuminate_from","xyz"]]))
-	lib.append(my_data("ray_theta_stop","Degrees",_("Theta stop"),"QLineEdit",show_on_token_eq=[["light_illuminate_from","xyz"]]))
+	lib.append(my_data("ray_theta_steps","au",_("Theta steps"),"QLineEdit",show_on_token_eq=[["light_illuminate_from","xyz"],["pl_emission_enabled",True]]))
+	lib.append(my_data("ray_theta_start","Degrees",_("Theta start"),"QLineEdit",show_on_token_eq=[["light_illuminate_from","xyz"],["pl_emission_enabled",True]]))
+	lib.append(my_data("ray_theta_stop","Degrees",_("Theta stop"),"QLineEdit",show_on_token_eq=[["light_illuminate_from","xyz"],["pl_emission_enabled",True]]))
 
-	lib.append(my_data("ray_phi_steps","au",_("Phi steps"),"QLineEdit",show_on_token_eq=[["light_illuminate_from","xyz"]]))
-	lib.append(my_data("ray_phi_start","Degrees",_("Phi start"),"QLineEdit",show_on_token_eq=[["light_illuminate_from","xyz"]]))
-	lib.append(my_data("ray_phi_stop","Degrees",_("Phi stop"),"QLineEdit",show_on_token_eq=[["light_illuminate_from","xyz"]]))
+	lib.append(my_data("ray_phi_steps","au",_("Phi steps"),"QLineEdit",show_on_token_eq=[["light_illuminate_from","xyz"],["pl_emission_enabled",True]]))
+	lib.append(my_data("ray_phi_start","Degrees",_("Phi start"),"QLineEdit",show_on_token_eq=[["light_illuminate_from","xyz"],["pl_emission_enabled",True]]))
+	lib.append(my_data("ray_phi_stop","Degrees",_("Phi stop"),"QLineEdit",show_on_token_eq=[["light_illuminate_from","xyz"],["pl_emission_enabled",True]]))
 
 	lib.append(my_data("ray_escape_bins","au",_("Escape bins"),"QLineEdit"))
 

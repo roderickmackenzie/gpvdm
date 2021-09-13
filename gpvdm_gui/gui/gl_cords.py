@@ -134,6 +134,7 @@ class gl_cords():
 		xyz=vec()
 		xyz.x=-18.0
 		xyz.z=-18.0
+		print("world max=",self.scale.world_max.y)
 		xyz.y=self.scale.project_m2screen_y(self.scale.world_max.y)
 		o.xyz.append(xyz)
 

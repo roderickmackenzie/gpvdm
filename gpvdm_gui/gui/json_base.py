@@ -291,7 +291,6 @@ class json_base():
 					elif type(val)==str:
 						setattr(self, m, str(data[m]))
 					elif isclass(getattr(self,m))==True:
-						#print(data[m])
 						getattr(self,m).load_from_json(data[m])
 
 

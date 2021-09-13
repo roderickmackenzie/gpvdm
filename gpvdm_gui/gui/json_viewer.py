@@ -557,12 +557,15 @@ class json_viewer(QWidget,tab_base):
 
 			if w.show_on_token_eq!=None:
 				do_hide=True
+				found=False
 				for val in w.show_on_token_eq:
 					json_val=getattr(self.template_widget,val[0],None)
+					if json_val!=None:
+						found=True
 					if json_val==val[1]:
 						do_hide=False
 
-				if do_hide==True:			
+				if do_hide==True and found==True:			
 					w.edit_box.setVisible(False)
 					w.units.setVisible(False)
 					w.label.setVisible(False)

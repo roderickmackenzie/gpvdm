@@ -65,6 +65,27 @@ class json_light_source(json_base):
 		self.var_list.append(["id",self.random_id()])
 		self.var_list_build()
 
+	def get_min_max(self,my_min,my_max):
+		#x
+		if self.x0<my_min.x:
+			my_min.x=self.x0
+		if self.x0>my_max.x:
+			my_max.x=self.x0
+
+		#y
+		if self.y0<my_min.y:
+			my_min.y=self.y0
+		if self.y0>my_max.y:
+			my_max.y=self.y0
+
+		#y
+		if self.z0<my_min.z:
+			my_min.z=self.z0
+		if self.z0>my_max.z:
+			my_max.z=self.z0
+
+		return my_min,my_max
+
 class json_lights(json_base):
 	def __init__(self):
 		json_base.__init__(self,"lights",segment_class=True)

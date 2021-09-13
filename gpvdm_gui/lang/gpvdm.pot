@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gpvdm 5.0\n"
 "Report-Msgid-Bugs-To: roderick.mackenzie@nottingham.ac.uk\n"
-"POT-Creation-Date: 2021-09-09 09:27+0100\n"
+"POT-Creation-Date: 2021-09-13 13:11+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -10665,7 +10665,7 @@ msgstr ""
 msgid "Free hand drawing"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/cmp_class.py:233
+#: ../../gpvdm_gui/gui/cmp_class.py:241
 msgid "Video"
 msgstr ""
 

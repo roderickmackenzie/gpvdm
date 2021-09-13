@@ -62,8 +62,6 @@ class display_widget(QWidget):
 		self.display=gl_fallback()
 		self.hbox.addWidget(self.display)
 	
-	def update_ray_file(self):
-		self.display.ray_file=global_object_get("fx_box_update").get_file_name()
 
 	def __init__(self):
 		QWidget.__init__(self)
@@ -75,7 +73,7 @@ class display_widget(QWidget):
 		
 		#if enable_3d==True:
 		self.display=glWidget(self)
-		#self.update_ray_file()
+		global_object_get("main_fx_box").cb.currentIndexChanged.connect(self.fx_box_changed)
 
 		self.hbox.addWidget(self.display)
 
@@ -84,11 +82,8 @@ class display_widget(QWidget):
 		global_object_register("display_set_selected_obj",self.set_selected_obj)
 
 	def fx_box_changed(self):
-		self.update_ray_file()
+		self.display.ray_file=global_object_get("main_fx_box").get_file_name()
 		self.display.force_redraw()
-		#print("rod",self.display.ray_file)
-		
-
 
 		
 	def set_selected_obj(self,obj_id):
@@ -101,12 +96,13 @@ class display_widget(QWidget):
 
 	#This will reclaculate all the display elements in the display widget.
 	def recalculate(self):
-		global_object_get("fx_box_update").update()
-		self.update_ray_file()
-			
+		global_object_get("main_fx_box").update()
+		self.display.ray_file=global_object_get("main_fx_box").get_file_name()	
 		self.display.force_redraw()
 		
 	def update(self):
+		global_object_get("main_fx_box").update()
+		self.display.ray_file=global_object_get("main_fx_box").get_file_name()
 		self.display.rebuild_scene()
 
 

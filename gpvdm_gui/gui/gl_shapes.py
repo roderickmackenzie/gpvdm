@@ -180,9 +180,15 @@ class gl_shapes:
 		dx=o.dxyz.x/2
 		dy=o.dxyz.y/2
 		dz=o.dxyz.z/2
-
+		alpha=0.5
+		beta=0.5
 		glLineWidth(line_width)
-		
+
+		if o.r==None:
+			o.r=1.0
+			o.g=0.0
+			o.b=0.0
+
 		for xyz in o.xyz:
 			glPushMatrix()
 			glTranslatef(xyz.x,xyz.y,xyz.z)
@@ -191,19 +197,15 @@ class gl_shapes:
 
 			n=1.0
 			for t in o.triangles:
+				if false_color==True:
+					self.set_color(o,r_override=o.r*alpha+o.r*beta*n, g_override=o.g*alpha+o.g*beta*n, b_override=o.b*alpha+o.b*beta*n)
+				else:
+					self.set_color(o)
+
 				glVertex3f(t.xyz0.x,t.xyz0.y,t.xyz0.z)
 				glVertex3f(t.xyz1.x,t.xyz1.y,t.xyz1.z)
 
-				if o.r==None:
-					o.r=1.0
-					o.g=0.0
-					o.b=0.0
-
 				if t.points==3:
-					if false_color==True:
-						self.set_color(o,r_override=o.r*0.1+o.r*0.9*n, g_override=o.g*0.1+o.g*0.9*n, b_override=o.b*0.1+o.b*0.9*n)
-					else:
-						self.set_color(o)
 
 					glVertex3f(t.xyz1.x,t.xyz1.y,t.xyz1.z)
 					glVertex3f(t.xyz2.x,t.xyz2.y,t.xyz2.z)

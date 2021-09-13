@@ -54,7 +54,7 @@ from PIL import Image
 from PyQt5.QtGui import QImage
 import io
 from util_latex import str_to_latex
-
+from inp import inp
 
 class cmp_class(QWidgetSavePos):
 
@@ -226,8 +226,16 @@ class cmp_class(QWidgetSavePos):
 
 
 		self.slider.changed.connect(self.update)
-		self.plot=plot_widget(enable_3d=True,widget_mode=widget_mode)
-		self.plot.setMaximumHeight(300)
+		force_2d3d=False
+		f=inp()
+		j=f.load_json(os.path.join(path,"data.json"))
+
+		print(j['default_plot_type'])
+		if j['default_plot_type']=="3d":
+			force_2d3d="3d"
+
+		self.plot=plot_widget(enable_3d=True,widget_mode=widget_mode,force_2d3d=force_2d3d)
+		self.plot.setMinimumHeight(300)
 		#force_2d3d="3d"
 
 		self.plot.plot_ribbon.addTab(self.plot.plot_ribbon.tb_video,_("Video"))
@@ -238,7 +246,7 @@ class cmp_class(QWidgetSavePos):
 		self.plot.plot_ribbon.plot_toolbar.addAction(self.slider.tb_play)
 		self.plot.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
-
+			
 
 		self.main_vbox.addWidget(self.plot)
 
