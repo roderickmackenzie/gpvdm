@@ -1,0 +1,51 @@
+{
+	"item_type":"material",
+	"color_r":0.23921568627450981,
+	"color_g":0.6941176470588235,
+	"color_b":0.1568627450980392,
+	"color_alpha":0.8,
+	"material_type":"organic",
+	"status":"public",
+	"changelog":"",
+	"mat_src":"",
+	"n_import": {
+		"import_file_path":"/second_disk/gpvdm/gpvdm8.0/materials/small_molecules/TPBi/data/n.csv",
+		"import_x_combo_pos":9,
+		"import_data_combo_pos":20,
+		"import_x_spin":0,
+		"import_data_spin":1,
+		"import_title":"IMPS Im(Z) - Refractive index",
+		"import_xlabel":"IMPS Im(Z)",
+		"import_data_label":"Refractive index",
+		"import_area":0.104,
+		"import_data_invert":"False",
+		"import_x_invert":"False",
+		"data_file":"n.gmat"
+		},
+	"alpha_import": {
+		"import_file_path":"/second_disk/gpvdm/gpvdm8.0/materials/small_molecules/TPBi/data/k.csv",
+		"import_x_combo_pos":3,
+		"import_data_combo_pos":23,
+		"import_x_spin":0,
+		"import_data_spin":1,
+		"import_title":"Wavelength - Absorption",
+		"import_xlabel":"Wavelength",
+		"import_data_label":"Absorption",
+		"import_area":0.104,
+		"import_data_invert":"False",
+		"import_x_invert":"False",
+		"data_file":"alpha.gmat"
+		},
+	"electrical_constants": {
+		"material_blend":"False",
+		"Xi0":-3.2,
+		"Eg0":3.2,
+		"Xi1":-3.0,
+		"Eg1":1.0
+		},
+	"thermal_constants": {
+		"thermal_kl":1.0,
+		"thermal_tau_e":1e-08,
+		"thermal_tau_h":1e-09
+		}
+	}

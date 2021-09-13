@@ -122,10 +122,11 @@ class import_data_json(QDialog):
 		data.save()
 
 	def load_config(self):
+		#print("import path=",self.data.import_file_path)
 		if os.path.isfile(self.data.import_file_path)==True:
 			self.path=os.path.dirname(self.data.import_file_path)
 		else:
-			self.path=get_sim_path()
+			self.path=self.export_path
 
 		self.disable_callbacks=True
 		self.x_combo.setCurrentIndex(int(self.data.import_x_combo_pos))
