@@ -176,7 +176,9 @@ class ml_vectors:
 		read_lines1 = zf.read(sims[1])
 		json_data0=json.loads(read_lines0)
 		json_data1=json.loads(read_lines1)
-		#print(json_data0,read_lines1)
+		print(sims[0])
+		print(sims[1])
+
 		zf.close()
 		return json_diff(json_data0,json_data1)
 

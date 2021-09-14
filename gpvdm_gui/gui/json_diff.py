@@ -48,12 +48,16 @@ def json_diff(obj0,obj1,path=""):
 			my_ret=json_diff(obj0[obj],obj1,path=new_path)
 			ret.extend(my_ret)
 		else:
-			cur_path=path+"."+obj
-			pointer=obj1
-			#print(cur_path)
-			for seg in cur_path.split("."):
-				#print(pointer,seg)
-				pointer=pointer[seg]
+			if path!="":
+				cur_path=path+"."+obj
+				pointer=obj1
+				for seg in cur_path.split("."):
+					#print(pointer,seg)
+					pointer=pointer[seg]
+			else:							#This is to deal with items in the root of the tree which are not a dic
+				pointer=obj1[obj]	
+				cur_path=obj
+
 			if pointer!=obj0[obj]:
 				ret.append(cur_path)
 
