@@ -166,7 +166,7 @@ class ml_vectors:
 		items=zf.namelist()
 		sims=[]
 		for file_name in items:
-			if file_name.endswith("json.inp"):
+			if file_name.endswith("sim.json"):
 				if os.path.basename(os.path.dirname(file_name))==sub_sim:
 					sims.append(file_name)
 
@@ -281,8 +281,8 @@ class ml_vectors:
 						mul=1.0
 						do_fabs=False
 						d=gpvdm_data()
-						#print(os.path.join(sub_sim_folder,"json.inp"))
-						if d.load(os.path.join(sub_sim_folder,"json.inp"))==False:
+						#print(os.path.join(sub_sim_folder,"sim.json"))
+						if d.load(os.path.join(sub_sim_folder,"sim.json"))==False:
 							error=True
 							break
 
@@ -413,7 +413,7 @@ class ml_vectors:
 								getattr(base,sub_sim).var_list.append([t,val])
 
 					f=inp()
-					json_data=f.load_json(os.path.join(tmp_dir,sub_sims[0],"json.inp"))
+					json_data=f.load_json(os.path.join(tmp_dir,sub_sims[0],"sim.json"))
 
 					for token_path in self.ml_tokens:
 						temp=str(json_get_val(json_data,token_path))

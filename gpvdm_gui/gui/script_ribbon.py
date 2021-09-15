@@ -136,7 +136,7 @@ class script_ribbon(ribbon_base):
 
 	def callback_view_json(self):
 		f=inp()
-		f.load(os.path.join(get_sim_path(),"json.inp"))
-		f.save_as(os.path.join(gpvdm_paths.get_tmp_path(),"json.json"),dest="file")
-		webbrowser.open(os.path.join(gpvdm_paths.get_tmp_path(),"json.json"))
+		f.load(os.path.join(get_sim_path(),"sim.json"))
+		f.save_as(os.path.join(gpvdm_paths.get_tmp_path(),"sim.json"),dest="file")
+		webbrowser.open(os.path.join(gpvdm_paths.get_tmp_path(),"sim.json"))
 

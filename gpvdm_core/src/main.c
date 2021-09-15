@@ -143,7 +143,7 @@ sim_init(&sim);
 /*json_init(&j);
 
 struct json_obj *json_obj;
-json_load(&sim,&j,"json.inp");
+json_load(&sim,&j,"sim.json");
 json_obj=&(j.obj);//json_obj_find_by_path(&sim,&(j.obj), "circuit.circuit_diagram.segment3");
 
 struct json_obj *next_obj;
@@ -334,7 +334,7 @@ if (scanarg( argv,argc,"--gui")==TRUE)
 gui_start(&sim);
 
 json_init(&j);
-json_load_from_path(&sim,&j,sim.root_simulation_path,"json.inp");
+json_load_from_path(&sim,&j,sim.root_simulation_path,"sim.json");
 
 //Check version
 	obj=json_obj_find(&(j.obj), "sim");

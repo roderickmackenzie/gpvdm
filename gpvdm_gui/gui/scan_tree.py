@@ -249,7 +249,7 @@ def tree_gen_random_files(sim_path,flat_simulation_list,program_list,base_dir):
 			t=scan_tree_leaf()
 			t.program_list=program_list
 			t.directory=cur_dir
-			t.json_load(os.path.join(cur_dir,"json.inp"))
+			t.json_load(os.path.join(cur_dir,"sim.json"))
 
 			if t.apply_constants()==False:
 				return False
@@ -306,7 +306,7 @@ def tree(flat_simulation_list,program_list,tree_items,base_dir,level,path,var_to
 				t=scan_tree_leaf()
 				t.program_list=program_list
 				t.directory=cur_dir
-				t.json_load(os.path.join(cur_dir,"json.inp"))
+				t.json_load(os.path.join(cur_dir,"sim.json"))
 
 				#print(t.json)
 				#print(program_line.human_name)

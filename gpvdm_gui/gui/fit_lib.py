@@ -64,7 +64,7 @@ class fit_lib(fit_lib_anal_results):
 
 
 			data=gpvdm_data()
-			data.load(os.path.join(s,"json.inp"))
+			data.load(os.path.join(s,"sim.json"))
 			
 			lx=latex()
 			lx.document_start()

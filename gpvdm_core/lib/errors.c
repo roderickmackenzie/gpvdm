@@ -147,7 +147,8 @@ int ewe( struct simulation *sim, const char *format, ...)
 		printf("error.c: sprintf error\n");
 		exit(0);
 	}
-	printf_log(sim, "%s\n",temp2);
+	rainbow_print(sim,600e-9, 640e-9, "%s\n",temp2);
+	//printf_log(sim, "%s\n",temp2);
 
 	va_end(args);
 

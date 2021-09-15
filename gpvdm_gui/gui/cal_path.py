@@ -320,7 +320,7 @@ def get_user_settings_dir():
 	if use_gpvdm_local==None:
 		use_gpvdm_local=True
 
-		file_path=os.path.join(os.getcwd(),"json.inp")
+		file_path=os.path.join(os.getcwd(),"sim.json")
 
 		if os.path.isfile(file_path):
 			f=open(file_path, mode='r')

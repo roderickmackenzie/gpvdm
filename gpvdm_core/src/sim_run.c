@@ -102,7 +102,7 @@ int device_run_simulation(struct simulation *sim, struct device *dev)
 
 	printf_log(sim,"%s\n",_("Runing simulation"));
 
-	join_path(2,json_path,dev->input_path,"json.inp");
+	join_path(2,json_path,dev->input_path,"sim.json");
 	json_load(sim,&(dev->config),json_path);
 
 	dev->onlypos=FALSE;

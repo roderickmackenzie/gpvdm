@@ -231,7 +231,7 @@ void printf_log(struct simulation *sim, const char *format, ...)
 	va_end(args);
 }
 
-void rainbow_print(struct simulation *sim, const char *format, ...)
+void rainbow_print(struct simulation *sim,double start,double stop, const char *format, ...)
 {
 	char data[STR_MAX];
 	char temp[PATH_MAX];
@@ -241,8 +241,6 @@ void rainbow_print(struct simulation *sim, const char *format, ...)
 
 	int r,g,b;
 	int i;
-	double start=350e-9;
-	double stop=750e-9;
 	double dl=0.0;
 	double lambda=start;
 	int len=0;

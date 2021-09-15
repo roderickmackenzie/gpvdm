@@ -170,7 +170,13 @@ void light_load_light_sources(struct simulation *sim,struct light *li, struct js
 		}
 	}
 
-
+	if (y0_found==TRUE)
+	{
+		if (y1_found==TRUE)
+		{
+			ewe(sim,"If you want to illuminate from the top and bottom at the same time drop me a mail..\n");
+		}
+	}
 }
 
 void light_load_config(struct simulation *sim,struct light *li, struct device *dev)

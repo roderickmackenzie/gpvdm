@@ -453,7 +453,7 @@ class scan_io:
 
 	def apply_constants_to_dir(self,folder):
 		leaf=scan_tree_leaf()
-		leaf.json_load(os.path.join(folder,"json.inp"))
+		leaf.json_load(os.path.join(folder,"sim.json"))
 		leaf.directory=folder
 		leaf.program_list=self.program_list
 		leaf.apply_constants()

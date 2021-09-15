@@ -46,6 +46,7 @@
 #include <color.h>
 #include <dump.h>
 #include <util.h>
+#include <detector.h>
 
 /** @file ray.c
 	@brief Ray tracing for the optical model, this should really be split out into it's own library.
@@ -591,6 +592,8 @@ void dump_ang_escape_as_rgb(struct simulation *sim,struct image *in)
 
 	buffer_dump_path(sim,"","theta_small_z.dat",&buf_z);
 	buffer_free(&buf_z);
+
+	 detector_dump_bins(sim,in);
 }
 
 void dump_rendered_image(struct simulation *sim,char *out_dir, struct world *w, struct image *in)

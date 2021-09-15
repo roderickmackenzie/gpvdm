@@ -1,4 +1,4 @@
-// 
+//
 // General-purpose Photovoltaic Device Model gpvdm.com - a drift diffusion
 // base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solarcells.
 // The model can simulate OLEDs, Perovskite cells, and OFETs.
@@ -33,29 +33,75 @@
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
 
-/** @file detector.h
-@brief header file for the optical detectors
-*/
-#ifndef detector_h
-#define detector_h
-#include <enabled_libs.h>
-#include <vec.h>
-#include <i.h>
-#include <sim_struct.h>
-#include <triangle.h>
-#include <dim.h>
-#include <shape_struct.h>
-#include <detector_struct.h>
+#include <stdio.h>
 #include <ray.h>
-#include <vectors.h>
+#include <gpvdm_const.h>
+#include <math.h>
+#include <stdlib.h>
+#include <cal_path.h>
+#include <log.h>
+#include <ray_fun.h>
+#include <dat_file.h>
+#include <string.h>
+#include <color.h>
+#include <dump.h>
+#include <util.h>
+#include <detector.h>
 
-void detector_init(struct simulation *sim,struct detector *d);
-void detector_free(struct simulation *sim,struct detector *d);
-void detector_cpy(struct simulation *sim,struct detector *out,struct detector *in);
-void detectors_init(struct simulation *sim,struct world *w);
-void detectors_load(struct simulation *sim,struct world *w, struct json_obj *json_detectors);
-void detectors_free(struct simulation *sim,struct world *w);
-void detectors_cpy(struct simulation *sim,struct world *out,struct world *in);
-void dectors_add_to_scene(struct simulation *sim,struct world *w, struct image *my_image,struct vec *min, struct vec *max);
-void detector_dump_bins(struct simulation *sim,struct image *in);
-#endif
+
+/** @file detector_dump_bins.c
+	@brief Ray tracing for the optical model, this should really be split out into it's own library.
+*/
+
+
+void detector_dump_bins(struct simulation *sim,struct image *in)
+{
+	int x;
+	int y;
+	char temp[200];
+
+	struct dat_file buf;
+
+	buffer_init(&buf);
+
+	buffer_malloc(&buf);
+	buf.x_mul=1.0;
+	buf.y_mul=1e9;
+	strcpy(buf.title,"Angle vs. Wavelength");
+	strcpy(buf.type,"heat");
+	strcpy(buf.x_label,"Wavelength");
+	strcpy(buf.y_label,"Angle");
+	strcpy(buf.data_label,"Intensity");
+	strcpy(buf.x_units,"nm");
+	strcpy(buf.y_units,"Degrees");
+	strcpy(buf.data_units,"Counts");
+	buf.logscale_x=0;
+	buf.logscale_y=0;
+	buf.x=in->escape_bins;
+	buf.y=in->ray_wavelength_points;
+	buf.z=1;
+	buffer_add_info(sim,&buf);
+
+	sprintf(temp,"#data\n");
+	buffer_add_string(&buf,temp);
+
+	for (x=0;x<in->escape_bins;x++)
+	{
+		for (y=0;y<in->ray_wavelength_points;y++)
+		{
+			sprintf(temp,"%Le %e %Le\n",in->angle[x],in->lam[y],in->ang_escape[y][x]);
+			buffer_add_string(&buf,temp);
+		}
+
+		buffer_add_string(&buf,"\n");
+	}
+
+	sprintf(temp,"#end\n");
+	buffer_add_string(&buf,temp);
+
+	buffer_dump_path(sim,"","escape_bins_raw.dat",&buf);
+	buffer_free(&buf);
+
+
+}
+

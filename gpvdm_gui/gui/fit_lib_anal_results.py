@@ -69,7 +69,7 @@ class fit_lib_anal_results:
 		vars_from_file={}
 		results=[]
 		data=all_gpvdm_data()
-		data.load(os.path.join(simulation_paths[0],"json.inp"))
+		data.load(os.path.join(simulation_paths[0],"sim.json"))
 		for v in data.fits.vars.segments:
 			if v.fit_var_enabled==True:
 				vars_from_file[v.json_var]=[]
@@ -79,7 +79,7 @@ class fit_lib_anal_results:
 
 		for s in simulation_paths:
 			f=inp()
-			if f.load(os.path.join(s,"json.inp"))!=False:
+			if f.load(os.path.join(s,"sim.json"))!=False:
 				json_data="\n".join(f.lines)
 				decode=json.loads(json_data)
 
@@ -167,7 +167,7 @@ class fit_lib_anal_results:
 		token_lib=tokens()
 		
 		f=inp()
-		f.load(os.path.join(json_path,"json.inp"))
+		f.load(os.path.join(json_path,"sim.json"))
 		json_data="\n".join(f.lines)
 		decode=json.loads(json_data)
 
@@ -207,7 +207,7 @@ class fit_lib_anal_results:
 		token_lib=tokens()
 		
 		f=inp()
-		f.load(os.path.join(os.getcwd(),"json.inp"))
+		f.load(os.path.join(os.getcwd(),"sim.json"))
 		json_data="\n".join(f.lines)
 		decode=json.loads(json_data)
 

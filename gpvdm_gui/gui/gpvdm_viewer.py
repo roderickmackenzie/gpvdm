@@ -613,7 +613,7 @@ class gpvdm_viewer(QListWidget,gpvdm_viewer_new):
 						itm.icon="sim_lock"
 					else:
 						f=inp()
-						if f.load_json("json.inp",archive=file_name)!=False:
+						if f.load_json("sim.json",archive=file_name)!=False:
 							itm.display_name=f.json['english_name']
 							icon_name=f.json['icon']
 							itm.icon=icon_name

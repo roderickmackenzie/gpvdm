@@ -140,7 +140,7 @@ void gen_dos_fd_gaus_fd_stand_alone(struct simulation *sim,char *input_path)
 
 	json_init(&j);
 
-	join_path(2, full_name,input_path,"json.inp");
+	join_path(2, full_name,input_path,"sim.json");
 
 	json_load(sim,&j,full_name);
 

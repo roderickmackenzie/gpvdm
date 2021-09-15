@@ -77,7 +77,7 @@ class file_type():
 file_list=[]
 
 file_list.append(file_type(name="genrate",dest="file",copy_opp=file_type().JUST_COPY))
-file_list.append(file_type(name="json.inp",dest="archive",copy_opp=file_type().JUST_COPY))
+file_list.append(file_type(name="sim.json",dest="archive",copy_opp=file_type().JUST_COPY))
 file_list.append(file_type(name="fit_error_delta",dest="file",copy_opp=file_type().JUST_COPY))
 file_list.append(file_type(name="fit_error_exp",dest="file",copy_opp=file_type().JUST_COPY))
 file_list.append(file_type(name="fit_error_sim",dest="file",copy_opp=file_type().JUST_COPY))

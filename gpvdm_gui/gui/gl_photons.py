@@ -88,7 +88,7 @@ class gl_photons():
 		if source.light_illuminate_from=="y0":
 			y=-1.0
 		elif source.light_illuminate_from=="y1":
-			y=self.scale.project_m2screen_y(self.scale.world_min.y)+0.5
+			y=self.scale.project_m2screen_y(self.scale.world_max.y)+0.5
 			up_photons=True
 		else:
 			return
