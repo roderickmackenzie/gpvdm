@@ -38,8 +38,8 @@
 		},
 	"electrical_constants": {
 		"material_blend":"False",
-		"Xi0":-3.2,
-		"Eg0":3.2,
+		"Xi0":-2.7,
+		"Eg0":3.5,
 		"Xi1":-3.0,
 		"Eg1":1.0
 		},

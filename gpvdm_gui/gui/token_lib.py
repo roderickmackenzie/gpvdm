@@ -291,6 +291,7 @@ def build_token_lib():
 
 	#sim_info.dat (jv plugin)
 	lib.append(my_data("voc","V",_("V_{oc}"),"QLineEdit"))
+	lib.append(my_data("jv_vbi","V",_("V_{bi}"),"QLineEdit"))
 	lib.append(my_data("pce","Percent",_("Power conversion efficiency"),"QLineEdit"))
 	lib.append(my_data("ff","a.u.",_("Fill factor"),"QLineEdit"))
 	lib.append(my_data("Pmax","W m^{-2}",_("Max power"),"QLineEdit"))

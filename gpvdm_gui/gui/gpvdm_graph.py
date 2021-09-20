@@ -55,7 +55,6 @@ from icon_lib import icon_get
 
 from open_save_dlg import save_as_filter
 from cal_path import get_sim_path
-from cal_path import get_materials_path
 from cal_path import get_default_material_path
 
 from lock import get_lock

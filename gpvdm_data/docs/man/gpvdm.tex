@@ -39,13 +39,14 @@
 \section{Foreword}
 This manual is a work in progress, as people ask questions to do with gpvdm, I write the answer in the manual and then send the link to them.  So the text is far from exhaustive.  If something is not clear, just drop me an e-mail.  I also suggest you also read the papers which were published from this model - do also read the supplementary information (SI) to the papers, as I often write about the model in there.
 
+\newpage
+
 \section{Running the model}
 
 \subsection{Installing gpvdm for windows}
 Go to the download page for gpvdm at \url{http://www.gpvdm.com/windows.php} and download the latest version.  Simply double click on it and say yes to all questions.  The installer may offer you a choice of where to install the software to, don't change the install destination, the current version will only work if it is in the default install path which is C:$\backslash$gpvdm.  I publish a new exe with updates every couple of weeks, however it is possible I won't actually use gpvdm for a while after having published a new version.  Therefore, it is entirely possible that I may have introduced bugs that break the code in between releases.  So, if gpvdm is not working for, you drop me an e-mail and I will do my best to fix it asap.
 
-\subsection{Installing gpvdm for linux}
-This is discussed in section \ref{installing_on_linux}.
+\input{linux.tex}
 
 \section{Running gpvdm}
 On both windows and linux gpvdm will install on the start menu, click on it to launch it.  Once run, a window resembling that in figure \ref{fig:mainwindow} will appear.  From the left, the first three icons on the toolbar, open a simulation, save a simulation and generate a new simulation.  Once you have made a new simulation, the the play button will run it, and the stop button will stop the simulation running.  You will find more video examples describing how to use the model throughout the gpvdm web page.
@@ -57,7 +58,8 @@ On both windows and linux gpvdm will install on the start menu, click on it to l
 \label{fig:mainwindow}
 \end{figure}
 
-Each set of model parameters is displayed in an individual simulation tab.  For example the tab 'DoS layer' contains the material parameters for material layer 0.  These include mobility, recombination cross sections, tail slopes and band gaps.  The 'device' tab is used to set information about the device, such as shunt resistance, series resistance and density of electrons/holes on the contacts.
+
+\input{electrical.tex}
 
 \subsection{Meshing}
 \subsubsection{Editing the electrical mesh/layers}
@@ -235,251 +237,13 @@ If your simulation window looks like figure \ref{fig:nothreed} and not like figu
 \vfill
 \clearpage
 
-\section{The physical model}
-\subsection{Summary of model inputs}
-A device is comprised of a series of layers (upto 10 layers), all these layers will interact with light.  Usually only one or two of these layers are electrically active, meaning the transport of electrons and holes must be modeled in detail.  Each electrically active layer with in the device has a set of electrical input parameters which define, charge transport, recombination and trapping. (see table)  If a device has more than one electrically active layer, then multiple sets of these parameters must be defined.  It should be noted that for organic materials (unlike inorganic) there is no standard set of material parameters for any given material.  The exact parameters will depend a lot on the fabrication conditions.  All layers in the device will also need a refractive index spectrum to be defined, this includes the real and imaginary refractive index as a function of wavelength (typically 300-1000 nm).
- 
-\begin{table}[H]
-\begin{center}
-\begin{tabular}{lll}
-\hline
-Parameter & Typical values & unit  \\
-\hline
-Electron trap density & $0-1.0\e{25}$ & $m^{-3} eV^{-1}$ \\
-Hole trap density & $1.0\e{25}$ & $m^{-3} eV^{-1}$ \\
-Electron tail slope & $4.0\e{-02}$ & $eV$ \\
-Hole tail slope & $4.0\e{-02}$ & $eV$ \\
-Electron mobility & $1.0\e{-05}$ & $m^{2}V^{-1}s^{-1}$ \\
-Hole mobility & $1.0\e{-05}$ & $m^{2}V^{-1}s^{-1}$ \\
-Relative permittivity & $3$ & $au$ \\
-Free electron to Trapped electron & $1.0\e{-15}$ & $m^{-2}$ \\
-Trapped electron to Free hole & $1.0\e{-28}$ & $m^{-2}$ \\
-Trapped hole to Free electron & $1.0\e{-28}$ & $m^{-2}$ \\
-Free hole to Trapped hole & $1.0\e{-15}$ & $m^{-2}$ \\
-Effective density of free electron states & $5.0\e{+26}$ & $m^{-3}$ \\
-Effective density of free hole states & $5.0\e{+26}$ & $m^{-3}$ \\
-Xi & $3.7$ & $eV$ \\
-Eg & $1.1$ & $eV$ \\
-$n_{free}$ to $p_{free}$ Recombination rate constant & $0.0$ & $m^{3}s^{-1}$ \\
-  \hline
-\end{tabular}
-\end{center}
-\caption{Device parameters}
-\end{table}
 
-\subsection{Summary of model outputs}
-The model can output.  Current voltage curves.  The transient responses (current/voltage) to laser pulses, and the response of the the device to the application of a sinusoidal optical or electrical perturbation. 
+\newpage
 
-\subsection{Electrical model}
-\subsubsection{Calculating the built in potential}  \label{sssec:initial}
-The first step to performing a device simulation, is to calculate the built in potential of the device.  To do this we must know the following things:
+\section{Thermal models}
+\subsection{Lattice thermal model}
 
-\begin{itemize}
-
-  \item The majority carrier concentrations on the contacts $n$ and $p$.
-  \item The effective densities of states $N_{LUMO}$ and $N_{HOMO}$.
-  \item The effective band gap $E_g$
-
-\end{itemize}
-
-\begin{figure}[ht!]
-\centering
-\includegraphics[width=120mm]{./images/bands.png}
-\caption{Band structure of device in equilibrium.}
-\label{fig:bands}
-\end{figure}
-
-\vspace{1em}
-The left hand side of the device is given a reference potential of 0 V.  See figure \ref{fig:bands}.  We can then write the energy of the LUMO and HOMO on the left hand side of the device as:
-
-\begin{equation}
-E_{LUMO}=-\chi
-\end{equation}
-
-\begin{equation}
-E_{HOMO}=-\chi-E_{g}
-\end{equation}
-
-For the left hand side of the device, we can use Maxwell-Boltzmann statistics to calculate the equilibrium Fermi-level ($F_i$).
-
-\begin{equation}
-p_{l}=N_v exp \left(\frac{E_{HOMO}-F_p}{kT} \right)
-\end{equation}
-
-We can then calculate the minority carrier concentration on the left hand side using $F_i$
-
-\begin{equation}
-n_{l}=N_c exp \left (\frac{F_n-E_{LUMO}}{kT} \right)
-\end{equation}
-
-The Fermi-level must be flat across the entire device because it is in equilibrium.  However we know there is a built in potential, we can therefore write the potential of the conduction and valance band on the right hand side of the device in terms of $phi$ to take account of the built in potential.
-
-\begin{equation}
-E_{LUMO}=-\chi-q\phi
-\label{equ:Ev_rhs}
-\end{equation}
-
-\begin{equation}
-E_{HOMO}=-\chi-E_g-q\phi
-\end{equation}
-
-we can now calculate the potential using
-
-\begin{equation}
-n_{r}=N_c exp \left (\frac{F_n-E_{LUMO}}{kT} \right)
-\end{equation}
-equation \ref{equ:Ev_rhs}.
-
-The minority concentration on the right hand side can now also be calculated using.
-
-\begin{equation}
-p_{r}=N_v exp \left (\frac{E_v-F_{HOMO}}{kT} \right)
-\end{equation}
-
-The result of this calculation is that we now know the built in potential and minority carrier concentrations on both sides of the device.  Note, infinite recombination velocity on the contacts is assumed.  I have not included finite recombination velocities in the model simply because they would add four more fitting parameters and in my experience I have never needed to use them to fit any experimental data I have come across.
-
-Once this calculation has been performed, we can estimate the potential profile between the left and right hand side of the device, using a linear approximation. From this the charge carrier densities across the device can be guessed.  The guess for potential and carrier densities, is then used to prime the main Newton solver.  Where the real value are calculated.  The Newton solver is described in the next section.
-
-\subsubsection{Transport}
-To describe charge carrier transport, the bi-polar drift-diffusion equations are solved in position space
-for electrons,
-\begin{equation}
-\label{eq:ndrive}
-\boldsymbol{J_n} = q \mu_e n_{f}  {\frac{\partial E_{LUMO}}{\partial x}}  + q D_n  {\frac{\partial n_{f}}{\partial x}},
-\end{equation}
-and holes,
-\begin{equation}
-\label{eq:pdrive}
-\boldsymbol{J_p} = q \mu_h p_{f}  {\frac{\partial E_{HOMO}}{\partial x}}  - q D_p {\frac{\partial p_{f}}{\partial x}}.
-\end{equation}
-
-Conservation of charge carriers is forced by solving the charge carrier continuity equations for both electrons,
-\begin{equation}
-\label{eq:contn}
-{\frac{\partial \boldsymbol{J_n}}{\partial x}}  = q (R-G),
-\end{equation}
-and holes
-\begin{equation}
-\label{eq:contp}
-{\frac{\partial \boldsymbol{J_p}}{\partial x}} = - q (R-G).
-\end{equation}
-
-where $R$ and $G$ are the net recombination and generation rates per unit volume respectively.
-
-To obtain the internal potential distribution within the device Poisson's equation is solved,
-
-\begin{equation}
-\label{eq:pos}
-{\frac{d}{d x}} \cdot \epsilon_0 \epsilon_r {\frac{d \phi}{d x}} = q (n_{f}+n_{t}-p_{f}-p_{t}-N_{ad}),
-\end{equation}
-
-where $n_{f}$, $n_{t}$ are the carrier densities of free and trapped electrons; $p_{f}$ and $p_{t}$ are the carrier densities of the free and trapped holes; and $N_{ad}$ is the doping density.
-
-\subsubsection{Geminate recombination}
-There exist models to calculate the number of charge carriers generated per absorbed photon (and example is the Onsager-Braun model).  This model explicitly accounts for geminate recombination, and charge carrier separation at the microscopic scale.  However, the model will require a number of reliability unknown parameters to make it work, and then as far as solar cell simulation is concerned, you will end up with a number giving you the percentage of absorbed photons which make it to being free electrons/holes.  A more simple approach in my view, is to firstly use correct real/imaginary refractive index spectra for your chosen material.  The optical model will then give you how may photos are absorbed at each position in the device.  Then multiply this generation rate, buy a factor between 0 and 1.0 which accounts for geminate recombination loss.  You can make a good approximation of this value by making sure the simulated and experimental Jsc match up.  This value is set in (Simulation->Optical Simulation->Optical Setup->Photon Efficiency.)
-
-
-\subsubsection{Carrier trapping and Shockley-Read-Hall recombination}
-
-
-\begin{figure}
-In energy space the model describes the interaction of free carriers with a distribution of trap states using Shockley-Read-Hall (SRH) theory. A 0D section of the model is depicted in figure \ref{fig:dos_structure}, the free electron and hole carrier distributions are labeled as n free and p free respectively. The trapped carrier populations are denoted with n trap and p trap , they are depicted with filled red and blue boxes. SRH theory describes the rates at which electrons and holes become captured and escape from the carrier traps. If one considers a single electron trap, the change in population of this trap can be described by four carrier capture and escape rates as depicted in figure \ref{fig:dos_structure}. The rate rec describes the rate at which electrons become captured into the electron trap, $r_{ee}$ is the rate which electrons can escape from the trap back to the free electron population, $r_{hc}$ is the rate at which free holes get trapped and $r_{he}$ is the rate at which holes escape back to the free hole population. Recombination is described by holes becoming captured into electron space slice through our 1D traps. Analogous processes are also defined for the hole traps.
-
-\centering
-\includegraphics[width=70mm]{./images/dos_structure.jpg}
-\caption{Trap filling in both energy and position space as the solar cell is taken from a negative bias
-Carrier trapping, de-trapping, and recombination}
-\label{fig:dos_structure}
-\end{figure}
-
-For each trap level the carrier balance equation
-
-\begin{equation}
-\label{eq:taile}
-\frac{\delta n_t}{\partial t}=r_{ec}-r_{ee}-r_{hc}+r_{he}
-\end{equation}
-
-is solved, giving each trap level an independent quasi-Fermi level. Each point in position space can be allocated between 10 and 160 independent trap states.  The rates of each process $r_{ec}$, $r_{ee}$, $r_{hc}$, and $r_{he}$ are give in table \ref{tab:rates}.
-
-\begin{table}
-\begin{center}
-  \begin{tabular}{lll}
-  \hline
-  Mechanism & Label & Description  \\
-  \hline
-Electron capture rate & $r_{ec}$ & $n v_{th} \sigma_{n} N_{t}(1-f)$ \\
-Electron escape rate & $r_{ee}$ & $e_{n} N_{t} f$ \\
-Hole capture rate & $r_{hc}$ & $p v_{th} \sigma_{p} N_{t} f$ \\
-Hole escape rate & $r_{he}$ & $e_{p} N_{t} (1-f)$\\
-  \hline
-\end{tabular}
-\end{center}
-\caption{Shockley-Read-Hall trap capture and emission rates, where $f$ is the fermi-Dirac occupation function and $N_{t}$ is the trap density of a single carrier trap.}
-\label{tab:rates}
-\end{table}
-
-\begin{equation}
-\label{eq:taile}
-e_n=v_{th}\sigma_{n} N_{c} exp \left ( \frac{E_t-E_c}{kT}\right )
-\end{equation}
-
-and
-
-\begin{equation}
-\label{eq:taile}
-e_p=v_{th}\sigma_{p} N_{v} exp \left ( \frac{E_v-E_t}{kT}\right )
-\end{equation}
-
- where $\sigma_{n,p}$ are the trap cross sections, $v_{th}$ is the thermal emission velocity of the carriers, and $N_{c,v}$ are the effective density of states for free electrons or holes.  The distribution of trapped states (DoS) is defined between the mobility edges as
-
-\begin{equation}
-\label{eq:taile}
-\rho^{e/h}(E)=N^{e/h}exp(E/E_{u}^{e/h})
-\end{equation}
-
-where , $N_{e/h}$ is the density of trap states at the LUMO or HOMO band edge
-in states/eV and where $E_{U}^{e/h}$ is slope energy of the density of states. 
-
-The value of $N_{t}$ for any given trap level is calculated by averaging the DoS function over the energy ($\Delta E$ ) which a trap occupies:
-
-\begin{equation}
-\label{eq:taile}
-N_{t}(E)=\frac{\int^{E+\Delta E/2}_{E-\Delta E/2} \rho^{e}{E} dE}{\Delta E}
-\end{equation}
-
-The ocupation function is given by the equation,
-\begin{equation}
-f(E_{t},F_{t})=\frac{1}{e^{\frac{E_{t}-F_{t}}{kT}}+1}
-\end{equation}
-Where, $E_{t}$ is the trap level, and $F_{t}$ is the Fermi-Level of the trap.
-The carrier escape rates for electrons and holes are given by
-
-
-\subsubsection{Free-to-free carrier recombination}
-A free-carrier-to-free-carrier recombination pathway is also included in the model. However, most organic solar cells have a great deal of trap states and an ideality factor greater than 1.0 suggesting that free to free recombination is not the dominant mechanism.  It is also worth noting that since I included this recombination pathway in the model I have not found it useful to reproduce experimental results.
-
-Free-to-free recombination is described using equation \ref{equ:freetofree}
-
-\begin{equation}
-R_{free}=k_{r}(n_{f}p_{f}-n_{0}-n_{0})
-\label{equ:freetofree}
-\end{equation}
-The above set of non linear equations are placed into a single sparse matrix, and solved using the umfpack solver. The drift diffusion are cast into a Scharfetter-Gummel form, to ensure stability.
-
-\subsubsection{Average free carrier mobility}
-In this model there are two types of electrons (holes), free electrons (holes) and trapped electrons (holes).  Free electrons (holes) have a finite mobility of $\mu_e^0$ ($\mu_h^0$) and trapped electrons (holes) can not move at all and have a mobility of zero.  To calculate the average mobility we take the ratio of free to trapped carriers and multiply it by the free carrier mobility.:
-
-\begin{equation}
-\mu_e(n)=\frac{\mu_e^0 n_{free}}{n_{free}+n_{trap}}
-\end{equation}
-
-Thus if all carriers were free, the average mobility would be $\mu_e^0$ and if all carriers were trapped the average mobility would be 0.  It should be noted that only $\mu_e^0$ ($\mu_h^0$) are used in the model for computation and $\mu_e(n)$ is an output parameter.
-
-The value of $\mu_e^0$ ($\mu_h^0$) is an input parameter to the model.  This can be edited in the electrical parameter editor.  The value of $\mu_e(n)$, and $\mu_h(p)$ are output parameters from the model.  The value of $\mu_e(n)$, and $\mu_h(p)$ change as a function of position, within the device, as the number of both free and trapped charge carriers change as a function of position.  The values of  $\mu_e(x)$, and $\mu_h(x)$ can be found in $mu\_n\_ft.dat$ and $mu\_p\_ft.dat$ within the $snapshots$ directory.  The spatially averaged value of mobility, as a function of time or voltage can be found in the files $dynamic\_mue.dat$ or $dynamic\_muh.dat$ within the dynamic directory.
-
-Were one to try to measure mobility using a technique such as CELIV or ToF, one would expect to get a value closer to $\mu_e(n)$ or $\mu_h(p)$ rather than closer to $\mu_e^0$ or $\mu_h^0$.  It should be noted however, that measuring mobility in disordered materials is a difficult thing to do, and one will get a different experimental value of mobility depending upon which experimental measurement method one uses, furthermore, mobility will change depending upon the charge density profile within the device, and thus upon the applied voltage and light intensity.  To better understand this, try for example doing a CELIV simulation, and plotting $\mu_e(n)$ as a function of time (Voltage).  You will see that mobility reduces as the negative voltage ramp is applied, this is because carriers are being sucked out of the device.  Then try extracting the mobility from the transient using the CELIV equation for extracting mobility.  Firstly, the CELIV equation will give you one value of mobility, which is a simplification of reality as the value really changes during the application of the voltage ramp.  Secondly, the value you get from the equation will almost certainly not match either $\mu_e^0$ or any value of $\mu_e(n)$.  This simply highlights, the difficult of measuring $a$ value of mobility for a disordered semiconductor and that really when we quote a value of mobility for a disordered material, it really only makes sense to quote a value measured under the conditions a material will be used.  For example, for a solar cell, values of $\mu_e(n)$ and $\mu_h(n)$, would be most useful to know under 1 Sun at the $P_{max}$ point on a JV curve.
-
-\subsubsection{Energy balance - hydrodynamic transport model}
+\subsection{Energy balance - hydrodynamic transport model}
 This is an experimental feature.  From the configure window one can access the thermal simulation tab \ref{fig:thermal}, by default this model is turned off.  There are three options, the lattice thermal model which just solves the lattice heat equation; electron thermal model and hole thermal model.  The latter two solve the energy balance equations, or 3rd order moment expansion of of the Boltzmann equation.  If you turn on just the lattice model, the lattice heat equation will be solved along with the electrical model.  The thermal solver is external to the electrical solver. 
 
 \begin{equation}
@@ -543,7 +307,14 @@ and for holes as,
 \label{fig:thermal}
 \end{figure}
 
-\subsection{Optical model}
+
+\newpage
+
+\section{Optical models}
+\subsection{Ray tracing model}
+\subsection{FDTD - beta}
+\subsection{Transfer matrix model}
+The transfer matrix model is used for simulating external light incident on the device. 
 On the left of the interface the electric field is given by
 \begin{equation}
 E_{1}=E^{+}_{1} e^{-j k_1 z}+E^{-}_{1} e^{j k_1 z}
@@ -697,38 +468,6 @@ I suggest you check the webpage regularly for updates, as I often publish minor 
 
 \subsection{Can I use the model to simulate my exotic* material system/contacts?}
 The short answer is yes.  The model is an effective medium model, meaning that it does not simulate the details of the medium, rather it approximates the medium with a set of electrical parameters.  For example, when simulating an organic solar cell, it does not simulate every detail of the BHJ, rather it just assumes an effective mobility, density of states, recombination cross sections, trapping cross sections and so on...  So if you can find electrical parameters to aproximate your material system (or guess them), there is nothing stopping you using gpvdm to simulate any exotic device/material.  The same goes for the contacts, the model simulates the contacts simply as a charge density. So if you have fancy graphene contacts which inject lots of charge, use a high majority carrier density on the contacts.  Where as if you have some dirty old ITO contacts may be drop the majority carrier density a bit.
-
-\section{Installing gpvdm on Linux} \label{installing_on_linux}
-The windows version of gpvdm seems to be much more popular than the Linux version.  Therefore, I will tend to publish an updated windows exe every couple of weeks (along with the platform independent source code) and only publish updated linux rpms/deb packages when someone asks me to.  This means that the Linux deb/rpm files tend to lag behind the windows version by about a year.  For this reason I recommend you install the Linux version from source.  If you don't want to do this, drop me an e-mail and I will often be able to push out a new rpm/deb within a day or two.  Currently I provide pre-compiled copies for, Fedora Linux, Ubuntu Linux, Debian Linux, Mint Linux , Opensuse Leap, and Raspbian pi 3.0.
-
-
-\subsection{Linux from source the easy way}
-Make sure you have python3-dialog installed on your system.  Then issue the command ./build in the root directory of gpvdm.  Firstly select (packages) and let the installer install the packages needed to compile gpvdm.  Then select build and let the installer build gpvdm.  You can then exit the installer and run ./gpvdm.  Or if you wish to install gpvdm on your system, chooses install from the menu.
-
-\begin{figure}[ht!]
-\centering
-\includegraphics[width=120mm]{./images/build.png}
-\caption{The linux build system, run ./build to get this menu.  }
-\label{fig:build}
-\end{figure}
-
-
-\subsection{Linux from source the hard way}
-
-On Fedora install the following pacakges:\newline
-dnf install zlib-devel libzip-devel libmatheval-devel suitesparse-devel openssl-devel gsl-devel libcurl-devel blas-devel librsvg2-tools texlive ghostscript ImageMagick mencoder valgrind @development-tools fedora-packager mingw32-gcc python-crypto python-awake python3-qt5-devel python3-crypto python3-matplotlib-qt5 python3-openpyxl python3-pyopengl numpy notify-python python-inotify.noarch python-matplotlib python-inotify python-matplotlib indent unifdef indent libcurl-devel poedit ElectricFence kcachegrind help2man\newline
-\newline
-Then build the build system\newline
-aclocal\newline
-automake --add-missing\newline
-automake\newline
-autoconf\newline
-
-Then configure the build system:\newline
-./configure CPPFLAGS="-I/usr/include/suitesparse/"\newline
-
-Then make the binary\newline
-make\newline
 
 \newpage
 

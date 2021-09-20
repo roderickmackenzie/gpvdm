@@ -1,0 +1,51 @@
+\subsection{Installing gpvdm on Linux} \label{installing_on_linux}
+The windows version of gpvdm seems to be much more popular than the Linux version.  Therefore, I will tend to publish an updated windows exe every couple of weeks (along with the platform independent source code) and only publish updated linux rpms/deb packages when someone asks me to.  This means that the Linux deb/rpm files tend to lag behind the windows version by about a year.  For this reason I recommend you install the Linux version from source.  If you don't want to do this, drop me an e-mail and I will often be able to push out a new rpm/deb within a day or two.  Currently I provide pre-compiled copies for, Fedora Linux, Ubuntu Linux, Debian Linux, Mint Linux , Opensuse Leap, and Raspbian pi 3.0.
+
+
+\subsection{Linux from source the easy way}
+Download the gpvdm by issuing the command
+
+\begin{lstlisting}
+git clone  https://github.com/roderickmackenzie/gpvdm
+\end{lstlisting}
+Find your operating system in
+
+\begin{lstlisting}
+build_system/dependency_scripts
+\end{lstlisting}
+
+This script should install all the packages you need to run/compile gpvdm for a given OS. I don't always keep them up to date, so if you have a new version of an OS and the packages have been renamed you may have to hunt around.
+
+Then run:
+\begin{lstlisting}
+./build
+\end{lstlisting}
+
+Then select, (compile), and (auto). Then hit return to build.
+
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=120mm]{./images/build.png}
+\caption{The linux build system, run ./build to get this menu.  }
+\label{fig:build}
+\end{figure}
+
+
+\subsection{Linux from source the hard way}
+
+On Fedora install the following pacakges:\newline
+dnf install zlib-devel libzip-devel libmatheval-devel suitesparse-devel openssl-devel gsl-devel libcurl-devel blas-devel librsvg2-tools texlive ghostscript ImageMagick mencoder valgrind @development-tools fedora-packager mingw32-gcc python-crypto python-awake python3-qt5-devel python3-crypto python3-matplotlib-qt5 python3-openpyxl python3-pyopengl numpy notify-python python-inotify.noarch python-matplotlib python-inotify python-matplotlib indent unifdef indent libcurl-devel poedit ElectricFence kcachegrind help2man\newline
+\newline
+Then build the build system\newline
+aclocal\newline
+automake --add-missing\newline
+automake\newline
+autoconf\newline
+
+Then configure the build system:\newline
+./configure CPPFLAGS="-I/usr/include/suitesparse/"\newline
+
+Then make the binary\newline
+make\newline
+

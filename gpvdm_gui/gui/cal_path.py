@@ -367,6 +367,7 @@ def get_fonts_path():
 	global fonts_path
 	return fonts_path
 
+#dont use any more
 def get_materials_path():
 	return os.path.join(get_user_settings_dir(),"materials")
 
@@ -481,6 +482,9 @@ class gpvdm_paths:
 	def get_use_gpvdm_local():
 		global use_gpvdm_local
 		return use_gpvdm_local
+
+	def get_materials_path():
+		return os.path.join(get_user_settings_dir(),"materials")
 
 def get_flag_file_path():
 	global flag_path

@@ -1,0 +1,25 @@
+\subsection{Charge carrier transport}
+To describe charge carrier transport, the bi-polar drift-diffusion equations are solved in position space
+for electrons,
+\begin{equation}
+\label{eq:ndrive}
+\boldsymbol{J_n} = q \mu_e n_{f}  {\nabla E_{c}}  + q D_n  {\nabla n_{f}},
+\end{equation}
+and holes,
+\begin{equation}
+\label{eq:pdrive}
+\boldsymbol{J_p} = q \mu_h p_{f}  {\nabla E_{v}}  - q D_p {\nabla p_{f}}.
+\end{equation}
+
+Conservation of charge carriers is forced by solving the charge carrier continuity equations for both electrons,
+\begin{equation}
+\label{eq:contn}
+\nabla \boldsymbol{J_n}  = q (R-G+\frac{\partial n}{\partial t}),
+\end{equation}
+and holes
+\begin{equation}
+\label{eq:contp}
+\nabla \boldsymbol{J_p} = - q (R-G+\frac{\partial p}{\partial t}).
+\end{equation}
+
+where $R$ and $G$ are the net recombination and generation rates per unit volume respectively.

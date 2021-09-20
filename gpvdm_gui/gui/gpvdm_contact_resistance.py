@@ -36,7 +36,6 @@ from QComboBoxLang import QComboBoxLang
 
 #cal_path
 from cal_path import subtract_paths
-from cal_path import get_materials_path
 
 import i18n
 _ = i18n.language.gettext

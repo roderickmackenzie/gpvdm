@@ -46,7 +46,6 @@ from PyQt5.QtWidgets import QWidget, QHBoxLayout, QMenu, QColorDialog, QAction
 import os
 
 #path
-from cal_path import get_materials_path
 from cal_path import get_sim_path
 
 
@@ -396,7 +395,6 @@ if open_gl_ok==True:
 			self.render()
 			self.swapBuffers()
 
-
 		def paintGL(self):
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 			glLoadIdentity()
@@ -615,8 +613,8 @@ if open_gl_ok==True:
 					glLightfv(l.number, GL_POSITION, [l.xyz[0],l.xyz[1],l.xyz[2] ])
 					glLightfv(l.number, GL_DIFFUSE, lightZeroColor)
 					#glLightfv(l.number, GL_SPOT_DIRECTION, [ 1,1,1]);
-					glLightf(l.number, GL_CONSTANT_ATTENUATION, 0.1)
-					glLightf(l.number, GL_LINEAR_ATTENUATION, 0.05)
+					#glLightf(l.number, GL_CONSTANT_ATTENUATION, 0.1)
+					#glLightf(l.number, GL_LINEAR_ATTENUATION, 0.05)
 					glEnable(l.number)
 
 			self.failed=False

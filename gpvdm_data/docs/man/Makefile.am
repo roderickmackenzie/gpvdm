@@ -6,7 +6,7 @@ inc=-I../../include/
 all: gpvdm.pdf
 	echo "Docs built"
 
-gpvdm.pdf: gpvdm.tex gpvdm.bib
+gpvdm.pdf: *.tex gpvdm.bib
 	pdflatex gpvdm
 	bibtex gpvdm
 	pdflatex gpvdm

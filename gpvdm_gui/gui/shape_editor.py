@@ -106,6 +106,20 @@ class shape_editor(QWidgetSavePos):
 			data.data=triangles_sub_vec(data.data,min_vec)
 			max_vec=triangles_get_max(data.data)
 			data.data=triangles_div_vec(data.data,max_vec)
+
+			min_vec=triangles_get_min(data.data)
+			max_vec=triangles_get_max(data.data)
+			max_vec.x=max_vec.x*7
+			max_vec.y=max_vec.y*7
+			max_vec.z=max_vec.z*7
+
+			self.three_d_shape.scale.world_min=min_vec
+			self.three_d_shape.scale.world_max=max_vec
+			self.three_d_shape.scale.refresh_world_size=False
+			self.three_d_shape.scale.set_m2screen()
+
+			data.data=self.three_d_shape.scale.scale_trianges_m2screen(data.data)
+
 			self.three_d_shape.gl_objects_remove_regex("bing")
 			a=gl_base_object()
 			a.id=["bing"]
@@ -114,15 +128,19 @@ class shape_editor(QWidgetSavePos):
 			a.g=data.g
 			a.b=data.b
 			xyz=vec()
-			xyz.x=-plot_size/2.0
-			xyz.y=-plot_size
-			xyz.z=-plot_size/2.0
+			xyz.x=self.three_d_shape.scale.project_m2screen_y(-2.5)
+			xyz.y=self.three_d_shape.scale.project_m2screen_y(max_vec.y-2.0)
+			xyz.z=self.three_d_shape.scale.project_m2screen_y(-1.0)
 			a.xyz.append(xyz)
-			a.dxyz.x=plot_size
-			a.dxyz.y=plot_size
-			a.dxyz.z=plot_size
+			a.dxyz.x=5.0*self.three_d_shape.scale.get_xmul()
+			a.dxyz.y=2.0*self.three_d_shape.scale.get_ymul()
+			a.dxyz.z=5.0*self.three_d_shape.scale.get_zmul()
 			a.rotate_x=180
 			a.triangles.extend(data.data)
+
+
+
+
 			self.three_d_shape.gl_objects_add(a)
 			last_obj=self.three_d_shape.objects[-1]
 			self.three_d_shape.objects[-1].compile("triangles_solid",[1.0,0.0,0.0,0.5])

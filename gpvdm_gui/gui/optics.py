@@ -37,7 +37,6 @@ from progress_class import progress_class
 from help import my_help_class
 
 #path
-from cal_path import get_materials_path
 from cal_path import get_exe_command
 
 #qt

@@ -71,7 +71,8 @@ void heat_cal_get_heating_sources_percent(struct simulation *sim,struct device *
 	long double dx=0.0;
 	long double dz=0.0;
 
-
+	long double Vol=0.0;
+	long double dV=0.0;
 	for (z=0;z<dim_t->zlen;z++)
 	{
 		for (x=0;x<dim_t->xlen;x++)
@@ -81,22 +82,23 @@ void heat_cal_get_heating_sources_percent(struct simulation *sim,struct device *
 				dx=dim_t->dx[x];
 				dy=dim_t->dy[y];
 				dz=dim_t->dz[z];
-
+				dV=dx*dy*dz;
 				//if (thermal->H_joule[z][x][y]>0.0)
 				//{
-					*H_joule+=thermal->H_joule[z][x][y]*dx*dy*dz;
+					*H_joule+=thermal->H_joule[z][x][y]*dV;
 				//}
-				*H_recombination+=thermal->H_recombination[z][x][y]*dx*dy*dz;
-				*H_parasitic+=thermal->H_parasitic[z][x][y]*dx*dy*dz;
+				*H_recombination+=thermal->H_recombination[z][x][y]*dV;
+				*H_parasitic+=thermal->H_parasitic[z][x][y]*dV;
+				Vol+=dV;
 			}
 		}
 	}
 
 //printf("sum: %Le %Le %Le\n",H_joule,H_recombination,H_parasitic);
 //H_tot=*H_joule+*H_recombination+*H_parasitic;
-//*H_joule/=H_tot;
-//*H_recombination/=H_tot;
-//*H_parasitic/=H_tot;
+*H_joule/=Vol;
+*H_recombination/=Vol;
+*H_parasitic/=Vol;
 
 //printf("p: %Le %Le %Le\n",H_joule,H_recombination,H_parasitic);
 

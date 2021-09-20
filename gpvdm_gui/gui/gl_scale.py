@@ -33,6 +33,7 @@ import math
 
 from triangle import triangle
 from gpvdm_json import gpvdm_data
+from triangle import vec
 
 x_mul=1.0
 y_mul=1.0
@@ -47,6 +48,7 @@ class gl_scale():
 	def __init__(self):
 		self.world_min=None
 		self.world_max=None
+		self.refresh_world_size=True
 
 	def project_screen_x_to_m(self,x):
 		global x_mul
@@ -140,9 +142,9 @@ class gl_scale():
 		global x_start
 		global y_start
 		global z_start
-
-		self.world_min,self.world_max=gpvdm_data().get_world_size()
-		#print(">>>>>>>>")
+		if self.refresh_world_size==True:
+			self.world_min,self.world_max=gpvdm_data().get_world_size()
+			
 		max_dist_x=10
 		max_dist_z=10
 		max_dist_y=10
@@ -160,14 +162,13 @@ class gl_scale():
 
 		if y_len*10.0<xyz_max:		#rescale for thin devices
 			max_dist_y=2
-			y_mul=max_dist_y/y_len
+			y_mul=2.0*max_dist_y/y_len
 
 		size_x=x_len*x_mul
 		size_z=z_len*z_mul
 
 		x_start=-size_x/2.0
 		z_start=-size_z/2.0
-		#print(x_start,self.project_m2screen_x(0.0))
 		y_start=0.0
 
 	def scale_trianges_m2screen(self,triangles):
@@ -215,7 +216,17 @@ class gl_scale():
 
 		return ret
 
+	def get_xmul(self):
+		global x_mul
+		return x_mul
 
+	def get_ymul(self):
+		global y_mul
+		return y_mul
+
+	def get_zmul(self):
+		global z_mul
+		return z_mul
 
 def scale_get_xmul():
 	global x_mul

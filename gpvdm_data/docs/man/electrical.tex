@@ -1,0 +1,161 @@
+\newpage
+\section{The drift diffusion electrical model}
+
+\subsection{Outline}
+Gpvdm's electrical model is a 1D/2D drift-diffusion model (like many others) however the special thing about gpvdm which makes it very good for disordered materials (Think organics, perovskites and a-Si) is that it goes to the trouble of explicitly solving the Shockley-Read-Hall equations as a function of energy and position space.  This enables one to model effects such as mobility/recombination rates changing as a function of carrier population and enables one to correctly model transients as one does not have to assume all the carriers in the trap states have reached equilibrium.  Things such as ToF transients, CELIV transients etc.. can be modelled with ease. Of course can be used for more ordered materials as well, you then just need to turn the traps off.
+
+\subsection{Summary of model inputs}
+A device is comprised of a series of layers (upto 10 layers), all these layers will interact with light.  Usually only one or two of these layers are electrically active, meaning the transport of electrons and holes must be modeled in detail.  Each electrically active layer with in the device has a set of electrical input parameters which define, charge transport, recombination and trapping. (see table)  If a device has more than one electrically active layer, then multiple sets of these parameters must be defined.  It should be noted that for organic materials (unlike inorganic) there is no standard set of material parameters for any given material.  The exact parameters will depend a lot on the fabrication conditions.  All layers in the device will also need a refractive index spectrum to be defined, this includes the real and imaginary refractive index as a function of wavelength (typically 300-1000 nm).
+ 
+
+\subsection{Electrostatic potential}
+The conduction band/valance band (or LUMO/HOMO in organic semiconductor speak) are defined as
+
+\begin{equation}
+E_{LUMO}=-\chi-q\phi
+\end{equation}
+
+\begin{equation}
+E_{HOMO}=-\chi-E_g-q\phi
+\end{equation}
+
+To obtain the internal potential distribution within the device Poisson's equation is solved,
+
+\begin{equation}
+\label{eq:pos}
+\nabla \cdot \epsilon_0 \epsilon_r \nabla = q (n_{f}+n_{t}-p_{f}-p_{t}-N_{ad}+-N_{ion}+a),
+\end{equation}
+
+where $n_{f}$, $n_{t}$ are the carrier densities of free and trapped electrons; $p_{f}$ and $p_{t}$ are the carrier densities of the free and trapped holes; and $N_{ad}$ is the doping density. $N_{ion}$ is the background density of perovskite ions and a is the density of mobile ions.
+
+\subsection{Free charge carrier statistics}
+For free carriers the model can either use Maxwell-Boltzmann statistics i.e.
+
+\begin{equation}
+n_{l}=N_c exp \left (\frac{F_n-E_{c}}{kT} \right)
+\end{equation}
+
+\begin{equation}
+p_{l}=N_v exp \left(\frac{E_{v}-F_p}{kT} \right)
+\end{equation}
+
+
+or full Fermi-dirac statistics i.e.
+
+\begin{equation}
+n_{free}(E_{f},T)=\int^{\infty}_{E_{min}} \rho(E) f(E,E_{f},T) dE
+\end{equation}
+
+\begin{equation}
+p_{free}(E_{f},T)=\int^{\infty}_{E_{min}} \rho(E) f(E,E_{f},T) dE
+\end{equation}
+
+where
+
+\begin{equation}
+f(E)=\frac{1}{1+e^{{E-E_f}/kT}}
+\end{equation}
+
+When using FD statistics free carriers are assumed to move in a parabolic band:
+
+\begin{equation}
+\rho(E)_{3D}=\frac{\sqrt{E}}{4\pi^2} \left ( \frac{2m^{*}}{\hbar^2}\right )^{3/2}
+\end{equation}
+
+The average energy of the carriers is defined as
+
+\begin{equation}
+\bar{W}(E_{f},T)=\frac{\int^{\infty}_{E_{min}} E \rho(E) f(E,E_{f},T) dE}{\int^{\infty}_{E_{min}} \rho(E) f(E,E_{f},T) dE}
+\end{equation}
+
+\input{electrical_srh.tex}
+\input{electrical_transport.tex}
+\subsection{Calculating the built in potential}  \label{sssec:initial}
+The first step to performing a device simulation, is to calculate the built in potential of the device.  To do this we must know the following things:
+
+\begin{itemize}
+
+  \item The majority carrier concentrations on the contacts $n$ and $p$.
+  \item The effective densities of states $N_{LUMO}$ and $N_{HOMO}$.
+  \item The effective band gap $E_g$
+
+\end{itemize}
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=120mm]{./images/bands.png}
+\caption{Band structure of device in equilibrium.}
+\label{fig:bands}
+\end{figure}
+
+\vspace{1em}
+The left hand side of the device is given a reference potential of 0 V.  See figure \ref{fig:bands}.  We can then write the energy of the LUMO and HOMO on the left hand side of the device as:
+
+\begin{equation}
+E_{LUMO}=-\chi
+\end{equation}
+
+\begin{equation}
+E_{HOMO}=-\chi-E_{g}
+\end{equation}
+
+For the left hand side of the device, we can use Maxwell-Boltzmann statistics to calculate the equilibrium Fermi-level ($F_i$).
+
+\begin{equation}
+p_{l}=N_v exp \left(\frac{E_{HOMO}-F_p}{kT} \right)
+\end{equation}
+
+We can then calculate the minority carrier concentration on the left hand side using $F_i$
+
+\begin{equation}
+n_{l}=N_c exp \left (\frac{F_n-E_{LUMO}}{kT} \right)
+\end{equation}
+
+The Fermi-level must be flat across the entire device because it is in equilibrium.  However we know there is a built in potential, we can therefore write the potential of the conduction and valance band on the right hand side of the device in terms of $phi$ to take account of the built in potential.
+
+\begin{equation}
+E_{LUMO}=-\chi-q\phi
+\label{equ:Ev_rhs}
+\end{equation}
+
+\begin{equation}
+E_{HOMO}=-\chi-E_g-q\phi
+\end{equation}
+
+we can now calculate the potential using
+
+\begin{equation}
+n_{r}=N_c exp \left (\frac{F_n-E_{LUMO}}{kT} \right)
+\end{equation}
+equation \ref{equ:Ev_rhs}.
+
+The minority concentration on the right hand side can now also be calculated using.
+
+\begin{equation}
+p_{r}=N_v exp \left (\frac{E_v-F_{HOMO}}{kT} \right)
+\end{equation}
+
+The result of this calculation is that we now know the built in potential and minority carrier concentrations on both sides of the device.  Note, infinite recombination velocity on the contacts is assumed.  I have not included finite recombination velocities in the model simply because they would add four more fitting parameters and in my experience I have never needed to use them to fit any experimental data I have come across.
+
+Once this calculation has been performed, we can estimate the potential profile between the left and right hand side of the device, using a linear approximation. From this the charge carrier densities across the device can be guessed.  The guess for potential and carrier densities, is then used to prime the main Newton solver.  Where the real value are calculated.  The Newton solver is described in the next section.
+
+
+
+\subsubsection{Geminate recombination}
+There exist models to calculate the number of charge carriers generated per absorbed photon (and example is the Onsager-Braun model).  This model explicitly accounts for geminate recombination, and charge carrier separation at the microscopic scale.  However, the model will require a number of reliability unknown parameters to make it work, and then as far as solar cell simulation is concerned, you will end up with a number giving you the percentage of absorbed photons which make it to being free electrons/holes.  A more simple approach in my view, is to firstly use correct real/imaginary refractive index spectra for your chosen material.  The optical model will then give you how may photos are absorbed at each position in the device.  Then multiply this generation rate, buy a factor between 0 and 1.0 which accounts for geminate recombination loss.  You can make a good approximation of this value by making sure the simulated and experimental Jsc match up.  This value is set in (Simulation->Optical Simulation->Optical Setup->Photon Efficiency.)
+
+
+
+\subsubsection{Average free carrier mobility}
+In this model there are two types of electrons (holes), free electrons (holes) and trapped electrons (holes).  Free electrons (holes) have a finite mobility of $\mu_e^0$ ($\mu_h^0$) and trapped electrons (holes) can not move at all and have a mobility of zero.  To calculate the average mobility we take the ratio of free to trapped carriers and multiply it by the free carrier mobility.:
+
+\begin{equation}
+\mu_e(n)=\frac{\mu_e^0 n_{free}}{n_{free}+n_{trap}}
+\end{equation}
+
+Thus if all carriers were free, the average mobility would be $\mu_e^0$ and if all carriers were trapped the average mobility would be 0.  It should be noted that only $\mu_e^0$ ($\mu_h^0$) are used in the model for computation and $\mu_e(n)$ is an output parameter.
+
+The value of $\mu_e^0$ ($\mu_h^0$) is an input parameter to the model.  This can be edited in the electrical parameter editor.  The value of $\mu_e(n)$, and $\mu_h(p)$ are output parameters from the model.  The value of $\mu_e(n)$, and $\mu_h(p)$ change as a function of position, within the device, as the number of both free and trapped charge carriers change as a function of position.  The values of  $\mu_e(x)$, and $\mu_h(x)$ can be found in $mu\_n\_ft.dat$ and $mu\_p\_ft.dat$ within the $snapshots$ directory.  The spatially averaged value of mobility, as a function of time or voltage can be found in the files $dynamic\_mue.dat$ or $dynamic\_muh.dat$ within the dynamic directory.
+
+Were one to try to measure mobility using a technique such as CELIV or ToF, one would expect to get a value closer to $\mu_e(n)$ or $\mu_h(p)$ rather than closer to $\mu_e^0$ or $\mu_h^0$.  It should be noted however, that measuring mobility in disordered materials is a difficult thing to do, and one will get a different experimental value of mobility depending upon which experimental measurement method one uses, furthermore, mobility will change depending upon the charge density profile within the device, and thus upon the applied voltage and light intensity.  To better understand this, try for example doing a CELIV simulation, and plotting $\mu_e(n)$ as a function of time (Voltage).  You will see that mobility reduces as the negative voltage ramp is applied, this is because carriers are being sucked out of the device.  Then try extracting the mobility from the transient using the CELIV equation for extracting mobility.  Firstly, the CELIV equation will give you one value of mobility, which is a simplification of reality as the value really changes during the application of the voltage ramp.  Secondly, the value you get from the equation will almost certainly not match either $\mu_e^0$ or any value of $\mu_e(n)$.  This simply highlights, the difficult of measuring $a$ value of mobility for a disordered semiconductor and that really when we quote a value of mobility for a disordered material, it really only makes sense to quote a value measured under the conditions a material will be used.  For example, for a solar cell, values of $\mu_e(n)$ and $\mu_h(n)$, would be most useful to know under 1 Sun at the $P_{max}$ point on a JV curve.
+
