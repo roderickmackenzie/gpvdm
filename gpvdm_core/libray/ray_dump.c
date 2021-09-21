@@ -444,7 +444,7 @@ void dump_ang_escape_as_rgb(struct simulation *sim,struct image *in)
 
 	buffer_malloc(&buf_X);
 	buf_X.y_mul=1.0;
-	buf_X.x_mul=1e9;
+	buf_X.data_mul=1.0;
 	strcpy(buf_X.title,"CIE 1931 color space - X");
 	strcpy(buf_X.type,"xy");
 	strcpy(buf_X.y_label,"Angle");
@@ -458,7 +458,7 @@ void dump_ang_escape_as_rgb(struct simulation *sim,struct image *in)
 
 	buffer_malloc(&buf_Y);
 	buf_Y.y_mul=1.0;
-	buf_Y.x_mul=1e9;
+	buf_Y.data_mul=1.0;
 	strcpy(buf_Y.title,"CIE 1931 color space - Y");
 	strcpy(buf_Y.type,"xy");
 	strcpy(buf_Y.y_label,"Angle");
@@ -472,7 +472,7 @@ void dump_ang_escape_as_rgb(struct simulation *sim,struct image *in)
 
 	buffer_malloc(&buf_Z);
 	buf_Z.y_mul=1.0;
-	buf_Z.x_mul=1e9;
+	buf_Z.data_mul=1.0;
 	strcpy(buf_Z.title,"CIE 1931 color space - Z");
 	strcpy(buf_Z.type,"xy");
 	strcpy(buf_Z.y_label,"Angle");
@@ -486,7 +486,7 @@ void dump_ang_escape_as_rgb(struct simulation *sim,struct image *in)
 
 	buffer_malloc(&buf_x);
 	buf_x.y_mul=1.0;
-	buf_x.x_mul=1e9;
+	buf_x.data_mul=1.0;
 	strcpy(buf_x.title,"CIE 1931 color space - x");
 	strcpy(buf_x.type,"xy");
 	strcpy(buf_x.y_label,"Angle");
@@ -500,7 +500,7 @@ void dump_ang_escape_as_rgb(struct simulation *sim,struct image *in)
 
 	buffer_malloc(&buf_y);
 	buf_y.y_mul=1.0;
-	buf_y.x_mul=1e9;
+	buf_y.data_mul=1.0;
 	strcpy(buf_y.title,"CIE 1931 color space - y");
 	strcpy(buf_y.type,"xy");
 	strcpy(buf_y.y_label,"Angle");
@@ -514,7 +514,7 @@ void dump_ang_escape_as_rgb(struct simulation *sim,struct image *in)
 
 	buffer_malloc(&buf_z);
 	buf_z.y_mul=1.0;
-	buf_z.x_mul=1e9;
+	buf_z.data_mul=1.0;
 	strcpy(buf_z.title,"CIE 1931 color space - z");
 	strcpy(buf_z.type,"xy");
 	strcpy(buf_z.y_label,"Angle");

@@ -29,8 +29,11 @@ import sys
 import glob
 from triangle import vec
 import numpy as np
-from OpenGL.GL import *
-from OpenGL.GLU import *
+try:
+	from OpenGL.GL import *
+	from OpenGL.GLU import *
+except:
+	pass
 
 class gl_base_object():
 	def __init__(self,x=0.0,y=0.0,z=0.0,dx=0.0,dy=0.0,dz=0.0,r=1.0,g=1.0,b=1.0):

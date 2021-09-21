@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gpvdm 5.0\n"
 "Report-Msgid-Bugs-To: roderick.mackenzie@nottingham.ac.uk\n"
-"POT-Creation-Date: 2021-09-20 06:04+0100\n"
+"POT-Creation-Date: 2021-09-21 07:07+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -640,9 +640,9 @@ msgstr ""
 #: ../../gpvdm_core/plugins/time_domain/pulse.c:517
 #: ../../gpvdm_core/plugins/time_domain/pulse.c:559
 #: ../../gpvdm_core/plugins/time_domain/pulse.c:561
-#: ../../gpvdm_core/plugins/ce/ce.c:164 ../../gpvdm_core/plugins/ce/ce.c:166
-#: ../../gpvdm_core/plugins/ce/ce.c:214 ../../gpvdm_core/plugins/ce/ce.c:216
-#: ../../gpvdm_core/plugins/ce/ce.c:414 ../../gpvdm_core/plugins/ce/ce.c:419
+#: ../../gpvdm_core/plugins/ce/ce.c:168 ../../gpvdm_core/plugins/ce/ce.c:170
+#: ../../gpvdm_core/plugins/ce/ce.c:218 ../../gpvdm_core/plugins/ce/ce.c:220
+#: ../../gpvdm_core/plugins/ce/ce.c:458 ../../gpvdm_core/plugins/ce/ce.c:463
 #: ../../gpvdm_core/plugins/jv/jv.c:93 ../../gpvdm_core/plugins/jv/jv.c:611
 #: ../../gpvdm_core/plugins/jv/jv.c:851 ../../gpvdm_core/plugins/jv/jv.c:853
 #: ../../gpvdm_core/plugins/jv/jv.c:874
@@ -779,7 +779,7 @@ msgid "pulse time"
 msgstr ""
 
 #: ../../gpvdm_core/plugins/time_domain/pulse.c:339
-#: ../../gpvdm_core/plugins/ce/ce.c:371
+#: ../../gpvdm_core/plugins/ce/ce.c:405
 #: ../../gpvdm_core/libfxdomain/fxdomain_large_signal.c:301
 #: ../../gpvdm_core/libfxdomain/fxdomain_dft.c:306
 msgid "step"
@@ -799,8 +799,8 @@ msgstr ""
 #: ../../gpvdm_core/plugins/time_domain/pulse.c:514
 #: ../../gpvdm_core/plugins/time_domain/pulse.c:535
 #: ../../gpvdm_core/plugins/time_domain/pulse.c:537
-#: ../../gpvdm_core/plugins/ce/ce.c:389 ../../gpvdm_core/plugins/ce/ce.c:391
-#: ../../gpvdm_core/plugins/ce/ce.c:414 ../../gpvdm_core/plugins/ce/ce.c:416
+#: ../../gpvdm_core/plugins/ce/ce.c:433 ../../gpvdm_core/plugins/ce/ce.c:435
+#: ../../gpvdm_core/plugins/ce/ce.c:458 ../../gpvdm_core/plugins/ce/ce.c:460
 #: ../../gpvdm_core/libdump/dump_contacts.c:174
 #: ../../gpvdm_core/libdump/dump_contacts.c:194
 #: ../../gpvdm_core/libdump/dynamic.c:68 ../../gpvdm_core/libdump/dynamic.c:410
@@ -837,7 +837,7 @@ msgstr ""
 #: ../../gpvdm_core/plugins/time_domain/pulse.c:406
 #: ../../gpvdm_core/plugins/time_domain/pulse.c:411
 #: ../../gpvdm_core/plugins/time_domain/pulse.c:490
-#: ../../gpvdm_core/plugins/ce/ce.c:389 ../../gpvdm_core/plugins/ce/ce.c:394
+#: ../../gpvdm_core/plugins/ce/ce.c:433 ../../gpvdm_core/plugins/ce/ce.c:438
 #: ../../gpvdm_core/plugins/jv/jv.c:93 ../../gpvdm_core/plugins/jv/jv.c:829
 #: ../../gpvdm_core/libdump/dump_contacts.c:101
 #: ../../gpvdm_core/libdump/dump_contacts.c:121
@@ -872,7 +872,7 @@ msgstr ""
 #: ../../gpvdm_core/plugins/time_domain/pulse.c:487
 #: ../../gpvdm_core/plugins/time_domain/pulse.c:559
 #: ../../gpvdm_core/plugins/time_domain/pulse.c:562
-#: ../../gpvdm_core/plugins/ce/ce.c:372
+#: ../../gpvdm_core/plugins/ce/ce.c:406
 #: ../../gpvdm_core/libfxdomain/fxdomain_large_signal.c:302
 #: ../../gpvdm_core/libfxdomain/fxdomain_dump.c:159
 #: ../../gpvdm_core/libfxdomain/fxdomain_dft.c:307
@@ -908,10 +908,10 @@ msgstr ""
 msgid "Generation rate"
 msgstr ""
 
-#: ../../gpvdm_core/plugins/ce/ce.c:139 ../../gpvdm_core/plugins/ce/ce.c:144
-#: ../../gpvdm_core/plugins/ce/ce.c:164 ../../gpvdm_core/plugins/ce/ce.c:169
-#: ../../gpvdm_core/plugins/ce/ce.c:189 ../../gpvdm_core/plugins/ce/ce.c:194
-#: ../../gpvdm_core/plugins/ce/ce.c:214 ../../gpvdm_core/plugins/ce/ce.c:219
+#: ../../gpvdm_core/plugins/ce/ce.c:143 ../../gpvdm_core/plugins/ce/ce.c:148
+#: ../../gpvdm_core/plugins/ce/ce.c:168 ../../gpvdm_core/plugins/ce/ce.c:173
+#: ../../gpvdm_core/plugins/ce/ce.c:193 ../../gpvdm_core/plugins/ce/ce.c:198
+#: ../../gpvdm_core/plugins/ce/ce.c:218 ../../gpvdm_core/plugins/ce/ce.c:223
 #: ../../gpvdm_core/plugins/jv/jv.c:736 ../../gpvdm_core/plugins/jv/jv.c:759
 #: ../../gpvdm_core/libdump/dump_map.c:110
 #: ../../gpvdm_core/libdump/dump_map.c:178
@@ -934,8 +934,9 @@ msgstr ""
 msgid "Charge density"
 msgstr ""
 
-#: ../../gpvdm_core/plugins/ce/ce.c:139 ../../gpvdm_core/plugins/ce/ce.c:141
-#: ../../gpvdm_core/plugins/ce/ce.c:189 ../../gpvdm_core/plugins/ce/ce.c:191
+#: ../../gpvdm_core/plugins/ce/ce.c:143 ../../gpvdm_core/plugins/ce/ce.c:145
+#: ../../gpvdm_core/plugins/ce/ce.c:193 ../../gpvdm_core/plugins/ce/ce.c:195
+#: ../../gpvdm_core/plugins/ce/ce.c:243 ../../gpvdm_core/plugins/ce/ce.c:245
 #: ../../gpvdm_core/libfxdomain/fxdomain_dump.c:132
 #: ../../gpvdm_core/libfxdomain/fxdomain_dump.c:141
 #: ../../gpvdm_core/libfxdomain/fxdomain_dump.c:222
@@ -951,15 +952,20 @@ msgstr ""
 msgid "Suns"
 msgstr ""
 
-#: ../../gpvdm_core/plugins/ce/ce.c:296
+#: ../../gpvdm_core/plugins/ce/ce.c:243 ../../gpvdm_core/plugins/ce/ce.c:248
+#: ../../gpvdm_gui/gui/import_data_json.py:299
+msgid "Charge"
+msgstr ""
+
+#: ../../gpvdm_core/plugins/ce/ce.c:326
 msgid "ce mode not known\n"
 msgstr ""
 
-#: ../../gpvdm_core/plugins/ce/ce.c:340
+#: ../../gpvdm_core/plugins/ce/ce.c:371
 msgid "ce mode not known"
 msgstr ""
 
-#: ../../gpvdm_core/plugins/ce/ce.c:371
+#: ../../gpvdm_core/plugins/ce/ce.c:405
 msgid "ce time"
 msgstr ""
 
@@ -3814,7 +3820,7 @@ msgid ""
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gpvdm.py:437
-#: ../../gpvdm_gui/gui/gpvdm.py:370
+#: ../../gpvdm_gui/gui/gpvdm.py:371
 msgid "You should not try to open simulations in the root gpvdm directory."
 msgstr ""
 
@@ -3825,17 +3831,17 @@ msgid ""
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gpvdm.py:452
-#: ../../gpvdm_gui/gui/gpvdm.py:377
+#: ../../gpvdm_gui/gui/gpvdm.py:378
 msgid "Open an existing gpvdm simulation"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gpvdm.py:489
-#: ../../gpvdm_gui/gui/gpvdm.py:423
+#: ../../gpvdm_gui/gui/gpvdm.py:424
 msgid "The simulation directory has been deleted."
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gpvdm.py:517
-#: ../../gpvdm_gui/gui/gpvdm.py:439
+#: ../../gpvdm_gui/gui/gpvdm.py:440
 msgid "I can't run from inside a zip file!"
 msgstr ""
 
@@ -9693,11 +9699,11 @@ msgstr ""
 msgid "Clone the experiment:"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/fit_window.py:313 ../../gpvdm_gui/gui/gpvdm.py:390
+#: ../../gpvdm_gui/gui/fit_window.py:313 ../../gpvdm_gui/gui/gpvdm.py:391
 msgid "Export the simulation"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/fit_window.py:315 ../../gpvdm_gui/gui/gpvdm.py:392
+#: ../../gpvdm_gui/gui/fit_window.py:315 ../../gpvdm_gui/gui/gpvdm.py:393
 msgid "Zip file"
 msgstr ""
 
@@ -10537,10 +10543,6 @@ msgstr ""
 
 #: ../../gpvdm_gui/gui/import_data_json.py:284
 msgid "Angular frequency"
-msgstr ""
-
-#: ../../gpvdm_gui/gui/import_data_json.py:299
-msgid "Charge"
 msgstr ""
 
 #: ../../gpvdm_gui/gui/import_data_json.py:301

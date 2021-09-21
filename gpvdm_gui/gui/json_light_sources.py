@@ -42,8 +42,8 @@ class json_light_sources_config(json_base):
 
 class json_light_source(json_base):
 
-	def __init__(self,name):
-		json_base.__init__(self,name)
+	def __init__(self):
+		json_base.__init__(self,"light_source")
 		self.var_list=[]
 		self.var_list.append(["english_name","Light\\nsource"])
 		self.var_list.append(["icon","lighthouse"])
@@ -95,13 +95,13 @@ class json_lights(json_base):
 		self.segments=[]
 		segs=json['segments']
 		for i in range(0,segs):
-			a=json_light_source("light_source")
+			a=json_light_source()
 			simulation_name="segment"+str(i)
 			a.load_from_json(json[simulation_name])
 			self.segments.append(a)
 
 		if len(self.segments)==0:
-			self.segments.append(json_light_source("light_source"))
+			self.segments.append(json_light_source())
 
 class json_light_sources(json_base):
 	def __init__(self):

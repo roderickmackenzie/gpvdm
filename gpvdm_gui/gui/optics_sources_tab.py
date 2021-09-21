@@ -130,7 +130,7 @@ class optics_light_src(QWidget):
 		self.plot_widget=plot_widget(enable_toolbar=False,widget_mode="gpvdm_graph")
 		self.plot_widget.set_labels([_("Light intensity")])
 		plot_file=os.path.join(get_sim_path(),"optical_output","light_src_"+self.uid+".dat")
-		print(">>>>>>>>",plot_file)
+
 		self.plot_widget.load_data([plot_file])
 		self.plot_widget.canvas.x0_mul=0.2
 		self.plot_widget.canvas.y_label=""

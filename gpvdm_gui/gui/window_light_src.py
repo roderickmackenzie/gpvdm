@@ -57,7 +57,7 @@ class window_light_src(experiment):
 	def __init__(self,data=None):
 		experiment.__init__(self,window_save_name="window_light_src", window_title=_("Light source editor"),name_of_tab_class="tab_light_src",json_search_path="gpvdm_data().light_sources.lights")
 
-
+		self.base_json_obj="from json_light_sources import json_light_source"
 		self.notebook.currentChanged.connect(self.switch_page)
 
 		self.tb_configure = QAction(icon_get("cog"), _("Configure"), self)

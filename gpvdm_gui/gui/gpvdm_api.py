@@ -193,7 +193,7 @@ class gpvdm_api():
 		if os.path.isdir(output_dir)==False:
 			os.makedirs(output_dir)
 		for f in os.listdir(input_dir):
-			if f.endswith(".inp") or f.endswith(".gpvdm"):
+			if f.endswith(".inp") or f.endswith(".json") or f.endswith(".gpvdm"):
 				copyfile(os.path.join(input_dir,f), os.path.join(output_dir,f))
 
 	def build_multiplot(self,path,gnuplot=False,exp_data=""):

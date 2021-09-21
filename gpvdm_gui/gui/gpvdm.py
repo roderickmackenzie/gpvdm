@@ -312,11 +312,12 @@ class gpvdm_main_window(QMainWindow):
 
 		used_files_add(os.path.join(new_dir,"sim.gpvdm"))
 		a=gpvdm_data()
-		if inp().isfile(os.path.join(new_dir,"json.inp"))==True:
+		if inp().isfile(os.path.join(new_dir,"sim.json"))==True:
+			a.load(os.path.join(new_dir,"sim.json"))
+		elif inp().isfile(os.path.join(new_dir,"json.inp"))==True:
 			a.load(os.path.join(new_dir,"json.inp"))
 			a.f.file_name="sim.json"
-		else:
-			a.load(os.path.join(new_dir,"sim.json"))
+
 
 		a.sim.version=const_ver()
 		a.save()

@@ -216,7 +216,8 @@ class plot_widget_matplotlib():
 		elif self.plot_type=="rgb":
 			self.ax[0].set_xlabel(self.data[0].y_label+" ("+str(self.data[0].y_units)+")")
 			self.ax[0].set_ylabel(self.data[0].data_label+" ("+self.data[0].data_units+")")
-			self.ax[0].imshow(self.data[0].data[0])		#
+			self.ax[0].imshow(self.data[0].data[0],extent=[self.data[0].y_scale[0],self.data[0].y_scale[-1],self.data[0].y_scale[0]/4,self.data[0].y_scale[-1]/4])
+			#plt.xticks([0,90,180])
 			#,extent=[self.data[0].y_scale[0],self.data[0].y_scale[-1],0,20]
 		elif self.plot_type=="quiver":
 			self.ax[0].set_xlabel(self.data[0].x_label+" ("+self.data[0].x_units+")")
