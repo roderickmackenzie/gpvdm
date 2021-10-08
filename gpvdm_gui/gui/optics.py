@@ -1,25 +1,23 @@
 # 
 #   General-purpose Photovoltaic Device Model - a drift diffusion base/Shockley-Read-Hall
 #   model for 1st, 2nd and 3rd generation solar cells.
-#   Copyright (C) 2012-2017 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
-#
+#   Copyright (C) 2008-2022 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
+#   
 #   https://www.gpvdm.com
-#   Room B86 Coates, University Park, Nottingham, NG7 2RD, UK
-#
+#   
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License v2.0, as published by
 #   the Free Software Foundation.
-#
+#   
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
-#
+#   
 #   You should have received a copy of the GNU General Public License along
 #   with this program; if not, write to the Free Software Foundation, Inc.,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#
-# 
+#   
 
 ## @package optics
 #  The main optics window
@@ -62,6 +60,7 @@ from optics_ribbon import optics_ribbon
 from css import css_apply
 from gui_util import yes_no_dlg
 from gpvdm_json import gpvdm_data
+from config_window import class_config_window
 
 class class_optical(QWidgetSavePos):
 
@@ -144,8 +143,8 @@ class class_optical(QWidgetSavePos):
 
 	def callback_configwindow(self):
 		data=gpvdm_data()
-		self.configure_widget=tab_class(data.light)
-		self.configure_widget.show()
+		self.config_window=class_config_window([data.light],[_("Output files")])
+		self.config_window.show()
 
 	def callback_save(self):
 		tab = self.notebook.currentWidget()

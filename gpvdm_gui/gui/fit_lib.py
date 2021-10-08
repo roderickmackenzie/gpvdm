@@ -1,25 +1,23 @@
 # 
 #   General-purpose Photovoltaic Device Model - a drift diffusion base/Shockley-Read-Hall
 #   model for 1st, 2nd and 3rd generation solar cells.
-#   Copyright (C) 2012-2017 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
-#
+#   Copyright (C) 2008-2022 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
+#   
 #   https://www.gpvdm.com
-#   Room B86 Coates, University Park, Nottingham, NG7 2RD, UK
-#
+#   
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License v2.0, as published by
 #   the Free Software Foundation.
-#
+#   
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
-#
+#   
 #   You should have received a copy of the GNU General Public License along
 #   with this program; if not, write to the Free Software Foundation, Inc.,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#
-# 
+#   
 
 ## @package fit_lib
 #  This is the backend to handle fitting
@@ -38,20 +36,13 @@ from util_latex import latex
 from token_lib import tokens
 from gpvdm_json import gpvdm_data
 from fit_lib_anal_results import fit_lib_anal_results
+from search import find_sims
 
 class fit_lib(fit_lib_anal_results):
 
-	def find_sims(self,search_path):
-		sims=[]
-		for root, dirs, files in os.walk(search_path):
-			for name in files:
-				full_name=os.path.join(root, name)
-				if full_name.endswith("sim.gpvdm") and os.path.dirname(os.path.dirname(full_name)).endswith("sim")==0:		
-					sims.append(os.path.dirname(full_name))
-		return sims
 
 	def gen_plots(self,scan_dir,plot_file,copy_fit_file=True):
-		sims=self.find_sims(scan_dir)
+		sims=find_sims(scan_dir)
 		
 		for s in sims:
 			dest_plot_file=os.path.join(s,plot_file)

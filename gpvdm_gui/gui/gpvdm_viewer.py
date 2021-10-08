@@ -1,25 +1,23 @@
 # 
 #   General-purpose Photovoltaic Device Model - a drift diffusion base/Shockley-Read-Hall
 #   model for 1st, 2nd and 3rd generation solar cells.
-#   Copyright (C) 2012-2017 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
-#
+#   Copyright (C) 2008-2022 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
+#   
 #   https://www.gpvdm.com
-#   Room B86 Coates, University Park, Nottingham, NG7 2RD, UK
-#
+#   
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License v2.0, as published by
 #   the Free Software Foundation.
-#
+#   
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
-#
+#   
 #   You should have received a copy of the GNU General Public License along
 #   with this program; if not, write to the Free Software Foundation, Inc.,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#
-# 
+#   
 
 ## @package gpvdm_viewer
 #  A directory/file browser for gpvdm.
@@ -260,6 +258,9 @@ class gpvdm_viewer(QListWidget,gpvdm_viewer_new):
 
 		menu_new_shape = menu_new.addAction(icon_get("shape"),_("New shape"))
 		menu_new_shape.triggered.connect(self.new_shape)
+
+		menu_new_filter = menu_new.addAction(icon_get("filter_wheel"),_("New filter"))
+		menu_new_filter.triggered.connect(self.new_filter)
 
 		deleteAction = menu.addAction(_("Delete file"))
 		renameAction = menu.addAction(_("Rename"))
@@ -547,6 +548,8 @@ class gpvdm_viewer(QListWidget,gpvdm_viewer_new):
 					itm.icon="organic_material"
 				elif itm.type=="emission":
 					itm.icon="emission"
+				elif itm.type=="filter":
+					itm.icon="filter_wheel"
 				elif itm.type=="backup_main":
 					itm.icon="backup"
 				elif itm.type=="multi_plot_dir":
@@ -789,6 +792,12 @@ class gpvdm_viewer(QListWidget,gpvdm_viewer_new):
 				from emission_main import emission_main
 				self.emission_window=emission_main(full_path)
 				self.emission_window.show()
+				return
+
+			if dir_type=="filter":
+				from filter_main import filter_main
+				self.filter_window=filter_main(full_path)
+				self.filter_window.show()
 				return
 
 			if dir_type=="snapshots":

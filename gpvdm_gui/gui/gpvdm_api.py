@@ -1,25 +1,23 @@
 # 
 #   General-purpose Photovoltaic Device Model - a drift diffusion base/Shockley-Read-Hall
 #   model for 1st, 2nd and 3rd generation solar cells.
-#   Copyright (C) 2012-2017 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
-#
+#   Copyright (C) 2008-2022 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
+#   
 #   https://www.gpvdm.com
-#   Room B86 Coates, University Park, Nottingham, NG7 2RD, UK
-#
+#   
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License v2.0, as published by
 #   the Free Software Foundation.
-#
+#   
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
-#
+#   
 #   You should have received a copy of the GNU General Public License along
 #   with this program; if not, write to the Free Software Foundation, Inc.,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#
-# 
+#   
 
 
 ## @package gpvdm_api
@@ -52,7 +50,6 @@ from scans_io import scans_io
 
 from cal_path import get_exe_command
 from scan_tree import tree_load_flat_list
-from scan_tree import random_log
 from gui_enable import set_gui
 from ml_vectors import ml_vectors
 from scan_io import scan_archive
@@ -64,7 +61,10 @@ import codecs
 from gpvdm_json import gpvdm_data
 from inp import inp_get_token_value
 from math import log10
+from scan_tree import random_log
 import random
+from clone import clone_sim_dir
+from clean_sim import clean_sim_dir
 
 class api_scan():
 
@@ -190,11 +190,7 @@ class gpvdm_api():
 			os.makedirs(file_name)
 
 	def clone(self,output_dir,input_dir):
-		if os.path.isdir(output_dir)==False:
-			os.makedirs(output_dir)
-		for f in os.listdir(input_dir):
-			if f.endswith(".inp") or f.endswith(".json") or f.endswith(".gpvdm"):
-				copyfile(os.path.join(input_dir,f), os.path.join(output_dir,f))
+		clone_sim_dir(output_dir,input_dir)
 
 	def build_multiplot(self,path,gnuplot=False,exp_data=""):
 		a=multiplot(gnuplot=gnuplot,exp_data=exp_data)
@@ -202,11 +198,7 @@ class gpvdm_api():
 		a.save()
 
 	def clean_dir(self,path):
-		for f in os.listdir(path):
-			full_path=os.path.join(path,f)
-			if f.startswith("fit_data")==True:
-				if f.endswith(".inp")==True:
-					os.unlink(full_path)
+		clean_sim_dir(path)
 
 	def graph_from_tokens(self,output_file,path,file0,token0,file1,token1):
 		output_file=os.path.join(get_sim_path(),path,output_file)

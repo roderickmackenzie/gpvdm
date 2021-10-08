@@ -1,25 +1,23 @@
 # 
 #   General-purpose Photovoltaic Device Model - a drift diffusion base/Shockley-Read-Hall
 #   model for 1st, 2nd and 3rd generation solar cells.
-#   Copyright (C) 2012-2017 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
-#
+#   Copyright (C) 2008-2022 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
+#   
 #   https://www.gpvdm.com
-#   Room B86 Coates, University Park, Nottingham, NG7 2RD, UK
-#
+#   
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License v2.0, as published by
 #   the Free Software Foundation.
-#
+#   
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
-#
+#   
 #   You should have received a copy of the GNU General Public License along
 #   with this program; if not, write to the Free Software Foundation, Inc.,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#
-# 
+#   
 
 ## @package scan_tab
 #  A scan tab - sub widget.
@@ -195,11 +193,6 @@ class scan_vbox(QWidget):
 	def import_from_hpc(self):
 		scan_import_from_hpc(self.scan_io.scan_dir)
 
-	def scan_tab_ml_build_vector(self):
-		pass
-		#scan=scan_ml(self.scan_io.scan_dir)
-		#scan.build_vector()
-
 	def plot_fits(self):
 		scan_plot_fits(self.scan_io.scan_dir)
 
@@ -309,11 +302,7 @@ class scan_vbox(QWidget):
 		elif value == "python_code":
 			self.tab.set_value(y,1,"python code")
 
-		elif value == "random_file_name":
-			self.tab.set_value(y,0,"not needed")
-			self.tab.set_value(y,1,"10")
-		else:
-			self.tab.set_value(y,1,"duplicate")
+		self.tab.set_value(y,1,"duplicate")
 
 		self.save_combo()
 
@@ -360,7 +349,6 @@ class scan_vbox(QWidget):
 		items.append("scan")
 		items.append("constant")
 		items.append("python_code")
-		items.append("random_file_name")
 		items.append("none")
 
 		for i in range(0,self.tab.rowCount()):

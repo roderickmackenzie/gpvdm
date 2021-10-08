@@ -1,25 +1,23 @@
 # 
 #   General-purpose Photovoltaic Device Model - a drift diffusion base/Shockley-Read-Hall
 #   model for 1st, 2nd and 3rd generation solar cells.
-#   Copyright (C) 2012-2017 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
-#
+#   Copyright (C) 2008-2022 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
+#   
 #   https://www.gpvdm.com
-#   Room B86 Coates, University Park, Nottingham, NG7 2RD, UK
-#
+#   
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License v2.0, as published by
 #   the Free Software Foundation.
-#
+#   
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
-#
+#   
 #   You should have received a copy of the GNU General Public License along
 #   with this program; if not, write to the Free Software Foundation, Inc.,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#
-# 
+#   
 
 
 ## @package json_fit
@@ -64,21 +62,8 @@ class json_fit_config(json_base):
 class json_fit_patch(json_base):
 
 	def __init__(self):
-		json_base.__init__(self,"fit_patch",segment_class=True)
+		json_base.__init__(self,"fit_patch",segment_class=True,segment_example=json_fit_patch_line())
 		self.segments.append(json_fit_patch_line())
-		#self.segments.append(json_fx_domain_mesh_segment())
-
-	def load_from_json(self,json):
-		self.segments=[]
-		segs=json['segments']
-		for i in range(0,segs):
-			a=json_fit_patch_line()
-			#print("before",a.json_path,a.val,type(a.json_path),type(a.val))
-			segment_name="segment"+str(i)
-			a.load_from_json(json[segment_name])
-			#print(json[segment_name])
-			#print(a.json_path,a.val,type(a.json_path),type(a.val))
-			self.segments.append(a)
 
 
 class json_data_set_config(json_base):
@@ -168,18 +153,9 @@ class json_fit_rules_line(json_base):
 class json_fit_rules(json_base):
 
 	def __init__(self):
-		json_base.__init__(self,"rules",segment_class=True)
+		json_base.__init__(self,"rules",segment_class=True,segment_example=json_fit_rules_line())
 		self.segments.append(json_fit_rules_line())
 
-
-	def load_from_json(self,json):
-		self.segments=[]
-		segs=json['segments']
-		for i in range(0,segs):
-			a=json_fit_rules_line()
-			data_set="segment"+str(i)
-			a.load_from_json(json[data_set])
-			self.segments.append(a)
 
 class json_duplicate_line(json_base):
 
@@ -197,18 +173,7 @@ class json_duplicate_line(json_base):
 class json_fit_duplicate(json_base):
 
 	def __init__(self):
-		json_base.__init__(self,"duplicate",segment_class=True)
-		#self.segments.append(json_duplicate_line())
-		#self.simulations.append(json_fx_domain_simulation())
-
-	def load_from_json(self,json):
-		self.segments=[]
-		segs=json['segments']
-		for i in range(0,segs):
-			a=json_duplicate_line()
-			data_set="segment"+str(i)
-			a.load_from_json(json[data_set])
-			self.segments.append(a)
+		json_base.__init__(self,"duplicate",segment_class=True,segment_example=json_duplicate_line())
 
 class json_all_fits(json_base):
 

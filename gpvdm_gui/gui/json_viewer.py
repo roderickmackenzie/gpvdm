@@ -1,25 +1,23 @@
 # 
 #   General-purpose Photovoltaic Device Model - a drift diffusion base/Shockley-Read-Hall
 #   model for 1st, 2nd and 3rd generation solar cells.
-#   Copyright (C) 2012-2017 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
-#
+#   Copyright (C) 2008-2022 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
+#   
 #   https://www.gpvdm.com
-#   Room B86 Coates, University Park, Nottingham, NG7 2RD, UK
-#
+#   
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License v2.0, as published by
 #   the Free Software Foundation.
-#
+#   
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
-#
+#   
 #   You should have received a copy of the GNU General Public License along
 #   with this program; if not, write to the Free Software Foundation, Inc.,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#
-# 
+#   
 
 ## @package json_viewer
 #  This is the equivlent of the inp_viewer for json files
@@ -38,7 +36,9 @@ from leftright import leftright
 from gpvdm_select import gpvdm_select
 from gpvdm_select_material import gpvdm_select_material
 from gpvdm_select_emission import gpvdm_select_emission
+from gpvdm_select_filter import gpvdm_select_filter
 from gpvdm_select_shape import gpvdm_select_shape
+from gpvdm_select_filter import gpvdm_select_filter
 from icon_widget import icon_widget
 
 
@@ -314,7 +314,10 @@ class json_viewer(QWidget,tab_base):
 					a.edit_box=gpvdm_select_material(file_box=False)
 					a.edit_box.setFixedSize(300, 25)
 					a.edit_box.changed.connect(functools.partial(self.callback_edit,token,a.edit_box,unit,result))
-
+				elif result.widget=="gpvdm_select_filter":
+					a.edit_box=gpvdm_select_filter(file_box=False)
+					a.edit_box.setFixedSize(300, 25)
+					a.edit_box.changed.connect(functools.partial(self.callback_edit,token,a.edit_box,unit,result))
 				elif result.widget=="gpvdm_select_emission":
 					a.edit_box=gpvdm_select_emission(file_box=False)
 					a.edit_box.setFixedSize(300, 25)
@@ -498,6 +501,9 @@ class json_viewer(QWidget,tab_base):
 			self.window.show()
 
 		if type(widget)==gpvdm_select_material:
+			widget.callback_button_click()
+
+		if type(widget)==gpvdm_select_filter:
 			widget.callback_button_click()
 
 		if type(widget)==gpvdm_select_emission:

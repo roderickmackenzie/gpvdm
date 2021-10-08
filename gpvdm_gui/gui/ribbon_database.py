@@ -2,25 +2,23 @@
 # 
 #   General-purpose Photovoltaic Device Model - a drift diffusion base/Shockley-Read-Hall
 #   model for 1st, 2nd and 3rd generation solar cells.
-#   Copyright (C) 2012-2017 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
-#
+#   Copyright (C) 2008-2022 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
+#   
 #   https://www.gpvdm.com
-#   Room B86 Coates, University Park, Nottingham, NG7 2RD, UK
-#
+#   
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License v2.0, as published by
 #   the Free Software Foundation.
-#
+#   
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
-#
+#   
 #   You should have received a copy of the GNU General Public License along
 #   with this program; if not, write to the Free Software Foundation, Inc.,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#
-# 
+#   
 
 ## @package ribbon_database
 #  The database ribbon.
@@ -83,13 +81,6 @@ class ribbon_database(ribbon_page):
 		self.spectra_file.clicked.connect(self.callback_view_optical)
 		self.addAction(self.spectra_file)
 
-		self.tb_update = QAction_lock("update", _("Download extra\nmaterials"), self,"ribbion_db_update")
-		self.tb_update.clicked.connect(self.callback_update_window)
-
-		self.lasers = QAction_lock("lasers", _("Laser\ndatabase"), self,"ribbion_db_lasers")
-		self.lasers.clicked.connect(self.callback_configure_lasers)
-		self.addAction(self.lasers)
-
 		self.emission = QAction_lock("pl", _("Emission\ndatabase"), self,"ribbion_db_emission")
 		self.emission.clicked.connect(self.callback_configure_emission)
 		self.addAction(self.emission)
@@ -102,6 +93,10 @@ class ribbon_database(ribbon_page):
 		self.shape.clicked.connect(self.callback_configure_shape)
 		self.addAction(self.shape)
 
+		self.filters = QAction_lock("filter_wheel", _("Filters\ndatabase"), self,"ribbion_db_materials")
+		self.filters.clicked.connect(self.callback_view_filters)
+		self.addAction(self.filters)
+
 		self.home_backup = QAction_lock("backup", _("Backup\nSimulaion"), self,"ribbion_db_backup")
 		self.home_backup.clicked.connect(self.callback_home_backup)
 		self.addAction(self.home_backup)
@@ -111,19 +106,13 @@ class ribbon_database(ribbon_page):
 		if get_lock().is_gpvdm_next()==True:
 			self.addAction(self.solar)
 
-		self.lasers_window=None
-
 	def update(self):
-		if self.lasers_window!=None:
-			del self.lasers_window
-			self.lasers_window=None
+		pass
 
 
 	def setEnabled(self,val):
 		self.materials.setEnabled(val)
 		self.spectra_file.setEnabled(val)
-		self.tb_update.setEnabled(val)
-		self.lasers.setEnabled(val)
 		self.emission.setEnabled(val)
 		self.user.setEnabled(val)
 		self.shape.setEnabled(val)
@@ -143,6 +132,16 @@ class ribbon_database(ribbon_page):
 		self.dialog.menu_new_material_enabled=True
 		ret=self.dialog.exec_()
 
+	def callback_view_filters(self):
+		self.dialog=gpvdm_open(gpvdm_paths.get_filters_path(),big_toolbar=True)
+		self.new_materials = QAction_lock("add_filter", wrap_text(_("Add Filter"),8), self,"add_filter")
+		self.new_materials.clicked.connect(self.dialog.viewer.new_filter)
+		self.dialog.toolbar.addAction(self.new_materials)
+
+		self.dialog.show_inp_files=False
+		self.dialog.menu_new_material_enabled=True
+		ret=self.dialog.exec_()
+
 	def callback_view_optical(self):
 		self.dialog=gpvdm_open(get_spectra_path(),big_toolbar=True)
 		self.new_materials = QAction_lock("add_spectra", wrap_text(_("Add Spectra"),8), self,"add_spectra")
@@ -153,19 +152,6 @@ class ribbon_database(ribbon_page):
 
 	def callback_update_window(self):
 		webbrowser.open('http://www.gpvdm.com/download_materials.php')
-
-
-	def callback_configure_lasers(self):
-		from lasers import lasers
-		data=gpvdm_data()
-		if self.lasers_window==None:
-			self.lasers_window=lasers(data.lasers)
-
-		help_window().help_set_help(["lasers.png",_("<big><b>Laser setup</b></big><br> Use this window to set up your lasers.")])
-		if self.lasers_window.isVisible()==True:
-			self.lasers_window.hide()
-		else:
-			self.lasers_window.show()
 
 	def callback_configure_emission(self):
 		self.dialog=gpvdm_open(get_emission_path(),big_toolbar=True)

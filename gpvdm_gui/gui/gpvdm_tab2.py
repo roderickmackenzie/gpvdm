@@ -1,25 +1,23 @@
 # 
 #   General-purpose Photovoltaic Device Model - a drift diffusion base/Shockley-Read-Hall
 #   model for 1st, 2nd and 3rd generation solar cells.
-#   Copyright (C) 2012-2017 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
-#
+#   Copyright (C) 2008-2022 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
+#   
 #   https://www.gpvdm.com
-#   Room B86 Coates, University Park, Nottingham, NG7 2RD, UK
-#
+#   
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License v2.0, as published by
 #   the Free Software Foundation.
-#
+#   
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
-#
+#   
 #   You should have received a copy of the GNU General Public License along
 #   with this program; if not, write to the Free Software Foundation, Inc.,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#
-# 
+#   
 
 ## @package gpvdm_tab2
 #  A table widget
@@ -44,12 +42,14 @@ from gtkswitch import gtkswitch
 from leftright import leftright
 from gpvdm_select_material import gpvdm_select_material
 from gpvdm_applied_voltage import gpvdm_applied_voltage
+from gpvdm_select_filter import gpvdm_select_filter
 from tb_spectrum import tb_spectrum
 from str2bool import str2bool
 from gpvdm_json import gpvdm_data
 from json_base import isclass
 from token_lib import tokens
 from json_base import json_base
+from tab_button import tab_button
 import copy
 import json
 
@@ -130,7 +130,7 @@ class gpvdm_tab2(QTableWidget):
 		path=self.get_json_obj()
 		path.insert(row,obj)
 		self.insert_row(obj,row)
-
+		self.changed.emit()
 
 	def set_tokens(self,tokens):
 		self.json_tokens=tokens
@@ -172,6 +172,8 @@ class gpvdm_tab2(QTableWidget):
 						item1.addItemLang(token.defaults[i][0],token.defaults[i][1])
 					item1.currentIndexChanged.connect(self.callback_value_changed)
 				elif widget_name=="gpvdm_select_material":
+					item1.changed.connect(self.callback_value_changed)
+				elif widget_name=="gpvdm_select_filter":
 					item1.changed.connect(self.callback_value_changed)
 				elif widget_name=="gpvdm_select":
 					item1.edit.textChanged.connect(self.callback_value_changed)
@@ -315,6 +317,10 @@ class gpvdm_tab2(QTableWidget):
 				self.cellWidget(y, x).blockSignals(True)
 				self.cellWidget(y, x).setText(value)
 				self.cellWidget(y, x).blockSignals(False)
+			elif type(self.cellWidget(y,x))==gpvdm_select_filter:
+				self.cellWidget(y, x).blockSignals(True)
+				self.cellWidget(y, x).setText(value)
+				self.cellWidget(y, x).blockSignals(False)
 			elif type(self.cellWidget(y,x))==QLineEdit:
 				self.cellWidget(y, x).blockSignals(True)
 				self.cellWidget(y, x).setText(value)
@@ -331,6 +337,8 @@ class gpvdm_tab2(QTableWidget):
 				self.cellWidget(y, x).blockSignals(True)
 				self.cellWidget(y, x).set_value(value)
 				self.cellWidget(y, x).blockSignals(False)
+			elif type(self.cellWidget(y,x))==tab_button:
+				pass
 			else:
 				item = self.item(y, x)
 				if type(item)==QTableWidgetItem:
@@ -381,10 +389,14 @@ class gpvdm_tab2(QTableWidget):
 			return self.cellWidget(y, x).get_value()
 		elif type(self.cellWidget(y,x))==gpvdm_select_material:
 			return self.cellWidget(y, x).text()
+		elif type(self.cellWidget(y,x))==gpvdm_select_filter:
+			return self.cellWidget(y, x).text()
 		elif type(self.cellWidget(y,x))==QLineEdit:
 			return self.cellWidget(y, x).text()
 		elif type(self.cellWidget(y,x))==gpvdm_applied_voltage:
 			return self.cellWidget(y, x).text()
+		elif type(self.cellWidget(y,x))==tab_button:
+			pass
 		else:
 			item = self.item(y, x)
 			if type(item)==QTableWidgetItem:

@@ -3,34 +3,26 @@
 // base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solarcells.
 // The model can simulate OLEDs, Perovskite cells, and OFETs.
 // 
-// Copyright (C) 2008-2020 Roderick C. I. MacKenzie
-// 
-// https://www.gpvdm.com
+// Copyright 2008-2022 Roderick C. I. MacKenzie https://www.gpvdm.com
 // r.c.i.mackenzie at googlemail.com
 // 
-// All rights reserved.
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the "Software"),
+// to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+// and/or sell copies of the Software, and to permit persons to whom the
+// Software is furnished to do so, subject to the following conditions:
 // 
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are met:
-//     * Redistributions of source code must retain the above copyright
-//       notice, this list of conditions and the following disclaimer.
-//     * Redistributions in binary form must reproduce the above copyright
-//       notice, this list of conditions and the following disclaimer in the
-//       documentation and/or other materials provided with the distribution.
-//     * Neither the name of the GPVDM nor the
-//       names of its contributors may be used to endorse or promote products
-//       derived from this software without specific prior written permission.
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
 // 
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-// ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-// DISCLAIMED. IN NO EVENT SHALL Roderick C. I. MacKenzie BE LIABLE FOR ANY
-// DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-// (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-// LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-// ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-// SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+// SOFTWARE.
 // 
 
 
@@ -82,6 +74,28 @@ void light_src_dump(struct simulation *sim,char *path,struct light_src *in)
 	buffer_add_xy_data(sim,&buf,in->spectra_tot.x, in->spectra_tot.data, in->spectra_tot.len);
 	buffer_dump_path(sim,path,file_name,&buf);
 	buffer_free(&buf);
+
+	sprintf(file_name,"light_src_filter_%s.dat",in->id);
+	buffer_init(&buf);
+
+	buffer_malloc(&buf);
+	buf.data_mul=1.0;
+	buf.y_mul=1e9;
+	strcpy(buf.title,"Wavelength - Attenuation");
+	strcpy(buf.type,"xy");
+	strcpy(buf.y_label,"Wavelength");
+	strcpy(buf.data_label,"Attenuation");
+	strcpy(buf.y_units,"nm");
+	strcpy(buf.data_units,"au");
+	buf.logscale_x=0;
+	buf.logscale_y=0;
+	buf.x=1;
+	buf.y=in->filter_read.len;
+	buf.z=1;
+	buffer_add_info(sim,&buf);
+	buffer_add_xy_data(sim,&buf,in->filter_read.x, in->filter_read.data, in->filter_read.len);
+	buffer_dump_path(sim,path,file_name,&buf);
+	buffer_free(&buf);
 }
 
 void light_src_cpy(struct simulation *sim,struct light_src *out, struct light_src *in)
@@ -103,6 +117,9 @@ void light_src_cpy(struct simulation *sim,struct light_src *out, struct light_sr
 	//filter
 	out->filter_enabled=in->filter_enabled;
 	out->filter_dB=in->filter_dB;
+	out->filter_invert=in->filter_invert;
+
+	out->local_ground_view_factor=in->local_ground_view_factor;
 	strcpy(out->filter_path,in->filter_path);
 	inter_copy(&(out->filter_read),&(in->filter_read),TRUE);
 
@@ -192,6 +209,8 @@ void light_src_init(struct simulation *sim,struct light_src *in)
 	strcpy(in->filter_path,"");
 	inter_init(sim,&(in->filter_read));
 	in->filter_dB=-1.0;
+	in->filter_invert=-1.0;
+	in->local_ground_view_factor=-1.0;
 	in->n=-1.0;
 	in->external_interface_enabled=FALSE;
 	strcpy(in->id,"");
@@ -225,6 +244,8 @@ void light_src_free(struct simulation *sim, struct light_src *in)
 		in->spectra=NULL;
 	}
 
+	inter_free(&(in->filter_read));
+
 	light_src_init(sim,in);
 
 }
@@ -234,16 +255,23 @@ void light_src_load(struct simulation *sim,struct light_src *in, struct json_obj
 {
 	int x;
 	char filter_path[PATH_MAX];
-	struct json_obj *json_filter;
+	struct json_obj *json_filters;
 	struct json_obj *json_external_interface;
 	int i;
 	struct json_obj *obj;
 	struct json_obj *json_light_spectra;
 	struct json_obj *virtual_spectra;
+
+	struct math_xy filter;
+
+	inter_init(sim,&filter);
+
 	int segments;
 	char temp_str[100];
 	char spectrum_name[200];
 	char file_path[PATH_MAX];
+	int filter_invert;
+	long double val;
 
 	json_get_string(sim, json_light_src, in->id,"id");
 
@@ -263,7 +291,8 @@ void light_src_load(struct simulation *sim,struct light_src *in, struct json_obj
 	json_get_int(sim, json_light_src, &(in->phi_steps),"ray_phi_steps");
 	json_get_long_double(sim, json_light_src, &(in->phi_start),"ray_phi_start");
 	json_get_long_double(sim, json_light_src, &(in->phi_stop),"ray_phi_stop");
-
+	json_get_long_double(sim, json_light_src, &(in->local_ground_view_factor),"filter_local_ground_view_factor");
+	in->local_ground_view_factor=(1.0-cos(2.0*M_PI*in->local_ground_view_factor/360.0))/2.0;
 
 	virtual_spectra=json_obj_find(json_light_src, "virtual_spectra");
 
@@ -309,38 +338,78 @@ void light_src_load(struct simulation *sim,struct light_src *in, struct json_obj
 
 	//Load the filter
 
-	json_filter=json_obj_find(virtual_spectra, "light_filter");
-	if (json_filter==NULL)
+	json_filters=json_obj_find(virtual_spectra, "light_filters");
+	if (json_filters==NULL)
 	{
-		ewe(sim,"json_filter not found\n");
+		ewe(sim,"json_filters not found\n");
 	}
 
-	json_get_english(sim, json_filter, &(in->filter_enabled),"filter_enabled");
+	json_get_int(sim, json_filters, &segments,"segments");	
 
-	if (in->filter_enabled==TRUE)
+	int filter_enabled=FALSE;
+	in->filter_enabled=FALSE;
+
+	inter_copy(&in->filter_read,&(in->spectra[0]),TRUE);
+	inter_set_value(&in->filter_read,1.0);
+
+	for (i=0;i<segments;i++)
 	{
-		json_get_string(sim, json_filter, filter_path,"filter_material");
-		json_get_long_double(sim, json_filter, &(in->filter_dB),"filter_db");
-
-		join_path(3,in->filter_path,get_materials_path(sim),filter_path,"alpha.gmat");
-
-		if (isfile(in->filter_path)==0)
+		sprintf(temp_str,"segment%d",i);
+		obj=json_obj_find(json_filters, temp_str);
+		if (obj==NULL)
 		{
-			printf_log(sim,"%s %s\n",_("Light: Load filter"),in->filter_path);
-			inter_init(sim,&(in->filter_read));
-			inter_load(sim,&(in->filter_read),in->filter_path);
-			inter_sort(&(in->filter_read));
-			inter_mod(&(in->filter_read));
-			inter_norm(&(in->filter_read),1.0);
-
-			for (x=0;x<in->filter_read.len;x++)
-			{
-				in->filter_read.data[x]=powl(1.0-in->filter_read.data[x],10*in->filter_dB);
-				//printf("%Le\n",in->filter_read.data[x]);
-			}
-			//getchar();
+			ewe(sim,"Object %s not found\n",temp_str);
 		}
+
+		json_get_english(sim, obj, &(filter_enabled),"filter_enabled");
+
+
+		if (filter_enabled==TRUE)
+		{
+			in->filter_enabled=TRUE;
+			json_get_string(sim, obj, filter_path,"filter_material");
+			json_get_long_double(sim, obj, &(in->filter_dB),"filter_db");
+			json_get_english(sim, obj, &filter_invert,"filter_invert");
+
+			join_path(3,in->filter_path,get_filter_path(sim),filter_path,"filter.inp");
+
+//			printf("%ld",in->filter_read.len);
+
+
+			if (isfile(in->filter_path)==0)
+			{
+				printf_log(sim,"%s %s\n",_("Light: Load filter"),in->filter_path);
+				inter_load(sim,&filter,in->filter_path);
+				inter_sort(&filter);
+				inter_mod(&filter);
+				inter_norm(&filter,1.0);
+
+
+				for (x=0;x<in->filter_read.len;x++)
+				{
+					val=inter_get_hard(&filter,in->filter_read.x[x]);
+
+					if (filter_invert==TRUE)
+					{
+						val=1.0-val;
+					}
+					//printf("%Le %Le %Le\n",val,powl(1.0-val,10*in->filter_dB),in->filter_dB);
+					in->filter_read.data[x]*=powl((1.0-val),10.0*in->filter_dB);
+
+					//printf("%Le %Le %Le\n",in->filter_read.data[x],val,in->filter_dB);
+				}
+
+				inter_free(&filter);
+				//getchar();
+			}
+		}
+
 	}
+
+
+
+	math_xy_mul_long_double(&(in->filter_read),in->local_ground_view_factor);
+
 
 	//Reflection of external interface
 
@@ -352,6 +421,6 @@ void light_src_load(struct simulation *sim,struct light_src *in, struct json_obj
 
 	json_get_english(sim, json_external_interface, &(in->external_interface_enabled),"enabled");
 	json_get_long_double(sim, json_external_interface, &(in->n),"light_external_n");
-
+	
 }
 

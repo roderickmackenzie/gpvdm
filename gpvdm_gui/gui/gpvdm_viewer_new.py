@@ -1,25 +1,23 @@
 # 
 #   General-purpose Photovoltaic Device Model - a drift diffusion base/Shockley-Read-Hall
 #   model for 1st, 2nd and 3rd generation solar cells.
-#   Copyright (C) 2012-2017 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
-#
+#   Copyright (C) 2008-2022 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
+#   
 #   https://www.gpvdm.com
-#   Room B86 Coates, University Park, Nottingham, NG7 2RD, UK
-#
+#   
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License v2.0, as published by
 #   the Free Software Foundation.
-#
+#   
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
-#
+#   
 #   You should have received a copy of the GNU General Public License along
 #   with this program; if not, write to the Free Software Foundation, Inc.,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#
-# 
+#   
 
 ## @package gpvdm_viewer_new
 #  Make new files/directories
@@ -99,5 +97,17 @@ class gpvdm_viewer_new(QWidget):
 			from json_material_db_item import json_material_db_item
 			a=json_material_db_item()
 			a.save_as(os.path.join(new_material,"data.json"))
+
+			self.fill_store()
+
+	def new_filter(self):
+		new_sim_name=dlg_get_text( _("New filter name:"), _("New filter name"),"filter_wheel")
+		new_sim_name=new_sim_name.ret
+		if new_sim_name!=None:
+			new_filter=os.path.join(self.path,new_sim_name)
+			os.makedirs(new_filter)
+			from json_filter_db_item import json_filter_db_item
+			a=json_filter_db_item()
+			a.save_as(os.path.join(new_filter,"data.json"))
 
 			self.fill_store()

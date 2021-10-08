@@ -3,34 +3,26 @@
 // base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solarcells.
 // The model can simulate OLEDs, Perovskite cells, and OFETs.
 // 
-// Copyright (C) 2008-2020 Roderick C. I. MacKenzie
-// 
-// https://www.gpvdm.com
+// Copyright 2008-2022 Roderick C. I. MacKenzie https://www.gpvdm.com
 // r.c.i.mackenzie at googlemail.com
 // 
-// All rights reserved.
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the "Software"),
+// to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+// and/or sell copies of the Software, and to permit persons to whom the
+// Software is furnished to do so, subject to the following conditions:
 // 
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are met:
-//     * Redistributions of source code must retain the above copyright
-//       notice, this list of conditions and the following disclaimer.
-//     * Redistributions in binary form must reproduce the above copyright
-//       notice, this list of conditions and the following disclaimer in the
-//       documentation and/or other materials provided with the distribution.
-//     * Neither the name of the GPVDM nor the
-//       names of its contributors may be used to endorse or promote products
-//       derived from this software without specific prior written permission.
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
 // 
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-// ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-// DISCLAIMED. IN NO EVENT SHALL Roderick C. I. MacKenzie BE LIABLE FOR ANY
-// DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-// (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-// LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-// ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-// SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+// SOFTWARE.
 // 
 
 /** @file time.c
@@ -137,7 +129,7 @@ json_get_long_double(sim,json_config,&fs_laser_time,"fs_laser_time");
 json_mesh=json_obj_find(json_pulse, "mesh");
 
 json_get_int(sim,json_mesh,&segments,"segments");
-
+long double dt_last=0.0;
 for (round=0;round<2;round++)
 {
 	fired=FALSE;
@@ -156,6 +148,7 @@ for (round=0;round<2;round++)
 		}
 		json_get_long_double(sim,json_mesh_seg,&read_len,"len");
 		json_get_long_double(sim,json_mesh_seg,&dt,"dt");
+		dt_last=dt;
 		json_get_long_double(sim,json_mesh_seg,&v_start,"voltage_start");
 		json_get_long_double(sim,json_mesh_seg,&v_stop,"voltage_stop");
 		json_get_long_double(sim,json_mesh_seg,&mul,"mul");
@@ -182,37 +175,42 @@ for (round=0;round<2;round++)
 				if (round==1)
 				{
 					tm->tm_time_mesh[ii]=time;
-
+					tm->tm_dt[ii]=dt_last;
 					tm->tm_laser[ii]=laser;
 					tm->tm_sun[ii]=sun;//+light_get_sun(&(in->mylight));
 					tm->tm_voltage[ii]=v;
 					tm->tm_fs_laser[ii]=0.0;
 				}
 				time=time+dt;
+				dt_last=dt;	
 				v=v+dv;
 				laser=laser+dlaser;
 				sun=sun+dsun;
-				if (fired==FALSE)
+				if (round==1)
 				{
-					if ((time>fs_laser_time)&&(fs_laser_time!= -1.0))
+					if (fired==FALSE)
 					{
-						fired=TRUE;
-						if (round==1)
+						if ((time>fs_laser_time)&&(fs_laser_time!= -1.0))
 						{
-							tm->tm_fs_laser[ii]=laser_pulse_width/dt;
+							fired=TRUE;
+							if (round==1)
+							{
+								tm->tm_fs_laser[ii]=laser_pulse_width/dt;
+							}
 						}
 					}
+					//printf("%Le %Le %d\n",time,tm->tm_fs_laser[ii],fired);
 				}
-
 				ii++;
 				dt=dt*mul;
 			}
 		}
 	}
-
+	//getchar();
 	if (round==0)
 	{
 		malloc_1d((void **)&(tm->tm_time_mesh), ii, sizeof(long double));
+		malloc_1d((void **)&(tm->tm_dt), ii, sizeof(long double));
 		malloc_1d((void **)&(tm->tm_sun), ii, sizeof(long double));
 		malloc_1d((void **)&(tm->tm_voltage), ii, sizeof(long double));
 		malloc_1d((void **)&(tm->tm_laser), ii, sizeof(long double));
@@ -224,7 +222,7 @@ tm->tm_mesh_len=ii;
 
 
 in->time=tm->tm_time_mesh[0];
-in->dt=tm->tm_time_mesh[1]-tm->tm_time_mesh[0];
+in->dt=tm->tm_dt[0];
 
 
 tm->tm_use_mesh=TRUE;
@@ -298,7 +296,7 @@ if (in->go_time==TRUE)
 		if (tm->tm_mesh_pos<(tm->tm_mesh_len-1))
 		{
 			tm->tm_mesh_pos++;
-			//in->time=tm->tm_time_mesh[tm->tm_mesh_pos];
+			
 			if (tm->tm_mesh_pos==(tm->tm_mesh_len-1))
 			{
 				in->dt=(tm->tm_time_mesh[tm->tm_mesh_pos]-tm->tm_time_mesh[tm->tm_mesh_pos-1]);
@@ -306,10 +304,10 @@ if (in->go_time==TRUE)
 			{
 				in->dt=(tm->tm_time_mesh[tm->tm_mesh_pos+1]-tm->tm_time_mesh[tm->tm_mesh_pos]);
 			}
-
 			in->time+=in->dt;
 
 		}
+
 	}else
 	{
 		in->time+=in->dt;
@@ -357,6 +355,7 @@ void time_memory_free(struct time_mesh *tm)
 {
 
 	free_1d((void **)&(tm->tm_time_mesh),sizeof(long double));
+	free_1d((void **)&(tm->tm_dt),sizeof(long double));
 	free_1d((void **)&(tm->tm_sun),sizeof(long double));
 	free_1d((void **)&(tm->tm_voltage),sizeof(long double));
 	free_1d((void **)&(tm->tm_laser),sizeof(long double));
@@ -370,6 +369,7 @@ void time_memory_free(struct time_mesh *tm)
 void time_mesh_init(struct time_mesh *tm)
 {
 	tm->tm_time_mesh=NULL;
+	tm->tm_dt=NULL;
 	tm->tm_sun=NULL;
 	tm->tm_voltage=NULL;
 	tm->tm_laser=NULL;
@@ -385,6 +385,7 @@ void time_mesh_cpy(struct time_mesh *out,struct time_mesh *in)
 {
 
 	cpy_1d_alloc( (void **)&(out->tm_time_mesh), (void **)&(in->tm_time_mesh), TM_BUFFER_MAX_LEN,sizeof(long double));
+	cpy_1d_alloc( (void **)&(out->tm_dt), (void **)&(in->tm_dt), TM_BUFFER_MAX_LEN,sizeof(long double));
 	cpy_1d_alloc( (void **)&(out->tm_sun), (void **)&(in->tm_sun), TM_BUFFER_MAX_LEN,sizeof(long double));
 	cpy_1d_alloc( (void **)&(out->tm_voltage), (void **)&(in->tm_voltage), TM_BUFFER_MAX_LEN,sizeof(long double));
 	cpy_1d_alloc( (void **)&(out->tm_laser), (void **)&(in->tm_laser), TM_BUFFER_MAX_LEN,sizeof(long double));

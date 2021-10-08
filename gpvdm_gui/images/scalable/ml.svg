@@ -13,7 +13,7 @@
    height="48px"
    id="svg3885"
    version="1.1"
-   inkscape:version="0.92.2 (5c3e80d, 2017-08-06)"
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
    sodipodi:docname="ml.svg"
    inkscape:export-filename="/home/rod/nl/orig/gui/optics.png"
    inkscape:export-xdpi="90"
@@ -54,17 +54,17 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.731811"
-     inkscape:cx="-123.95038"
-     inkscape:cy="21.761047"
+     inkscape:zoom="7.7267283"
+     inkscape:cx="-42.224477"
+     inkscape:cy="23.034745"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:grid-bbox="true"
      inkscape:document-units="px"
      inkscape:window-width="1920"
-     inkscape:window-height="953"
+     inkscape:window-height="974"
      inkscape:window-x="0"
-     inkscape:window-y="49"
+     inkscape:window-y="33"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata3890">
@@ -87,25 +87,21 @@
      id="layer1"
      inkscape:label="Layer 1"
      inkscape:groupmode="layer">
-    <g
-       id="g6599"
-       transform="matrix(0.8883244,0,0,0.86748665,3.6034305,2.3584978)">
-      <ellipse
-         transform="rotate(34.399749,23.813443,24.639528)"
-         ry="18.175716"
-         rx="18.75811"
-         cy="24.639528"
-         cx="23.813442"
-         id="path4542"
-         style="opacity:0.77999998;fill:none;stroke:#0000ff;stroke-width:9.36600018;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter6593)" />
-      <ellipse
-         transform="rotate(34.399749,23.838336,25.089978)"
-         ry="18.175716"
-         rx="18.75811"
-         cy="24.639528"
-         cx="23.813442"
-         id="path4542-7"
-         style="opacity:1;fill:none;stroke:#ffffff;stroke-width:5.26599979;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter5685)" />
-    </g>
+    <ellipse
+       style="opacity:0.77999998;fill:none;stroke:#0000ff;stroke-width:9.36600018;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter6593)"
+       id="path4542"
+       cx="23.813442"
+       cy="24.639528"
+       rx="18.75811"
+       ry="18.175716"
+       transform="matrix(0.73297065,0.4900982,-0.50187076,0.71577709,18.892272,-6.0920593)" />
+    <ellipse
+       style="opacity:1;fill:none;stroke:#8f97ff;stroke-width:5.26599979;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter5685)"
+       id="path4542-7"
+       cx="23.813442"
+       cy="24.639528"
+       rx="18.75811"
+       ry="18.175716"
+       transform="matrix(0.73297065,0.4900982,-0.50187076,0.71577709,19.122206,-6.0359217)" />
   </g>
 </svg>

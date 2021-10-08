@@ -1,25 +1,23 @@
 # 
 #   General-purpose Photovoltaic Device Model - a drift diffusion base/Shockley-Read-Hall
 #   model for 1st, 2nd and 3rd generation solar cells.
-#   Copyright (C) 2012-2017 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
-#
+#   Copyright (C) 2008-2022 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
+#   
 #   https://www.gpvdm.com
-#   Room B86 Coates, University Park, Nottingham, NG7 2RD, UK
-#
+#   
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License v2.0, as published by
 #   the Free Software Foundation.
-#
+#   
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
-#
+#   
 #   You should have received a copy of the GNU General Public License along
 #   with this program; if not, write to the Free Software Foundation, Inc.,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#
-# 
+#   
 
 ## @package optics_sources_tab.py
 #  A mesh editor for the time domain mesh.
@@ -100,20 +98,6 @@ class optics_light_src(QWidget):
 		self.menu_optical_external_interface.addAction(self.external_interface_edit)
 		toolbar2.addAction(self.optical_external_interface)
 
-		label = QLabel(_("Filter:"))
-		toolbar2.addWidget(label)
-		#Filter
-		self.optical_filter = QAction(icon_get("optical_filter"), _("Optical\nFilter"), self)
-		self.optical_filter.setCheckable(True)
-		self.optical_filter.triggered.connect(self.callback_filter_clicked)
-
-		self.menu_optical_filter = QMenu(self)
-		self.optical_filter.setMenu(self.menu_optical_filter)
-
-		self.filter_edit=QAction(_("Edit"), self)
-		self.filter_edit.triggered.connect(self.callback_filter_window)
-		self.menu_optical_filter.addAction(self.filter_edit)
-		toolbar2.addAction(self.optical_filter)
 
 
 		self.tab_y0.json_search_path=search_path
@@ -160,7 +144,6 @@ class optics_light_src(QWidget):
 		self.plot_widget.do_plot()
 
 		self.blockSignals(True)
-		self.optical_filter.setChecked(self.get_json_obj().virtual_spectra.light_filter.filter_enabled)
 		self.optical_external_interface.setChecked(self.get_json_obj().virtual_spectra.external_interface.enabled)
 
 		self.blockSignals(False)
@@ -168,18 +151,9 @@ class optics_light_src(QWidget):
 	def callback_filter_clicked(self):
 		data=gpvdm_data()
 		path=self.get_json_obj().virtual_spectra
-		path.light_filter.filter_enabled=self.optical_filter.isChecked()
 		path.external_interface.enabled=self.optical_external_interface.isChecked()
 		data.save()
 
-
-	def callback_filter_window(self):
-		self.widget=tab_class(self.get_json_obj().virtual_spectra.light_filter)
-		self.widget.setWindowIcon(icon_get("filter_wheel"))
-
-		self.widget.setWindowTitle(_("Filter editor")+" (https://www.gpvdm.com)")    
-
-		self.widget.show()
 
 	def callback_external_interface_window(self):
 		self.widget=tab_class(self.get_json_obj().virtual_spectra.external_interface)

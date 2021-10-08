@@ -2,25 +2,23 @@
 # 
 #   General-purpose Photovoltaic Device Model - a drift diffusion base/Shockley-Read-Hall
 #   model for 1st, 2nd and 3rd generation solar cells.
-#   Copyright (C) 2012-2017 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
-#
+#   Copyright (C) 2008-2022 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
+#   
 #   https://www.gpvdm.com
-#   Room B86 Coates, University Park, Nottingham, NG7 2RD, UK
-#
+#   
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License v2.0, as published by
 #   the Free Software Foundation.
-#
+#   
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
-#
+#   
 #   You should have received a copy of the GNU General Public License along
 #   with this program; if not, write to the Free Software Foundation, Inc.,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#
-# 
+#   
 
 ## @package ribbon_file
 #  A ribbon for the file menu
@@ -58,6 +56,7 @@ from play import play
 from server import server_get
 from help import help_window
 from global_objects import global_object_register
+from gpvdm_local import gpvdm_local
 
 class ribbon_file(ribbon_page):
 	used_files_click= pyqtSignal(str)
@@ -66,6 +65,7 @@ class ribbon_file(ribbon_page):
 		self.scan_window=None
 		self.fit_window=None
 		self.optics_window=None
+		self.ml_window=None
 
 		self.myserver=server_get()
 
@@ -109,9 +109,12 @@ class ribbon_file(ribbon_page):
 		self.optics.clicked.connect(self.callback_optics_sim)
 		self.addAction(self.optics)
 
-		self.plot = QAction_lock("plot", _("Plot\nFile"), self,"ribbon_home_plot")
-		self.plot.clicked.connect(self.callback_plot_select)
-		self.addAction(self.plot)
+		self.addSeparator()
+		self.tb_ml_build_vectors = QAction(icon_get("ml"), wrap_text(_("Machine\nLearning"),4), self)
+
+		if get_lock().is_gpvdm_next()==True:
+			self.addAction(self.tb_ml_build_vectors)
+			self.tb_ml_build_vectors.triggered.connect(self.callback_ml)
 
 		spacer = QWidget()
 		spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
@@ -153,6 +156,11 @@ class ribbon_file(ribbon_page):
 			del self.optics_window
 			self.optics_window=None
 
+		if self.ml_window!=None:
+			del self.ml_window
+			self.ml_window=None
+
+
 		self.populate_used_file_menu()
 
 
@@ -160,13 +168,16 @@ class ribbon_file(ribbon_page):
 		self.home_new.setEnabled(val)
 		self.home_open.setEnabled(val)
 		self.home_export.setEnabled(val)
-		self.plot.setEnabled(val)
+		#self.plot.setEnabled(val)
 
 	def setEnabled_other(self,val):
 		self.home_export.setEnabled(val)
 		self.tb_script_editor.setEnabled(val)
 		self.fit.setEnabled(val)
 		self.scan.setEnabled(val)
+		self.tb_ml_build_vectors.setEnabled(val)
+		self.run.setEnabled(val)
+		self.optics.setEnabled(val)
 
 	def on_new_backup(self):
 		new_backup_name=dlg_get_text( _("New backup:"), _("New backup name"),"add_backup")
@@ -205,24 +216,10 @@ class ribbon_file(ribbon_page):
 		else:
 			self.fit_window.show()
 
-	def callback_plot_select(self):
-		help_window().help_set_help(["dat_file.png",_("<big>Select a file to plot</big><br>Single clicking shows you the content of the file")])
 
-		dialog=gpvdm_open(get_sim_path(),show_inp_files=False)
-		dialog.show_directories=False
-		ret=dialog.exec_()
-		if ret==QDialog.Accepted:
-			file_name=dialog.get_filename()
-
-			if os.path.basename(dialog.get_filename())=="sim_info.dat":
-				self.sim_info_window=window_json_ro_viewer(dialog.get_filename())
-				self.sim_info_window.show()
-				return
-			from plot_gen import plot_gen
-			plot_gen([dialog.get_filename()],[],"auto")
-
-			#self.plotted_graphs.refresh()
-			#self.plot_after_run_file=dialog.get_filename()
+	#def callback_mb_build_vectors(self):
+	#	tab = self.notebook.currentWidget()
+	#	tab.scan_tab_ml_build_vector()
 
 
 	def callback_optics_sim(self, widget, data=None):
@@ -241,3 +238,15 @@ class ribbon_file(ribbon_page):
 			self.optics_window.ribbon.update()
 			self.optics_window.show()
 
+	def callback_ml(self, widget, data=None):
+		help_window().help_set_help(["ml.png",_("<big><b>Machine learning window</b></big><br>Use this window to generate machine learning vectors")])
+
+
+		if self.ml_window==None:
+			from window_ml import window_ml
+			self.window_ml=window_ml()
+
+		if self.window_ml.isVisible()==True:
+			self.window_ml.hide()
+		else:
+			self.window_ml.show()

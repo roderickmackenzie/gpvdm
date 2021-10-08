@@ -1,25 +1,23 @@
 # 
 #   General-purpose Photovoltaic Device Model - a drift diffusion base/Shockley-Read-Hall
 #   model for 1st, 2nd and 3rd generation solar cells.
-#   Copyright (C) 2012-2017 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
-#
+#   Copyright (C) 2008-2022 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
+#   
 #   https://www.gpvdm.com
-#   Room B86 Coates, University Park, Nottingham, NG7 2RD, UK
-#
+#   
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License v2.0, as published by
 #   the Free Software Foundation.
-#
+#   
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
-#
+#   
 #   You should have received a copy of the GNU General Public License along
 #   with this program; if not, write to the Free Software Foundation, Inc.,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#
-# 
+#   
 
 
 ## @package command_args
@@ -29,7 +27,6 @@
 import sys
 import os
 
-from clone import gpvdm_clone
 from import_archive import import_archive
 from util import gpvdm_copy_src
 
@@ -77,7 +74,6 @@ parser.add_argument("--patch", help=_("Patch a .gpvdm file with an older .gpvdm 
 parser.add_argument("--patchfile", help=_("Patch an .inp file with an older .inp file. usage --patchfile dest_file base_file input_file"), nargs=3)
 parser.add_argument("--importfile", help=_("usage --import abc.gpvdm ./path/to/output/ "), nargs=2)
 parser.add_argument("--dumptab", help=_("Dumps simulation parameters as jpg, usage: --dump-tab output_path"), nargs=1)
-parser.add_argument("--clone", help=_("Generate a clean simulation in the current directory"), action='store_true')
 parser.add_argument("--clonesrc", help=_("Clone the source code."), action='store_true')
 parser.add_argument("--editvalue", help=_("edits a value in a .gpvdm archive. Usage --edit-value /path/to/sim.gpvdm #token_to_change new_value "), nargs=3)
 parser.add_argument("--scanplot", help=_("Runs an oplot file, usage --scanplot /path/to/oplot/file.oplot "), nargs=1)
@@ -121,9 +117,6 @@ def command_args(argc,argv):
 			sys.exit(0)
 		elif args.patch:
 			import_archive(args.patch[0],args.patch[1],True)
-			sys.exit(0)
-		elif args.clone:
-			gpvdm_clone(os.getcwd(),copy_dirs=True)
 			sys.exit(0)
 		elif args.matcompress:
 			archive_materials(os.path.join(os.getcwd(),"materials"))

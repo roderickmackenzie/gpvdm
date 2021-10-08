@@ -2,25 +2,23 @@
 #
 #   General-purpose Photovoltaic Device Model - a drift diffusion base/Shockley-Read-Hall
 #   model for 1st, 2nd and 3rd generation solar cells.
-#   Copyright (C) 2012-2017 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
-#
+#   Copyright (C) 2008-2022 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
+#   
 #   https://www.gpvdm.com
-#   Room B86 Coates, University Park, Nottingham, NG7 2RD, UK
-#
+#   
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License v2.0, as published by
 #   the Free Software Foundation.
-#
+#   
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
-#
+#   
 #   You should have received a copy of the GNU General Public License along
 #   with this program; if not, write to the Free Software Foundation, Inc.,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#
-#
+#   
 
 ## @package ribbon_electrical
 #  The configure ribbon.
@@ -72,8 +70,13 @@ class ribbon_optical(ribbon_page2):
 		pan.addAction(self.light_sources)
 
 
+		self.lasers = QAction_lock("lasers", _("Lasers\n(fs)"), self,"ribbion_db_lasers")
+		self.lasers.clicked.connect(self.callback_configure_lasers)
+		pan.addAction(self.lasers)
+
 		self.sun=tb_item_sun()
 		pan.addWidget(self.sun)
+
 
 		pan.addSeparator()
 
@@ -92,10 +95,16 @@ class ribbon_optical(ribbon_page2):
 
 		pan.addWidget(self.fx_box)
 
+		self.lasers_window=None
+
 	def update(self):
 		if self.light_sources_window!=None:
 			del self.light_sources_window
 			self.light_sources_window=None
+
+		if self.lasers_window!=None:
+			del self.lasers_window
+			self.lasers_window=None
 
 		self.sun.update()
 
@@ -104,6 +113,19 @@ class ribbon_optical(ribbon_page2):
 		self.optics.setEnabled(val)
 		self.ray_trace.setEnabled(val)
 		self.sun.setEnabled(val)
+		self.lasers.setEnabled(val)
+
+	def callback_configure_lasers(self):
+		from lasers import lasers
+		data=gpvdm_data()
+		if self.lasers_window==None:
+			self.lasers_window=lasers(data.lasers)
+
+		help_window().help_set_help(["lasers.png",_("<big><b>Laser setup</b></big><br> Use this window to set up your lasers.")])
+		if self.lasers_window.isVisible()==True:
+			self.lasers_window.hide()
+		else:
+			self.lasers_window.show()
 
 	def callback_light_sources(self, widget, data=None):
 		help_window().help_set_help(["lighthouse.png",_("<big><b>The light sources window</b></big><br>Use this window to setup optical sources for the transfer matrix, ray tracing and FDTD simulations.")])

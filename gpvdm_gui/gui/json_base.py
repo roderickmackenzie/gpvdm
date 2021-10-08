@@ -1,25 +1,23 @@
 # 
 #   General-purpose Photovoltaic Device Model - a drift diffusion base/Shockley-Read-Hall
 #   model for 1st, 2nd and 3rd generation solar cells.
-#   Copyright (C) 2012-2017 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
-#
+#   Copyright (C) 2008-2022 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
+#   
 #   https://www.gpvdm.com
-#   Room B86 Coates, University Park, Nottingham, NG7 2RD, UK
-#
+#   
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License v2.0, as published by
 #   the Free Software Foundation.
-#
+#   
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
-#
+#   
 #   You should have received a copy of the GNU General Public License along
 #   with this program; if not, write to the Free Software Foundation, Inc.,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#
-# 
+#   
 
 
 ## @package json_base
@@ -38,6 +36,7 @@ from util_latex import latex
 from util import pygtk_to_latex_subscript
 from inp import inp
 import codecs
+import copy
 
 def del_keys(dic, del_key):
     dict_foo = dic.copy()
@@ -55,7 +54,7 @@ def isclass(object):
 
 class json_base():
 
-	def __init__(self,name,segment_class=False):
+	def __init__(self,name,segment_class=False,segment_example=None):
 		self.include_name=True
 		self.base_name=name
 		self.var_list=[]
@@ -67,6 +66,7 @@ class json_base():
 		self.triangles_loaded=False
 		self.segments_name="segments"
 		self.f=inp()
+		self.segment_example=segment_example
 
 	def import_from_list(self,lines):
 		lines="\n".join(lines)
@@ -176,6 +176,21 @@ class json_base():
 				except:
 					pass
 
+	def set_val(self,path,val):
+		pointer=self
+		for m in path.split("/"):
+			last=pointer
+			if m.startswith("section"):
+				n=int(m[7:])
+				pointer=pointer.sections[n]
+			elif m.startswith("layer"):
+				n=int(m[5:])
+				pointer=pointer.layers[n]
+			else:
+				pointer=getattr(pointer, m)
+
+		setattr(last, m, val)
+
 	def gen_json(self,include_bracket=True):
 		out=[]
 
@@ -255,43 +270,52 @@ class json_base():
 		return ret
 
 	def load_from_json(self,data):
-		for item in self.var_list:
-			m=item[0]
-			val=item[1]
-			#print(data)
-			#print(data[m],type(getattr(self,m)),type(val))
-			decoded=False
-			if m=="time_domain":
-				if 'pulse' in data:
-					self.time_domain.load_from_json(data['pulse'])
-					decoded=True
-			elif m=="fx_domain":
-				if "is" in data:
-					self.fx_domain.load_from_json(data['is'])
-					decoded=True
-			
-			if decoded==False:
-				if m in data:
-					if type(val)==float:
-						try:
-							clean_val=float(data[m])
-						except:
-							clean_val=0.0
-						setattr(self, m, clean_val)
-					elif type(val)==int:
-						try:
-							clean_val=int(data[m])
-						except:
-							clean_val=0
-						setattr(self, m, clean_val)
-					elif type(val)==bool:
-						setattr(self, m, str2bool(data[m]))
-					elif type(val)==type(data[m]):
-						setattr(self, m, data[m])
-					elif type(val)==str:
-						setattr(self, m, str(data[m]))
-					elif isclass(getattr(self,m))==True:
-						getattr(self,m).load_from_json(data[m])
+		if self.segment_class==False:
+			for item in self.var_list:
+				m=item[0]
+				val=item[1]
+				#print(data)
+				#print(data[m],type(getattr(self,m)),type(val))
+				decoded=False
+				if m=="time_domain":
+					if 'pulse' in data:
+						self.time_domain.load_from_json(data['pulse'])
+						decoded=True
+				elif m=="fx_domain":
+					if "is" in data:
+						self.fx_domain.load_from_json(data['is'])
+						decoded=True
+				
+				if decoded==False:
+					if m in data:
+						if type(val)==float:
+							try:
+								clean_val=float(data[m])
+							except:
+								clean_val=0.0
+							setattr(self, m, clean_val)
+						elif type(val)==int:
+							try:
+								clean_val=int(data[m])
+							except:
+								clean_val=0
+							setattr(self, m, clean_val)
+						elif type(val)==bool:
+							setattr(self, m, str2bool(data[m]))
+						elif type(val)==type(data[m]):
+							setattr(self, m, data[m])
+						elif type(val)==str:
+							setattr(self, m, str(data[m]))
+						elif isclass(getattr(self,m))==True:
+							getattr(self,m).load_from_json(data[m])
+		else:
+			self.segments=[]
+			segs=data['segments']
+			for i in range(0,segs):
+				a=copy.deepcopy(self.segment_example)
+				simulation_name="segment"+str(i)
+				a.load_from_json(data[simulation_name])
+				self.segments.append(a)
 
 
 	def reload(self):

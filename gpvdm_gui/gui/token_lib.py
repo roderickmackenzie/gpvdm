@@ -1,25 +1,23 @@
 # 
 #   General-purpose Photovoltaic Device Model - a drift diffusion base/Shockley-Read-Hall
 #   model for 1st, 2nd and 3rd generation solar cells.
-#   Copyright (C) 2012-2017 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
-#
+#   Copyright (C) 2008-2022 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
+#   
 #   https://www.gpvdm.com
-#   Room B86 Coates, University Park, Nottingham, NG7 2RD, UK
-#
+#   
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License v2.0, as published by
 #   the Free Software Foundation.
-#
+#   
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
-#
+#   
 #   You should have received a copy of the GNU General Public License along
 #   with this program; if not, write to the Free Software Foundation, Inc.,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#
-# 
+#   
 
 ## @package token_lib
 #  A library of all tokens used in the model.
@@ -76,8 +74,11 @@ def build_token_lib():
 	lib.append(my_data("I_photo","A",_("Photo current"),"QLineEdit"))
 
 	#filter.inp
-	lib.append(my_data("filter_material","...",_("Optical filter material"),"gpvdm_select_material" ,units_widget="QPushButton"))
+	lib.append(my_data("filter_enabled","au",_("Invert"),"gtkswitch"))
+	lib.append(my_data("filter_material","...",_("Optical filter material"),"gpvdm_select_filter" ,units_widget="QPushButton"))
 	lib.append(my_data("filter_db","0-1000dB",_("dB"),"QLineEdit"))
+	lib.append(my_data("filter_local_ground_view_factor",_("Degrees"),"Local ground view factor","QLineEdit"))
+	lib.append(my_data("filter_invert","au",_("Invert"),"gtkswitch"))
 
 	#light sources
 	lib.append(my_data("light_external_n","Refractive index",_("n"),"QLineEdit"))
@@ -88,6 +89,15 @@ def build_token_lib():
 	lib.append(my_data("human_var",_("Select"),_("Select"),"gpvdm_select"))
 	lib.append(my_data("fit_var_enabled",_("True/False"),_("Enable fit variable"),"gtkswitch"))
 	lib.append(my_data("duplicate_var_enabled",_("True/False"),_("Enable fit variable"),"gtkswitch"))
+
+	#ml
+	lib.append(my_data("ml_sim_enabled",_("True/False"),_("Enable fit variable"),"gtkswitch"))
+	lib.append(my_data("ml_patch_enabled",_("True/False"),_("Enable fit variable"),"gtkswitch"))
+	lib.append(my_data("random_var_enabled",_("True/False"),_("Enable fit variable"),"gtkswitch"))
+	lib.append(my_data("ml_edit_sim","file_name",_("Edit patch"),"tab_button"))
+	lib.append(my_data("ml_number_of_archives","au",_("Number of archives"),"QLineEdit"))
+	lib.append(my_data("ml_sims_per_archive","au",_("Simulations per archive"),"QLineEdit"))
+	lib.append(my_data("random_distribution","type",_("Random distribution"),"QComboBoxLang",defaults=[[("log"),_("Log")],["linear",_("Linear")]]))
 
 	#fit duplicate
 	#lib.append(my_data("enabled",_("True/False"),_("Enabled"),"gtkswitch"))
@@ -460,7 +470,8 @@ def build_token_lib():
 	lib.append(my_data("fit_set_error_to_zero_before","au",_("Set error to zero before"),"QLineEdit"))
 
 	#eqe.inp
-	lib.append(my_data("eqe_voltage","au",_("EQE Voltage"),"QLineEdit"))
+	lib.append(my_data("eqe_voltage","V",_("EQE Voltage"),"QLineEdit"))
+	lib.append(my_data("eqe_light_power","W m^{-2}",_("Optical power"),"QLineEdit"))
 
 	#thermal.inp
 	lib.append(my_data("thermal_model_type","au",_("Thermal model type"),"QComboBoxLang",defaults=[["thermal_hydrodynamic",_("Hydrodynamic")],["thermal_lattice",_("Lattice heat")]], hide_on_false_token=["thermal"]))

@@ -1,25 +1,23 @@
 # 
 #   General-purpose Photovoltaic Device Model - a drift diffusion base/Shockley-Read-Hall
 #   model for 1st, 2nd and 3rd generation solar cells.
-#   Copyright (C) 2012-2017 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
-#
+#   Copyright (C) 2008-2022 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
+#   
 #   https://www.gpvdm.com
-#   Room B86 Coates, University Park, Nottingham, NG7 2RD, UK
-#
+#   
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License v2.0, as published by
 #   the Free Software Foundation.
-#
+#   
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
-#
+#   
 #   You should have received a copy of the GNU General Public License along
 #   with this program; if not, write to the Free Software Foundation, Inc.,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#
-# 
+#   
 
 ## @package scan_tree
 #  Logic to itterate though a scan tree.
@@ -27,8 +25,6 @@
 import os
 import shutil
 import glob
-import random
-from random import randint
 
 from inp import inp
 
@@ -52,6 +48,10 @@ from scan_human_labels import get_json_from_human_path
 from scan_human_labels import set_json_from_human_path
 
 import json
+import random
+
+from random import randint
+from clone import clone_sim_dir
 
 def random_log(in_start,in_stop):
 	start=math.log10(in_start)
@@ -63,6 +63,7 @@ def random_log(in_start,in_stop):
 
 	ret="{:.8E}".format(val)
 	return ret
+
 
 class scan_tree_leaf:
 
@@ -193,20 +194,9 @@ def tree_gen(output_dir,flat_simulation_list,program_list,base_dir):
 	output_dir=os.path.abspath(output_dir)	# we are about to traverse the directory structure better to have the abs path
 	#print("here",program_list)
 	found_scan=False
-	found_random=False
 	for program_line in program_list:
 		if program_line.opp=="scan":
 			found_scan=True
-
-		if program_line.opp=="random_file_name":
-			found_random=True
-
-	if found_scan==True and found_random==True:
-		return False
-
-	if found_random==True:
-		tree_gen_random_files(output_dir,flat_simulation_list,program_list,base_dir)
-		return
 
 	tree_items=decode_scan_list(program_list)
 
@@ -214,63 +204,7 @@ def tree_gen(output_dir,flat_simulation_list,program_list,base_dir):
 	return ret
 
 
-
-def copy_simulation(base_dir,cur_dir):
-	gpvdm_clone(cur_dir,src_archive=os.path.join(base_dir, "sim.gpvdm"),dest="file")
 	
-
-
-def tree_gen_random_files(sim_path,flat_simulation_list,program_list,base_dir):
-	length=0
-
-	for program_line in program_list:
-		if program_line.opp=="random_file_name":
-			length=int(program_line.values)
-
-	progress_window=progress_class()
-	progress_window.show()
-	progress_window.start()
-
-	process_events()
-
-	#print("length",length)
-
-	for i in range(0,length):
-		rand=codecs.encode(os.urandom(int(16 / 2)), 'hex').decode()
-		cur_dir=os.path.join(sim_path,rand)
-
-		if not os.path.exists(cur_dir):
-			os.makedirs(cur_dir)
-			gpvdm_clone(cur_dir,src_archive=os.path.join(base_dir, "sim.gpvdm"),dest="file")
-
-			os.chdir(cur_dir)
-			archive_decompress(os.path.join(cur_dir,"sim.gpvdm"))
-
-			t=scan_tree_leaf()
-			t.program_list=program_list
-			t.directory=cur_dir
-			t.json_load(os.path.join(cur_dir,"sim.json"))
-
-			if t.apply_constants()==False:
-				return False
-
-			if t.apply_python_scripts()==False:
-				return False
-
-
-			t.duplicate_params()
-			#tree_apply_duplicate(cur_dir,program_list)
-			t.json_save()
-			
-			archive_compress(os.path.join(cur_dir,"sim.gpvdm"))
-
-			flat_simulation_list.append(cur_dir)
-
-			progress_window.set_fraction(float(i)/float(length))
-			progress_window.set_text("Adding "+cur_dir)
-			process_events()
-
-	progress_window.stop()
 
 def tree(flat_simulation_list,program_list,tree_items,base_dir,level,path,var_to_change,value_to_change):
 
@@ -301,7 +235,7 @@ def tree(flat_simulation_list,program_list,tree_items,base_dir,level,path,var_to
 
 			config_file=os.path.join(cur_dir,"sim.gpvdm")
 			if os.path.isfile(config_file)==False:	#Don't build a simulation over something that exists already
-				copy_simulation(base_dir,cur_dir)
+				clone_sim_dir(cur_dir,base_dir)
 				os.chdir(cur_dir)
 				t=scan_tree_leaf()
 				t.program_list=program_list

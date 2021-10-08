@@ -1,25 +1,23 @@
 # 
 #   General-purpose Photovoltaic Device Model - a drift diffusion base/Shockley-Read-Hall
 #   model for 1st, 2nd and 3rd generation solar cells.
-#   Copyright (C) 2012-2017 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
-#
+#   Copyright (C) 2008-2022 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
+#   
 #   https://www.gpvdm.com
-#   Room B86 Coates, University Park, Nottingham, NG7 2RD, UK
-#
+#   
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License v2.0, as published by
 #   the Free Software Foundation.
-#
+#   
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
-#
+#   
 #   You should have received a copy of the GNU General Public License along
 #   with this program; if not, write to the Free Software Foundation, Inc.,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#
-# 
+#   
 
 ## @package dat_file
 #  Load and dump a dat file into a dat class
@@ -30,13 +28,12 @@ import shutil
 import re
 import hashlib
 import glob
+import sys
 from util_zip import zip_get_data_file
 from inp import inp_load_file
 from str2bool import str2bool
 from triangle import triangle
 from quiver import quiver
-from json_circuit import json_component
-from gl_base_object import gl_base_object
 from util_text import is_number
 from triangle import vec
 
@@ -435,8 +432,6 @@ class dat_file():
 
 		lines=lines[skip_lines:]
 
-		print("2")
-
 		self.x_scale=[]
 		self.y_scale=[]
 		self.z_scale=[]
@@ -458,16 +453,23 @@ class dat_file():
 					break
 
 				if data_started==True:
-					if max(x_col,y_col)<l:
-						duplicate=False
-						for c in range(0,len(self.y_scale)):
-							if self.y_scale[c]==float(s[x_col]):
-								duplicate=True
-								break
+					number_ok=False
+					try:
+						float(s[x_col])
+						float(s[y_col])
+						number_ok=True
+					except:
+						pass
 
-						if duplicate==False:
-							self.y_scale.append(float(s[x_col]))
-							self.data[0][0].append(float(s[y_col]))
+					if number_ok==True:
+						if max(x_col,y_col)<l:
+							duplicate=False
+							if float(s[x_col]) in self.y_scale:
+								duplicate=True
+
+							if duplicate==False:
+								self.y_scale.append(float(s[x_col]))
+								self.data[0][0].append(float(s[y_col]))
 
 		self.x_len=1
 		self.y_len=len(self.data[0][0])
@@ -491,6 +493,27 @@ class dat_file():
 				for y in range(0,len(self.y_scale)):
 					a.data[z][x][y]=pow(self.data[z][x][y],val)
 		return a		
+
+	def intergrate(self):
+		sum=0.0
+		for y in range(0,len(self.y_scale)-1):
+			dy=self.y_scale[y+1]-self.y_scale[y]
+			sum=sum+self.data[0][0][y]*dy
+
+		return sum
+
+	def set_neg_to_zero(self):
+		for y in range(0,len(self.y_scale)):
+			if self.data[0][0][y]<0.0:
+				self.data[0][0][y]=0.0
+
+	def set_neg_to_last(self):
+		last=0.0
+		for y in range(0,len(self.y_scale)):
+			if self.data[0][0][y]<0.0:
+				self.data[0][0][y]=last
+			else:
+				last=self.data[0][0][y]
 
 	def __sub__(self,val):
 		a=dat_file()
@@ -607,6 +630,8 @@ class dat_file():
 		self.valid_data=True
 
 	def decode_gobj_lines(self,lines):
+		if modulename not in sys.modules:
+			from gl_base_object import gl_base_object
 		nobj=0
 		for line in lines:
 			o=gl_base_object()

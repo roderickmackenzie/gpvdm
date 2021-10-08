@@ -1,25 +1,23 @@
 # 
 #   General-purpose Photovoltaic Device Model - a drift diffusion base/Shockley-Read-Hall
 #   model for 1st, 2nd and 3rd generation solar cells.
-#   Copyright (C) 2012-2017 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
-#
+#   Copyright (C) 2008-2022 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
+#   
 #   https://www.gpvdm.com
-#   Room B86 Coates, University Park, Nottingham, NG7 2RD, UK
-#
+#   
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License v2.0, as published by
 #   the Free Software Foundation.
-#
+#   
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
-#
+#   
 #   You should have received a copy of the GNU General Public License along
 #   with this program; if not, write to the Free Software Foundation, Inc.,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#
-# 
+#   
 
 ## @package clone
 #  Clone a simulation
@@ -33,7 +31,6 @@ from util_zip import read_lines_from_archive
 from util_zip import write_lines_to_archive
 from util_zip import archive_make_empty
 from shutil import copyfile
-from inp import inp_search_token_value
 from cal_path import get_base_material_path
 from cp_gasses import copy_gasses
 from cal_path import find_light_source
@@ -42,11 +39,19 @@ from cal_path import get_base_spectra_path
 from win_lin import running_on_linux
 from cal_path import gpvdm_paths
 
-def gpvdm_clone(path,src_archive="",copy_dirs=False,dest="archive"):
+def clone_sim_dir(output_dir,input_dir):
+	if os.path.isdir(output_dir)==False:
+		os.makedirs(output_dir)
+	for f in os.listdir(input_dir):
+		if f.endswith(".inp") or f.endswith(".json") or f.endswith(".gpvdm"):
+			copyfile(os.path.join(input_dir,f), os.path.join(output_dir,f))
 
-	if src_archive=="":
-		src_dir=gpvdm_paths.get_inp_template_path()
-		src_archive=os.path.join(src_dir,"sim.gpvdm")
+#remove this if you can but you will need to remove inp_template first
+def gpvdm_clone(path,copy_dirs=False,dest="archive"):
+
+
+	src_dir=gpvdm_paths.get_inp_template_path()
+	src_archive=os.path.join(src_dir,"sim.gpvdm")
 		
 	dest_archive=os.path.join(path,"sim.gpvdm")
 	files=zip_lsdir(src_archive)
@@ -58,8 +63,7 @@ def gpvdm_clone(path,src_archive="",copy_dirs=False,dest="archive"):
 		if files[i].endswith(".inp"):
 			lines=read_lines_from_archive(src_archive,files[i],mode="b")
 			write_lines_to_archive(dest_archive,files[i],lines,dest=dest,mode="b")
-			#if (files[i]=="dos0.inp"):
-			#	asdsa
+
 
 	if copy_dirs==True:
 		if os.path.isdir(os.path.join(src_dir,"plot")):
@@ -68,10 +72,7 @@ def gpvdm_clone(path,src_archive="",copy_dirs=False,dest="archive"):
 		if os.path.isdir(os.path.join(src_dir,"exp")):
 			shutil.copytree(os.path.join(src_dir,"exp"), os.path.join(path,"exp"))
 
-		#if os.path.isdir(os.path.join(src_dir,"materials")):
-		#	shutil.copytree(os.path.join(src_dir,"materials"), os.path.join(path,"materials"))
-		#clone_materials(path)
-		#clone_spectras(path)
+
 
 def clone_spectra(dest_spectra_dir,src_spectra_dir):
 	#print(dest_spectra_dir,src_spectra_dir)

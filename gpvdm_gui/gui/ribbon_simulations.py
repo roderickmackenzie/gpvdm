@@ -2,25 +2,23 @@
 # 
 #   General-purpose Photovoltaic Device Model - a drift diffusion base/Shockley-Read-Hall
 #   model for 1st, 2nd and 3rd generation solar cells.
-#   Copyright (C) 2012-2017 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
-#
+#   Copyright (C) 2008-2022 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
+#   
 #   https://www.gpvdm.com
-#   Room B86 Coates, University Park, Nottingham, NG7 2RD, UK
-#
+#   
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License v2.0, as published by
 #   the Free Software Foundation.
-#
+#   
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
-#
+#   
 #   You should have received a copy of the GNU General Public License along
 #   with this program; if not, write to the Free Software Foundation, Inc.,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#
-# 
+#   
 
 ## @package ribbon_simulations
 #  The main time domain ribbon.
@@ -43,7 +41,7 @@ from help import help_window
 from sunsvoc import sunsvoc
 from sunsjsc import sunsjsc
 
-from qe import qe_window
+from window_eqe import window_eqe
 from cost import cost
 
 from util import wrap_text
@@ -80,22 +78,22 @@ class ribbon_simulations(ribbon_page):
 		self.spm_window=None
 		self.server_config_window=None
 
-		self.jv = QAction_lock("jv", _("Steady state\nsimulation editor"), self,"ribbon_simulations_jv")
+		self.jv = QAction_lock("jv", _("JV\neditor"), self,"ribbon_simulations_jv")
 		self.jv.clicked.connect(self.callback_jv_window)
 		if gpvdm_paths.is_plugin("jv")==True:
 			self.addAction(self.jv)
 
-		self.time = QAction_lock("time", _("Time domain\nsimulation editor."), self,"ribbon_simulations_time")
+		self.time = QAction_lock("time", _("Time domain\neditor."), self,"ribbon_simulations_time")
 		self.time.clicked.connect(self.callback_edit_experiment_window)
 		if gpvdm_paths.is_plugin("time_domain")==True:
 			self.addAction(self.time )
 
-		self.fx = QAction_lock("spectrum", _("Frequency domain\nsimulation editor"), self,"ribbon_simulations_spectrum")
+		self.fx = QAction_lock("spectrum", _("FX domain\neditor"), self,"ribbon_simulations_spectrum")
 		self.fx.clicked.connect(self.callback_fxexperiment_window)
 		if gpvdm_paths.is_plugin("fx_domain")==True:
 			self.addAction(self.fx)
 
-		self.capacitance_voltage = QAction_lock("cv", _("Capacitance voltage\nsimulation editor"), self,"ribbon_capacitance_voltage")
+		self.capacitance_voltage = QAction_lock("cv", _("CV\neditor"), self,"ribbon_capacitance_voltage")
 		self.capacitance_voltage.clicked.connect(self.callback_capacitance_voltage)
 		if gpvdm_paths.is_plugin("cv")==True:
 			if get_lock().is_gpvdm_next()==True:
@@ -317,7 +315,7 @@ class ribbon_simulations(ribbon_page):
 			
 	def callback_qe_window(self, widget):
 		if self.qe_window==None:
-			self.qe_window=qe_window()
+			self.qe_window=window_eqe()
 
 		if self.qe_window.isVisible()==True:
 			self.qe_window.hide()

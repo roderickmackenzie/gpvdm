@@ -3,34 +3,26 @@
 // base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solarcells.
 // The model can simulate OLEDs, Perovskite cells, and OFETs.
 // 
-// Copyright (C) 2008-2020 Roderick C. I. MacKenzie
-// 
-// https://www.gpvdm.com
+// Copyright 2008-2022 Roderick C. I. MacKenzie https://www.gpvdm.com
 // r.c.i.mackenzie at googlemail.com
 // 
-// All rights reserved.
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the "Software"),
+// to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+// and/or sell copies of the Software, and to permit persons to whom the
+// Software is furnished to do so, subject to the following conditions:
 // 
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are met:
-//     * Redistributions of source code must retain the above copyright
-//       notice, this list of conditions and the following disclaimer.
-//     * Redistributions in binary form must reproduce the above copyright
-//       notice, this list of conditions and the following disclaimer in the
-//       documentation and/or other materials provided with the distribution.
-//     * Neither the name of the GPVDM nor the
-//       names of its contributors may be used to endorse or promote products
-//       derived from this software without specific prior written permission.
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
 // 
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-// ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-// DISCLAIMED. IN NO EVENT SHALL Roderick C. I. MacKenzie BE LIABLE FOR ANY
-// DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-// (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-// LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-// ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-// SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+// SOFTWARE.
 // 
 
 /** @file pulse.c
@@ -231,6 +223,18 @@ FILE *m_out;
 m_out=fopen("errors.dat","w");
 
 //newton_externalv_simple(sim,in,time_get_voltage(in)+pulse_config.pulse_bias);	
+int ii;
+struct time_mesh *tm=&(in->tm);
+/*for (ii=0;ii<tm->tm_mesh_len-1;ii++)
+{
+	//printf("%Le %Le %Le\n",tm->tm_time_mesh[ii],in->time,tm->tm_fs_laser[ii]);
+	printf("%Le %Le \n",tm->tm_time_mesh[ii+1]-tm->tm_time_mesh[ii],tm->tm_dt[ii]);
+
+	device_timestep(sim,in);
+}
+
+getchar();*/
+
 
 do
 {
@@ -242,6 +246,8 @@ do
 
 	light_set_sun(&(in->mylight),time_get_sun(in)*pulse_config.pulse_light_efficiency);
 	light_solve_and_update(sim,in,&(in->mylight), (time_get_laser(in)+time_get_fs_laser(in))*pulse_config.pulse_light_efficiency);
+
+	//printf("%Le %Le\n",time_get_fs_laser(in),in->time);
 	//int r;
 	//for (r=0;r<dim->ylen;r++)
 	//{
@@ -367,12 +373,16 @@ dump_dynamic_free(sim,in,&store);
 if (pulse_config.pulse_subtract_dc==TRUE)
 {
 	inter_sub_long_double(&out_i,out_i.data[0]);
+	inter_sub_long_double(&out_v,out_v.data[0]);
 	inter_sub_long_double(&out_j_int,out_j_int.data[0]);
 }
 
 
 if (in->ncontacts==2)
 {
+	inter_copy(&out_j,&out_i,TRUE);
+	math_xy_mul_long_double(&out_j,1.0/(in->xlen*in->zlen));
+
 	if (buffer_set_file_name(sim,in,&buf,"time_j_int.dat")==0)
 	{
 		buffer_malloc(&buf);
@@ -423,8 +433,6 @@ if (in->ncontacts==2)
 
 	if (buffer_set_file_name(sim,in,&buf,"time_j.dat")==0)
 	{
-		inter_copy(&out_j,&out_i,TRUE);
-		math_xy_mul_long_double(&out_j,1.0/(in->xlen*in->zlen));
 
 		buffer_malloc(&buf);
 		buf.y_mul=1.0;
@@ -470,10 +478,9 @@ if (in->ncontacts==2)
 		buffer_add_xy_data(sim,&buf,out_flip.x, out_flip.data, out_flip.len);
 		buffer_dump_path(sim,in->output_path,NULL,&buf);
 		buffer_free(&buf);
+
 		inter_free(&out_flip);
 	}
-
-	inter_free(&out_j);
 
 
 	if (buffer_set_file_name(sim,in,&buf,"time_i_abs.dat")==0)
@@ -525,6 +532,8 @@ if (in->ncontacts==2)
 		buffer_dump_path(sim,in->output_path,NULL,&buf);
 		buffer_free(&buf);
 	}
+
+	inter_free(&out_j);
 }
 
 if (buffer_set_file_name(sim,in,&buf,"time_G.dat")==0)

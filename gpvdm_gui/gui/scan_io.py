@@ -1,25 +1,23 @@
 # 
 #   General-purpose Photovoltaic Device Model - a drift diffusion base/Shockley-Read-Hall
 #   model for 1st, 2nd and 3rd generation solar cells.
-#   Copyright (C) 2012-2017 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
-#
+#   Copyright (C) 2008-2022 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
+#   
 #   https://www.gpvdm.com
-#   Room B86 Coates, University Park, Nottingham, NG7 2RD, UK
-#
+#   
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License v2.0, as published by
 #   the Free Software Foundation.
-#
+#   
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
-#
+#   
 #   You should have received a copy of the GNU General Public License along
 #   with this program; if not, write to the Free Software Foundation, Inc.,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#
-# 
+#   
 
 ## @package scan_io
 #  IO functions for the scanning simulation parameters.
@@ -31,7 +29,6 @@ import os
 import shutil
 import gc
 
-from util import gpvdm_delete_file
 from inp import inp_get_token_value
 from scan_tree import tree_load_flat_list
 from scan_tree import tree_gen_flat_list
@@ -42,23 +39,23 @@ from scan_tree import tree_save_flat_list
 from server_io import server_find_simulations_to_run
 
 
-from progress_class import progress_class
-from process_events import process_events
 from server import server_break
 from numpy import std
 
 from error_dlg import error_dlg
 from scan_tree import scan_tree_leaf
+from process_events import process_events
 
 import i18n
 _ = i18n.language.gettext
 
-from yes_no_cancel_dlg import yes_no_cancel_dlg
 
 import zipfile
 from util_zip import archive_add_dir
 from inp import inp
 from scan_program_line import scan_program_line
+from clean_sim import ask_to_delete
+from progress_class import progress_class
 
 def scan_next_archive(sim_dir):
 	i=0
@@ -98,24 +95,6 @@ def scan_archive(sim_dir):
 	progress_window.stop()
 
 
-	
-def scan_delete_files(dirs_to_del,parent_window=None):
-	if parent_window!=None:
-		progress_window=progress_class()
-		progress_window.show()
-		progress_window.start()
-
-		process_events()
-	
-	for i in range(0, len(dirs_to_del)):
-		gpvdm_delete_file(dirs_to_del[i])
-		if parent_window!=None:
-			progress_window.set_fraction(float(i)/float(len(dirs_to_del)))
-			progress_window.set_text("Deleting"+dirs_to_del[i])
-			process_events()
-
-	if parent_window!=None:
-		progress_window.stop()
 
 def scan_list_simulations(dir_to_search):
 	found_dirs=[]
@@ -179,32 +158,7 @@ def scan_list_unconverged_simulations(dir_to_search):
 
 	return found_dirs
 
-def scan_ask_to_delete(parent,dirs_to_del,parent_window=None,interactive=True):
-	if (len(dirs_to_del)!=0):
 
-		if interactive==True:
-			text_del_dirs=""
-			if len(dirs_to_del)>30:
-				for i in range(0,30,1):
-					text_del_dirs=text_del_dirs+dirs_to_del[i]+"\n"
-				text_del_dirs=text_del_dirs+_("and ")+str(len(dirs_to_del)-30)+_(" more.")
-			else:
-				for i in range(0,len(dirs_to_del)):
-					text_del_dirs=text_del_dirs+dirs_to_del[i]+"\n"
-
-			text=_("Should I delete these files?:\n")+"\n"+text_del_dirs
-
-			response = yes_no_cancel_dlg(parent,text)
-
-			if response == "yes":
-				scan_delete_files(dirs_to_del,parent_window)
-				return "yes"
-			elif response == "no":
-				return "no"
-			elif response == "cancel":
-				return "cancel"
-		else:
-			scan_delete_files(dirs_to_del,parent_window)
 
 class report_token():
 	def __init__(self,file_name,token):
@@ -320,7 +274,7 @@ def scan_clean_unconverged(parent,dir_to_clean):
 		dirs_to_del=[]
 		dirs_to_del=scan_list_unconverged_simulations(dir_to_clean)
 
-		scan_ask_to_delete(parent,dirs_to_del)
+		ask_to_delete(parent,dirs_to_del)
 
 def scan_push_to_hpc(base_dir,only_unconverged):
 	config_file=os.path.join(os.getcwd(),"server.inp")
@@ -332,7 +286,7 @@ def scan_push_to_hpc(base_dir,only_unconverged):
 		hpc_files=[]
 		hpc_files=scan_list_simulations(hpc_path)
 		#print("hpc files=",hpc_files)
-		scan_delete_files(hpc_files)
+		delete_files(hpc_files)
 		files=[]
 
 		if only_unconverged==True:
@@ -449,7 +403,7 @@ class scan_io:
 			if os.path.isdir(full_path)==True:
 				dirs_to_del.append(full_path)
 
-		scan_ask_to_delete(self.parent_window,dirs_to_del,parent_window=self.parent_window,interactive=self.interactive)
+		ask_to_delete(self.parent_window,dirs_to_del,interactive=self.interactive)
 
 	def apply_constants_to_dir(self,folder):
 		leaf=scan_tree_leaf()

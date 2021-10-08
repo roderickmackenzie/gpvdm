@@ -1,25 +1,23 @@
 # 
 #   General-purpose Photovoltaic Device Model - a drift diffusion base/Shockley-Read-Hall
 #   model for 1st, 2nd and 3rd generation solar cells.
-#   Copyright (C) 2012-2017 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
-#
+#   Copyright (C) 2008-2022 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
+#   
 #   https://www.gpvdm.com
-#   Room B86 Coates, University Park, Nottingham, NG7 2RD, UK
-#
+#   
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License v2.0, as published by
 #   the Free Software Foundation.
-#
+#   
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
-#
+#   
 #   You should have received a copy of the GNU General Public License along
 #   with this program; if not, write to the Free Software Foundation, Inc.,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#
-# 
+#   
 
 
 ## @package gpvdm_data
@@ -66,6 +64,8 @@ from json_light_sources import json_light_sources
 from json_world import json_world
 from json_world_stats import json_world_stats
 from json_detectors import json_detectors
+from json_ml import json_ml
+
 class json_dump(json_base):
 
 	def __init__(self):
@@ -171,6 +171,7 @@ class all_gpvdm_data(json_base,json_world_stats):
 		self.var_list.append(["circuit",json_circuit()])
 		self.var_list.append(["gl",json_gl()])
 		self.var_list.append(["world",json_world()])
+		self.var_list.append(["ml",json_ml()])
 		self.var_list.append(["icon","icon"])
 		self.var_list.append(["english_name","Simulation"])
 		self.var_list.append(["hidden",False])

@@ -20,7 +20,7 @@
 		"import_area":0.104,
 		"import_data_invert":"False",
 		"import_x_invert":"False",
-		"data_file":"none"
+		"data_file":"n.gmat"
 		},
 	"alpha_import": {
 		"import_file_path":"none",
@@ -34,13 +34,18 @@
 		"import_area":0.104,
 		"import_data_invert":"False",
 		"import_x_invert":"False",
-		"data_file":"none"
+		"data_file":"alpha.gmat"
 		},
-	"material_db_electrical_params": {
-		"material_blend":"False",
-		"Xi0":-3.0,
-		"Eg0":1.0,
-		"Xi1":-3.0,
-		"Eg1":1.0
+	"electrical_constants": {
+		"material_blend":"True",
+		"Xi0":-3.13,
+		"Eg0":2.02,
+		"Xi1":-3.9,
+		"Eg1":2.2
+		},
+	"thermal_constants": {
+		"thermal_kl":1.0,
+		"thermal_tau_e":1e-08,
+		"thermal_tau_h":1e-09
 		}
 	}

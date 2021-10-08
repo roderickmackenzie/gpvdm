@@ -2,25 +2,23 @@
 # 
 #   General-purpose Photovoltaic Device Model - a drift diffusion base/Shockley-Read-Hall
 #   model for 1st, 2nd and 3rd generation solar cells.
-#   Copyright (C) 2012-2017 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
-#
+#   Copyright (C) 2008-2022 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
+#   
 #   https://www.gpvdm.com
-#   Room B86 Coates, University Park, Nottingham, NG7 2RD, UK
-#
+#   
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License v2.0, as published by
 #   the Free Software Foundation.
-#
+#   
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
-#
+#   
 #   You should have received a copy of the GNU General Public License along
 #   with this program; if not, write to the Free Software Foundation, Inc.,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#
-# 
+#   
 
 ## @package clean_sim
 #  Clean the simulation
@@ -30,6 +28,7 @@
 import os
 import shutil
 from cal_path import get_sim_path
+from util import gpvdm_delete_file
 
 #import glob
 
@@ -56,7 +55,15 @@ def remove_bin(directory):
 				print("Deleteing "+del_file)
 				os.remove(del_file)
 
-def clean_sim_dir():
+def clean_sim_dir(path,clean_exp_data=True):
+	if clean_exp_data==True:
+		for f in os.listdir(path):
+			full_path=os.path.join(path,f)
+			if f.startswith("fit_data")==True:
+				if f.endswith(".inp")==True:
+					os.unlink(full_path)
+
+	return
 	remove_bin("light")
 	remove_bin("plugins")
 	remove_bin("solvers")
@@ -104,3 +111,54 @@ def clean_sim_dir():
 		if remove==True:
 			print("Deleting",file)
 			os.remove(file)
+
+def delete_files(dirs_to_del,parent_window=None):
+	if parent_window!=None:
+		from yes_no_cancel_dlg import yes_no_cancel_dlg
+		from progress_class import progress_class
+		from process_events import process_events
+
+		progress_window=progress_class()
+		progress_window.show()
+		progress_window.start()
+
+		process_events()
+	
+	for i in range(0, len(dirs_to_del)):
+		gpvdm_delete_file(dirs_to_del[i])
+		if parent_window!=None:
+			progress_window.set_fraction(float(i)/float(len(dirs_to_del)))
+			progress_window.set_text("Deleting"+dirs_to_del[i])
+			process_events()
+
+	if parent_window!=None:
+		progress_window.stop()
+
+
+def ask_to_delete(parent_window,dirs_to_del,interactive=True):
+	if len(dirs_to_del)!=0:
+
+		if interactive==True:
+			from yes_no_cancel_dlg import yes_no_cancel_dlg
+			text_del_dirs=""
+			n=0
+			for dir_item in dirs_to_del:
+				text_del_dirs=text_del_dirs+dir_item+"\n"
+				if n>15:
+					text_del_dirs=text_del_dirs+_("and ")+str(len(dirs_to_del)-30)+_(" more.")
+					break
+				n=n+1
+
+			text=_("Should I delete these files?:\n")+"\n"+text_del_dirs
+
+			response = yes_no_cancel_dlg(parent_window,text)
+
+			if response == "yes":
+				delete_files(dirs_to_del,parent_window)
+				return "yes"
+			elif response == "no":
+				return "no"
+			elif response == "cancel":
+				return "cancel"
+		else:
+			delete_files(dirs_to_del,parent_window)

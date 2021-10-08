@@ -2,25 +2,23 @@
 # 
 #   General-purpose Photovoltaic Device Model - a drift diffusion base/Shockley-Read-Hall
 #   model for 1st, 2nd and 3rd generation solar cells.
-#   Copyright (C) 2012-2017 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
-#
+#   Copyright (C) 2008-2022 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
+#   
 #   https://www.gpvdm.com
-#   Room B86 Coates, University Park, Nottingham, NG7 2RD, UK
-#
+#   
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License v2.0, as published by
 #   the Free Software Foundation.
-#
+#   
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
-#
+#   
 #   You should have received a copy of the GNU General Public License along
 #   with this program; if not, write to the Free Software Foundation, Inc.,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#
-# 
+#   
 
 ## @package scan_ribbon
 #  The ribbon for the scan window.
@@ -116,17 +114,6 @@ class scan_ribbon(ribbon_base):
 
 		return toolbar
 
-	def ml(self):
-		toolbar = QToolBar()
-		toolbar.setToolButtonStyle( Qt.ToolButtonTextUnderIcon)
-		toolbar.setIconSize(QSize(42, 42))
-
-		self.tb_ml_build_vectors = QAction(icon_get("ml"), wrap_text(_("Build vectors"),4), self)
-		toolbar.addAction(self.tb_ml_build_vectors)
-
-
-		return toolbar
-
 	def update(self):
 		print("update")
 		#self.device.update()
@@ -160,9 +147,6 @@ class scan_ribbon(ribbon_base):
 		if gpvdm_local().gui_config.enable_betafeatures==True:
 			self.addTab(w,_("Advanced"))
 
-		w=self.ml()
-		if gpvdm_local().gui_config.enable_betafeatures==True:
-			self.addTab(w,_("ML"))
 
 		sheet=self.readStyleSheet(os.path.join(get_css_path(),"style.css"))
 		if sheet!=None:

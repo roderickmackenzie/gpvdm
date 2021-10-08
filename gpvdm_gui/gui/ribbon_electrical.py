@@ -2,25 +2,23 @@
 #
 #   General-purpose Photovoltaic Device Model - a drift diffusion base/Shockley-Read-Hall
 #   model for 1st, 2nd and 3rd generation solar cells.
-#   Copyright (C) 2012-2017 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
-#
+#   Copyright (C) 2008-2022 Roderick C. I. MacKenzie r.c.i.mackenzie at googlemail.com
+#   
 #   https://www.gpvdm.com
-#   Room B86 Coates, University Park, Nottingham, NG7 2RD, UK
-#
+#   
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License v2.0, as published by
 #   the Free Software Foundation.
-#
+#   
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
-#
+#   
 #   You should have received a copy of the GNU General Public License along
 #   with this program; if not, write to the Free Software Foundation, Inc.,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#
-#
+#   
 
 ## @package ribbon_electrical
 #  The configure ribbon.
@@ -117,9 +115,6 @@ class ribbon_electrical(ribbon_page2):
 		self.perovskite.setCheckable(True)
 		pan.addAction(self.perovskite)
 
-		self.configwindow = QAction_lock("preferences-system", _("Configure"), self,"ribbon_config_config")
-		self.configwindow.triggered.connect(self.callback_config_window)
-		pan.addAction(self.configwindow)
 
 		#a.setStyleSheet("QToolBar {margin-top: 0px;margin-bottom: 0px; padding 0px;}")
 #		spacer = QWidget()
@@ -150,21 +145,18 @@ class ribbon_electrical(ribbon_page2):
 		data=gpvdm_data()
 		if self.enabled==True:
 			if data.electrical_solver.solver_type=="drift-diffusion":
-				self.configwindow.setEnabled(True)
 				self.doping.setEnabled(True)
 				self.interfaces.setEnabled(True)
 				self.parasitic.setEnabled(True)
 				self.boundary.setEnabled(True)
 				self.perovskite.setEnabled(True)
 			elif data.electrical_solver.solver_type=="poisson":
-				self.configwindow.setEnabled(True)
 				self.doping.setEnabled(True)
 				self.interfaces.setEnabled(False)
 				self.parasitic.setEnabled(False)
 				self.boundary.setEnabled(True)
 				self.perovskite.setEnabled(False)
 			else:
-				self.configwindow.setEnabled(False)
 				self.doping.setEnabled(False)
 				self.interfaces.setEnabled(False)
 				self.parasitic.setEnabled(False)
@@ -179,7 +171,6 @@ class ribbon_electrical(ribbon_page2):
 
 	def setEnabled(self,val):
 		self.enabled=val
-		self.configwindow.setEnabled(val)
 		self.mesh.setEnabled(val)
 		self.doping.setEnabled(val)
 		self.interfaces.setEnabled(val)
@@ -188,17 +179,6 @@ class ribbon_electrical(ribbon_page2):
 		self.boundary.setEnabled(val)
 		self.perovskite.setEnabled(val)
 
-	def callback_config_window(self):
-		self.config_window=class_config_window([gpvdm_data().dump],[_("Output files")])
-		self.config_window.show()
-
-		#self.config_window=gpvdm_open("/gpvdmroot/gpvdm_configure",show_inp_files=False,title=_("Configure"))
-		#self.config_window.toolbar.hide()
-		#self.config_window.show_directories=False
-		#ret=self.config_window.exec_()
-
-
-		#help_window().help_set_help(["preferences-system.png",_("<big><b>Configuration editor</b></big><br> Use this window to control advanced simulation parameters.")])
 
 
 
