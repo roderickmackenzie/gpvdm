@@ -25,13 +25,22 @@
 
 import os
 from math import pi,acos,sin,cos
+from json_base import json_base
 
-class vec():
+class vec(json_base):
 	def __init__(self):
-		self.x=0.0
-		self.y=0.0
-		self.z=0.0
+		json_base.__init__(self,"vec")
+		self.var_list=[]
+		self.var_list.append(["x",0.0])
+		self.var_list.append(["y",0.0])
+		self.var_list.append(["z",0.0])
+		self.var_list_build()
 
+		#self.x=0.0
+		#self.y=0.0
+		#self.z=0.0
+	def gen_json(self):
+		adasds
 	def __str__(self):
 		return "(x="+str(self.x)+",y="+str(self.y)+",z="+str(self.z)+")"
 
@@ -105,7 +114,7 @@ class vec():
 		self.z=data.z
 
 
-class triangle():
+class triangle(json_base):
 
 	def rotate_y(self,ang):
 		a=triangle()
@@ -115,9 +124,16 @@ class triangle():
 		return a
 
 	def __init__(self):
-		self.xyz0=vec()
-		self.xyz1=vec()
-		self.xyz2=vec()
+		json_base.__init__(self,"vec")
+		self.var_list=[]
+		self.var_list.append(["xyz0",vec()])
+		self.var_list.append(["xyz1",vec()])
+		self.var_list.append(["xyz2",vec()])
+		self.var_list_build()
+
+		#self.xyz0=vec()
+		#self.xyz1=vec()
+		#self.xyz2=vec()
 		self.points=3
 
 	def __str__(self):

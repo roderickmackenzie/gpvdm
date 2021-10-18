@@ -82,4 +82,5 @@ struct circuit_node * circuit_nodes_find_node_x_plus_one(struct simulation * sim
 struct circuit_node * circuit_nodes_selected_find_miny(struct simulation * sim,struct circuit *cir,struct circuit_node *base_node);
 void circuit_dump_snapshot(struct simulation * sim,struct device *dev,char *out_dir);
 void circuit_dump_I_layers(struct simulation * sim,struct device *dev,char *out_dir);
+void circuit_dump_gnuplot(struct simulation * sim,struct device *dev,struct circuit *cir);
 #endif

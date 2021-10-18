@@ -256,6 +256,8 @@ class shape(json_base):
 		if os.path.isfile(self.shape_path)==True:
 			self.triangles=dat_file()
 			self.triangles.load(self.shape_path)
+			#for t in self.triangles.data:
+			#	print(t.gen_json())
 			if self.triangles.data!=None:
 				min_vec=triangles_get_min(self.triangles.data)
 				self.triangles.data=triangles_sub_vec(self.triangles.data,min_vec)

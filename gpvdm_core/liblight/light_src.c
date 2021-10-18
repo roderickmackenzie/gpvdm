@@ -346,11 +346,16 @@ void light_src_load(struct simulation *sim,struct light_src *in, struct json_obj
 
 	json_get_int(sim, json_filters, &segments,"segments");	
 
+	//If there is a spectra defined then use its wavelength range as the base of the filter
+	if (in->nspectra>0)
+	{
+		inter_copy(&in->filter_read,&(in->spectra[0]),TRUE);
+		inter_set_value(&in->filter_read,1.0);
+	}
+
 	int filter_enabled=FALSE;
 	in->filter_enabled=FALSE;
-
-	inter_copy(&in->filter_read,&(in->spectra[0]),TRUE);
-	inter_set_value(&in->filter_read,1.0);
+	int first_load=TRUE;
 
 	for (i=0;i<segments;i++)
 	{
@@ -373,8 +378,6 @@ void light_src_load(struct simulation *sim,struct light_src *in, struct json_obj
 
 			join_path(3,in->filter_path,get_filter_path(sim),filter_path,"filter.inp");
 
-//			printf("%ld",in->filter_read.len);
-
 
 			if (isfile(in->filter_path)==0)
 			{
@@ -383,7 +386,15 @@ void light_src_load(struct simulation *sim,struct light_src *in, struct json_obj
 				inter_sort(&filter);
 				inter_mod(&filter);
 				inter_norm(&filter,1.0);
-
+				if (first_load==TRUE)
+				{
+					if (in->nspectra==0)
+					{
+						inter_copy(&in->filter_read,&filter,TRUE);
+						inter_set_value(&in->filter_read,1.0);
+					}
+					first_load=FALSE;
+				}
 
 				for (x=0;x<in->filter_read.len;x++)
 				{
@@ -409,7 +420,6 @@ void light_src_load(struct simulation *sim,struct light_src *in, struct json_obj
 
 
 	math_xy_mul_long_double(&(in->filter_read),in->local_ground_view_factor);
-
 
 	//Reflection of external interface
 

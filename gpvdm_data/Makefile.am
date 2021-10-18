@@ -25,6 +25,7 @@ install-data-hook:
 	cp emission $(DESTDIR)$(datadir)/gpvdm_data/emission -rf
 	cp atmosphere $(DESTDIR)$(datadir)/gpvdm_data/atmosphere -rf
 	cp shape $(DESTDIR)$(datadir)/gpvdm_data/shape -rf
+	cp filters $(DESTDIR)$(datadir)/gpvdm_data/filters -rf
 	cp components $(DESTDIR)$(datadir)/gpvdm_data/components -rf
 	find ./ -name "*.mo" -exec cp --parents {} $(DESTDIR)$(datadir)/gpvdm_data/ ";"
 	@echo "(gpvdm_build_finished)"

@@ -45,6 +45,7 @@ def clone_material(dest_material_dir,src_material_dir):
 	all_files=["alpha.gmat","n.gmat"]
 	all_files.append("spectra.inp")
 	all_files.append("shape.inp")
+	all_files.append("filter.inp")
 	all_files.append("shape_import.inp")
 	all_files.append("data.json")
 	all_files.append("image.png")

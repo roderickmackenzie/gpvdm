@@ -219,6 +219,7 @@ printf_log(sim,"Vapplied=%Le\n",Vapplied);
 long double n_tot=0.0;
 long double J_tot=0.0;
 long double n_count_last=0.0;
+long double solver_i=0.0;
 FILE *m_out;
 m_out=fopen("errors.dat","w");
 
@@ -315,18 +316,22 @@ do
 	if (pulse_config.pulse_sim_mode==LOAD)
 	{
 		V=time_get_voltage(in)+pulse_config.pulse_bias;
-		J_for_jv=newton_externv(sim,in,V)/in->area;
+		solver_i=newton_externv(sim,in,V);
+		J_for_jv=solver_i/in->area;
 	}else
 	if (pulse_config.pulse_sim_mode==IDEAL_DIODE_IDEAL_LOAD)
 	{
 		V=time_get_voltage(in)+pulse_config.pulse_bias;
 		newton_externalv_simple(sim,in,V);
+		solver_i=get_I(in);
 		J_for_jv=get_avg_J(in);
+
 	}else
 	if (pulse_config.pulse_sim_mode==OPEN_CIRCUIT)
 	{
 		V=contact_get_active_contact_voltage(sim,in);
 		newton_sim_voc_fast(sim,in,TRUE);
+		solver_i=get_I(in);
 		J_for_jv=get_avg_J(in);
 	}else
 	{
@@ -350,7 +355,7 @@ do
 	gui_send_data(sim,gui_sub,"pulse");
 
 	plot_now(sim,in,"pulse.plot");
-	inter_append(&out_i,in->time,get_I(in));
+	inter_append(&out_i,in->time,solver_i);
 	inter_append(&out_j_int,in->time,get_avg_J(in));
 	inter_append(&out_v,in->time,V);
 	inter_append(&out_G,in->time,in->Gn[0][0][0]);

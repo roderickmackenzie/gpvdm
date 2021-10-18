@@ -127,7 +127,7 @@ class gl_scale():
 				break
 
 			o.dxyz.x=o.dxyz.x*scale_get_xmul()
-			o.dxyz.y=-o.dxyz.y*scale_get_ymul()
+			o.dxyz.y=o.dxyz.y*scale_get_ymul()
 			o.dxyz.z=o.dxyz.z*scale_get_zmul()
 
 			ret.append(o)

@@ -104,7 +104,6 @@ from gl_text import gl_text
 from gl_lib_ray import gl_lib_ray
 from gl_contacts import gl_contacts
 from gl_graph import gl_graph
-from gl_draw_circuit import gl_draw_circuit
 from gl_draw_light_profile import gl_draw_light_profile
 from gl_color import gl_color
 from gl_shapes import gl_shapes
@@ -123,7 +122,7 @@ class open_gl_light:
 		self.number=GL_LIGHT0
 
 if open_gl_ok==True:		
-	class glWidget(QGLWidget,shape_layer, gl_lib_ray,gl_objects, gl_text,gl_views,gl_mesh,gl_object_editor,gl_cords,gl_base_widget,gl_main_menu,gl_input, gl_contacts, gl_draw_light_profile, gl_graph, gl_draw_circuit, gl_color, gl_shapes, gl_render_obj, gl_photons, gl_toolbar):
+	class glWidget(QGLWidget,shape_layer, gl_lib_ray,gl_objects, gl_text,gl_views,gl_mesh,gl_object_editor,gl_cords,gl_base_widget,gl_main_menu,gl_input, gl_contacts, gl_draw_light_profile, gl_graph, gl_color, gl_shapes, gl_render_obj, gl_photons, gl_toolbar):
 
 
 		text_output = pyqtSignal(str)
@@ -147,41 +146,39 @@ if open_gl_ok==True:
 			self.lights=[]
 			self.view_options=gl_view_options()
 
+
 			l=open_gl_light()
 			l.xyz=[0, 5, -10]
 			l.number=GL_LIGHT0
 			self.lights.append(l)
 
 			l=open_gl_light()
-			l.xyz=[0, 5, 10]
+			l.xyz=[0, -5, -10]
 			l.number=GL_LIGHT1
 			self.lights.append(l)
 
+
 			l=open_gl_light()
-			l.xyz=[0, -5, 10]
+			l.xyz=[0, 5, 10]
 			l.number=GL_LIGHT2
 			self.lights.append(l)
 
 			l=open_gl_light()
-			l.xyz=[-10, -5, 0]
+			l.xyz=[0, -5, 10]
 			l.number=GL_LIGHT3
 			self.lights.append(l)
 
 			l=open_gl_light()
-			l.xyz=[10, -5, 0]
+			l.xyz=[-10, -5, 0]
 			l.number=GL_LIGHT4
 			self.lights.append(l)
 
+			l=open_gl_light()
+			l.xyz=[10, -5, 0]
+			l.number=GL_LIGHT5
+			self.lights.append(l)
 
-			#l=open_gl_light()
-			#l.xyz=[-10, 5, 0, 1.0]
-			#l.number=GL_LIGHT5
-			#self.lights.append(l)
 
-			#l=open_gl_light()
-			#l.xyz=[10, 5, 0, 1.0]
-			#l.number=GL_LIGHT6
-			#self.lights.append(l)
 
 			self.failed=True
 			self.graph_path=None
@@ -558,7 +555,7 @@ if open_gl_ok==True:
 			glDepthFunc(GL_LESS)
 			glEnable(GL_DEPTH_TEST)
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE);	#GL_ONE_MINUS_SRC_ALPHA
-			glEnable(GL_BLEND);
+			glEnable(GL_BLEND)
 			glEnableClientState(GL_VERTEX_ARRAY)
 			glShadeModel(GL_SMOOTH)
 			glColorMaterial(GL_FRONT, GL_DIFFUSE)		#This means we can set the color of a material using glColor and not glMaterialfv
@@ -608,9 +605,11 @@ if open_gl_ok==True:
 					glEnable(GL_LIGHTING)
 					lightZeroColor = [1.0, 1.0, 1.0, 1.0]
 					#print(l.number,GL_LIGHT1)
-					glLightfv(l.number, GL_POSITION, [l.xyz[0],l.xyz[1],l.xyz[2] ])
-					glLightfv(l.number, GL_DIFFUSE, lightZeroColor)
-					#glLightfv(l.number, GL_SPOT_DIRECTION, [ 1,1,1]);
+					glLightfv(l.number, GL_POSITION, [l.xyz[0],l.xyz[1],l.xyz[2] ,1.0])
+					glLightfv(l.number, GL_AMBIENT, [0.2,0.2,0.2,1.0 ])
+					glLightfv(l.number, GL_DIFFUSE, [0.8,0.8,0.8,1.0 ])
+					glLightfv(l.number, GL_SPECULAR, [1.0,1.0,1.0,1.0 ])
+					#glLightfv(l .number, GL_SPOT_DIRECTION, [ 1,1,1]);
 					#glLightf(l.number, GL_CONSTANT_ATTENUATION, 0.1)
 					#glLightf(l.number, GL_LINEAR_ATTENUATION, 0.05)
 					glEnable(l.number)

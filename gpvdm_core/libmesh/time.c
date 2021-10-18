@@ -296,18 +296,9 @@ if (in->go_time==TRUE)
 		if (tm->tm_mesh_pos<(tm->tm_mesh_len-1))
 		{
 			tm->tm_mesh_pos++;
-			
-			if (tm->tm_mesh_pos==(tm->tm_mesh_len-1))
-			{
-				in->dt=(tm->tm_time_mesh[tm->tm_mesh_pos]-tm->tm_time_mesh[tm->tm_mesh_pos-1]);
-			}else
-			{
-				in->dt=(tm->tm_time_mesh[tm->tm_mesh_pos+1]-tm->tm_time_mesh[tm->tm_mesh_pos]);
-			}
-			in->time+=in->dt;
-
+			in->dt=tm->tm_dt[tm->tm_mesh_pos];
+			in->time=tm->tm_time_mesh[tm->tm_mesh_pos];
 		}
-
 	}else
 	{
 		in->time+=in->dt;

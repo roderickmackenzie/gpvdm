@@ -567,7 +567,7 @@ class gpvdm_main_window(QMainWindow):
 				coppied=True
 
 			if os.path.isdir(gpvdm_paths.get_filters_path())==False:
-				clone_materials(gpvdm_paths.get_filters_path(), gpvdm_paths.get_base_filters_path(),"filters")
+				clone_materials(gpvdm_paths.get_filters_path(), gpvdm_paths.get_base_filters_path(),"filter")
 				coppied=True
 
 			if os.path.isdir(get_spectra_path())==False:

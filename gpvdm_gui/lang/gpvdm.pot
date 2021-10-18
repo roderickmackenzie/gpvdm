@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gpvdm 5.0\n"
 "Report-Msgid-Bugs-To: roderick.mackenzie@nottingham.ac.uk\n"
-"POT-Creation-Date: 2021-10-08 10:16+0100\n"
+"POT-Creation-Date: 2021-10-18 11:55+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -638,10 +638,10 @@ msgstr ""
 
 #: ../../gpvdm_core/plugins/cv/cv.c:339 ../../gpvdm_core/plugins/cv/cv.c:341
 #: ../../gpvdm_core/plugins/cv/cv.c:360 ../../gpvdm_core/plugins/cv/cv.c:362
-#: ../../gpvdm_core/plugins/time_domain/pulse.c:519
 #: ../../gpvdm_core/plugins/time_domain/pulse.c:524
-#: ../../gpvdm_core/plugins/time_domain/pulse.c:568
-#: ../../gpvdm_core/plugins/time_domain/pulse.c:570
+#: ../../gpvdm_core/plugins/time_domain/pulse.c:529
+#: ../../gpvdm_core/plugins/time_domain/pulse.c:573
+#: ../../gpvdm_core/plugins/time_domain/pulse.c:575
 #: ../../gpvdm_core/plugins/ce/ce.c:160 ../../gpvdm_core/plugins/ce/ce.c:162
 #: ../../gpvdm_core/plugins/ce/ce.c:210 ../../gpvdm_core/plugins/ce/ce.c:212
 #: ../../gpvdm_core/plugins/ce/ce.c:450 ../../gpvdm_core/plugins/ce/ce.c:455
@@ -706,7 +706,7 @@ msgstr ""
 
 #: ../../gpvdm_core/plugins/pl_ss/pl_ss.c:82
 #: ../../gpvdm_core/plugins/time_domain/pulse.c:205
-#: ../../gpvdm_core/plugins/time_domain/pulse.c:333
+#: ../../gpvdm_core/plugins/time_domain/pulse.c:338
 msgid "pulse mode not known\n"
 msgstr ""
 
@@ -768,10 +768,10 @@ msgstr ""
 
 #: ../../gpvdm_core/plugins/fx_domain/is.c:507
 #: ../../gpvdm_core/plugins/fx_domain/is.c:510
-#: ../../gpvdm_core/libcircuit/circuit_dump.c:501
-#: ../../gpvdm_core/libcircuit/circuit_dump.c:504
-#: ../../gpvdm_core/libcircuit/circuit_dump.c:564
-#: ../../gpvdm_core/libcircuit/circuit_dump.c:567
+#: ../../gpvdm_core/libcircuit/circuit_dump.c:538
+#: ../../gpvdm_core/libcircuit/circuit_dump.c:541
+#: ../../gpvdm_core/libcircuit/circuit_dump.c:601
+#: ../../gpvdm_core/libcircuit/circuit_dump.c:604
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:127
 #: ../../gpvdm_gui/gui/token_lib.py:186
 #: ../../gpvdm_gui/gui/import_data_json.py:716
@@ -779,31 +779,31 @@ msgstr ""
 msgid "Resistance"
 msgstr ""
 
-#: ../../gpvdm_core/plugins/time_domain/pulse.c:345
+#: ../../gpvdm_core/plugins/time_domain/pulse.c:350
 msgid "pulse time"
 msgstr ""
 
-#: ../../gpvdm_core/plugins/time_domain/pulse.c:345
+#: ../../gpvdm_core/plugins/time_domain/pulse.c:350
 #: ../../gpvdm_core/plugins/ce/ce.c:397
 #: ../../gpvdm_core/libfxdomain/fxdomain_large_signal.c:293
 #: ../../gpvdm_core/libfxdomain/fxdomain_dft.c:298
 msgid "step"
 msgstr ""
 
-#: ../../gpvdm_core/plugins/time_domain/pulse.c:392
-#: ../../gpvdm_core/plugins/time_domain/pulse.c:394
-#: ../../gpvdm_core/plugins/time_domain/pulse.c:416
-#: ../../gpvdm_core/plugins/time_domain/pulse.c:418
-#: ../../gpvdm_core/plugins/time_domain/pulse.c:440
-#: ../../gpvdm_core/plugins/time_domain/pulse.c:442
-#: ../../gpvdm_core/plugins/time_domain/pulse.c:466
-#: ../../gpvdm_core/plugins/time_domain/pulse.c:468
-#: ../../gpvdm_core/plugins/time_domain/pulse.c:494
-#: ../../gpvdm_core/plugins/time_domain/pulse.c:496
-#: ../../gpvdm_core/plugins/time_domain/pulse.c:519
-#: ../../gpvdm_core/plugins/time_domain/pulse.c:521
-#: ../../gpvdm_core/plugins/time_domain/pulse.c:544
-#: ../../gpvdm_core/plugins/time_domain/pulse.c:546
+#: ../../gpvdm_core/plugins/time_domain/pulse.c:397
+#: ../../gpvdm_core/plugins/time_domain/pulse.c:399
+#: ../../gpvdm_core/plugins/time_domain/pulse.c:421
+#: ../../gpvdm_core/plugins/time_domain/pulse.c:423
+#: ../../gpvdm_core/plugins/time_domain/pulse.c:445
+#: ../../gpvdm_core/plugins/time_domain/pulse.c:447
+#: ../../gpvdm_core/plugins/time_domain/pulse.c:471
+#: ../../gpvdm_core/plugins/time_domain/pulse.c:473
+#: ../../gpvdm_core/plugins/time_domain/pulse.c:499
+#: ../../gpvdm_core/plugins/time_domain/pulse.c:501
+#: ../../gpvdm_core/plugins/time_domain/pulse.c:524
+#: ../../gpvdm_core/plugins/time_domain/pulse.c:526
+#: ../../gpvdm_core/plugins/time_domain/pulse.c:549
+#: ../../gpvdm_core/plugins/time_domain/pulse.c:551
 #: ../../gpvdm_core/plugins/ce/ce.c:425 ../../gpvdm_core/plugins/ce/ce.c:427
 #: ../../gpvdm_core/plugins/ce/ce.c:450 ../../gpvdm_core/plugins/ce/ce.c:452
 #: ../../gpvdm_core/libdump/dump_contacts.c:166
@@ -838,11 +838,11 @@ msgstr ""
 msgid "Time"
 msgstr ""
 
-#: ../../gpvdm_core/plugins/time_domain/pulse.c:392
 #: ../../gpvdm_core/plugins/time_domain/pulse.c:397
-#: ../../gpvdm_core/plugins/time_domain/pulse.c:416
+#: ../../gpvdm_core/plugins/time_domain/pulse.c:402
 #: ../../gpvdm_core/plugins/time_domain/pulse.c:421
-#: ../../gpvdm_core/plugins/time_domain/pulse.c:497
+#: ../../gpvdm_core/plugins/time_domain/pulse.c:426
+#: ../../gpvdm_core/plugins/time_domain/pulse.c:502
 #: ../../gpvdm_core/plugins/ce/ce.c:425 ../../gpvdm_core/plugins/ce/ce.c:430
 #: ../../gpvdm_core/plugins/jv/jv.c:86 ../../gpvdm_core/plugins/jv/jv.c:835
 #: ../../gpvdm_core/libdump/dump_contacts.c:93
@@ -859,25 +859,25 @@ msgstr ""
 msgid "Current"
 msgstr ""
 
-#: ../../gpvdm_core/plugins/time_domain/pulse.c:440
+#: ../../gpvdm_core/plugins/time_domain/pulse.c:445
 msgid "current density"
 msgstr ""
 
-#: ../../gpvdm_core/plugins/time_domain/pulse.c:445
-#: ../../gpvdm_core/plugins/time_domain/pulse.c:466
-#: ../../gpvdm_core/plugins/time_domain/pulse.c:469
+#: ../../gpvdm_core/plugins/time_domain/pulse.c:450
+#: ../../gpvdm_core/plugins/time_domain/pulse.c:471
+#: ../../gpvdm_core/plugins/time_domain/pulse.c:474
 #: ../../gpvdm_core/plugins/jv/jv.c:696 ../../gpvdm_core/plugins/jv/jv.c:809
 #: ../../gpvdm_core/plugins/jv/jv.c:812 ../../gpvdm_core/plugins/jv/jv.c:901
 #: ../../gpvdm_core/libdump/dynamic_dump_j.c:311
 #: ../../gpvdm_core/libdump/dump_zxy.c:421
 #: ../../gpvdm_core/libdump/dump_zxy.c:443
-#: ../../gpvdm_core/libcircuit/circuit_dump.c:407
+#: ../../gpvdm_core/libcircuit/circuit_dump.c:444
 msgid "Current density"
 msgstr ""
 
-#: ../../gpvdm_core/plugins/time_domain/pulse.c:494
-#: ../../gpvdm_core/plugins/time_domain/pulse.c:568
-#: ../../gpvdm_core/plugins/time_domain/pulse.c:571
+#: ../../gpvdm_core/plugins/time_domain/pulse.c:499
+#: ../../gpvdm_core/plugins/time_domain/pulse.c:573
+#: ../../gpvdm_core/plugins/time_domain/pulse.c:576
 #: ../../gpvdm_core/plugins/ce/ce.c:398
 #: ../../gpvdm_core/libfxdomain/fxdomain_large_signal.c:294
 #: ../../gpvdm_core/libfxdomain/fxdomain_dump.c:151
@@ -885,20 +885,20 @@ msgstr ""
 msgid "current"
 msgstr ""
 
-#: ../../gpvdm_core/plugins/time_domain/pulse.c:522
+#: ../../gpvdm_core/plugins/time_domain/pulse.c:527
 #: ../../gpvdm_core/plugins/jv/jv.c:836 ../../gpvdm_core/plugins/jv/jv.c:861
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/fxmesh.py:207
 #: ../../gpvdm_gui/gui/fxexperiment_mesh_tab.py:114
 msgid "Volts"
 msgstr ""
 
-#: ../../gpvdm_core/plugins/time_domain/pulse.c:544
+#: ../../gpvdm_core/plugins/time_domain/pulse.c:549
 #: ../../gpvdm_core/libemission/probe.c:283
 #: ../../gpvdm_core/libemission/probe.c:308
 msgid "Photogeneration rate"
 msgstr ""
 
-#: ../../gpvdm_core/plugins/time_domain/pulse.c:547
+#: ../../gpvdm_core/plugins/time_domain/pulse.c:552
 #: ../../gpvdm_core/libdump/dump_zxy.c:753
 #: ../../gpvdm_core/libdump/dump_zxy.c:768
 #: ../../gpvdm_core/libdump/dynamic.c:178
@@ -1178,8 +1178,8 @@ msgstr ""
 #: ../../gpvdm_core/liblight/light_dump_verbose_1d.c:214
 #: ../../gpvdm_core/liblight/light_dump_verbose_1d.c:247
 #: ../../gpvdm_core/liblight/light_dump_verbose_1d.c:282
-#: ../../gpvdm_core/libcircuit/circuit_dump.c:503
-#: ../../gpvdm_core/libcircuit/circuit_dump.c:566 ../../gpvdm_core/src/pos.c:82
+#: ../../gpvdm_core/libcircuit/circuit_dump.c:540
+#: ../../gpvdm_core/libcircuit/circuit_dump.c:603 ../../gpvdm_core/src/pos.c:82
 #: ../../gpvdm_core/src/pos.c:99 ../../gpvdm_core/src/pos.c:134
 #: ../../gpvdm_core/src/pos.c:152 ../../gpvdm_core/src/pos.c:169
 #: ../../gpvdm_core/libperovskite/perovskite.c:109
@@ -1414,7 +1414,7 @@ msgstr ""
 #: ../../gpvdm_core/libcircuit/circuit_spm.c:237
 #: ../../gpvdm_core/libcircuit/circuit_spm.c:256
 #: ../../gpvdm_core/libcircuit/circuit_spm.c:314
-#: ../../gpvdm_core/libcircuit/circuit_dump.c:409
+#: ../../gpvdm_core/libcircuit/circuit_dump.c:446
 #: ../../gpvdm_core/libemission/pl.c:425 ../../gpvdm_core/libemission/pl.c:441
 #: ../../gpvdm_core/lib/initial.c:86 ../../gpvdm_core/lib/initial.c:110
 #: ../../gpvdm_core/lib/initial.c:134 ../../gpvdm_core/lib/initial.c:158
@@ -1444,7 +1444,7 @@ msgstr ""
 #: ../../gpvdm_core/libcircuit/circuit_spm.c:238
 #: ../../gpvdm_core/libcircuit/circuit_spm.c:257
 #: ../../gpvdm_core/libcircuit/circuit_spm.c:315
-#: ../../gpvdm_core/libcircuit/circuit_dump.c:410
+#: ../../gpvdm_core/libcircuit/circuit_dump.c:447
 #: ../../gpvdm_core/lib/initial.c:87 ../../gpvdm_core/lib/initial.c:111
 #: ../../gpvdm_core/lib/initial.c:135 ../../gpvdm_core/lib/initial.c:159
 #: ../../gpvdm_core/lib/initial.c:183
@@ -1547,7 +1547,7 @@ msgstr ""
 #: ../../gpvdm_core/libdump/dump_zxy.c:902
 #: ../../gpvdm_core/libdump/dump_zxy.c:942
 #: ../../gpvdm_core/libmath2d/math_2d_dump.c:64
-#: ../../gpvdm_core/libcircuit/circuit_dump.c:404
+#: ../../gpvdm_core/libcircuit/circuit_dump.c:441
 #: ../../gpvdm_core/libmesh/dim_light.c:215 ../../gpvdm_core/libmesh/dim.c:250
 #: ../../gpvdm_core/libmesh/dim_heat.c:167
 msgid "x-position"
@@ -1557,7 +1557,7 @@ msgstr ""
 #: ../../gpvdm_core/libdump/dump_zxy.c:903
 #: ../../gpvdm_core/libdump/dump_zxy.c:943
 #: ../../gpvdm_core/libmath2d/math_2d_dump.c:65
-#: ../../gpvdm_core/libcircuit/circuit_dump.c:405
+#: ../../gpvdm_core/libcircuit/circuit_dump.c:442
 #: ../../gpvdm_core/libmesh/dim_light.c:216 ../../gpvdm_core/libmesh/dim.c:251
 #: ../../gpvdm_core/libmesh/dim_heat.c:168
 msgid "y-position"
@@ -1567,7 +1567,7 @@ msgstr ""
 #: ../../gpvdm_core/libdump/dump_zxy.c:904
 #: ../../gpvdm_core/libdump/dump_zxy.c:944
 #: ../../gpvdm_core/libmath2d/math_2d_dump.c:66
-#: ../../gpvdm_core/libcircuit/circuit_dump.c:406
+#: ../../gpvdm_core/libcircuit/circuit_dump.c:443
 #: ../../gpvdm_core/libmesh/dim_light.c:217 ../../gpvdm_core/libmesh/dim.c:252
 #: ../../gpvdm_core/libmesh/dim_heat.c:169
 msgid "z-position"
@@ -2283,7 +2283,7 @@ msgstr ""
 msgid "File not found"
 msgstr ""
 
-#: ../../gpvdm_core/liblight/light_src.c:381
+#: ../../gpvdm_core/liblight/light_src.c:384
 msgid "Light: Load filter"
 msgstr ""
 
@@ -2405,10 +2405,12 @@ msgid "V spm"
 msgstr ""
 
 #: ../../gpvdm_core/libcircuit/circuit_dump.c:124
+#: ../../gpvdm_core/libcircuit/circuit_dump.c:168
 msgid "Electrical circuit"
 msgstr ""
 
 #: ../../gpvdm_core/libcircuit/circuit_dump.c:127
+#: ../../gpvdm_core/libcircuit/circuit_dump.c:171
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/fxexperiment_tab.py:77
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/experiment_tab.py:78
 #: ../../gpvdm_gui/gui/fxexperiment_tab.py:68
@@ -2416,7 +2418,7 @@ msgstr ""
 msgid "Circuit"
 msgstr ""
 
-#: ../../gpvdm_core/libcircuit/circuit_dump.c:402
+#: ../../gpvdm_core/libcircuit/circuit_dump.c:439
 msgid "Curretn vector plot"
 msgstr ""
 
@@ -7205,7 +7207,7 @@ msgid "Detailed dump control"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl.py:293
-#: ../../gpvdm_gui/gui/gl.py:291
+#: ../../gpvdm_gui/gui/gl.py:288
 msgid "active"
 msgstr ""
 

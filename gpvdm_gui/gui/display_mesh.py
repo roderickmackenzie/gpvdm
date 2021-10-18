@@ -126,7 +126,7 @@ class display_mesh(QWidget):
 
 	def refresh_display(self):
 		self.data.load(os.path.join(get_sim_path(),"electrical_mesh.dat"))
-		self.display.pre_built_scene=gl_scale.project_base_objects_from_m_2_screen(self.data.data)
+		self.display.pre_built_scene=self.display.scale.project_base_objects_from_m_2_screen(self.data.data)
 		self.display.force_redraw()
 
 	def rebuild_mesh(self):

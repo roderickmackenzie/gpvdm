@@ -122,6 +122,8 @@ class gl_shapes:
 
 				#print(b.gl_array_float32[n])
 				if self.false_color==False:
+					glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE)
+					glMaterialfv(GL_FRONT,GL_SHININESS,100.0)
 					glColorPointer(4, GL_FLOAT, 0, b.gl_array_colors_float32)
 
 				glDrawArrays(b.gl_array_type, 0, b.gl_array_points)

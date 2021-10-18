@@ -144,12 +144,18 @@ class gl_render_obj:
 			glEnd()
 
 	def paint_resistor(self,o):
+		glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE)
+		glMaterialfv(GL_FRONT,GL_SHININESS,50.0)
+		glColor4f(o.r,o.g,o.b,0.5)
+		glEnable(GL_BLEND)
+		glEnableClientState(GL_COLOR_ARRAY)
+
 		for xyz in o.xyz:
 			glPushMatrix()
 			glTranslatef(xyz.x,xyz.y,xyz.z)
 
 			glLineWidth(2)
-			self.set_color(o)
+			#self.set_color(o)
 			glBegin(GL_LINES)
 			glVertex3f(0.0, 0.0, 0.0)
 			glVertex3f(o.dxyz.x, o.dxyz.y, o.dxyz.z)

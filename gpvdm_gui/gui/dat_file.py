@@ -419,7 +419,7 @@ class dat_file():
 			return True
 
 		lines=[]
-		print("1")
+		#print("1")
 		lines=inp_load_file(file_name)
 		if lines==False:
 			return False
@@ -475,7 +475,7 @@ class dat_file():
 		self.y_len=len(self.data[0][0])
 		self.z_len=1
 
-		print("3")
+		#print("3")
 		return True
 
 	def rgb(self):
@@ -630,8 +630,7 @@ class dat_file():
 		self.valid_data=True
 
 	def decode_gobj_lines(self,lines):
-		if modulename not in sys.modules:
-			from gl_base_object import gl_base_object
+		from gl_base_object import gl_base_object
 		nobj=0
 		for line in lines:
 			o=gl_base_object()
@@ -667,6 +666,17 @@ class dat_file():
 
 				self.data.append(o)
 				nobj=nobj+1
+		#lines=[]
+		#for o in self.data:
+		#	if o.type=="resistor":
+		#		lines.append(str(o.xyz[0].z)+" "+str(o.xyz[0].x)+" "+str(o.xyz[0].y))
+		#		lines.append(str(o.xyz[0].z+o.dxyz.z)+" "+str(o.xyz[0].x+o.dxyz.x)+" "+str(o.xyz[0].y+o.dxyz.y))
+		#		lines.append("")
+		#		lines.append("")
+
+		#with open('test.dat', 'w') as f:
+		#	for item in lines:
+		#		f.write("%s\n" % item)
 
 	def decode_circuit_lines(self,lines):
 		build=[]
