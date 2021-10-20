@@ -27,52 +27,58 @@ import sys
 import glob
 from triangle import vec
 import numpy as np
+import copy
+
 try:
 	from OpenGL.GL import *
 	from OpenGL.GLU import *
 except:
 	pass
+from json_base import json_base
 
-class gl_base_object():
+class gl_base_object(json_base):
 	def __init__(self,x=0.0,y=0.0,z=0.0,dx=0.0,dy=0.0,dz=0.0,r=1.0,g=1.0,b=1.0):
+		json_base.__init__(self,"gl_base_object",segment_class=True,segment_example=vec())
+		self.segments_name=["xyz","sub_objects"]
+		self.segment_name=["xyz","sub_object"]
 		self.id=[]
-		self.type=""
-		self.xyz=[]
+		self.var_list.append(["type",""])
+		self.var_list.append(["r",r])
+		self.var_list.append(["g",g])
+		self.var_list.append(["b",b])
+		self.var_list.append(["r_false",None])
+		self.var_list.append(["g_false",None])
+		self.var_list.append(["b_false",None])
+		self.var_list.append(["alpha",0.5])
+		self.var_list.append(["selected",False])
+		self.var_list.append(["selectable",False])
+		self.var_list.append(["moveable",False])
+		self.var_list.append(["allow_cut_view",False])
+		self.var_list.append(["text",""])
+		self.var_list.append(["rotate_y",0.0])
+		self.var_list.append(["rotate_x",0.0])
+		self.var_list.append(["dxyz",vec(name="dxyz")])
+		self.var_list_build()
 
-		self.dxyz=vec()
 		self.dxyz.x=-1.0
 		self.dxyz.y=-1.0
 		self.dxyz.z=-1.0
 
-		self.r=r
-		self.g=g
-		self.b=b
-
-		self.r_false=None
-		self.g_false=None
-		self.b_false=None
-
-		self.alpha=0.5
-		self.selected=False
-		self.selectable=False
-		self.moveable=False
-		self.allow_cut_view=True
+		self.sub_objects=[]
 		self.triangles=[]
 		self.points=[]
-		self.text=""
 		self.texture=None
 
 		self.gl_array_float32=[]
 		self.gl_array_points=[]
 		#self.gl_array_false_colors_float32=[]
 		self.gl_array_line_width=[]
-
-		self.rotate_y=0.0
-		self.rotate_x=0.0
+		self.blocks=[]
 
 		#remove later maybe used for circuit
 		self.gl_array_done=False
-		self.blocks=[]
+		a=copy.deepcopy(self)
+		self.segment_examples=[vec(),a]
 
 	def copy(self,obj):
 		self.id=obj.id
@@ -117,20 +123,7 @@ class gl_base_object():
 		return False
 
 	def dump(self):
-		print(self.id)
-		print(self.type)
-		for v in self.xyz:
-			print("xyz: "+str(v))
-		print("dx: "+str(self.xyz.dx))
-		print("dy: "+str(self.xyz.dy))
-		print("dz: "+str(self.xyz.dz))
-		print(self.r)
-		print(self.g)
-		print(self.b)
-		print(self.alpha)
-		print(self.selected)
-		print(self.selectable)
-		print(self.moveable)
+		print("\n".join(self.gen_json()))
 		print(self.triangles)
 
 	def id_starts_with(self,val):
@@ -143,30 +136,7 @@ class gl_base_object():
 
 	def __str__(self):
 		ret=""
-		ret=ret+self.type
-
-		for v in self.xyz:
-			ret=ret+";;"+str(v.x)
-			ret=ret+";;"+str(v.y)
-			ret=ret+";;"+str(v.z)
-
-		ret=ret+";;"+str(self.dxyz.x)
-		ret=ret+";;"+str(self.dxyz.y)
-		ret=ret+";;"+str(self.dxyz.z)
-
-		ret=ret+";;"+str(self.r)
-		ret=ret+";;"+str(self.g)
-		ret=ret+";;"+str(self.b)
-
-		ret=ret+";;"+str(self.alpha)
-		ret=ret+";;"+str(self.selected)
-		ret=ret+";;"+str(self.selectable)
-		ret=ret+";;"+str(self.moveable)
-		ret=ret+";;"+str(self.allow_cut_view)
-
-		ret=ret+";;"+str(self.text)
-
-
+		ret="\n".join(self.gen_json())
 		return ret
 
 	class code_block():
@@ -179,62 +149,95 @@ class gl_base_object():
 			#self.gl_array_false_colors_float32=[]
 
 	def compile(self,gl_render_type,color,line_width=3):
-		points=[]
+		self.points=[]
 		colors=[]
 		false_colors=[]
 		false_color=[self.r_false,self.g_false,self.b_false]
 		points_per_tri=3
-		b=self.code_block()
+		array_colors=False
+		if len(color)>4:
+			array_colors=True
 
+		b=self.code_block()
 		if gl_render_type=="triangles_solid":
 			b.gl_array_type=GL_TRIANGLES
 			points_per_tri=3
 			for t in self.triangles:
-				points.append([t.xyz0.x,t.xyz0.y,t.xyz0.z])
+				self.points.append([t.xyz0.x,t.xyz0.y,t.xyz0.z])
 				colors.append(color)
 				false_colors.append(false_color)
-				points.append([t.xyz1.x,t.xyz1.y,t.xyz1.z])
+				self.points.append([t.xyz1.x,t.xyz1.y,t.xyz1.z])
 				colors.append(color)
 				false_colors.append(false_color)
-				points.append([t.xyz2.x,t.xyz2.y,t.xyz2.z])
+				self.points.append([t.xyz2.x,t.xyz2.y,t.xyz2.z])
 				colors.append(color)
 				false_colors.append(false_color)
 		elif gl_render_type=="triangles_open":
 			b.gl_array_type=GL_LINES
 			points_per_tri=6
 			for t in self.triangles:
-				points.append([t.xyz0.x,t.xyz0.y,t.xyz0.z])
+				self.points.append([t.xyz0.x,t.xyz0.y,t.xyz0.z])
 				colors.append(color)
 				false_colors.append(false_color)
-				points.append([t.xyz1.x,t.xyz1.y,t.xyz1.z])
-				colors.append(color)
-				false_colors.append(false_color)
-
-				points.append([t.xyz1.x,t.xyz1.y,t.xyz1.z])
-				colors.append(color)
-				false_colors.append(false_color)
-				points.append([t.xyz2.x,t.xyz2.y,t.xyz2.z])
+				self.points.append([t.xyz1.x,t.xyz1.y,t.xyz1.z])
 				colors.append(color)
 				false_colors.append(false_color)
 
-				points.append([t.xyz2.x,t.xyz2.y,t.xyz2.z])
+				self.points.append([t.xyz1.x,t.xyz1.y,t.xyz1.z])
 				colors.append(color)
 				false_colors.append(false_color)
-				points.append([t.xyz0.x,t.xyz0.y,t.xyz0.z])
+				self.points.append([t.xyz2.x,t.xyz2.y,t.xyz2.z])
+				colors.append(color)
+				false_colors.append(false_color)
+
+				self.points.append([t.xyz2.x,t.xyz2.y,t.xyz2.z])
+				colors.append(color)
+				false_colors.append(false_color)
+				self.points.append([t.xyz0.x,t.xyz0.y,t.xyz0.z])
 				colors.append(color)
 				false_colors.append(false_color)
 		elif gl_render_type=="lines":
 			b.gl_array_type=GL_LINES
 			points_per_tri=1
+			pos=0
 			for t in self.triangles:
-				points.append(t)
-				colors.append(color)
+				self.points.append(t)
+				if array_colors==True:
+					colors.append(color[pos])
+				else:
+					colors.append(color)
 				false_colors.append(false_color)
+				pos=pos+1
+
 		b.gl_line_width=line_width
 		b.gl_array_points=len(self.triangles)*points_per_tri
+
 		b.gl_array_colors_float32=np.array(colors, dtype='float32')
-		b.gl_array_float32=np.array(points, dtype='float32')
+		b.gl_array_float32=np.array(self.points, dtype='float32')
 		self.blocks.append(b)
 
+	def build_master_objects(self):
+		if self.type=="":
+			self.triangles=[]
+			colors=[]
+			for o in self.sub_objects:
+				self.triangles.append([o.xyz[0].x,o.xyz[0].y,o.xyz[0].z])
+				colors.append([o.r,o.g,o.b,0.5])
+				self.triangles.append([o.xyz[0].x+o.dxyz.x,o.xyz[0].y+o.dxyz.y,o.xyz[0].z+o.dxyz.z])
+				colors.append([o.r,o.g,o.b,0.5])
 
+			self.type="from_array"
+			xyz=vec()
+			xyz.x=0.0
+			xyz.y=0.0
+			xyz.z=0.0
+			self.rotate_y=0.0
+			self.rotate_x=0.0
+			self.dxyz.x=-1.0
+			self.dxyz.y=-1.0
+			self.dxyz.z=-1.0
+
+			self.xyz=[xyz]
+			self.compile("lines",colors)
+			print(colors)
 

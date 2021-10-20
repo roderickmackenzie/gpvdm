@@ -125,8 +125,26 @@ class display_mesh(QWidget):
 		self.display.start_rotate()
 
 	def refresh_display(self):
-		self.data.load(os.path.join(get_sim_path(),"electrical_mesh.dat"))
-		self.display.pre_built_scene=self.display.scale.project_base_objects_from_m_2_screen(self.data.data)
+		from gl_base_object import gl_base_object
+		from inp import inp
+
+		f=inp()
+		f.load_json(os.path.join(get_sim_path(),"electrical_mesh.dat"))
+		objs=[]
+		for item in f.json:
+			data=f.json[item]
+			o=gl_base_object()
+			#print(item)
+			o.load_from_json(data)
+			objs.append(o)
+			#print(data)
+		objs2=self.display.scale.project_base_objects_from_m_2_screen(objs)
+		objs[0].build_master_objects()
+		#print(objs[0].triangles)
+		#print(objs[0].type)
+
+		self.display.pre_built_scene=objs2
+
 		self.display.force_redraw()
 
 	def rebuild_mesh(self):

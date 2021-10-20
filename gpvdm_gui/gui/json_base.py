@@ -64,9 +64,10 @@ class json_base():
 		self.latex_allowed=[]
 		self.latex_banned=[]
 		self.triangles_loaded=False
-		self.segments_name="segments"
+		self.segments_name=["segments"]
+		self.segment_name=["segment"]
 		self.f=inp()
-		self.segment_example=segment_example
+		self.segment_examples=[segment_example]
 
 	def import_from_list(self,lines):
 		lines="\n".join(lines)
@@ -74,9 +75,10 @@ class json_base():
 		self.load_from_json(j_data)
 
 	def find_enabled_segment(self):
-		for s in self.segments:
-			if s.enabled==True:
-				return s
+		for sn in self.segments_name:
+			for s in getattr(self, sn):
+				if s.enabled==True:
+					return s
 
 	def import_raw_json(self,json_data):
 		self.var_list=[]
@@ -87,7 +89,9 @@ class json_base():
 	def var_list_build(self):
 		for l in self.var_list:
 			setattr(self, l[0], l[1])
-
+		for s in self.segments_name:
+			setattr(self, s, [])
+		
 	def find_object_by_id(self,want_id):
 		for item in self.var_list:
 			m=item[0]
@@ -100,14 +104,15 @@ class json_base():
 				if ret!=None:
 					return ret
 
-		for s in self.segments:
-			val=getattr(s, "id","not found")
-			if val==want_id:
-				return s
-			elif isclass(s)==True:
-				ret=s.find_object_by_id(want_id)
-				if ret!=None:
-					return ret
+		for sn in self.segments_name:
+			for s in getattr(self, sn):
+				val=getattr(s, "id","not found")
+				if val==want_id:
+					return s
+				elif isclass(s)==True:
+					ret=s.find_object_by_id(want_id)
+					if ret!=None:
+						return ret
 		return None
 
 	def pop_object_by_id(self,want_id):
@@ -139,15 +144,16 @@ class json_base():
 			elif isclass(val)==True:
 				val.fix_identical_uids(found)
 
-		for s in self.segments:
-			val=getattr(s, "id",None)
-			if val!=None:
-				if val in found:
-					print("warning updated ID",val)
-					s.id=self.random_id()
-				found.append(val)
-			elif isclass(val)==True:
-				val.fix_identical_uids(found)
+		for sn in self.segments_name:
+			for s in getattr(self, sn):
+				val=getattr(s, "id",None)
+				if val!=None:
+					if val in found:
+						print("warning updated ID",val)
+						s.id=self.random_id()
+					found.append(val)
+				elif isclass(val)==True:
+					val.fix_identical_uids(found)
 
 		print(found)
 
@@ -164,17 +170,18 @@ class json_base():
 				except:
 					pass
 
-		for item in self.segments:
-			m=item[0]
-			val=getattr(self, m)
-			if m=="id":
-				#print(self)
-				setattr(self, m, self.random_id()	)
-			elif isclass(val)==True:
-				try:
-					val.update_random_ids()
-				except:
-					pass
+		for sn in self.segments_name:
+			for item in getattr(self, sn):
+				m=item[0]
+				val=getattr(self, m)
+				if m=="id":
+					#print(self)
+					setattr(self, m, self.random_id()	)
+				elif isclass(val)==True:
+					try:
+						val.update_random_ids()
+					except:
+						pass
 
 	def set_val(self,path,val):
 		pointer=self
@@ -194,48 +201,47 @@ class json_base():
 	def gen_json(self,include_bracket=True):
 		out=[]
 
-		if self.segment_class==False:
 
-			if self.include_name==True:
-				name_str="\""+self.base_name+"\":"
-			else:
-				name_str=""
-			if include_bracket==True:
-				out.append(name_str +" {")
-
-			for item in self.var_list:
-				m=item[0]
-				val=getattr(self, m)
-				if type(val)==str:
-					val=val.replace("\n","\\n")
-					out.append("\t\""+m+"\":\""+val+"\",")
-				elif type(val)==int:
-					out.append("\t\""+m+"\":"+str(val)+",")
-				elif type(val)==float:
-					out.append("\t\""+m+"\":"+str(val)+",")
-				elif type(val)==bool:
-					out.append("\t\""+m+"\":\""+str(val)+"\",")
-				elif isclass(val)==True:
-					#print(type(val))
-					out.extend(val.gen_json())
-					out[-1]=out[-1]+","
-				else:
-					print(m,type(val))
-			if out[-1].endswith(",")==True:
-				out[-1]=out[-1][:-1]
-			if include_bracket==True:
-				out.append("\t}")
+		if self.include_name==True:
+			name_str="\""+self.base_name+"\":"
 		else:
-			out.append("\""+self.base_name+"\": {")
-			out.append("\""+self.segments_name+"\":"+str(len(self.segments))+",")
-			i=0
-			for s in self.segments:
-				s.base_name="segment"+str(i)
-				out.extend(s.gen_json())
+			name_str=""
+		if include_bracket==True:
+			out.append(name_str +" {")
+
+		for item in self.var_list:
+			m=item[0]
+			val=getattr(self, m)
+			if type(val)==str:
+				val=val.replace("\n","\\n")
+				out.append("\t\""+m+"\":\""+val+"\",")
+			elif type(val)==int:
+				out.append("\t\""+m+"\":"+str(val)+",")
+			elif type(val)==float:
+				out.append("\t\""+m+"\":"+str(val)+",")
+			elif type(val)==bool:
+				out.append("\t\""+m+"\":\""+str(val)+"\",")
+			elif isclass(val)==True:
+				#print(type(val))
+				out.extend(val.gen_json())
 				out[-1]=out[-1]+","
-				i=i+1
+			else:
+				print(m,type(val))
+
+		if self.segment_class==True:
+			for sn,item_name in zip(self.segments_name,self.segment_name):
+				out.append("\""+sn+"\":"+str(len(getattr(self,sn)))+",")
+				i=0
+				for s in getattr(self,sn):
+					s.base_name=item_name+str(i)
+					out.extend(s.gen_json())
+					out[-1]=out[-1]+","
+					i=i+1
+
+		if out[-1].endswith(",")==True:
 			out[-1]=out[-1][:-1]
-			out.append("}")
+		if include_bracket==True:
+			out.append("\t}")
 
 		return out
 
@@ -270,52 +276,55 @@ class json_base():
 		return ret
 
 	def load_from_json(self,data):
-		if self.segment_class==False:
-			for item in self.var_list:
-				m=item[0]
-				val=item[1]
-				#print(data)
-				#print(data[m],type(getattr(self,m)),type(val))
-				decoded=False
-				if m=="time_domain":
-					if 'pulse' in data:
-						self.time_domain.load_from_json(data['pulse'])
-						decoded=True
-				elif m=="fx_domain":
-					if "is" in data:
-						self.fx_domain.load_from_json(data['is'])
-						decoded=True
-				
-				if decoded==False:
-					if m in data:
-						if type(val)==float:
-							try:
-								clean_val=float(data[m])
-							except:
-								clean_val=0.0
-							setattr(self, m, clean_val)
-						elif type(val)==int:
-							try:
-								clean_val=int(data[m])
-							except:
-								clean_val=0
-							setattr(self, m, clean_val)
-						elif type(val)==bool:
-							setattr(self, m, str2bool(data[m]))
-						elif type(val)==type(data[m]):
-							setattr(self, m, data[m])
-						elif type(val)==str:
-							setattr(self, m, str(data[m]))
-						elif isclass(getattr(self,m))==True:
-							getattr(self,m).load_from_json(data[m])
-		else:
-			self.segments=[]
-			segs=data['segments']
-			for i in range(0,segs):
-				a=copy.deepcopy(self.segment_example)
-				simulation_name="segment"+str(i)
-				a.load_from_json(data[simulation_name])
-				self.segments.append(a)
+		for item in self.var_list:
+			m=item[0]
+			val=item[1]
+			#print(data)
+			#print(data[m],type(getattr(self,m)),type(val))
+			decoded=False
+			if m=="time_domain":
+				if 'pulse' in data:
+					self.time_domain.load_from_json(data['pulse'])
+					decoded=True
+			elif m=="fx_domain":
+				if "is" in data:
+					self.fx_domain.load_from_json(data['is'])
+					decoded=True
+			
+			if decoded==False:
+				if m in data:
+					if type(val)==float:
+						try:
+							clean_val=float(data[m])
+						except:
+							clean_val=0.0
+						setattr(self, m, clean_val)
+					elif type(val)==int:
+						try:
+							clean_val=int(data[m])
+						except:
+							clean_val=0
+						setattr(self, m, clean_val)
+					elif type(val)==bool:
+						setattr(self, m, str2bool(data[m]))
+					elif type(val)==type(data[m]):
+						setattr(self, m, data[m])
+					elif type(val)==str:
+						setattr(self, m, str(data[m]))
+					elif isclass(getattr(self,m))==True:
+						getattr(self,m).load_from_json(data[m])
+
+		if self.segment_class==True:
+			for sn,item_name,segment_example in zip(self.segments_name,self.segment_name,self.segment_examples):
+				setattr(self,sn,[])
+				if sn in data:
+					segs=data[sn]
+					for i in range(0,segs):
+						a=copy.deepcopy(segment_example)
+						simulation_name=item_name+str(i)
+						a.load_from_json(data[simulation_name])
+						getattr(self,sn).append(a)
+
 
 
 	def reload(self):

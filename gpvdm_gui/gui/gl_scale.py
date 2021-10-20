@@ -129,7 +129,7 @@ class gl_scale():
 			o.dxyz.x=o.dxyz.x*scale_get_xmul()
 			o.dxyz.y=o.dxyz.y*scale_get_ymul()
 			o.dxyz.z=o.dxyz.z*scale_get_zmul()
-
+			o.sub_objects=self.project_base_objects_from_m_2_screen(o.sub_objects)
 			ret.append(o)
 		return ret
 

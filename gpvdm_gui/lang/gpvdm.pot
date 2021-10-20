@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gpvdm 5.0\n"
 "Report-Msgid-Bugs-To: roderick.mackenzie@nottingham.ac.uk\n"
-"POT-Creation-Date: 2021-10-18 11:55+0100\n"
+"POT-Creation-Date: 2021-10-20 05:53+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -768,10 +768,10 @@ msgstr ""
 
 #: ../../gpvdm_core/plugins/fx_domain/is.c:507
 #: ../../gpvdm_core/plugins/fx_domain/is.c:510
-#: ../../gpvdm_core/libcircuit/circuit_dump.c:538
-#: ../../gpvdm_core/libcircuit/circuit_dump.c:541
-#: ../../gpvdm_core/libcircuit/circuit_dump.c:601
-#: ../../gpvdm_core/libcircuit/circuit_dump.c:604
+#: ../../gpvdm_core/libcircuit/circuit_dump.c:628
+#: ../../gpvdm_core/libcircuit/circuit_dump.c:631
+#: ../../gpvdm_core/libcircuit/circuit_dump.c:691
+#: ../../gpvdm_core/libcircuit/circuit_dump.c:694
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:127
 #: ../../gpvdm_gui/gui/token_lib.py:186
 #: ../../gpvdm_gui/gui/import_data_json.py:716
@@ -871,7 +871,7 @@ msgstr ""
 #: ../../gpvdm_core/libdump/dynamic_dump_j.c:311
 #: ../../gpvdm_core/libdump/dump_zxy.c:421
 #: ../../gpvdm_core/libdump/dump_zxy.c:443
-#: ../../gpvdm_core/libcircuit/circuit_dump.c:444
+#: ../../gpvdm_core/libcircuit/circuit_dump.c:534
 msgid "Current density"
 msgstr ""
 
@@ -1178,8 +1178,8 @@ msgstr ""
 #: ../../gpvdm_core/liblight/light_dump_verbose_1d.c:214
 #: ../../gpvdm_core/liblight/light_dump_verbose_1d.c:247
 #: ../../gpvdm_core/liblight/light_dump_verbose_1d.c:282
-#: ../../gpvdm_core/libcircuit/circuit_dump.c:540
-#: ../../gpvdm_core/libcircuit/circuit_dump.c:603 ../../gpvdm_core/src/pos.c:82
+#: ../../gpvdm_core/libcircuit/circuit_dump.c:630
+#: ../../gpvdm_core/libcircuit/circuit_dump.c:693 ../../gpvdm_core/src/pos.c:82
 #: ../../gpvdm_core/src/pos.c:99 ../../gpvdm_core/src/pos.c:134
 #: ../../gpvdm_core/src/pos.c:152 ../../gpvdm_core/src/pos.c:169
 #: ../../gpvdm_core/libperovskite/perovskite.c:109
@@ -1414,7 +1414,7 @@ msgstr ""
 #: ../../gpvdm_core/libcircuit/circuit_spm.c:237
 #: ../../gpvdm_core/libcircuit/circuit_spm.c:256
 #: ../../gpvdm_core/libcircuit/circuit_spm.c:314
-#: ../../gpvdm_core/libcircuit/circuit_dump.c:446
+#: ../../gpvdm_core/libcircuit/circuit_dump.c:536
 #: ../../gpvdm_core/libemission/pl.c:425 ../../gpvdm_core/libemission/pl.c:441
 #: ../../gpvdm_core/lib/initial.c:86 ../../gpvdm_core/lib/initial.c:110
 #: ../../gpvdm_core/lib/initial.c:134 ../../gpvdm_core/lib/initial.c:158
@@ -1444,7 +1444,7 @@ msgstr ""
 #: ../../gpvdm_core/libcircuit/circuit_spm.c:238
 #: ../../gpvdm_core/libcircuit/circuit_spm.c:257
 #: ../../gpvdm_core/libcircuit/circuit_spm.c:315
-#: ../../gpvdm_core/libcircuit/circuit_dump.c:447
+#: ../../gpvdm_core/libcircuit/circuit_dump.c:537
 #: ../../gpvdm_core/lib/initial.c:87 ../../gpvdm_core/lib/initial.c:111
 #: ../../gpvdm_core/lib/initial.c:135 ../../gpvdm_core/lib/initial.c:159
 #: ../../gpvdm_core/lib/initial.c:183
@@ -1547,7 +1547,7 @@ msgstr ""
 #: ../../gpvdm_core/libdump/dump_zxy.c:902
 #: ../../gpvdm_core/libdump/dump_zxy.c:942
 #: ../../gpvdm_core/libmath2d/math_2d_dump.c:64
-#: ../../gpvdm_core/libcircuit/circuit_dump.c:441
+#: ../../gpvdm_core/libcircuit/circuit_dump.c:531
 #: ../../gpvdm_core/libmesh/dim_light.c:215 ../../gpvdm_core/libmesh/dim.c:250
 #: ../../gpvdm_core/libmesh/dim_heat.c:167
 msgid "x-position"
@@ -1557,7 +1557,7 @@ msgstr ""
 #: ../../gpvdm_core/libdump/dump_zxy.c:903
 #: ../../gpvdm_core/libdump/dump_zxy.c:943
 #: ../../gpvdm_core/libmath2d/math_2d_dump.c:65
-#: ../../gpvdm_core/libcircuit/circuit_dump.c:442
+#: ../../gpvdm_core/libcircuit/circuit_dump.c:532
 #: ../../gpvdm_core/libmesh/dim_light.c:216 ../../gpvdm_core/libmesh/dim.c:251
 #: ../../gpvdm_core/libmesh/dim_heat.c:168
 msgid "y-position"
@@ -1567,7 +1567,7 @@ msgstr ""
 #: ../../gpvdm_core/libdump/dump_zxy.c:904
 #: ../../gpvdm_core/libdump/dump_zxy.c:944
 #: ../../gpvdm_core/libmath2d/math_2d_dump.c:66
-#: ../../gpvdm_core/libcircuit/circuit_dump.c:443
+#: ../../gpvdm_core/libcircuit/circuit_dump.c:533
 #: ../../gpvdm_core/libmesh/dim_light.c:217 ../../gpvdm_core/libmesh/dim.c:252
 #: ../../gpvdm_core/libmesh/dim_heat.c:169
 msgid "z-position"
@@ -2418,7 +2418,7 @@ msgstr ""
 msgid "Circuit"
 msgstr ""
 
-#: ../../gpvdm_core/libcircuit/circuit_dump.c:439
+#: ../../gpvdm_core/libcircuit/circuit_dump.c:529
 msgid "Curretn vector plot"
 msgstr ""
 

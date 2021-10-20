@@ -307,6 +307,8 @@ class gl_objects():
 				self.paint_open_triangles_from_array(o)
 			elif o.type=="solid":
 				self.paint_from_array(o)
+			elif o.type=="from_array":
+				self.paint_from_array(o)
 			elif o.type=="solid_and_mesh":
 				if self.view_options.transparent_objects==False:
 					#print(o.id)

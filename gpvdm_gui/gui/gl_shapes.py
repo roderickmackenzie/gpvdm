@@ -103,6 +103,7 @@ class gl_shapes:
 
 		for xyz in o.xyz:
 			glPushMatrix()
+			
 			#glScalef(1.0, 1.0, 1.0) 
 			#print(o.id,xyz.x,xyz.y,xyz.z)
 			glTranslatef(xyz.x,xyz.y,xyz.z)
@@ -114,6 +115,7 @@ class gl_shapes:
 			if o.dxyz.x!=-1:
 				glScaled(o.dxyz.x,o.dxyz.y,o.dxyz.z)
 			n=0
+
 			for b in o.blocks:
 				if b.gl_line_width!=None:
 					glLineWidth(b.gl_line_width)

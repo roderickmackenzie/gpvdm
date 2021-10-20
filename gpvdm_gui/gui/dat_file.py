@@ -41,9 +41,6 @@ from triangle import vec
 def dat_file_load_info(output,lines):
 	#print(lines[0])
 	if len(lines)>1:
-		if lines[0]=="#gobj":
-			output.type="gobj"
-			return True
 
 		if lines[0]=="#gpvdm":
 			max_lines=len(lines)
@@ -629,54 +626,6 @@ class dat_file():
 		self.z_scale= [0.0]*self.z_len
 		self.valid_data=True
 
-	def decode_gobj_lines(self,lines):
-		from gl_base_object import gl_base_object
-		nobj=0
-		for line in lines:
-			o=gl_base_object()
-			l=line.split(";;")
-
-			#print(l)
-			if len(l)>1:
-				o.type=l[0]
-				o.id=["obj"+str(nobj)]
-				xyz=vec()
-				xyz.x=float(l[1])
-				xyz.y=float(l[2])
-				xyz.z=float(l[3])
-				o.xyz.append(xyz)
-
-				o.dxyz.x=float(l[4])
-				o.dxyz.y=float(l[5])
-				o.dxyz.z=float(l[6])
-
-				o.r=float(l[7])
-				o.g=float(l[8])
-				o.b=float(l[9])
-
-				o.alpha=float(l[10])
-
-				o.selected=str2bool(l[11])
-				o.selectable=str2bool(l[12])
-				o.moveable=str2bool(l[13])
-				o.allow_cut_view=str2bool(l[14])
-
-				o.text=l[15]
-				o.origonal_object=str2bool(l[16])
-
-				self.data.append(o)
-				nobj=nobj+1
-		#lines=[]
-		#for o in self.data:
-		#	if o.type=="resistor":
-		#		lines.append(str(o.xyz[0].z)+" "+str(o.xyz[0].x)+" "+str(o.xyz[0].y))
-		#		lines.append(str(o.xyz[0].z+o.dxyz.z)+" "+str(o.xyz[0].x+o.dxyz.x)+" "+str(o.xyz[0].y+o.dxyz.y))
-		#		lines.append("")
-		#		lines.append("")
-
-		#with open('test.dat', 'w') as f:
-		#	for item in lines:
-		#		f.write("%s\n" % item)
 
 	def decode_circuit_lines(self,lines):
 		build=[]
@@ -840,9 +789,6 @@ class dat_file():
 				self.valid_data=False
 				print("No idea what to do with this file!",file_name)
 				return False
-
-		if self.type=="gobj":
-			return self.decode_gobj_lines(lines)
 
 		if self.type=="poly":
 			return self.decode_poly_lines(lines)
