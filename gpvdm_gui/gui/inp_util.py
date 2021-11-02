@@ -60,33 +60,6 @@ def inp_search_token_value_multiline(lines, token):
 
 	return False
 
-def inp_merge2(template,src):
-	ret=[]
-	for template_line in template:
-		if template_line.startswith("#"):
-			found=False
-			if template_line!="#ver" and template_line!="#core":
-				for src_line in src:					#Try to find in the src file 
-					if found==True:
-						if src_line.startswith("#"):
-							break
-						ret.append(src_line)
-
-					if src_line==template_line:
-						found=True
-						ret.append(src_line)
-
-			if found==False:					#if you cant use what is in the template
-				for template_line2 in template:
-					if found==True:
-						if template_line2.startswith("#"):
-							break
-						ret.append(template_line2)
-
-					if template_line2==template_line:
-						found=True
-						ret.append(template_line2)
-	return ret
 
 def inp_check_ver(file_path, ver):
 	"""Check ver of file"""

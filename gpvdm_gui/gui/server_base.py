@@ -58,7 +58,6 @@ from inp import inp
 import time
 
 from cal_path import get_sim_path
-from gui_enable import gui_get
 from job import job
 
 my_server=False
@@ -68,6 +67,8 @@ from gui_hooks import tx_to_core
 from lock import get_lock
 from gpvdm_json import gpvdm_data
 import socket
+if gui_get()==True:
+	from process_events import process_events
 
 class node:
 	ip=""
@@ -95,6 +96,7 @@ class server_base():
 		self.clear_jobs()
 		self.callback=None
 		self.max_job_time=None
+		self.time_out=False
 
 	def clear_jobs(self):
 		self.jobs=[]
@@ -161,7 +163,9 @@ class server_base():
 
 	def remove_debug_info(self):
 		for i in range(0, len(self.jobs)):
-			os.unlink(os.path.join(self.jobs[i].path,"gmon.out"))
+			file_name=os.path.join(self.jobs[i].path,"gmon.out")
+			if os.path.isfile(file_name)==True:
+				os.unlink(file_name)
 
 	def print_jobs(self):
 		print("server job list:")
@@ -190,13 +194,14 @@ class server_base():
 			#self.print_jobs()
 			path,command=self.server_base_get_next_job_to_run(lock_file=True)
 			if path!=False:
-				print(command)
+				#print(command)
 				self.exe_command(path,command)
 				if len(self.jobs)>1:
 					jobs_per_second="%.2f" % self.jobs_per_second
 					self.progress_window.set_text(_("Running job ")+path+" jobs/s="+jobs_per_second)
 					self.progress_window.set_fraction(float(self.jobs_run)/float(len(self.jobs)))
-
+					if gui_get()==True:
+						process_events()
 			else:
 				return
 
@@ -215,16 +220,21 @@ class server_base():
 		self.remove_lock_files()
 				
 		self.server_base_process_jobs()
-
+		#if gui_get()==True:
+		#	self.progress_window.show()
+		#	self.progress_window.start()
+		n=0
 		while(1):
 			ls=os.listdir(self.sim_dir)
 			#print(self.sim_dir,ls)
 			for i in range(0, len(ls)):
 				if ls[i][:4]=="lock" and ls[i][-4:]==".dat":
+					n=0
 					lock_file=ls[i]
 					os.remove(os.path.join(self.sim_dir,lock_file))
 					job=int(lock_file[4:-4])
 					self.base_job_finished(job)
+
 			self.server_base_process_jobs()
 			time.sleep(1)
 			#self.print_jobs()
@@ -233,6 +243,15 @@ class server_base():
 			if self.jobs_run==len(self.jobs):
 				self.remove_lock_files()
 				break
+
+			if self.time_out!=False:
+				if n>30:
+					print(str(n)+"/"+str(self.time_out))
+
+				if n>self.time_out:
+					self.remove_lock_files()
+					break
+			n=n+1
 
 	def base_job_finished(self,job):
 		if self.jobs[job].status!=1:

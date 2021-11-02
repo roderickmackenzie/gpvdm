@@ -179,5 +179,5 @@ class energy_to_charge(QWidget):
 		self.edit_eV.blockSignals(False)
 
 	def text(self):
-		return self.uid
+		return self.contact.np
 		

@@ -71,22 +71,6 @@ class ribbon_shape_import(ribbon_base):
 
 		##########################
 
-		spacer = QWidget()
-		spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-		toolbar.addWidget(spacer)
-
-		self.tb_help = QAction(icon_get("help"), _("Help"), self)
-		self.tb_help.setStatusTip(_("Help"))
-		toolbar.addAction(self.tb_help)
-
-
-		return toolbar
-
-	def mesh_toolbar(self):
-		toolbar = QToolBar()
-		toolbar.setToolButtonStyle( Qt.ToolButtonTextUnderIcon)
-		toolbar.setIconSize(QSize(42, 42))
-
 		#mesh
 		self.show_mesh= QAction_lock("mesh_tri", wrap_text(_("Show\nMesh"),2), self,"ribbon_shape_mesh")
 		self.show_mesh.setCheckable(True)
@@ -107,7 +91,19 @@ class ribbon_shape_import(ribbon_base):
 		#self.mesh_build= QAction_lock("media-playback-start", wrap_text(_("Build\nMesh"),2), self,"ribbon_shape_mesh")
 		toolbar.addAction(self.mesh_build)
 
+		##########################
+
+		spacer = QWidget()
+		spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+		toolbar.addWidget(spacer)
+
+		self.tb_help = QAction(icon_get("help"), _("Help"), self)
+		self.tb_help.setStatusTip(_("Help"))
+		toolbar.addAction(self.tb_help)
+
+
 		return toolbar
+
 
 	def image_toolbar(self):
 		toolbar = QToolBar()
@@ -192,9 +188,6 @@ class ribbon_shape_import(ribbon_base):
 
 		w=self.image_toolbar()
 		self.addTab(w,_("2D Image"))
-
-		w=self.mesh_toolbar()
-		self.addTab(w,_("3D Mesh"))
 
 		sheet=self.readStyleSheet(os.path.join(get_css_path(),"style.css"))
 		if sheet!=None:

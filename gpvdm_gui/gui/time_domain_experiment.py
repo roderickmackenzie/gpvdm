@@ -94,5 +94,6 @@ class time_domain_experiment(experiment):
 
 	def switch_page(self):
 		tab = self.notebook.currentWidget()
-		self.tb_lasers.update(tab.data)
+		if tab!=None:
+			self.tb_lasers.update(tab.data)
 

@@ -30,7 +30,8 @@ from PyQt5.QtCore import QSize, Qt
 from PyQt5.QtWidgets import QWidget,QSizePolicy,QVBoxLayout,QPushButton,QDialog,QFileDialog,QToolBar,QLabel,QComboBox, QTabWidget,QStatusBar,QMenuBar, QTabBar, QStylePainter, QStyleOptionTab,QStyle
 from PyQt5.QtCore import pyqtSignal
 from icon_lib import icon_get
-
+from gpvdm_json import gpvdm_data
+import json
 class QHTabBar(QTabBar):
 	menu_click = pyqtSignal(QMouseEvent,int)
 	paste = pyqtSignal()
@@ -82,10 +83,10 @@ class QHTabBar(QTabBar):
 
 	def do_paste(self):
 		lines = QApplication.clipboard().text()
-		try:
-			read_data=json.loads(lines)
-		except:
-			return
+		#try:
+		read_data=json.loads(lines)
+		#except:
+		#	return
 		self.paste_data=read_data['data']
 		self.paste.emit()
 

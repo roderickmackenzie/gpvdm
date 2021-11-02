@@ -35,7 +35,6 @@ from dat_file import dat_file
 from icon_lib import icon_get
 
 from gl_base_object import gl_base_object
-from gl_scale import gl_scale
 
 from gl import glWidget
 from triangle import vec
@@ -146,7 +145,7 @@ class plot_window(QWidget):
 				self.dissection.show()
 
 			if data_type=="gobj":
-				self.plot.pre_built_scene=gl_scale.project_base_objects_from_m_2_screen(self.data.data)
+				self.plot.pre_built_scene=self.plot.scale.project_base_objects_from_m_2_screen(self.data.data)
 				self.show()
 				self.plot.force_redraw()
 

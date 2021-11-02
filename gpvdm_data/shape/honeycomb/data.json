@@ -13,22 +13,23 @@
 		"gauss_offset_y":0
 		},
 	"honeycomb": {
-		"honeycomb_dx":160,
-		"honeycomb_dy":75,
-		"honeycomb_x_shift":50,
-		"honeycomb_y_shift":-30,
-		"honeycomb_line_width":30
+		"honeycomb_dx":75,
+		"honeycomb_dy":100,
+		"honeycomb_x_shift":-30,
+		"honeycomb_y_shift":-25,
+		"honeycomb_line_width":20,
+		"honeycomb_rotate":90
 		},
 	"import_config": {
 		"shape_import_y_norm":"False",
 		"shape_import_z_norm":"False",
 		"shape_import_y_norm_percent":2,
-		"shape_import_rotate":270
+		"shape_import_rotate":360
 		},
 	"boundary": {
 		"image_boundary_x0":0,
 		"image_boundary_x1":0,
-		"image_boundary_y0":10,
+		"image_boundary_y0":40,
 		"image_boundary_y1":0
 		},
 	"mesh": {
@@ -39,6 +40,6 @@
 		},
 	"blur": {
 		"shape_import_blur_enabled":"False",
-		"shape_import_blur":10
+		"shape_import_blur":5
 		}
 	}

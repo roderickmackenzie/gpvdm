@@ -196,7 +196,7 @@ if (scanarg( argv,argc,"--html")==TRUE)
 if (scanarg( argv,argc,"--help")==TRUE)
 {
 	printf_log(&sim,"gpvdm_core - General-purpose Photovoltaic Device Model\n");
-	printf_log(&sim,"%s\n",_("Copyright (C) 2010-2019 Roderick C. I. MacKenzie, Releced the BSD 3-clause License"));
+	printf_log(&sim,"%s\n",_("Copyright (C) 2009-2022 Roderick C. I. MacKenzie, Releced the MIT License"));
 	printf_log(&sim,"\n");
 	printf_log(&sim,"Usage: gpvdm_core [%s]\n",_("options"));
 	printf_log(&sim,"\n");
@@ -218,7 +218,7 @@ if (scanarg( argv,argc,"--version")==TRUE)
 {
 	printf_log(&sim,_("gpvdm_core, Version %s\n"),gpvdm_ver);
 	printf_log(&sim,"%s\n",_("gpvdm (General-purpose Photovoltaic Device Model) core."));
-	printf_log(&sim,"%s\n",_("Copyright Roderick MacKenzie, released under the BSD 3-Clause License 2010-2019"));
+	printf_log(&sim,"%s\n",_("Copyright Roderick MacKenzie, released under the MIT License 2009-2022"));
 	printf_log(&sim,_("There is ABSOLUTELY NO WARRANTY; not even for MERCHANTABILITY or\n"));
 	printf_log(&sim,_("FITNESS FOR A PARTICULAR PURPOSE.\n"));
 	printf_log(&sim,"\n");
@@ -242,7 +242,7 @@ if (scanarg( argv,argc,"--version2")==TRUE)
 		printf_log(&sim,_("gpvdm_core, Version %s\n"),gpvdm_ver);
 	}
 	printf_log(&sim,"%s\n",_("gpvdm (General-purpose Photovoltaic Device Model) core."));
-	printf_log(&sim,"%s\n",_("Copyright Roderick MacKenzie, released under the BSD 3-Clause License 2010-2019"));
+	printf_log(&sim,"%s\n",_("Copyright Roderick MacKenzie, released under the MIT License 2010-2019"));
 	printf_log(&sim,_("There is ABSOLUTELY NO WARRANTY; not even for MERCHANTABILITY or\n"));
 	printf_log(&sim,_("FITNESS FOR A PARTICULAR PURPOSE.\n"));
 	printf_log(&sim,"\n");
@@ -279,13 +279,13 @@ if(geteuid()==0) {
 srand(time(0));
 
 randomprint(&sim,_("gpvdm_core - General-purpose Photovoltaic Device Model\n"));
-randomprint(&sim,_("Copyright (C) 2010-2019 Roderick C. I. MacKenzie,\n"));
-randomprint(&sim,_(" Releced the BSD 3-clause License"));
+randomprint(&sim,_("Copyright (C) 2009-2022 Roderick C. I. MacKenzie,\n"));
+randomprint(&sim,_(" Releced the MIT License"));
 
 randomprint(&sim,"\n");
 randomprint(&sim,_("If you wish to collaborate in anyway please get in touch:\n"));
 randomprint(&sim,"roderick.mackenzie@nottingham.ac.uk\n");
-randomprint(&sim,"www.rodmack.com/contact.html\n");
+randomprint(&sim,"http://www.gpvdm.com/contact.html\n");
 randomprint(&sim,"\n");
 //getchar();
 sim.server.on=FALSE;

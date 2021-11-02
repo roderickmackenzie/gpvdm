@@ -42,12 +42,14 @@ class json_gl_view(json_base):
 		self.var_list.append(["x_pos",0.0])
 		self.var_list.append(["y_pos",0.0])
 		self.var_list.append(["zoom",16])
+		self.var_list.append(["id",self.random_id()])
+		self.var_list.append(["english_name","view"])
 		self.var_list_build()
 
 
 class json_gl(json_base):
 	def __init__(self):
-		json_base.__init__(self,"gl",segment_class=True)
+		json_base.__init__(self,"gl",segment_class=True,segment_example=json_gl_view())
 
 	def load_from_json(self,json):
 		self.segments=[]

@@ -43,9 +43,6 @@ from inp import inp
 from epitaxy import get_epi
 from mesh import get_mesh
 from gl_base_object import gl_base_object
-from gl_scale import scale_get_xmul
-from gl_scale import scale_get_ymul
-from gl_scale import scale_get_zmul
 from gpvdm_json import gpvdm_data
 class gl_mesh():
 	def draw_mesh(self):
@@ -304,7 +301,7 @@ class gl_mesh():
 					new_obj.copy(o)
 					#print(layer,l.start,l.end-l.start)
 					new_obj.xyz.x=self.scale.project_m2screen_x(l.start)
-					new_obj.dxyz.x=(l.end-l.start)*scale_get_xmul()
+					new_obj.dxyz.x=(l.end-l.start)*self.scale.x_mul
 					#print(layer,o.xyz.x,o.dxyz.x)
 					self.gl_objects_add(new_obj)
 

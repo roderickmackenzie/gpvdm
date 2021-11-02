@@ -38,11 +38,7 @@ try:
 	from PyQt5 import QtOpenGL
 	from PyQt5.QtOpenGL import QGLWidget
 	from gl_lib import val_to_rgb
-	from gl_scale import gl_scale
 	from gl_list import gl_base_object
-	from gl_scale import scale_get_xmul
-	from gl_scale import scale_get_ymul
-	from gl_scale import scale_get_zmul
 
 except:
 	pass

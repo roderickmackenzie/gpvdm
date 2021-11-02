@@ -31,16 +31,13 @@ from OpenGL.GL import *
 from gl_lib import gl_obj_id_starts_with
 from gl_base_object import gl_base_object
 from epitaxy import get_epi
-from gl_scale import gl_scale
 from shape import shape
 from triangle import vec
 
-from gl_scale import scale_get_xmul
-from gl_scale import scale_get_ymul
-from gl_scale import scale_get_zmul
 from gpvdm_json import gpvdm_data
 import numpy as np
 from json_light_sources import json_light_source
+from inp import inp
 
 class gl_objects():
 
@@ -91,7 +88,6 @@ class gl_objects():
 					if xyz.y<min.y:
 						min.y=xyz.y
 
-					#print("screen",o.dxyz.y)
 					if xyz.y+o.dxyz.y<min.y:
 						min.y=xyz.y+o.dxyz.y
 
@@ -227,13 +223,13 @@ class gl_objects():
 							xyz.z=xyz.z+dz
 
 					if move_y==True:
-						s.y0=s.y0+dy/scale_get_ymul()
+						s.y0=s.y0+dy/self.scale.y_mul
 
 					if move_x==True:
-						s.x0=s.x0+dx/scale_get_xmul()
+						s.x0=s.x0+dx/self.scale.x_mul
 
 					if move_z==True:
-						s.z0=s.z0+dz/scale_get_zmul()
+						s.z0=s.z0+dz/self.scale.z_mul
 
 	def gl_objects_save_selected(self):
 		epi=get_epi()
@@ -301,6 +297,8 @@ class gl_objects():
 				self.paint_line(o)
 			elif o.type=="resistor":
 				self.paint_resistor(o)
+			elif o.type=="image":
+				self.gl_image.gl_render_image(o)
 			elif o.type=="diode":
 				self.paint_diode(o)
 			elif o.type=="open_triangles":
@@ -311,7 +309,6 @@ class gl_objects():
 				self.paint_from_array(o)
 			elif o.type=="solid_and_mesh":
 				if self.view_options.transparent_objects==False:
-					#print(o.id)
 					self.paint_from_array(o)
 				else:
 					self.paint_open_triangles_from_array(o,false_color=False,line_width=2)
@@ -341,12 +338,6 @@ class gl_objects():
 
 
 	def gl_objects_search_by_color(self,r,g,b):
-		#i=0
-		#for o in self.objects:
-		#	print(">>>>",i,o.type,o.id,o.r_false,o.g_false,o.b_false,r,g,b)
-		#	i=i+1
-		#print("")
-
 		for o in self.objects:
 			if o.match_false_color(r,g,b)==True:
 				return o
@@ -365,24 +356,7 @@ class gl_objects():
 			ret=""
 			ret=ret+o.type
 
-			ret=ret+";;"+"{:e}".format(self.scale.project_screen_x_to_m(o.xyz.x))
-			ret=ret+";;"+"{:e}".format(self.scale.project_screen_y_to_m(o.xyz.y))
-			ret=ret+";;"+"{:e}".format(self.scale.project_screen_z_to_m(o.xyz.z))
-			ret=ret+";;"+"{:e}".format(o.dxyz.x/scale_get_xmul())
-			ret=ret+";;"+"{:e}".format(o.dxyz.y/scale_get_ymul())
-			ret=ret+";;"+"{:e}".format(o.dxyz.z/scale_get_zmul())
-
-			ret=ret+";;"+str(o.r)
-			ret=ret+";;"+str(o.g)
-			ret=ret+";;"+str(o.b)
-
-			ret=ret+";;"+str(o.alpha)
-			ret=ret+";;"+str(o.selected)
-			ret=ret+";;"+str(o.selectable)
-			ret=ret+";;"+str(o.moveable)
-			ret=ret+";;"+str(o.allow_cut_view)
-
-			ret=ret+";;"+str(o.text)
+			ret=ret+"\n".join(o.gen_json())
 
 			f.write(ret+"\n")
 
@@ -394,4 +368,25 @@ class gl_objects():
 		for o in objs:
 			self.gl_objects_add(o)
 
+	def load_from_json(self,path,dx=0.0,dz=0.0):
+		f=inp()
+		f.load_json(path)
+		objs=[]
+		for item in f.json:
+			data=f.json[item]
+			o=gl_base_object()
+			o.load_from_json(data)
 
+			objs.append(o)
+
+
+		objs2=self.scale.project_base_objects_from_m_2_screen(objs)
+		objs[0].build_master_objects()
+
+		for o in objs2:
+			if len(o.xyz)>0:
+				o.xyz[0].x=o.xyz[0].x+dx*self.scale.x_mul
+				o.xyz[0].z=o.xyz[0].z+dz*self.scale.z_mul
+
+		self.pre_built_scene=objs2
+		#self.gl_objects_load(objs2)

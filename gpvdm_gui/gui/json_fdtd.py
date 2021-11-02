@@ -51,21 +51,13 @@ class json_fdtd_simulation(json_base):
 		self.var_list.append(["lam_jmax",12])
 		self.var_list.append(["plot",1])
 		self.var_list.append(["dt",1e-19])
+		self.var_list.append(["id",self.random_id()])
 		self.var_list_build()
 
 
 class json_fdtd(json_base):
 
 	def __init__(self):
-		json_base.__init__(self,"fdtd",segment_class=True)
-		self.segments.append(json_fdtd_simulation())
+		json_base.__init__(self,"fdtd",segment_class=True,segment_example=json_fdtd_simulation())
 
-	def load_from_json(self,json):
-		self.segments=[]
-		segs=json['segments']
-		for i in range(0,segs):
-			a=json_fdtd_simulation()
-			simulation_name="segment"+str(i)
-			a.load_from_json(json[simulation_name])
-			self.segments.append(a)
 

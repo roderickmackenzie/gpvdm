@@ -222,9 +222,9 @@ class gl_base_object(json_base):
 			colors=[]
 			for o in self.sub_objects:
 				self.triangles.append([o.xyz[0].x,o.xyz[0].y,o.xyz[0].z])
-				colors.append([o.r,o.g,o.b,0.5])
+				colors.append([o.r,o.g,o.b,0.8])
 				self.triangles.append([o.xyz[0].x+o.dxyz.x,o.xyz[0].y+o.dxyz.y,o.xyz[0].z+o.dxyz.z])
-				colors.append([o.r,o.g,o.b,0.5])
+				colors.append([o.r,o.g,o.b,0.8])
 
 			self.type="from_array"
 			xyz=vec()
@@ -239,5 +239,4 @@ class gl_base_object(json_base):
 
 			self.xyz=[xyz]
 			self.compile("lines",colors)
-			print(colors)
 

@@ -32,10 +32,6 @@ import random
 import numpy as np
 from math import pi,acos,sin,cos
 
-from gl_scale import scale_get_xmul
-from gl_scale import scale_get_ymul
-from gl_scale import scale_get_zmul
-
 from gl_base_object import gl_base_object
 from triangle import vec
 
@@ -81,7 +77,7 @@ class gl_photons():
 
 	def draw_photon_sheet(self,source,x0,z0):
 		up_photons=False
-		dx=gpvdm_data().mesh.mesh_x.get_len()*scale_get_xmul()
+		dx=gpvdm_data().mesh.mesh_x.get_len()*self.scale.x_mul
 
 		if source.light_illuminate_from=="y0":
 			y=-1.0
@@ -104,7 +100,7 @@ class gl_photons():
 			else:
 				den=dx/25
 			x=np.arange(x0+den/2.0, x0+dx , den)
-			z=np.arange(z0+den/2.0, z0+gpvdm_data().mesh.mesh_z.get_len()*scale_get_zmul() , den)
+			z=np.arange(z0+den/2.0, z0+gpvdm_data().mesh.mesh_z.get_len()*self.scale.z_mul , den)
 
 			for i in range(0,len(x)):
 				for ii in range(0,len(z)):
@@ -121,8 +117,8 @@ class gl_photons():
 
 		if self.emission==True and self.ray_model==False:
 			den=1.2
-			x=np.arange(x0+den/2.0, x0+gpvdm_data().mesh.mesh_x.get_len()*scale_get_xmul() , den)
-			z=np.arange(z0+den/2.0, z0+gpvdm_data().mesh.mesh_z.get_len()*scale_get_zmul() , den)
+			x=np.arange(x0+den/2.0, x0+gpvdm_data().mesh.mesh_x.get_len()*self.scale.x_mul , den)
+			z=np.arange(z0+den/2.0, z0+gpvdm_data().mesh.mesh_z.get_len()*self.scale.z_mul , den)
 
 			for i in range(0,len(x)):
 				for ii in range(0,len(z)):

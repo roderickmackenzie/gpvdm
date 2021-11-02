@@ -45,7 +45,6 @@ from window_eqe import window_eqe
 from cost import cost
 
 from util import wrap_text
-from fdtd import fdtd
 from global_objects import global_object_run
 from PyQt5.QtCore import pyqtSignal
 from QAction_lock import QAction_lock
@@ -301,9 +300,9 @@ class ribbon_simulations(ribbon_page):
 
 
 	def callback_fdtd(self):
-
+		from window_fdtd import window_fdtd
 		if self.fdtd_window==None:
-			self.fdtd_window=fdtd()
+			self.fdtd_window=window_fdtd()
 
 		help_window().help_set_help(["fdtd.png",_("<big><b>FDTD</b></big><br> Use this window to setup a finite difference time domain simulation.")])
 		if self.fdtd_window.isVisible()==True:

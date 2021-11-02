@@ -32,10 +32,6 @@ import random
 import numpy as np
 from math import pi,acos,sin,cos
 
-from gl_scale import scale_get_xmul
-from gl_scale import scale_get_ymul
-from gl_scale import scale_get_zmul
-
 from gl_base_object import gl_base_object
 from triangle import vec
 
@@ -72,13 +68,13 @@ class shape_layer():
 			a.xyz.append(xyz)
 
 		if x_mesh.get_points()==1 and z_mesh.get_points()==1 and epitaxy==True:
-			a.dxyz.x=gpvdm_data().mesh.mesh_x.get_len()*scale_get_xmul()
-			a.dxyz.y=shape0.dy*scale_get_ymul()
-			a.dxyz.z=gpvdm_data().mesh.mesh_z.get_len()*scale_get_zmul()
+			a.dxyz.x=gpvdm_data().mesh.mesh_x.get_len()*self.scale.x_mul
+			a.dxyz.y=shape0.dy*self.scale.y_mul
+			a.dxyz.z=gpvdm_data().mesh.mesh_z.get_len()*self.scale.z_mul
 		else:
-			a.dxyz.x=shape0.dx*scale_get_xmul()
-			a.dxyz.y=shape0.dy*scale_get_ymul()
-			a.dxyz.z=shape0.dz*scale_get_zmul()
+			a.dxyz.x=shape0.dx*self.scale.x_mul
+			a.dxyz.y=shape0.dy*self.scale.y_mul
+			a.dxyz.z=shape0.dz*self.scale.z_mul
 
 		a.r=shape0.color_r
 		a.g=shape0.color_g

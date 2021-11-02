@@ -79,7 +79,6 @@ void light_solve_and_update(struct simulation *sim,struct device *dev,struct lig
 		light_set_sun_power(li,Psun,li->laser_eff);
 
 		light_solve_all(sim,dev,li);
-
 		light_cal_photon_density(sim,li,dev);
 
 		for (l=0;l<dim->llen;l++)
@@ -90,13 +89,13 @@ void light_solve_and_update(struct simulation *sim,struct device *dev,struct lig
 		li->last_laser_eff=li->laser_eff;
 		li->last_Psun=li->Psun;
 		li->last_wavelength_laser=li->laser_wavelength;
+
 	}
 
 	if (li->laser_pos!=-1)
 	{
 		light_dump_1d(sim,get_output_path(dev),li, li->laser_pos,"");
 	}
-
 	light_transfer_gen_rate_to_device(sim, dev,li);
 
 }
@@ -154,19 +153,11 @@ void light_zx_lambda_solver(struct simulation *sim, struct light *li, struct dev
 	{
 		for (x=0;x<dim->xlen;x++)
 		{
-
-			memset_light_zxyl_float_y(dim, li->En,z,x,l,0.0);
-			memset_light_zxyl_float_y(dim, li->Ep,z,x,l,0.0);
-			memset_light_zxyl_float_y(dim, li->Enz,z,x,l,0.0);
-			memset_light_zxyl_float_y(dim, li->Epz,z,x,l,0.0);
-			memset_light_zxyl_double_y(dim, li->photons,z,x,l,0.0);
-			memset_light_zxyl_double_y(dim, li->photons_asb ,z,x,l,0.0);
-			memset_light_zxyl_float_y(dim, li->H,z,x,l,0.0);
-
-			if ((li->sun_E_y0[l]!=0.0)&&(li->sun_E_y1[l]!=0.0))
+			if ((li->sun_E_y0[l]!=0.0)||(li->sun_E_y1[l]!=0.0))
 			{
 				if ((x==0)&&(z==0))
 				{
+	
 					if (li->print_wavlengths==TRUE)
 					{
 						if (li->dump_verbosity>=0)
@@ -247,12 +238,23 @@ THREAD_FUNCTION thread_light_solve(void * in)
 
 void light_solve_all(struct simulation *sim,struct device *cell,struct light *li)
 {
+	struct dim_light *dim=&li->dim;
+	memset_light_zxyl_float(dim, li->En,0.0);
+	memset_light_zxyl_float(dim, li->Ep,0.0);
+	memset_light_zxyl_float(dim, li->Enz,0.0);
+	memset_light_zxyl_float(dim, li->Epz,0.0);
+	memset_light_zxyl_float(dim, li->Epz,0.0);
+	memset_light_zxyl_double(dim, li->photons,0.0);
+	memset_light_zxyl_double(dim, li->photons_asb,0.0);
+	memset_light_zxyl_float(dim, li->H,0.0);
+
+
 	int l=0;
 	struct job j;
 	int batch_id=server2_get_next_batch_id(sim,&(sim->server));
 
 	int slices_solved=0;
-	struct dim_light *dim=&li->dim;
+
 	li->finished_solveing=FALSE;
 
 	if (((dim->zlen>1)||(dim->xlen>1))&&(sim->server.max_threads>1))

@@ -38,10 +38,6 @@ import random
 import numpy as np
 from math import pi,acos,sin,cos
 
-from gl_scale import scale_get_xmul
-from gl_scale import scale_get_ymul
-from gl_scale import scale_get_zmul
-
 from gl_base_object import gl_base_object
 
 stars=[]

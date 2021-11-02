@@ -139,9 +139,11 @@ class shape_editor_io(shape_db_item):
 			else:
 				delta=0
 
+		im=im.rotate(self.honeycomb.honeycomb_rotate)
 		self.apply_boundary(im)
 		#im=self.apply_rotate(im)
 		im=self.apply_blur(im)
+
 		im.save(os.path.join(path,"image.png"))
 
 	def apply_rotate(self,im):

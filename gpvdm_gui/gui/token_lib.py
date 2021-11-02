@@ -98,6 +98,8 @@ def build_token_lib():
 	lib.append(my_data("ml_number_of_archives","au",_("Number of archives"),"QLineEdit"))
 	lib.append(my_data("ml_sims_per_archive","au",_("Simulations per archive"),"QLineEdit"))
 	lib.append(my_data("random_distribution","type",_("Random distribution"),"QComboBoxLang",defaults=[[("log"),_("Log")],["linear",_("Linear")]]))
+	lib.append(my_data("ml_archive_path","au",_("Archive path"),"QLineEdit"))
+
 
 	#fit duplicate
 	#lib.append(my_data("enabled",_("True/False"),_("Enabled"),"gtkswitch"))
@@ -409,6 +411,7 @@ def build_token_lib():
 	lib.append(my_data("honeycomb_line_width","pixels",_("Line width"),"QLineEdit"))
 	lib.append(my_data("honeycomb_x_shift","pixels",_("x shift"),"QLineEdit"))
 	lib.append(my_data("honeycomb_y_shift","pixels",_("y shift"),"QLineEdit"))
+	lib.append(my_data("honeycomb_rotate","pixels",_("Rotate"),"QLineEdit"))
 	lib.append(my_data("image_ylen","pixels",_("y size"),"QLineEdit"))
 	lib.append(my_data("image_xlen","pixels",_("x size"),"QLineEdit"))
 
@@ -610,7 +613,12 @@ def build_token_lib():
 	lib.append(my_data("test_param","m",_("debug (ignore)"),"QLineEdit",hidden=True))
 
 	#contacts.inp
-	lib.append(my_data("np","m^{-3}",_("Contact charge density"),"QLineEdit"))
+	lib.append(my_data("np","m^{-3}",_("Contact charge density"),"energy_to_charge"))
+	lib.append(my_data("position","au",_("Contact position"),"QComboBoxLang",defaults=[[("top"),_("top")],[("bottom"),_("bottom")],[("right"),_("right")],[("left"),_("left")]]))
+	lib.append(my_data("applied_voltage","m^{-3}",_("Applied voltage"),"gpvdm_applied_voltage"))
+	lib.append(my_data("charge_type","au",_("Charge type"),"QComboBoxLang",defaults=[[("electron"),_("Electron")],[("hole"),_("Hole")]]))
+	lib.append(my_data("physical_model","au",_("Physical model"),"QComboBoxLang",defaults=[[("ohmic"),_("Ohmic")],[("schottky"),_("Schottky")]]))
+
 
 	#mesh?.inp
 	lib.append(my_data("remesh_x","au",_("Automatic remesh x"),"gtkswitch"))

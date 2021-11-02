@@ -66,10 +66,14 @@ def scan_next_archive(sim_dir):
 			return name
 		i=i+1
 
-def scan_archive(sim_dir):
-	progress_window=progress_class()
-	progress_window.show()
-	progress_window.start()
+def scan_archive(sim_dir,progress_window=None):
+	own_progress_window=False
+	if progress_window==None:
+		progress_window=progress_class()
+		progress_window.show()
+		progress_window.start()
+		own_progress_window=True
+
 	archive_path=os.path.join(sim_dir,"build_archive.zip")
 	if os.path.isfile(archive_path)==True:
 		os.remove(archive_path)
@@ -92,7 +96,8 @@ def scan_archive(sim_dir):
 
 	os.rename(archive_path, os.path.join(sim_dir,scan_next_archive(sim_dir)))
 
-	progress_window.stop()
+	if own_progress_window==True:
+		progress_window.stop()
 
 
 

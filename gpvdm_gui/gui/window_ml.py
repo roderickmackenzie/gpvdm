@@ -66,6 +66,9 @@ from scan_tree import random_log
 import random
 from scan_io import scan_archive
 from ml_vectors import ml_vectors
+from process_events import process_events
+from server_base import server_base
+from util import wrap_text
 
 class window_ml(experiment):
 
@@ -85,33 +88,59 @@ class window_ml(experiment):
 		self.ribbon.file.insertAction(self.ribbon.tb_rename,self.run)
 		self.run.start_sim.connect(self.callback_run)
 
+		self.tb_clean = QAction(icon_get("clean"), wrap_text(_("Clean files"),4), self)
+		self.ribbon.file.insertAction(self.ribbon.tb_rename,self.tb_clean)
+		self.tb_clean.triggered.connect(self.callback_clean)
 
 		self.notebook.currentChanged.connect(self.switch_page)
-		self.my_server=server_get()
-		self.my_server.sim_finished.connect(self.callback_sim_finished)
+		self.my_server=server_base()
+		self.my_server.time_out=60
+		self.my_server.server_base_init(gpvdm_paths.get_sim_path())
+		self.my_server.pipe_to_null=True
+		#self.my_server.sim_finished.connect(self.callback_sim_finished)
+		#self.my_server.server_base_set_callback(self.callback_sim_finished)
 		self.switch_page()
+		self.running=False
+
+		self.progress_window=progress_class()
+		self.my_server.progress_window=self.progress_window
+
+	def callback_clean(self):
+		print("clean")
 
 	def switch_page(self):
 		tab = self.notebook.currentWidget()
 		#self.tb_lasers.update(tab.data)
 
+	def set_ml_dir(self):
+		tab = self.notebook.currentWidget()
+		self.obj=gpvdm_data().ml.find_object_by_id(tab.uid)
+		if self.obj.ml_config.ml_archive_path=="cwd":
+			self.ml_dir=os.path.join(gpvdm_paths.get_sim_path(),self.obj.english_name)
+		else:
+			one=gpvdm_paths.get_sim_path().split(os.path.sep)[-2]
+			two=gpvdm_paths.get_sim_path().split(os.path.sep)[-1]
+			
+			self.ml_dir=os.path.join(self.obj.ml_config.ml_archive_path,one,two,self.obj.english_name)
 
 	def callback_run(self):
 		self.n=0
 		tab = self.notebook.currentWidget()
-		self.obj=gpvdm_data().ml.find_object_by_id(tab.uid)
+		self.set_ml_dir()
 
-		self.ml_dir=os.path.join(gpvdm_paths.get_sim_path(),self.obj.english_name)
-		dirs_to_del=[]
-		for dir_name in os.listdir(self.ml_dir):
-			full_path=os.path.join(self.ml_dir,dir_name)
-			if os.path.isdir(full_path):
-				dirs_to_del.append(full_path)
+		if os.path.isdir(self.ml_dir)==True:
+			dirs_to_del=[]
+			for dir_name in os.listdir(self.ml_dir):
+				full_path=os.path.join(self.ml_dir,dir_name)
+				if os.path.isdir(full_path):
+					dirs_to_del.append(full_path)
 
 
-		ask_to_delete(self,dirs_to_del,interactive=True)
+			ask_to_delete(self,dirs_to_del,interactive=True)
+
 		self.run.start()
-
+		self.progress_window.show()
+		self.progress_window.start()
 		self.running=False
 		self.timer=QTimer()
 		self.timer.timeout.connect(self.callback_timer)
@@ -121,6 +150,7 @@ class window_ml(experiment):
 		if self.running==False:
 			self.running=True
 			self.n=self.n+1
+
 			for n in range(0,self.obj.ml_config.ml_sims_per_archive):
 				random_file_name=codecs.encode(os.urandom(int(16 / 2)), 'hex').decode()
 				cur_dir=os.path.join(self.ml_dir,random_file_name)
@@ -149,19 +179,28 @@ class window_ml(experiment):
 								val=random.uniform(random_item.min, random_item.max)
 							data.set_val(random_item.json_var,val)
 							
-					data.save()
+					data.save(do_tab=False)
 					self.my_server.add_job(sub_sim_dir,"")
 
-			self.my_server.start()
+				self.progress_window.set_fraction(float(n)/float(self.obj.ml_config.ml_sims_per_archive))
+				self.progress_window.set_text(_("Building simulations: ")+str(n)+"/"+str(self.obj.ml_config.ml_sims_per_archive))
+				process_events()
+
+			self.my_server.simple_run()
+			self.callback_sim_finished()
 
 	def callback_sim_finished(self):
-		self.my_server.remove_debug_info()
-		self.my_server.clear_jobs()
-		scan_archive(self.ml_dir)
-		if self.n>self.obj.ml_config.ml_number_of_archives:
-			self.timer.stop()
-			self.run.stop()
-		self.running=False
+		if self.running==True:
+			self.my_server.remove_debug_info()
+			self.my_server.clear_jobs()
+			scan_archive(self.ml_dir,progress_window=self.progress_window)
+			if self.n>self.obj.ml_config.ml_number_of_archives:
+				self.timer.stop()
+				self.run.stop()
+				self.progress_window.stop()
+				self.progress_window.hide()
+				os.chdir(gpvdm_paths.get_sim_path())
+			self.running=False
 
 	def callback_configure(self):
 		tab = self.notebook.currentWidget()
@@ -174,7 +213,7 @@ class window_ml(experiment):
 		tab = self.notebook.currentWidget()
 		obj=gpvdm_data().ml.find_object_by_id(tab.uid)
 
-		self.ml_dir=os.path.join(gpvdm_paths.get_sim_path(),obj.english_name)
+		self.set_ml_dir()
 
 		scan=ml_vectors()
 		scan.build_vector(self.ml_dir)

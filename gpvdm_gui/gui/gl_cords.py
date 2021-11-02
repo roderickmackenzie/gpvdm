@@ -38,11 +38,6 @@ try:
 except:
 	pass
 
-from PyQt5.QtCore import QTimer
-
-from gl_scale import scale_get_xmul
-from gl_scale import scale_get_ymul
-from gl_scale import scale_get_zmul
 from gl_base_object import gl_base_object
 from triangle import vec
 from gpvdm_json import gpvdm_data
@@ -168,9 +163,9 @@ class gl_cords():
 		xyz.z=self.scale.project_m2screen_z(self.scale.world_min.z)
 		a.xyz.append(xyz)
 
-		a.dxyz.x=fabs(self.scale.world_max.x-self.scale.world_min.x)*scale_get_xmul()
-		a.dxyz.y=fabs(self.scale.world_max.y-self.scale.world_min.y)*scale_get_ymul()
-		a.dxyz.z=fabs(self.scale.world_max.z-self.scale.world_min.z)*scale_get_zmul()
+		a.dxyz.x=fabs(self.scale.world_max.x-self.scale.world_min.x)*self.scale.x_mul
+		a.dxyz.y=fabs(self.scale.world_max.y-self.scale.world_min.y)*self.scale.y_mul
+		a.dxyz.z=fabs(self.scale.world_max.z-self.scale.world_min.z)*self.scale.z_mul
 
 		a.r=1.0
 		a.g=0.0

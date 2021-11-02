@@ -89,10 +89,6 @@ from gl_cords import gl_cords
 from gl_shape_layer import shape_layer
 from gl_base_widget import gl_base_widget
 
-from gl_scale import scale_get_xmul
-from gl_scale import scale_get_ymul
-from gl_scale import scale_get_zmul
-
 from gl_main_menu import gl_main_menu
 
 from gl_list import gl_objects
@@ -101,6 +97,8 @@ from gl_list import gl_objects
 from gl_input import gl_input
 
 from gl_text import gl_text
+from gl_image import gl_image
+
 from gl_lib_ray import gl_lib_ray
 from gl_contacts import gl_contacts
 from gl_graph import gl_graph
@@ -142,7 +140,7 @@ if open_gl_ok==True:
 			gl_views.__init__(self)
 			self.lit=True
 			self.setAutoBufferSwap(False)
-
+			self.gl_image=gl_image()
 			self.lights=[]
 			self.view_options=gl_view_options()
 
@@ -191,7 +189,6 @@ if open_gl_ok==True:
 			self.draw_electrical_mesh=False
 			self.draw_device_cut_through=False
 			self.enable_draw_ray_mesh=False
-			self.enable_cordinates=True
 			self.plot_graph=False
 			self.plot_circuit=False
 
@@ -277,7 +274,7 @@ if open_gl_ok==True:
 						o.xyz.append(xyz)
 
 						o.dxyz.x=0.1
-						o.dxyz.y=obj.dy*scale_get_ymul()
+						o.dxyz.y=obj.dy*self.scale.y_mul
 
 						o.r=0.0
 						o.g=0.0
@@ -309,6 +306,7 @@ if open_gl_ok==True:
 
 
 		def render(self):
+			self.makeCurrent()
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 			glClearColor(self.view_options.bg_color[0], self.view_options.bg_color[1], self.view_options.bg_color[2], 0.5)
 			glPolygonMode(GL_FRONT, GL_FILL);
@@ -330,7 +328,6 @@ if open_gl_ok==True:
 			x=self.scale.project_m2screen_x(0)
 			y=0.0#project_m2screen_y(0)
 			z=self.scale.project_m2screen_z(0)
-			#print(">>>>>>22",project_m2screen_z(0))
 
 			self.dos_start=-1
 			self.dos_stop=-1
@@ -354,12 +351,10 @@ if open_gl_ok==True:
 			glColor3f( 1.0, 1.5, 0.0 )
 
 
-			#glClearColor(0.92, 0.92, 0.92, 0.5) # Clear to black.
-
 			lines=[]
 
 			self.pos=0.0
-			if self.enable_cordinates==True:
+			if self.view_options.render_cords==True:
 				self.draw_cords()
 
 			if self.enable_draw_ray_mesh==True:
@@ -387,10 +382,14 @@ if open_gl_ok==True:
 
 
 		def do_draw(self):
+			#print("do_draw",self)
+			self.makeCurrent()
 			self.render()
 			self.swapBuffers()
 
 		def paintGL(self):
+			#print("paintGL",self)
+			self.makeCurrent()
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 			glLoadIdentity()
 			glScalef(-1.0, 1.0, -1.0) 

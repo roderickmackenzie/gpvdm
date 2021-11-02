@@ -104,5 +104,3 @@ class display_widget(QWidget):
 		self.display.rebuild_scene()
 
 
-	#def callback_layer_editor(self):
-	#	global_object_run("show_layer_editor")

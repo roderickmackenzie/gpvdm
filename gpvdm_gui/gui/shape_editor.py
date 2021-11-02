@@ -30,7 +30,7 @@ from icon_lib import icon_get
 
 #qt
 from PyQt5.QtCore import QSize, Qt 
-from PyQt5.QtWidgets import QWidget,QVBoxLayout,QToolBar,QSizePolicy,QAction,QTabWidget, QDialog
+from PyQt5.QtWidgets import QWidget,QVBoxLayout,QToolBar,QSizePolicy,QAction,QTabWidget, QDialog, QHBoxLayout
 from PyQt5.QtGui import QPainter,QIcon,QPixmap,QPen,QColor
 
 #python modules
@@ -130,9 +130,9 @@ class shape_editor(QWidgetSavePos):
 			xyz.y=self.three_d_shape.scale.project_m2screen_y(max_vec.y-2.0)
 			xyz.z=self.three_d_shape.scale.project_m2screen_y(-1.0)
 			a.xyz.append(xyz)
-			a.dxyz.x=5.0*self.three_d_shape.scale.get_xmul()
-			a.dxyz.y=2.0*self.three_d_shape.scale.get_ymul()
-			a.dxyz.z=5.0*self.three_d_shape.scale.get_zmul()
+			a.dxyz.x=5.0*self.three_d_shape.scale.x_mul
+			a.dxyz.y=2.0*self.three_d_shape.scale.y_mul
+			a.dxyz.z=5.0*self.three_d_shape.scale.z_mul
 			a.rotate_x=180
 			a.triangles.extend(data.data)
 
@@ -307,9 +307,15 @@ class shape_editor(QWidgetSavePos):
 		self.three_d_shape.view_options.draw_rays=False
 		self.three_d_shape.view_options.render_photons=False
 
-		self.notebook.addTab(self.three_d_shape,_("Shape"))
+		display=QWidget()
+		layout = QHBoxLayout()
+		display.setLayout(layout)
+		layout.addWidget(self.three_d_shape)
+		layout.addWidget(self.discretizer)
 
-		self.notebook.addTab(self.discretizer,_("Image"))
+		self.notebook.addTab(display,_("Shape"))
+
+		#self.notebook.addTab(self.discretizer,_("Image"))
 
 		self.setLayout(self.main_vbox)
 		

@@ -62,7 +62,7 @@ import json
 from scan_human_labels import json_find_sim_obj
 from dat_file import dat_file
 
-def make_vector_from_file(file_name,x_values):
+def make_vector_from_file(file_name,x_values,norm_y=False):
 	if os.path.isfile(file_name)==True:
 		f=open(file_name,'r')
 		lines = f.readlines()
@@ -89,6 +89,11 @@ def make_vector_from_file(file_name,x_values):
 				except:
 					return False
 	
+	if norm_y==True:
+		max_y=max(y)
+		for i in range(0,len(y)):
+			y[i]=y[i]/max_y
+			#print(x[i],y[i])
 
 	x, y = zip(*sorted(zip(x, y)))
 
@@ -96,24 +101,18 @@ def make_vector_from_file(file_name,x_values):
 		return y
 
 	r=np.interp(x_values,x,y)
-
+	#if norm_y==True:
+	#	print(r)
 	return r
 
-def get_vectors(file_name,x_values,dolog=False,div=1.0,fabs=False,do_norm=False,mul=1.0):
+def get_vectors(file_name,x_values,dolog=False,div=1.0,fabs=False,norm_y=False,mul=1.0):
 
-	data=make_vector_from_file(file_name,x_values)
+	data=make_vector_from_file(file_name,x_values,norm_y=norm_y)
 
 	if type(data)==bool:
 		if data==False:
 			return False
-	
 
-	if do_norm==True:
-		mi=1e6
-		for i in range(0,len(data)):
-			if float(data[i])<mi:
-				mi=float(data[i])
-		div=mi
 
 	n=[]
 	for i in range(0,len(data)):
@@ -279,6 +278,7 @@ class ml_vectors:
 						mul=1.0
 						do_fabs=False
 						d=gpvdm_data()
+						norm_y=False
 						#print(os.path.join(sub_sim_folder,"sim.json"))
 						if d.load(os.path.join(sub_sim_folder,"sim.json"))==False:
 							error=True
@@ -355,7 +355,7 @@ class ml_vectors:
 							sim_name=obj.english_name.lower()
 	
 							if sim_name.startswith("tpc")==True:
-								file_name=["time_i.dat"]
+								file_name=["time_i_abs.dat"]
 								t=2e-8
 								t_vectors=[]
 								while (t<1e-3):
@@ -364,7 +364,7 @@ class ml_vectors:
 									t_vectors.append(t)
 								vector=[t_vectors]
 								token_ext=[sub_sim]
-
+								norm_y=True
 								#dolog=True
 								#do_fabs=True
 							else:
@@ -372,7 +372,7 @@ class ml_vectors:
 								asdas
 
 						elif sim_mode.startswith("celiv")==True:
-							file_name=["time_i.dat"]
+							file_name=["time_i_abs.dat"]
 							vector=[[2e-6,3e-6,4e-6,5e-6,6e-6,7e-6,8e-6]]
 							token_ext=[sub_sim]
 							#do_fabs=True
@@ -390,7 +390,7 @@ class ml_vectors:
 
 						for c in range(0,len(file_name)):
 							vector_path=os.path.join(tmp_dir,sub_sim,file_name[c])
-							ret=get_vectors(vector_path,vector[c], dolog=dolog,div=div,mul=mul, fabs=do_fabs)
+							ret=get_vectors(vector_path,vector[c], dolog=dolog,div=div,mul=mul, fabs=do_fabs,norm_y=norm_y)
 							if ret==False:
 								error=True
 								error_file=open(os.path.join(scan_dir,"errors.dat"),'a')

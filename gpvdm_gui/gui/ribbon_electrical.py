@@ -178,7 +178,7 @@ class ribbon_electrical(ribbon_page2):
 		self.tb_solvers.setEnabled(val)
 		self.boundary.setEnabled(val)
 		self.perovskite.setEnabled(val)
-
+		self.update_buttons()
 
 
 

@@ -36,11 +36,6 @@
 
 int dump_can_i_dump(struct simulation *sim,struct device *dev, char *file_name)
 {
-	if (sim->fitting==FIT_NOT_FITTING)
-	{
-		return 0;
-	}
-
 	int i;
 	int data_sets;
 	char temp[200];
@@ -48,6 +43,52 @@ int dump_can_i_dump(struct simulation *sim,struct device *dev, char *file_name)
 	struct json_obj *json_data_set;
 	struct json_obj *json_config;
 	struct json_obj *json_fits;
+
+	struct json_obj *json_dump;
+	struct json_obj *json_banned_files;
+	struct json_obj *json_banned_file;
+	int banned_files;
+	char banned_file_name[200];
+
+	if (sim->fitting==FIT_NOT_FITTING)
+	{
+		json_dump=json_obj_find(&(dev->config.obj), "dump");
+		if (json_dump==NULL)
+		{
+			ewe(sim,"Object dump not found\n");
+		}
+
+		json_banned_files=json_obj_find(json_dump, "banned_files");
+		if (json_banned_files==NULL)
+		{
+			ewe(sim,"Object banned_files not found\n");
+		}
+
+		json_get_int(sim,json_banned_files, &banned_files,"segments");
+
+		for (i=0;i<banned_files;i++)
+		{
+			sprintf(temp,"segment%d",i);
+			json_banned_file=json_obj_find(json_banned_files, temp);
+			if (json_banned_file==NULL)
+			{
+				ewe(sim,"Object band_file segment not found\n");
+			}
+
+			json_get_string(sim,json_banned_file, banned_file_name,"banned_file_name");
+			if (strcmp(file_name,banned_file_name)==0)
+			{
+				return -1;
+			}
+			
+
+		}
+
+
+		return 0;
+	}
+
+
 	json_fits=json_obj_find(&(dev->config.obj), "fits");
 	if (json_fits==NULL)
 	{

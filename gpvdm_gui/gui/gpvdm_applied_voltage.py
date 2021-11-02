@@ -35,6 +35,7 @@ from QComboBoxLang import QComboBoxLang
 #cal_path
 from cal_path import subtract_paths
 from cal_path import get_materials_path
+from gpvdm_json import gpvdm_data
 
 import i18n
 _ = i18n.language.gettext
@@ -68,39 +69,48 @@ class gpvdm_applied_voltage(QWidget):
 
 	def update(self):
 		self.edit.blockSignals(True)
-
-		cb_value=self.applied_voltage_type
+		self.combobox.blockSignals(True)
+		cb_value=self.contact.applied_voltage_type
+		self.combobox.setValue_using_english(cb_value)
 		if cb_value!="ground" and cb_value!="change":
 			self.edit.setEnabled(True)
-			self.edit.setText(self.applied_voltage)
+			self.edit.setText(str(self.contact.applied_voltage))
 		else:
 			self.edit.setEnabled(False)
 			if cb_value=="ground":
-				self.edit.setText("0")
+				self.edit.setText("Gnd")
 			elif cb_value=="change":
 				self.edit.setText("Vsig")
 
+		self.combobox.blockSignals(False)
 		self.edit.blockSignals(False)
 
 
 	def callback_edit(self):
 		try:
-			self.applied_voltage=str(float(self.edit.text()))
-			self.changed.emit()
+			val=str(float(self.edit.text()))
 		except:
-			pass
+			return
+		self.find_contact()
+		self.contact.applied_voltage=float(self.edit.text())
+		self.changed.emit()
 
 	def callback_combobox(self):
-		self.applied_voltage_type=self.combobox.currentText_english()
+		self.find_contact()
+		self.contact.applied_voltage_type=self.combobox.currentText_english()
 		self.update()
 		self.changed.emit()
 
-	def setText(self,text):
-		self.applied_voltage_type=text.split(":")[0]
-		self.applied_voltage=text.split(":")[1]
-		self.combobox.setValue_using_english(self.applied_voltage_type)
+	def updateValue(self,uid):
+		self.uid=uid
+		self.find_contact()
+		print(self.uid,self.contact.applied_voltage_type)
 		self.update()
-	
-	def text(self):
-		return self.applied_voltage_type+":"+self.applied_voltage
+
+	def find_contact(self):
+		self.contact=None
+		for c in gpvdm_data().epi.contacts.segments:
+			if self.uid==c.id:
+				self.contact=c
+
 		

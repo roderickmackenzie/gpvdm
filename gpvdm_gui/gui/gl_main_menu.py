@@ -33,9 +33,6 @@ try:
 	from PyQt5.QtOpenGL import QGLWidget
 	from gl_lib import val_to_rgb
 	from PyQt5.QtWidgets import QMenu
-	from gl_scale import scale_get_xmul
-	from gl_scale import scale_get_ymul
-	from gl_scale import scale_get_zmul
 except:
 	pass
 
@@ -49,6 +46,7 @@ from PyQt5.QtWidgets import QApplication
 from PyQt5.QtGui import QImage
 from gpvdm_json import gpvdm_data
 from icon_lib import icon_get
+import os
 
 class gl_main_menu():
 	def build_main_menu(self):
@@ -87,6 +85,10 @@ class gl_main_menu():
 		self.menu_view_grid=view.addAction(_("Grid"))
 		self.menu_view_grid.triggered.connect(self.menu_toggle_view)
 		self.menu_view_grid.setCheckable(True)
+
+		self.menu_view_cords=view.addAction(_("Coordinates"))
+		self.menu_view_cords.triggered.connect(self.menu_toggle_view)
+		self.menu_view_cords.setCheckable(True)
 
 		self.menu_view_optical_mode=view.addAction(_("Optical mode"))
 		self.menu_view_optical_mode.triggered.connect(self.menu_toggle_view)
@@ -139,6 +141,58 @@ class gl_main_menu():
 		action=objects.addAction(icon_get("view-refresh"),_("Rescale"))
 		action.triggered.connect(self.callback_rescale)
 
+		action=objects.addAction(icon_get("view-refresh"),_("Debug"))
+		action.triggered.connect(self.callback_debug)
+
+	def callback_debug(self):
+		self.load_from_json(os.path.join(get_sim_path(),"electrical_mesh.dat"),dz=-0.012)
+		from gl_base_object import gl_base_object
+		from triangle import vec
+
+		o=gl_base_object()
+		xyz=vec()
+		xyz.x=-6.0
+		xyz.y=self.scale.project_m2screen_y(0.0)
+		xyz.z=3			
+		o.xyz.append(xyz)
+
+		o.dxyz.x=5.0
+		o.dxyz.y=2.0
+		o.dxyz.z=2.0
+
+		o.r=0.0
+		o.g=0.0
+		o.b=1.0
+
+		o.type="image"
+
+		o.image_path="text.png"
+
+
+		####
+		o2=gl_base_object()
+		xyz1=vec()
+		xyz1.x=-6.0		#self.scale.project_m2screen_x(-0.012)
+		xyz1.y=0.0
+		xyz1.z=-13.0		#self.scale.project_m2screen_z(0.5)					
+		o2.xyz.append(xyz1)
+
+		o2.dxyz.x=5.0
+		o2.dxyz.y=2.0
+		o2.dxyz.z=2.0
+
+		o2.r=0.0
+		o2.g=0.0
+		o2.b=1.0
+
+		o2.type="image"
+
+		o2.image_path="r.png"
+		self.force_redraw()
+		self.gl_objects_add(o)
+		self.gl_objects_add(o2)
+		self.do_draw()
+
 	def callback_rescale(self):
 		self.scale.set_m2screen()
 		self.build_scene()
@@ -189,6 +243,7 @@ class gl_main_menu():
 		self.draw_device_cut_through=self.menu_view_draw_device_cut_through.isChecked()
 		self.view_options.render_photons=self.menu_view_render_photons.isChecked()
 		self.view_options.render_grid=self.menu_view_grid.isChecked()
+		self.view_options.render_cords=self.menu_view_cords.isChecked()
 		self.view_options.draw_device=self.menu_view_draw_device.isChecked()
 		self.view_options.optical_mode=self.menu_view_optical_mode.isChecked()
 		self.view_options.text=self.menu_view_text.isChecked()
@@ -226,6 +281,7 @@ class gl_main_menu():
 		self.menu_view_draw_device_cut_through.setChecked(self.draw_device_cut_through)
 		self.menu_view_render_photons.setChecked(self.view_options.render_photons)
 		self.menu_view_grid.setChecked(self.view_options.render_grid)
+		self.menu_view_cords.setChecked(self.view_options.render_cords)
 		self.menu_view_draw_device.setChecked(self.view_options.draw_device)
 		self.menu_view_optical_mode.setChecked(self.view_options.optical_mode)
 		self.menu_view_text.setChecked(self.view_options.text)

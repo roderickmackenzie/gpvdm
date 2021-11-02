@@ -79,6 +79,7 @@ class json_shape_db_item_honeycomb(json_base):
 		self.var_list.append(["honeycomb_x_shift",0])
 		self.var_list.append(["honeycomb_y_shift",0])
 		self.var_list.append(["honeycomb_line_width",10])
+		self.var_list.append(["honeycomb_rotate",0])
 		self.var_list_build()
 
 class json_shape_db_item_gaus(json_base):

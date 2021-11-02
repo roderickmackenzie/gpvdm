@@ -354,11 +354,16 @@ class json_base():
 		self.f.save_as(file_name)
 		self.last_time=self.f.time()
 
-	def save(self):
+	def save(self,do_tab=True):
 		if self.loaded==True:
 			lines=self.gen_json()
 			self.f.lines=lines
-			self.f.tab()
+			if do_tab==True:
+				self.f.tab()
+			else:
+				tot=""
+				for i in range(0,len(self.f.lines)):
+					self.f.lines[i]=self.f.lines[i].replace("\t","")
 			self.f.save()
 			self.last_time=self.f.time()
 

@@ -43,7 +43,7 @@ def clone_sim_dir(output_dir,input_dir):
 	if os.path.isdir(output_dir)==False:
 		os.makedirs(output_dir)
 	for f in os.listdir(input_dir):
-		if f.endswith(".inp") or f.endswith(".json") or f.endswith(".gpvdm"):
+		if f.endswith(".inp") or f.endswith("sim.json") or f.endswith(".gpvdm"):
 			copyfile(os.path.join(input_dir,f), os.path.join(output_dir,f))
 
 #remove this if you can but you will need to remove inp_template first

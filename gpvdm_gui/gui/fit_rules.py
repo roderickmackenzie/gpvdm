@@ -47,7 +47,6 @@ from cal_path import get_sim_path
 from gtkswitch import gtkswitch
 from str2bool import str2bool
 
-from gpvdm_tab import gpvdm_tab
 from scan_select import select_param
 from gpvdm_json import gpvdm_data
 from json_fit import json_fit_rules_line

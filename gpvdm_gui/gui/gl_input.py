@@ -217,7 +217,6 @@ class gl_input():
 
 	def mousePressEvent(self,event):
 		self.lastPos=None
-
 		self.mouse_click_event=mouse_event()
 		self.mouse_click_event.time=time.time()
 		self.mouse_click_event.x=event.x()
@@ -252,11 +251,13 @@ class gl_input():
 			#print(self.obj)
 			if (delta)<3:
 				if obj!=None:
-					obj=gpvdm_data().find_object_by_id(obj.id[0])
-					if obj!=None:
-						self.menu_obj(event,obj)
-					elif gl_obj_id_starts_with(obj.id,"mesh")==True:
-						self.mesh_menu(event)
+					if len(obj.id)>0:
+						data_obj=gpvdm_data().find_object_by_id(obj.id[0])
+						if data_obj!=None:
+							if gl_obj_id_starts_with(data_obj.id,"mesh")==False:
+								self.menu_obj(event,data_obj)
+							else:
+								self.mesh_menu(event)
 				else:
 					self.menu(event)
 

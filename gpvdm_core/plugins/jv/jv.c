@@ -249,6 +249,24 @@ long double sun_orig=light_get_sun(&(in->mylight));
 light_set_sun(&(in->mylight),sun_orig*config.jv_light_efficiency);
 light_solve_and_update(sim,in,&(in->mylight),0.0);
 
+struct light *li=&(in->mylight);
+struct dim_light *ldim=&(li->dim);
+int z;
+int x;
+int y;
+
+/*for (z=0;z<ldim->zlen;z++)
+{
+	for (x=0;x<ldim->xlen;x++)
+	{
+		for (y=0;y<ldim->ylen;y++)
+		{
+			printf("%d %d %d %Le\n",z,x,y,li->Gn[z][x][y]);
+		}
+	}
+
+}
+getchar();*/
 //contacts_dump(sim,in);
 //printf("wait b\n");
 //getchar();

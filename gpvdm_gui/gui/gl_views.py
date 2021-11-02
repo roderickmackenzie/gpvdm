@@ -31,8 +31,6 @@ from PyQt5.QtCore import QTimer
 
 from epitaxy import get_epi
 
-from gl_scale import scale_get_xmul
-from gl_scale import scale_get_zmul
 from gl_view_point import view_point
 import os
 
@@ -172,8 +170,6 @@ class gl_views():
 				self.timer.stop()
 				if self.timer_end_callback!=None:
 					self.timer_end_callback()
-				self.timer_save_files=False
-				self.timer_save_files_number=0
 
 	def view_count_enabled(self):
 		enabled=0
@@ -209,6 +205,7 @@ class gl_view_options():
 
 	def __init__(self):
 		self.render_grid=True
+		self.render_cords=True
 		self.render_photons=True
 		self.render_text=True
 		self.render_plot=True

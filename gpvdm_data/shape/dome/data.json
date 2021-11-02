@@ -17,7 +17,8 @@
 		"honeycomb_dy":30,
 		"honeycomb_x_shift":0,
 		"honeycomb_y_shift":0,
-		"honeycomb_line_width":10
+		"honeycomb_line_width":10,
+		"honeycomb_rotate":0
 		},
 	"import_config": {
 		"shape_import_y_norm":"False",

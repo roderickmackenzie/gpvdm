@@ -57,6 +57,7 @@ from ribbon_experiment import ribbon_experiment
 from gpvdm_json import gpvdm_data
 import copy
 from global_objects import global_object_run
+from cal_path import gpvdm_paths
 
 class experiment(QWidgetSavePos):
 
@@ -114,7 +115,7 @@ class experiment(QWidgetSavePos):
 		self.main_vbox = QVBoxLayout()
 		self.json_search_path=json_search_path
 		self.name_of_tab_class=name_of_tab_class
-		self.setMinimumSize(1200, 700)
+		self.setMinimumSize(800, 700)
 		self.setWindowTitle(window_title+" (https://www.gpvdm.com)")
 		self.setWindowIcon(icon_get(icon))
 
@@ -157,6 +158,8 @@ class experiment(QWidgetSavePos):
 
 		self.notebook.currentChanged.connect(self.update_interface)
 
+		self.tab_bar.paste.connect(self.do_paste)
+		self.tab_bar.tabMoved.connect(self.callback_tab_moved)
 
 	def callback_rename_page(self):
 		tab = self.notebook.currentWidget()
@@ -193,16 +196,15 @@ class experiment(QWidgetSavePos):
 
 	def callback_delete_page(self):
 		data=self.get_json_obj()
-		if len(data.segments)>1:
-			tab = self.notebook.currentWidget()
-			obj=data.find_object_by_id(tab.uid)
-			response=yes_no_dlg(self,_("Are you sure you want to delete : ")+tab.get_json_obj().english_name)
-			if response == True:
-				index=self.notebook.currentIndex()
-				data.segments.remove(obj)
-				self.notebook.removeTab(index)
-				gpvdm_data().save()
-				global_object_run("ribbon_sim_mode_update")
+		tab = self.notebook.currentWidget()
+		obj=data.find_object_by_id(tab.uid)
+		response=yes_no_dlg(self,_("Are you sure you want to delete : ")+tab.get_json_obj().english_name)
+		if response == True:
+			index=self.notebook.currentIndex()
+			data.segments.remove(obj)
+			self.notebook.removeTab(index)
+			gpvdm_data().save()
+			global_object_run("ribbon_sim_mode_update")
 
 	def callback_add_page(self):
 		data=gpvdm_data()
@@ -221,10 +223,10 @@ class experiment(QWidgetSavePos):
 			exec("from "+self.name_of_tab_class+" import "+self.name_of_tab_class)
 
 			data=self.get_json_obj()
-			if data.segment_example==None:
+			if data.segment_examples[0]==None:
 				dfasdasd
 
-			a=copy.deepcopy(data.segment_example)
+			a=copy.deepcopy(data.segment_examples[0])
 			a.english_name=new_sim_name
 			a.update_random_ids()
 			data.segments.append(a)
@@ -238,7 +240,7 @@ class experiment(QWidgetSavePos):
 		data=self.get_json_obj()
 		tab = self.notebook.currentWidget()
 		if tab!=None:
-			self.status_bar.showMessage(tab.get_json_obj().english_name+", segment"+str(data.segments.index(tab.get_json_obj())))
+			self.status_bar.showMessage(gpvdm_paths.get_sim_path()+","+tab.get_json_obj().english_name+", segment"+str(data.segments.index(tab.get_json_obj())))
 			self.tab_bar.obj_search_path=self.json_search_path
 			self.tab_bar.obj_id=tab.uid
 			self.ribbon.tb_clone.setEnabled(True)
@@ -252,4 +254,21 @@ class experiment(QWidgetSavePos):
 	def get_json_obj(self):
 		return eval(self.json_search_path)
 
+	def do_paste(self):
+		exec("from "+self.name_of_tab_class+" import "+self.name_of_tab_class)
+		data=gpvdm_data()
+		data=self.get_json_obj()
+		a=copy.deepcopy(data.segment_examples[0])
+		a.load_from_json(self.tab_bar.paste_data)
+		a.update_random_ids()
+		data.segments.append(a)
+		tab=eval(self.name_of_tab_class+"(data.segments[-1])")
+		tab.uid=a.id
+		self.notebook.addTab(tab,data.segments[-1].english_name)
+
+	def callback_tab_moved(self,from_pos,to_pos):
+		data=gpvdm_data()
+		segments=self.get_json_obj().segments
+		segments.insert(to_pos, segments.pop(from_pos))
+		data.save()
 

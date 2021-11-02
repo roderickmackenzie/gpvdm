@@ -126,8 +126,7 @@ class ribbon_sim_mode(ribbon_page):
 		sims.append([data.eqe.segments, "eqe","segment"])
 		sims.append([data.fdtd.segments, "fdtd","segment"])
 		sims.append([data.ray.segments, "trace","segment"])
-		if get_lock().is_gpvdm_next()==True:
-			sims.append([data.spm.segments, "spm","segment"])
+		sims.append([data.spm.segments, "spm","segment"])
 		#print(data.pl.simulations)
 		for sim in sims:
 			i=0
@@ -160,7 +159,7 @@ class ribbon_sim_mode(ribbon_page):
 		simmode=data.sim.simmode.lower()
 
 		found=False
-		
+		last=None
 		for a in self.actions:
 			#self.sim_mode.addItem(command)
 			if type(a)==gQAction:
@@ -169,8 +168,9 @@ class ribbon_sim_mode(ribbon_page):
 					self.callback_click(a,disable_help=True)
 					found=True
 			else:
-				self.addSeparator()
-
+				if last != "|":
+					self.addSeparator()
+			last=a
 
 		#if there is no known mode, just set it to jv mode
 		if found==False:

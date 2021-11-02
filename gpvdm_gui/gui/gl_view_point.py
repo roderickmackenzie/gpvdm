@@ -31,8 +31,6 @@ from PyQt5.QtCore import QTimer
 
 from epitaxy import get_epi
 
-from gl_scale import scale_get_xmul
-from gl_scale import scale_get_zmul
 import os
 
 class view_point():
@@ -52,6 +50,7 @@ class view_point():
 		self.reset_shift_max_angles()
 		self.name="default"
 		self.enabled=True
+
 
 	def reset_shift_max_angles(self):
 		self.max_angle_shift=4.0

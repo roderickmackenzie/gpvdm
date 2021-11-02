@@ -175,6 +175,8 @@ class gpvdm_tab2(QTableWidget):
 					item1.changed.connect(self.callback_value_changed)
 				elif widget_name=="gpvdm_select_filter":
 					item1.changed.connect(self.callback_value_changed)
+				elif widget_name=="gpvdm_applied_voltage":
+					item1.changed.connect(self.callback_value_changed_direct)
 				elif widget_name=="gpvdm_select":
 					item1.edit.textChanged.connect(self.callback_value_changed)
 					if self.callback_a!=None:
@@ -203,7 +205,7 @@ class gpvdm_tab2(QTableWidget):
 				s=getattr(s, a,None)
 			#if t=="shape_name":
 			#	print(t,str(s))
-			self.set_value(y,x,str(s))
+			self.set_value(y,x,str(s),row=segments[y])
 			x=x+1
 
 	def callback_value_changed(self):
@@ -213,23 +215,33 @@ class gpvdm_tab2(QTableWidget):
 			x=0
 			for t in self.json_tokens:
 				s=segment
+				found=True
 				for a in t.split("."):
 					s_last=s
 					t_last=a
-					s=getattr(s,a)
-				orig_json_type=type(s)
-
-				if orig_json_type==str:
-					setattr(s_last,t_last,str(self.get_value(y,x)))
-				if orig_json_type==bool:
-					setattr(s_last,t_last,bool(self.get_value(y,x)))
-				elif orig_json_type==float:
 					try:
-						setattr(s_last,t_last,float(self.get_value(y,x)))
+						s=getattr(s,a)
 					except:
-						pass
+						found=False
+						break
+
+				if found==True:
+					orig_json_type=type(s)
+
+					if orig_json_type==str:
+						setattr(s_last,t_last,str(self.get_value(y,x)))
+					if orig_json_type==bool:
+						setattr(s_last,t_last,bool(self.get_value(y,x)))
+					elif orig_json_type==float:
+						try:
+							setattr(s_last,t_last,float(self.get_value(y,x)))
+						except:
+							pass
 				x=x+1
 			y=y+1
+		self.changed.emit()
+
+	def callback_value_changed_direct(self):
 		self.changed.emit()
 
 	def get_json_obj(self):
@@ -293,7 +305,7 @@ class gpvdm_tab2(QTableWidget):
 			self.menu.popup(QCursor.pos())
 
 
-	def set_value(self,y,x,value):
+	def set_value(self,y,x,value,row=None):
 
 		self.setUpdatesEnabled(False)
 		if 1==1:
@@ -311,7 +323,7 @@ class gpvdm_tab2(QTableWidget):
 				self.cellWidget(y, x).blockSignals(False)
 			elif type(self.cellWidget(y,x))==energy_to_charge:
 				self.cellWidget(y, x).blockSignals(True)
-				self.cellWidget(y, x).updateValue(value)
+				self.cellWidget(y, x).updateValue(row.id)
 				self.cellWidget(y, x).blockSignals(False)
 			elif type(self.cellWidget(y,x))==gpvdm_select_material:
 				self.cellWidget(y, x).blockSignals(True)
@@ -327,7 +339,7 @@ class gpvdm_tab2(QTableWidget):
 				self.cellWidget(y, x).blockSignals(False)
 			elif type(self.cellWidget(y,x))==gpvdm_applied_voltage:
 				self.cellWidget(y, x).blockSignals(True)
-				self.cellWidget(y, x).setText(value)
+				self.cellWidget(y, x).updateValue(row.id)
 				self.cellWidget(y, x).blockSignals(False)
 			elif type(self.cellWidget(y,x))==gtkswitch:
 				self.cellWidget(y, x).blockSignals(True)

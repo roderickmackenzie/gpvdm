@@ -34,7 +34,6 @@ import glob
 import hashlib
 from update_file_info import update_file_info
 from libcrypt import libcrypt_decrypt
-from inp_util import inp_merge2
 
 ## Copy a file from one archive to another.
 def archive_copy_file(dest_archive,dest_file_name,src_archive,file_name,dest="archive"):

@@ -220,8 +220,6 @@ long double n_tot=0.0;
 long double J_tot=0.0;
 long double n_count_last=0.0;
 long double solver_i=0.0;
-FILE *m_out;
-m_out=fopen("errors.dat","w");
 
 //newton_externalv_simple(sim,in,time_get_voltage(in)+pulse_config.pulse_bias);	
 int ii;
@@ -306,11 +304,6 @@ do
 	n_tot+=error*in->dt;
 	J_tot+=dJn*in->dt;
 
-	//printf("%Le %Le %Le %Le %Le\n",dJn,sum,n_tot,J_tot,n_tot-J_tot);
-	//fprintf(m_out,"%Le %Le\n",in->time,fabsl(n_tot-J_tot));
-	fprintf(m_out,"%Le %Le\n",in->time,n_tot);
-	//printf("%Le %Le %Le %Le\n",in->time,sum,dJn,(n_count-n_count_last)/in->dt);
-	//getchar();
 	n_count_last=n_count;
 
 	if (pulse_config.pulse_sim_mode==LOAD)
@@ -370,8 +363,7 @@ do
 	poll_gui(sim);
 
 }while(1);
-fclose(m_out);
-//fclose(out);
+
 dump_dynamic_save(sim,in,in->output_path,&store);
 dump_dynamic_free(sim,in,&store);
 

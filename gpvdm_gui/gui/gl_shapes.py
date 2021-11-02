@@ -38,11 +38,6 @@ import random
 import numpy as np
 from math import pi,acos,sin,cos
 
-
-from gl_scale import scale_get_xmul
-from gl_scale import scale_get_ymul
-from gl_scale import scale_get_zmul
-
 from gl_lib import val_to_rgb
 from triangle_io import triangles_get_min
 from triangle_io import triangles_get_max

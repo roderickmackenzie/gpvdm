@@ -186,7 +186,7 @@ class gl_object_editor():
 					if sub.id not in ids:
 						ids.append(sub.id)
 
-				self.shape_edit=object_editor()
+				self.shape_edit=object_editor(self.force_redraw)
 				self.shape_edit.load(ids)
 				self.shape_edit.show()
 

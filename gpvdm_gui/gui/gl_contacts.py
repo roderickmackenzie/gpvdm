@@ -40,9 +40,6 @@ from gl_base_object import gl_base_object
 
 from epitaxy import get_epi
 
-from gl_scale import scale_get_xmul
-from gl_scale import scale_get_ymul
-from gl_scale import scale_get_zmul
 from triangle_io import triangles_mul_vec
 
 from triangle import vec
@@ -76,11 +73,13 @@ class gl_contacts():
 					if mesh_x.get_points()>1:
 						sticking_out_bit=0.2
 						a.type="solid_and_mesh"
-						a.xyz.x=self.scale.project_m2screen_x(0)-sticking_out_bit
-						a.xyz.y=self.scale.project_m2screen_y(c.y0)
-						a.xyz.z=self.scale.project_m2screen_z(0)
+						xyz=vec()
+						xyz.x=self.scale.project_m2screen_x(0)-sticking_out_bit
+						xyz.y=self.scale.project_m2screen_y(c.y0)
+						xyz.z=self.scale.project_m2screen_z(0)
+						a.xyz.append(xyz)
 						a.dxyz.x=1.0
-						a.dxyz.y=scale_get_ymul()*c.dy
+						a.dxyz.y=self.scale.y_mul*c.dy
 						a.dxyz.z=self.scale.project_m2screen_z(mesh_z.get_len())
 
 						a.r=c.color_r
@@ -89,7 +88,7 @@ class gl_contacts():
 						a.coloralpha=1.0
 
 						my_vec=vec()
-						my_vec.x=sticking_out_bit/scale_get_xmul()#+c.ingress
+						my_vec.x=sticking_out_bit/self.scale.x_mul#+c.ingress
 						my_vec.y=c.dy
 						my_vec.z=mesh_z.get_len()
 
@@ -106,22 +105,22 @@ class gl_contacts():
 						xyz=vec()
 						if mesh_x.get_points()==1:
 							xyz.x=self.scale.project_m2screen_x(0.0)
-							a.dxyz.x=mesh_x.get_len()*scale_get_xmul()
+							a.dxyz.x=mesh_x.get_len()*self.scale.x_mul
 						else:
 							xyz.x=self.scale.project_m2screen_x(c.x0)
-							a.dxyz.x=c.dx*scale_get_xmul()
+							a.dxyz.x=c.dx*self.scale.x_mul
 
 						if mesh_z.get_points()==1:
-							a.dxyz.z=mesh_z.get_len()*scale_get_zmul()
+							a.dxyz.z=mesh_z.get_len()*self.scale.z_mul
 						else:
-							a.dxyz.z=c.dz*scale_get_zmul()
+							a.dxyz.z=c.dz*self.scale.z_mul
 
 
 						if c.position=="top":
-							a.dxyz.y=epi.layers[0].dy*scale_get_ymul()
+							a.dxyz.y=epi.layers[0].dy*self.scale.y_mul
 							xyz.y=self.scale.project_m2screen_y(epi.get_layer_start(0))
 						else:
-							a.dxyz.y=epi.layers[len(epi.layers)-1].dy*scale_get_ymul()
+							a.dxyz.y=epi.layers[len(epi.layers)-1].dy*self.scale.y_mul
 							xyz.y=self.scale.project_m2screen_y(epi.get_layer_start(len(epi.layers)-1))
 
 						xyz.z=self.scale.project_m2screen_z(0.0)

@@ -60,14 +60,14 @@ class object_editor(QWidgetSavePos):
 	def callback_help(self):
 		webbrowser.open('http://www.gpvdm.com/man/index.html')
 
-	def __init__(self):
+	def __init__(self,gl_forece_redraw):
 		QWidgetSavePos.__init__(self,"shape_editor")
 		self.setMinimumSize(600, 700)
 		self.setWindowIcon(icon_get("shape"))
 
 		self.setWindowTitle(_("Object editor")+"  (https://www.gpvdm.com)") 
 		
-
+		self.force_redraw=gl_forece_redraw
 		self.main_vbox = QVBoxLayout()
 
 		toolbar=QToolBar()
@@ -147,7 +147,7 @@ class object_editor(QWidgetSavePos):
 		tab = self.notebook.currentWidget()
 		data.save()
 		data.load_triagles()
-		global_object_run("gl_force_redraw")
+		self.force_redraw()
 
 	def callback_enable_disable(self):
 		data=gpvdm_data()
@@ -157,7 +157,7 @@ class object_editor(QWidgetSavePos):
 			s=tab.template_widget
 			s.shape_enabled=self.enable.enabled
 			data.save()
-			global_object_run("gl_force_redraw")
+			self.force_redraw()
 			
 
 	def changed_click(self):
@@ -188,7 +188,7 @@ class object_editor(QWidgetSavePos):
 		my_tab.changed.connect(self.callback_edit)
 		self.notebook.addTab(my_tab,s.shape_name)
 		my_tab.changed.connect(self.callback_edit)
-		global_object_run("gl_force_redraw")
+		self.force_redraw()
 		data.save()
 
 	def callback_rename_shape(self):
@@ -226,7 +226,7 @@ class object_editor(QWidgetSavePos):
 					my_tab.populate(my_shape)
 					self.notebook.addTab(my_tab,my_shape.shape_name)
 					my_tab.changed.connect(self.callback_edit)
-					global_object_run("gl_force_redraw")
+					self.force_redraw()
 
 	def callback_delete_shape(self):
 		data=gpvdm_data()
@@ -246,5 +246,5 @@ class object_editor(QWidgetSavePos):
 					data.save()
 					break
 
-		global_object_run("gl_force_redraw")
+		self.force_redraw()
 

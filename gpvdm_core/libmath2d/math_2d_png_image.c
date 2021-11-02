@@ -131,18 +131,19 @@ void math_2d_png_import(struct simulation *sim,struct math_2d *data,struct png_i
 	int y=0;
 	int rgba=3;
 
-    if (png_get_color_type(image->png_ptr,  image->info_ptr) == PNG_COLOR_TYPE_RGBA)
+    if (image->color_type == PNG_COLOR_TYPE_RGB)
 	{
-		ewe(sim,"[process_file] input file is PNG_COLOR_TYPE_RGBA but must be PNG_COLOR_TYPE_RGB "
-                   "(lacks the alpha channel)");
-	}
-
-    if (png_get_color_type(image->png_ptr,  image->info_ptr) == PNG_COLOR_TYPE_RGBA)
+		rgba=3;
+	}else
+    if (image->color_type == PNG_COLOR_TYPE_RGBA)
 	{
 		rgba=4;
+	}else
+	{
+		ewe(sim,"Image type not recognized\n");
 	}
-
-	printf("here %d %d\n",image->width, image->height);
+	
+	//printf("here %d %d\n",image->width, image->height);
 	math_2d_malloc(data, image->width, image->height);
 
     for (y=0; y< image->height; y++)
@@ -154,6 +155,10 @@ void math_2d_png_import(struct simulation *sim,struct math_2d *data,struct png_i
             png_byte* ptr = &(row[x*rgba]);
 
 			data->data[x][y]=(ptr[0]+ptr[1]+ptr[2])/3;
+			/*if (image->height/2==y)
+			{
+				printf("%d %d %d %d %d %d %d %d\n",ptr[0],ptr[1],ptr[2],rgba,png_get_color_type(image->png_ptr,  image->info_ptr),PNG_COLOR_TYPE_RGBA,PNG_COLOR_TYPE_RGB,image->color_type);
+			}*/
 
         }
     }
