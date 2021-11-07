@@ -216,5 +216,5 @@ class window_ml(experiment):
 		self.set_ml_dir()
 
 		scan=ml_vectors()
-		scan.build_vector(self.ml_dir)
+		scan.build_vector(self.ml_dir,obj.ml_config.ml_vector_file_name)
 

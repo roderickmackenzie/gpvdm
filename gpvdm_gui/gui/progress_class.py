@@ -159,7 +159,7 @@ if gui_get()==True:
 		def start(self):
 			shape=QDesktopWidget().screenGeometry()
 
-			w=shape.width()
+			w=shape.width()*2
 			h=shape.height()
 			win_w=self.frameGeometry().width()
 			win_h=self.frameGeometry().height()

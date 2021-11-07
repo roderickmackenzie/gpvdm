@@ -206,8 +206,8 @@ class ml_vectors:
 
 		return tmp_dir
 
-	def build_vector(self,scan_dir):
-		output_file=os.path.join(scan_dir,"vectors.json")
+	def build_vector(self,scan_dir,file_name):
+		output_file=os.path.join(scan_dir,file_name)
 		#if os.path.isfile(output_file)==True:
 		#	response=yes_no_cancel_dlg(None,"The file "+output_file+" already exists.  Continue? ")
 

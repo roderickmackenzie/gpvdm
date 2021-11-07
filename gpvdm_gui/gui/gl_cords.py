@@ -114,42 +114,79 @@ class gl_cords():
 		self.render_text (0.0,2.0,0.0, "(0,1,0)")
 		self.render_text (0.0,0.0,1.0, "(0,0,1)")
 
-	def gl_objects_add_grid(self):
+	def gl_objects_add_grid(self,x0,x1,y0,y1,z0,z1,color=[0.8,0.8,0.8,1.0],dx=1.0,dz=1.0,dy=1.0,direction="zx"):
 		o=gl_base_object()
 		o.id=["grid"]
 		o.type="solid_and_mesh"
 
 		start_x=0
-		stop_x=20.0+18.0
+		start_y=0
 		start_z=0
-		stop_z=20.0+18.0
+
+		if x1!=None:
+			stop_x=x1-x0
+			nx=int((stop_x-start_x)/dx)
+
+		if y1!=None:
+			stop_y=y1-y0
+			ny=int((stop_y-start_y)/dy)
+
+		if z1!=None:
+			stop_z=z1-z0
+			nz=int((stop_z-start_z)/dz)
 
 		xyz=vec()
-		xyz.x=-18.0
-		xyz.z=-18.0
+		xyz.x=x0
+		xyz.z=z0
+		xyz.y=y0
 
-		xyz.y=self.scale.project_m2screen_y(self.scale.world_max.y)
 		o.xyz.append(xyz)
 
-		n=int(stop_x-start_x)
-		dx=1.0
-		pos=start_x
 
-		for i in range(0,n+1):
-			o.triangles.append([start_x, 0.0, pos])
-			o.triangles.append([stop_x, 0.0, pos])
-			pos=pos+dx
+		if direction=="zx":
+			pos=start_z
+			while pos<=stop_z:
+				o.triangles.append([start_x, 0.0, pos])
+				o.triangles.append([stop_x, 0.0, pos])
+				pos=pos+dz
 
+			pos=start_x
+			while pos<=stop_x:
+				o.triangles.append([pos, 0.0, start_z])
+				o.triangles.append([pos, 0.0, stop_z])
+				pos=pos+dz
 
-		dz=1.0
-		pos=start_z
-		for i in range(0,n+1):
-			o.triangles.append([pos, 0.0, start_z])
-			o.triangles.append([pos, 0.0, stop_z])
-			pos=pos+dz
+		elif direction=="zy":
+			pos=start_z
+			while pos<=stop_z:
+				o.triangles.append([0.0, start_y, pos])
+				o.triangles.append([0.0, stop_y, pos])
+				pos=pos+dz
+
+			pos=start_y
+			while pos<=stop_y:
+				o.triangles.append([0.0, pos, start_z])
+				o.triangles.append([0.0, pos, stop_z])
+				pos=pos+dy
+
+		elif direction=="xy":
+			pos=start_x
+			while pos<=stop_x:
+				o.triangles.append([pos, start_y, 0.0])
+				o.triangles.append([pos, stop_y, 0.0])
+				pos=pos+dz
+
+			pos=start_y
+			while pos<=stop_y:
+				o.triangles.append([start_x, pos, 0.0])
+				o.triangles.append([stop_x, pos, 0.0])
+				pos=pos+dy
 
 		self.gl_objects_add(o)
-		self.objects[-1].compile("lines",[0.8,0.8,0.8,1.0],line_width=1)
+		self.objects[-1].compile("lines",color,line_width=1)
+		return self.objects[-1]
+
+
 
 	def world_box(self):
 		self.gl_objects_remove_regex("world_box")

@@ -361,9 +361,7 @@ void fdtd_solve_step(struct simulation *sim,struct fdtd_data *data)
 		solve_H(sim,data);
 	}
 
-	//getchar();
 	fdtd_time_step(sim,data);
-	//usleep(100);
 }
 
 

@@ -250,6 +250,7 @@ int test=0;
 		//getchar();
 		if (vec_within_box(&(obj->min),&(obj->max),&(my_ray.xy))==0)
 		{
+			//printf("%s\n",obj->name);
 			for (i=0;i<obj->tri.len;i++)
 			{
 				if (obj->tri.edges_calculated==FALSE)
@@ -333,8 +334,17 @@ int test=0;
 	//printf("nfound=%d\n",nfound);
 	if (nfound==0)
 	{
-		//printf("oh\n");
-		//getchar();
+		//So we think the point is outside the box. We could have a floating point issue so just check we are not in the big box.
+		if (w->objects>0)
+		{
+			obj=&(w->obj[0]);
+
+			if (vec_within_box(&(obj->min),&(obj->max),&(my_ray.xy))==0)
+			{
+				//printf_log(sim,"Floating point issue\n");
+				return obj;
+			}
+		}
 		return NULL;
 	}
 
@@ -357,6 +367,17 @@ int test=0;
 	//getchar();
 	if (min_dist_index==-1)
 	{
+		//Again quick fix for windows foating point issue
+		if (w->objects>0)
+		{
+			obj=&(w->obj[0]);
+
+			if (vec_within_box(&(obj->min),&(obj->max),&(my_ray.xy))==0)
+			{
+				//printf_log(sim,"Floating point issue\n");
+				return obj;
+			}
+		}
 		ewe(sim,"ray is outside the box 2");
 	}
 

@@ -144,7 +144,7 @@ class shape_editor(QWidgetSavePos):
 			self.three_d_shape.objects[-1].compile("triangles_solid",[1.0,0.0,0.0,0.5])
 			self.three_d_shape.objects[-1].compile("triangles_open",[0.9,0.0,0.0,1.0],line_width=5)
 			self.three_d_shape.scene_built=True
-			self.three_d_shape.gl_objects_add_grid()
+			self.three_d_shape.gl_objects_add_grid(-18,20,self.three_d_shape.scale.project_m2screen_y(self.scale.world_max.y),None,-18,20)
 
 	def callback_help(self):
 		webbrowser.open("https://www.gpvdm.com/docs.html")

@@ -42,9 +42,7 @@ from PyQt5.QtGui import QPainter,QIcon
 #window
 from tb_lasers import tb_lasers
 from QWidgetSavePos import QWidgetSavePos
-from progress_class import progress_class
-from process_events import process_events
-from global_objects import global_object_run
+from plexperiment_tab import plexperiment_tab
 from experiment import experiment
 
 class pl_experiment(experiment):

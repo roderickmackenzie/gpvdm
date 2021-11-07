@@ -26,6 +26,7 @@
 import os
 from inp import inp
 from json_base import json_base
+import operator
 
 class bib_item(json_base):
 	def __init__(self):
@@ -47,6 +48,8 @@ class bib_item(json_base):
 		self.var_list.append(["isbn",""])
 		self.var_list.append(["unformatted",""])
 		self.var_list_build()
+
+		self.year_int=1970
 
 	def bib_short_cite(self):
 		build=""
@@ -119,8 +122,10 @@ class bib_item(json_base):
 					else:
 						build=build+c
 					
-
-						
+		try:
+			self.year_int=int(self.year)
+		except:
+			pass
 		new_lines=[]
 
 
@@ -145,7 +150,27 @@ class bib_item(json_base):
 			return self.unformatted
 
 		if html==True:
-			text=text+"<b>"+_("Associated paper")+":</b>"+self.author+", "+self.title+", "+self.journal+", "+self.volume+", "+self.pages+", "+self.year+"<br>"
+			text=text+self.clean_author(self.author)+", "
+			if self.title!="":
+				text=text+"\""+self.title.capitalize()+"\""+", "
+
+			if self.journal!="":
+				text=text+self.journal+", "
+
+			if self.volume!="":
+				text=text+self.volume+", "
+
+			if self.pages!="":
+				text=text+self.pages.replace("--","-")+", "
+
+			if self.year!="":
+				text=text+self.year+", "
+
+			if text.endswith(", ")==True:
+				text=text[:-2]
+
+			text=text+"<br>\n"
+			
 			if self.DOI!="":
 				text=text+"<b>doi link:</b> <a href=\"http://doi.org/"+self.DOI+"\"> http://doi.org/"+self.DOI+"</a>"
 		else:
@@ -153,7 +178,23 @@ class bib_item(json_base):
 
 		return text
 
-
+	def clean_author(self,author):
+		au=author.split(" and ")
+		n=0
+		ret=""
+		for a in au:
+			name=a
+			s=a.split(",")
+			if len(s)>1:
+				first_name=s[1].strip()
+				if len(first_name)>1:
+					first_name=first_name[0]
+				first_name=first_name
+				name=s[0]+" "+first_name
+			if ret!="":
+				ret=ret+", "
+			ret=ret+name
+		return ret
 
 class bibtex:
 	def __init__(self):
@@ -192,6 +233,10 @@ class bibtex:
 				within=False
 		return True
 
+	def sort(self):
+		sorted_x = sorted(self.refs, key=operator.attrgetter('year_int'),reverse =True)
+		self.refs=sorted_x
+
 	def new(self):
 		item=bib_item()
 		item.type="article"
@@ -214,14 +259,24 @@ class bibtex:
 		f.lines=lines
 		f.save_as(file_name)
 
-	def get_text(self,html=True):
+	def get_text(self,html=True,numerate=True):
 		out=""
+		n=1
+		year=self.refs[0].year
+		out=out+"<h2>"+year+"</h2>"
 		for r in self.refs:
 			if html==True:
-				out=out+r.get_text()+"<br>"
+				if year!=r.year:
+					out=out+"<h1>"+r.year.replace("2000","Unknown year")+"</h1>"
+				year=r.year
+				text="<p>"
+				if numerate==True:
+					text=text+"["+str(n)+"] "
+				text=text+r.get_text()+"</p>\n"
+				out=out+text
 			else:
 				out=out+r.get_text()+"\n"
-
+			n=n+1
 		return out
 
 	def get_text_of_token(self,token,html=False):
@@ -229,7 +284,7 @@ class bibtex:
 		for r in self.refs:
 			if r.token==token:
 				if html==True:
-					return r.get_text()+"<br>"
+					return r.get_text()+"<br>\n"
 				else:
 					return r.get_text()+"\n"
 

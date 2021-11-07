@@ -35,7 +35,7 @@ from json_base import json_base
 class json_detectors_config(json_base):
 
 	def __init__(self):
-		json_base.__init__(self,"viewpoint")
+		json_base.__init__(self,"config")
 		self.var_list=[]
 		self.var_list.append(["viewpoint_enabled",False])
 		self.var_list.append(["viewpoint_x0",0.1])
@@ -64,14 +64,6 @@ class json_detector(json_base):
 class json_detectors(json_base):
 
 	def __init__(self):
-		json_base.__init__(self,"detectors",segment_class=True)
+		json_base.__init__(self,"detectors",segment_class=True,segment_example=json_detector())
 
-	def load_from_json(self,json):
-		self.segments=[]
-		segs=json['segments']
-		for i in range(0,segs):
-			a=json_detector()
-			simulation_name="segment"+str(i)
-			a.load_from_json(json[simulation_name])
-			self.segments.append(a)
 

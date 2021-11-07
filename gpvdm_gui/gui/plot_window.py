@@ -150,65 +150,56 @@ class plot_window(QWidget):
 				self.plot.force_redraw()
 
 				
-		elif data_type=="circuit":
+		elif data_type=="circuit" or data_type=="poly":
 			self.setWindowTitle(_("3D object viewer")+" https://www.gpvdm.com")
 			self.setWindowIcon(icon_get("shape"))
-
 			self.plot=glWidget(self)
+			self.plot.scale.set_m2screen()
 			self.plot.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 			self.main_vbox.addWidget(self.plot)
 			self.setLayout(self.main_vbox)
 
-			self.plot.draw_electrical_mesh=False
-			self.plot.view_options.draw_device=False
-			self.plot.enable_draw_ray_mesh=False
-			self.plot.view_options.enable_draw_light_source=False
-			self.plot.view_options.draw_rays=False
-			self.plot.plot_graph=False
-			self.plot.plot_circuit=True
-			self.plot.view_options.render_photons=False
-			self.plot.graph_data.load(input_files[0])
-			self.show()
+			if data_type=="circuit":
 
-		elif data_type=="poly":
-			self.setWindowTitle(_("3D object viewer")+" https://www.gpvdm.com")
-			self.setWindowIcon(icon_get("shape"))
+				self.plot.draw_electrical_mesh=False
+				self.plot.view_options.draw_device=False
+				self.plot.enable_draw_ray_mesh=False
+				self.plot.view_options.enable_draw_light_source=False
+				self.plot.view_options.draw_rays=False
+				self.plot.plot_graph=False
+				self.plot.plot_circuit=True
+				self.plot.view_options.render_photons=False
+				self.plot.graph_data.load(input_files[0])
+				self.show()
+			elif data_type=="poly":
 
-			self.plot=glWidget(self)
-			self.plot.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-			self.main_vbox.addWidget(self.plot)
+				self.plot.draw_electrical_mesh=False
+				self.plot.view_options.draw_device=False
+				self.plot.enable_draw_ray_mesh=True
+				self.plot.view_options.enable_draw_light_source=False
+				self.plot.view_options.draw_rays=False
+				self.plot.scene_built=True
+				self.plot.view_options.render_photons=False
 
+				if self.data.load(input_files[0])==True:
+					a=gl_base_object()
+					a.id=["bing"]
+					a.type="open_triangles"
+					a.r=self.data.r
+					a.g=self.data.g
+					a.b=self.data.b
+					xyz=vec()
+					xyz.x=0.0
+					xyz.y=0.0
+					xyz.z=0.0
+					a.xyz.append(xyz)
+					a.triangles=self.plot.scale.project_trianges_m2screen(self.data.data)
+					self.plot.gl_objects_add(a)
 
-			#self.plot.triangle_file=input_files[0]
+				self.main_vbox.addWidget(self.status_bar)
+				self.plot.text_output.connect(self.update_status_bar)
 
-			self.plot.draw_electrical_mesh=False
-			self.plot.view_options.draw_device=False
-			self.plot.enable_draw_ray_mesh=True
-			self.plot.view_options.enable_draw_light_source=False
-			self.plot.view_options.draw_rays=False
-			self.plot.scene_built=True
-			self.plot.view_options.render_photons=False
-
-			if self.data.load(input_files[0])==True:
-				a=gl_base_object()
-				a.id=["bing"]
-				a.type="open_triangles"
-				a.r=self.data.r
-				a.g=self.data.g
-				a.b=self.data.b
-				xyz=vec()
-				xyz.x=0.0
-				xyz.y=0.0
-				xyz.z=0.0
-				a.xyz.append(xyz)
-				a.triangles=self.plot.scale.project_trianges_m2screen(self.data.data)
-				self.plot.gl_objects_add(a)
-
-			self.main_vbox.addWidget(self.status_bar)
-			self.plot.text_output.connect(self.update_status_bar)
-			self.setLayout(self.main_vbox)
-
-			self.show()
+				self.show()
 		else:
 			self.shown=True
 

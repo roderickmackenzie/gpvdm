@@ -78,6 +78,9 @@ class display_widget(QWidget):
 		self.setLayout(self.hbox)
 		global_object_register("display_recalculate",self.recalculate)
 		global_object_register("display_set_selected_obj",self.set_selected_obj)
+		global_object_register("gl_do_rescale",self.display.scale.set_m2screen)
+		global_object_register("gl_force_redraw",self.display.force_redraw)
+		global_object_register("gl_do_draw",self.display.do_draw)
 
 	def fx_box_changed(self):
 		self.display.ray_file=global_object_get("main_fx_box").get_file_name()

@@ -99,7 +99,7 @@ def build_token_lib():
 	lib.append(my_data("ml_sims_per_archive","au",_("Simulations per archive"),"QLineEdit"))
 	lib.append(my_data("random_distribution","type",_("Random distribution"),"QComboBoxLang",defaults=[[("log"),_("Log")],["linear",_("Linear")]]))
 	lib.append(my_data("ml_archive_path","au",_("Archive path"),"QLineEdit"))
-
+	lib.append(my_data("ml_vector_file_name","au",_("Vector file name"),"QLineEdit"))
 
 	#fit duplicate
 	#lib.append(my_data("enabled",_("True/False"),_("Enabled"),"gtkswitch"))
@@ -841,6 +841,8 @@ def build_token_lib():
 	lib.append(my_data("fdtd_lambda_start","m",_("Start wavelength"),"QLineEdit"))
 	lib.append(my_data("fdtd_lambda_stop","m",_("Stop wavelength"),"QLineEdit"))
 	lib.append(my_data("fdtd_lambda_points","m",_("Wavelength steps"),"QLineEdit"))
+	lib.append(my_data("fdtd_xzy","au",_("FDTD Slice"),"QComboBoxLang",defaults=[["zy",_("zy")],["zx",_("zx")],["xy",_("xy")]]))
+
 
 	#any files
 	lib.append(my_data("dump_verbosity","au",_("Output verbosity to disk"),"QComboBoxLang",defaults=[["-1",_("Nothing")],["0",_("Key results")],[("1"),_("Write everything to disk")],[("2"),_("Write everything to disk every 2nd step")],[("5"),_("Write everything to disk every 5th step")],[("10"),_("Write everything to disk every 10th step")]]))

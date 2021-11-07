@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gpvdm 5.0\n"
 "Report-Msgid-Bugs-To: roderick.mackenzie@nottingham.ac.uk\n"
-"POT-Creation-Date: 2021-11-02 09:41+0000\n"
+"POT-Creation-Date: 2021-11-07 17:30+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -253,7 +253,7 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/timedomain_ribbon.py:145
 #: ../../gpvdm_gui/gui/time_domain_experiment.py:78
 #: ../../gpvdm_gui/gui/gpvdm_viewer.py:430
-#: ../../gpvdm_gui/gui/pl_experiment.py:68
+#: ../../gpvdm_gui/gui/pl_experiment.py:66
 msgid "Simulation"
 msgstr ""
 
@@ -3281,7 +3281,8 @@ msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/display.py:105
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/display_mesh.py:105
-#: ../../gpvdm_gui/gui/gl_toolbar.py:70 ../../gpvdm_gui/gui/display_mesh.py:76
+#: ../../gpvdm_gui/gui/token_lib.py:844 ../../gpvdm_gui/gui/gl_toolbar.py:70
+#: ../../gpvdm_gui/gui/display_mesh.py:76
 msgid "xy"
 msgstr ""
 
@@ -3695,7 +3696,6 @@ msgid "Load/Import"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/bibtex.py:139
-#: ../../gpvdm_gui/gui/bibtex.py:148
 msgid "Associated paper"
 msgstr ""
 
@@ -3787,7 +3787,7 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/scan_human_labels.py:140
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/scan_human_labels.py:141
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/doping.py:133
-#: ../../gpvdm_gui/gui/token_lib.py:857 ../../gpvdm_gui/gui/doping.py:198
+#: ../../gpvdm_gui/gui/token_lib.py:859 ../../gpvdm_gui/gui/doping.py:198
 msgid "Layer"
 msgstr ""
 
@@ -4032,7 +4032,6 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/plot_window.py:123
 #: ../../gpvdm_gui/gui/plot_window.py:113
 #: ../../gpvdm_gui/gui/plot_window.py:154
-#: ../../gpvdm_gui/gui/plot_window.py:174
 msgid "3D object viewer"
 msgstr ""
 
@@ -6136,27 +6135,27 @@ msgid "Ouput verbosity to disk"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:753
-#: ../../gpvdm_gui/gui/token_lib.py:846
+#: ../../gpvdm_gui/gui/token_lib.py:848
 msgid "Key results"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:753
-#: ../../gpvdm_gui/gui/token_lib.py:449 ../../gpvdm_gui/gui/token_lib.py:846
+#: ../../gpvdm_gui/gui/token_lib.py:449 ../../gpvdm_gui/gui/token_lib.py:848
 msgid "Write everything to disk"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:753
-#: ../../gpvdm_gui/gui/token_lib.py:846
+#: ../../gpvdm_gui/gui/token_lib.py:848
 msgid "Write everything to disk every 2nd step"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:753
-#: ../../gpvdm_gui/gui/token_lib.py:846
+#: ../../gpvdm_gui/gui/token_lib.py:848
 msgid "Write everything to disk every 5th step"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:753
-#: ../../gpvdm_gui/gui/token_lib.py:846
+#: ../../gpvdm_gui/gui/token_lib.py:848
 msgid "Write everything to disk every 10th step"
 msgstr ""
 
@@ -6165,30 +6164,30 @@ msgid "Ouput verbosity to screen"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:754
-#: ../../gpvdm_gui/gui/token_lib.py:847
+#: ../../gpvdm_gui/gui/token_lib.py:849
 msgid "Show lots"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:754
-#: ../../gpvdm_gui/gui/token_lib.py:847
+#: ../../gpvdm_gui/gui/token_lib.py:849
 msgid "Show key results"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:757
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/circuit_editor.py:58
-#: ../../gpvdm_gui/gui/token_lib.py:852
+#: ../../gpvdm_gui/gui/token_lib.py:854
 #: ../../gpvdm_gui/gui/circuit_editor.py:63
 msgid "Resistor"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:758
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/circuit_editor.py:59
-#: ../../gpvdm_gui/gui/token_lib.py:853
+#: ../../gpvdm_gui/gui/token_lib.py:855
 msgid "Capacitor"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:759
-#: ../../gpvdm_gui/gui/token_lib.py:854
+#: ../../gpvdm_gui/gui/token_lib.py:856
 msgid "Inductance"
 msgstr ""
 
@@ -6197,7 +6196,7 @@ msgid "J0"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:761
-#: ../../gpvdm_gui/gui/token_lib.py:856
+#: ../../gpvdm_gui/gui/token_lib.py:858
 msgid "Ideality factor"
 msgstr ""
 
@@ -7052,49 +7051,49 @@ msgid ""
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_simulations.py:113
-#: ../../gpvdm_gui/gui/ribbon_simulations.py:106
+#: ../../gpvdm_gui/gui/ribbon_simulations.py:105
 msgid ""
 "Suns Jsc\n"
 "editor"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_simulations.py:117
-#: ../../gpvdm_gui/gui/ribbon_optical.py:83
+#: ../../gpvdm_gui/gui/ribbon_optical.py:84
 msgid ""
 "Ray tracing\n"
 "editor"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_simulations.py:121
-#: ../../gpvdm_gui/gui/ribbon_simulations.py:117
+#: ../../gpvdm_gui/gui/ribbon_simulations.py:116
 msgid ""
 "PL\n"
 "editor"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_simulations.py:125
-#: ../../gpvdm_gui/gui/ribbon_simulations.py:122
+#: ../../gpvdm_gui/gui/ribbon_simulations.py:121
 msgid ""
 "Quantum\n"
 "efficiency"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_simulations.py:135
-#: ../../gpvdm_gui/gui/ribbon_simulations.py:131
+#: ../../gpvdm_gui/gui/ribbon_optical.py:93
 msgid ""
 "FDTD\n"
 "Simulation"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_simulations.py:143
-#: ../../gpvdm_gui/gui/ribbon_simulations.py:135
+#: ../../gpvdm_gui/gui/ribbon_simulations.py:130
 msgid ""
 "Calculate\n"
 "the cost"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_simulations.py:205
-#: ../../gpvdm_gui/gui/ribbon_simulations.py:216
+#: ../../gpvdm_gui/gui/ribbon_simulations.py:210
 msgid ""
 "<big><b>The time mesh editor</b></big><br> To do time domain simulations one "
 "must define how voltage the light vary as a function of time.  This can be "
@@ -7103,7 +7102,7 @@ msgid ""
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_simulations.py:216
-#: ../../gpvdm_gui/gui/ribbon_simulations.py:227
+#: ../../gpvdm_gui/gui/ribbon_simulations.py:221
 msgid ""
 "<big><b>Frequency domain mesh editor</b></big><br> Some times it is useful "
 "to do frequency domain simulations such as when simulating impedance "
@@ -7112,7 +7111,7 @@ msgid ""
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_simulations.py:227
-#: ../../gpvdm_gui/gui/ribbon_simulations.py:238
+#: ../../gpvdm_gui/gui/ribbon_simulations.py:232
 msgid ""
 "<big><b>Capacitance voltage editor</b></big><br> Use this editor to change "
 "serup capacitance voltage simulation."
@@ -7127,56 +7126,56 @@ msgid ""
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_simulations.py:251
-#: ../../gpvdm_gui/gui/ribbon_simulations.py:342
+#: ../../gpvdm_gui/gui/ribbon_simulations.py:322
 msgid ""
 "<big><b>JV simulation editor</b></big><br> Use this window to configure the "
 "Suns Voc simulations."
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_simulations.py:263
-#: ../../gpvdm_gui/gui/ribbon_simulations.py:262
+#: ../../gpvdm_gui/gui/ribbon_simulations.py:256
 msgid ""
 "<big><b>PL simulation editor</b></big><br> Use this window to configure the "
 "steady state photoluminescence simulation."
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_simulations.py:263
-#: ../../gpvdm_gui/gui/ribbon_simulations.py:262
+#: ../../gpvdm_gui/gui/ribbon_simulations.py:256
 msgid ""
 "<big><b><a href=\"https://www.youtube.com/watch?v=pgaJg6dErP4\">Watch the "
 "youtube video</a></b></big><br>Watch the video on simulating PL using gpvdm"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_simulations.py:274
-#: ../../gpvdm_gui/gui/ribbon_simulations.py:273
+#: ../../gpvdm_gui/gui/ribbon_simulations.py:267
 msgid ""
 "<big><b>Suns voc simulation editor</b></big><br> Use this window to select "
 "the step size and parameters of the JV simulations."
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_simulations.py:285
-#: ../../gpvdm_gui/gui/ribbon_simulations.py:284
+#: ../../gpvdm_gui/gui/ribbon_simulations.py:278
 msgid ""
 "<big><b>Suns Jsc simulation editor</b></big><br> Use this window to select "
 "the step size and parameters of the JV simulations."
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_simulations.py:296
-#: ../../gpvdm_gui/gui/ribbon_optical.py:150
+#: ../../gpvdm_gui/gui/ribbon_optical.py:156
 msgid ""
 "<big><b>The ray tracing editor</b></big><br> Use this window to configure "
 "ray tracing."
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_simulations.py:309
-#: ../../gpvdm_gui/gui/ribbon_simulations.py:307
+#: ../../gpvdm_gui/gui/ribbon_optical.py:181
 msgid ""
 "<big><b>FDTD</b></big><br> Use this window to setup a finite difference time "
 "domain simulation."
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_simulations.py:327
-#: ../../gpvdm_gui/gui/ribbon_simulations.py:325
+#: ../../gpvdm_gui/gui/ribbon_simulations.py:305
 msgid ""
 "<big><b>Costs window</b></big>\n"
 "Use this window to calculate the cost of the solar cell and the energy "
@@ -7213,7 +7212,7 @@ msgid "Detailed dump control"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl.py:293
-#: ../../gpvdm_gui/gui/gl.py:285
+#: ../../gpvdm_gui/gui/gl.py:283
 msgid "active"
 msgstr ""
 
@@ -9410,7 +9409,7 @@ msgid "Add Spectra"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_database.py:203
-#: ../../gpvdm_gui/gui/ribbon_optical.py:124
+#: ../../gpvdm_gui/gui/ribbon_optical.py:130
 msgid ""
 "<big><b>Laser setup</b></big><br> Use this window to set up your lasers."
 msgstr ""
@@ -9877,6 +9876,10 @@ msgstr ""
 msgid "Archive path"
 msgstr ""
 
+#: ../../gpvdm_gui/gui/token_lib.py:102
+msgid "Vector file name"
+msgstr ""
+
 #: ../../gpvdm_gui/gui/token_lib.py:108
 msgid "multiplier"
 msgstr ""
@@ -10166,12 +10169,12 @@ msgstr ""
 msgid "Quit on convergence problem"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:449 ../../gpvdm_gui/gui/token_lib.py:846
+#: ../../gpvdm_gui/gui/token_lib.py:449 ../../gpvdm_gui/gui/token_lib.py:848
 msgid "Output verbosity to disk"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:449 ../../gpvdm_gui/gui/token_lib.py:846
-#: ../../gpvdm_gui/gui/token_lib.py:849
+#: ../../gpvdm_gui/gui/token_lib.py:449 ../../gpvdm_gui/gui/token_lib.py:848
+#: ../../gpvdm_gui/gui/token_lib.py:851
 msgid "Nothing"
 msgstr ""
 
@@ -10399,47 +10402,59 @@ msgstr ""
 msgid "margin z1"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:847
+#: ../../gpvdm_gui/gui/token_lib.py:844
+msgid "FDTD Slice"
+msgstr ""
+
+#: ../../gpvdm_gui/gui/token_lib.py:844
+msgid "zy"
+msgstr ""
+
+#: ../../gpvdm_gui/gui/token_lib.py:844
+msgid "zx"
+msgstr ""
+
+#: ../../gpvdm_gui/gui/token_lib.py:849
 msgid "Output verbosity to screen"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:849
+#: ../../gpvdm_gui/gui/token_lib.py:851
 msgid "Solver output verbosity"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:849
+#: ../../gpvdm_gui/gui/token_lib.py:851
 msgid "As answers are found"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:849
+#: ../../gpvdm_gui/gui/token_lib.py:851
 msgid "Each step"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:855
+#: ../../gpvdm_gui/gui/token_lib.py:857
 msgid "I0"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:860
+#: ../../gpvdm_gui/gui/token_lib.py:862
 msgid "x rotation"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:861
+#: ../../gpvdm_gui/gui/token_lib.py:863
 msgid "y rotation"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:862
+#: ../../gpvdm_gui/gui/token_lib.py:864
 msgid "z rotation"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:863
+#: ../../gpvdm_gui/gui/token_lib.py:865
 msgid "x pos"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:864
+#: ../../gpvdm_gui/gui/token_lib.py:866
 msgid "y pos"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:865
+#: ../../gpvdm_gui/gui/token_lib.py:867
 msgid "zoom"
 msgstr ""
 
@@ -10447,31 +10462,31 @@ msgstr ""
 msgid "Adds an inp file to a json file inp_file.inp"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/ribbon_optical.py:68
+#: ../../gpvdm_gui/gui/ribbon_optical.py:69
 msgid ""
 "Light\n"
 "Sources"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/ribbon_optical.py:73
+#: ../../gpvdm_gui/gui/ribbon_optical.py:74
 msgid ""
 "Lasers\n"
 "(fs)"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/ribbon_optical.py:88
+#: ../../gpvdm_gui/gui/ribbon_optical.py:89
 msgid ""
 "Optical\n"
 "Detectors"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/ribbon_optical.py:131
+#: ../../gpvdm_gui/gui/ribbon_optical.py:137
 msgid ""
 "<big><b>The light sources window</b></big><br>Use this window to setup "
 "optical sources for the transfer matrix, ray tracing and FDTD simulations."
 msgstr ""
 
-#: ../../gpvdm_gui/gui/ribbon_optical.py:157
+#: ../../gpvdm_gui/gui/ribbon_optical.py:163
 msgid ""
 "<big><b>The detectors window</b></big><br>Use this window to setup optical "
 "detectors.  These can be used for the ray tracing simulations."
@@ -10585,61 +10600,61 @@ msgstr ""
 msgid "is not a number.."
 msgstr ""
 
-#: ../../gpvdm_gui/gui/ribbon_simulations.py:80
+#: ../../gpvdm_gui/gui/ribbon_simulations.py:79
 msgid ""
 "JV\n"
 "editor"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/ribbon_simulations.py:85
+#: ../../gpvdm_gui/gui/ribbon_simulations.py:84
 msgid ""
 "Time domain\n"
 "editor."
 msgstr ""
 
-#: ../../gpvdm_gui/gui/ribbon_simulations.py:90
+#: ../../gpvdm_gui/gui/ribbon_simulations.py:89
 msgid ""
 "FX domain\n"
 "editor"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/ribbon_simulations.py:95
+#: ../../gpvdm_gui/gui/ribbon_simulations.py:94
 msgid ""
 "CV\n"
 "editor"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/ribbon_simulations.py:101
+#: ../../gpvdm_gui/gui/ribbon_simulations.py:100
 msgid ""
 "Suns Voc\n"
 "editor"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/ribbon_simulations.py:111
+#: ../../gpvdm_gui/gui/ribbon_simulations.py:110
 msgid ""
 "CE\n"
 "editor"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/ribbon_simulations.py:141
+#: ../../gpvdm_gui/gui/ribbon_simulations.py:136
 msgid ""
 "scanning probe\n"
 "microscopy"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/ribbon_simulations.py:150
+#: ../../gpvdm_gui/gui/ribbon_simulations.py:145
 msgid ""
 "Simulation\n"
 "Hardware"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/ribbon_simulations.py:250
+#: ../../gpvdm_gui/gui/ribbon_simulations.py:244
 msgid ""
 "<big><b>Scanning probe microscopy</b></big><br> Use this window to configure "
 "the scanning probe microscopy simulations."
 msgstr ""
 
-#: ../../gpvdm_gui/gui/ribbon_simulations.py:295
+#: ../../gpvdm_gui/gui/ribbon_simulations.py:289
 msgid ""
 "<big><b>Charge Extraction editor</b></big><br> This performs charge "
 "extraction experiments in time domain, accounting for recombination losses.  "
@@ -10647,7 +10662,7 @@ msgid ""
 "just run a JV curve or a Suns-Voc simulation and use the charge.dat file."
 msgstr ""
 
-#: ../../gpvdm_gui/gui/ribbon_simulations.py:349
+#: ../../gpvdm_gui/gui/ribbon_simulations.py:329
 msgid ""
 "<big><b>Simulation hardware</b></big><br>Use this window to change how the "
 "model uses the computer's hardware."
@@ -10812,7 +10827,7 @@ msgstr ""
 msgid "Optical"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/pl_experiment.py:63
+#: ../../gpvdm_gui/gui/pl_experiment.py:61
 msgid "PL experiment window"
 msgstr ""
 

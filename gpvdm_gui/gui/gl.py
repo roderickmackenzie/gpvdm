@@ -64,8 +64,6 @@ from str2bool import str2bool
 
 import random
 
-from global_objects import global_object_register
-
 from math import fabs
 from triangle import vec
 from gl_fallback import gl_fallback
@@ -485,15 +483,76 @@ if open_gl_ok==True:
 				self.draw_device2(x,z)
 				self.draw_contacts()
 
-			#if self.plot_circuit==True:
-			#	self.draw_circuit()
-
 			if self.enable_light_profile==True:
 				self.draw_light_profile()
 
 			if self.view_options.render_grid==True:
-				self.gl_objects_add_grid()
+				self.gl_objects_add_grid(-18,20,self.scale.project_m2screen_y(self.scale.world_max.y),None,-18,20)
 
+			for d in data.detectors.segments:
+				if d.config.viewpoint_enabled==True:
+					world_dx=(self.scale.world_max.x-self.scale.world_min.x)
+					x0=self.scale.project_m2screen_x(self.scale.world_min.x)+world_dx*self.scale.x_mul*d.config.viewpoint_x0
+					x1=x0+world_dx*self.scale.x_mul*d.config.viewpoint_dx
+
+					y0=self.scale.project_m2screen_y(self.scale.world_min.y)+(self.scale.world_max.y-self.scale.world_min.y)*self.scale.y_mul*d.config.viewpoint_y0
+
+					world_dz=(self.scale.world_max.z-self.scale.world_min.z)
+					z0=self.scale.project_m2screen_z(self.scale.world_min.z)+world_dz*self.scale.z_mul*d.config.viewpoint_z0
+					z1=z0+world_dz*self.scale.z_mul*d.config.viewpoint_dz
+
+					dx=(x1-x0)/d.config.viewpoint_nx
+					dz=(z1-z0)/d.config.viewpoint_nz
+
+					self.gl_objects_add_grid(x0,x1,y0,None,z0,z1,color=[0.8,0.0,0.8,1.0],dx=dx,dz=dz)
+
+					if self.view_options.render_text==True:
+						if self.views[0].zoom<40:
+							o=gl_base_object()
+							o.r=1.0
+							o.g=1.0
+							o.b=1.0
+							xyz=vec()
+							xyz.x=x1+0.2
+							xyz.y=y0
+							xyz.z=z0
+							o.xyz.append(xyz)
+							o.id=["text"]
+							o.type="text"
+							o.text="Detector: "+d.english_name
+							self.gl_objects_add(o)
+
+			for fdtd in data.fdtd.segments:
+				if fdtd.fdtd_xzy=="zy":
+					world_dy=(self.scale.world_max.y-self.scale.world_min.y)
+					y0=self.scale.project_m2screen_y(self.scale.world_min.y)
+					y1=y0+world_dy*self.scale.y_mul
+
+					x0=0.0#self.scale.project_m2screen_y(self.scale.world_min.y)
+
+					world_dz=(self.scale.world_max.z-self.scale.world_min.z)
+					z0=self.scale.project_m2screen_z(self.scale.world_min.z)
+					z1=z0+world_dz*self.scale.z_mul
+
+					dy=(y1-y0)/10
+					dz=(z1-z0)/10
+					
+					o=self.gl_objects_add_grid(x0,None,y0,y1,z0,z1,color=[0.8,0.0,0.8,1.0],dy=dy,dz=dz,direction="zy")
+				elif fdtd.fdtd_xzy=="xy":
+					world_dy=(self.scale.world_max.y-self.scale.world_min.y)
+					y0=self.scale.project_m2screen_y(self.scale.world_min.y)
+					y1=y0+world_dy*self.scale.y_mul
+
+					world_dz=(self.scale.world_max.z-self.scale.world_min.z)
+					z0=self.scale.project_m2screen_z(self.scale.world_min.z)+world_dz*self.scale.z_mul/2.0
+
+					world_dx=(self.scale.world_max.x-self.scale.world_min.x)
+					x0=self.scale.project_m2screen_x(self.scale.world_min.x)
+					x1=x0+world_dx*self.scale.x_mul
+
+					dy=(y1-y0)/10
+					dx=(x1-x0)/10
+					o=self.gl_objects_add_grid(x0,x1,y0,y1,z0,None,color=[0.8,0.0,0.8,1.0],dy=dy,dx=dx,direction="xy")
 
 			if 1==0:
 				for l in self.lights:
@@ -614,9 +673,6 @@ if open_gl_ok==True:
 					glEnable(l.number)
 
 			self.failed=False
-			global_object_register("gl_do_rescale",self.scale.set_m2screen)
-			global_object_register("gl_force_redraw",self.force_redraw)
-			global_object_register("gl_do_draw",self.do_draw)
 
 			get_epi().add_callback(self.force_redraw)
 

@@ -257,7 +257,10 @@ struct shape* s;
 					Nad1=s->dosn.config.Na1;
 					in->Nad[z][x][y]-=Nad0+(Nad1-Nad0)*(pos/dy);
 
-					in->Nad[z][x][y]-=s->dosn.config.ion_density;
+					if (ns->Nion_enabled==TRUE)
+					{
+						in->Nad[z][x][y]-=s->dosn.config.ion_density;
+					}
 					 //printf("%Le\n",in->Nad[z][x][y]);
 				}
 			}

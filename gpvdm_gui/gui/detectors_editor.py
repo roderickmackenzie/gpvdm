@@ -32,7 +32,7 @@ class detectors_editor(experiment):
 
 
 	def __init__(self,data=None):
-		experiment.__init__(self,window_save_name="detectors_editor", window_title=_("Optical detectors editor"),name_of_tab_class="detectors_tab",json_search_path="gpvdm_data().detectors")
+		experiment.__init__(self,"detectors_tab",window_save_name="detectors_editor", window_title=_("Optical detectors editor"),json_search_path="gpvdm_data().detectors")
 
 		self.base_json_obj="from json_detectors import json_detector"
 		self.notebook.currentChanged.connect(self.switch_page)

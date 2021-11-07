@@ -50,6 +50,8 @@ class json_fdtd_simulation(json_base):
 		self.var_list.append(["xsize",8.0])
 		self.var_list.append(["lam_jmax",12])
 		self.var_list.append(["plot",1])
+		self.var_list.append(["fdtd_xzy","zy"])
+
 		self.var_list.append(["dt",1e-19])
 		self.var_list.append(["id",self.random_id()])
 		self.var_list_build()

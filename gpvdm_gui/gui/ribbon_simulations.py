@@ -71,7 +71,6 @@ class ribbon_simulations(ribbon_page):
 		self.qe_window=None
 		self.solar_spectrum_window=None
 		self.cost_window=None
-		self.fdtd_window=None
 
 		self.plexperiment_window=None
 		self.spm_window=None
@@ -127,10 +126,6 @@ class ribbon_simulations(ribbon_page):
 		#self.qe.setVisible(False)
 
 		self.addSeparator()
-
-		self.fdtd = QAction_lock("fdtd", _("FDTD\nSimulation"), self,"ribbon_simulations_fdtd")
-		self.fdtd.clicked.connect(self.callback_fdtd)
-		self.addAction(self.fdtd)
 
 		self.tb_cost = QAction_lock("cost", _("Calculate\nthe cost"), self,"ribbon_simulations_cost")
 		self.tb_cost.clicked.connect(self.callback_cost)
@@ -201,7 +196,6 @@ class ribbon_simulations(ribbon_page):
 		self.sunsvoc.setEnabled(val)
 		self.sunsjsc.setEnabled(val)
 		self.ce.setEnabled(val)
-		self.fdtd.setEnabled(val)
 		self.pl.setEnabled(val)
 		self.spm.setEnabled(val)
 		self.jv.setEnabled(val)
@@ -297,21 +291,7 @@ class ribbon_simulations(ribbon_page):
 			self.ce_experiment_window.hide()
 		else:
 			self.ce_experiment_window.show()
-
-
-	def callback_fdtd(self):
-		from window_fdtd import window_fdtd
-		if self.fdtd_window==None:
-			self.fdtd_window=window_fdtd()
-
-		help_window().help_set_help(["fdtd.png",_("<big><b>FDTD</b></big><br> Use this window to setup a finite difference time domain simulation.")])
-		if self.fdtd_window.isVisible()==True:
-			self.fdtd_window.hide()
-		else:
-			self.fdtd_window.show()
-
-
-			
+	
 	def callback_qe_window(self, widget):
 		if self.qe_window==None:
 			self.qe_window=window_eqe()

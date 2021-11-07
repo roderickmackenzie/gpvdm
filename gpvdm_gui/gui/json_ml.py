@@ -102,6 +102,7 @@ class json_ml_config(json_base):
 		self.var_list.append(["ml_number_of_archives",400])
 		self.var_list.append(["ml_sims_per_archive",40])
 		self.var_list.append(["ml_archive_path","cwd"])
+		self.var_list.append(["ml_vector_file_name","vectors.json"])
 		self.var_list_build()
 
 class json_ml_segment(json_base):

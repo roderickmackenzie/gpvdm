@@ -63,6 +63,7 @@ class ribbon_optical(ribbon_page2):
 		self.light_sources_window=None
 		self.ray_trace_window=None
 		self.detectors_window=None
+		self.fdtd_window=None
 
 		pan=self.add_panel()
 		self.light_sources = QAction_lock("lighthouse", _("Light\nSources"), self,"ribbon_home_light_sources")
@@ -89,6 +90,10 @@ class ribbon_optical(ribbon_page2):
 		self.detector.clicked.connect(self.callback_detector)
 		pan.addAction(self.detector)
 
+		self.fdtd = QAction_lock("fdtd", _("FDTD\nSimulation"), self,"ribbon_simulations_fdtd")
+		self.fdtd.clicked.connect(self.callback_fdtd)
+		pan.addAction(self.fdtd)
+
 		self.fx_box=fx_selector()
 		self.fx_box.update()
 		global_object_register("main_fx_box",self.fx_box)
@@ -114,6 +119,7 @@ class ribbon_optical(ribbon_page2):
 		self.ray_trace.setEnabled(val)
 		self.sun.setEnabled(val)
 		self.lasers.setEnabled(val)
+		self.fdtd.setEnabled(val)
 
 	def callback_configure_lasers(self):
 		from lasers import lasers
@@ -166,3 +172,16 @@ class ribbon_optical(ribbon_page2):
 		else:
 			self.detectors_window.ribbon.update()
 			self.detectors_window.show()
+
+	def callback_fdtd(self):
+		from window_fdtd import window_fdtd
+		if self.fdtd_window==None:
+			self.fdtd_window=window_fdtd()
+
+		help_window().help_set_help(["fdtd.png",_("<big><b>FDTD</b></big><br> Use this window to setup a finite difference time domain simulation.")])
+		if self.fdtd_window.isVisible()==True:
+			self.fdtd_window.hide()
+		else:
+			self.fdtd_window.show()
+
+
