@@ -34,7 +34,6 @@ from PyQt5.QtCore import pyqtSignal
 from help import help_window
 
 from dat_file import dat_file
-from dat_file_math import dat_file_max_min
 from PyQt5.QtCore import QTimer
 from icon_lib import icon_get
 from util import wrap_text

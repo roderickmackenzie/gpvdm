@@ -2,28 +2,28 @@
 // General-purpose Photovoltaic Device Model gpvdm.com - a drift diffusion
 // base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solarcells.
 // The model can simulate OLEDs, Perovskite cells, and OFETs.
-// 
+//
 // Copyright 2008-2022 Roderick C. I. MacKenzie https://www.gpvdm.com
 // r.c.i.mackenzie at googlemail.com
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+// the rights to use, copy, modify, merge, publish, distribute, sublicense,
 // and/or sell copies of the Software, and to permit persons to whom the
 // Software is furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included
 // in all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 // OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// 
+//
 
 
 
@@ -70,14 +70,14 @@ void light_dump(struct simulation *sim,struct light *li)
 	}
 
 	struct dat_file buf;
-	struct dim_light *dim=&li->dim;
+	struct dimensions *dim=&li->dim;
 	//struct epitaxy *epi=li->epi;
 
 
-	buffer_init(&buf);
+	dat_file_init(&buf);
 
 	buffer_malloc(&buf);
-	dim_light_info_to_buf(&buf,dim);
+	dim_info_to_buf(&buf,dim);
 	strcpy(buf.title,"Photon density");
 	strcpy(buf.type,"heat");
 	strcpy(buf.x_label,"Wavelength");
@@ -96,7 +96,7 @@ void light_dump(struct simulation *sim,struct light *li)
 
 
 	buffer_malloc(&buf);
-	dim_light_info_to_buf(&buf,dim);
+	dim_info_to_buf(&buf,dim);
 	strcpy(buf.title,"Absorbed Photon density");
 	strcpy(buf.type,"heat");
 	strcpy(buf.x_label,"Wavelength");
@@ -168,18 +168,18 @@ int x=0;
 int y;
 
 double max=0.0;
-struct dim_light *dim=&li->dim;
+struct dimensions *dim=&li->dim;
 //struct epitaxy *epi=li->epi;
 
 struct dat_file data_photons_norm;
 struct dat_file data_1d_photons_tot;
 
-buffer_init(&data_photons_norm);
-buffer_init(&data_1d_photons_tot);
+dat_file_init(&data_photons_norm);
+dat_file_init(&data_1d_photons_tot);
 
 struct dat_file buf;
 
-buffer_init(&buf);
+dat_file_init(&buf);
 
 
 
@@ -187,54 +187,60 @@ buffer_init(&buf);
 	{
 		light_dump_snapshots(sim,path,li);
 
-		buffer_malloc(&buf);
-		dim_light_info_to_buf(&buf,dim);
-		strcpy(buf.title,_("Electron generation rate"));
-		strcpy(buf.type,"zxy-d");
-		strcpy(buf.data_label,_("Generation rate"));
-		strcpy(buf.data_units,"m^{-3}");
-		buf.x=dim->xlen;
-		buf.y=dim->ylen;
-		buf.z=dim->zlen;
-		buffer_add_info(sim,&buf);
-		dat_file_add_zxy_long_double_light_data(sim,&buf,li->Gn, dim);
-		buffer_dump_path(sim,li->dump_dir,"light_Gn.dat",&buf);
-		buffer_free(&buf);
+		if (buffer_set_file_name(sim,NULL,&buf,"light_Gn.csv")==0)
+		{
+			buffer_malloc(&buf);
+			dim_info_to_buf(&buf,dim);
+			strcpy(buf.title,_("Electron generation rate"));
+			strcpy(buf.type,"zxy-d");
+			strcpy(buf.data_label,_("Generation rate"));
+			strcpy(buf.data_units,"m^{-3}");
+			buf.x=dim->xlen;
+			buf.y=dim->ylen;
+			buf.z=dim->zlen;
+			dat_file_add_zxy_data(sim,&buf, dim,li->Gn);
+			buffer_dump_path(sim,li->dump_dir,NULL,&buf);
+			buffer_free(&buf);
+		}
 
-		buffer_malloc(&buf);
-		dim_light_info_to_buf(&buf,dim);
-		strcpy(buf.title,_("Optical heating"));
-		strcpy(buf.type,"zxy-d");
-		strcpy(buf.data_label,_("Optical heating"));
-		strcpy(buf.data_units,"W m^{-3}");
-		buf.x=dim->xlen;
-		buf.y=dim->ylen;
-		buf.z=dim->zlen;
-		buffer_add_info(sim,&buf);
-		dat_file_add_zxy_long_double_light_data(sim,&buf,li->Htot, dim);
-		buffer_dump_path(sim,li->dump_dir,"light_Htot.dat",&buf);
-		buffer_free(&buf);
+		if (buffer_set_file_name(sim,NULL,&buf,"light_Htot.csv")==0)
+		{
+			buffer_malloc(&buf);
+			dim_info_to_buf(&buf,dim);
+			strcpy(buf.title,_("Optical heating"));
+			strcpy(buf.type,"zxy-d");
+			strcpy(buf.data_label,_("Optical heating"));
+			strcpy(buf.data_units,"W m^{-3}");
+			buf.x=dim->xlen;
+			buf.y=dim->ylen;
+			buf.z=dim->zlen;
+			dat_file_add_zxy_data(sim,&buf, dim,li->Htot);
+			buffer_dump_path(sim,li->dump_dir,NULL,&buf);
+			buffer_free(&buf);
+		}
 
-		buffer_malloc(&buf);
-		dim_light_info_to_buf(&buf,dim);
-		strcpy(buf.title,_("Photon density"));
-		strcpy(buf.type,"zxy-d");
-		strcpy(buf.data_label,_("Photon density"));
-		strcpy(buf.data_units,"W m^{-3}");
-		buf.x=dim->xlen;
-		buf.y=dim->ylen;
-		buf.z=dim->zlen;
-		buffer_add_info(sim,&buf);
-		dat_file_add_zxy_long_double_light_data(sim,&buf,li->photons_tot, dim);
-		buffer_dump_path(sim,li->dump_dir,"light_photons.dat",&buf);
-		buffer_free(&buf);
+		if (buffer_set_file_name(sim,NULL,&buf,"light_photons.csv")==0)
+		{
+			buffer_malloc(&buf);
+			dim_info_to_buf(&buf,dim);
+			strcpy(buf.title,_("Photon density"));
+			strcpy(buf.type,"zxy-d");
+			strcpy(buf.data_label,_("Photon density"));
+			strcpy(buf.data_units,"W m^{-3}");
+			buf.x=dim->xlen;
+			buf.y=dim->ylen;
+			buf.z=dim->zlen;
+			dat_file_add_zxy_data(sim,&buf, dim,li->photons_tot);
+			buffer_dump_path(sim,li->dump_dir,NULL,&buf);
+			buffer_free(&buf);
+		}
 		///////////
 
 
 		max=inter_array_get_max(li->photons_tot[0][0],dim->ylen);
 
 		buffer_malloc(&buf);
-		dim_light_info_to_buf(&buf,dim);
+		dim_info_to_buf(&buf,dim);
 		strcpy(buf.title,"Normalized photon density");
 		strcpy(buf.type,"xy");
 		strcpy(buf.data_label,"Photon desntiy");
@@ -275,7 +281,7 @@ buffer_init(&buf);
 		max=inter_array_get_max(li->Gn[0][0],dim->ylen);
 
 		buffer_malloc(&buf);
-		dim_light_info_to_buf(&buf,dim);
+		dim_info_to_buf(&buf,dim);
 		strcpy(buf.title,"Normalized photons absorbed");
 		strcpy(buf.type,"xy");
 		strcpy(buf.data_label,"Absorbed photons");
@@ -296,7 +302,7 @@ buffer_init(&buf);
 		buffer_free(&buf);
 
 		buffer_malloc(&buf);
-		dim_light_info_to_buf(&buf,dim);
+		dim_info_to_buf(&buf,dim);
 		strcpy(buf.title,_("Electron generation rate"));
 		strcpy(buf.type,"xy");
 		strcpy(buf.data_label,_("Generation rate"));
@@ -316,7 +322,7 @@ buffer_init(&buf);
 		buffer_free(&buf);
 
 		buffer_malloc(&buf);
-		dim_light_info_to_buf(&buf,dim);
+		dim_info_to_buf(&buf,dim);
 		strcpy(buf.title,_("Hole generation rate"));
 		strcpy(buf.type,"xy");
 		strcpy(buf.data_label,_("Generation rate"));
@@ -347,11 +353,7 @@ buffer_init(&buf);
 		strcpy(buf.data_units,"a.u.");
 		buf.logscale_x=0;
 		buf.logscale_y=0;
-		buf.x=1;
-		buf.y=dim->llen;
-		buf.z=1;
-		buffer_add_info(sim,&buf);
-		buffer_add_xy_data(sim,&buf,dim->l, li->reflect, dim->llen);
+		dat_file_add_xy_data(sim,&buf,dim->l, li->reflect, dim->llen);
 		buffer_dump_path(sim,path,"reflect.dat",&buf);
 		buffer_free(&buf);
 
@@ -366,11 +368,7 @@ buffer_init(&buf);
 		strcpy(buf.data_units,"a.u.");
 		buf.logscale_x=0;
 		buf.logscale_y=0;
-		buf.x=1;
-		buf.y=dim->llen;
-		buf.z=1;
-		buffer_add_info(sim,&buf);
-		buffer_add_xy_data(sim,&buf,dim->l, li->transmit, dim->llen);
+		dat_file_add_xy_data(sim,&buf,dim->l, li->transmit, dim->llen);
 		buffer_dump_path(sim,path,"transmit.dat",&buf);
 		buffer_free(&buf);
 

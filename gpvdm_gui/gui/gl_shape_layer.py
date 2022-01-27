@@ -46,7 +46,7 @@ class shape_layer():
 		x_mesh=gpvdm_data().mesh.mesh_x
 		a=gl_base_object()
 		a.moveable=shape0.moveable
-		if shape0.shape_enabled==True:
+		if shape0.shape_enabled==True and shape0.shape_hidden==False:
 			a.type="solid_and_mesh"
 			if self.draw_device_cut_through==True:
 					a.type="box_cut_through"

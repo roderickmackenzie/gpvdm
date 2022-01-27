@@ -90,7 +90,7 @@ long double tot=0;
 /**Smooth math_xy with a window
 @param points input math_xy
 */
-void math_xy_smooth(struct math_xy* out,struct math_xy* in,int points)
+void math_xy_smooth(struct simulation *sim,struct math_xy* out,struct math_xy* in,int points)
 {
 int i=0;
 int ii=0;
@@ -98,6 +98,7 @@ int pos=0;
 long double tot_point=0.0;
 long double tot=0;
 struct math_xy store;
+inter_init(sim,&store);
 
 if (out==NULL)
 {

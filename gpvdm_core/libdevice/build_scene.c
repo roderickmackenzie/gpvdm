@@ -242,4 +242,5 @@ void device_build_scene(struct simulation *sim,struct device *dev)
 	}
 
 	dectors_add_to_scene(sim,w,&(dev->my_image),&min, &max);
+
 }

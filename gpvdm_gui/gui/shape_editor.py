@@ -144,7 +144,7 @@ class shape_editor(QWidgetSavePos):
 			self.three_d_shape.objects[-1].compile("triangles_solid",[1.0,0.0,0.0,0.5])
 			self.three_d_shape.objects[-1].compile("triangles_open",[0.9,0.0,0.0,1.0],line_width=5)
 			self.three_d_shape.scene_built=True
-			self.three_d_shape.gl_objects_add_grid(-18,20,self.three_d_shape.scale.project_m2screen_y(self.scale.world_max.y),None,-18,20)
+			self.three_d_shape.gl_objects_add_grid(-18,20,self.three_d_shape.scale.project_m2screen_y(self.three_d_shape.scale.world_max.y),None,-18,20)
 
 	def callback_help(self):
 		webbrowser.open("https://www.gpvdm.com/docs.html")
@@ -163,6 +163,14 @@ class shape_editor(QWidgetSavePos):
 
 	def callback_tb_honeycomb(self):
 		self.io.draw_honeycomb()
+		self.discretizer.force_update()
+
+	def callback_tb_xtal(self):
+		self.io.draw_xtal()
+		self.discretizer.force_update()
+
+	def callback_tb_lens(self):
+		self.io.draw_lens()
 		self.discretizer.force_update()
 
 	def callback_norm_z(self):
@@ -263,12 +271,16 @@ class shape_editor(QWidgetSavePos):
 		self.ribbon.edit_norm_y.triggered.connect(self.callback_edit_norm_y)
 		self.ribbon.menu_blur.triggered.connect(self.callback_menu_blur)
 		self.ribbon.tb_honeycomb_menu_edit.triggered.connect(self.callback_honeycomb_menu_edit)
+		self.ribbon.tb_xtal_menu_edit.triggered.connect(self.callback_xtal_menu_edit)
+		self.ribbon.tb_lens_menu_edit.triggered.connect(self.callback_lens_menu_edit)
 		#self.ribbon.tb_boundary_menu_edit.triggered.connect(self.callback_boundary_menu_edit)
 
 
 		self.ribbon.tb_gaus_menu_edit.triggered.connect(self.callback_gaus_menu_edit)
 		self.ribbon.tb_gaus.triggered.connect(self.callback_tb_gaus)
 		self.ribbon.tb_honeycomb.triggered.connect(self.callback_tb_honeycomb)
+		self.ribbon.tb_xtal.triggered.connect(self.callback_tb_xtal)
+		self.ribbon.tb_lens.triggered.connect(self.callback_tb_lens)
 		self.ribbon.tb_boundary.triggered.connect(self.callback_boundary_menu_edit)
 		self.ribbon.tb_configure.triggered.connect(self.callback_configure)
 
@@ -326,6 +338,13 @@ class shape_editor(QWidgetSavePos):
 		self.config_window=class_config_window([self.io.honeycomb],[_("Configure honeycomb")],data=self.io)
 		self.config_window.show()
 
+	def callback_xtal_menu_edit(self):
+		self.config_window=class_config_window([self.io.xtal],[_("Configure photonic xtal")],data=self.io)
+		self.config_window.show()
+
+	def callback_lens_menu_edit(self):
+		self.config_window=class_config_window([self.io.lens],[_("Configure photonic lens")],data=self.io)
+		self.config_window.show()
 
 	def callback_gaus_menu_edit(self):
 		self.config_window=class_config_window([self.io.gauss],[_("Configure gaussian")],data=self.io)

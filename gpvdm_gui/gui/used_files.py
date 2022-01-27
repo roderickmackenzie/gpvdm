@@ -27,7 +27,6 @@
 import os
 from dat_file import dat_file
 import glob
-from plot_io import plot_load_info
 from cal_path import get_user_settings_dir
 from util_zip import read_lines_from_file
 from inp import inp_save_lines_to_file

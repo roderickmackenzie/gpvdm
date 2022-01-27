@@ -27,8 +27,6 @@ import sys
 import os
 import shutil
 
-from util import gpvdm_delete_file
-
 from math import log10
 from math import isnan
 
@@ -63,51 +61,73 @@ from scan_human_labels import json_find_sim_obj
 from dat_file import dat_file
 import math
 from token_lib import tokens
+import re
 
 class ml_anal:
 
 	def __init__(self):
 		pass
 
-	def gather(self,json_in,x_token,y_token):
-		ret=[[],[]]
+	def gather(self,json_in,x_token,y_token,array_item=None):
+		ret=[]
 		for obj in json_in:
-			if type(json_in[obj])==dict:
-				my_ret=self.gather(json_in[obj],x_token,y_token)
-				ret[0].extend(my_ret[0])
-				ret[1].extend(my_ret[1])
+			if obj != "item_type":
+				obj_x=None
+				obj_y=None
+				if x_token!=None:
+					obj_x=json_in[obj]
+					tokens=x_token.split("/")
+					
+					for t in tokens:
+						obj_x=obj_x[t]
 
-			else:
-				if obj==x_token:
-					ret[0].append(json_in[obj])
-				if obj==y_token:
-					ret[1].append(json_in[obj])
+				if y_token!=None:
+					obj_y=json_in[obj]
+					tokens=y_token.split("/")
+					
+					for t in tokens:
+						obj_y=obj_y[t]
 
+					if array_item!=None:
+						s=obj_y.split()
+						obj_y=s[array_item]
+
+				ret.append([obj_x,obj_y])
+		#print(ret)
 		return ret
 
-	def plot_xy(self,file_name,x_token,y_token):
+	def plot_xy(self,file_name,x_token,y_token,array_item=None):
 		t=tokens()
-		xt=t.find(x_token)
-		yt=t.find(y_token)
+		my_short_token=x_token
+		if my_short_token.count("/")+my_short_token.count(".")>0:
+			my_short_token=re.split('\/|\.', my_short_token)[-1]
+		xt=t.find(my_short_token)
+
+		my_short_token=y_token
+		if my_short_token.count("/")+my_short_token.count(".")>0:
+			my_short_token=re.split('\/|\.', my_short_token)[-1]
+		yt=t.find(my_short_token)
 
 		f=inp()
 		json_data=f.load_json(file_name)
-		vals=self.gather(json_data,x_token,y_token)
+		vals=self.gather(json_data,x_token,y_token,array_item=array_item)
+
 		out_file=dat_file()
 		out_file.y_mul=1.0
 		out_file.y_units=xt.units
 		out_file.y_label=xt.info
 		out_file.data_mul=1.0
-		out_file.data_units=yt.units
-		out_file.data_label=yt.info
+		if yt!=False:
+			out_file.data_units=yt.units
+			out_file.data_label=yt.info
 		out_file.y_scale=[]
 		out_file.data=[[[]]]
 
-		for i in range(0,len(vals[0])):
+		for v in vals:
 			try:
-				if vals[0][i].count("nan")==0:
-					f0=float(vals[0][i])
-					f1=float(vals[1][i])
+				if v[0].count("nan")==0 and v[1].count("nan")==0:
+					f0=float(v[0])
+					f1=float(v[1])
 					out_file.y_scale.append(f0)
 					out_file.data[0][0].append(f1)
 			except:
@@ -126,8 +146,8 @@ class ml_anal:
 	def plot_hist(self,file_name,my_token,log_scale=False):
 		t=tokens()
 		my_short_token=my_token
-		if my_token.count(".")>0:
-			my_short_token=my_token.split(".")[-1]
+		if my_short_token.count("/")+my_short_token.count(".")>0:
+			my_short_token=re.split("\/|\.", my_token)[-1]
 		xt=t.find(my_short_token)
 
 		f=inp()
@@ -143,8 +163,8 @@ class ml_anal:
 		out_file.y_scale=[]
 		out_file.data=[[[]]]
 		data=[]
-		for v in vals[0]:
-			f=float(v)
+		for v in vals:
+			f=float(v[0])
 			if math.isinf(f)==False:
 				if math.isnan(f)==False:
 					data.append(f)
@@ -172,7 +192,7 @@ class ml_anal:
 				if abs(d)<my_min:
 					my_min=abs(d)
 
-			print(my_min)
+			#print(my_min)
 			if my_min!=0:
 				my_min=math.log10(my_min)
 			my_max=math.log10(max(data))

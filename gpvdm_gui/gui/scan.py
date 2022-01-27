@@ -27,7 +27,6 @@ import os
 import shutil
 from icon_lib import icon_get
 from gui_util import dlg_get_text
-from util import gpvdm_delete_file
 from search import return_file_list
 import webbrowser
 from search import find_fit_log

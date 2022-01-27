@@ -1,0 +1,62 @@
+\section{Thermal models}
+\subsection{Lattice thermal model}
+From the configure window one can access the thermal simulation tab \ref{fig:thermal}, by default this model is turned off.  There are three options, the lattice thermal model which just solves the lattice heat equation; electron thermal model and hole thermal model.  The latter two solve the energy balance equations, or 3rd order moment expansion of of the Boltzmann equation.  If you turn on just the lattice model, the lattice heat equation will be solved along with the electrical model.  The thermal solver is external to the electrical solver. 
+
+\begin{equation}
+ \frac{d}{dx}\Bigg(-  \kappa_{l} \frac{dT_{L}}{dt}\Bigg)=H
+\end{equation}
+where H (the heat source term) is given by
+
+\begin{equation}
+H=\frac{1}{q}\frac{dE_{c}}{dx} J_{n}+\frac{1}{q}\frac{dE_{v}}{dx} J_{p}+R(E_{c}-E_{v})
+\end{equation}
+
+\subsection{Energy balance - hydrodynamic transport model}
+
+If you turn on the electrical and hole thermal model, then the heat source term will be replaced by
+
+\begin{equation}
+H=\frac{3 k_{b}}{2} \Bigg ( n (\frac{T_{n}-T_{l}}{\tau_{e}}) + p (\frac{T_{p}-T_{l}}{\tau_{h}})\Bigg) +R(E_{c}-E_{v})
+\end{equation}
+
+and the energy transport equation for electrons
+
+\begin{equation}
+S_n=-\kappa_n \frac{dT_{n}}{dx}-\frac{5}{2} \frac{k_{b}T_{n}}{q} J_{n}
+\end{equation}
+
+and holes,
+
+\begin{equation}
+S_p=-\kappa_p \frac{dT_{p}}{dx}+\frac{5}{2} \frac{k_{b}T_{p}}{q} J_{p}
+\end{equation}
+
+will be solved.
+
+The energy balance equations will also be solved for electrons,
+
+\begin{equation}
+\frac{dS_{n}}{dx}=\frac{1}{q}\frac{dE_{c}}{dx} J_{n}-\frac{3 k_{b}}{2} \Bigg( R T_{n}+ n(\frac{T_{n}-T_{l}}{\tau_{e}}) \Bigg)
+\end{equation}
+
+and for holes
+
+\begin{equation}
+\frac{dS_{p}}{dx}=\frac{1}{q}\frac{dE_{v}}{dx} J_{p}-\frac{3 k_{b}}{2} \Bigg( R T_{p}+ n(\frac{T_{p}-T_{l}}{\tau_{e}}) \Bigg)
+\end{equation}
+
+The thermal conductivity of the electron gas is given by
+
+\begin{equation}
+\kappa_{n}=\Bigg ( \frac{5}{2} +c_n\Bigg) \frac{{k_{b}}^2}{q} T_{n} \mu_n n
+\end{equation}
+
+and for holes as,
+
+\begin{equation}
+\kappa_{p}=\Bigg ( \frac{5}{2} +c_p\Bigg) \frac{{k_{b}}^2}{q} T_{p} \mu_p p
+\end{equation}
+
+
+
+\newpage

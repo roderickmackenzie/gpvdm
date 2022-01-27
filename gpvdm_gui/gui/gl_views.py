@@ -205,6 +205,7 @@ class gl_view_options():
 
 	def __init__(self):
 		self.render_grid=True
+		self.render_fdtd_grid=True
 		self.render_cords=True
 		self.render_photons=True
 		self.render_text=True

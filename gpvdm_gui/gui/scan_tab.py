@@ -238,11 +238,12 @@ class scan_vbox(QWidget):
 			full_file_name=dialog.get_filename()
 
 			dir_type=get_dir_type(full_file_name)
-			if dir_type=="snapshots":
-				from cmp_class import cmp_class
-				self.snapshot_window=cmp_class(full_file_name)
-				self.snapshot_window.show()
-				return
+			if dir_type!=None:
+				if dir_type.type=="snapshots":
+					from cmp_class import cmp_class
+					self.snapshot_window=cmp_class(full_file_name)
+					self.snapshot_window.show()
+					return
 
 			file_name=os.path.basename(full_file_name)
 

@@ -207,6 +207,60 @@ void load_txt_dos_from_json(struct simulation *sim,struct dos *dos_n,struct dos 
 		dos_p->mobility_symmetric=FALSE;
 	}
 
+
+	json_get_english(sim,json_dos, &(dos_n->auger_enabled),"dos_enable_auger");
+	json_get_long_double(sim,json_dos, &(dos_n->Cn),"dos_auger_Cn");
+	json_get_long_double(sim,json_dos, &(dos_n->Cp),"dos_auger_Cp");
+
+	dos_p->auger_enabled=dos_n->auger_enabled;
+	if (dos_n->auger_enabled==TRUE)
+	{
+		dos_n->Cn=fabsl(dos_n->Cn);
+		dos_n->Cp=fabsl(dos_n->Cp);
+
+		dos_p->Cn=dos_n->Cn;
+		dos_p->Cp=dos_n->Cp;
+	}else
+	{
+		dos_n->Cn=0.0;
+		dos_n->Cp=0.0;
+
+		dos_p->Cn=0.0;
+		dos_p->Cp=0.0;
+	}
+
+
+	json_get_english(sim,json_dos, &(dos_n->ss_srh_enabled),"ss_srh_enabled");
+	json_get_long_double(sim,json_dos, &(dos_n->n1),"srh_n1");
+	json_get_long_double(sim,json_dos, &(dos_n->p1),"srh_p1");
+	json_get_long_double(sim,json_dos, &(dos_n->tau_n),"srh_tau_n");
+	json_get_long_double(sim,json_dos, &(dos_n->tau_p),"srh_tau_p");
+
+	if (dos_n->ss_srh_enabled==TRUE)
+	{
+		dos_n->n1=fabsl(dos_n->n1);
+		dos_n->p1=fabsl(dos_n->p1);
+		dos_n->tau_n=fabsl(dos_n->tau_n);
+		dos_n->tau_p=fabsl(dos_n->tau_p);
+
+		dos_p->n1=dos_n->n1;
+		dos_p->p1=dos_n->p1;
+		dos_p->tau_n=dos_n->tau_n;
+		dos_p->tau_p=dos_n->tau_p;
+	}else
+	{
+		dos_n->n1=0.0;
+		dos_n->p1=0.0;
+		dos_n->tau_n=0.0;
+		dos_n->tau_p=0.0;
+
+		dos_p->n1=0.0;
+		dos_p->p1=0.0;
+		dos_p->tau_n=0.0;
+		dos_p->tau_p=0.0;
+	}
+
+
 	json_get_long_double(sim,json_dos, &(dos_n->B),"free_to_free_recombination");
 	dos_n->B=fabsl(dos_n->B);
 	dos_p->B=dos_n->B;

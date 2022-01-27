@@ -34,7 +34,7 @@ from cal_path import get_css_path
 from PyQt5.QtWidgets import QMainWindow, QTextEdit, QAction, QApplication
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import QSize, Qt,QFile,QIODevice
-from PyQt5.QtWidgets import QWidget,QSizePolicy,QVBoxLayout,QHBoxLayout,QPushButton,QDialog,QFileDialog,QToolBar,QMessageBox, QLineEdit, QToolButton
+from PyQt5.QtWidgets import QWidget,QSizePolicy,QVBoxLayout,QHBoxLayout,QPushButton,QDialog,QFileDialog,QToolBar,QMessageBox, QLineEdit, QMenu, QToolButton
 from PyQt5.QtWidgets import QTabWidget
 
 from help import help_window
@@ -94,13 +94,11 @@ class ribbon_electrical(ribbon_page2):
 
 		self.interfaces = QAction_lock("interfaces", _("Interfaces"), self,"ribbon_config_interfaces")
 		self.interfaces.triggered.connect(self.callback_interfaces)
-		if get_lock().is_gpvdm_next()==True:
-			pan.addAction(self.interfaces)
+		pan.addAction(self.interfaces)
 
 		self.boundary = QAction_lock("boundary", _("Boundary\nConditions"), self,"ribbon_electrical_boundary")
 		self.boundary.clicked.connect(self.callback_boundary)
-		if get_lock().is_gpvdm_next()==True:
-			pan.addAction(self.boundary)
+		pan.addAction(self.boundary)
 
 		self.parasitic = QAction_lock("parasitic", _("Parasitic\n components"), self,"ribbon_device_parasitic")
 		self.parasitic.clicked.connect(self.callback_parasitic)
@@ -114,6 +112,7 @@ class ribbon_electrical(ribbon_page2):
 		self.perovskite.clicked.connect(self.callback_perovskite)
 		self.perovskite.setCheckable(True)
 		pan.addAction(self.perovskite)
+
 
 
 		#a.setStyleSheet("QToolBar {margin-top: 0px;margin-bottom: 0px; padding 0px;}")
@@ -162,6 +161,7 @@ class ribbon_electrical(ribbon_page2):
 				self.parasitic.setEnabled(False)
 				self.boundary.setEnabled(False)
 				self.perovskite.setEnabled(False)
+
 		self.perovskite.setChecked(data.perovskite.perovskite_enabled)
 
 	def callback_perovskite(self):
@@ -206,7 +206,7 @@ class ribbon_electrical(ribbon_page2):
 
 	def callback_boundary(self):
 		data=gpvdm_data()
-		self.config_window=class_config_window([data.electrical_solver.boundary],[_("Electrical boundary conditions")],title=_("Electrical boundary conditions"),icon="electrical")
+		self.config_window=class_config_window([data.electrical_solver.boundary,data.exciton_boundary],[_("Electrical boundary conditions"),_("Excitonic boundary conditions")],title=_("Electrical boundary conditions"),icon="electrical")
 		self.config_window.show()
 
 	def callback_doping(self):

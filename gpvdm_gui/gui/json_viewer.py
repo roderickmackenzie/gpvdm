@@ -141,6 +141,9 @@ class json_viewer(QWidget,tab_base):
 		action=self.copy_menu.addAction(icon_get("edit-copy"),_("Copy as JSON"))
 		action.triggered.connect(self.do_copy)
 
+		action=self.copy_menu.addAction(icon_get("edit-copy"),_("Copy json/python path"))
+		action.triggered.connect(self.do_copy_path)
+
 		action=self.copy_menu.addAction(icon_get("edit-copy"),_("Copy ObjID"))
 		action.triggered.connect(self.do_copy_id)
 
@@ -171,6 +174,14 @@ class json_viewer(QWidget,tab_base):
 		cb = QApplication.clipboard()
 		cb.clear(mode=cb.Clipboard )
 		cb.setText("\n".join(all_data), mode=cb.Clipboard)
+
+	def do_copy_path(self):
+		if self.uid!=None:
+			path=eval(self.json_path)
+			obj,path=path.find_object_path_by_id(self.uid)
+			cb = QApplication.clipboard()
+			cb.clear(mode=cb.Clipboard )
+			cb.setText(self.json_path+path, mode=cb.Clipboard)
 
 	def do_copy_latex(self):
 		from util_latex import latex
@@ -295,47 +306,47 @@ class json_viewer(QWidget,tab_base):
 				elif result.units_widget=="QPushButton":
 					unit=QPushButton()
 					unit.setText(latex_to_html(units))
-					unit.setFixedSize(50, 25)
+					unit.setMinimumSize(50, 25)
 
 				#edit widget
 				if result.widget=="gtkswitch":
 					a.edit_box=gtkswitch()
-					a.edit_box.setFixedSize(300, 25)
+					a.edit_box.setMinimumSize(150, 25)
 					a.edit_box.changed.connect(functools.partial(self.callback_edit,token,a.edit_box,unit,result))
 				elif result.widget=="leftright":
 					a.edit_box=leftright()
-					a.edit_box.setFixedSize(300, 25)
+					a.edit_box.setMinimumSize(150, 25)
 					a.edit_box.changed.connect(functools.partial(self.callback_edit,token,a.edit_box,unit,result))
 				elif result.widget=="gpvdm_select":
 					a.edit_box=gpvdm_select(file_box=True)
-					a.edit_box.setFixedSize(300, 25)
+					a.edit_box.setMinimumSize(150, 25)
 					a.edit_box.edit.textChanged.connect(functools.partial(self.callback_edit,token,a.edit_box,unit,result))
 				elif result.widget=="gpvdm_select_material":
 					a.edit_box=gpvdm_select_material(file_box=False)
-					a.edit_box.setFixedSize(300, 25)
+					a.edit_box.setMinimumSize(150, 25)
 					a.edit_box.changed.connect(functools.partial(self.callback_edit,token,a.edit_box,unit,result))
 				elif result.widget=="gpvdm_select_filter":
 					a.edit_box=gpvdm_select_filter(file_box=False)
-					a.edit_box.setFixedSize(300, 25)
+					a.edit_box.setMinimumSize(150, 25)
 					a.edit_box.changed.connect(functools.partial(self.callback_edit,token,a.edit_box,unit,result))
 				elif result.widget=="gpvdm_select_emission":
 					a.edit_box=gpvdm_select_emission(file_box=False)
-					a.edit_box.setFixedSize(300, 25)
+					a.edit_box.setMinimumSize(150, 25)
 					a.edit_box.changed.connect(functools.partial(self.callback_edit,token,a.edit_box,unit,result))
 
 				elif result.widget=="gpvdm_select_shape":
 					a.edit_box=gpvdm_select_shape(file_box=False)
-					a.edit_box.setFixedSize(300, 25)
+					a.edit_box.setMinimumSize(150, 25)
 					a.edit_box.changed.connect(functools.partial(self.callback_edit,token,a.edit_box,unit,result))
 
 				elif result.widget=="icon_widget":
 					a.edit_box=icon_widget()
-					a.edit_box.setFixedSize(300, 25)
+					a.edit_box.setMinimumSize(150, 25)
 					a.edit_box.changed.connect(functools.partial(self.callback_edit,token,a.edit_box,unit,result))
 
 				elif result.widget=="QLineEdit":
 					a.edit_box=QLineEdit()
-					a.edit_box.setFixedSize(300, 25)
+					a.edit_box.setMinimumSize(150, 25)
 					if self.editable==False:
 						a.edit_box.setReadOnly(True)
 
@@ -347,11 +358,11 @@ class json_viewer(QWidget,tab_base):
 					b=float(self.template_widget.color_b)
 					alpha=float(self.template_widget.color_alpha)
 					a.edit_box=QColorPicker(r,g,b,alpha)
-					a.edit_box.setFixedSize(300, 25)
+					a.edit_box.setMinimumSize(150, 25)
 					a.edit_box.changed.connect(functools.partial(self.callback_edit,token,a.edit_box,unit,result))
 				elif result.token=="fit_against":
 					a.edit_box=QComboBoxLang()
-					a.edit_box.setFixedSize(300, 25)
+					a.edit_box.setMinimumSize(150, 25)
 					data=gpvdm_data()
 					a.edit_box.addItemLang("self",_("This simulation"))
 					for data_set in data.fits.fits.segments:
@@ -360,18 +371,18 @@ class json_viewer(QWidget,tab_base):
 					a.edit_box.currentIndexChanged.connect(functools.partial(self.callback_edit,token,a.edit_box,unit,result))
 				elif result.widget=="QComboBoxLang":
 					a.edit_box=QComboBoxLang()
-					a.edit_box.setFixedSize(300, 25)
+					a.edit_box.setMinimumSize(150, 25)
 					for i in range(0,len(result.defaults)):
 						a.edit_box.addItemLang(result.defaults[i][0],result.defaults[i][1])
 							
 					a.edit_box.currentIndexChanged.connect(functools.partial(self.callback_edit,token,a.edit_box,unit,result))
 				elif result.widget=="QComboBoxLayers":
 					a.edit_box=QComboBoxLayers()
-					a.edit_box.setFixedSize(300, 25)
+					a.edit_box.setMinimumSize(150, 25)
 					a.edit_box.currentIndexChanged.connect(functools.partial(self.callback_edit,token,a.edit_box,unit,result))
 				elif result.widget=="QComboBoxNewtonSelect":
 					a.edit_box=QComboBoxNewtonSelect()
-					a.edit_box.setFixedSize(300, 25)
+					a.edit_box.setMinimumSize(150, 25)
 					for i in range(0,len(result.defaults)):
 						a.edit_box.addItem(result.defaults[i])
 
@@ -379,7 +390,7 @@ class json_viewer(QWidget,tab_base):
 
 				elif result.widget=="QParasitic":
 					a.edit_box=QParasitic()
-					a.edit_box.setFixedSize(300, 25)
+					a.edit_box.setMinimumSize(150, 25)
 					a.edit_box.textChanged.connect(functools.partial(self.callback_edit,token,a.edit_box,unit,result))
 
 				elif result.widget=="QChangeLog":
@@ -390,23 +401,23 @@ class json_viewer(QWidget,tab_base):
 					a.edit_box.textChanged.connect(functools.partial(self.callback_edit,token,a.edit_box,unit,result))
 				elif result.widget=="generic_switch":
 					a.edit_box=generic_switch(state0=result.defaults[0][0],state1=result.defaults[1][0],state0_value=result.defaults[0][1],state1_value=result.defaults[1][1],)
-					a.edit_box.setFixedSize(300, 25)
+					a.edit_box.setMinimumSize(150, 25)
 					a.edit_box.changed.connect(functools.partial(self.callback_edit,token,a.edit_box,unit,result))
 				elif result.widget=="mobility_widget":
 					a.edit_box=mobility_widget(electrons=result.defaults[0])
-					a.edit_box.setFixedSize(400, 25)
+					a.edit_box.setMinimumSize(400, 25)
 					a.edit_box.changed.connect(functools.partial(self.callback_edit,token,a.edit_box,unit,result))
 				elif result.widget=="shape_dos_switch":
 					a.edit_box=shape_dos_switch()
-					a.edit_box.setFixedSize(300, 25)
+					a.edit_box.setMinimumSize(150, 25)
 					a.edit_box.changed.connect(functools.partial(self.callback_edit,token,a.edit_box,unit,result))
 				elif result.widget=="shape_electrical_switch":
 					a.edit_box=shape_electrical_switch()
-					a.edit_box.setFixedSize(300, 25)
+					a.edit_box.setMinimumSize(150, 25)
 					a.edit_box.changed.connect(functools.partial(self.callback_edit,token,a.edit_box,unit,result))
 				elif result.widget=="QComboBox":
 					a.edit_box=QComboBox()
-					a.edit_box.setFixedSize(300, 25)
+					a.edit_box.setMinimumSize(150, 25)
 					for i in range(0,len(result.defaults)):
 						a.edit_box.addItem(result.defaults[i])
 					
@@ -418,6 +429,7 @@ class json_viewer(QWidget,tab_base):
 					unit.clicked.connect(functools.partial(self.callback_unit_click,token,a.edit_box,unit))
 
 				if draw_widget==True:
+					#print(token,result.widget)
 					a.token=token
 					a.label=description
 					a.units=unit
@@ -427,7 +439,8 @@ class json_viewer(QWidget,tab_base):
 					a.hide_on_token_eq=result.hide_on_token_eq
 					a.show_on_token_eq=result.show_on_token_eq
 					self.tab.addWidget(description,widget_number,0)
-					self.tab.addWidget(a.edit_box,widget_number,1)
+					if a.edit_box!=None:
+						self.tab.addWidget(a.edit_box,widget_number,1)
 					self.tab.addWidget(unit,widget_number,2)
 					self.widget_list.append(a)										
 					widget_number=widget_number+1
@@ -536,7 +549,8 @@ class json_viewer(QWidget,tab_base):
 					json_val=getattr(self.template_widget,json_token)
 					if json_token==w.hide_on_true_token:
 						if json_val==True:
-							w.edit_box.setVisible(False)
+							if w.edit_box!=None:
+								w.edit_box.setVisible(False)
 							w.units.setVisible(False)
 							w.label.setVisible(False)
 
@@ -547,7 +561,8 @@ class json_viewer(QWidget,tab_base):
 						json_val=getattr(self.template_widget,json_token)
 						if json_token==val[0]:
 							if json_val==val[1]:
-								w.edit_box.setVisible(False)
+								if w.edit_box!=None:
+									w.edit_box.setVisible(False)
 								w.units.setVisible(False)
 								w.label.setVisible(False)
 
@@ -557,7 +572,8 @@ class json_viewer(QWidget,tab_base):
 					json_val=getattr(self.template_widget,json_token)
 					if json_token in w.hide_on_false_token:
 						if json_val==False:
-							w.edit_box.setVisible(False)
+							if w.edit_box!=None:
+								w.edit_box.setVisible(False)
 							w.units.setVisible(False)
 							w.label.setVisible(False)
 
@@ -571,14 +587,15 @@ class json_viewer(QWidget,tab_base):
 					if json_val==val[1]:
 						do_hide=False
 
-				if do_hide==True and found==True:			
-					w.edit_box.setVisible(False)
+				if do_hide==True and found==True:
+					if w.edit_box!=None:		
+						w.edit_box.setVisible(False)
 					w.units.setVisible(False)
 					w.label.setVisible(False)
 
 	def callback_edit(self,token,widget,unit,token_class):
 		val=widget_get_value(widget)
-		print("Edit",val)
+		#print("Edit",val)
 		if val!=None:
 			if token.startswith("symmetric_mobility_e")==True:
 				self.template_widget.symmetric_mobility_e=val[0]

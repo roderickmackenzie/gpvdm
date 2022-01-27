@@ -78,6 +78,18 @@ void dos_cpy(struct dos *out,struct dos *in)
 	out->mux=in->mux;
 	out->muy=in->muy;
 
+	//Auger
+	out->auger_enabled=in->auger_enabled;
+	out->Cn=in->Cn;
+	out->Cp=in->Cp;
+
+	//SS SRH
+	out->ss_srh_enabled=in->ss_srh_enabled;
+	out->n1=in->n1;
+	out->p1=in->p1;
+	out->tau_n=in->tau_n;
+	out->tau_p=in->tau_p;
+
 	out->B=in->B;
 
 	out->mobility_symmetric=in->mobility_symmetric;

@@ -72,7 +72,7 @@ int get_offset_Jh(struct device *dev)
 	int offset=0;
 	struct newton_state *ns=&(dev->ns);
 	struct dimensions *dim=&(ns->dim);
-	int contact_right=dev->contacts[dev->n_contact_y1[0][0]].type;
+	//int contact_right=dev->contacts[dev->n_contact_y1[0][0]].type;
 	offset=get_offset_Je(dev);
 	offset+=dim->ylen;
 

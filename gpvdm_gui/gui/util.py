@@ -106,21 +106,6 @@ def copy_scan_dir(new_dir,old_dir):
 			shutil.copy(filename, new_dir)
 
 
-def gpvdm_delete_file(path):
-	if os.path.isdir(path)==True:
-		print("Delete",path)
-		try:
-			shutil.rmtree(path)
-		except IOError:
-			print("Could not delete the dir:", path)
-
-	elif os.path.isfile(path)==True:
-		print("Delete",path)
-		try:
-			os.remove(path)
-		except IOError:
-			print("Could not delete the file:", path)
-
 
 def pygtk_to_latex_subscript(in_string):
 	out_string=in_string.replace("<sub>","_{")

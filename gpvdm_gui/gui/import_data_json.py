@@ -40,9 +40,7 @@ from PyQt5.QtCore import pyqtSignal
 
 from open_save_dlg import open_as_filter
 
-from plot_io import plot_load_info
 from dat_file import dat_file
-
 
 from PyQt5.QtCore import pyqtSignal
 

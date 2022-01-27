@@ -2,28 +2,28 @@
 // General-purpose Photovoltaic Device Model gpvdm.com - a drift diffusion
 // base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solarcells.
 // The model can simulate OLEDs, Perovskite cells, and OFETs.
-// 
+//
 // Copyright 2008-2022 Roderick C. I. MacKenzie https://www.gpvdm.com
 // r.c.i.mackenzie at googlemail.com
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+// the rights to use, copy, modify, merge, publish, distribute, sublicense,
 // and/or sell copies of the Software, and to permit persons to whom the
 // Software is furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included
 // in all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 // OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// 
+//
 
 #include <stdio.h>
 #include <ray.h>
@@ -52,7 +52,7 @@ void ray_dump_triangle(struct simulation *sim,struct device *dev,struct image *i
 	struct world *my_world=&(dev->w);
 	//printf("file dump\n");
 	struct dat_file buf;
-	buffer_init(&buf);
+	dat_file_init(&buf);
 
 	buffer_malloc(&buf);
 	buf.y_mul=1.0;
@@ -117,7 +117,7 @@ void dump_plane_to_file(struct simulation *sim,char *file_name,struct image *in,
 	struct world *w=&(dev->w);
 	//printf("file dump\n");
 	struct dat_file buf;
-	buffer_init(&buf);
+	dat_file_init(&buf);
 
 	buffer_malloc(&buf);
 	buf.y_mul=1.0;
@@ -186,7 +186,7 @@ void dump_ray_to_file(struct simulation *sim,struct image *in,struct ray *my_ray
 	struct world *w=&(dev->w);
 
 	struct dat_file buf;
-	buffer_init(&buf);
+	dat_file_init(&buf);
 
 	buffer_malloc(&buf);
 	buf.y_mul=1.0;
@@ -307,7 +307,7 @@ void dump_extraction_efficiency(struct simulation *sim,struct device *dev,struct
 	char temp[200];
 	char path[PATH_MAX];
 	struct dat_file buf;
-	buffer_init(&buf);
+	dat_file_init(&buf);
 
 	for (layer=0;layer<dev->my_epitaxy.layers;layer++)
 	{
@@ -349,7 +349,7 @@ void dump_ang_escape(struct simulation *sim,struct image *in)
 	int y;
 	char temp[200];
 	struct dat_file buf;
-	buffer_init(&buf);
+	dat_file_init(&buf);
 
 	buffer_malloc(&buf);
 	buf.y_mul=1.0;
@@ -409,15 +409,15 @@ void dump_ang_escape_as_rgb(struct simulation *sim,struct image *in)
 
 	struct math_xy spec_out;
 
-	buffer_init(&buf_rgb);
+	dat_file_init(&buf_rgb);
 
-	buffer_init(&buf_X);
-	buffer_init(&buf_Y);
-	buffer_init(&buf_Z);
+	dat_file_init(&buf_X);
+	dat_file_init(&buf_Y);
+	dat_file_init(&buf_Z);
 
-	buffer_init(&buf_x);
-	buffer_init(&buf_y);
-	buffer_init(&buf_z);
+	dat_file_init(&buf_x);
+	dat_file_init(&buf_y);
+	dat_file_init(&buf_z);
 
 	buffer_malloc(&buf_rgb);
 	buf_rgb.y_mul=1.0;
@@ -601,7 +601,7 @@ void dump_rendered_image(struct simulation *sim,char *out_dir, struct world *w, 
 		if (det->viewpoint_enabled==TRUE)
 		{
 
-			buffer_init(&buf);
+			dat_file_init(&buf);
 
 			buffer_malloc(&buf);
 			buf.y_mul=1.0;
@@ -650,16 +650,16 @@ void dump_rendered_cross_section(struct simulation *sim,char *out_dir, struct wo
 		if (det->viewpoint_enabled==TRUE)
 		{
 
-			buffer_init(&buf);
+			dat_file_init(&buf);
 
 			for (l=0;l<in->viewpoint_dim.ylen;l++)
 			{
-				get_wavelength_dim(unit,&mul,in->viewpoint_dim.ymesh[l]);
+				get_wavelength_dim(unit,&mul,in->viewpoint_dim.y[l]);
 
 				buffer_malloc(&buf);
 
 				dim_info_to_buf(&buf,&(in->viewpoint_dim));
-				sprintf(buf.title,"Emission profile for %.0Lf %s",in->viewpoint_dim.ymesh[l]*mul,unit);
+				sprintf(buf.title,"Emission profile for %.0Lf %s",in->viewpoint_dim.y[l]*mul,unit);
 				strcpy(buf.type,"3d");
 				strcpy(buf.y_label,"x");
 				strcpy(buf.x_label,"no used");
@@ -682,7 +682,7 @@ void dump_rendered_cross_section(struct simulation *sim,char *out_dir, struct wo
 				//buffer_add_zxy_rgb_data(sim,&buf,(&in->viewpoint_dim),in->viewpoint_image);
 				buffer_add_zxy_data_y_slice(sim,&buf,(&in->viewpoint_dim),in->viewpoint_image,0);
 
-				sprintf(file_name,"RAY_cross_section%d_x_%.0Lf%s.dat",d,in->viewpoint_dim.ymesh[l]*mul,unit);
+				sprintf(file_name,"RAY_cross_section%d_x_%.0Lf%s.dat",d,in->viewpoint_dim.y[l]*mul,unit);
 				buffer_dump_path(sim,out_dir,file_name,&buf);
 
 				buffer_free(&buf);

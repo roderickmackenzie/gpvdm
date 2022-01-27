@@ -189,11 +189,9 @@ struct shape* s;
 
 			for (y=0;y<dim->ylen;y++)
 			{
-				in->Tl[z][x][y]=thermal->Ty0+dim->ymesh[y]*(thermal->Ty1-thermal->Ty0)/in->ylen;
-				in->Te[z][x][y]=thermal->Ty0+dim->ymesh[y]*(thermal->Ty1-thermal->Ty0)/in->ylen;
-				in->Th[z][x][y]=thermal->Ty0+dim->ymesh[y]*(thermal->Ty1-thermal->Ty0)/in->ylen;
-				in->ex[z][x][y]=0.0;
-				in->Hex[z][x][y]=0.0;
+				in->Tl[z][x][y]=thermal->Ty0+dim->y[y]*(thermal->Ty1-thermal->Ty0)/in->ylen;
+				in->Te[z][x][y]=thermal->Ty0+dim->y[y]*(thermal->Ty1-thermal->Ty0)/in->ylen;
+				in->Th[z][x][y]=thermal->Ty0+dim->y[y]*(thermal->Ty1-thermal->Ty0)/in->ylen;
 
 
 				s=in->obj_zxy[z][x][y]->s;
@@ -212,8 +210,6 @@ struct shape* s;
 
 					in->B[z][x][y]=get_dos_B(s);
 
-					in->Dex[z][x][y]=0.0;//get_mat_param(&(in->mat.l[in->imat[z][x][y]]),mat_Dex);
-
 					in->Xi[z][x][y]=get_dos_Xi(s);
 
 					in->Ec[z][x][y]= -in->Xi[z][x][y];
@@ -225,6 +221,7 @@ struct shape* s;
 
 					in->Nv[z][x][y]=get_Nv_free(s);
 
+					//mobility
 					in->mun_z[z][x][y]=get_n_muz(s);
 					in->mun_x[z][x][y]=get_n_mux(s);
 					in->mun_y[z][x][y]=get_n_muy(s);
@@ -233,10 +230,18 @@ struct shape* s;
 					in->mup_x[z][x][y]=get_p_mux(s);
 					in->mup_y[z][x][y]=get_p_muy(s);
 
+					//Auger
+					in->Cn[z][x][y]=get_Cn(s);
+					in->Cp[z][x][y]=get_Cp(s);
+
+					//SS SRH
+					in->n1[z][x][y]=get_ss_srh_n1(s);
+					in->p1[z][x][y]=get_ss_srh_p1(s);
+					in->tau_n[z][x][y]=get_ss_srh_tau_n(s);
+					in->tau_p[z][x][y]=get_ss_srh_tau_p(s);
+
 					//printf("%Le %Le\n",in->mun[z][x][y],in->B[z][x][y]);
 					//getchar();
-
-					in->kf[z][x][y]=0.0;//get_mat_param(&(in->mat.l[in->imat[z][x][y]]),mat_kf);
 
 					in->t[z][x][y]=in->Xi[z][x][y];
 					in->tp[z][x][y]=in->Xi[z][x][y]+in->Eg[z][x][y];
@@ -247,7 +252,7 @@ struct shape* s;
 
 				
 					dy=epi->layer[in->imat_epitaxy[z][x][y]].width;
-					pos=in->ns.dim.ymesh[y]-in->layer_start[in->imat_epitaxy[z][x][y]];
+					pos=in->ns.dim.y[y]-in->layer_start[in->imat_epitaxy[z][x][y]];
 
 					Nad0=s->dosn.config.Nd0;
 					Nad1=s->dosn.config.Nd1;

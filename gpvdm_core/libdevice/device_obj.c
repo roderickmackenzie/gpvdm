@@ -2,28 +2,28 @@
 // General-purpose Photovoltaic Device Model gpvdm.com - a drift diffusion
 // base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solarcells.
 // The model can simulate OLEDs, Perovskite cells, and OFETs.
-// 
+//
 // Copyright 2008-2022 Roderick C. I. MacKenzie https://www.gpvdm.com
 // r.c.i.mackenzie at googlemail.com
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+// the rights to use, copy, modify, merge, publish, distribute, sublicense,
 // and/or sell copies of the Software, and to permit persons to whom the
 // Software is furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included
 // in all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 // OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// 
+//
 
 
 /** @file device_obj.c
@@ -65,7 +65,7 @@ void device_obj_dump(struct simulation *sim,struct device *dev)
 	struct dimensions *dim=&(dev->ns.dim);
 	struct dat_file buf;
 
-	buffer_init(&buf);
+	dat_file_init(&buf);
 
 	buffer_malloc(&buf);
 	dim_info_to_buf(&buf,dim);
@@ -107,6 +107,16 @@ void device_build_obj_pointer_array(struct simulation *sim,struct device *dev)
 	//printf("%d\n",dev->circuit_simulation);
 	//getchar();
 
+	v.z=dim->z[0];
+	v.x=dim->x[dim->xlen/2];
+	/*for (y=0;y<dim->ylen;y++)
+	{
+		v.y=dim->y[y];
+		obj=ray_obj_search_xyz(sim,dev,&v);
+		printf("%d %s\n",y,obj->name);
+	}*/
+
+	//getchar();
 	for (z=0;z<dim->zlen;z++)
 	{
 		for (x=0;x<dim->xlen;x++)
@@ -115,8 +125,8 @@ void device_build_obj_pointer_array(struct simulation *sim,struct device *dev)
 			{
 				mid_point=epi->layer[l].y_start+epi->layer[l].width/2.0;
 
-				v.z=dim->zmesh[z];
-				v.x=dim->xmesh[x];
+				v.z=dim->z[z];
+				v.x=dim->x[x];
 				v.y=mid_point;
 
 				obj=ray_obj_search_xyz(sim,dev,&v);
@@ -135,23 +145,23 @@ void device_build_obj_pointer_array(struct simulation *sim,struct device *dev)
 			{
 				if (dev->circuit_simulation==FALSE)
 				{
-					v.z=dim->zmesh[z];
-					v.x=dim->xmesh[x];
-					v.y=epi->device_start+dim->ymesh[y];
+					v.z=dim->z[z];
+					v.x=dim->x[x];
+					v.y=epi->device_start+dim->y[y];
 
 				}else
 				{
-					if (epi->device_start+dim->ymesh[y]>device_length)
+					if (epi->device_start+dim->y[y]>device_length)
 					{
 						l=epi->layers-1;
 					}else
 					{
-						l=epitaxy_get_layer(epi,epi->device_start+dim->ymesh[y]);
+						l=epitaxy_get_layer(epi,epi->device_start+dim->y[y]);
 					}
 					mid_point=epi->layer[l].y_start+epi->layer[l].width/2.0;
 
-					v.z=dim->zmesh[z];
-					v.x=dim->xmesh[x];
+					v.z=dim->z[z];
+					v.x=dim->x[x];
 					v.y=mid_point;
 
 					//obj=ray_obj_search_xyz(sim,dev,&v);

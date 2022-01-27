@@ -53,6 +53,8 @@ from json_perovskite import json_perovskite
 from json_server import json_server
 from json_thermal import json_thermal
 from json_thermal import json_thermal_boundary
+from json_exciton import json_exciton
+from json_exciton import json_exciton_boundary
 from json_electrical_solver import json_electrical_solver
 from json_spctral2 import json_spctral2
 from json_lasers import json_lasers
@@ -111,6 +113,8 @@ class all_gpvdm_data(json_base,json_world_stats):
 		self.var_list.append(["epitaxy",epitaxy()])
 		self.var_list.append(["thermal",json_thermal()])
 		self.var_list.append(["thermal_boundary",json_thermal_boundary()])
+		self.var_list.append(["exciton",json_exciton()])
+		self.var_list.append(["exciton_boundary",json_exciton_boundary()])
 		self.var_list.append(["ray",json_ray()])
 		self.var_list.append(["suns_voc",json_suns_voc()])
 		self.var_list.append(["suns_jsc",json_suns_jsc()])

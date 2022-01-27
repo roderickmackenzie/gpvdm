@@ -33,40 +33,68 @@ import hashlib
 import glob
 from inp import inp
 from inp import inp_get_token_value
+from file_store import file_store
+
 import json
 
 def get_dir_type(path):
-
+	ret=file_store()
+	ret.file_name=os.path.basename(path)
+	ret.display_name=os.path.basename(path)
 	if os.path.isfile(path)==True:
-		return "file"
+		ret.isdir=False
+		ret.type="file"
+		return ret
 
 	if os.path.isdir(path)==True:
+		ret.isdir=True
+		ret.icon="folder"
+		ret.type="dir"
 		file_name=os.path.join(path,"data.json")
 		f=inp()
-		try:
-			if f.load(file_name)!=False:
+
+		if f.load(file_name)!=False:
+			try:
 				json_data="\n".join(f.lines)
 				decode=json.loads(json_data)
-				return decode['item_type']
-		except:
-			pass
+				ret.type=decode['item_type']
+			except:
+				pass
+
+			try:
+				ret.icon=decode['icon']
+			except:
+				pass
+
+			try:
+				ret.hidden=decode['hidden']
+			except:
+				pass
+
+			return ret
+
 
 		if os.path.isfile(os.path.join(path,"wavelengths.dat"))==True:
-			return "light"
+			ret.type="light"
+			return ret
 
 		if os.path.isfile(os.path.join(path,"scan_config.inp"))==True:
-			return "scan_dir"
+			ret.type="scan_dir"
+			return ret
 
 		mat_file=os.path.join(path,"mat.inp")
 		token=inp_get_token_value(os.path.join(path,"mat.inp"), "#gpvdm_file_type")
 		if token=="backup_main":
-			return "backup_main"
+			ret.type="backup_main"
+			return ret
 		elif token=="backup":
-			return "backup"
-		elif token=="cache":
-			return "cache"
+			ret.type="backup"
+			return ret
 		elif token=="multi_plot_dir":
-			return "multi_plot_dir"
+			ret.type="multi_plot_dir"
+			return ret
 
+		return ret
 
-		return "dir"
+	return None
+	

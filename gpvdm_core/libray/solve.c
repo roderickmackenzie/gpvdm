@@ -109,9 +109,10 @@ void *ray_thread_solve(void *in_data)
 
 void ray_solve_all(struct simulation *sim,struct device *dev)
 {
+
 }
 
-void ray_solve(struct simulation *sim,struct device *dev, struct ray_src *raysrc,double mag,struct ray_worker *worker)
+void ray_solve(struct simulation *sim,struct device *dev, struct ray_src *raysrc,double mag,struct ray_worker *worker, int *rays_shot)
 {
 
 

@@ -2,28 +2,28 @@
 // General-purpose Photovoltaic Device Model gpvdm.com - a drift diffusion
 // base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solarcells.
 // The model can simulate OLEDs, Perovskite cells, and OFETs.
-// 
+//
 // Copyright 2008-2022 Roderick C. I. MacKenzie https://www.gpvdm.com
 // r.c.i.mackenzie at googlemail.com
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+// the rights to use, copy, modify, merge, publish, distribute, sublicense,
 // and/or sell copies of the Software, and to permit persons to whom the
 // Software is furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included
 // in all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 // OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// 
+//
 
 /** @file dynamic_dump_j.c
 @brief Dumps dynamic current density
@@ -59,7 +59,7 @@ void dump_dynamic_save_j(struct simulation *sim,struct device *in,char *outputpa
 	struct dat_file buf;
 	struct math_xy one;
 
-	buffer_init(&buf);
+	dat_file_init(&buf);
 
 
 
@@ -75,9 +75,8 @@ void dump_dynamic_save_j(struct simulation *sim,struct device *in,char *outputpa
 
 	char out_dir[1000];
 	join_path(2, out_dir,outputpath,"dynamic");
-	struct stat st = {0};
 
-	buffer_add_dir(sim,out_dir);
+	gpvdm_mkdir(out_dir);
 
 	char outpath[200];
 
@@ -88,8 +87,7 @@ void dump_dynamic_save_j(struct simulation *sim,struct device *in,char *outputpa
 	sprintf(buf.title,"%s",_("Electron current density left contact (J_y0_n)"));
 	strcpy(buf.data_label,_("Electron current density"));
 	strcpy(buf.data_units,"A m^{-2}");
-	buffer_add_info(sim,&buf);
-	buffer_add_xy_data(sim,&buf,(store->J_y0_n).x, (store->J_y0_n).data, (store->J_y0_n).len);
+	dat_file_add_xy_data(sim,&buf,(store->J_y0_n).x, (store->J_y0_n).data, (store->J_y0_n).len);
 	buffer_dump_path(sim,out_dir,"J_y0_n.dat",&buf);
 	buffer_free(&buf);
 
@@ -99,8 +97,7 @@ void dump_dynamic_save_j(struct simulation *sim,struct device *in,char *outputpa
 	sprintf(buf.title,"%s",_("Hole current density left contact (J_y0_p)"));
 	strcpy(buf.data_label,_("Hole current density"));
 	strcpy(buf.data_units,"A m^{-2}");
-	buffer_add_info(sim,&buf);
-	buffer_add_xy_data(sim,&buf,(store->J_y0_p).x, (store->J_y0_p).data, (store->J_y0_p).len);
+	dat_file_add_xy_data(sim,&buf,(store->J_y0_p).x, (store->J_y0_p).data, (store->J_y0_p).len);
 	buffer_dump_path(sim,out_dir,"J_y0_p.dat",&buf);
 	buffer_free(&buf);
 
@@ -110,8 +107,7 @@ void dump_dynamic_save_j(struct simulation *sim,struct device *in,char *outputpa
 	sprintf(buf.title,"%s",_("Electron current density right contact (J_y1_n)"));
 	strcpy(buf.data_label,_("Electron current density"));
 	strcpy(buf.data_units,"A m^{-2}");
-	buffer_add_info(sim,&buf);
-	buffer_add_xy_data(sim,&buf,(store->J_y1_n).x, (store->J_y1_n).data, (store->J_y1_n).len);
+	dat_file_add_xy_data(sim,&buf,(store->J_y1_n).x, (store->J_y1_n).data, (store->J_y1_n).len);
 	buffer_dump_path(sim,out_dir,"J_y1_n.dat",&buf);
 	buffer_free(&buf);
 
@@ -121,8 +117,7 @@ void dump_dynamic_save_j(struct simulation *sim,struct device *in,char *outputpa
 	sprintf(buf.title,"%s",_("Hole current density right contact (J_y1_p)"));
 	strcpy(buf.data_label,_("Hole current density"));
 	strcpy(buf.data_units,"A m^{-2}");
-	buffer_add_info(sim,&buf);
-	buffer_add_xy_data(sim,&buf,(store->J_y1_p).x, (store->J_y1_p).data, (store->J_y1_p).len);
+	dat_file_add_xy_data(sim,&buf,(store->J_y1_p).x, (store->J_y1_p).data, (store->J_y1_p).len);
 	buffer_dump_path(sim,out_dir,"J_y1_p.dat",&buf);
 	buffer_free(&buf);
 
@@ -136,8 +131,7 @@ void dump_dynamic_save_j(struct simulation *sim,struct device *in,char *outputpa
 	strcpy(buf.type,"xy");
 	strcpy(buf.data_label,_("Electron current density"));
 	strcpy(buf.data_units,"A m^{-2}");
-	buffer_add_info(sim,&buf);
-	buffer_add_xy_data(sim,&buf,(store->dynamic_jn).x, (store->dynamic_jn).data, (store->dynamic_jn).len);
+	dat_file_add_xy_data(sim,&buf,(store->dynamic_jn).x, (store->dynamic_jn).data, (store->dynamic_jn).len);
 	buffer_dump_path(sim,out_dir,"jn_contacts.dat",&buf);
 	buffer_free(&buf);
 
@@ -148,18 +142,17 @@ void dump_dynamic_save_j(struct simulation *sim,struct device *in,char *outputpa
 	strcpy(buf.data_label,_("Hole current density"));
 	strcpy(buf.y_units,"\\mu s");
 	strcpy(buf.data_units,"A m^{-2}");
-	buffer_add_info(sim,&buf);
-	buffer_add_xy_data(sim,&buf,(store->dynamic_jp).x, (store->dynamic_jp).data, (store->dynamic_jp).len);
+	dat_file_add_xy_data(sim,&buf,(store->dynamic_jp).x, (store->dynamic_jp).data, (store->dynamic_jp).len);
 	buffer_dump_path(sim,out_dir,"jp_contacts.dat",&buf);
 	buffer_free(&buf);
 
 	buffer_malloc(&buf);
-	buffer_add_xy_data(sim,&buf,(store->jn_avg).x, (store->jn_avg).data, (store->jn_avg).len);
+	dat_file_add_xy_data(sim,&buf,(store->jn_avg).x, (store->jn_avg).data, (store->jn_avg).len);
 	buffer_dump_path(sim,out_dir,"jn_avg.dat",&buf);
 	buffer_free(&buf);
 
 	buffer_malloc(&buf);
-	buffer_add_xy_data(sim,&buf,(store->jp_avg).x, (store->jp_avg).data, (store->jp_avg).len);
+	dat_file_add_xy_data(sim,&buf,(store->jp_avg).x, (store->jp_avg).data, (store->jp_avg).len);
 	buffer_dump_path(sim,out_dir,"jp_avg.dat",&buf);
 	buffer_free(&buf);
 
@@ -169,13 +162,12 @@ void dump_dynamic_save_j(struct simulation *sim,struct device *in,char *outputpa
 	strcpy(buf.title,_("External Current"));
 	strcpy(buf.data_label,_("Current"));
 	strcpy(buf.data_units,"Amps");
-	buffer_add_info(sim,&buf);
-	buffer_add_xy_data(sim,&buf,(store->iout).x, (store->iout).data, (store->iout).len);
+	dat_file_add_xy_data(sim,&buf,(store->iout).x, (store->iout).data, (store->iout).len);
 	join_path(3, outpath,outputpath,"dynamic","i.dat");
 	buffer_free(&buf);
 
 	buffer_malloc(&buf);
-	buffer_add_xy_data(sim,&buf,(store->jnout_mid).x, (store->jnout_mid).data, (store->jnout_mid).len);
+	dat_file_add_xy_data(sim,&buf,(store->jnout_mid).x, (store->jnout_mid).data, (store->jnout_mid).len);
 	buffer_dump_path(sim,out_dir,"jn_mid.dat",&buf);
 	buffer_free(&buf);
 
@@ -185,21 +177,21 @@ void dump_dynamic_save_j(struct simulation *sim,struct device *in,char *outputpa
 	inter_deriv(&one,&(store->jnout_mid));
 
 	buffer_malloc(&buf);
-	buffer_add_xy_data(sim,&buf,one.x, one.data, one.len);
+	dat_file_add_xy_data(sim,&buf,one.x, one.data, one.len);
 	buffer_dump_path(sim,out_dir,"djn.dat",&buf);
 	buffer_free(&buf);
 
 	inter_free(&one);
 
 	buffer_malloc(&buf);
-	buffer_add_xy_data(sim,&buf,(store->jpout_mid).x, (store->jpout_mid).data, (store->jpout_mid).len);
+	dat_file_add_xy_data(sim,&buf,(store->jpout_mid).x, (store->jpout_mid).data, (store->jpout_mid).len);
 	buffer_dump_path(sim,out_dir,"jp_mid.dat",&buf);
 	buffer_free(&buf);
 
 	inter_copy(&one,&(store->jpout_mid),TRUE);
 	inter_deriv(&one,&(store->jpout_mid));
 	buffer_malloc(&buf);
-	buffer_add_xy_data(sim,&buf,one.x, one.data, one.len);
+	dat_file_add_xy_data(sim,&buf,one.x, one.data, one.len);
 	buffer_dump_path(sim,out_dir,"djp.dat",&buf);
 	buffer_free(&buf);
 	inter_free(&one);
@@ -213,13 +205,12 @@ void dump_dynamic_save_j(struct simulation *sim,struct device *in,char *outputpa
 	strcpy(buf.title,_("Current density at contacts"));
 	strcpy(buf.data_label,_("Current density"));
 	strcpy(buf.data_units,"A m^{-2}");
-	buffer_add_info(sim,&buf);
 	if (sub==TRUE)
 	{
 		inter_sub_long_double(&(store->jout),(store->jout).data[0]);
 		math_xy_mul_long_double(&(store->jout),-1.0);
 	}
-	buffer_add_xy_data(sim,&buf,(store->jout).x, (store->jout).data, (store->jout).len);
+	dat_file_add_xy_data(sim,&buf,(store->jout).x, (store->jout).data, (store->jout).len);
 	buffer_dump_path(sim,out_dir,"j.dat",&buf);
 	buffer_free(&buf);
 

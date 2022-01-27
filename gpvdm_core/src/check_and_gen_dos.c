@@ -109,12 +109,14 @@ THREAD_FUNCTION thread_dos_p(void * in)
 
 	gen_do(sim,&configh,&confige,path,json_dos,FALSE);
 
-	join_path(2, path,get_cache_path(sim),"mat.inp");
+	join_path(2, path,get_cache_path(sim),"data.dat");
 
 	out=fopen(path,"w");
-	fprintf(out,"#gpvdm_file_type\n");
-	fprintf(out,"cache\n");
-	fprintf(out,"#end\n");
+	fprintf(out,"{\n");
+	fprintf(out," \"icon\":\"fdtd_output\",\n");
+	fprintf(out," \"item_type\":\"cache\",\n");
+	fprintf(out," \"hidden\":\"True\"\n");
+	fprintf(out,"}");
 	fclose(out);
 
 	j->data1=NULL;
@@ -140,7 +142,7 @@ void gen_dos_fd_gaus_fd_stand_alone(struct simulation *sim,char *input_path)
 
 	if (json_epi==NULL)
 	{
-		ewe(sim,"Object light not found\n");
+		ewe(sim,"Object epitaxy not found in check_and_gen_dos.c\n");
 	}
 
 	epitaxy_load(sim,&epi,json_epi);

@@ -44,6 +44,8 @@
 #include <enabled_libs.h>
 #include <heat.h>
 #include <heat_fun.h>
+#include <exciton.h>
+#include <exciton_fun.h>
 
 int shape_load_from_json(struct simulation *sim,struct shape *s, struct json_obj *obj ,long double y_pos)
 {
@@ -51,6 +53,7 @@ int shape_load_from_json(struct simulation *sim,struct shape *s, struct json_obj
 	struct json_obj *shape_electrical;
 	struct json_obj *json_dos;
 	struct json_obj *json_heat;
+	struct json_obj *json_exciton;
 
 	char dos_id[100];
 
@@ -136,6 +139,15 @@ int shape_load_from_json(struct simulation *sim,struct shape *s, struct json_obj
 	}else
 	{
 		ewe(sim,"shape_heat not found\n");
+	}
+
+	json_exciton=json_dos;//json_obj_find(obj, "shape_heat");
+	if (json_exciton!=NULL)
+	{
+		exciton_material_load_from_json(sim,&(s->ex),json_exciton );
+	}else
+	{
+		ewe(sim,"shape_exciton not found\n");
 	}
 return TRUE;
 }

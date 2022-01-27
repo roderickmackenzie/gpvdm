@@ -206,6 +206,13 @@ struct world *w=&(dev->w);
 	//getchar();
 }
 
+struct intersections
+{
+	int intersections;
+	int uid;
+	struct vec point;
+};
+
 //Searches which object a given xyz point is within.
 struct object *ray_obj_search_xyz(struct simulation *sim,struct device *dev,struct vec *xyz)
 {
@@ -220,9 +227,8 @@ int min_dist_index=-1;
 
 int nfound=0;
 
-int uids[100];
-struct vec points[100];
-int intersections[100];
+struct intersections ft[100];	//found triangles
+
 //double dist[100];
 int uid=0;
 int ii;
@@ -240,7 +246,7 @@ vec_set(&tmp,0.0,1.0,0.0);
 
 vec_cpy(&(my_ray.xy),xyz);
 vec_cpy(&(my_ray.dir),&tmp);
-int test=0;
+
 
 	for (o=0;o<w->objects;o++)
 	{
@@ -272,19 +278,18 @@ int test=0;
 
 				if (found!=0)
 				{
-					test++;
 					//ray_dump_triangle(sim,in,i);
 					//getchar();
 					in_list=FALSE;
 					//printf("%d\n",uid);
 					for (ii=0;ii<nfound;ii++)
 					{
-						if (uids[ii]==uid)
+						if (ft[ii].uid==uid)
 						{
 							in_list=TRUE;
-							if (vec_cmp(&(points[ii]),&ret)!=0)		//If two triangles share the same plane then don't add (these would be triangles sharing an edge)
+							if (vec_cmp(&(ft[ii].point),&ret)!=0)		//If two triangles share the same plane then don't add (these would be triangles sharing an edge)
 							{
-								intersections[ii]++;
+								ft[ii].intersections++;
 								//vec_print(&(points[ii]));
 								//vec_print(&ret);
 								//FILE *oh1=fopen("oh.dat","a");
@@ -300,12 +305,12 @@ int test=0;
 
 					if (in_list==FALSE)
 					{
-						uids[nfound]=uid;
+						ft[nfound].uid=uid;
 
-						vec_cpy(&(points[nfound]),&ret);	//store xyz intersect point
+						vec_cpy(&(ft[nfound].point),&ret);	//store xyz intersect point
 
 						//dist[nfound]=vec_fabs(&tmp);
-						intersections[nfound]=1;
+						ft[nfound].intersections=1;
 						//FILE *oh=fopen("oh.dat","w");
 						//fclose(oh);
 						//printf("here1\n");
@@ -348,17 +353,18 @@ int test=0;
 		return NULL;
 	}
 
-	//for (ii=nfound-1;ii>=0;ii--)
-	//{
-	//	printf(">>%d inter=%d %s\n",uids[ii],intersections[ii],dev->obj[uids[ii]].name);
-	//}
+	/*for (ii=nfound-1;ii>=0;ii--)
+	{
+		uid=ft[ii].uid;
+		printf(">>%d inter=%d %s %d\n",uid,ft[ii].intersections,w->obj[uid].name,ft[ii].intersections %2);
+	}*/
 
 	for (ii=nfound-1;ii>=0;ii--)
 	{
 		//printf("%d\n",ii);
-		if (intersections[ii]==1)
+		if ((ft[ii].intersections % 2) != 0 )
 		{
-			min_dist_index=uids[ii];
+			min_dist_index=ft[ii].uid;
 			break;
 		}
 		//printf(">>%d inter=%d %le %s %d\n",uids[ii],intersections[ii],dist[ii],dev->obj[uids[ii]].name,min_dist_index);

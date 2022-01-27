@@ -2,28 +2,28 @@
 // General-purpose Photovoltaic Device Model gpvdm.com - a drift diffusion
 // base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solarcells.
 // The model can simulate OLEDs, Perovskite cells, and OFETs.
-// 
+//
 // Copyright 2008-2022 Roderick C. I. MacKenzie https://www.gpvdm.com
 // r.c.i.mackenzie at googlemail.com
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+// the rights to use, copy, modify, merge, publish, distribute, sublicense,
 // and/or sell copies of the Software, and to permit persons to whom the
 // Software is furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included
 // in all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 // OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// 
+//
 
 /** @file light_zxy_long_double.c
 @brief memory functions for light zxy arrays
@@ -42,26 +42,26 @@
 #include "memory.h"
 
 
-void malloc_light_zxy_long_double(struct dim_light *dim, long double * (***var))
+void malloc_light_zxy_long_double(struct dimensions *dim, long double * (***var))
 {
 	malloc_3d((void ****)var,dim->zlen, dim->xlen, dim->ylen, sizeof(long double));
 
 }
 
 
-void free_light_zxy_long_double(struct dim_light *dim, long double * (***var))
+void free_light_zxy_long_double(struct dimensions *dim, long double * (***var))
 {
 	free_3d((void ****)var,dim->zlen, dim->xlen, dim->ylen, sizeof(long double));
 }
 
-void cpy_light_zxy_long_double(struct dim_light *dim, long double * (***out), long double * (***in))
+void cpy_light_zxy_long_double(struct dimensions *dim, long double * (***out), long double * (***in))
 {
 	free_3d((void ****)out,dim->zlen, dim->xlen, dim->ylen, sizeof(long double));
 	malloc_3d((void ****)out,dim->zlen, dim->xlen, dim->ylen, sizeof(long double));
-	cpy_3d((void ****)out,(void ****)in,dim->zlen, dim->xlen, dim->ylen,sizeof(long double));	
+	cpy_3d((void ****)out,(void ****)in,dim->zlen, dim->xlen, dim->ylen,sizeof(long double));
 }
 
-void light_zxy_mul_long_double(struct simulation *sim, struct dim_light *dim,long double *** data,long double mul)
+void light_zxy_mul_long_double(struct simulation *sim, struct dimensions *dim,long double *** data,long double mul)
 {
 	int x=0;
 	int y=0;
@@ -80,7 +80,7 @@ void light_zxy_mul_long_double(struct simulation *sim, struct dim_light *dim,lon
 
 }
 
-void flip_light_zxy_long_double_y(struct simulation *sim, struct dim_light *dim,long double *** data)
+void flip_light_zxy_long_double_y(struct simulation *sim, struct dimensions *dim,long double *** data)
 {
 	int x=0;
 	int y=0;
@@ -119,7 +119,7 @@ void flip_light_zxy_long_double_y(struct simulation *sim, struct dim_light *dim,
 	free_light_zxy_long_double(dim, &temp);
 }
 
-void memset_light_zxy_long_double(struct dim_light *dim, long double ***data,int val)
+void memset_light_zxy_long_double(struct dimensions *dim, long double ***data,int val)
 {
 	int x=0;
 	int z=0;
@@ -134,7 +134,7 @@ void memset_light_zxy_long_double(struct dim_light *dim, long double ***data,int
 
 }
 
-void div_light_zxy_long_double(struct dim_light *dim, long double ***data,long double val)
+void div_light_zxy_long_double(struct dimensions *dim, long double ***data,long double val)
 {
 	int x=0;
 	int y=0;
@@ -154,7 +154,7 @@ void div_light_zxy_long_double(struct dim_light *dim, long double ***data,long d
 }
 
 //This shoudl be 3D interpolation but we are assuming the meshes are aligned.
-long double interpolate_light_zxy_long_double(struct dim_light *dim, long double ***data,int z, int x, long double y_in)
+long double interpolate_light_zxy_long_double(struct dimensions *dim, long double ***data,int z, int x, long double y_in)
 {
 	int y=0;
 	long double x0=0.0;
@@ -194,7 +194,7 @@ return ret;
 }
 
 //This shoudl be 3D interpolation but we are assuming the meshes are aligned.
-long double interpolate_light_zxy_long_double_intergral(struct dim_light *dim, long double ***data,int z, int x, long double y_start,long double y_stop)
+long double interpolate_light_zxy_long_double_intergral(struct dimensions *dim, long double ***data,int z, int x, long double y_start,long double y_stop)
 {
 	int y=0;
 	int yy=0;
@@ -256,7 +256,7 @@ long double interpolate_light_zxy_long_double_intergral(struct dim_light *dim, l
 		return ret;
 	}
 
-	
+
 
 return 0.0;
 

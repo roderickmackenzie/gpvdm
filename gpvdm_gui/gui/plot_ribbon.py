@@ -137,19 +137,23 @@ class plot_ribbon(ribbon_base):
 		#self.setMaximumHeight(130)
 		#self.setStyleSheet("QWidget {	background-color:cyan; }")
 
-		self.tb_video=self.video()
 
-		w=self.plot()
-		self.addTab(w,_("Plot"))
 
-		w=self.color()
-		self.addTab(w,_("Color"))
+		self.tab_plot=self.plot()
+		self.addTab(self.tab_plot,_("Plot"))
+
+		self.tab_color=self.color()
+		self.addTab(self.tab_color,_("Color"))
 
 		self.scale_toolbar=self.scale()
 		self.addTab(self.scale_toolbar,_("Scale"))
 
-		w=self.math()
-		self.addTab(w,_("Math"))
+		self.tab_math=self.math()
+		self.addTab(self.tab_math,_("Math"))
+
+		self.tb_video=self.video()
+		self.addTab(self.tb_video,_("Video"))
+		self.setTabEnabled(4,False)
 
 		sheet=self.readStyleSheet(os.path.join(get_css_path(),"style.css"))
 		if sheet!=None:

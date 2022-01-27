@@ -27,7 +27,6 @@
 import os
 from plot_widget import plot_widget
 from dat_file import dat_file
-from plot_io import plot_load_info
 from cal_path import get_exe_command
 from icon_lib import icon_get
 import webbrowser
@@ -47,7 +46,6 @@ from help import help_window
 from QWidgetSavePos import QWidgetSavePos
 from cal_path import get_sim_path
 
-from dat_file_math import dat_file_max_min
 from PIL import Image
 from PyQt5.QtGui import QImage
 import io
@@ -232,16 +230,21 @@ class cmp_class(QWidgetSavePos):
 		if j['default_plot_type']=="3d":
 			force_2d3d="3d"
 
+		if j['default_plot_type']=="trap_map":
+			widget_mode="gpvdm_graph"
+
 		self.plot=plot_widget(enable_3d=True,widget_mode=widget_mode,force_2d3d=force_2d3d)
 		self.plot.setMinimumHeight(300)
 		#force_2d3d="3d"
 
-		self.plot.plot_ribbon.addTab(self.plot.plot_ribbon.tb_video,_("Video"))
+		if force_2d3d=="3d":
+			self.plot.plot_ribbon.tb_video.addAction(self.slider.tb_play)
+		else:
+			self.plot.plot_ribbon.plot_toolbar.addAction(self.slider.tb_play)
 
 		self.plot.plot_ribbon.tb_save_video.triggered.connect(self.callback_save)
 		self.plot.plot_ribbon.tb_storyboard.triggered.connect(self.callback_storyboard)
-
-		self.plot.plot_ribbon.plot_toolbar.addAction(self.slider.tb_play)
+	
 		self.plot.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
 			

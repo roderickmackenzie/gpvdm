@@ -99,7 +99,7 @@ class contacts_window(QWidgetSavePos):
 	def save_and_redraw(self):
 		self.changed.emit()
 		gpvdm_data().save()
-		#global_object_run("gl_force_redraw")
+		global_object_run("gl_force_redraw")
 
 	def callback_help(self):
 		webbrowser.open('http://www.gpvdm.com/man/index.html')
@@ -146,7 +146,7 @@ class contacts_window(QWidgetSavePos):
 		self.tab.populate()
 		#self.tab.new_row_clicked.connect(self.callback_new_row_clicked)
 		self.tab.changed.connect(self.emit_structure_changed)
-		self.tab.itemSelectionChanged.connect(self.save_and_redraw)
+		#self.tab.itemSelectionChanged.connect(self.save_and_redraw)
 
 
 
@@ -173,4 +173,5 @@ class contacts_window(QWidgetSavePos):
 		self.show_hide_cols()
 		gpvdm_data().save()
 		self.changed.emit()
+		global_object_run("gl_force_redraw")
 

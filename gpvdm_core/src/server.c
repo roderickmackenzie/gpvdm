@@ -149,7 +149,6 @@ strcpy(sim->server.lock_file,"");
 
 void server_add_job(struct simulation *sim,char *command,char *output)
 {
-char split[100];
 char send_data[PATH_MAX];
 char temp[PATH_MAX];
 poll_gui(sim);
@@ -175,6 +174,8 @@ struct device dev;
 
 void server_exe_jobs(struct simulation *sim, struct server_struct *myserver)
 {
+char lockname[PATH_MAX];
+char my_temp[PATH_MAX+20];
 
 if (myserver->jobs==0) return;
 }

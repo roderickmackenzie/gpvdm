@@ -162,7 +162,10 @@ long double newton_sim_voc(struct simulation *sim, struct device *in)
 
 	if (Vapplied<0.0)
 	{
-		ewe(sim,"I have found a negative Voc");
+		if (fabs(Vapplied)>1e-2)
+		{
+			ewe(sim,"I have found a negative Voc %Le\n",Vapplied);
+		}
 	}
 
 return ret;

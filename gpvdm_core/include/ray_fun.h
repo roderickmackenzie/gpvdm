@@ -65,7 +65,7 @@ double get_eff(struct image *in);
 void ray_build_scene(struct simulation *sim,struct device *cell,struct image *my_image,struct epitaxy *my_epitaxy);
 void ray_free(struct simulation *sim,struct device *in,struct image *my_image);
 void ray_read_config(struct simulation *sim,struct image *my_image,struct world *w,struct json_obj *json_config);
-void ray_solve(struct simulation *sim,struct device *dev, struct ray_src *raysrc,double mag,struct ray_worker *worker);
+void ray_solve(struct simulation *sim,struct device *dev, struct ray_src *raysrc,double mag,struct ray_worker *worker, int *rays_shot);
 void ray_solve_all(struct simulation *sim,struct device *dev);
 double ray_cal_escape_angle(struct image *in, struct ray_worker *worker);
 void ray_escape_angle_reset(struct image *in,int l);

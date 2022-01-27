@@ -28,7 +28,6 @@ from __future__ import unicode_literals
 import os
 import io
 from numpy import *
-from plot_io import plot_load_info
 
 
 #matplotlib
@@ -52,20 +51,13 @@ from icon_lib import icon_get
 from open_save_dlg import save_as_image
 from open_save_dlg import save_as_filter
 
-from dat_file_math import dat_file_max_min
-from dat_file_math import dat_file_sub
-from dat_file_math import dat_file_mul
-from dat_file_math import dat_file_sub_float
-from dat_file_math import dat_file_abs
 from dat_file import dat_file
-from dat_file import read_data_2d
 
 
 from dlg_get_multi_text import dlg_get_multi_text
 
 from mpl_toolkits.mplot3d import Axes3D
 
-from dat_file import dat_file_print
 from plot_ribbon import plot_ribbon
 from lock import get_lock
 from dat_files_to_gnuplot import dat_files_to_gnuplot_files
@@ -167,10 +159,10 @@ class plot_widget(plot_widget_menu,plot_widget_matplotlib):
 
 	def log_3d_workaround(self):
 		if self.done_log==False:
-			my_max,my_min=dat_file_max_min(self.data[0])
+			my_max,my_min=self.data[0].max_min()
 			for i in range(0,len(self.data)):
 				if self.data[i].logdata==True:
-					my_max,my_min=dat_file_max_min(self.data[i],cur_min=my_min,cur_max=my_max)
+					my_max,my_min=self.data[i].max_min(cur_min=my_min,cur_max=my_max)
 
 			zticks=[]
 			zticks_txt=[]
@@ -216,8 +208,6 @@ class plot_widget(plot_widget_menu,plot_widget_matplotlib):
 		if self.open_gl_enabled==True:
 			self.gl_plot.graph_data=self.data
 			self.gl_plot.force_redraw()
-			#print("update 3d")
-			#self.matplotlib_do_plot()
 		else:
 			if self.widget_mode=="band_graph" or self.widget_mode=="gpvdm_graph":
 				self.canvas.set_data_file(self.input_files[0])
@@ -330,9 +320,9 @@ class plot_widget(plot_widget_menu,plot_widget_matplotlib):
 	def callback_autoscale_y(self):
 		self.fix_scales=not self.fix_scales
 		if self.fix_scales==True:
-			my_max,my_min=dat_file_max_min(self.data[0])
+			my_max,my_min=self.data[0].max_min()
 			for i in range(0,len(self.data)):
-				my_max,my_min=dat_file_max_min(self.data[i],cur_min=my_min,cur_max=my_max)
+				my_max,my_min=self.data[i].max_min(cur_min=my_min,cur_max=my_max)
 			self.force_data_max=my_max
 			self.force_data_min=my_min
 			self.do_plot()
@@ -343,7 +333,7 @@ class plot_widget(plot_widget_menu,plot_widget_matplotlib):
 	def callback_math_opp(self,opp):
 		for i in range(0,len(self.data)):
 			if opp=="abs":
-				dat_file_abs(self.data[i])
+				self.data[i].abs()
 
 		self.do_plot()
 
@@ -528,7 +518,12 @@ class plot_widget(plot_widget_menu,plot_widget_matplotlib):
 
 		if self.open_gl_enabled==True:
 			self.canvas.setVisible(False)
-
+			self.plot_ribbon.setTabEnabled(0,False) 
+			self.plot_ribbon.setTabEnabled(1,False) 
+			self.plot_ribbon.setTabEnabled(2,False)
+			self.plot_ribbon.setTabEnabled(3,False)
+			self.plot_ribbon.setTabEnabled(4,True)
+			self.plot_ribbon.setCurrentWidget(self.plot_ribbon.tb_video)
 			if self.gl_plot==None:
 				from gl import glWidget
 				self.gl_plot=glWidget(self)
@@ -537,10 +532,11 @@ class plot_widget(plot_widget_menu,plot_widget_matplotlib):
 				self.gl_plot.enable_draw_ray_mesh=True
 				self.gl_plot.view_options.enable_draw_light_source=False
 				self.gl_plot.view_options.draw_rays=False
+				self.gl_plot.view_options.render_fdtd_grid=False
 				self.gl_plot.scene_built=True
 				self.gl_plot.plot_graph=True
 				self.main_vbox.insertWidget(1,self.gl_plot)
-				self.plot_ribbon.plot_toolbar.addWidget(self.gl_plot.toolbar1)
+				self.plot_ribbon.tb_video.addWidget(self.gl_plot.toolbar1)
 				#self.plot_ribbon.plot_toolbar.removeAction(self.matplotlib_nav_bar)
 				#self.self.tb_3d_mode.setVisible(False)
 

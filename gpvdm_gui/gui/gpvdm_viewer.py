@@ -25,8 +25,7 @@
 
 
 import os
-from util import gpvdm_delete_file
-from plot_io import get_plot_file_info
+from safe_delete import gpvdm_delete_file
 from dat_file import dat_file
 
 #qt
@@ -104,19 +103,7 @@ from scan_io import scan_io
 from gpvdm_json import gpvdm_data
 from search import find_shapshots
 from gpvdm_viewer_new import gpvdm_viewer_new
-
-class file_store():
-	def __init__(self):
-		self.file_name=""
-		self.display_name=""
-		self.icon=""
-		self.hidden=False
-		self.type=""
-		self.isdir=False
-		self.allow_navigation=False
-
-	def __str__(self):
-		return self.file_name+":"+self.display_name+":"+str(self.icon)+":"+str(self.type)
+from file_store import file_store
 
 class gpvdm_viewer(QListWidget,gpvdm_viewer_new):
 
@@ -374,7 +361,7 @@ class gpvdm_viewer(QListWidget,gpvdm_viewer_new):
 				progress_window.set_text("Deleting: "+f)
 				process_events()
 
-				gpvdm_delete_file(f)
+				gpvdm_delete_file(f,allow_dir_removal=True)
 
 				i=i+1
 
@@ -393,7 +380,7 @@ class gpvdm_viewer(QListWidget,gpvdm_viewer_new):
 					scans.delete(decode.display_name)
 				else:
 					file_to_remove=os.path.join(self.path,decode.file_name)
-					gpvdm_delete_file(file_to_remove)
+					gpvdm_delete_file(file_to_remove,allow_dir_removal=True)
 
 	def resizeEvent(self,resizeEvent):
 		self.fill_store()
@@ -486,14 +473,11 @@ class gpvdm_viewer(QListWidget,gpvdm_viewer_new):
 		else:
 			files=os.listdir(self.path)
 			for f in files:
-				itm=file_store()
-				itm.file_name=f
-				itm.isdir=os.path.isdir(os.path.join(self.path,f))
-				itm.type=get_dir_type(os.path.join(self.path,f))
-				if itm.type!="scan_dir":
-					ret.append(itm)
-				
-			#print(get_sim_path(),self.path)
+				itm=get_dir_type(os.path.join(self.path,f))
+				if itm!=None:
+					if itm.type!="scan_dir":
+						ret.append(itm)
+
 			if get_sim_path()==self.path:
 				scan=scans_io(get_sim_path())
 				scans=scan.get_scans()
@@ -509,7 +493,7 @@ class gpvdm_viewer(QListWidget,gpvdm_viewer_new):
 					itm.file_name=os.path.basename(s.config_file)
 					itm.display_name=s.human_name
 					ret.append(itm)
-					
+
 		ret=sorted(ret, key=operator.attrgetter('display_name'))
 		#files = sorted(files, key=operator.attrgetter('file_name'))
 		return ret
@@ -530,18 +514,14 @@ class gpvdm_viewer(QListWidget,gpvdm_viewer_new):
 			self.set_grid_view()
 
 		for itm in all_files:
-			#print(fl)
 			#if it is a directory
 			file_name=os.path.join(path, itm.file_name)
+
 			if itm.isdir==True:
 				if itm.type=="spectra":
 					itm.icon="spectra"
 				elif itm.type=="shape":
 					itm.icon="shape"
-				elif itm.type=="snapshots":
-					itm.icon="cover_flow"
-					if itm.file_name=="optical_snapshots":
-						itm.icon="optics2"
 				elif itm.type=="light":
 					itm.icon="optics2"
 				elif itm.type=="material":
@@ -562,8 +542,6 @@ class gpvdm_viewer(QListWidget,gpvdm_viewer_new):
 					itm.icon="star"
 				elif itm.type=="cache":
 					itm.hidden=True
-				else:
-					itm.icon="folder"
 
 			else:
 				#append=False
@@ -574,7 +552,7 @@ class gpvdm_viewer(QListWidget,gpvdm_viewer_new):
 				else:
 					ext=""
 
-				if (ext==".dat"):
+				if ext==".dat" or ext==".csv":
 					text=peek_data(file_name)
 					if itm.file_name in ["theta_small_x.dat","theta_small_z.dat","theta_Y.dat", "theta_small_y.dat","theta_X.dat", "theta_Z.dat", "theta_RGB.dat"]:
 
@@ -762,45 +740,46 @@ class gpvdm_viewer(QListWidget,gpvdm_viewer_new):
 			self.set_path(full_path)
 			self.fill_store()
 			return
-		dir_type=get_dir_type(full_path)
+		
+		dir_info=get_dir_type(full_path)
 
 		if self.open_own_files==True:
 			self.file_path=full_path
 
-			if dir_type=="spectra":
+			if dir_info.type=="spectra":
 				from spectra_main import spectra_main
 				self.mat_window=spectra_main(full_path)
 				self.mat_window.show()
 				return
-			if dir_type=="shape":
+			if dir_info.type=="shape":
 				from shape_editor import shape_editor
 				self.windows.append(shape_editor(full_path))
 				self.windows[-1].show()
 				return
-			if dir_type=="light":
+			if dir_info.type=="light":
 				from optics import class_optical 
 				self.optics_window=class_optical()
 				self.optics_window.show()
 
-			if dir_type=="material":
+			if dir_info.type=="material":
 				from materials_main import materials_main
 				self.mat_window=materials_main(full_path)
 				self.mat_window.show()
 				return
 
-			if dir_type=="emission":
+			if dir_info.type=="emission":
 				from emission_main import emission_main
 				self.emission_window=emission_main(full_path)
 				self.emission_window.show()
 				return
 
-			if dir_type=="filter":
+			if dir_info.type=="filter":
 				from filter_main import filter_main
 				self.filter_window=filter_main(full_path)
 				self.filter_window.show()
 				return
 
-			if dir_type=="snapshots":
+			if dir_info.type=="snapshots":
 				from cmp_class import cmp_class
 
 				help_window().help_set_help(["plot_time.png",_("<big><b>Examine the results in time domain</b></big><br> After you have run a simulation in time domain, if is often nice to be able to step through the simulation and look at the results.  This is what this window does.  Use the slider bar to move through the simulation.  When you are simulating a JV curve, the slider sill step through voltage points rather than time points.")])
@@ -812,21 +791,21 @@ class gpvdm_viewer(QListWidget,gpvdm_viewer_new):
 				#print("snapshots!!")
 				return
 
-			if dir_type=="backup":
+			if dir_info.type=="backup":
 				ret=yes_no_dlg(self,_("Are you sure you want restore this file from the backup, it will overwrite all files in the simulation directory?")+"\n\n"+full_path)
 				if ret==True:
 					from backup import backup_restore
 					backup_restore(get_sim_path(),full_path)
 
 
-			if dir_type=="file":
+			if dir_info.type=="file":
 				self.file_path=full_path
 				if os.path.basename(full_path)=="sim_info.dat":
 					self.sim_info_window=window_json_ro_viewer(full_path)
 					self.sim_info_window.show()
 					return
 
-				if isfiletype(full_path,"dat")==True:
+				if isfiletype(full_path,"dat")==True or isfiletype(full_path,"csv")==True:
 					text=peek_data(full_path)
 					if text.startswith(b"#multiplot"):
 						my_multiplot=multiplot()
@@ -840,9 +819,9 @@ class gpvdm_viewer(QListWidget,gpvdm_viewer_new):
 
 				desktop_open(full_path)
 				return
-#self.reject.emit()
-		
-		if dir_type=="dir" or dir_type=="backup_main" or dir_type=="multi_plot_dir" :
+
+		print(dir_info.type)
+		if dir_info.type=="dir" or dir_info.type=="backup_main" or dir_info.type=="multi_plot_dir" :
 			self.file_path=full_path
 			self.set_path(full_path)
 			self.fill_store()
@@ -869,27 +848,33 @@ class gpvdm_viewer(QListWidget,gpvdm_viewer_new):
 
 			full_path=self.file_path
 
-			if (file_name.endswith(".dat")==True):
+			if file_name.endswith(".dat")==True:
 				state=dat_file()
-				get_plot_file_info(state,full_path)
+				state.load_only_info(full_path)
 				summary="<big><b>"+file_name+"</b></big><br><br>"+_("title")+": "+state.title+"<br>"+_("x axis")+": "+state.y_label+" ("+latex_to_html(state.y_units)+")<br>"+_("y axis")+": "+state.data_label+" ("+latex_to_html(state.data_units)+")<br><br><big><b>"+_("Double click to open")+"</b></big>"
 				help_window().help_set_help(["dat_file.png",summary])
-
+			elif file_name.endswith(".csv")==True:
+				state=dat_file()
+				state.load_only_info(full_path)
+				summary="<big><b>"+file_name+"</b></big><br><br>"+_("title")+": "+state.title+"<br>"+_("x axis")+": "+state.y_label+" ("+latex_to_html(state.y_units)+")<br>"+_("y axis")+": "+state.data_label+" ("+latex_to_html(state.data_units)+")<br><br><big><b>"+_("Double click to open")+"</b></big>"
+				help_window().help_set_help(["csv.png",summary])
 			if file_name.endswith("equilibrium"):
 				state=dat_file()
-				get_plot_file_info(state,full_path)
+				state.load_only_info(full_path)
 				summary="<big><b>"+_("equilibrium")+"</b></big><br><br>"+_("This contains the simulation output at 0V in the dark.")
 				help_window().help_set_help(["folder.png",summary])
 
 			#if os.path.isdir(full_path)==True:
-			if get_dir_type(full_path)=="material":
+			dir_info=get_dir_type(full_path)
+			if dir_info!=None:
+				if dir_info.type=="material":
 
-				summary="<b><big>"+file_name+"</b></big><br>"
-				ref_path=os.path.join(full_path,"mat.bib")
-				b=bibtex()
-				
-				if b.load(ref_path)!=False:
-					summary=summary+b.get_text()
-				help_window().help_set_help(["organic_material",summary])
+					summary="<b><big>"+file_name+"</b></big><br>"
+					ref_path=os.path.join(full_path,"mat.bib")
+					b=bibtex()
+					
+					if b.load(ref_path)!=False:
+						summary=summary+b.get_text()
+					help_window().help_set_help(["organic_material",summary])
 
 		self.selection_changed.emit()

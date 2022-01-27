@@ -45,7 +45,7 @@ void mesh_cpy(struct simulation *sim,struct mesh *out,struct mesh *in);
 void mesh_malloc_sub_mesh(struct simulation * sim, struct mesh *in);
 void mesh_gen_simple(struct simulation * sim, struct mesh *in,long double len,int points);
 long double mesh_to_dim(struct simulation *sim,struct dimensions *dim, struct mesh *in,char xyz);
-long double mesh_to_dim_heat(struct simulation *sim,struct dim_heat *dim, struct mesh *in,char xyz);
+long double mesh_to_dim_heat(struct simulation *sim,struct dimensions *dim, struct mesh *in,char xyz);
 long double mesh_to_lin_array(struct simulation *sim,long double *mesh, long double *dmesh, struct mesh *in);
 
 //mesh obj

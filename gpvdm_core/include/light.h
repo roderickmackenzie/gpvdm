@@ -50,14 +50,21 @@ struct light_sources
 	long double lstart;
 	long double lstop;
 	int llen;
+
+	//for EQE
+	int use_flat_sepctrum;			
 };
 
 struct light_src
 {
 	int nspectra;
 	struct math_xy spectra_tot;
+	struct math_xy spectra_tot_no_filter;
 	struct math_xy *spectra;
 	double light_multiplyer[20];
+	//for EQE
+	int use_flat_sepctrum;			
+
 
 	//filter
 	int filter_enabled;
@@ -88,13 +95,14 @@ struct light_src
 	long double phi_start;
 	long double phi_stop;
 
+
 };
 
 struct light
 {
 	//output files
 	char dump_dir[PATH_MAX];
-	struct dim_light dim;
+	struct dimensions dim;
 
 	//long double zxyl
 	float ****Ep;
@@ -130,6 +138,9 @@ struct light
 	long double *reflect;
 	long double *transmit;
 
+	//for EQE
+	int use_flat_sepctrum;			
+
 	//Input spectra
 	struct light_src light_src_y0;
 	struct light_src light_src_y1;
@@ -138,6 +149,14 @@ struct light
 	long double *sun_y1;
 	long double *sun_photons_y0;
 	long double *sun_photons_y1;
+
+	//with no filter
+	long double *sun_y0_no_filter;
+	long double *sun_y1_no_filter;
+	long double *sun_photons_y0_no_filter;
+	long double *sun_photons_y1_no_filter;
+
+	//electricl field
 	long double *sun_E_y0;
 	long double *sun_E_y1;
 	char suns_spectrum_file[200];

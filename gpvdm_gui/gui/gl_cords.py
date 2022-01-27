@@ -154,7 +154,7 @@ class gl_cords():
 			while pos<=stop_x:
 				o.triangles.append([pos, 0.0, start_z])
 				o.triangles.append([pos, 0.0, stop_z])
-				pos=pos+dz
+				pos=pos+dx
 
 		elif direction=="zy":
 			pos=start_z
@@ -174,7 +174,7 @@ class gl_cords():
 			while pos<=stop_x:
 				o.triangles.append([pos, start_y, 0.0])
 				o.triangles.append([pos, stop_y, 0.0])
-				pos=pos+dz
+				pos=pos+dx
 
 			pos=start_y
 			while pos<=stop_y:

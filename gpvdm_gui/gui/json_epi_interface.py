@@ -24,11 +24,6 @@
 #  Store the interface information for the interface
 #
 
-
-import sys
-import os
-import shutil
-import json
 from json_base import json_base
 
 
@@ -39,6 +34,13 @@ class json_epi_interface(json_base):
 		self.var_list=[]
 		self.var_list.append(["interface_model","none"])
 		self.var_list.append(["interface_eh_tau",1e-15])
+
+		self.var_list.append(["interface_tunnel_e",False])
+		self.var_list.append(["interface_Ge",1e-15])
+
+		self.var_list.append(["interface_tunnel_h",False])
+		self.var_list.append(["interface_Gh",1e-15])
+
 		self.var_list.append(["interface_left_doping_enabled",False])
 		self.var_list.append(["interface_left_doping",1e20])
 		self.var_list.append(["interface_right_doping_enabled",False])

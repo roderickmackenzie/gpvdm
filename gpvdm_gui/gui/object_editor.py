@@ -142,12 +142,14 @@ class object_editor(QWidgetSavePos):
 			self.notebook.addTab(my_tab,name)	
 			i=i+1
 
-	def callback_edit(self):
+	def callback_edit(self,item):
 		data=gpvdm_data()
 		tab = self.notebook.currentWidget()
 		data.save()
-		data.load_triagles()
-		self.force_redraw()
+		if item=="shape_type":
+			self.force_redraw(level="reload_rebuild")
+		else:
+			self.force_redraw()
 
 	def callback_enable_disable(self):
 		data=gpvdm_data()
@@ -182,13 +184,14 @@ class object_editor(QWidgetSavePos):
 		s.dx=obj.dx/2.0
 		s.dy=obj.dy/2.0
 		s.dz=obj.dz/2.0
+		s.moveable=True
 		obj.shapes.append(s)
 		my_tab=json_viewer()
 		my_tab.populate(s)
 		my_tab.changed.connect(self.callback_edit)
 		self.notebook.addTab(my_tab,s.shape_name)
 		my_tab.changed.connect(self.callback_edit)
-		self.force_redraw()
+		self.force_redraw(level="reload_rebuild")
 		data.save()
 
 	def callback_rename_shape(self):

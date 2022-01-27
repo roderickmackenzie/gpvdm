@@ -338,7 +338,7 @@ void contacts_dump(struct simulation *sim,struct device *in)
 		for (y = 0; y < dim->ylen; y++)
 		{
 			printf("%d %d\n",in->n_contact_x0[z][y],in->n_contact_x1[z][y]);
-			//printf("%d %.2Le %.2Lf %.2Lf (%.2Lf %.2Lf %Le %Le %Le %Le)\n",y,dim->ymesh[y],in->Vapplied_x0[z][y],in->Vapplied_x1[z][y],in->V_x0[z][y],in->V_x1[z][y],in->electrons_x0[z][y],in->holes_x0[z][y],in->electrons_x1[z][y],in->holes_x1[z][y]);
+			//printf("%d %.2Le %.2Lf %.2Lf (%.2Lf %.2Lf %Le %Le %Le %Le)\n",y,dim->y[y],in->Vapplied_x0[z][y],in->Vapplied_x1[z][y],in->V_x0[z][y],in->V_x1[z][y],in->electrons_x0[z][y],in->holes_x0[z][y],in->electrons_x1[z][y],in->holes_x1[z][y]);
 		}
 	}
 }
@@ -465,7 +465,7 @@ for (z=0;z<dim->zlen;z++)
 				for (x=0;x<dim->xlen;x++)
 				{
 
-					if (contact_within_zx(c, dim->zmesh[z],dim->xmesh[x])==0)
+					if (contact_within_zx(c, dim->z[z],dim->x[x])==0)
 					{
 
 						if (in->n_contact_y0[z][x]!=-1)
@@ -487,10 +487,10 @@ for (z=0;z<dim->zlen;z++)
 			{
 				for (x=0;x<dim->xlen;x++)
 				{
-					//printf("%d %Le %Le %d\n",i,dim->zmesh[z],dim->xmesh[x],contact_within_zx(c, dim->zmesh[z],dim->xmesh[x]));
+					//printf("%d %Le %Le %d\n",i,dim->z[z],dim->x[x],contact_within_zx(c, dim->z[z],dim->x[x]));
 					//getchar();
 					//printf("%Le\n",in->contacts[1].shape.x0);
-					if (contact_within_zx(c, dim->zmesh[z],dim->xmesh[x])==0)
+					if (contact_within_zx(c, dim->z[z],dim->x[x])==0)
 					{
 
 						if (in->n_contact_y1[z][x]!=-1)
@@ -514,7 +514,7 @@ for (z=0;z<dim->zlen;z++)
 				{
 
 
-					if (contact_within_zy(c, dim->zmesh[z], dim->ymesh[y]+in->my_epitaxy.device_start)==0)
+					if (contact_within_zy(c, dim->z[z], dim->y[y]+in->my_epitaxy.device_start)==0)
 					{
 
 						if (in->n_contact_x0[z][y]!=-1)
@@ -536,7 +536,7 @@ for (z=0;z<dim->zlen;z++)
 				for (y=0;y<dim->ylen;y++)
 				{
 
-					if (contact_within_zy(c, dim->zmesh[z], dim->ymesh[y]+in->my_epitaxy.device_start)==0)
+					if (contact_within_zy(c, dim->z[z], dim->y[y]+in->my_epitaxy.device_start)==0)
 					{
 
 						if (in->n_contact_x1[z][y]!=-1)
@@ -608,8 +608,8 @@ void contacts_interpolate(struct simulation *sim,struct device *in, long double 
 					//we have found the next contact
 					if (cc!=-1)
 					{
-						x0=dim->xmesh[last_x];
-						x1=dim->xmesh[xx];
+						x0=dim->x[last_x];
+						x1=dim->x[xx];
 						v0=var_zx[z][last_x];//in->contacts[last].voltage;
 						v1=var_zx[z][xx];//in->contacts[cc].voltage;
 						interpolate=TRUE;
@@ -622,7 +622,7 @@ void contacts_interpolate(struct simulation *sim,struct device *in, long double 
 			if ((interpolate==TRUE)&&(c==-1))
 			{
 				//printf("%Le %Le %Le %Le\n",x0,x1,v0,v1);
-				var_zx[z][x]=v0+(dim->xmesh[x]-x0)*((v1-v0)/(x1-x0));
+				var_zx[z][x]=v0+(dim->x[x]-x0)*((v1-v0)/(x1-x0));
 				in->passivate_y0[z][x]=INTERPOLATE;
 			}
 
@@ -917,13 +917,13 @@ for (x=0;x<dim->xlen;x++)
 			i=in->n_contact_y1[z][x];
 			if (i!=-1)
 			{
-				in->contacts[i].area+=dim->dx[x]*dim->dz[z];
+				in->contacts[i].area+=dim->dX[x]*dim->dZ[z];
 			}
 
 			i=in->n_contact_y0[z][x];
 			if (i!=-1)
 			{
-				in->contacts[i].area+=dim->dx[x]*dim->dz[z];
+				in->contacts[i].area+=dim->dX[x]*dim->dZ[z];
 			}
 
 		}
@@ -1094,13 +1094,13 @@ void contacts_ingress(struct simulation *sim,struct device *in)
 
 	for (z=0;z<dim->zlen;z++)
 	{
-		z_pos=dim->zmesh[z];
+		z_pos=dim->z[z];
 		for (x=0;x<dim->xlen;x++)
 		{
-			x_pos=dim->xmesh[x];
+			x_pos=dim->x[x];
 			for (y=0;y<dim->ylen;y++)
 			{
-				y_pos=dim->ymesh[y];
+				y_pos=dim->y[y];
 				for (c=0;c<in->ncontacts;c++)
 				{
 					if (in->contacts[c].position==LEFT)		//I should not need this line if I fix up the other contacts

@@ -53,7 +53,7 @@ from gpvdm_json import gpvdm_data
 
 class tab_class(QWidget,tab_base):
 
-	changed = pyqtSignal()
+	changed = pyqtSignal(str)
 
 	def __init__(self,template_widget,data=gpvdm_data(),db_json_file=None,json_path=None,uid=None):
 		QWidget.__init__(self)
@@ -101,9 +101,9 @@ class tab_class(QWidget,tab_base):
 
 		self.tab.changed.connect(self.callback_edit)
 
-	def callback_edit(self):
+	def callback_edit(self,token):
 		self.data.save()
-		self.changed.emit()
+		self.changed.emit(token)
 
 	def set_edit(self,editable):
 		self.tab.editable=editable

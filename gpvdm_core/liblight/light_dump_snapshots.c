@@ -2,28 +2,28 @@
 // General-purpose Photovoltaic Device Model gpvdm.com - a drift diffusion
 // base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solarcells.
 // The model can simulate OLEDs, Perovskite cells, and OFETs.
-// 
+//
 // Copyright 2008-2022 Roderick C. I. MacKenzie https://www.gpvdm.com
 // r.c.i.mackenzie at googlemail.com
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+// the rights to use, copy, modify, merge, publish, distribute, sublicense,
 // and/or sell copies of the Software, and to permit persons to whom the
 // Software is furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included
 // in all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 // OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// 
+//
 
 
 
@@ -54,18 +54,18 @@ void light_dump_snapshots(struct simulation *sim,char *output_path,struct light 
 
 	int l;
 	char out_dir[PATH_MAX];
-	struct dim_light *dim=&li->dim;
+	struct dimensions *dim=&li->dim;
 	char temp[200];
 	char line[400];
 	char snapshots_path[PATH_MAX];
 	struct dat_file buf;
-	buffer_init(&buf);
+	dat_file_init(&buf);
 
 	struct dat_file info_file;
-	buffer_init(&info_file);
+	dat_file_init(&info_file);
 
 	struct dat_file wavelengths_buffer;
-	buffer_init(&wavelengths_buffer);
+	dat_file_init(&wavelengths_buffer);
 	buffer_malloc(&wavelengths_buffer);
 
 	int dump_number=0;
@@ -82,7 +82,15 @@ void light_dump_snapshots(struct simulation *sim,char *output_path,struct light 
 
 		if (dump_number>=li->dump_verbosity)
 		{
-			dump_make_snapshot_dir(sim,out_dir,output_path ,"optical_snapshots", tot_dump_number,"2d");
+			struct snapshots snap;
+			snapshots_init(&snap);
+			strcpy(snap.type,"snapshots");
+			strcpy(snap.icon,"optics2");
+			strcpy(snap.plot_type,"2d");
+			strcpy(snap.name,"optical_snapshots");
+			strcpy(snap.path,output_path);
+
+			dump_make_snapshot_dir(sim,out_dir, tot_dump_number,&snap);
 			made_dir=TRUE;
 			buffer_malloc(&info_file);
 
@@ -102,24 +110,51 @@ void light_dump_snapshots(struct simulation *sim,char *output_path,struct light 
 
 			wavelength_to_rgb(&r,&g,&b,dim->l[l]);
 
-			buffer_malloc(&buf);
-			dim_light_info_to_buf(&buf,dim);
-			sprintf(buf.title,"%s %.2Lf nm",_("Absorbed photons at"),dim->l[l]*1e9);
-			strcpy(buf.type,"zxy-d");
-			strcpy(buf.data_label,_("Generation rate"));
-			strcpy(buf.data_units,"m^{-3}");
-			buf.x=dim->xlen;
-			buf.y=dim->ylen;
-			buf.z=dim->zlen;
-			buffer_add_info(sim,&buf);
-			sprintf(buf.rgb,"%.2x%.2x%.2x",r,g,b);
-			dat_file_add_zxy_from_zxyl_double_light_data(sim,&buf,li->photons_asb, dim,l);
-			dat_file_add_zxy_long_double_light_data(sim,&buf,li->Gn, dim);
-			buffer_dump_path(sim,out_dir,"light_Gn.dat",&buf);
-			buffer_free(&buf);
+			if (buffer_set_file_name(sim,NULL,&buf,"light_Gn.csv")==0)
+			{
+				buffer_malloc(&buf);
+				dim_info_to_buf(&buf,dim);
+				sprintf(buf.title,"%s %.2Lf nm",_("Absorbed photons at"),dim->l[l]*1e9);
+				strcpy(buf.type,"zxy-d");
+				strcpy(buf.data_label,_("Generation rate"));
+				strcpy(buf.data_units,"m^{-3}");
+				sprintf(buf.rgb,"%.2x%.2x%.2x",r,g,b);
+				dat_file_add_zxy_double_l(sim,&buf, dim,li->photons_asb,l);
+				buffer_dump_path(sim,out_dir,NULL,&buf);
+				buffer_free(&buf);
+			}
+
+			if (buffer_set_file_name(sim,NULL,&buf,"n.csv")==0)
+			{
+				buffer_malloc(&buf);
+				dim_info_to_buf(&buf,dim);
+				strcpy(buf.title,_("Refractive index"));
+				strcpy(buf.type,"zxy-d");
+				strcpy(buf.data_label,_("Refractive index"));
+				strcpy(buf.data_units,"au");
+				sprintf(buf.rgb,"%.2x%.2x%.2x",r,g,b);
+				dat_file_add_zxy_float_l(sim,&buf, dim,li->n,l);
+				buffer_dump_path(sim,out_dir,NULL,&buf);
+				buffer_free(&buf);
+			}
+
+
+			if (buffer_set_file_name(sim,NULL,&buf,"alpha.csv")==0)
+			{
+				buffer_malloc(&buf);
+				dim_info_to_buf(&buf,dim);
+				strcpy(buf.title,_("Absorption"));
+				strcpy(buf.type,"zxy-d");
+				strcpy(buf.data_label,_("Absorption"));
+				strcpy(buf.data_units,"m^{-1}");
+				sprintf(buf.rgb,"%.2x%.2x%.2x",r,g,b);
+				dat_file_add_zxy_float_l(sim,&buf, dim,li->alpha,l);
+				buffer_dump_path(sim,out_dir,NULL,&buf);
+				buffer_free(&buf);
+			}
 
 			buffer_malloc(&buf);
-			dim_light_info_to_buf(&buf,dim);
+			dim_info_to_buf(&buf,dim);
 			strcpy(buf.title,"Photons absorbed vs position");
 			strcpy(buf.type,"xy");
 			strcpy(buf.data_label,_("Photons absorbed"));
@@ -149,7 +184,7 @@ void light_dump_snapshots(struct simulation *sim,char *output_path,struct light 
 
 
 			buffer_malloc(&buf);
-			dim_light_info_to_buf(&buf,dim);
+			dim_info_to_buf(&buf,dim);
 			strcpy(buf.title,"Position - Normalized photon density");
 			strcpy(buf.type,"xy");
 			strcpy(buf.data_label,"Normalized photon density");
@@ -188,7 +223,7 @@ void light_dump_snapshots(struct simulation *sim,char *output_path,struct light 
 		dump_number++;
 		if (dump_number>li->dump_verbosity)
 		{
-			dump_number=0;		
+			dump_number=0;
 		}
 	}
 

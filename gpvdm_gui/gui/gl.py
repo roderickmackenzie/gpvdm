@@ -401,9 +401,6 @@ if open_gl_ok==True:
 			lines=[]
 
 			data=gpvdm_data()
-			self.dump_energy_slice_xpos=int(data.dump.dump_energy_slice_xpos)
-			self.dump_energy_slice_ypos=int(data.dump.dump_energy_slice_ypos)
-			self.dump_energy_slice_zpos=int(data.dump.dump_energy_slice_zpos)
 			self.dump_1d_slice_xpos=int(data.dump.dump_1d_slice_xpos)
 			self.dump_1d_slice_zpos=int(data.dump.dump_1d_slice_zpos)
 
@@ -465,9 +462,9 @@ if open_gl_ok==True:
 						a.dxyz.x=0.5
 						a.dxyz.y=0.5
 						a.dxyz.z=0.5
-						a.r=1.0
-						a.g=0.0
-						a.b=1.0
+						a.r=0.0
+						a.g=1.0
+						a.b=0.0
 						
 						a.rotate_x=source.rotate_x
 						a.rotate_y=source.rotate_y
@@ -522,38 +519,57 @@ if open_gl_ok==True:
 							o.text="Detector: "+d.english_name
 							self.gl_objects_add(o)
 
-			for fdtd in data.fdtd.segments:
-				if fdtd.fdtd_xzy=="zy":
-					world_dy=(self.scale.world_max.y-self.scale.world_min.y)
-					y0=self.scale.project_m2screen_y(self.scale.world_min.y)
-					y1=y0+world_dy*self.scale.y_mul
+			if data.sim.simmode.endswith("fdtd")==True:
+				if self.view_options.render_fdtd_grid==True:
+					for fdtd in data.fdtd.segments:
+						if fdtd.fdtd_xzy=="zy":
+							world_dy=(self.scale.world_max.y-self.scale.world_min.y)
+							y0=self.scale.project_m2screen_y(self.scale.world_min.y)
+							y1=y0+world_dy*self.scale.y_mul
 
-					x0=0.0#self.scale.project_m2screen_y(self.scale.world_min.y)
+							x0=0.0#self.scale.project_m2screen_y(self.scale.world_min.y)
 
-					world_dz=(self.scale.world_max.z-self.scale.world_min.z)
-					z0=self.scale.project_m2screen_z(self.scale.world_min.z)
-					z1=z0+world_dz*self.scale.z_mul
+							world_dz=(self.scale.world_max.z-self.scale.world_min.z)
+							z0=self.scale.project_m2screen_z(self.scale.world_min.z)
+							z1=z0+world_dz*self.scale.z_mul
 
-					dy=(y1-y0)/10
-					dz=(z1-z0)/10
-					
-					o=self.gl_objects_add_grid(x0,None,y0,y1,z0,z1,color=[0.8,0.0,0.8,1.0],dy=dy,dz=dz,direction="zy")
-				elif fdtd.fdtd_xzy=="xy":
-					world_dy=(self.scale.world_max.y-self.scale.world_min.y)
-					y0=self.scale.project_m2screen_y(self.scale.world_min.y)
-					y1=y0+world_dy*self.scale.y_mul
+							dy=(y1-y0)/float(fdtd.fdtd_ylen)
+							dz=(z1-z0)/float(fdtd.fdtd_zlen)
+							
+							o=self.gl_objects_add_grid(x0,None,y0,y1,z0,z1,color=[0.8,0.0,0.8,1.0],dy=dy,dz=dz,direction="zy")
+						elif fdtd.fdtd_xzy=="xy":
+							world_dy=(self.scale.world_max.y-self.scale.world_min.y)
+							y0=self.scale.project_m2screen_y(self.scale.world_min.y)
+							y1=y0+world_dy*self.scale.y_mul
 
-					world_dz=(self.scale.world_max.z-self.scale.world_min.z)
-					z0=self.scale.project_m2screen_z(self.scale.world_min.z)+world_dz*self.scale.z_mul/2.0
+							world_dz=(self.scale.world_max.z-self.scale.world_min.z)
+							z0=self.scale.project_m2screen_z(self.scale.world_min.z)+world_dz*self.scale.z_mul/2.0
 
-					world_dx=(self.scale.world_max.x-self.scale.world_min.x)
-					x0=self.scale.project_m2screen_x(self.scale.world_min.x)
-					x1=x0+world_dx*self.scale.x_mul
+							world_dx=(self.scale.world_max.x-self.scale.world_min.x)
+							x0=self.scale.project_m2screen_x(self.scale.world_min.x)
+							x1=x0+world_dx*self.scale.x_mul
 
-					dy=(y1-y0)/10
-					dx=(x1-x0)/10
-					o=self.gl_objects_add_grid(x0,x1,y0,y1,z0,None,color=[0.8,0.0,0.8,1.0],dy=dy,dx=dx,direction="xy")
+							dy=(y1-y0)/float(fdtd.fdtd_ylen)
+							dx=(x1-x0)/float(fdtd.fdtd_xlen)
 
+							o=self.gl_objects_add_grid(x0,x1,y0,y1,z0,None,color=[0.8,0.0,0.8,1.0],dy=dy,dx=dx,direction="xy")
+						elif fdtd.fdtd_xzy=="zx":
+							world_dy=(self.scale.world_max.y-self.scale.world_min.y)
+							y0=self.scale.project_m2screen_y(self.scale.world_min.y)+world_dy*self.scale.y_mul/2.0
+
+							world_dz=(self.scale.world_max.z-self.scale.world_min.z)
+							z0=self.scale.project_m2screen_z(self.scale.world_min.z)
+							z1=z0+world_dz*self.scale.z_mul
+
+							world_dx=(self.scale.world_max.x-self.scale.world_min.x)
+							x0=self.scale.project_m2screen_x(self.scale.world_min.x)
+							x1=x0+world_dx*self.scale.x_mul
+
+
+							dx=(x1-x0)/float(fdtd.fdtd_xlen)
+							dz=(z1-z0)/float(fdtd.fdtd_zlen)
+
+							o=self.gl_objects_add_grid(x0,x1,y0,None,z0,z1,color=[0.8,0.0,0.8,1.0],dz=dz,dx=dx,direction="zx")
 			if 1==0:
 				for l in self.lights:
 					a=gl_base_object()
@@ -586,11 +602,19 @@ if open_gl_ok==True:
 			self.update()
 			self.rebuild_scene()
 
-		def force_redraw(self):
-			self.build_scene()
-			self.do_draw()
-			self.menu_update()
-
+		def force_redraw(self,level="rebuild"):
+			if level=="reload_rebuild":
+				data=gpvdm_data()
+				data.load_triagles()
+				self.build_scene()
+				self.do_draw()
+				self.menu_update()
+			elif level=="rebuild":
+				self.build_scene()
+				self.do_draw()
+				self.menu_update()
+			elif level=="no_rebuild":
+				self.update()
 		def resizeEvent(self,event):
 			if self.failed==False:
 				#glClearDepth(1.0)              

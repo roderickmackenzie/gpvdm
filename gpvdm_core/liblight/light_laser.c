@@ -2,28 +2,28 @@
 // General-purpose Photovoltaic Device Model gpvdm.com - a drift diffusion
 // base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solarcells.
 // The model can simulate OLEDs, Perovskite cells, and OFETs.
-// 
+//
 // Copyright 2008-2022 Roderick C. I. MacKenzie https://www.gpvdm.com
 // r.c.i.mackenzie at googlemail.com
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+// the rights to use, copy, modify, merge, publish, distribute, sublicense,
 // and/or sell copies of the Software, and to permit persons to whom the
 // Software is furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included
 // in all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 // OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// 
+//
 
 /** @file light_laser.c
 	@brief Deals with lasers for the light model.
@@ -57,7 +57,7 @@ int light_load_laser(struct simulation *sim, struct light *li,char *name, struct
 	struct json_obj *json_lasers;
 	struct json_obj *json_laser;
 	struct json_obj *json_config;
-	struct dim_light *dim=&(li->dim);
+	struct dimensions *dim=&(li->dim);
 
 	str_to_lower(search_name, name);
 
@@ -76,6 +76,15 @@ int light_load_laser(struct simulation *sim, struct light *li,char *name, struct
 			json_get_long_double(sim, json_config, &(li->laser_wavelength),"laserwavelength");
 
 			li->laser_pos=(int)((li->laser_wavelength-li->lstart)/dim->dl);
+			if (li->laser_wavelength<li->lstart)
+			{
+				ewe(sim,"fs laser wavelength smaller than minimum point on optical spectra min=%Le (m) laser=%Le (m) max=%Le (m)\n",li->lstart,li->laser_wavelength,li->lstop);
+			}
+
+			if (li->laser_wavelength>li->lstop)
+			{
+				ewe(sim,"fs laser wavelength smaller than maximum point on optical spectra min=%Le (m) laser=%Le (m) max=%Le (m)\n",li->lstart,li->laser_wavelength,li->lstop);
+			}
 
 			json_get_long_double(sim, json_config, &(li->spotx),"spotx");
 			li->spotx=gfabs(li->spotx);

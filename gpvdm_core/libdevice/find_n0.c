@@ -48,6 +48,10 @@ struct newton_state *ns=&in->ns;
 long double ***Bfree_bk=NULL;
 long double ***Binterface_bk=NULL;
 long double ***Bt_interface_bk=NULL;
+int auger_enabled_bk=FALSE;
+int ss_srh_enabled_bk=FALSE;
+int interfaces_tunnels_e_bk=0;
+int interfaces_tunnels_h_bk=0;
 
 struct dimensions *dim=&in->ns.dim;
 printf_log(sim,"%s\n",_("Finding equilibrium conditions"));
@@ -70,6 +74,18 @@ light_solve_and_update(sim,in,&(in->mylight),0.0);
 		zxy_set_gdouble(dim, in->B, 0.0);
 		zxy_set_gdouble(dim, in->interface_B, 0.0);
 		zxy_set_gdouble(dim, in->interface_Bt, 0.0);
+
+		auger_enabled_bk=in->auger_enabled;
+		in->auger_enabled=FALSE;
+
+		ss_srh_enabled_bk=in->ss_srh_enabled;
+		in->ss_srh_enabled=FALSE;
+
+		interfaces_tunnels_e_bk=in->interfaces_tunnels_e;
+		in->interfaces_tunnels_e=0;
+
+		interfaces_tunnels_h_bk=in->interfaces_tunnels_h;
+		in->interfaces_tunnels_h=0;
 
 		gdouble save_clamp=in->electrical_clamp;
 		int save_ittr=in->max_electrical_itt;
@@ -150,9 +166,15 @@ light_solve_and_update(sim,in,&(in->mylight),0.0);
 		cpy_zxy_long_double(dim, &(in->interface_B), &(Binterface_bk));
 		cpy_zxy_long_double(dim, &(in->interface_Bt), &(Bt_interface_bk));
 
-		free_zxy_gdouble(dim, &(Bfree_bk));
-		free_zxy_gdouble(dim, &(Binterface_bk));
-		free_zxy_gdouble(dim, &(Bt_interface_bk));
+		free_zxy_long_double(dim, &(Bfree_bk));
+		free_zxy_long_double(dim, &(Binterface_bk));
+		free_zxy_long_double(dim, &(Bt_interface_bk));
+
+		in->auger_enabled=auger_enabled_bk;
+		in->ss_srh_enabled=ss_srh_enabled_bk;
+
+		in->interfaces_tunnels_e=interfaces_tunnels_e_bk;
+		in->interfaces_tunnels_h=interfaces_tunnels_h_bk;
 
 		reset_np_save(in);
 		reset_npequlib(in);

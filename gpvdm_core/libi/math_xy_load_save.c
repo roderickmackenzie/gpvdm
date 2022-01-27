@@ -58,7 +58,6 @@ static char* unused_pchar __attribute__((unused));
 */
 int inter_load(struct simulation *sim,struct math_xy* in,char *name)
 {
-char temp[1000];
 struct inp_file data;
 long double x;
 long double y;
@@ -80,8 +79,6 @@ char line[4000];
 int ret_val=inp_get_string(sim,line,&data);
 while(ret_val==0)
 {
-	//
-	//unused_pchar=gpvdm_fgets(temp, 1000, file);
 	if ((line[0]!='#')&&(line[0]!='\n')&&(line[0]!='\r')&&(line[0]!=0)&&(line[0]!=0x0D))
 	{
 		sscanf(line,"%Le %Le",&(x),&(y));

@@ -2,28 +2,28 @@
 // General-purpose Photovoltaic Device Model gpvdm.com - a drift diffusion
 // base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solarcells.
 // The model can simulate OLEDs, Perovskite cells, and OFETs.
-// 
+//
 // Copyright 2008-2022 Roderick C. I. MacKenzie https://www.gpvdm.com
 // r.c.i.mackenzie at googlemail.com
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+// the rights to use, copy, modify, merge, publish, distribute, sublicense,
 // and/or sell copies of the Software, and to permit persons to whom the
 // Software is furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included
 // in all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 // OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// 
+//
 
 /** @file jv.c
 	@brief Simulate JV curve.
@@ -125,6 +125,10 @@ long double Jlast;
 long double Pdenlast;
 long double Vexternal;
 long double V=0.0;
+
+long double mue=0.0;
+long double muh=0.0;
+
 struct json_obj *json_jv;
 struct dimensions *dim=&in->ns.dim;
 
@@ -137,7 +141,7 @@ light_solve_and_update(sim,in,&(in->mylight),0.0);
 
 printf_log(sim,_("Running JV simulation\n"));
 struct dat_file buf;
-buffer_init(&buf);
+dat_file_init(&buf);
 
 struct dynamic_store store;
 
@@ -209,6 +213,9 @@ inter_init(sim,&tau_list);
 struct math_xy Tl;
 inter_init(sim,&Tl);
 
+struct math_xy v_optical_efficiency;
+inter_init(sim,&v_optical_efficiency);
+
 //contact_set_active_contact_voltage(sim,in,Vapplied);
 //char json_path[PATH_MAX];
 //join_path(2,json_path,in->output_path,"json.dat");
@@ -250,7 +257,7 @@ light_set_sun(&(in->mylight),sun_orig*config.jv_light_efficiency);
 light_solve_and_update(sim,in,&(in->mylight),0.0);
 
 struct light *li=&(in->mylight);
-struct dim_light *ldim=&(li->dim);
+struct dimensions *ldim=&(li->dim);
 int z;
 int x;
 int y;
@@ -329,6 +336,9 @@ struct heat *thermal=&(in->thermal);
 long double mu_pmax=-1.0;
 long double mu_voc=-1.0;
 long double mu_jsc=0.0;
+long double mu_geom_pmax=-1.0;
+long double mu_geom_voc=-1.0;
+long double mu_geom_jsc=0.0;
 long double tau_voc=-1.0;
 long double tau_pmax=-1.0;
 long double theta_srh_free=-1.0;
@@ -431,7 +441,11 @@ if (config.Vstop<config.Vstart)
 				if ((Vlast<=0)&&(Vexternal>=0.0))
 				{
 					nsc=get_extracted_np(in);
-					mu_jsc=(get_avg_mue(in)+get_avg_muh(in))/2.0;
+					mue=get_avg_mue(in);
+					muh=get_avg_muh(in);
+					mu_jsc=(mue+muh)/2.0;
+					mu_geom_jsc=sqrt(mue*muh);
+
 					found_jsc=TRUE;
 				}
 
@@ -445,7 +459,10 @@ if (config.Vstop<config.Vstart)
 						n_free_voc=get_free_n_charge(in);
 						p_trap_voc=get_p_trapped_charge(in);
 						p_free_voc=get_free_p_charge(in);
-						mu_voc=(get_avg_mue(in)+get_avg_muh(in))/2.0;
+						mue=get_avg_mue(in);
+						muh=get_avg_muh(in);
+						mu_voc=(mue+muh)/2.0;
+						mu_geom_voc=sqrt(mue*muh);
 						found_voc=TRUE;
 					}
 				}
@@ -455,6 +472,7 @@ if (config.Vstop<config.Vstart)
 					mue_pmax=get_avg_mue(in);
 					muh_pmax=get_avg_muh(in);
 					mu_pmax=(mue_pmax+muh_pmax)/2.0;
+					mu_geom_pmax=sqrt(mue_pmax*muh_pmax);
 				}
 
 				inter_append(&R_list,Vexternal,get_avg_recom(in));
@@ -502,18 +520,37 @@ if (config.Vstop<config.Vstart)
 			if ((dump_step>=config.dump_verbosity)||(config.dump_verbosity==1))
 			{
 				dump_write_to_disk(sim,in);
+
+				if (config.dump_energy_space==ENERGY_SPACE_MAP)
+				{
+					dump_device_map(sim,in->output_path,in);
+				}
+
+				if (config.dump_energy_space==SINGLE_MESH_POINT)
+				{
+					dump_energy_slice(sim,in,config.dump_x, config.dump_y, config.dump_z);
+				}
+
 				dump_step=0;
 			}
 			dump_step++;
 		}
 
-		#ifdef libemission_enabled
-			optical_power_m2=calculate_photon_power_m2(sim,in);
-		#endif
 
-		inter_append(&lv,Vexternal,optical_power_m2);
 
-		inter_append(&lj,J,optical_power_m2);
+
+
+		if (in->emission_enabled==TRUE)
+		{
+			#ifdef libemission_enabled
+				optical_power_m2=calculate_photon_power_m2(sim,in);
+			#endif
+
+			inter_append(&lv,Vexternal,optical_power_m2);
+
+			inter_append(&lj,J,optical_power_m2);
+			inter_append(&v_optical_efficiency,Vexternal,100.0*optical_power_m2/(J*Vexternal));
+		}
 		//printf("%Le %le\n",get_avg_recom(in),in->my_image.avg_extract_eff);
 
 		jv_voltage_step(sim,in,&V,&Vstep);
@@ -602,7 +639,7 @@ if (power_den.len>0)
 printf_log(sim,"Max possible Jsc = %Lf\n",get_max_Jsc(in));
 if (get_dump_status(sim,dump_print_text)==TRUE)
 {
-	
+
 	if (Voc!=-1.0)
 	{
 		printf_log(sim,"Voc= %Lf (V)\n",Voc);
@@ -667,6 +704,9 @@ if (config.dump_verbosity>=0)
 			fprintf(out,"\t\"mu_jsc\":\"%Le\",\n",mu_jsc);
 			fprintf(out,"\t\"mu_pmax\":\"%Le\",\n",mu_pmax);
 			fprintf(out,"\t\"mu_voc\":\"%Le\",\n",mu_voc);
+			fprintf(out,"\t\"mu_geom_jsc\":\"%Le\",\n",mu_jsc);
+			fprintf(out,"\t\"mu_geom_pmax\":\"%Le\",\n",mu_pmax);
+			fprintf(out,"\t\"mu_geom_voc\":\"%Le\",\n",mu_voc);
 			fprintf(out,"\t\"mue_pmax\":\"%Le\",\n",mue_pmax);
 			fprintf(out,"\t\"muh_pmax\":\"%Le\",\n",muh_pmax);
 			fprintf(out,"\t\"tau_voc\":\"%Le\",\n",tau_voc);
@@ -682,7 +722,7 @@ if (config.dump_verbosity>=0)
 
 if (config.dump_verbosity==1)
 {
-	if (buffer_set_file_name(sim,in,&buf,"jv_internal.dat")==0)
+	if (buffer_set_file_name(sim,in,&buf,"jv_internal.csv")==0)
 	{
 		buffer_malloc(&buf);
 		buf.y_mul=1.0;
@@ -695,17 +735,13 @@ if (config.dump_verbosity==1)
 		strcpy(buf.data_units,"A m^{-2}");
 		buf.logscale_x=0;
 		buf.logscale_y=0;
-		buf.x=1;
-		buf.y=jvexternal.len;
-		buf.z=1;
-		buffer_add_info(sim,&buf);
-		buffer_add_xy_data(sim,&buf,jv_internal.x, jv_internal.data, jv_internal.len);
-		buffer_dump_path(sim,in->output_path,"jv_internal.dat",&buf);
+		dat_file_add_xy_data(sim,&buf,jv_internal.x, jv_internal.data, jv_internal.len);
+		buffer_dump_path(sim,in->output_path,NULL,&buf);
 		buffer_free(&buf);
 	}
 }
 
-if (buffer_set_file_name(sim,in,&buf,"k.dat")==0)
+if (buffer_set_file_name(sim,in,&buf,"k.csv")==0)
 {
 	buffer_malloc(&buf);
 	buf.y_mul=1.0;
@@ -719,11 +755,7 @@ if (buffer_set_file_name(sim,in,&buf,"k.dat")==0)
 	buf.logscale_x=0;
 	buf.logscale_y=0;
 	buf.logscale_z=0;
-	buf.x=1;
-	buf.y=charge.len;
-	buf.z=1;
-	buffer_add_info(sim,&buf);
-	buffer_add_xy_data(sim,&buf,klist.x, klist.data, klist.len);
+	dat_file_add_xy_data(sim,&buf,klist.x, klist.data, klist.len);
 	buffer_dump_path(sim,in->output_path,NULL,&buf);
 	buffer_free(&buf);
 }
@@ -742,16 +774,12 @@ if (buffer_set_file_name(sim,in,&buf,"charge.dat")==0)
 	buf.logscale_x=0;
 	buf.logscale_y=0;
 	buf.logscale_z=0;
-	buf.x=1;
-	buf.y=charge.len;
-	buf.z=1;
-	buffer_add_info(sim,&buf);
-	buffer_add_xy_data(sim,&buf,charge.x, charge.data, charge.len);
+	dat_file_add_xy_data(sim,&buf,charge.x, charge.data, charge.len);
 	buffer_dump_path(sim,in->output_path,NULL,&buf);
 	buffer_free(&buf);
 }
 
-if (buffer_set_file_name(sim,in,&buf,"charge_with_surface.dat")==0)
+if (buffer_set_file_name(sim,in,&buf,"charge_with_surface.csv")==0)
 {
 	buffer_malloc(&buf);
 	buf.y_mul=1.0;
@@ -765,17 +793,13 @@ if (buffer_set_file_name(sim,in,&buf,"charge_with_surface.dat")==0)
 	buf.logscale_x=0;
 	buf.logscale_y=0;
 	buf.logscale_z=0;
-	buf.x=1;
-	buf.y=charge_with_surface_charge.len;
-	buf.z=1;
-	buffer_add_info(sim,&buf);
-	buffer_add_xy_data(sim,&buf,charge_with_surface_charge.x, charge_with_surface_charge.data, charge_with_surface_charge.len);
+	dat_file_add_xy_data(sim,&buf,charge_with_surface_charge.x, charge_with_surface_charge.data, charge_with_surface_charge.len);
 	buffer_dump_path(sim,in->output_path,NULL,&buf);
 	buffer_free(&buf);
 }
 
 
-if (buffer_set_file_name(sim,in,&buf,"charge_tot.dat")==0)
+if (buffer_set_file_name(sim,in,&buf,"charge_tot.csv")==0)
 {
 	buffer_malloc(&buf);
 	buf.y_mul=1.0;
@@ -789,36 +813,30 @@ if (buffer_set_file_name(sim,in,&buf,"charge_tot.dat")==0)
 	buf.logscale_x=0;
 	buf.logscale_y=0;
 	buf.logscale_z=0;
-	buf.x=1;
-	buf.y=charge.len;
-	buf.z=1;
-	buffer_add_info(sim,&buf);
-	buffer_add_xy_data(sim,&buf,charge_tot.x, charge_tot.data, charge.len);
+	dat_file_add_xy_data(sim,&buf,charge_tot.x, charge_tot.data, charge.len);
 	buffer_dump_path(sim,in->output_path,NULL,&buf);
 	buffer_free(&buf);
 }
 
 if (in->ncontacts==2)
 {
-	buffer_malloc(&buf);
-	buf.y_mul=1.0;
-	buf.data_mul=1.0;
-	sprintf(buf.title,"%s - %s",_("Current density"),_("Applied voltage"));
-	strcpy(buf.type,"xy");
-	strcpy(buf.y_label,_("Applied Voltage"));
-	strcpy(buf.data_label,_("Current density"));
-	strcpy(buf.y_units,"Volts");
-	strcpy(buf.data_units,"A m^{-2}");
-	buf.logscale_x=0;
-	buf.logscale_y=0;
-	buf.x=1;
-	buf.y=jvexternal.len;
-	buf.z=1;
-	buffer_add_info(sim,&buf);
-	buffer_add_xy_data(sim,&buf,jvexternal.x, jvexternal.data, jvexternal.len);
-	buffer_dump_path(sim,in->output_path,"jv.dat",&buf);
-	buffer_free(&buf);
-
+	if (buffer_set_file_name(sim,in,&buf,"jv.dat")==0)
+	{
+		buffer_malloc(&buf);
+		buf.y_mul=1.0;
+		buf.data_mul=1.0;
+		sprintf(buf.title,"%s - %s",_("Current density"),_("Applied voltage"));
+		strcpy(buf.type,"xy");
+		strcpy(buf.y_label,_("Applied Voltage"));
+		strcpy(buf.data_label,_("Current density"));
+		strcpy(buf.y_units,"Volts");
+		strcpy(buf.data_units,"A m^{-2}");
+		buf.logscale_x=0;
+		buf.logscale_y=0;
+		dat_file_add_xy_data(sim,&buf,jvexternal.x, jvexternal.data, jvexternal.len);
+		buffer_dump_path(sim,in->output_path,NULL,&buf);
+		buffer_free(&buf);
+	}
 
 	if (buffer_set_file_name(sim,in,&buf,"iv.dat")==0)
 	{
@@ -834,11 +852,7 @@ if (in->ncontacts==2)
 		strcpy(buf.data_units,"A");
 		buf.logscale_x=0;
 		buf.logscale_y=0;
-		buf.x=1;
-		buf.y=jvexternal.len;
-		buf.z=1;
-		buffer_add_info(sim,&buf);
-		buffer_add_xy_data(sim,&buf,jvexternal.x, jvexternal.data, jvexternal.len);
+		dat_file_add_xy_data(sim,&buf,jvexternal.x, jvexternal.data, jvexternal.len);
 		buffer_dump_path(sim,in->output_path,NULL,&buf);
 		buffer_free(&buf);
 	}
@@ -846,7 +860,7 @@ if (in->ncontacts==2)
 
 if (thermal->newton_enable_external_thermal==TRUE)
 {
-	if (buffer_set_file_name(sim,in,&buf,"v_Tl.dat")==0)
+	if (buffer_set_file_name(sim,in,&buf,"v_Tl.csv")==0)
 	{
 		buffer_malloc(&buf);
 		buf.y_mul=1.0;
@@ -859,57 +873,70 @@ if (thermal->newton_enable_external_thermal==TRUE)
 		strcpy(buf.data_units,"K");
 		buf.logscale_x=0;
 		buf.logscale_y=0;
-		buf.x=1;
-		buf.y=Tl.len;
-		buf.z=1;
-		buffer_add_info(sim,&buf);
-		buffer_add_xy_data(sim,&buf,Tl.x, Tl.data, Tl.len);
+		dat_file_add_xy_data(sim,&buf,Tl.x, Tl.data, Tl.len);
 		buffer_dump_path(sim,in->output_path,NULL,&buf);
 		buffer_free(&buf);
 	}
 }
+
 if (in->emission_enabled==TRUE)
 {
-	buffer_malloc(&buf);
-	buf.y_mul=1.0;
-	buf.data_mul=1.0;
-	buf.data_mul=1;
-	sprintf(buf.title,"%s - %s",_("Voltage"),_("Light flux"));
-	strcpy(buf.type,"xy");
-	strcpy(buf.y_label,("Applied Voltage"));
-	strcpy(buf.data_label,("Light flux"));
-	strcpy(buf.y_units,"Volts");
-	strcpy(buf.data_units,"W m^{-2}");
-	buf.logscale_x=0;
-	buf.logscale_y=0;
-	buf.x=1;
-	buf.y=lv.len;
-	buf.z=1;
-	buffer_add_info(sim,&buf);
-	buffer_add_xy_data(sim,&buf,lv.x, lv.data, lv.len);
-	buffer_dump_path(sim,in->output_path,"lv.dat",&buf);
-	buffer_free(&buf);
+	if (buffer_set_file_name(sim,in,&buf,"vl.csv")==0)
+	{
+		buffer_malloc(&buf);
+		buf.y_mul=1.0;
+		buf.data_mul=1.0;
+		buf.data_mul=1;
+		sprintf(buf.title,"%s - %s",_("Voltage"),_("Light flux"));
+		strcpy(buf.type,"xy");
+		strcpy(buf.y_label,("Applied Voltage"));
+		strcpy(buf.data_label,("Light flux"));
+		strcpy(buf.y_units,"Volts");
+		strcpy(buf.data_units,"W m^{-2}");
+		buf.logscale_x=0;
+		buf.logscale_y=0;
+		dat_file_add_xy_data(sim,&buf,lv.x, lv.data, lv.len);
+		buffer_dump_path(sim,in->output_path,NULL,&buf);
+		buffer_free(&buf);
+	}
+
+	if (buffer_set_file_name(sim,in,&buf,"jl.csv")==0)
+	{
+		buffer_malloc(&buf);
+		buf.y_mul=1.0;
+		buf.data_mul=1.0;
+		sprintf(buf.title,"%s - %s",_("Current density"),_("Light flux"));
+		strcpy(buf.type,"xy");
+		strcpy(buf.y_label,("Current density"));
+		strcpy(buf.data_label,_("Light flux"));
+		strcpy(buf.y_units,"A m^{-2}");
+		strcpy(buf.data_units,"W m^{-2}");
+		buf.logscale_x=0;
+		buf.logscale_y=0;
+		dat_file_add_xy_data(sim,&buf,lj.x, lj.data, lj.len);
+		buffer_dump_path(sim,in->output_path,NULL,&buf);
+		buffer_free(&buf);
+	}
+
+	if (buffer_set_file_name(sim,in,&buf,"v_optical_efficiency.csv")==0)
+	{
+		buffer_malloc(&buf);
+		buf.y_mul=1.0;
+		buf.data_mul=1.0;
+		sprintf(buf.title,"%s - %s",_("Voltage"),_("Power in Optical emission/Electrical power in"));
+		strcpy(buf.type,"xy");
+		strcpy(buf.y_label,("Voltage"));
+		strcpy(buf.data_label,_("Efficiency"));
+		strcpy(buf.y_units,"V");
+		strcpy(buf.data_units,"%");
+		buf.logscale_x=0;
+		buf.logscale_y=0;
+		dat_file_add_xy_data(sim,&buf,v_optical_efficiency.x, v_optical_efficiency.data, v_optical_efficiency.len);
+		buffer_dump_path(sim,in->output_path,NULL,&buf);
+		buffer_free(&buf);
+	}
 
 
-
-	buffer_malloc(&buf);
-	buf.y_mul=1.0;
-	buf.data_mul=1.0;
-	sprintf(buf.title,"%s - %s",_("Current density"),_("Light flux"));
-	strcpy(buf.type,"xy");
-	strcpy(buf.y_label,("Current density"));
-	strcpy(buf.data_label,_("Light flux"));
-	strcpy(buf.y_units,"A m^{-2}");
-	strcpy(buf.data_units,"W m^{-2}");
-	buf.logscale_x=0;
-	buf.logscale_y=0;
-	buf.x=1;
-	buf.y=lj.len;
-	buf.z=1;
-	buffer_add_info(sim,&buf);
-	buffer_add_xy_data(sim,&buf,lj.x, lj.data, lj.len);
-	buffer_dump_path(sim,in->output_path,"lj.dat",&buf);
-	buffer_free(&buf);
 }
 
 inter_free(&jvexternal);
@@ -926,6 +953,7 @@ inter_free(&R_list);
 inter_free(&n_list);
 inter_free(&tau_list);
 inter_free(&Tl);
+inter_free(&v_optical_efficiency);
 inter_free(&charge_tot);
 
 dump_dynamic_save(sim,in,in->output_path,&store);
@@ -977,6 +1005,14 @@ void jv_load_config(struct simulation *sim,struct jv* in, struct json_obj *json_
 	json_get_english(sim,json_config, &(in->jv_single_point),"jv_single_point");
 
 	json_get_int(sim,json_config, &(in->dump_verbosity),"dump_verbosity");
+
+
+	json_get_english(sim,json_config, &(in->dump_energy_space),"dump_energy_space");
+	json_get_int(sim,json_config, &(in->dump_x),"dump_x");
+	json_get_int(sim,json_config, &(in->dump_y),"dump_y");
+	json_get_int(sim,json_config, &(in->dump_z),"dump_z");
+
+
 	json_get_english(sim,json_config, &(in->jv_use_external_voltage_as_stop),"jv_use_external_voltage_as_stop");
 
 }

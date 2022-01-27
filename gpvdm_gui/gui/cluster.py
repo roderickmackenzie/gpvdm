@@ -238,7 +238,7 @@ class cluster:
 		#		print "I should be waiting for mylock"
 		#		self.wait_lock()
 		#		print "I have finished waiting"
-		print("cache clear")
+		pass
 
 	def recvall(self,n):
 		data = bytearray() 

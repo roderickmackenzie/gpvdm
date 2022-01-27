@@ -73,7 +73,6 @@ def clone_materials(dest,src_dir,file_type):
 
 			src_file=os.path.join(src_dir,files[i])
 			dest_file=os.path.join(dest,files[i])
-			
 			clone_material(dest_file,src_file)
 
 			progress_window.set_fraction(float(i)/float(len(files)))

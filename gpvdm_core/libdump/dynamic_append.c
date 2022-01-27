@@ -92,13 +92,13 @@ if (get_dump_status(sim,dump_dynamic)==TRUE)
 	J_tot=fabs(dev->Jn_y0[0][0])+fabs(dev->Jp_y0[0][0]);
 	J_out=fabs(dev->Jn_y0[0][0]+dev->Jp_y0[0][0]);
 	dJ=J_tot-J_out;
-	s0=dJ/dim->dy[0]/Qe;
+	s0=dJ/dim->dY[0]/Qe;
 	inter_append(&(store->R_surface_y0),x_value,s0);
 
 	J_tot=fabs(dev->Jn_y1[0][0])+fabs(dev->Jp_y1[0][0]);
 	J_out=fabs(dev->Jn_y1[0][0]+dev->Jp_y1[0][0]);
 	dJ=J_tot-J_out;
-	s1=dJ/dim->dy[dim->ylen-1]/Qe;
+	s1=dJ/dim->dY[dim->ylen-1]/Qe;
 	inter_append(&(store->R_surface_y1),x_value,s1);
 
 	//charge
@@ -137,7 +137,7 @@ if (get_dump_status(sim,dump_dynamic)==TRUE)
 
 	//printf(">>%Le %Le\n",1.0000e-5*get_free_n_charge(dev)/(get_free_n_charge(dev)+get_n_trapped_charge(dev)),get_avg_mue(dev));
 	//srh rates
-	int i;
+
 	int band;
 	gdouble srh_n_r1=0.0;
 	gdouble srh_n_r2=0.0;
@@ -210,7 +210,7 @@ if (get_dump_status(sim,dump_dynamic)==TRUE)
 	}
 
 	//field
-	long double val=(ns->phi[0][0][(dim->ylen/2)+1]-ns->phi[0][0][(dim->ylen/2)])/(dim->ymesh[(dim->ylen/2)+1]-dim->ymesh[(dim->ylen/2)]);
+	long double val=(ns->phi[0][0][(dim->ylen/2)+1]-ns->phi[0][0][(dim->ylen/2)])/(dim->y[(dim->ylen/2)+1]-dim->y[(dim->ylen/2)]);
 	inter_append(&(store->E_field),x_value,val);
 
 	Vapplied=contact_get_voltage(sim,dev,0);
@@ -223,7 +223,7 @@ if (get_dump_status(sim,dump_dynamic)==TRUE)
 
 	if (store->band_snapshot==NULL)
 	{
-		malloc_zxy_gdouble(dim,&(store->band_snapshot));
+		malloc_zxy_long_double(dim,&(store->band_snapshot));
 
 		for (z=0;z<dim->zlen;z++)
 		{

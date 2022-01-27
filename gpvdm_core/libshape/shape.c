@@ -2,28 +2,28 @@
 // General-purpose Photovoltaic Device Model gpvdm.com - a drift diffusion
 // base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solarcells.
 // The model can simulate OLEDs, Perovskite cells, and OFETs.
-// 
+//
 // Copyright 2008-2022 Roderick C. I. MacKenzie https://www.gpvdm.com
 // r.c.i.mackenzie at googlemail.com
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+// the rights to use, copy, modify, merge, publish, distribute, sublicense,
 // and/or sell copies of the Software, and to permit persons to whom the
 // Software is furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included
 // in all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 // OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// 
+//
 
 /** @file shape.c
 	@brief Load the shape files.
@@ -44,6 +44,7 @@
 #include <enabled_libs.h>
 #include <dos.h>
 #include <heat_fun.h>
+#include <exciton_fun.h>
 
 int shape_in_shape(struct simulation *sim,struct shape *s,long double z,long double x,long double y)
 {
@@ -117,6 +118,7 @@ void shape_free(struct simulation *sim,struct shape *s)
 	dos_free(&(s->dosn));
 	dos_free(&(s->dosp));
 	heat_material_free(&(s->heat));
+	exciton_material_free(&(s->ex));
 }
 
 
@@ -158,6 +160,7 @@ void shape_init(struct simulation *sim,struct shape *s)
 	dos_init(&(s->dosn));
 	dos_init(&(s->dosp));
 	heat_material_init(&(s->heat));
+	exciton_material_init(&(s->ex));
 
 	s->color_r=0.5;
 	s->color_g=0.5;
@@ -172,6 +175,7 @@ void shape_cpy(struct simulation *sim,struct shape *out,struct shape *in)
 	dos_cpy(&(out->dosn),&(in->dosn));
 	dos_cpy(&(out->dosp),&(in->dosp));
 	heat_material_cpy(&(out->heat),&(in->heat));
+	exciton_material_cpy(&(out->ex),&(in->ex));
 	strcpy(out->dos_file,in->dos_file);
 	out->Gnp=in->Gnp;
 
@@ -186,7 +190,7 @@ void shape_load_materials(struct simulation *sim,struct shape *s)
 /*	struct triangles tri;
 	triangle_load_from_file(sim,(&tri),"/home/rod/gpvdm_local/shape/selen/shape.inp");
 	struct dat_file buf;
-	buffer_init(&buf);
+	dat_file_init(&buf);
 	buffer_malloc(&buf);
 	triangles_to_dat_file(&buf,(&tri));
 	buffer_dump_path(sim,"","rod_test.dat",&buf);

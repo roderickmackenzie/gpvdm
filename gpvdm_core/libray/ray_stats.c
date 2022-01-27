@@ -136,7 +136,7 @@ void ray_calculate_avg_extract_eff(struct simulation *sim,struct epitaxy *epi,st
 			for (i=0;i<in->ray_wavelength_points;i++)
 			{
 				tot+=epi->layer[layer].photon_extract_eff[i];
-				count+=1.0;
+				count+=epi->layer[layer].photon_extract_eff_count[i];
 			}
 
 			epi->layer[layer].avg_photon_extract_eff=tot/count;

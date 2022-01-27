@@ -91,6 +91,7 @@ void update_material_arrays(struct simulation *sim, struct device *in);
 void load_config(struct simulation *sim,struct device *in);
 void update(struct device *cell);
 int device_run_simulation(struct simulation *sim, struct device *dev);
+void clean_sim_dir(struct simulation *sim, struct device *dev);
 void solve_all(struct simulation *sim,struct device *in);
 
 //Light

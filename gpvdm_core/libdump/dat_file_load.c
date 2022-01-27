@@ -51,9 +51,7 @@
 void dat_file_load_info(struct simulation *sim,struct dat_file *in,char *file_name)
 {
 char line[10000];
-char *token;
 char temp2[200];
-int i;
 FILE *file;
 file=fopen(file_name,"r");
 

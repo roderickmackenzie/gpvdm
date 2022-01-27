@@ -42,6 +42,10 @@ struct jv
 	long double jv_Rcontact;
 	int jv_single_point;
 	int dump_verbosity;
+	int dump_energy_space;
+	int dump_x;
+	int dump_y;
+	int dump_z;
 	int jv_use_external_voltage_as_stop;
 };
 

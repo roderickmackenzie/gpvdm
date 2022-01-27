@@ -202,7 +202,7 @@ class gl_input():
 		self.lastPos=event.pos()
 		self.setFocusPolicy(Qt.StrongFocus)
 		self.setFocus()
-		self.update()
+		self.force_redraw(level="no_rebuild")
 		#self.view_dump()
 
 	def event_to_view(self,event):
@@ -233,10 +233,10 @@ class gl_input():
 				self.gl_objects_select_by_id(obj.id)
 				self.set_cursor(QCursor(Qt.SizeAllCursor))
 				self.text_output.emit(obj.id[0]+" "+obj.text)
-				self.update()
+				self.force_redraw(level="no_rebuild")
 			else:
 				self.gl_object_deselect_all()
-				self.update()
+				self.force_redraw(level="no_rebuild")
 
 
 	def mouseReleaseEvent(self,event):
@@ -269,5 +269,5 @@ class gl_input():
 		p=event.angleDelta()
 		self.active_view=self.event_to_view(event)
 		self.active_view.zoom =self.active_view.zoom - p.y()/120
-		self.update()
+		self.force_redraw(level="no_rebuild")
 

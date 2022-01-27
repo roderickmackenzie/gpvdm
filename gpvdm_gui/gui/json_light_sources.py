@@ -87,20 +87,9 @@ class json_light_source(json_base):
 
 class json_lights(json_base):
 	def __init__(self):
-		json_base.__init__(self,"lights",segment_class=True)
+		json_base.__init__(self,"lights",segment_class=True,segment_example=json_light_source())
 
 
-	def load_from_json(self,json):
-		self.segments=[]
-		segs=json['segments']
-		for i in range(0,segs):
-			a=json_light_source()
-			simulation_name="segment"+str(i)
-			a.load_from_json(json[simulation_name])
-			self.segments.append(a)
-
-		if len(self.segments)==0:
-			self.segments.append(json_light_source())
 
 class json_light_sources(json_base):
 	def __init__(self):

@@ -57,7 +57,7 @@ void device_load_math_config(struct simulation *sim,struct device *in)
 	obj=json_obj_find(&(in->config.obj), "math");
 	if (obj==NULL)
 	{
-		ewe(sim,"Object light not found\n");
+		ewe(sim,"Object math not found in config.c\n");
 	}
 
 	json_get_int(sim, obj, &in->max_electrical_itt0,"maxelectricalitt_first");

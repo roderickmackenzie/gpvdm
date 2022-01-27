@@ -81,6 +81,12 @@ struct epi_layer
 	int interface_type;
 	long double interface_R;
 
+	int interface_tunnel_e;
+	long double interface_Ge;
+
+	int interface_tunnel_h;
+	long double interface_Gh;
+
 	int interface_left_doping_enabled;
 	long double interface_left_doping;
 

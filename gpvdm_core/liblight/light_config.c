@@ -2,28 +2,28 @@
 // General-purpose Photovoltaic Device Model gpvdm.com - a drift diffusion
 // base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solarcells.
 // The model can simulate OLEDs, Perovskite cells, and OFETs.
-// 
+//
 // Copyright 2008-2022 Roderick C. I. MacKenzie https://www.gpvdm.com
 // r.c.i.mackenzie at googlemail.com
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+// the rights to use, copy, modify, merge, publish, distribute, sublicense,
 // and/or sell copies of the Software, and to permit persons to whom the
 // Software is furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included
 // in all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 // OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// 
+//
 
 
 
@@ -57,7 +57,7 @@ void light_load_config_file(struct simulation *sim,struct light *li, struct json
 {
 	struct json_obj *json_light;
 
-	struct dim_light *dim=&(li->dim);
+	struct dimensions *dim=&(li->dim);
 
 	li->disable_transfer_to_electrical_mesh=FALSE;
 
@@ -65,10 +65,10 @@ void light_load_config_file(struct simulation *sim,struct light *li, struct json
 
 	if (json_light==NULL)
 	{
-		ewe(sim,"Object light not found\n");
+		ewe(sim,"Object light not found in light_config.c\n");
 	}
 	json_get_string(sim, json_light, li->suns_spectrum_file,"sun");
-	
+
 	json_get_int(sim, json_light, &li->align_mesh,"alignmesh");
 
 	json_get_int(sim, json_light, &dim->ylen,"meshpoints");
@@ -143,6 +143,11 @@ void light_load_light_sources(struct simulation *sim,struct light *li, struct js
 		sprintf(temp,"segment%d",i);
 		json_seg=json_obj_find(json_lights, temp);
 		json_get_string(sim, json_seg, illuminate_from,"light_illuminate_from");
+
+		li->light_src_y0.use_flat_sepctrum=li->use_flat_sepctrum;
+
+		li->light_src_y1.use_flat_sepctrum=li->use_flat_sepctrum;
+
 		if (strcmp(illuminate_from,"y0")==0)
 		{
 			if (y0_found==FALSE)
@@ -181,6 +186,8 @@ void light_load_config(struct simulation *sim,struct light *li, struct device *d
 	li->lstart=dev->lights.lstart;
 	li->lstop=dev->lights.lstop;
 	li->dim.llen=dev->lights.llen;
+	li->dim.dx=dev->xlen;
+	li->dim.dz=dev->zlen;
 
 	li->force_update=FALSE;
 

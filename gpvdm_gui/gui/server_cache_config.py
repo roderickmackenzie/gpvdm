@@ -33,14 +33,13 @@ from inp import inp_save_lines_to_file
 from inp import inp_load_file
 from inp import inp_search_token_value
 
-from disk_speed import disk_test
 from progress_class import progress_class
 from PyQt5.QtGui import QFont
 from gpvdm_progress import gpvdm_progress
 
 from icon_lib import icon_get
 from inp import inp_update_token_value
-from util import gpvdm_delete_file
+from safe_delete import gpvdm_delete_file
 from gtkswitch import gtkswitch
 from str2bool import str2bool
 
@@ -150,7 +149,7 @@ class server_cache_config(QWidget):
 
 	def callback_clear_cache(self):
 		path=os.path.join(get_user_settings_dir(),"cache")
-		gpvdm_delete_file(path)
+		gpvdm_delete_file(path,allow_dir_removal=True)
 		self.close()
 
 	def update_progress(self):
@@ -167,14 +166,12 @@ class server_cache_config(QWidget):
 		self.max_size=1000
 		self.enabled=True
 		if os.path.isfile(self.cache_config_file)==False:
-			speed=disk_test(get_user_settings_dir())
+
 			lines=[]
 			lines.append("#cache_size")
 			lines.append(str(self.max_size))
 			lines.append("#cache_disk_speed")
 			lines.append(str(speed))
-			if (speed<200):
-				self.enabled=False
 			lines.append("#cache_enabled")
 			lines.append(str(self.enabled))
 			lines.append("#ver")

@@ -122,6 +122,18 @@ struct dos
 	long double mux;
 	long double muy;
 
+	//Auger
+	int auger_enabled;
+	long double Cn;
+	long double Cp;
+
+	//SS SRH
+	int ss_srh_enabled;
+	long double n1;
+	long double p1;
+	long double tau_n;
+	long double tau_p;
+
 	long double B;
 
 	int mobility_symmetric;

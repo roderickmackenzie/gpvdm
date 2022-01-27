@@ -83,25 +83,25 @@ void device_calculate_joule_heat(struct simulation *sim,struct device *dev)
 					{
 						Ecl=-dev->Xi[z][x][0]-dev->Vapplied_y0[z][x];
 						Evl=-dev->Xi[z][x][0]-dev->Vapplied_y0[z][x]-dev->Eg[z][x][0];
-						yl=dim->ymesh[0]-(dim->ymesh[1]-dim->ymesh[0]);
+						yl=dim->y[0]-(dim->y[1]-dim->y[0]);
 					}else
 					{
 						Ecl=dev->Ec[z][x][y-1];
 						Evl=dev->Ev[z][x][y-1];
-						yl=dim->ymesh[y-1];
+						yl=dim->y[y-1];
 					}
 
 					if (y==dim->ylen-1)
 					{
 						Ecr=-dev->Xi[z][x][y]-dev->V_y1[z][x];
 						Evr=-dev->Xi[z][x][y]-dev->V_y1[z][x]-dev->Eg[z][x][y];
-						yr=dim->ymesh[y]+(dim->ymesh[y]-dim->ymesh[y-1]);
+						yr=dim->y[y]+(dim->y[y]-dim->y[y-1]);
 
 					}else
 					{
 						Ecr=dev->Ec[z][x][y+1];
 						Evr=dev->Ev[z][x][y+1];
-						yr=dim->ymesh[y+1];
+						yr=dim->y[y+1];
 					}
 
 					dh=yr-yl;
@@ -121,7 +121,7 @@ void device_calculate_joule_heat(struct simulation *sim,struct device *dev)
 				{
 					dev->H_joule[z][x][y]=0.0;
 				}
-				//printf(">%Le %Le\n",dim->ymesh[y],dev->H_joule[z][x][y]);
+				//printf(">%Le %Le\n",dim->y[y],dev->H_joule[z][x][y]);
 			}
 		}
 	}

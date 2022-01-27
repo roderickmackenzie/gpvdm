@@ -134,7 +134,7 @@ long double get_tau(struct device *dev)
 	struct newton_state *ns=&dev->ns;
 	struct dimensions *dim=&dev->ns.dim;
 
-	dy=dim->ymesh[1]-dim->ymesh[0];
+	dy=dim->y[1]-dim->y[0];
 
 	for (z=0;z<dim->zlen;z++)
 	{

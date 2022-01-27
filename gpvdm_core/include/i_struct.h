@@ -39,6 +39,6 @@
 		int len;
 		int max_len;
 		int complex_enabled;
-		char name[200];
+		char name[PATH_MAX];
 	};
 #endif

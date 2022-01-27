@@ -141,6 +141,12 @@ class gl_scale():
 		self.y_mul=max_dist_y/xyz_max
 		self.z_mul=max_dist_z/xyz_max
 
+		while (self.x_mul*x_len*2.0<max_dist_x):
+			self.x_mul=self.x_mul*2.0
+
+		while (self.z_mul*z_len*2.0<max_dist_z):
+			self.z_mul=self.z_mul*2.0
+
 		if y_len*10.0<xyz_max:		#rescale for thin devices
 			max_dist_y=2
 			self.y_mul=2.0*max_dist_y/y_len

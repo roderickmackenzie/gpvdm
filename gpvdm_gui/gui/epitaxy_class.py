@@ -83,6 +83,7 @@ class epitaxy(json_base):
 		self.layers=[]
 		self.callbacks=[]
 		json_base.__init__(self,"epitaxy")
+		self.segments_name=["layers"]
 		self.var_list.append(["contacts",contacts_io()])
 		self.var_list_build()
 
@@ -291,21 +292,6 @@ class epitaxy(json_base):
 
 		return tot
 
-	def ylen_active(self):
-		tot=0
-		for a in self.layers:
-			if a.shape_dos.enabled==True:
-				tot=tot+a.dy
-
-		return tot
-
-	def get_opticaly_active_ylen(self):
-		tot=0
-		for a in epi.layers:
-			if a.solve_optical_problem==True:
-				tot=tot+a.dy
-
-		return tot
 
 	def get_layer_by_cordinate(self,y):
 		tot=0
@@ -364,6 +350,7 @@ class epitaxy(json_base):
 			for ns in range(0,int(layer_json['layer_shapes'])):
 				my_shape=shape()
 				my_shape.decode_from_json(layer_json["shape"+str(ns)])
+				my_shape.moveable=True
 				a.shapes.append(my_shape)
 
 			a.start=y_pos

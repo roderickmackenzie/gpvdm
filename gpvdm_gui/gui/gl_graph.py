@@ -29,7 +29,6 @@ from math import fabs
 from cal_path import get_sim_path
 
 from dat_file import dat_file
-from dat_file_math import dat_file_max_min
 from triangle import vec
 
 try:
@@ -39,11 +38,12 @@ try:
 	from PyQt5.QtOpenGL import QGLWidget
 	from gl_lib import val_to_rgb
 	from gl_list import gl_base_object
-
+	from PIL import Image, ImageFilter,ImageOps, ImageDraw
 except:
 	pass
 
 def clamp(val):
+	val=fabs(val)
 	if val>1.0:
 		val=1.0
 	return val
@@ -59,7 +59,7 @@ class gl_graph():
 		for data in self.graph_data:
 			if data.valid_data==True:
 				if data.type=="3d":
-					if self.view.render_plot==True:
+					if self.view_options.render_plot==True:
 						self.draw_graph_3d(data)
 				elif data.type=="poly":
 					self.draw_graph_rays(data)
@@ -98,138 +98,83 @@ class gl_graph():
 
 		data.plotted=True
 
-	def draw_graph_3d(self,data):
-		z=0
-		max_y_pos=int(len(data.y_scale)*self.frac_max)
-		min_y_pos=int(len(data.y_scale)*self.frac_min)
-		#print(max_y_pos,min_y_pos)
+	def graph_project_3d_slice_to_image(self,data):
+		
+		image_file=os.path.splitext(data.file_name)[0]+"_render.png"
 
-		if min_y_pos<0:
-			min_y_pos=0
+		if len(data.y_scale)>1 and len(data.x_scale)>1 and len(data.z_scale)>1:
+			print("can't project truly 3d images yet") 
 
-		if max_y_pos>=len(data.y_scale):
-			max_y_pos=len(data.y_scale)-1
+		len_x=len(data.x_scale)
+		len_y=len(data.y_scale)
+		len_z=len(data.z_scale)
 
-		if min_y_pos>=max_y_pos:
-			min_y_pos=max_y_pos-1
+		if os.path.isfile(image_file)==False:
+			my_max,my_min=data.max_min()
+			my_min=0.0
+			#my_max=my_max*0.7
+			#my_min=my_min*0.7
 
-		#print(min_y_pos,max_y_pos)
-		#for z in range(0,len(data.z_scale)):
-		my_max,my_min=dat_file_max_min(data)
-		my_max=my_max*0.7
+			if data.cols=="xyd":
+				im= Image.new("RGBA", (len(data.x_scale), len(data.y_scale)), "#000000")
+			elif data.cols=="yzd":
+				im= Image.new("RGBA", (len(data.z_scale), len(data.y_scale)), "#000000")
+			elif data.cols=="xzd":
+				im= Image.new("RGBA", (len(data.x_scale), len(data.z_scale)), "#000000")
 
-		if len(data.z_scale)==1:
-			zi_list=[0]
-		else:
-			zi_list=[0,len(data.z_scale)-1]
+			for xi in range(0,len_x):
+				for yi in range(0,len_y):
+					for zi in range(0,len_z):
+						r=int(255*clamp(2.0*(data.data[zi][xi][yi]-my_min)/(my_max-my_min))*data.r)
+						g=int(255*clamp(2.0*(data.data[zi][xi][yi]-my_min)/(my_max-my_min))*data.g)
+						b=int(255*clamp(2.0*(data.data[zi][xi][yi]-my_min)/(my_max-my_min))*data.b)
+						#print(pos,data.data[zi][xi][yi],my_min,my_max)
+						#if pos>len(self.color_map):
+						#	pos=len(self.color_map)-1
 
-		glBegin(GL_QUADS)
+						#rgb=self.color_map[pos]
+						if data.cols=="xyd":
+							im.putpixel((xi,yi),(r, g, b))
+						elif data.cols=="yzd":
+							im.putpixel((zi,yi),(r, g, b))
+						elif data.cols=="xzd":
+							im.putpixel((xi,zi),(r, g, b))
+			#print(image_file)
+			im.save(image_file)
 
-		if len(data.z_scale)>1:
-			dz=data.z_scale[1]-data.z_scale[0]
-		else:
-			dz=0.0
-
-		dx=data.x_scale[1]-data.x_scale[0]
-		dy=data.y_scale[1]-data.y_scale[0]
-		#for yi in range(0,len(data.y_scale)):
-		#	print(data.y_scale[yi])
-		#print("")
-		#front,back
+		#if slice_dir=="xy":
 		zi=0
-		yi=0
-		for zi in zi_list:
-			#for xi in range(0,len(data.x_scale)):
-			if len(zi_list)>1:
-				z0=self.scale.project_m2screen_z(data.z_scale[zi])
-				z1=self.scale.project_m2screen_z(data.z_scale[zi])
-			else:
-				z0=self.scale.project_m2screen_z(data.z_scale[0])
-				z1=self.scale.project_m2screen_z(data.z_scale[0])
-				z0=z0+z0*0.1
-				z1=z1+z1*0.1
 
-			for yi in range(0,len(data.y_scale)-1):
-				for xi in range(0,len(data.x_scale)-1):
-					x0=self.scale.project_m2screen_x(data.x_scale[xi])
-					y0=self.scale.project_m2screen_y(data.y_scale[yi])
-					x1=self.scale.project_m2screen_x(data.x_scale[xi+1])
-					y1=self.scale.project_m2screen_y(data.y_scale[yi+1])
+		z0=self.scale.project_m2screen_z(data.z_scale[0])
+		z1=self.scale.project_m2screen_z(data.z_scale[len(data.z_scale)-1])
+		x0=self.scale.project_m2screen_x(data.x_scale[0])
+		x1=self.scale.project_m2screen_x(data.x_scale[len(data.x_scale)-1])
+		y0=self.scale.project_m2screen_y(data.y_scale[0])
+		y1=self.scale.project_m2screen_y(data.y_scale[len(data.y_scale)-1])
 
-					if data.r==None:
-						d0=data.data[zi][xi][yi]
-						d1=data.data[zi][xi][yi+1]
-						r,g,b=val_to_rgb(((d0+d1)/2.0-my_min)/(my_max-my_min),grey=True)
-					else:
-						r=clamp(data.r*(data.data[zi][xi][yi]-my_min)/(my_max-my_min))
-						g=clamp(data.g*(data.data[zi][xi][yi]-my_min)/(my_max-my_min))
-						b=clamp(data.b*(data.data[zi][xi][yi]-my_min)/(my_max-my_min))
+		o=self.gl_objects_find("graph")
+		if o==None:
+			o=gl_base_object()
+			xyz=vec()
+			xyz.x=x0
+			xyz.y=y0
+			xyz.z=z0			
+			o.xyz.append(xyz)
 
-					glColor4f(r,g,b, 1.0)
+			o.dxyz.x=x1-x0
+			o.dxyz.y=y1-y0
+			o.dxyz.z=z1-z0
+			o.id=["graph"]
+			o.type="image"
 
-					#print(data.x_scale[xi],data.y_scale[yi])
-					glVertex3f(x0, y0, z0)
-					glVertex3f(x1, y0, z0)
-					glVertex3f(x1, y1, z0)
-					glVertex3f(x0, y1, z0)
+			o.image_path=image_file
+			self.gl_objects_add(o)
 
 
-		if len(data.z_scale)==1:
-			glEnd()
-			#print("exit here")
-			return
- 
-		#left,right
-		for xi in [0, len(data.x_scale)-1]:
-			for zi in range(0,len(data.z_scale)):
-				for yi in range(min_y_pos,max_y_pos):
-					x0=self.scale.project_m2screen_x(data.x_scale[xi])
-					y0=self.scale.project_m2screen_y(data.y_scale[yi])
-					z0=self.scale.project_m2screen_z(data.z_scale[zi])
-					x1=self.scale.project_m2screen_x(data.x_scale[xi])
-					y1=self.scale.project_m2screen_y(data.y_scale[yi]+dy)
-					z1=self.scale.project_m2screen_z(data.z_scale[zi]+dz)
-					if data.r==None:
-						r,g,b=val_to_rgb((data.data[zi][xi][yi]-my_min)/(my_max-my_min),grey=True)
-					else:
-						r=clamp(data.r*(data.data[zi][xi][yi]-my_min)/(my_max-my_min))
-						g=clamp(data.g*(data.data[zi][xi][yi]-my_min)/(my_max-my_min))
-						b=clamp(data.b*(data.data[zi][xi][yi]-my_min)/(my_max-my_min))
+			self.gl_image.clear_lib()
 
-					glColor4f(r,g,b, 1.0)
-
-					glVertex3f(x0, y0, z0)
-					glVertex3f(x0, y1, z0)
-					glVertex3f(x0, y1, z1)
-					glVertex3f(x0, y0, z1)
-
-
-		#top,bottom
-		for yi in [min_y_pos,max_y_pos-1]:
-			for zi in range(0,len(data.z_scale)):
-				for xi in range(0,len(data.x_scale)):
-					x0=self.scale.project_m2screen_x(data.x_scale[xi])
-					y0=self.scale.project_m2screen_y(data.y_scale[yi])
-					z0=self.scale.project_m2screen_z(data.z_scale[zi])
-					x1=self.scale.project_m2screen_x(data.x_scale[xi]+dx)
-					y1=self.scale.project_m2screen_y(data.y_scale[yi])
-					z1=self.scale.project_m2screen_z(data.z_scale[zi]+dz)
-					if data.r==None:
-						r,g,b=val_to_rgb((data.data[zi][xi][yi]-my_min)/(my_max-my_min),grey=True)
-					else:
-						r=clamp(data.r*(data.data[zi][xi][yi]-my_min)/(my_max-my_min))
-						g=clamp(data.g*(data.data[zi][xi][yi]-my_min)/(my_max-my_min))
-						b=clamp(data.b*(data.data[zi][xi][yi]-my_min)/(my_max-my_min))
-
-					glColor4f(r,g,b, 1.0)
-
-					glVertex3f(x0, y0, z0)
-					glVertex3f(x1, y0, z0)
-					glVertex3f(x1, y0, z1)
-					glVertex3f(x0, y0, z1)
-
-		glEnd()
-
+	def draw_graph_3d(self,data):
+		self.graph_project_3d_slice_to_image(data)
 
 
 	def draw_mode(self):

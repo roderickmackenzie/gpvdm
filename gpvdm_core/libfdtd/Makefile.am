@@ -6,7 +6,7 @@ LINK_FLAG=@LINK_FLAG@
 
 inc=-I../include/
 
-OBJS=fdtd.o fdtd_config.o fdtd_lambda.o fdtd_init.o fdtd_mesh.o fdtd_power.o fdtd_mem.o fdtd_util.o opencl_init.o fdtd_kernel.o opencl_mem.o fdtd_opencl_util.o fdtd_solve.o fdtd_dump.o
+OBJS=fdtd.o fdtd_config.o fdtd_lambda.o fdtd_init.o fdtd_mesh.o fdtd_power.o fdtd_mem.o fdtd_util.o opencl_init.o fdtd_kernel.o opencl_mem.o fdtd_opencl_util.o fdtd_solve.o fdtd_dump.o fdtd_excitation.o
 
 all: $(OBJS)
 	$(AR) rcs libgpvdm_fdtd.@SLIB_EXT@ $(OBJS)

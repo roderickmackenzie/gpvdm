@@ -523,7 +523,7 @@ void server2_run_until_done(struct simulation *sim,struct server_struct *server,
 		old_jobs_finished=jobs_finished;
 		//printf("-----\n");
 		//server2_dump_jobs(sim,server);
-		usleep(1000);
+		usleep(100);
 		//getchar();
 	}
 

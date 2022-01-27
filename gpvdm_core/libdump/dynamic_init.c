@@ -51,11 +51,6 @@ static int unused __attribute__((unused));
 
 void dump_dynamic_init(struct simulation *sim,struct dynamic_store *store,struct device *in)
 {
-int x=0;
-int y=0;
-int z=0;
-struct newton_state *ns=&(in->ns);
-struct dimensions *dim=&in->ns.dim;
 
 if (get_dump_status(sim,dump_dynamic)==TRUE)
 {

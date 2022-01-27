@@ -70,6 +70,7 @@ class tab_light_src(QTabWidget):
 		self.get_json_obj().english_name=tab_name
 		gpvdm_data().save()
 
-	def callback_configure_changed(self):
-		global_object_run("gl_force_redraw")
+	def callback_configure_changed(self,item):
+		if item=="light_illuminate_from":
+			global_object_run("gl_force_redraw")
 

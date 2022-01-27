@@ -38,6 +38,10 @@ struct pulse
 	int pulse_sim_mode;
 	int pulse_subtract_dc;
 	int dump_verbosity;
+	int dump_energy_space;
+	int dump_x;
+	int dump_y;
+	int dump_z;
 };
 
 

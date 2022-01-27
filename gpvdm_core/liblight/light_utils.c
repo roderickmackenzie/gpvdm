@@ -2,28 +2,28 @@
 // General-purpose Photovoltaic Device Model gpvdm.com - a drift diffusion
 // base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solarcells.
 // The model can simulate OLEDs, Perovskite cells, and OFETs.
-// 
+//
 // Copyright 2008-2022 Roderick C. I. MacKenzie https://www.gpvdm.com
 // r.c.i.mackenzie at googlemail.com
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+// the rights to use, copy, modify, merge, publish, distribute, sublicense,
 // and/or sell copies of the Software, and to permit persons to whom the
 // Software is furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included
 // in all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 // OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// 
+//
 
 /** @file light_utils.c
 	@brief Miscellaneous functions for the light model.
@@ -43,6 +43,8 @@
 #include "log.h"
 #include "memory.h"
 #include <light_fun.h>
+#include "exciton.h"
+#include "exciton_fun.h"
 
 static int unused __attribute__((unused));
 
@@ -63,7 +65,7 @@ void light_set_model(struct light *li,char *model)
 
 void light_cal_photon_density_y(struct simulation *sim,struct light *li,struct device *dev, int z, int x, int l)
 {
-	struct dim_light *dim=&li->dim;
+	struct dimensions *dim=&li->dim;
 
 	struct shape* s;
 	struct object* obj;
@@ -96,7 +98,7 @@ void light_cal_photon_density_y(struct simulation *sim,struct light *li,struct d
 
 		li->photons[z][x][y][l]+=photon_density;
 		li->photons_asb[z][x][y][l]+=photon_density*li->alpha[z][x][y][l];
-	
+
 		Eg=0.0;
 		if (obj->epi_layer!=-1)
 		{
@@ -117,14 +119,14 @@ void light_cal_photon_density_y(struct simulation *sim,struct light *li,struct d
 		{
 			li->H[z][x][y][l]+=E*Qe*li->photons_asb[z][x][y][l];
 		}
-		
+
 	}
 
 }
 
 long double light_cal_photon_density(struct simulation *sim,struct light *li,struct device *dev)
 {
-struct dim_light *dim=&li->dim;
+struct dimensions *dim=&li->dim;
 
 //struct shape* s;
 //struct object* obj;
@@ -198,6 +200,30 @@ return 0.0;
 }
 
 
+long double light_cal_photons_abs_l(struct simulation *sim,struct light *li,int l)
+{
+struct dimensions *dim=&li->dim;
+
+int x;
+int y;
+int z;
+long double tot=0.0;
+
+	for (z=0;z<dim->zlen;z++)
+	{
+		for (x=0;x<dim->xlen;x++)
+		{
+			for (y=0;y<dim->ylen;y++)
+			{
+				tot+=li->photons_asb[z][x][y][l]*dim->dl*dim->dx*dim->dy*dim->dz;
+				//printf("%le %Le %Le %Le %Le\n",li->photons_asb[z][x][y][l],dim->dl,dim->dx,dim->dy,dim->dz);
+			}
+		}
+	}
+//getchar();
+return tot;
+}
+
 void light_norm_photon_density(struct simulation *sim, struct light *li)
 {
 
@@ -206,7 +232,7 @@ int y=0;
 int z=0;
 int l=0;
 struct epitaxy *epi=li->epi;
-struct dim_light *dim=&li->dim;
+struct dimensions *dim=&li->dim;
 
 long double max=0.0;
 
@@ -258,7 +284,7 @@ void light_calculate_complex_n(struct light *li)
 int l=0;
 int x=0;
 int z=0;
-struct dim_light *dim=&li->dim;
+struct dimensions *dim=&li->dim;
 	for (z=0;z<dim->zlen;z++)
 	{
 		for (x=0;x<dim->xlen;x++)
@@ -278,7 +304,7 @@ void light_calculate_complex_n_zxl(struct light *li, int z, int x,  int l)
 {
 int y=0;
 
-struct dim_light *dim=&li->dim;
+struct dimensions *dim=&li->dim;
 
 long double nc=0.0;
 long double kc=0.0;
@@ -321,7 +347,7 @@ void light_set_sun_power(struct light *li,long double power, long double laser_e
 {
 int l;
 
-struct dim_light *dim=&li->dim;
+struct dimensions *dim=&li->dim;
 long double E=0.0;
 long double laser_photons=0.0;
 long double nl=0.0;
@@ -337,19 +363,32 @@ long double lam=0.0;
 for (l=0;l<dim->llen;l++)
 {
 	lam=dim->l[l];
+	//With filter
 	li->sun_y0[l]=li->light_src_y0.spectra_tot.data[l]*power;
 	li->sun_y1[l]=li->light_src_y1.spectra_tot.data[l]*power;
 
+	//With no filter
+	li->sun_y0_no_filter[l]=li->light_src_y0.spectra_tot_no_filter.data[l]*power;
+	li->sun_y1_no_filter[l]=li->light_src_y1.spectra_tot_no_filter.data[l]*power;
+
 	E=hp*cl/dim->l[l];
+
+	//With filter
 	li->sun_photons_y0[l]=li->sun_y0[l]/E;
 	li->sun_photons_y1[l]=li->sun_y1[l]/E;
 
+	//With no filter
+	li->sun_photons_y0_no_filter[l]=li->sun_y0_no_filter[l]/E;
+	li->sun_photons_y1_no_filter[l]=li->sun_y1_no_filter[l]/E;
+
 	if (l==li->laser_pos)
 	{
+
 		if (li->pulse_width!=0.0)
 		{
 			laser_photons=laser_eff*((li->pulseJ/li->pulse_width/E)/(li->spotx*li->spoty))/dim->dl;
-
+			printf("%Le\n",laser_photons);
+			
 			if (li->light_src_y0.nspectra>0)
 			{
 				if (li->light_src_y0.filter_enabled==TRUE)
@@ -419,7 +458,7 @@ for (l=0;l<dim->llen;l++)
 void light_set_unity_power(struct light *li)
 {
 	int l=0;
-	struct dim_light *dim=&li->dim;
+	struct dimensions *dim=&li->dim;
 
 	for  (l=0;l<dim->llen;l++)
 	{
@@ -432,7 +471,7 @@ void light_set_unity_power(struct light *li)
 
 }
 
-void light_flip_y_float(struct dim_light *dim,float ****in,int z,int x,int l)
+void light_flip_y_float(struct dimensions *dim,float ****in,int z,int x,int l)
 {
 	int i;
 	int j;
@@ -450,7 +489,7 @@ void light_flip_y_float(struct dim_light *dim,float ****in,int z,int x,int l)
 
 }
 
-void light_flip_y_float_complex(struct dim_light *dim,float complex ****in,int z,int x,int l)
+void light_flip_y_float_complex(struct dimensions *dim,float complex ****in,int z,int x,int l)
 {
 	int i;
 	int j;
@@ -471,7 +510,7 @@ void light_flip_y_float_complex(struct dim_light *dim,float complex ****in,int z
 int light_get_pos_from_wavelength(struct simulation *sim,struct light *li,double lam)
 {
 	int l=0;
-	struct dim_light *dim=&li->dim;
+	struct dimensions *dim=&li->dim;
 
 	if (lam<li->lstart)
 	{
@@ -495,7 +534,7 @@ void light_get_mode(struct math_xy *mode,int lam,struct light *li)
 	int y;
 	long double device_start=0.0;
 	struct epitaxy *epi=li->epi;
-	struct dim_light *dim=&li->dim;
+	struct dimensions *dim=&li->dim;
 	device_start=epi->device_start;
 
 	for (y=0;y<mode->len;y++)
@@ -507,10 +546,20 @@ void light_get_mode(struct math_xy *mode,int lam,struct light *li)
 
 long double light_get_optical_power(struct simulation *sim,struct light *li)
 {
-	struct dim_light *dim=&li->dim;
+	struct dimensions *dim=&li->dim;
 	long double Power=0.0;
 	Power=intergrate_light_l_long_double(dim, li->sun_y0);
 	Power+=intergrate_light_l_long_double(dim, li->sun_y1);
+
+	return Power;
+}
+
+long double light_get_optical_power_no_filter(struct simulation *sim,struct light *li)
+{
+	struct dimensions *dim=&li->dim;
+	long double Power=0.0;
+	Power=intergrate_light_l_long_double(dim, li->sun_y0_no_filter);
+	Power+=intergrate_light_l_long_double(dim, li->sun_y1_no_filter);
 
 	return Power;
 }
@@ -551,37 +600,65 @@ void light_transfer_gen_rate_to_device(struct simulation *sim,struct device *dev
 	long double Gn=0.0;
 	long double Gp=0.0;
 	long double pos=0;
+	struct dimensions *dim=&(dev->ns.dim);
+	struct dimensions *dim_l=&(li->dim);
+	struct epitaxy *epi=&(dev->my_epitaxy);
+	struct exciton *ex=&(dev->ex);
+	struct dimensions *dim_ex=&(ex->dim);
 
 	if (dev->electrical_simulation_enabled==FALSE)
 	{
 		return;
 	}
 
-	struct dimensions *dim=&(dev->ns.dim);
-	struct dim_light *dim_l=&(li->dim);
-	struct epitaxy *epi=&(dev->my_epitaxy);
 
 	//struct newton_state *ns=&cell->ns;
 
-	for (y=0;y<dim->ylen;y++)
+
+
+	for (z=0;z<dim->zlen;z++)
 	{
-
-		for (z=0;z<dim->zlen;z++)
+		for (x=0;x<dim->xlen;x++)
 		{
-			for (x=0;x<dim->xlen;x++)
+			if (dev->ex.exciton_enabled==TRUE)
 			{
-				pos=epi->device_start+dim->ymesh[y];
+				printf("Running exciton solver\n");
+				exciton_solve(sim, ex,dev, z, x);
+			}
 
-				Gn=interpolate_light_zxy_long_double(dim_l, li->Gn, z, x, pos)*li->Dphotoneff;
-				Gp=interpolate_light_zxy_long_double(dim_l, li->Gp, z, x, pos)*li->Dphotoneff;
+			//for (y=0;y<dim_ex->ylen;y++)
+			//{
+			//	printf("%Le %Le\n",ex->G[z][x][y],ex->Gn[z][x][y]);
+			//}
+			//getchar();
+			for (y=0;y<dim->ylen;y++)
+			{
 
-				//printf("%Le %Le %Le %Le %Le\n",Gn,Gp,li->Gn[0][0][0],pos,li->Dphotoneff);
-				dev->Gn[z][x][y]=Gn*li->electron_eff;
-				dev->Gp[z][x][y]=Gp*li->hole_eff;
+				if (dev->ex.exciton_enabled==TRUE)
+				{
+					pos=epi->device_start+dim->y[y];
+					Gn=interpolate_light_zxy_long_double(dim_ex, ex->Gn, z, x, pos)*li->Dphotoneff;
+					Gp=Gn;
+					//printf("%Le %Le %Le %Le %Le\n",Gn,ex->Gn[0][0][0],pos, dim_ex->y[0],dim_ex->y[dim_ex->ylen-1]);
+					//printf("%Le %Le %Le %Le %Le\n",Gn,Gp,li->Gn[0][0][0],pos,li->Dphotoneff);
+					dev->Gn[z][x][y]=Gn*li->electron_eff;
+					dev->Gp[z][x][y]=Gp*li->hole_eff;
+
+				}else
+				{
+					pos=epi->device_start+dim->y[y];
+					Gn=interpolate_light_zxy_long_double(dim_l, li->Gn, z, x, pos)*li->Dphotoneff;
+					Gp=interpolate_light_zxy_long_double(dim_l, li->Gp, z, x, pos)*li->Dphotoneff;
+
+					//printf("%Le %Le %Le %Le %Le\n",Gn,Gp,li->Gn[0][0][0],pos,li->Dphotoneff);
+					dev->Gn[z][x][y]=Gn*li->electron_eff;
+					dev->Gp[z][x][y]=Gp*li->hole_eff;
+
+				}
 			}
 		}
 	}
-
+	//getchar();
 
 }
 
@@ -590,7 +667,7 @@ long double light_J_photo(struct light *li)
 	int x=0;
 	int y=0;
 	int z=0;
-	struct dim_light *dim=&li->dim;
+	struct dimensions *dim=&li->dim;
 	struct epitaxy *epi=li->epi;
 
 	long double in_active=0.0;

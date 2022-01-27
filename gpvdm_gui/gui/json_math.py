@@ -61,6 +61,7 @@ class json_math(json_base):
 		self.var_list.append(["math_dynamic_mesh",False])
 		self.var_list.append(["cache_path","/home/rod/cache"])
 		self.var_list.append(["math_stop_on_convergence_problem",False])
+		self.var_list.append(["math_stop_on_inverted_fermi_level",False])
 		self.var_list.append(["solver_verbosity","solver_verbosity_at_end"])
 		self.var_list_build()
 

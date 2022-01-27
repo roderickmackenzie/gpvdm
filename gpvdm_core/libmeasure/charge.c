@@ -300,7 +300,7 @@ long double cal_contact_charge(struct device *in)
 		{
 			charge=in->p[z][x][y]+in->pt_all[z][x][y];
 			charge-=in->n[z][x][y]+in->nt_all[z][x][y];
-			sum+=(dim->ymesh[y]-(in->ylen/2.0))*charge*dim->dy[y];
+			sum+=(dim->y[y]-(in->ylen/2.0))*charge*dim->dY[y];
 		}
 	}
 	return sum/in->ylen/in->ylen;

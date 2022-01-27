@@ -1,7 +1,7 @@
 // 
 // General-purpose Photovoltaic Device Model gpvdm.com - a drift diffusion
-// base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solarcells.
-// The model can simulate OLEDs, Perovskite cells, and OFETs.
+// base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solardevs.
+// The model can simulate OLEDs, Perovskite devs, and OFETs.
 // 
 // Copyright 2008-2022 Roderick C. I. MacKenzie https://www.gpvdm.com
 // r.c.i.mackenzie at googlemail.com
@@ -43,11 +43,14 @@
 	#define CL_USE_DEPRECATED_OPENCL_1_2_APIS
 #include <CL/cl.h>
 #endif
+#include <dim.h>
+#include <light.h>
 
 struct fdtd_data
 {
 
-
+	struct dimensions dim;
+	struct vec world_min;
 	float ***Ex;
 	float ***Ey;
 	float ***Ez;
@@ -67,10 +70,6 @@ struct fdtd_data
 	float ***sigma;
 	float dt;
 	float dt2;
-	float zsize;
-	float xsize;
-	float ysize;
-	int *layer;
 
 	float *gEx;
 	float *gEy;
@@ -87,15 +86,6 @@ struct fdtd_data
 	float *gepsilon_r;
 	float *gy;
 
-	//axis
-	float *z_mesh;
-	float *x_mesh;
-	float *y_mesh;
-
-	float dx;
-	float dy;
-	float dz;
-
 	float f;
 	float omega;
 
@@ -103,6 +93,8 @@ struct fdtd_data
 	int excitation_mesh_point_y;
 
 	char *src_code;
+	struct object ****obj;
+
 	int use_gpu;
 	#ifdef use_open_cl
 
@@ -144,27 +136,28 @@ struct fdtd_data
 	//config
 	int lam_jmax;
 	float gap;
-	int plot;
-	FILE *gnuplot;
-	int zlen;
-	int xlen;
-	int ylen;
 	int max_ittr;
-
+	float max_time;
 	float src_start;
 	float src_stop;
 	float lambda;
 	float lambda_start;
 	float lambda_stop;
-	int lambda_points;
+
 	float stop;
 	float time;
 	int step;
 	float escape;
+	int excitation_type;
+	int pulse_length;
+	int excite_Ex;
+	int excite_Ey;
+	int excite_Ez;
+
 };
 
 void fdtd_init(struct fdtd_data *data);
-int do_fdtd(struct simulation *sim,struct device *cell);
+int do_fdtd(struct simulation *sim,struct device *dev);
 void fdtd_get_mem(struct simulation *sim, struct fdtd_data *data);
 void fdtd_free_all(struct simulation *sim, struct fdtd_data *data);
 void fdtd_opencl_load_config(struct simulation *sim, struct fdtd_data *data);
@@ -174,23 +167,23 @@ void fdtd_opencl_kernel_init(struct simulation *sim, struct fdtd_data *data);
 void fdtd_zero_arrays(struct simulation *sim,struct fdtd_data *data);
 void fdtd_opencl_push_to_gpu(struct simulation *sim,struct fdtd_data *data);
 void fdtd_opencl_write_ctrl_data(struct simulation *sim,struct fdtd_data *data);
-void fdtd_solve_step(struct simulation *sim,struct fdtd_data *data);
+void fdtd_solve_step(struct simulation *sim,struct fdtd_data *data,struct device *dev);
 int fdtd_opencl_solve_step(struct simulation *sim,struct fdtd_data *data);
 void fdtd_opencl_pull_data(struct simulation *sim,struct fdtd_data *data);
-void fdtd_dump(struct simulation *sim,char *output_path,struct fdtd_data *data);
+void fdtd_dump(struct simulation *sim,char *output_path,struct device *dev, struct fdtd_data *data);
 void fdtd_opencl_get_mem(struct simulation *sim, struct fdtd_data *data);
 void fdtd_opencl_freemem(struct simulation *sim, struct fdtd_data *data);
-void fdtd_mesh(struct simulation *sim,struct fdtd_data *data,struct device *cell);
-void fdtd_set_3d_float(struct fdtd_data *in, float ***var, float value);
-void fdtd_free_3d_float(struct fdtd_data *in, float ***var);
+void fdtd_mesh(struct simulation *sim,struct fdtd_data *data,struct device *dev);
 void fdtd_3d_malloc_float(struct fdtd_data *in, float * (***var));
-void fdtd_memcpy(struct fdtd_data *data, float ***out, float ***in);
 float fdtd_power_zxy(struct simulation *sim,struct fdtd_data *data,int z, int x, int y);
 float fdtd_power_y(struct simulation *sim,struct fdtd_data *data, int y);
 float fdtd_test_conv(struct simulation *sim,struct fdtd_data *data);
-void fdtd_set_lambda(struct simulation *sim,struct fdtd_data *data,struct device *cell,float lambda);
-void fdtd_solve_all_lambda(struct simulation *sim,struct device *cell,struct fdtd_data *data);
-void fdtd_solve_lambda(struct simulation *sim,struct fdtd_data *data,struct device *cell,float lambda);
+void fdtd_set_lambda(struct simulation *sim,struct fdtd_data *data,struct device *dev,float lambda);
+void fdtd_solve_all_lambda(struct simulation *sim,struct device *dev,struct fdtd_data *data);
+void fdtd_solve_lambda(struct simulation *sim,struct fdtd_data *data,struct device *dev,float lambda);
 void fdtd_load_config(struct simulation *sim, struct fdtd_data *data,struct json_obj *json_obj);
-
+void fdtd_excitation(struct simulation *sim,struct fdtd_data *data,struct device *dev);
+int fdtd_world_x_to_mesh(struct fdtd_data *data,float x);
+int fdtd_world_y_to_mesh(struct fdtd_data *data,float y);
+int fdtd_world_z_to_mesh(struct fdtd_data *data,float z);
 #endif

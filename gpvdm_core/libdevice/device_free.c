@@ -46,6 +46,7 @@
 #include <lang.h>
 #include <util.h>
 #include <heat_fun.h>
+#include <exciton_fun.h>
 #include <solver_interface.h>
 #include <log.h>
 #include <light_fun.h>
@@ -122,144 +123,158 @@ void device_free(struct simulation *sim,struct device *dev)
 		free_zy_long_double(dim,&dev->V_x1);
 
 	//Ions
-		free_zxy_gdouble(dim,&dev->Nad);
-		free_zxy_gdouble(dim,&dev->Nion);
-		free_zxy_gdouble(dim,&dev->dNion);
-		free_zxy_gdouble(dim,&dev->dNiondphi);
-		free_zxy_gdouble(dim,&dev->Nion_last);
+		free_zxy_long_double(dim,&dev->Nad);
+		free_zxy_long_double(dim,&dev->Nion);
+		free_zxy_long_double(dim,&dev->dNion);
+		free_zxy_long_double(dim,&dev->dNiondphi);
+		free_zxy_long_double(dim,&dev->Nion_last);
 
 	//Generation
-		free_zxy_gdouble(dim,&dev->G);
-		free_zxy_gdouble(dim,&dev->Gn);
-		free_zxy_gdouble(dim,&dev->Gp);
+		free_zxy_long_double(dim,&dev->G);
+		free_zxy_long_double(dim,&dev->Gn);
+		free_zxy_long_double(dim,&dev->Gp);
 
 	//Free charges
-		free_zxy_gdouble(dim,&dev->n);
-		free_zxy_gdouble(dim,&dev->p);
-		free_zxy_gdouble(dim,&dev->dn);
-		free_zxy_gdouble(dim,&dev->dp);
-		free_zxy_gdouble(dim,&dev->dndphi);
-		free_zxy_gdouble(dim,&dev->dpdphi);
-		free_zxy_gdouble(dim,&dev->Dn);
-		free_zxy_gdouble(dim,&dev->Dp);
+		free_zxy_long_double(dim,&dev->n);
+		free_zxy_long_double(dim,&dev->p);
+		free_zxy_long_double(dim,&dev->dn);
+		free_zxy_long_double(dim,&dev->dp);
+		free_zxy_long_double(dim,&dev->dndphi);
+		free_zxy_long_double(dim,&dev->dpdphi);
+		free_zxy_long_double(dim,&dev->Dn);
+		free_zxy_long_double(dim,&dev->Dp);
 
-		free_zxy_gdouble(dim,&dev->Fn);
-		free_zxy_gdouble(dim,&dev->Fp);
-		free_zxy_gdouble(dim,&dev->Nc);
-		free_zxy_gdouble(dim,&dev->Nv);
+		free_zxy_long_double(dim,&dev->Fn);
+		free_zxy_long_double(dim,&dev->Fp);
+		free_zxy_long_double(dim,&dev->Nc);
+		free_zxy_long_double(dim,&dev->Nv);
 
-		free_zxy_gdouble(dim,&dev->nf_save);
-		free_zxy_gdouble(dim,&dev->pf_save);
+		free_zxy_long_double(dim,&dev->nf_save);
+		free_zxy_long_double(dim,&dev->pf_save);
 
-		free_zxy_gdouble(dim,&dev->nfequlib);
-		free_zxy_gdouble(dim,&dev->pfequlib);
+		free_zxy_long_double(dim,&dev->nfequlib);
+		free_zxy_long_double(dim,&dev->pfequlib);
 
-		free_zxy_gdouble(dim,&dev->nlast);
-		free_zxy_gdouble(dim,&dev->plast);
+		free_zxy_long_double(dim,&dev->nlast);
+		free_zxy_long_double(dim,&dev->plast);
 
-		free_zxy_gdouble(dim,&dev->n_orig);
-		free_zxy_gdouble(dim,&dev->p_orig);
+		free_zxy_long_double(dim,&dev->n_orig);
+		free_zxy_long_double(dim,&dev->p_orig);
 
-		free_zxy_gdouble(dim,&dev->n_orig_f);
-		free_zxy_gdouble(dim,&dev->p_orig_f);
+		free_zxy_long_double(dim,&dev->n_orig_f);
+		free_zxy_long_double(dim,&dev->p_orig_f);
 
-		free_zxy_gdouble(dim,&dev->n_orig_t);
-		free_zxy_gdouble(dim,&dev->p_orig_t);
+		free_zxy_long_double(dim,&dev->n_orig_t);
+		free_zxy_long_double(dim,&dev->p_orig_t);
 
-		free_zxy_gdouble(dim,&dev->t);
-		free_zxy_gdouble(dim,&dev->tp);
-		free_zxy_gdouble(dim,&dev->t_ion);
+		free_zxy_long_double(dim,&dev->t);
+		free_zxy_long_double(dim,&dev->tp);
+		free_zxy_long_double(dim,&dev->t_ion);
 
-		free_zxy_gdouble(dim,&dev->wn);
-		free_zxy_gdouble(dim,&dev->wp);
+		free_zxy_long_double(dim,&dev->wn);
+		free_zxy_long_double(dim,&dev->wp);
 
 	//Fermi levels
-		free_zxy_gdouble(dim,&dev->Fi);
+		free_zxy_long_double(dim,&dev->Fi);
 
 	//Bands
-		free_zxy_gdouble(dim,&dev->Eg);
-		free_zxy_gdouble(dim,&dev->Xi);
-		free_zxy_gdouble(dim,&dev->Ev);
-		free_zxy_gdouble(dim,&dev->Ec);
+		free_zxy_long_double(dim,&dev->Eg);
+		free_zxy_long_double(dim,&dev->Xi);
+		free_zxy_long_double(dim,&dev->Ev);
+		free_zxy_long_double(dim,&dev->Ec);
 
 	//Recombination
-		free_zxy_gdouble(dim,&dev->Rfree);
+		free_zxy_long_double(dim,&dev->Rfree);
+		free_zxy_long_double(dim,&dev->Rauger);
 
-		free_zxy_gdouble(dim,&dev->Rn);
-		free_zxy_gdouble(dim,&dev->Rp);
-		free_zxy_gdouble(dim,&dev->Rnet);
+		free_zxy_long_double(dim,&dev->Rn);
+		free_zxy_long_double(dim,&dev->Rp);
+		free_zxy_long_double(dim,&dev->Rnet);
 
-		free_zxy_gdouble(dim,&dev->Rn_srh);
-		free_zxy_gdouble(dim,&dev->Rp_srh);
+		free_zxy_long_double(dim,&dev->Rn_srh);
+		free_zxy_long_double(dim,&dev->Rp_srh);
 
-		free_zxy_gdouble(dim,&dev->Rbi_k);
+		free_zxy_long_double(dim,&dev->Rbi_k);
 
-		free_zxy_gdouble(dim,&dev->B);
+		free_zxy_long_double(dim,&dev->B);
 
 	//Interfaces
 		free_zxy_int(dim,&(dev->interface_type));
-		free_zxy_gdouble(dim,&dev->interface_B);
-		free_zxy_gdouble(dim,&dev->interface_Bt);
-		free_zxy_gdouble(dim,&dev->interface_R);
+		free_zxy_long_double(dim,&dev->interface_B);
+		free_zxy_long_double(dim,&dev->interface_Bt);
+		free_zxy_long_double(dim,&dev->interface_R);
+		//Tunnel
+		free_zxy_long_double(dim,&dev->interface_Ge);
+		free_zxy_long_double(dim,&dev->interface_Gh);
 
 	//Rates
-		free_zxy_gdouble(dim,&dev->nrelax);
-		free_zxy_gdouble(dim,&dev->ntrap_to_p);
-		free_zxy_gdouble(dim,&dev->prelax);
-		free_zxy_gdouble(dim,&dev->ptrap_to_n);
+		free_zxy_long_double(dim,&dev->nrelax);
+		free_zxy_long_double(dim,&dev->ntrap_to_p);
+		free_zxy_long_double(dim,&dev->prelax);
+		free_zxy_long_double(dim,&dev->ptrap_to_n);
 
 	//Mobility
-		free_zxy_gdouble(dim,&dev->mun_z);
-		free_zxy_gdouble(dim,&dev->mun_x);
-		free_zxy_gdouble(dim,&dev->mun_y);
+		free_zxy_long_double(dim,&dev->mun_z);
+		free_zxy_long_double(dim,&dev->mun_x);
+		free_zxy_long_double(dim,&dev->mun_y);
 
-		free_zxy_gdouble(dim,&dev->mup_z);
-		free_zxy_gdouble(dim,&dev->mup_x);
-		free_zxy_gdouble(dim,&dev->mup_y);
+		free_zxy_long_double(dim,&dev->mup_z);
+		free_zxy_long_double(dim,&dev->mup_x);
+		free_zxy_long_double(dim,&dev->mup_y);
 
 
 
-		free_zxy_gdouble(dim,&dev->muion);
+		free_zxy_long_double(dim,&dev->muion);
+
+	//Auger
+		free_zxy_long_double(dim,&dev->Cn);
+		free_zxy_long_double(dim,&dev->Cp);
+
+	//SS SRH
+		free_zxy_long_double(dim,&dev->n1);
+		free_zxy_long_double(dim,&dev->p1);
+		free_zxy_long_double(dim,&dev->tau_n);
+		free_zxy_long_double(dim,&dev->tau_p);
 
 	//Electrostatics
-		free_zxy_gdouble(dim,&dev->epsilonr);
-		free_zxy_gdouble(dim,&dev->epsilonr_e0);
+		free_zxy_long_double(dim,&dev->epsilonr);
+		free_zxy_long_double(dim,&dev->epsilonr_e0);
 
-		free_zxy_gdouble(dim,&dev->phi_save);
+		free_zxy_long_double(dim,&dev->phi_save);
 
 	//Temperature
-		free_zxy_gdouble(dim,&dev->Tl);
-		free_zxy_gdouble(dim,&dev->Te);
-		free_zxy_gdouble(dim,&dev->Th);
+		free_zxy_long_double(dim,&dev->Tl);
+		free_zxy_long_double(dim,&dev->Te);
+		free_zxy_long_double(dim,&dev->Th);
 
-		free_zxy_gdouble(dim,&dev->ke);
-		free_zxy_gdouble(dim,&dev->kh);
+		free_zxy_long_double(dim,&dev->ke);
+		free_zxy_long_double(dim,&dev->kh);
 
 	//Heating
-		free_zxy_gdouble(dim,&dev->Hl);
-		free_zxy_gdouble(dim,&dev->H_joule);
-		free_zxy_gdouble(dim,&dev->H_recombination);
+		free_zxy_long_double(dim,&dev->Hl);
+		free_zxy_long_double(dim,&dev->H_joule);
+		free_zxy_long_double(dim,&dev->H_recombination);
 
-		free_zxy_gdouble(dim,&dev->He);
-		free_zxy_gdouble(dim,&dev->Hh);
+		free_zxy_long_double(dim,&dev->He);
+		free_zxy_long_double(dim,&dev->Hh);
 
 	//Current
-		free_zxy_gdouble(dim,&dev->Jn);
-		free_zxy_gdouble(dim,&dev->Jp);
-		free_zxy_gdouble(dim,&dev->Jn_x);
-		free_zxy_gdouble(dim,&dev->Jp_x);
+		free_zxy_long_double(dim,&dev->Jn);
+		free_zxy_long_double(dim,&dev->Jp);
+		free_zxy_long_double(dim,&dev->Jn_x);
+		free_zxy_long_double(dim,&dev->Jp_x);
 
-		free_zxy_gdouble(dim,&dev->Jn_drift);
-		free_zxy_gdouble(dim,&dev->Jn_diffusion);
+		free_zxy_long_double(dim,&dev->Jn_drift);
+		free_zxy_long_double(dim,&dev->Jn_diffusion);
 
-		free_zxy_gdouble(dim,&dev->Jn_x_drift);
-		free_zxy_gdouble(dim,&dev->Jn_x_diffusion);
+		free_zxy_long_double(dim,&dev->Jn_x_drift);
+		free_zxy_long_double(dim,&dev->Jn_x_diffusion);
 
-		free_zxy_gdouble(dim,&dev->Jp_drift);
-		free_zxy_gdouble(dim,&dev->Jp_diffusion);
+		free_zxy_long_double(dim,&dev->Jp_drift);
+		free_zxy_long_double(dim,&dev->Jp_diffusion);
 
-		free_zxy_gdouble(dim,&dev->Jp_x_drift);
-		free_zxy_gdouble(dim,&dev->Jp_x_diffusion);
+		free_zxy_long_double(dim,&dev->Jp_x_drift);
+		free_zxy_long_double(dim,&dev->Jp_x_diffusion);
 
 	//Applied voltages
 		free_zx_gdouble(dim,&dev->Vapplied_y0);
@@ -275,7 +290,7 @@ void device_free(struct simulation *sim,struct device *dev)
 		free_zy_int(dim,&dev->passivate_x1);
 
 	//Emission
-		free_zxy_gdouble(dim,&dev->Photon_gen);
+		free_zxy_long_double(dim,&dev->Photon_gen);
 
 	//objects
 		free_zxy_p_object(dim, &(dev->obj_zxy));
@@ -289,32 +304,23 @@ void device_free(struct simulation *sim,struct device *dev)
 		free_zx_epitaxy_int(&(dev->dim_epitaxy),&(dev->mask_epitaxy));
 		dim_free_zx_epitaxy(&(dev->dim_epitaxy));
 
-	//Exciton
-		free_zxy_gdouble(dim,&dev->ex);
-		free_zxy_gdouble(dim,&dev->Dex);
-		free_zxy_gdouble(dim,&dev->Hex);
-
-		free_zxy_gdouble(dim,&dev->kf);
-		free_zxy_gdouble(dim,&dev->kd);
-		free_zxy_gdouble(dim,&dev->kr);
-
 	//Trap control
 		//none 
 
 	//Traps 3d n
-		free_zxy_gdouble(dim,&dev->nt_all);
-		free_zxy_gdouble(dim,&dev->tt);
+		free_zxy_long_double(dim,&dev->nt_all);
+		free_zxy_long_double(dim,&dev->tt);
 
-		free_zxy_gdouble(dim,&dev->nt_save);
-		free_zxy_gdouble(dim,&dev->pt_save);
+		free_zxy_long_double(dim,&dev->nt_save);
+		free_zxy_long_double(dim,&dev->pt_save);
 
 
 	//Traps 3d p
-		free_zxy_gdouble(dim,&dev->pt_all);
-		free_zxy_gdouble(dim,&dev->tpt);
+		free_zxy_long_double(dim,&dev->pt_all);
+		free_zxy_long_double(dim,&dev->tpt);
 
-		free_zxy_gdouble(dim,&dev->ntequlib);
-		free_zxy_gdouble(dim,&dev->ptequlib);
+		free_zxy_long_double(dim,&dev->ntequlib);
+		free_zxy_long_double(dim,&dev->ptequlib);
 
 	//Traps 4d n
 		free_srh_bands(dim, &dev->nt);
@@ -426,6 +432,11 @@ void device_free(struct simulation *sim,struct device *dev)
 	//Thermal
 		#ifdef libheat_enabled
 			heat_free_memory(sim,&(dev->thermal));
+		#endif
+
+	//Exciton
+		#ifdef libexciton_enabled
+			exciton_free_memory(sim,&(dev->ex));
 		#endif
 
 	//Perovskite

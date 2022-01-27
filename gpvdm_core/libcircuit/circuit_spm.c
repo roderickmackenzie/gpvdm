@@ -2,28 +2,28 @@
 // General-purpose Photovoltaic Device Model gpvdm.com - a drift diffusion
 // base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solarcells.
 // The model can simulate OLEDs, Perovskite cells, and OFETs.
-// 
+//
 // Copyright 2008-2022 Roderick C. I. MacKenzie https://www.gpvdm.com
 // r.c.i.mackenzie at googlemail.com
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+// the rights to use, copy, modify, merge, publish, distribute, sublicense,
 // and/or sell copies of the Software, and to permit persons to whom the
 // Software is furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included
 // in all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 // OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// 
+//
 
 /** @file circuit_spm.c
 @brief Scanning Probe Microscopy
@@ -96,7 +96,7 @@ THREAD_FUNCTION circuit_spm_thread(void * in)
 		}
 	}
 
-	
+
 
 	circuit_calculate_matrix_pos(sim,cir_new);
 	matrix_free(sim,&(cir_new->mx));
@@ -146,7 +146,7 @@ void circuit_spm(struct simulation * sim,struct device *dev,long double x0,long 
 
 	//struct circuit_node *nodes=(cir->nodes);
 	struct dat_file buf;
-	buffer_init(&buf);
+	dat_file_init(&buf);
 
 	char name[PATH_MAX];
 	long double **R_out=NULL;
@@ -180,8 +180,8 @@ void circuit_spm(struct simulation * sim,struct device *dev,long double x0,long 
 			//printf("%d %d\n",contact_node->y,y_max_pos);
 			if (contact_node->y==y_max_pos)
 			{
-				x_pos=dim->xmesh[contact_node->x];
-				z_pos=dim->zmesh[contact_node->z];
+				x_pos=dim->x[contact_node->x];
+				z_pos=dim->z[contact_node->z];
 				if ((x_pos>=x0)&&(x_pos<=x1))
 				{
 					//printf("%Le %Le %Le\n",z0,z_pos,z1);
@@ -266,7 +266,7 @@ void circuit_spm(struct simulation * sim,struct device *dev,long double x0,long 
 	char temp[200];
 	for (x=0;x<dim->xlen;x++)
 	{
-		sprintf(temp,"%Le %Le\n",dim->xmesh[x],R_out[dim->zlen/2][x]);
+		sprintf(temp,"%Le %Le\n",dim->x[x],R_out[dim->zlen/2][x]);
 		buffer_add_string(&buf,temp);
 	}
 	//buffer_add_zx_data(sim,&buf,dim, R_out);
@@ -285,16 +285,16 @@ void circuit_spm(struct simulation * sim,struct device *dev,long double x0,long 
 			//printf("%d %d\n",contact_node->y,y_max_pos);
 			if (contact_node->y==y_max_pos)
 			{
-				x_pos=dim->xmesh[contact_node->x];
-				z_pos=dim->zmesh[contact_node->z];
+				x_pos=dim->x[contact_node->x];
+				z_pos=dim->z[contact_node->z];
 				if ((x_pos>=x0)&&(x_pos<=x1))
 				{
 					if ((z_pos>=z0)&&(z_pos<=z1))
 					{
 						my_j=200.0;	//A/m2
-						V_lost[contact_node->z][contact_node->x]=R_out[contact_node->z][contact_node->x]*my_j*dim->dx[contact_node->x]*dim->dz[contact_node->z];
-						R_avg+=R_out[contact_node->z][contact_node->x]*dim->dx[contact_node->x]*dim->dz[contact_node->z];
-						aera+=dim->dx[contact_node->x]*dim->dz[contact_node->z];
+						V_lost[contact_node->z][contact_node->x]=R_out[contact_node->z][contact_node->x]*my_j*dim->dX[contact_node->x]*dim->dZ[contact_node->z];
+						R_avg+=R_out[contact_node->z][contact_node->x]*dim->dX[contact_node->x]*dim->dZ[contact_node->z];
+						aera+=dim->dX[contact_node->x]*dim->dZ[contact_node->z];
 					}
 				}
 			}

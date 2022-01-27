@@ -2,28 +2,28 @@
 // General-purpose Photovoltaic Device Model gpvdm.com - a drift diffusion
 // base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solarcells.
 // The model can simulate OLEDs, Perovskite cells, and OFETs.
-// 
+//
 // Copyright 2008-2022 Roderick C. I. MacKenzie https://www.gpvdm.com
 // r.c.i.mackenzie at googlemail.com
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+// the rights to use, copy, modify, merge, publish, distribute, sublicense,
 // and/or sell copies of the Software, and to permit persons to whom the
 // Software is furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included
 // in all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 // OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// 
+//
 
 /** @file light_mesh.c
 	@brief Performs meshing for the light model.
@@ -59,17 +59,17 @@ void light_build_mesh(struct simulation *sim,struct light *li,struct dimensions 
 
 	long double pos=0.0;
 
-	struct dim_light *dim=&(li->dim);
+	struct dimensions *dim=&(li->dim);
 
 	printf_log(sim,"init: mesh\n");
 	for (x=0;x<electrical_dim->xlen;x++)
 	{
-		dim->x[x]=electrical_dim->xmesh[x];
+		dim->x[x]=electrical_dim->x[x];
 	}
 
 	for (z=0;z<electrical_dim->zlen;z++)
 	{
-		dim->z[z]=electrical_dim->zmesh[z];
+		dim->z[z]=electrical_dim->z[z];
 	}
 
 	dim->dy=(epitaxy_get_optical_problem_stop(li->epi)-epitaxy_get_optical_problem_start(li->epi))/((long double)dim->ylen);
@@ -102,7 +102,7 @@ int light_build_obj_pointer_array_z(struct simulation *sim,struct device *dev,st
 
 	struct vec v;
 
-	struct dim_light *dim=&li->dim;
+	struct dimensions *dim=&li->dim;
 
 	for (x=0;x<dim->xlen;x++)
 	{
@@ -146,7 +146,7 @@ THREAD_FUNCTION thread_light_build_obj_pointer_array(void * in)
 	struct simulation *sim=(struct simulation *)j->sim;
 	struct light *li=(struct light *)j->data0;
 	struct device *dev=(struct device *)j->data1;
-	struct dim_light *dim=&li->dim;
+	struct dimensions *dim=&li->dim;
 	struct object *obj_last=NULL;
 	struct object *obj=NULL;
 	struct shape *s;
@@ -238,7 +238,7 @@ void light_build_obj_pointer_array(struct simulation *sim,struct light *li, stru
 	printf_log(sim,"Light: Building object pointer array\n");
 	int z=0;
 	struct job j;
-	struct dim_light *dim=&(li->dim);
+	struct dimensions *dim=&(li->dim);
 	int batch_id=server2_get_next_batch_id(sim,&(sim->server));
 	for (z=0;z<dim->zlen;z++)
 	{
@@ -271,7 +271,7 @@ void light_build_obj_pointer_array(struct simulation *sim,struct light *li, stru
 void light_build_materials_arrays(struct simulation *sim,struct light *li, struct device *dev)
 {
 
-	struct dim_light *dim=&(li->dim);
+	struct dimensions *dim=&(li->dim);
 
 
 	/*for (z=0;z<dim->zlen;z++)

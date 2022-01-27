@@ -54,7 +54,6 @@ from gui_util import dlg_get_text
 from gpvdm_viewer import gpvdm_viewer
 
 
-from disk_speed import disk_test
 from util import peek_data
 from inp_encrypt import decrypt_file
 from cal_path import gpvdm_paths

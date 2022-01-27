@@ -51,7 +51,15 @@ long double get_p_mux(struct shape *s);
 long double get_n_muy(struct shape *s);
 long double get_p_muy(struct shape *s);
 
-
+//Auger
+long double get_Cn(struct shape *s);
+long double get_Cp(struct shape *s);
+//SS SRH
+//Steady state SRH
+long double get_ss_srh_n1(struct shape *s);
+long double get_ss_srh_p1(struct shape *s);
+long double get_ss_srh_tau_n(struct shape *s);
+long double get_ss_srh_tau_p(struct shape *s);
 
 long double get_top_from_n(struct shape *s,long double n,long double T);
 long double get_top_from_p(struct shape *s,long double p,long double T);
@@ -116,4 +124,6 @@ void dos_cache_free(struct dos_cache *cache);
 long double get_top_from_ion(long double n);
 void get_ion_den(long double top,long double *n, long double *dn);
 
+void check_fermi_inversion_n(struct simulation *sim,struct shape *s,long double n,int do_check);
+void check_fermi_inversion_p(struct simulation *sim,struct shape *s,long double p,int do_check);
 #endif

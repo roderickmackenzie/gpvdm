@@ -158,6 +158,30 @@ class ribbon_shape_import(ribbon_base):
 		self.tb_honeycomb_menu.addAction(self.tb_honeycomb_menu_edit)
 
 		toolbar.addAction(self.tb_honeycomb)
+
+		##########################
+		self.tb_xtal= QAction_lock("xtal", wrap_text(_("Generate\nXtal"),2), self,"ribbon_shape_xtal")
+
+		self.tb_xtal_menu = QMenu(self)
+		self.tb_xtal.setMenu(self.tb_xtal_menu)
+
+		self.tb_xtal_menu_edit=QAction(_("Edit"), self)
+		self.tb_xtal_menu.addAction(self.tb_xtal_menu_edit)
+
+		toolbar.addAction(self.tb_xtal)
+
+		##########################
+		self.tb_lens= QAction_lock("lens", wrap_text(_("Generate\nlens"),2), self,"ribbon_shape_lens")
+
+		self.tb_lens_menu = QMenu(self)
+		self.tb_lens.setMenu(self.tb_lens_menu)
+
+		self.tb_lens_menu_edit=QAction(_("Edit"), self)
+		self.tb_lens_menu.addAction(self.tb_lens_menu_edit)
+
+		toolbar.addAction(self.tb_lens)
+
+
 		##########################
 		self.tb_gaus= QAction_lock("gauss", wrap_text(_("Generate\nGaussian"),2), self,"ribbon_shape_gaus")
 

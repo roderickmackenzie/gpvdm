@@ -211,7 +211,7 @@ if (scanarg( argv,argc,"--help")==TRUE)
 	printf_log(&sim,"\n");
 	printf_log(&sim,"%s\n",_("Additional information about gpvdm is available at https://www.gpvdm.com."));
 	printf_log(&sim,"\n");
-	printf_log(&sim,"%s\n\n",_("Report bugs to: roderick.mackenzie@nottingham.ac.uk"));
+	printf_log(&sim,"%s\n\n",_("Report bugs to: roderick.mackenzie@durham.ac.uk"));
 	exit(0);
 }
 if (scanarg( argv,argc,"--version")==TRUE)
@@ -277,16 +277,15 @@ if(geteuid()==0) {
 
 
 srand(time(0));
+rainbow_print(&sim,450e-9, 680e-9, "%s\n",_("gpvdm_core - General-purpose Photovoltaic Device Model"));
+rainbow_print(&sim,450e-9, 680e-9,_("Copyright (C) 2009-2022 Roderick C. I. MacKenzie,\n"));
+rainbow_print(&sim,450e-9, 680e-9,_("Released under the MIT software license"));
 
-randomprint(&sim,_("gpvdm_core - General-purpose Photovoltaic Device Model\n"));
-randomprint(&sim,_("Copyright (C) 2009-2022 Roderick C. I. MacKenzie,\n"));
-randomprint(&sim,_(" Releced the MIT License"));
-
-randomprint(&sim,"\n");
-randomprint(&sim,_("If you wish to collaborate in anyway please get in touch:\n"));
-randomprint(&sim,"roderick.mackenzie@nottingham.ac.uk\n");
-randomprint(&sim,"http://www.gpvdm.com/contact.html\n");
-randomprint(&sim,"\n");
+rainbow_print(&sim,450e-9, 680e-9,"\n");
+rainbow_print(&sim,450e-9, 680e-9,_("If you wish to collaborate in anyway please get in touch:\n"));
+rainbow_print(&sim,450e-9, 680e-9,"roderick.mackenzie@durham.ac.uk\n");
+rainbow_print(&sim,450e-9, 680e-9,"http://www.gpvdm.com/contact.html\n");
+rainbow_print(&sim,450e-9, 680e-9,"\n");
 //getchar();
 sim.server.on=FALSE;
 sim.server.max_threads=1;

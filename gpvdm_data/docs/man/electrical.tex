@@ -68,8 +68,15 @@ The average energy of the carriers is defined as
 \bar{W}(E_{f},T)=\frac{\int^{\infty}_{E_{min}} E \rho(E) f(E,E_{f},T) dE}{\int^{\infty}_{E_{min}} \rho(E) f(E,E_{f},T) dE}
 \end{equation}
 
+\input{electrical_srh_intro.tex}
+\input{electrical_ss_srh.tex}
 \input{electrical_srh.tex}
+\input{electrical_f2f.tex}
+\input{electrical_auger.tex}
+\input{electrical_geminate.tex}
 \input{electrical_transport.tex}
+\input{electrical_perovskite.tex}
+\input{interfaces.tex}
 \subsection{Calculating the built in potential}  \label{sssec:initial}
 The first step to performing a device simulation, is to calculate the built in potential of the device.  To do this we must know the following things:
 
@@ -138,11 +145,6 @@ p_{r}=N_v exp \left (\frac{E_v-F_{HOMO}}{kT} \right)
 The result of this calculation is that we now know the built in potential and minority carrier concentrations on both sides of the device.  Note, infinite recombination velocity on the contacts is assumed.  I have not included finite recombination velocities in the model simply because they would add four more fitting parameters and in my experience I have never needed to use them to fit any experimental data I have come across.
 
 Once this calculation has been performed, we can estimate the potential profile between the left and right hand side of the device, using a linear approximation. From this the charge carrier densities across the device can be guessed.  The guess for potential and carrier densities, is then used to prime the main Newton solver.  Where the real value are calculated.  The Newton solver is described in the next section.
-
-
-
-\subsubsection{Geminate recombination}
-There exist models to calculate the number of charge carriers generated per absorbed photon (and example is the Onsager-Braun model).  This model explicitly accounts for geminate recombination, and charge carrier separation at the microscopic scale.  However, the model will require a number of reliability unknown parameters to make it work, and then as far as solar cell simulation is concerned, you will end up with a number giving you the percentage of absorbed photons which make it to being free electrons/holes.  A more simple approach in my view, is to firstly use correct real/imaginary refractive index spectra for your chosen material.  The optical model will then give you how may photos are absorbed at each position in the device.  Then multiply this generation rate, buy a factor between 0 and 1.0 which accounts for geminate recombination loss.  You can make a good approximation of this value by making sure the simulated and experimental Jsc match up.  This value is set in (Simulation->Optical Simulation->Optical Setup->Photon Efficiency.)
 
 
 

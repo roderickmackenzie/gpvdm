@@ -32,7 +32,7 @@
 #ifndef server_struct_h
 #define server_struct_h
 
-#define server_max 100
+#define server_max 20
 #define server_no_job 0
 #define server_job_ready 1
 #define server_job_running 2
@@ -41,6 +41,7 @@
 #include <enabled_libs.h>
 	#include <pthread.h>
 
+#include <gpvdm_const.h>
 
 #define JOB_NONE		0
 #define JOB_WAIT		1
@@ -68,6 +69,11 @@ struct job
 	void * data2;
 	void * data3;
 	int data_int0;
+	int data_int1;
+	int data_int2;
+	int data_int3;
+	int data_int4;
+	int data_int5;
 	int cpus;
 	struct worker *w;
 	void * next;
@@ -75,11 +81,11 @@ struct job
 
 struct server_struct
 {
-	char command[server_max][200];
-	char output[server_max][200];
+	char command[server_max][PATH_MAX];		//these need removing as they take up too much memory
+	char output[server_max][PATH_MAX];
 	int state[server_max];
 	char dbus_finish_signal[200];
-	char lock_file[200];
+	char lock_file[PATH_MAX];
 	int jobs;
 	int jobs_running;
 	int fd;

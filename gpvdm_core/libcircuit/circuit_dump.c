@@ -2,28 +2,28 @@
 // General-purpose Photovoltaic Device Model gpvdm.com - a drift diffusion
 // base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solarcells.
 // The model can simulate OLEDs, Perovskite cells, and OFETs.
-// 
+//
 // Copyright 2008-2022 Roderick C. I. MacKenzie https://www.gpvdm.com
 // r.c.i.mackenzie at googlemail.com
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+// the rights to use, copy, modify, merge, publish, distribute, sublicense,
 // and/or sell copies of the Software, and to permit persons to whom the
 // Software is furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included
 // in all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 // OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// 
+//
 
 /** @file mesh.c
 @brief This builds the electrical mesh
@@ -114,7 +114,7 @@ void circuit_dump(struct simulation * sim,struct device *dev,struct circuit *cir
 	int l;
 	struct dat_file buf;
 	char line[200];
-	buffer_init(&buf);
+	dat_file_init(&buf);
 	struct circuit_link *links=(cir->links);
 	struct circuit_node *nodes=(cir->nodes);
 	struct dimensions *dim=&dev->ns.dim;
@@ -158,7 +158,7 @@ void circuit_dump_gnuplot(struct simulation * sim,struct device *dev,struct circ
 	int l;
 	struct dat_file buf;
 	char line[200];
-	buffer_init(&buf);
+	dat_file_init(&buf);
 	struct circuit_link *links=(cir->links);
 	struct circuit_node *nodes=(cir->nodes);
 	struct dimensions *dim=&dev->ns.dim;
@@ -204,7 +204,7 @@ void circuit_dump_to_obj_file(struct simulation * sim,char *file_name,struct dev
 	struct dat_file buf_json;
 	char build[1024];
 	char line[1024];
-	buffer_init(&buf_json);
+	dat_file_init(&buf_json);
 	struct circuit_link *links=(cir->links);
 	struct circuit_node *nodes=(cir->nodes);
 	//struct dimensions *dim=&dev->ns.dim;
@@ -250,7 +250,7 @@ void circuit_dump_to_obj_file(struct simulation * sim,char *file_name,struct dev
 		}else
 		{
 			sprintf(build,"\t\t\t\"type\":\"%s\",\n","unknown");
-			
+
 		}
 		buffer_add_string(&buf_json,build);
 
@@ -517,12 +517,12 @@ void circuit_dump_I(struct simulation * sim,struct device *dev,char *out_dir)
 		max_i=1.0;
 	}
 
-	buffer_init(&buf);
+	dat_file_init(&buf);
 
 	buffer_malloc(&buf);
-	get_meter_dim(buf.x_units,&mul_x,dim->xmesh[dim->xlen-1]);
-	get_meter_dim(buf.y_units,&mul_y,dim->ymesh[dim->ylen-1]);
-	get_meter_dim(buf.z_units,&mul_z,dim->zmesh[dim->zlen-1]);
+	get_meter_dim(buf.x_units,&mul_x,dim->x[dim->xlen-1]);
+	get_meter_dim(buf.y_units,&mul_y,dim->y[dim->ylen-1]);
+	get_meter_dim(buf.z_units,&mul_z,dim->z[dim->zlen-1]);
 	buf.y_mul=mul_y;
 	buf.x_mul=mul_x;
 	buf.z_mul=mul_z;
@@ -616,12 +616,12 @@ void circuit_plot_resistance(struct simulation * sim,struct circuit *cir,struct 
 	//struct circuit_node *nodes=cir->nodes;
 	struct circuit_link *links=(cir->links);
 
-	buffer_init(&buf);
+	dat_file_init(&buf);
 
 	buffer_malloc(&buf);
-	get_meter_dim(buf.x_units,&mul_x,dim->xmesh[dim->xlen-1]);
-	get_meter_dim(buf.y_units,&mul_y,dim->ymesh[dim->ylen-1]);
-	get_meter_dim(buf.z_units,&mul_z,dim->zmesh[dim->zlen-1]);
+	get_meter_dim(buf.x_units,&mul_x,dim->x[dim->xlen-1]);
+	get_meter_dim(buf.y_units,&mul_y,dim->y[dim->ylen-1]);
+	get_meter_dim(buf.z_units,&mul_z,dim->z[dim->zlen-1]);
 	buf.y_mul=mul_y;
 	buf.x_mul=mul_x;
 	buf.z_mul=mul_z;
@@ -645,7 +645,7 @@ void circuit_plot_resistance(struct simulation * sim,struct circuit *cir,struct 
 			for (y=0;y<dim->ylen-1;y++)
 			{
 				l=circuit_find_link(sim,cir,z,x,y, z,x,y+1);
-				sprintf(line,"%Le %Le %Le %e\n",dim->zmesh[z],dim->xmesh[x],dim->ymesh[y],links[l].R);
+				sprintf(line,"%Le %Le %Le %e\n",dim->z[z],dim->x[x],dim->y[y],links[l].R);
 				buffer_add_string(&buf,line);
 			}
 		}
@@ -677,14 +677,14 @@ void circuit_dump_I_layers(struct simulation * sim,struct device *dev,char *out_
 	struct circuit *cir=&dev->cir;
 	struct circuit_link *links=(cir->links);
 	double val;
-	buffer_init(&buf);
+	dat_file_init(&buf);
 
 	for (y=0;y<dim->ylen-1;y++)
 	{
 		buffer_malloc(&buf);
-		get_meter_dim(buf.x_units,&mul_x,dim->xmesh[dim->xlen-1]);
-		get_meter_dim(buf.y_units,&mul_y,dim->ymesh[dim->ylen-1]);
-		get_meter_dim(buf.z_units,&mul_z,dim->zmesh[dim->zlen-1]);
+		get_meter_dim(buf.x_units,&mul_x,dim->x[dim->xlen-1]);
+		get_meter_dim(buf.y_units,&mul_y,dim->y[dim->ylen-1]);
+		get_meter_dim(buf.z_units,&mul_z,dim->z[dim->zlen-1]);
 		buf.y_mul=mul_y;
 		buf.x_mul=mul_x;
 		buf.z_mul=mul_z;
@@ -711,7 +711,7 @@ void circuit_dump_I_layers(struct simulation * sim,struct device *dev,char *out_
 				{
 					val=links[l].i;
 				}
-				sprintf(line,"%Le %Le %e\n",dim->zmesh[z],dim->xmesh[x],val);
+				sprintf(line,"%Le %Le %e\n",dim->z[z],dim->x[x],val);
 				buffer_add_string(&buf,line);
 			}
 			buffer_add_string(&buf,"\n");

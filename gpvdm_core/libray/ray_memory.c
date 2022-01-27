@@ -150,14 +150,14 @@ void ray_malloc(struct simulation *sim,struct device *dev,struct image *my_image
 		det=&(w->det[d]);
 		if (det->viewpoint_enabled==TRUE)
 		{
-			dim_alloc_xyz(&(my_image->viewpoint_dim),'y');
+			dim_malloc_xyz(&(my_image->viewpoint_dim),'y');
 
 			for (y=0;y<my_image->ray_wavelength_points;y++)
 			{
-				my_image->viewpoint_dim.ymesh[y]=my_image->lam[y];
+				my_image->viewpoint_dim.y[y]=my_image->lam[y];
 			}
 
-			malloc_zxy_gdouble(&(my_image->viewpoint_dim),&(my_image->viewpoint_image));
+			malloc_zxy_long_double(&(my_image->viewpoint_dim),&(my_image->viewpoint_image));
 			break;
 		}
 	}
@@ -219,7 +219,7 @@ void ray_free(struct simulation *sim,struct device *dev,struct image *my_image)
 
 	free(my_image->angle);
 
-	free_zxy_gdouble(&(my_image->viewpoint_dim),&(my_image->viewpoint_image));
+	free_zxy_long_double(&(my_image->viewpoint_dim),&(my_image->viewpoint_image));
 	dim_free(&(my_image->viewpoint_dim));
 
 

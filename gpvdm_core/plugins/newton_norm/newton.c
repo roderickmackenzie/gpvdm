@@ -398,7 +398,7 @@ struct shape *s;
 				phil=(in->Vapplied_y0[z][x]/phi0);
 
 
-				yl=dim->ymesh[0]/l0-(dim->ymesh[1]-dim->ymesh[0])/l0;
+				yl=dim->y[0]/l0-(dim->y[1]-dim->y[0])/l0;
 //				Tll=thermal->Ty0;
 				Tel=thermal->Ty0;
 				Thl=thermal->Ty0;
@@ -446,7 +446,7 @@ struct shape *s;
 //				Dexl=in->Dex[i-1];
 //				exl=in->ex[i-1];
 				phil=ns->phi[z][x][i-1]/phi0;
-				yl=dim->ymesh[i-1]/l0;
+				yl=dim->y[i-1]/l0;
 //				Tll=in->Tl[z][x][i-1];
 				Tel=in->Te[z][x][i-1];
 				Thl=in->Th[z][x][i-1];
@@ -485,7 +485,7 @@ struct shape *s;
 
 				phir=(in->V_y1[z][x]/phi0+in->Vapplied_y1[z][x]/phi0);
 
-				yr=dim->ymesh[i]/l0+(dim->ymesh[i]-dim->ymesh[i-1])/l0;
+				yr=dim->y[i]/l0+(dim->y[i]-dim->y[i-1])/l0;
 //				Tlr=thermal->Ty1;
 				Ter=thermal->Ty1;
 				Thr=thermal->Ty1;
@@ -532,7 +532,7 @@ struct shape *s;
 //				Dexr=in->Dex[z][x][i+1];
 //				exr=in->ex[z][x][i+1];
 				phir=ns->phi[z][x][i+1]/phi0;
-				yr=dim->ymesh[i+1]/l0;
+				yr=dim->y[i+1]/l0;
 //				Tlr=in->Tl[z][x][i+1];
 				Ter=in->Te[z][x][i+1];
 				Thr=in->Th[z][x][i+1];
@@ -565,7 +565,7 @@ struct shape *s;
 
 //			exc=in->ex[z][x][i];
 //			Dexc=in->Dex[z][x][i];
-			yc=dim->ymesh[i]/l0;
+			yc=dim->y[i]/l0;
 			dyl=yc-yl;
 			dyr=yr-yc;
 			ddh=(dyl+dyr)/2.0;

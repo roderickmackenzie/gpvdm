@@ -20,19 +20,36 @@
 #   
 
 ## @package plot
-#  The main plotting window which uses the plot_widget
+#  These are mainly used by the scan widget.
+#  This needs rewriting
 #
 
-
-
-#import sys
 import os
-#import shutil
 from token_lib import tokens
-from plot_io import plot_load_info
+from util_zip import zip_get_data_file
+from dat_file import dat_file_load_info
+
+def plot_load_info(plot_token,file_name_in):
+	if get_plot_file_info(plot_token,file_name_in)==False:
+		return False
+
+	return True
+
+
+def get_plot_file_info(output,file_name):
+	found,lines=zip_get_data_file(file_name)
+	#print(file_name)
+	if found==False:
+		print("can't find file",file_name)
+		return False
+
+	for i in range(0, len(lines)):
+		lines[i]=lines[i].rstrip()
+
+	return dat_file_load_info(output,lines)
 
 def check_info_file(search_string):
-	files=["dos0.inp","dos1.inp","photokit_ri.dat","photokit_real.dat","photokit_imag.dat","jv_psun_voc.dat","jv_voc_nt.dat","jv_voc_pt.dat","jv_psun_nf_nt.dat","jv_psun_pf_pt.dat","jv_psun_np_tot.dat","sim_info.dat","points.dat","stark.inp"]
+	files=["sim_info.dat"]
 	if files.count(search_string)> 0:
 		return True
 	else:

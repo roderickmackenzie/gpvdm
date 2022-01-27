@@ -69,4 +69,8 @@ long double epitaxy_get_optical_problem_stop(struct epitaxy *in);
 //heat
 long double epitaxy_get_heat_problem_start(struct epitaxy *in);
 long double epitaxy_get_heat_problem_stop(struct epitaxy *in);
+
+//exciton
+long double epitaxy_get_exciton_problem_start(struct epitaxy *in);
+long double epitaxy_get_exciton_problem_stop(struct epitaxy *in);
 #endif

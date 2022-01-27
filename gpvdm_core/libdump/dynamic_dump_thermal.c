@@ -2,28 +2,28 @@
 // General-purpose Photovoltaic Device Model gpvdm.com - a drift diffusion
 // base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solarcells.
 // The model can simulate OLEDs, Perovskite cells, and OFETs.
-// 
+//
 // Copyright 2008-2022 Roderick C. I. MacKenzie https://www.gpvdm.com
 // r.c.i.mackenzie at googlemail.com
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+// the rights to use, copy, modify, merge, publish, distribute, sublicense,
 // and/or sell copies of the Software, and to permit persons to whom the
 // Software is furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included
 // in all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 // OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// 
+//
 
 /** @file dynamic_dump_thermal.c
 @brief Dumps dynamic thermal stats
@@ -52,12 +52,7 @@ static int unused __attribute__((unused));
 void dump_dynamic_save_thermal(struct simulation *sim,struct device *dev,char *outputpath,struct dynamic_store *store)
 {
 
-	int i;
-	long double tot;
-	int sub=TRUE;
-	char temp[200];
 	struct dat_file buf;
-	struct math_xy one;
 	struct heat *thermal=&(dev->thermal);
 
 	if (thermal->newton_enable_external_thermal==FALSE)
@@ -65,17 +60,13 @@ void dump_dynamic_save_thermal(struct simulation *sim,struct device *dev,char *o
 		return;
 	}
 
-	buffer_init(&buf);
+	dat_file_init(&buf);
 
-	char out_dir[1000];
+	char out_dir[PATH_MAX];
 	join_path(2, out_dir,outputpath,"dynamic");
-	struct stat st = {0};
 
 
-	buffer_add_dir(sim,out_dir);
-
-	char outpath[200];
-
+	gpvdm_mkdir(out_dir);
 
 	buffer_malloc(&buf);
 	buf.data_mul=1.0;
@@ -83,8 +74,7 @@ void dump_dynamic_save_thermal(struct simulation *sim,struct device *dev,char *o
 	sprintf(buf.title,"%s",_("H_joule"));
 	strcpy(buf.data_label,_("H_joule"));
 	strcpy(buf.data_units,"W m^{-3}");
-	buffer_add_info(sim,&buf);
-	buffer_add_xy_data(sim,&buf,(store->H_joule).x, (store->H_joule).data, (store->H_joule).len);
+	dat_file_add_xy_data(sim,&buf,(store->H_joule).x, (store->H_joule).data, (store->H_joule).len);
 	buffer_dump_path(sim,out_dir,"H_joule.dat",&buf);
 	buffer_free(&buf);
 
@@ -94,8 +84,7 @@ void dump_dynamic_save_thermal(struct simulation *sim,struct device *dev,char *o
 	sprintf(buf.title,"%s",_("H_recombination"));
 	strcpy(buf.data_label,_("H_recombination"));
 	strcpy(buf.data_units,"W m^{-3}");
-	buffer_add_info(sim,&buf);
-	buffer_add_xy_data(sim,&buf,(store->H_recombination).x, (store->H_recombination).data, (store->H_recombination).len);
+	dat_file_add_xy_data(sim,&buf,(store->H_recombination).x, (store->H_recombination).data, (store->H_recombination).len);
 	buffer_dump_path(sim,out_dir,"H_recombination.dat",&buf);
 	buffer_free(&buf);
 
@@ -105,8 +94,7 @@ void dump_dynamic_save_thermal(struct simulation *sim,struct device *dev,char *o
 	sprintf(buf.title,"%s",_("H_parasitic"));
 	strcpy(buf.data_label,_("H_parasitic"));
 	strcpy(buf.data_units,"W m^{-3}");
-	buffer_add_info(sim,&buf);
-	buffer_add_xy_data(sim,&buf,(store->H_parasitic).x, (store->H_parasitic).data, (store->H_parasitic).len);
+	dat_file_add_xy_data(sim,&buf,(store->H_parasitic).x, (store->H_parasitic).data, (store->H_parasitic).len);
 	buffer_dump_path(sim,out_dir,"H_parasitic.dat",&buf);
 	buffer_free(&buf);
 

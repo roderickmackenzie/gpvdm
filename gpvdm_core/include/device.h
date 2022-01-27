@@ -43,6 +43,7 @@
 #include <matrix.h>
 #include <shape_struct.h>
 #include <heat.h>
+#include <exciton.h>
 #include <mesh_struct.h>
 #include <lib_fxdomain.h>
 #include <time_mesh.h>
@@ -245,6 +246,7 @@ struct device
 
 	//Recombination
 		long double ***Rfree;
+		long double ***Rauger;
 
 		long double ***Rn;
 		long double ***Rp;
@@ -257,6 +259,8 @@ struct device
 
 		long double ***B;
 
+
+
 	//Interfaces
 		int interfaces_n;
 		int interfaces_n_srh;
@@ -264,6 +268,12 @@ struct device
 		long double ***interface_B;
 		long double ***interface_Bt;
 		long double ***interface_R;
+
+		//Tunneling
+		int interfaces_tunnels_e;
+		int interfaces_tunnels_h;
+		long double ***interface_Ge;
+		long double ***interface_Gh;
 
 	//Rates
 		long double ***nrelax;
@@ -283,6 +293,18 @@ struct device
 		long double ***mup_y;
 
 		long double ***muion;
+
+	//Auger
+		long double ***Cn;
+		long double ***Cp;
+		int auger_enabled;
+
+	//SS SRH
+		int ss_srh_enabled;
+		long double ***n1;
+		long double ***p1;
+		long double ***tau_n;
+		long double ***tau_p;
 
 	//Electrostatics
 		long double ***epsilonr;
@@ -345,14 +367,6 @@ struct device
 		struct dim_zx_epitaxy dim_epitaxy;				//This is a dim object with zx and the length of the epitaxy
 		int ***mask_epitaxy;							//?????????????????? Come back to
 
-	//Exciton
-		long double ***ex;
-		long double ***Dex;
-		long double ***Hex;
-
-		long double ***kf;
-		long double ***kd;
-		long double ***kr;
 
 	//Trap control
 		int srh_sim;
@@ -473,13 +487,6 @@ struct device
 		long double contact_charge;
 
 	//Dump contorl
-		int dump_energy_slice_xpos;
-		int dump_energy_slice_ypos;
-		int dump_energy_slice_zpos;
-
-		int dump_1d_slice_xpos;
-		int dump_1d_slice_zpos;
-
 		int dumpitdos;
 
 		long double dump_dynamic_pl_energy;
@@ -547,6 +554,9 @@ struct device
 
 	//thermal
 		struct heat thermal;
+
+	//exciton
+		struct exciton ex;
 
 	//Preovskite
 		struct perovskite mobileion;

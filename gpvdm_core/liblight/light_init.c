@@ -2,28 +2,28 @@
 // General-purpose Photovoltaic Device Model gpvdm.com - a drift diffusion
 // base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solarcells.
 // The model can simulate OLEDs, Perovskite cells, and OFETs.
-// 
+//
 // Copyright 2008-2022 Roderick C. I. MacKenzie https://www.gpvdm.com
 // r.c.i.mackenzie at googlemail.com
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+// the rights to use, copy, modify, merge, publish, distribute, sublicense,
 // and/or sell copies of the Software, and to permit persons to whom the
 // Software is furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included
 // in all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 // OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// 
+//
 
 
 /** @file light_memory.c
@@ -49,7 +49,7 @@ static int unused __attribute__((unused));
 
 void light_init(struct simulation *sim,struct light *li)
 {
-	struct dim_light *dim=&(li->dim);
+	struct dimensions *dim=&(li->dim);
 	li->last_Psun= -1000.0;
 	li->last_laser_eff= -1000.0;
 	li->last_wavelength_laser= -1000.0;
@@ -106,17 +106,26 @@ void light_init(struct simulation *sim,struct light *li)
 	light_src_init(sim,&(li->light_src_y0));
 	light_src_init(sim,&(li->light_src_y1));
 
+	//Input spectra
 	li->sun_y0=NULL;
 	li->sun_y1=NULL;
 	li->sun_photons_y0=NULL;
 	li->sun_photons_y1=NULL;
+
+	//Input spectra no filter
+	li->sun_y0_no_filter=NULL;
+	li->sun_y1_no_filter=NULL;
+	li->sun_photons_y0_no_filter=NULL;
+	li->sun_photons_y1_no_filter=NULL;
+
+	//Input field
 	li->sun_E_y0=NULL;
 	li->sun_E_y1=NULL;
 	strcpy(li->suns_spectrum_file,"");
 	strcpy(li->light_file_generation,"");
 
 	li->lib_handle=NULL;
-	
+
 	strcpy(li->light_profile,"box");
 	triangles_init((&(li->light_profile_tri)));
 
@@ -127,5 +136,9 @@ void light_init(struct simulation *sim,struct light *li)
 	strcpy(li->snapshot_path,"none");
 	li->dump_verbosity=0;
 	strcpy(li->dump_dir,"none");
+
+	//for EQE
+	li->use_flat_sepctrum=FALSE;			
+
 }
 

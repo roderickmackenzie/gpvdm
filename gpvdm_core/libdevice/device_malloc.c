@@ -123,163 +123,182 @@ void device_get_memory(struct simulation *sim,struct device *in)
 	//Ions
 	if (in->drift_diffision_simulations_enabled==TRUE)
 	{
-		malloc_zxy_gdouble(dim,&(in->Nad));
-		malloc_zxy_gdouble(dim,&(in->Nion));
-		malloc_zxy_gdouble(dim,&(in->dNion));
-		malloc_zxy_gdouble(dim,&(in->dNiondphi));
-		malloc_zxy_gdouble(dim,&(in->Nion_last));
+		malloc_zxy_long_double(dim,&(in->Nad));
+		malloc_zxy_long_double(dim,&(in->Nion));
+		malloc_zxy_long_double(dim,&(in->dNion));
+		malloc_zxy_long_double(dim,&(in->dNiondphi));
+		malloc_zxy_long_double(dim,&(in->Nion_last));
 	}
 
 	//Generation
-	malloc_zxy_gdouble(dim,&(in->G));
-	malloc_zxy_gdouble(dim,&(in->Gn));
-	malloc_zxy_gdouble(dim,&(in->Gp));
+	malloc_zxy_long_double(dim,&(in->G));
+	malloc_zxy_long_double(dim,&(in->Gn));
+	malloc_zxy_long_double(dim,&(in->Gp));
 
 	//Free charges
 	if (in->drift_diffision_simulations_enabled==TRUE)
 	{
-		malloc_zxy_gdouble(dim,&(in->n));
-		malloc_zxy_gdouble(dim,&(in->p));
-		malloc_zxy_gdouble(dim,&(in->dn));
-		malloc_zxy_gdouble(dim,&(in->dp));
-		malloc_zxy_gdouble(dim,&(in->dndphi));
-		malloc_zxy_gdouble(dim,&(in->dpdphi));
+		malloc_zxy_long_double(dim,&(in->n));
+		malloc_zxy_long_double(dim,&(in->p));
+		malloc_zxy_long_double(dim,&(in->dn));
+		malloc_zxy_long_double(dim,&(in->dp));
+		malloc_zxy_long_double(dim,&(in->dndphi));
+		malloc_zxy_long_double(dim,&(in->dpdphi));
 
-		malloc_zxy_gdouble(dim,&(in->Dn));
-		malloc_zxy_gdouble(dim,&(in->Dp));
+		malloc_zxy_long_double(dim,&(in->Dn));
+		malloc_zxy_long_double(dim,&(in->Dp));
 
-		malloc_zxy_gdouble(dim,&(in->Fn));
-		malloc_zxy_gdouble(dim,&(in->Fp));
+		malloc_zxy_long_double(dim,&(in->Fn));
+		malloc_zxy_long_double(dim,&(in->Fp));
 
-		malloc_zxy_gdouble(dim,&(in->Nc));
-		malloc_zxy_gdouble(dim,&(in->Nv));
+		malloc_zxy_long_double(dim,&(in->Nc));
+		malloc_zxy_long_double(dim,&(in->Nv));
 
-		malloc_zxy_gdouble(dim,&(in->nf_save));
-		malloc_zxy_gdouble(dim,&(in->pf_save));
+		malloc_zxy_long_double(dim,&(in->nf_save));
+		malloc_zxy_long_double(dim,&(in->pf_save));
 
-		malloc_zxy_gdouble(dim,&(in->nfequlib));
-		malloc_zxy_gdouble(dim,&(in->pfequlib));
+		malloc_zxy_long_double(dim,&(in->nfequlib));
+		malloc_zxy_long_double(dim,&(in->pfequlib));
 
-		malloc_zxy_gdouble(dim,&(in->nlast));
-		malloc_zxy_gdouble(dim,&(in->plast));
+		malloc_zxy_long_double(dim,&(in->nlast));
+		malloc_zxy_long_double(dim,&(in->plast));
 
-		malloc_zxy_gdouble(dim,&(in->wn));
-		malloc_zxy_gdouble(dim,&(in->wp));
+		malloc_zxy_long_double(dim,&(in->wn));
+		malloc_zxy_long_double(dim,&(in->wp));
 
-		malloc_zxy_gdouble(dim,&(in->n_orig));
-		malloc_zxy_gdouble(dim,&(in->p_orig));
+		malloc_zxy_long_double(dim,&(in->n_orig));
+		malloc_zxy_long_double(dim,&(in->p_orig));
 
-		malloc_zxy_gdouble(dim,&(in->n_orig_f));
-		malloc_zxy_gdouble(dim,&(in->p_orig_f));
+		malloc_zxy_long_double(dim,&(in->n_orig_f));
+		malloc_zxy_long_double(dim,&(in->p_orig_f));
 
-		malloc_zxy_gdouble(dim,&(in->n_orig_t));
-		malloc_zxy_gdouble(dim,&(in->p_orig_t));
+		malloc_zxy_long_double(dim,&(in->n_orig_t));
+		malloc_zxy_long_double(dim,&(in->p_orig_t));
 
-		malloc_zxy_gdouble(dim,&(in->t));
-		malloc_zxy_gdouble(dim,&(in->tp));
-		malloc_zxy_gdouble(dim,&(in->t_ion));
+		malloc_zxy_long_double(dim,&(in->t));
+		malloc_zxy_long_double(dim,&(in->tp));
+		malloc_zxy_long_double(dim,&(in->t_ion));
 
 	}
 	//Fermi levels
 	if (in->drift_diffision_simulations_enabled==TRUE)
 	{
-		malloc_zxy_gdouble(dim,&(in->Fi));
+		malloc_zxy_long_double(dim,&(in->Fi));
 	}
 	//Bands
 	if (in->drift_diffision_simulations_enabled==TRUE)
 	{
-		malloc_zxy_gdouble(dim,&(in->Eg));
-		malloc_zxy_gdouble(dim,&(in->Xi));
-		malloc_zxy_gdouble(dim,&(in->Ev));
-		malloc_zxy_gdouble(dim,&(in->Ec));
+		malloc_zxy_long_double(dim,&(in->Eg));
+		malloc_zxy_long_double(dim,&(in->Xi));
+		malloc_zxy_long_double(dim,&(in->Ev));
+		malloc_zxy_long_double(dim,&(in->Ec));
 	}
 	//Recombination
 	if (in->drift_diffision_simulations_enabled==TRUE)
 	{
-		malloc_zxy_gdouble(dim,&(in->Rfree));
+		malloc_zxy_long_double(dim,&(in->Rfree));
+		malloc_zxy_long_double(dim,&(in->Rauger));
 
-		malloc_zxy_gdouble(dim,&(in->Rn));
-		malloc_zxy_gdouble(dim,&(in->Rp));
+		malloc_zxy_long_double(dim,&(in->Rn));
+		malloc_zxy_long_double(dim,&(in->Rp));
 
-		malloc_zxy_gdouble(dim,&(in->Rn_srh));
-		malloc_zxy_gdouble(dim,&(in->Rp_srh));
+		malloc_zxy_long_double(dim,&(in->Rn_srh));
+		malloc_zxy_long_double(dim,&(in->Rp_srh));
 
-		malloc_zxy_gdouble(dim,&(in->Rnet));
+		malloc_zxy_long_double(dim,&(in->Rnet));
 
-		malloc_zxy_gdouble(dim,&(in->B));
+		malloc_zxy_long_double(dim,&(in->B));
 	}
 	//Interfaces
 	if (in->drift_diffision_simulations_enabled==TRUE)
 	{
 		malloc_zxy_int(dim,&(in->interface_type));
-		malloc_zxy_gdouble(dim,&in->interface_B);
-		malloc_zxy_gdouble(dim,&in->interface_Bt);
-		malloc_zxy_gdouble(dim,&in->interface_R);
+		malloc_zxy_long_double(dim,&in->interface_B);
+		malloc_zxy_long_double(dim,&in->interface_Bt);
+		malloc_zxy_long_double(dim,&in->interface_R);
+		//Tunnel
+		malloc_zxy_long_double(dim,&in->interface_Ge);
+		malloc_zxy_long_double(dim,&in->interface_Gh);
 	}
 	//Rates
 	if (in->drift_diffision_simulations_enabled==TRUE)
 	{
-		malloc_zxy_gdouble(dim,&(in->nrelax));
-		malloc_zxy_gdouble(dim,&(in->ntrap_to_p));
-		malloc_zxy_gdouble(dim,&(in->prelax));
-		malloc_zxy_gdouble(dim,&(in->ptrap_to_n));
+		malloc_zxy_long_double(dim,&(in->nrelax));
+		malloc_zxy_long_double(dim,&(in->ntrap_to_p));
+		malloc_zxy_long_double(dim,&(in->prelax));
+		malloc_zxy_long_double(dim,&(in->ptrap_to_n));
 	}
 	//Mobility
 	if (in->drift_diffision_simulations_enabled==TRUE)
 	{
-		malloc_zxy_gdouble(dim,&(in->mun_z));
-		malloc_zxy_gdouble(dim,&(in->mun_x));
-		malloc_zxy_gdouble(dim,&(in->mun_y));
+		malloc_zxy_long_double(dim,&(in->mun_z));
+		malloc_zxy_long_double(dim,&(in->mun_x));
+		malloc_zxy_long_double(dim,&(in->mun_y));
 
-		malloc_zxy_gdouble(dim,&(in->mup_z));
-		malloc_zxy_gdouble(dim,&(in->mup_x));
-		malloc_zxy_gdouble(dim,&(in->mup_y));
+		malloc_zxy_long_double(dim,&(in->mup_z));
+		malloc_zxy_long_double(dim,&(in->mup_x));
+		malloc_zxy_long_double(dim,&(in->mup_y));
 
-		malloc_zxy_gdouble(dim,&(in->muion));
+		malloc_zxy_long_double(dim,&(in->muion));
+	}
+
+	//Auger
+	if (in->drift_diffision_simulations_enabled==TRUE)
+	{
+		//Auger
+		malloc_zxy_long_double(dim,&(in->Cn));
+		malloc_zxy_long_double(dim,&(in->Cp));
+
+		//SS SRH
+		malloc_zxy_long_double(dim,&(in->n1));
+		malloc_zxy_long_double(dim,&(in->p1));
+		malloc_zxy_long_double(dim,&(in->tau_n));
+		malloc_zxy_long_double(dim,&(in->tau_p));
+
 	}
 	//Electrostatics
-		malloc_zxy_gdouble(dim,&(in->epsilonr));
-		malloc_zxy_gdouble(dim,&(in->epsilonr_e0));
+		malloc_zxy_long_double(dim,&(in->epsilonr));
+		malloc_zxy_long_double(dim,&(in->epsilonr_e0));
 
-		malloc_zxy_gdouble(dim,&(in->phi_save));
+		malloc_zxy_long_double(dim,&(in->phi_save));
 
 	//Temperature
-		malloc_zxy_gdouble(dim,&(in->Tl));
-		malloc_zxy_gdouble(dim,&(in->Te));
-		malloc_zxy_gdouble(dim,&(in->Th));
+		malloc_zxy_long_double(dim,&(in->Tl));
+		malloc_zxy_long_double(dim,&(in->Te));
+		malloc_zxy_long_double(dim,&(in->Th));
 
-		malloc_zxy_gdouble(dim,&(in->ke));
-		malloc_zxy_gdouble(dim,&(in->kh));
+		malloc_zxy_long_double(dim,&(in->ke));
+		malloc_zxy_long_double(dim,&(in->kh));
 
 	//Heating
-		malloc_zxy_gdouble(dim,&(in->Hl));
-		malloc_zxy_gdouble(dim,&(in->H_recombination));
-		malloc_zxy_gdouble(dim,&(in->H_joule));
+		malloc_zxy_long_double(dim,&(in->Hl));
+		malloc_zxy_long_double(dim,&(in->H_recombination));
+		malloc_zxy_long_double(dim,&(in->H_joule));
 
-		malloc_zxy_gdouble(dim,&(in->He));
-		malloc_zxy_gdouble(dim,&(in->Hh));
+		malloc_zxy_long_double(dim,&(in->He));
+		malloc_zxy_long_double(dim,&(in->Hh));
 
 
 
 	//Current
-		malloc_zxy_gdouble(dim,&(in->Jn));
-		malloc_zxy_gdouble(dim,&(in->Jp));
-		malloc_zxy_gdouble(dim,&(in->Jn_x));
-		malloc_zxy_gdouble(dim,&(in->Jp_x));
+		malloc_zxy_long_double(dim,&(in->Jn));
+		malloc_zxy_long_double(dim,&(in->Jp));
+		malloc_zxy_long_double(dim,&(in->Jn_x));
+		malloc_zxy_long_double(dim,&(in->Jp_x));
 
 		if (in->drift_diffision_simulations_enabled==TRUE)
 		{
-			malloc_zxy_gdouble(dim,&(in->Jn_drift));
-			malloc_zxy_gdouble(dim,&(in->Jn_diffusion));
+			malloc_zxy_long_double(dim,&(in->Jn_drift));
+			malloc_zxy_long_double(dim,&(in->Jn_diffusion));
 
-			malloc_zxy_gdouble(dim,&(in->Jn_x_drift));
-			malloc_zxy_gdouble(dim,&(in->Jn_x_diffusion));
+			malloc_zxy_long_double(dim,&(in->Jn_x_drift));
+			malloc_zxy_long_double(dim,&(in->Jn_x_diffusion));
 
-			malloc_zxy_gdouble(dim,&(in->Jp_drift));
-			malloc_zxy_gdouble(dim,&(in->Jp_diffusion));
+			malloc_zxy_long_double(dim,&(in->Jp_drift));
+			malloc_zxy_long_double(dim,&(in->Jp_diffusion));
 
-			malloc_zxy_gdouble(dim,&(in->Jp_x_drift));
-			malloc_zxy_gdouble(dim,&(in->Jp_x_diffusion));
+			malloc_zxy_long_double(dim,&(in->Jp_x_drift));
+			malloc_zxy_long_double(dim,&(in->Jp_x_diffusion));
 		}
 	//Applied voltages
 		malloc_zx_gdouble(dim,&(in->Vapplied_y0));
@@ -296,7 +315,7 @@ void device_get_memory(struct simulation *sim,struct device *in)
 		malloc_zy_int(dim,&(in->passivate_x1));
 
 	//Emission
-		malloc_zxy_gdouble(dim,&(in->Photon_gen));
+		malloc_zxy_long_double(dim,&(in->Photon_gen));
 
 	//Device layout
 		malloc_zxy_int(dim,&(in->imat_epitaxy));
@@ -305,35 +324,26 @@ void device_get_memory(struct simulation *sim,struct device *in)
 		dim_alloc_zx_epitaxy(&(in->dim_epitaxy),in);
 		malloc_zx_epitaxy_int(&(in->dim_epitaxy),&(in->mask_epitaxy));
 
-	//Exciton
-		malloc_zxy_gdouble(dim,&(in->ex));
-		malloc_zxy_gdouble(dim,&(in->Dex));
-		malloc_zxy_gdouble(dim,&(in->Hex));
-
-		malloc_zxy_gdouble(dim,&(in->kf));
-		malloc_zxy_gdouble(dim,&(in->kd));
-		malloc_zxy_gdouble(dim,&(in->kr));
-
 	//Trap control
 		//none
 
 	//Traps 3d n
 	if (in->drift_diffision_simulations_enabled==TRUE)
 	{
-		malloc_zxy_gdouble(dim,&(in->nt_all));
-		malloc_zxy_gdouble(dim,&(in->tt));
+		malloc_zxy_long_double(dim,&(in->nt_all));
+		malloc_zxy_long_double(dim,&(in->tt));
 
-		malloc_zxy_gdouble(dim,&(in->nt_save));
-		malloc_zxy_gdouble(dim,&(in->pt_save));
+		malloc_zxy_long_double(dim,&(in->nt_save));
+		malloc_zxy_long_double(dim,&(in->pt_save));
 	}
 	//Traps 3d p
 	if (in->drift_diffision_simulations_enabled==TRUE)
 	{
-		malloc_zxy_gdouble(dim,&(in->pt_all));
-		malloc_zxy_gdouble(dim,&(in->tpt));
+		malloc_zxy_long_double(dim,&(in->pt_all));
+		malloc_zxy_long_double(dim,&(in->tpt));
 
-		malloc_zxy_gdouble(dim,&(in->ntequlib));
-		malloc_zxy_gdouble(dim,&(in->ptequlib));
+		malloc_zxy_long_double(dim,&(in->ntequlib));
+		malloc_zxy_long_double(dim,&(in->ptequlib));
 	}
 
 	//Traps 4d n
@@ -412,15 +422,15 @@ void device_get_memory(struct simulation *sim,struct device *in)
 	//////////////////////////////////// not yet done
 
 
-	malloc_zxy_gdouble(dim,&(in->Rbi_k));
+	malloc_zxy_long_double(dim,&(in->Rbi_k));
 
 	newton_state_alloc_mesh(ns,dim, FALSE);
 	//newton_state_alloc(ns,dim);
 	//newton_state_alloc_mesh(&(in->ns),dim);
 
-	//malloc_zxy_gdouble(dim,&(ns->phi));
-	//malloc_zxy_gdouble(dim,&(ns->x));
-	//malloc_zxy_gdouble(dim,&(ns->xp));
+	//malloc_zxy_long_double(dim,&(ns->phi));
+	//malloc_zxy_long_double(dim,&(ns->x));
+	//malloc_zxy_long_double(dim,&(ns->xp));
 	#ifdef libcircuit_enabled
 		circuit_alloc_nodes_and_links(sim,&(in->cir));
 	#endif
@@ -433,6 +443,7 @@ void device_to_dim(struct simulation *sim,struct dimensions *dim,struct device *
 {
 	struct newton_state *ns=(&dev->ns);
 	struct json_obj *json_perovskite;
+
 	dim->zlen=dev->mesh_data.meshdata_z.tot_points;
 	dim->xlen=dev->mesh_data.meshdata_x.tot_points;
 	dim->ylen=dev->mesh_data.meshdata_y.tot_points;
@@ -442,5 +453,6 @@ void device_to_dim(struct simulation *sim,struct dimensions *dim,struct device *
 		ewe(sim,"Perovskite object not found\n");
 	}
 	json_get_english(sim, json_perovskite, &(ns->Nion_enabled),"perovskite_enabled");
-	printf("here %d\n",ns->Nion_enabled);
+
 }
+

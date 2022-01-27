@@ -2,28 +2,28 @@
 // General-purpose Photovoltaic Device Model gpvdm.com - a drift diffusion
 // base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solarcells.
 // The model can simulate OLEDs, Perovskite cells, and OFETs.
-// 
+//
 // Copyright 2008-2022 Roderick C. I. MacKenzie https://www.gpvdm.com
 // r.c.i.mackenzie at googlemail.com
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+// the rights to use, copy, modify, merge, publish, distribute, sublicense,
 // and/or sell copies of the Software, and to permit persons to whom the
 // Software is furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included
 // in all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 // OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// 
+//
 
 /** @file dim.c
 @brief Dimension object
@@ -40,7 +40,7 @@
 #include <lang.h>
 #include <shape.h>
 
-void dim_light_init_xyzl(struct dim_light *dim,char xyzl)
+void dim_light_init_xyzl(struct dimensions *dim,char xyzl)
 {
 	if (xyzl=='x')
 	{
@@ -69,7 +69,7 @@ void dim_light_init_xyzl(struct dim_light *dim,char xyzl)
 
 }
 
-void dim_light_init(struct dim_light *dim)
+void dim_light_init(struct dimensions *dim)
 {
 	dim_light_init_xyzl(dim,'x');
 	dim_light_init_xyzl(dim,'y');
@@ -77,7 +77,7 @@ void dim_light_init(struct dim_light *dim)
 	dim_light_init_xyzl(dim,'l');
 }
 
-void dim_light_free_xyzl(struct dim_light *dim,char xyzl)
+void dim_light_free_xyzl(struct dimensions *dim,char xyzl)
 {
 	if (xyzl=='x')
 	{
@@ -114,7 +114,7 @@ void dim_light_free_xyzl(struct dim_light *dim,char xyzl)
 
 }
 
-void dim_light_free(struct dim_light *dim)
+void dim_light_free(struct dimensions *dim)
 {
 	dim_light_free_xyzl(dim,'x');
 	dim_light_free_xyzl(dim,'y');
@@ -123,7 +123,7 @@ void dim_light_free(struct dim_light *dim)
 	dim_light_init(dim);
 }
 
-void dim_light_cpy(struct dim_light *out,struct dim_light *in)
+void dim_light_cpy(struct dimensions *out,struct dimensions *in)
 {
 	dim_light_free(out);
 	out->xlen=in->xlen;
@@ -148,7 +148,7 @@ void dim_light_cpy(struct dim_light *out,struct dim_light *in)
 	}
 }
 
-void dim_light_malloc_xyzl(struct dim_light *dim,char xyzl)
+void dim_light_malloc_xyzl(struct dimensions *dim,char xyzl)
 {
 
 	if (xyzl=='x')
@@ -189,7 +189,7 @@ void dim_light_malloc_xyzl(struct dim_light *dim,char xyzl)
 
 
 
-void dim_light_malloc(struct dim_light *dim)
+void dim_light_malloc(struct dimensions *dim)
 {
 	dim_light_malloc_xyzl(dim,'x');
 	dim_light_malloc_xyzl(dim,'y');
@@ -199,28 +199,4 @@ void dim_light_malloc(struct dim_light *dim)
 }
 
 
-void dim_light_info_to_buf(struct dat_file *buf,struct dim_light *dim)
-{
-	long double mul_x=0.0;
-	long double mul_y=0.0;
-	long double mul_z=0.0;
 
-	get_meter_dim(buf->x_units,&mul_x,dim->x[dim->xlen-1]);
-	get_meter_dim(buf->y_units,&mul_y,dim->y[dim->ylen-1]);
-	get_meter_dim(buf->z_units,&mul_z,dim->z[dim->zlen-1]);
-	buf->y_mul=mul_y;
-	buf->x_mul=mul_x;
-	buf->z_mul=mul_z;
-
-	strcpy(buf->x_label,_("x-position"));
-	strcpy(buf->y_label,_("y-position"));
-	strcpy(buf->z_label,_("z-position"));
-
-	buf->x=dim->xlen;
-	buf->y=dim->ylen;
-	buf->z=dim->zlen;
-
-	buf->logscale_x=0;
-	buf->logscale_y=0;
-
-}

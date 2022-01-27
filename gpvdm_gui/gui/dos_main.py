@@ -63,9 +63,30 @@ class dos_main(QWidget,tab_base):
 
 		toolbar=QToolBar()
 		toolbar.setIconSize(QSize(48, 48))
+		toolbar.setToolButtonStyle( Qt.ToolButtonTextUnderIcon)
 
 		spacer = QWidget()
 		spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+
+		self.auger = QAction(icon_get("auger"), _("Enable\nAuger"), self)
+		self.auger.setCheckable(True)
+		self.auger.triggered.connect(self.callback_auger)
+		toolbar.addAction(self.auger)
+
+		self.traps = QAction(icon_get("traps"), _("Dynamic\nSRH traps"), self)
+		self.traps.setCheckable(True)
+		self.traps.triggered.connect(self.callback_traps)
+		toolbar.addAction(self.traps)
+
+		self.steady_state_srh = QAction(icon_get("srh"), _("Equilibrium\nSRH traps"), self)
+		self.steady_state_srh.setCheckable(True)
+		self.steady_state_srh.triggered.connect(self.callback_srh)
+		toolbar.addAction(self.steady_state_srh)
+
+		self.exciton = QAction(icon_get("exciton"), _("Excitons"), self)
+		self.exciton.setCheckable(True)
+		self.exciton.triggered.connect(self.callback_exciton)
+		toolbar.addAction(self.exciton)
 
 		toolbar.addWidget(spacer)
 
@@ -85,7 +106,7 @@ class dos_main(QWidget,tab_base):
 
 		global_object_register("dos_update",self.update)
 		self.status_bar=QStatusBar()
-		#self.notebook.currentChanged.connect(self.changed_click)
+		self.notebook.currentChanged.connect(self.changed_click)
 
 		self.main_vbox.addWidget(self.status_bar)	
 		self.update()
@@ -104,6 +125,7 @@ class dos_main(QWidget,tab_base):
 			w.tab.update_values()
 
 	def update(self):
+		self.notebook.blockSignals(True)
 		self.notebook.clear()
 		data=gpvdm_data()
 		for l in data.epi.layers:
@@ -128,13 +150,98 @@ class dos_main(QWidget,tab_base):
 
 					self.notebook.addTab(widget,name)
 
+		self.changed_click()
+		self.notebook.blockSignals(False)
+
 	def help(self):
 		help_window().help_set_help(["tab.png","<big><b>Density of States</b></big>\nThis tab contains the electrical model parameters, such as mobility, tail slope energy, and band gap."])
-	#def changed_click(self):
-	#	tab = self.notebook.currentWidget()
-	#	self.status_bar.showMessage(tab.file_name)
 
+	def changed_click(self):
+		data=gpvdm_data()
+		if data.electrical_solver.solver_type!="circuit":
+			self.auger.setEnabled(True)
+			self.traps.setEnabled(True)
+			self.steady_state_srh.setEnabled(True)
+			tab = self.notebook.currentWidget()
+			tab.tab.refind_template_widget()
+			self.auger.setChecked(tab.tab.template_widget.dos_enable_auger)
+			self.steady_state_srh.setChecked(tab.tab.template_widget.ss_srh_enabled)
+			self.exciton.setChecked(tab.tab.template_widget.exciton_enabled)
+			traps_enabled=False
+			for l in data.epi.layers:
+				if l.shape_dos.enabled==True and l.shape_enabled==True:
+					if l.shape_dos.srh_bands>0:
+						traps_enabled=True
+						break
+					for s in l.shapes:
+						if s.shape_dos.enabled==True and s.shape_enabled==True:
+							if s.shape_dos.srh_bands>0:
+								traps_enabled=True
+								break
+			self.traps.setChecked(traps_enabled)
+		else:
+			self.auger.setEnabled(False)
+			self.traps.setEnabled(False)
+			self.steady_state_srh.setEnabled(False)
+	
 	def callback_help(self,widget):
 		webbrowser.open('http://www.gpvdm.com/man/index.html')
 
+	def callback_auger(self):
+		data=gpvdm_data()
+		if data.electrical_solver.solver_type!="circuit":
+			tab = self.notebook.currentWidget()
+			tab.tab.refind_template_widget()
+			tab.tab.template_widget.dos_enable_auger=self.auger.isChecked()
+			tab.tab.hide_show_widgets()
+			data.save()
 
+	def callback_srh(self):
+		data=gpvdm_data()
+		if data.electrical_solver.solver_type!="circuit":
+			tab = self.notebook.currentWidget()
+			tab.tab.refind_template_widget()
+			tab.tab.template_widget.ss_srh_enabled=self.steady_state_srh.isChecked()
+			tab.tab.hide_show_widgets()
+			data.save()
+
+	def callback_exciton(self):
+		data=gpvdm_data()
+		if data.electrical_solver.solver_type!="circuit":
+			tab = self.notebook.currentWidget()
+			tab.tab.refind_template_widget()
+
+			for l in data.epi.layers:
+				l.shape_dos.exciton_enabled=self.exciton.isChecked()
+				for s in l.shapes:
+					s.shape_dos.exciton_enabled=self.exciton.isChecked()
+
+			for i in range(0,self.notebook.count()):
+				tab=self.notebook.widget(i)
+				tab.tab.update_values()
+				tab.tab.hide_show_widgets()
+
+			data.exciton.exciton_enabled=self.exciton.isChecked()
+
+			tab.tab.hide_show_widgets()
+			data.save()
+
+
+	def callback_traps(self):
+		data=gpvdm_data()
+		if self.traps.isChecked()==True:
+			ntraps=8
+		else:
+			ntraps=0
+
+		for l in data.epi.layers:
+			l.shape_dos.srh_bands=ntraps
+			for s in l.shapes:
+				s.shape_dos.srh_bands=ntraps
+
+		for i in range(0,self.notebook.count()):
+			tab=self.notebook.widget(i)
+			tab.tab.update_values()
+			tab.tab.hide_show_widgets()
+
+		data.save()

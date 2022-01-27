@@ -1,29 +1,29 @@
-// 
+//
 // General-purpose Photovoltaic Device Model gpvdm.com - a drift diffusion
 // base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solarcells.
 // The model can simulate OLEDs, Perovskite cells, and OFETs.
-// 
+//
 // Copyright 2008-2022 Roderick C. I. MacKenzie https://www.gpvdm.com
 // r.c.i.mackenzie at googlemail.com
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+// the rights to use, copy, modify, merge, publish, distribute, sublicense,
 // and/or sell copies of the Software, and to permit persons to whom the
 // Software is furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included
 // in all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 // OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// 
+//
 
 /** @file fdtd_power.c
 	@brief Calculate fdtd power.
@@ -64,9 +64,10 @@ float fdtd_power_y(struct simulation *sim,struct fdtd_data *data, int y)
 	int z;
 	int x;
 	float tot=0.0;
-	for (z=0;z<data->zlen;z++)
+	struct dimensions *dim=&(data->dim);
+	for (z=0;z<dim->zlen;z++)
 	{
-		for (x=0;x<data->xlen;x++)
+		for (x=0;x<dim->xlen;x++)
 		{
 			tot=tot+fdtd_power_zxy(sim,data,z, x,y);
 		}
@@ -77,10 +78,11 @@ float fdtd_power_y(struct simulation *sim,struct fdtd_data *data, int y)
 
 float fdtd_test_conv(struct simulation *sim,struct fdtd_data *data)
 {
+struct dimensions *dim=&(data->dim);
 float ret=0.0;
 float src=fdtd_power_zxy(sim,data,0, data->excitation_mesh_point_x, data->excitation_mesh_point_y);
-float almost_top=fdtd_power_y(sim,data,  data->ylen-data->ylen/4);
-float top=fdtd_power_y(sim,data,  data->ylen-2);
+float almost_top=fdtd_power_y(sim,data,  dim->ylen-dim->ylen/4);
+float top=fdtd_power_y(sim,data,  dim->ylen-2);
 
 	if (top!=0.0)
 	{

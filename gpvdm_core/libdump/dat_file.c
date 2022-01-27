@@ -2,28 +2,28 @@
 // General-purpose Photovoltaic Device Model gpvdm.com - a drift diffusion
 // base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solarcells.
 // The model can simulate OLEDs, Perovskite cells, and OFETs.
-// 
+//
 // Copyright 2008-2022 Roderick C. I. MacKenzie https://www.gpvdm.com
 // r.c.i.mackenzie at googlemail.com
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+// the rights to use, copy, modify, merge, publish, distribute, sublicense,
 // and/or sell copies of the Software, and to permit persons to whom the
 // Software is furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included
 // in all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 // OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// 
+//
 
 /** @file buffer.c
 @brief used to save output files to disk with a nice header, so the user knows what was writtne to them
@@ -52,57 +52,21 @@ void buffer_zip_set_name(struct dat_file *in,char * name)
 	in->write_to_zip=TRUE;
 }
 
-void buffer_init(struct dat_file *in)
-{
-in->write_to_zip=FALSE;
-in->norm_x_axis=FALSE;
-in->norm_y_axis=FALSE;
-in->data_max=NAN;
-in->data_min=NAN;
-strcpy(in->file_name,"");
-}
 
 void buffer_malloc(struct dat_file *in)
 {
-in->len=0;
-in->max_len=0;
-in->max_len+=10240;
-strcpy(in->title,"");
-strcpy(in->type,"xy");
-strcpy(in->title,"");
-in->x_mul=1.0;
-in->y_mul=1.0;
-in->z_mul=1.0;
-in->x_offset=0.0;
-in->y_offset=0.0;
-in->z_offset=0.0;
-in->data_mul=1.0;
-strcpy(in->x_label,"");
-strcpy(in->y_label,"");
-strcpy(in->z_label,"");
-strcpy(in->data_label,"");
-strcpy(in->x_units,"");
-strcpy(in->y_units,"");
-strcpy(in->z_units,"");
-strcpy(in->rgb,"");
-strcpy(in->data_units,"");
-strcpy(in->section_one,"");
-strcpy(in->section_two,"");
-in->logscale_x=0;
-in->logscale_y=0;
-in->logscale_z=0;
-in->logscale_data=0;
-in->x=0;
-in->y=0;
-in->z=0;
-in->time= -1.0;
-in->Vexternal= -1.0;
-in->dump_gnu_plot_file=FALSE;
-in->buf=(char*)malloc(sizeof(char)*in->max_len);
-memset(in->buf, 0, in->max_len);
+	in->buf=(char*)malloc(sizeof(char)*in->max_len);
+	memset(in->buf, 0, in->max_len);
 }
 
-void buffer_add_xy_data_shift(struct simulation *sim,struct dat_file *in,gdouble *x, gdouble *y, int len,long double shift)
+void buffer_free(struct dat_file *in)
+{
+	free(in->buf);
+	in->len=0;
+	in->max_len=0;
+}
+
+void dat_file_add_xy_data_shift(struct simulation *sim,struct dat_file *in,gdouble *x, gdouble *y, int len,long double shift)
 {
 int i;
 long double *temp;
@@ -113,12 +77,12 @@ for (i=0;i<len;i++)
 	temp[i]=y[i]+shift;
 }
 
-buffer_add_xy_data(sim,in,x,temp, len);
+dat_file_add_xy_data(sim,in,x,temp, len);
 
 free(temp);
 }
 
-void buffer_add_xy_data(struct simulation *sim,struct dat_file *in,gdouble *x, gdouble *y, int len)
+void dat_file_add_xy_data(struct simulation *sim,struct dat_file *in, gdouble *x, gdouble *y, int len)
 {
 int i;
 char string[200];
@@ -126,11 +90,32 @@ gdouble x_out=0.0;
 gdouble y_out=0.0;
 gdouble max=0.0;
 gdouble min=0.0;
+int csv=FALSE;
+in->x=1;
+in->y=len;
+in->z=1;
+strcpy(in->cols,"yd");
+
+if (strcmp_end(in->file_name,"csv")==0)
+{
+	csv=TRUE;
+	buffer_add_json(sim,in);
+	buffer_add_csv_header(sim,in);
+}else
+{
+	buffer_add_info(sim,in);
+}
 
 if (get_dump_status(sim,dump_write_headers)==TRUE)
 {
-	sprintf(string,"#data\n");
-	buffer_add_string(in,string);
+	if (csv==TRUE)
+	{
+
+	}else
+	{
+		sprintf(string,"#data\n");
+		buffer_add_string(in,string);
+	}
 }
 
 if (len>0)
@@ -159,15 +144,21 @@ if (len>0)
 			y_out=(y[i]-min)/(max-min);
 		}
 
-		sprintf(string,"%Le %Le\n",x_out,y_out);
+		sprintf(string,"%Le\t%Le\n",x_out,y_out);
 		buffer_add_string(in,string);
 	}
 }
 
 if (get_dump_status(sim,dump_write_headers)==TRUE)
 {
-	sprintf(string,"#end\n");
-	buffer_add_string(in,string);
+	if (csv==TRUE)
+	{
+
+	}else
+	{
+		sprintf(string,"#end\n");
+		buffer_add_string(in,string);
+	}
 }
 
 }
@@ -192,7 +183,7 @@ if (get_dump_status(sim,dump_write_headers)==TRUE)
 		{
 			for (y = 0; y < dim->ylen; y++)
 			{
-				sprintf(string,"%Le %Le %Le %d\n",dim->zmesh[z],dim->xmesh[x],dim->ymesh[y],data[z][x][y]->uid);
+				sprintf(string,"%Le %Le %Le %d\n",dim->z[z],dim->x[x],dim->y[y],data[z][x][y]->uid);
 				buffer_add_string(in,string);
 			}
 		}
@@ -207,39 +198,6 @@ if (get_dump_status(sim,dump_write_headers)==TRUE)
 
 }
 
-void buffer_add_zxy_heat_data(struct simulation *sim,struct dat_file *in,long double ***data, struct dim_heat *dim)
-{
-int z;
-int x;
-int y;
-char string[100];
-
-if (get_dump_status(sim,dump_write_headers)==TRUE)
-{
-	sprintf(string,"#data\n");
-	buffer_add_string(in,string);
-}
-
-	for (z = 0; z < dim->zlen; z++)
-	{
-		for (x = 0; x < dim->xlen; x++)
-		{
-			for (y = 0; y < dim->ylen; y++)
-			{
-				sprintf(string,"%Le %Le %Le %Le\n",dim->z[z],dim->x[x],dim->y[y],data[z][x][y]);
-				buffer_add_string(in,string);
-			}
-		}
-	}
-
-
-if (get_dump_status(sim,dump_write_headers)==TRUE)
-{
-	sprintf(string,"#end\n");
-	buffer_add_string(in,string);
-}
-
-}
 
 void buffer_add_xy_data_z_label(struct dat_file *in,gdouble *x, gdouble *y, gdouble *z, int len)
 {
@@ -288,6 +246,16 @@ buffer_add_string(in,string);
 
 }
 
+void dat_file_increase_buffer(struct dat_file *in,int size)
+{
+	in->len+=size;
+	if (in->len-in->max_len>0)
+	{
+		in->max_len+=in->len-in->max_len;
+		in->buf=(char*)realloc((char*)in->buf,sizeof(char)*in->max_len);
+	}
+}
+
 void buffer_add_string(struct dat_file *in,char * string)
 {
 int str_len=strlen(string);
@@ -311,142 +279,10 @@ if (in->len+100>in->max_len)
 strcpy((char*)(in->buf+pos),string);
 }
 
-void buffer_add_info(struct simulation *sim,struct dat_file *in)
-{
-char temp[400];
 
-//if (get_dump_status(sim,dump_write_headers)==TRUE)
-{
-	buffer_add_string(in,"#gpvdm\n");
-	sprintf(temp,"#title %s\n",in->title);
-	buffer_add_string(in,temp);
-
-	sprintf(temp,"#type %s\n",in->type);
-	buffer_add_string(in,temp);
-
-	sprintf(temp,"#x_mul %Lf\n",in->x_mul);
-	buffer_add_string(in,temp);
-
-	sprintf(temp,"#y_mul %Lf\n",in->y_mul);
-	buffer_add_string(in,temp);
-
-	sprintf(temp,"#z_mul %Lf\n",in->z_mul);
-	buffer_add_string(in,temp);
-
-	sprintf(temp,"#data_mul %Lf\n",in->data_mul);
-	buffer_add_string(in,temp);
-
-	if (in->x_offset!=0)
-	{
-		sprintf(temp,"#x_offset %Le\n",in->x_offset);
-		buffer_add_string(in,temp);
-	}
-
-	if (in->y_offset!=0)
-	{
-		sprintf(temp,"#y_offset %Le\n",in->y_offset);
-		buffer_add_string(in,temp);
-	}
-
-	if (in->z_offset!=0)
-	{
-		sprintf(temp,"#z_offset %Le\n",in->z_offset);
-		buffer_add_string(in,temp);
-	}
-
-	sprintf(temp,"#x_label %s\n",in->x_label);
-	buffer_add_string(in,temp);
-
-	sprintf(temp,"#y_label %s\n",in->y_label);
-	buffer_add_string(in,temp);
-
-	sprintf(temp,"#z_label %s\n",in->z_label);
-	buffer_add_string(in,temp);
-
-	sprintf(temp,"#data_label %s\n",in->data_label);
-	buffer_add_string(in,temp);
-
-	sprintf(temp,"#x_units %s\n",in->x_units);
-	buffer_add_string(in,temp);
-
-	sprintf(temp,"#y_units %s\n",in->y_units);
-	buffer_add_string(in,temp);
-
-	sprintf(temp,"#z_units %s\n",in->z_units);
-	buffer_add_string(in,temp);
-
-	if (strcmp(in->rgb,"")!=0)
-	{
-		sprintf(temp,"#rgb %s\n",in->rgb);
-		buffer_add_string(in,temp);
-	}
-
-	sprintf(temp,"#data_units %s\n",in->data_units);
-	buffer_add_string(in,temp);
-
-	sprintf(temp,"#logscale_x %d\n",in->logscale_x);
-	buffer_add_string(in,temp);
-
-	sprintf(temp,"#logscale_y %d\n",in->logscale_y);
-	buffer_add_string(in,temp);
-
-	sprintf(temp,"#logscale_z %d\n",in->logscale_z);
-	buffer_add_string(in,temp);
-
-	sprintf(temp,"#logscale_data %d\n",in->logscale_data);
-	buffer_add_string(in,temp);
-
-	sprintf(temp,"#section_one %s\n",in->section_one);
-	buffer_add_string(in,temp);
-
-	sprintf(temp,"#section_two %s\n",in->section_two);
-	buffer_add_string(in,temp);
-
-	sprintf(temp,"#time %Le\n",in->time);
-	buffer_add_string(in,temp);
-
-	sprintf(temp,"#Vexternal %Le\n",in->Vexternal);
-	buffer_add_string(in,temp);
-
-	if (isnan(in->data_max)!=1)
-	{
-		sprintf(temp,"#data_max %Le\n",in->data_max);
-		buffer_add_string(in,temp);
-	}
-
-	if (isnan(in->data_min)!=1)
-	{
-		sprintf(temp,"#data_min %Le\n",in->data_min);
-		buffer_add_string(in,temp);
-	}
-
-	if (in->x!=0)
-	{
-		sprintf(temp,"#x %d\n",in->x);
-		buffer_add_string(in,temp);
-	}
-
-	if (in->y!=0)
-	{
-		sprintf(temp,"#y %d\n",in->y);
-		buffer_add_string(in,temp);
-	}
-
-	if (in->z!=0)
-	{
-		sprintf(temp,"#z %d\n",in->z);
-		buffer_add_string(in,temp);
-	}
-
-	sprintf(temp,"#begin\n");
-	buffer_add_string(in,temp);
-}
-}
 
 void buffer_dump(struct simulation *sim,char * file,struct dat_file *in)
 {
-	int out_len;
-	char *out_data;
 	FILE *out;
 	sim->files_written++;
 	sim->bytes_written+=in->len;
@@ -507,14 +343,14 @@ void buffer_dump_cache(struct simulation *sim,char * file_name,struct dat_file *
 	buffer_dump(sim,file_name,in);
 }
 
-void buffer_add_dir(struct simulation *sim,char * file_name)
-{
-	gpvdm_mkdir(file_name);
-
-}
-
 int buffer_set_file_name(struct simulation *sim,struct device *dev,struct dat_file *in,char * file_name)
 {
+	if (dev==NULL)
+	{
+		strcpy(in->file_name,file_name);
+		return 0;
+	}
+
 	if (dump_can_i_dump(sim,dev, file_name)==0)
 	{
 		strcpy(in->file_name,file_name);
@@ -542,13 +378,6 @@ void buffer_dump_path(struct simulation *sim,char *path,char * file,struct dat_f
 	buffer_dump_cache(sim,wholename,in);
 }
 
-
-void buffer_free(struct dat_file *in)
-{
-free(in->buf);
-in->len=0;
-in->max_len=0;
-}
 
 void dat_file_reset(struct dat_file *in)
 {

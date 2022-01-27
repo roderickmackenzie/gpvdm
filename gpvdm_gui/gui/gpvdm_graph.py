@@ -40,12 +40,11 @@ from dat_file import dat_file
 
 
 from matplotlib.figure import Figure
-from plot_io import get_plot_file_info
 
 #qt
 from PyQt5.QtCore import QSize, Qt 
 from PyQt5.QtWidgets import QWidget,QVBoxLayout,QToolBar,QSizePolicy,QAction,QActionGroup,QTabWidget,QMenu,QApplication
-from PyQt5.QtGui import QIcon,QPixmap,QImage, QScreen
+from PyQt5.QtGui import QIcon,QPixmap,QImage, QScreen, QBrush, QColor
 from PyQt5.QtGui import QPainter,QFont,QColor,QPen,QFontMetrics,QPainterPath
 
 #calpath
@@ -61,8 +60,10 @@ from epitaxy import get_epi
 from PyQt5.QtCore import pyqtSignal
 from json_material_db_item import json_material_db_item
 
-from dat_file_math import dat_file_max_min
 from util import wavelength_to_rgb
+from color_map import color_map
+from math import log10
+from util import time_with_units
 
 try:
 	import svgwrite
@@ -98,6 +99,9 @@ class gpvdm_graph(QWidget):
 		self.data_x1=None
 		self.x0_mul=0.1
 		self.enable_wavelength_to_rgb=False
+		self.colors=color_map()
+		self.colors_free=color_map(map_name="blues")
+		self.show_title=False
 
 	def callback_save_as_svg(self):
 		response=save_as_filter(self,"svg (*.svg)")
@@ -292,26 +296,99 @@ class gpvdm_graph(QWidget):
 		#qp.rotate(-90)
 		qp.restore()
 
+	def draw_graph_lines(self,qp):
+		path = QPainterPath()
+		path.moveTo(self.to_screen_x(self.data.y_scale[0]),self.to_screen_y(self.data.data[0][0][0]))
+		for i in range(1,len(self.data.y_scale)):
+			x0=self.to_screen_x(self.data.y_scale[i])
+			y0=self.to_screen_y(self.data.data[0][0][i])
+			#if self.enable_wavelength_to_rgb==True:
+			#	r,g,b=wavelength_to_rgb(self.data.y_scale[i]*1e9)
+			#	print(r,g,b)
+			path.lineTo(x0, y0)
+
+		pen = QPen(QColor(10, 10, 10,127), 4, Qt.SolidLine)
+		qp.setPen(pen)
+		qp.drawPath(path)
+		pen = QPen(QColor(0, 0, 0), 1, Qt.SolidLine)
+		qp.setPen(pen)
+
+	def draw_trap_map(self,qp):
+
+		qp.setPen(Qt.NoPen)
+
+		for y in range(0,self.data.y_len):
+			if y<self.data.y_len-1:
+				dy=self.data.y_scale[y+1]-self.data.y_scale[y]
+			else:
+				dy=self.data.y_scale[y]-self.data.y_scale[y-1]
+
+			#Ec
+			x0=self.to_screen_x(self.data.y_scale[y])
+			x1=self.to_screen_x(self.data.y_scale[y]+dy)
+
+			y0=self.to_screen_y(self.data.Ec_f[0][0][y])
+			y1=y0+10
+
+			pos=int(255*(log10(self.data.nf[0][0][y])-self.data.trap_min)/(self.data.trap_max-self.data.trap_min))
+
+			br = QBrush(QColor(self.colors.map[pos][0], self.colors.map[pos][1], self.colors.map[pos][2]))  
+			qp.setBrush(br)
+			
+			qp.drawRect(x0, y0, 1+x1-x0, -1+y1-y0)
+
+			#Ev
+			x0=self.to_screen_x(self.data.y_scale[y])
+			x1=self.to_screen_x(self.data.y_scale[y]+dy)
+
+			y0=self.to_screen_y(self.data.Ev_f[0][0][y])-3
+			y1=y0+10
+
+			pos=int(255*(log10(self.data.pf[0][0][y])-self.data.trap_min)/(self.data.trap_max-self.data.trap_min))
+
+			br = QBrush(QColor(self.colors.map[pos][0], self.colors.map[pos][1], self.colors.map[pos][2]))  
+			qp.setBrush(br)
+			
+			qp.drawRect(x0, y0, 1+x1-x0, -1+y1-y0)
+			for band in range(0,self.data.srh_bands):
+				x0=self.to_screen_x(self.data.y_scale[y])
+				x1=self.to_screen_x(self.data.y_scale[y]+dy)
+
+				if band<self.data.srh_bands-1:
+					dE=self.data.Ec[0][0][y][band+1]-self.data.Ec[0][0][y][band]
+				else:
+					dE=self.data.Ec[0][0][y][band]-self.data.Ec[0][0][y][band-1]
+
+				y0=self.to_screen_y(self.data.Ec[0][0][y][band])+10
+				y1=self.to_screen_y(self.data.Ec[0][0][y][band]+dE)+10
+
+				pos=int(255*(log10(self.data.nt[0][0][y][band])-self.data.trap_min)/(self.data.trap_max-self.data.trap_min))
+
+				br = QBrush(QColor(self.colors.map[pos][0], self.colors.map[pos][1], self.colors.map[pos][2]))  
+				qp.setBrush(br)
+				
+				qp.drawRect(x0, y0, 1+x1-x0, -1+y1-y0)
+
+				x0=self.to_screen_x(self.data.y_scale[y])
+				y0=self.to_screen_y(self.data.Ev[0][0][y][band])
+				y1=self.to_screen_y(self.data.Ev[0][0][y][band]+dE)
+
+				pos=int(255*(log10(self.data.pt[0][0][y][band])-self.data.trap_min)/(self.data.trap_max-self.data.trap_min))
+				br = QBrush(QColor(self.colors.map[pos][0], self.colors.map[pos][1], self.colors.map[pos][2]))  
+				qp.setBrush(br)
+
+				qp.drawRect(x0, y0, 1+x1-x0, -1+y1-y0)
+
+		qp.setPen(Qt.SolidLine)
+
 	def plot_data(self,qp):
 		if self.data.valid_data==True:
-
 			if len(self.data.y_scale)>1:
-				path = QPainterPath()
+				if self.data.type!="trap_map":
 
-				path.moveTo(self.to_screen_x(self.data.y_scale[0]),self.to_screen_y(self.data.data[0][0][0]))
-				for i in range(1,len(self.data.y_scale)):
-					x0=self.to_screen_x(self.data.y_scale[i])
-					y0=self.to_screen_y(self.data.data[0][0][i])
-					#if self.enable_wavelength_to_rgb==True:
-					#	r,g,b=wavelength_to_rgb(self.data.y_scale[i]*1e9)
-					#	print(r,g,b)
-					path.lineTo(x0, y0)
-
-				pen = QPen(QColor(10, 10, 10,127), 4, Qt.SolidLine)
-				qp.setPen(pen)
-				qp.drawPath(path)
-				pen = QPen(QColor(0, 0, 0), 1, Qt.SolidLine)
-				qp.setPen(pen)
+					self.draw_graph_lines(qp)
+				else:
+					self.draw_trap_map(qp)
 
 	def drawText(self,qp,x, y , text,r,g,b,svg=False):
 		if svg==False:
@@ -339,6 +416,13 @@ class gpvdm_graph(QWidget):
 				qp.add(qp.rect((x,y), (w, h),stroke='none',fill=svgwrite.rgb(r, g, b, '%')))
 			else:
 				qp.add(qp.rect((x,y), (w, h),stroke='none',fill=svgwrite.rgb(r, g, b, '%'),opacity=alpha/255))
+
+	def draw_title(self,qp):
+		title=self.data.title
+		if self.data.time!=-1.0 and self.data.Vexternal!=-1.0:
+			mul,unit=time_with_units(self.data.time)
+			title=title+" V="+str(self.data.Vexternal)+" "+_("time")+"="+str(self.data.time*mul)+" "+unit
+			qp.drawText(self.width()/3, 20, title)
 
 	def render_image(self,qp,svg=False):
 		self.x0=self.width()*self.x0_mul
@@ -368,6 +452,7 @@ class gpvdm_graph(QWidget):
 		#x scale
 		if self.show_axis==True:
 			if svg==False:
+				self.draw_title(qp)
 				self.draw_x_scale(qp)
 				self.draw_y_scale(qp)
 				self.draw_y2_scale(qp)
@@ -393,11 +478,18 @@ class gpvdm_graph(QWidget):
 		#print("reload",file_name)
 		self.data=dat_file()
 		self.data.load(file_name)
-		[max,min] = dat_file_max_min(self.data)
+		if self.data.data!=None:
+			[my_max,my_min] = self.data.max_min()
 
-		self.data.data_min=min
-		self.data.data_max=max
-		
+			self.data.data_min=my_min
+			self.data.data_max=my_max
+
+		if self.data.type=="trap_map":
+			self.data.trap_min=log10(self.data.data_min)
+			self.data.trap_max=log10(self.data.data_max)
+			self.data.data_min=self.data.Ev_min
+			self.data.data_max=self.data.Ec_max
+
 		if self.use_epi_for_x==True:
 			self.data_x0=0.0
 			self.data_x1=get_epi().ylen()

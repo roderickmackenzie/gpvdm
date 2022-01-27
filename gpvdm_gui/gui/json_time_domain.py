@@ -82,7 +82,12 @@ class json_time_domain_config(json_base):
 		self.var_list.append(["pulse_subtract_dc","false"])
 		self.var_list.append(["start_time",-4e-12])
 		self.var_list.append(["fs_laser_time",-1.0])
+		self.var_list.append(["text_output",""])
 		self.var_list.append(["dump_verbosity",1])
+		self.var_list.append(["dump_energy_space","false"])
+		self.var_list.append(["dump_x",0])
+		self.var_list.append(["dump_y",0])
+		self.var_list.append(["dump_z",0])
 		self.var_list_build()
 
 

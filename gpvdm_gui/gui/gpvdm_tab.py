@@ -82,6 +82,10 @@ class gpvdm_tab(QTableWidget):
 		self.menu.addAction(self.menu_delete)
 		self.menu_delete.triggered.connect(self.emit_remove_rows)
 
+	#def setColortoRow(self, rowIndex, color):
+	#	for j in range(self.columnCount()):
+	#	    table.item(rowIndex, j).setBackground(color)
+
 	def callback_menu_copy(self):
 		if self.rowCount()==0:
 			return

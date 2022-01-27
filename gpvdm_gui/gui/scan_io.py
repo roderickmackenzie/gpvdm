@@ -45,6 +45,7 @@ from numpy import std
 from error_dlg import error_dlg
 from scan_tree import scan_tree_leaf
 from process_events import process_events
+from safe_delete import gpvdm_delete_file
 
 import i18n
 _ = i18n.language.gettext
@@ -321,7 +322,7 @@ def scan_import_from_hpc(base_dir):
 				src_path=hpc_files[i]
 				dest_path=os.path.join(base_dir,hpc_files[i][len(hpc_path)+1:])
 				if os.path.isdir(dest_path):
-					shutil.rmtree(dest_path)
+					gpvdm_delete_file(dest_path,allow_dir_removal=True)
 				shutil.copytree(src_path, dest_path, symlinks=False, ignore=None)
 				#print(src_path,dest_path)
 	else:

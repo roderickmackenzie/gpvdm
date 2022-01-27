@@ -40,7 +40,6 @@ from dat_file import dat_file
 
 
 from matplotlib.figure import Figure
-from plot_io import get_plot_file_info
 
 #qt
 from PyQt5.QtCore import QSize, Qt 
@@ -62,7 +61,6 @@ from epitaxy import get_epi
 from PyQt5.QtCore import pyqtSignal
 from json_material_db_item import json_material_db_item
 
-from dat_file_math import dat_file_max_min
 from gpvdm_graph import gpvdm_graph
 from epitaxy import get_epi
 

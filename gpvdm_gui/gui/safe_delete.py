@@ -19,56 +19,48 @@
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #   
 
-## @package colors
-#  Functions to deal with colors.
+
+## @package util
+#  General helper functions.
 #
 
+
+
 import os
-import io
-from numpy import *
-from plot_io import plot_load_info
+import shutil
+import sys
+import hashlib
+import glob
+from cal_path import get_home_path
+from win_lin import running_on_linux
 
-color=[]
-color_black=[]
-marker=[]
+def gpvdm_delete_file(path,allow_dir_removal=False):
+	#Paranoia
+	if os.path.samefile(str(get_home_path()),str(path))==True:
+		sys.exit('I can not delete this dir')
+		return
 
-def gen_colors_black():
-	global color_black
-	global marker
-	marker_base=["","x","o"]
+	#Paranoia
+	if os.path.samefile(str(os.getcwd()),str(path))==True:
+		sys.exit('I can not delete this dir2')
+		return
 
-	base=[[0.0,0.0,0.0]]
-	marker=[]
-	color_black=[]
-	for i in range(0,100):
-		color_black.append([base[0][0],base[0][1],base[0][2]])
-		marker.append("")
+	if os.path.isdir(path)==True:
+		if allow_dir_removal==False:
+			print("I am not allwed to delete:", path)
+			return
+		try:
+			shutil.rmtree(path)
+		except IOError:
+			print("Could not delete the dir:", path)
 
-def gen_colors():
-	global color
-	global marker
-	base=[[0.0,0.0,1.0],[1.0,0.0,0.0],[0.0,1.0,0.0],[0.0,1.0,1.0],[1.0,1.0,0.0],[1.0,0.0,1.0]]
-	marker=[]
-	marker_base=["","x","o"]
-	mul=1.0
-	color=[]
-	for rounds in range(0,20):
-		for i in range(0,len(base)):
-			color.append([base[i][0]*mul,base[i][1]*mul,base[i][2]*mul])
-			marker.append("")
-		mul=mul*0.5
+	elif os.path.isfile(path)==True:
+		print("Delete",path)
+		try:
+			os.remove(path)
+		except IOError:
+			print("Could not delete the file:", path)
+	else:
+		print("This should not be run")
 
-gen_colors()
-gen_colors_black()
 
-def get_color(i):
-	global color
-	return color[i]
-
-def get_color_black(i):
-	global color_black
-	return color_black[i]
-
-def get_marker(i):
-	global marker
-	return marker[i]

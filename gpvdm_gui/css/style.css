@@ -2,6 +2,13 @@
 /*QTabWidget {
 	background-color: #d0d9f0;
 }*/
+QTabBar::tab::disabled {
+	width: 0;
+	height: 0;
+	margin: 0;
+	padding: 0;
+	border: none;
+} 
 
 QTabWidget::pane {
 	border-top: 2px solid qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #90a0e0, stop:1.0 #303070);

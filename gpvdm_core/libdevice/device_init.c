@@ -44,6 +44,8 @@
 #include <shape.h>
 #include <heat.h>
 #include <heat_fun.h>
+#include <exciton.h>
+#include <exciton_fun.h>
 #include <gpvdm_const.h>
 #include <lib_fxdomain.h>
 #include <fxdomain_fun.h>
@@ -182,6 +184,7 @@ void device_init(struct simulation *sim,struct device *dev)
 
 	//Recombination
 		dev->Rfree= NULL;
+		dev->Rauger= NULL;
 
 		dev->Rn= NULL;
 		dev->Rp= NULL;
@@ -202,6 +205,12 @@ void device_init(struct simulation *sim,struct device *dev)
 		dev->interface_Bt=NULL;
 		dev->interface_R=NULL;
 
+		//Tunnel
+		dev->interface_Ge=NULL;
+		dev->interface_Gh=NULL;
+		dev->interfaces_tunnels_e=0;
+		dev->interfaces_tunnels_h=0;
+
 	//Rates
 		dev->nrelax= NULL;
 		dev->ntrap_to_p= NULL;
@@ -220,6 +229,18 @@ void device_init(struct simulation *sim,struct device *dev)
 		dev->mup_y= NULL;
 
 		dev->muion=NULL;
+
+	//Auger
+		dev->Cn=NULL;
+		dev->Cp=NULL;
+		dev->auger_enabled=FALSE;
+
+	//SS SRH
+		dev->ss_srh_enabled=FALSE;
+		dev->n1=NULL;
+		dev->p1=NULL;
+		dev->tau_n=NULL;
+		dev->tau_p=NULL;
 
 	//Electrostatics
 		dev->epsilonr= NULL;
@@ -284,15 +305,6 @@ void device_init(struct simulation *sim,struct device *dev)
 
 		dim_init_zx_epitaxy(&(dev->dim_epitaxy));
 		dev->mask_epitaxy= NULL;
-
-	//Exciton
-		dev->ex= NULL;
-		dev->Dex= NULL;
-		dev->Hex= NULL;
-
-		dev->kf= NULL;
-		dev->kd= NULL;
-		dev->kr= NULL;
 
 	//Trap control
 		dev->ntrapnewton= -1;
@@ -416,13 +428,6 @@ void device_init(struct simulation *sim,struct device *dev)
 		dev->contact_charge= -1.0;
 
 	//Dump control
-		dev->dump_energy_slice_xpos= -1;
-		dev->dump_energy_slice_ypos= -1;
-		dev->dump_energy_slice_zpos= -1;
-
-		dev->dump_1d_slice_xpos=-1;
-		dev->dump_1d_slice_zpos=-1;
-
 		dev->dumpitdos= -1;
 
 		dev->dump_dynamic_pl_energy= -1;
@@ -489,6 +494,12 @@ void device_init(struct simulation *sim,struct device *dev)
 		#ifdef libheat_enabled
 			heat_init(&(dev->thermal));
 		#endif
+
+	//Exciton
+		#ifdef libheat_enabled
+			exciton_init(&(dev->ex));
+		#endif
+
 
 	//Perovskite
 		#ifdef libperovskite_enabled

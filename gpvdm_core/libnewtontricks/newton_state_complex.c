@@ -77,7 +77,7 @@ void newton_state_complex_alloc_mesh(struct newton_state_complex *ns,struct dime
 	ns->dim.ylen=dim->ylen;
 	ns->dim.zlen=dim->zlen;
 
-	dim_alloc(&(ns->dim));
+	dim_malloc(&(ns->dim));
 
 	malloc_zxy_long_double_complex(dim,&(ns->phi));
 

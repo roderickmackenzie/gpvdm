@@ -2,28 +2,28 @@
 // General-purpose Photovoltaic Device Model gpvdm.com - a drift diffusion
 // base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solarcells.
 // The model can simulate OLEDs, Perovskite cells, and OFETs.
-// 
+//
 // Copyright 2008-2022 Roderick C. I. MacKenzie https://www.gpvdm.com
 // r.c.i.mackenzie at googlemail.com
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+// the rights to use, copy, modify, merge, publish, distribute, sublicense,
 // and/or sell copies of the Software, and to permit persons to whom the
 // Software is furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included
 // in all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 // OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// 
+//
 
 /** @file utils.c
 	@brief Miscellaneous functions for the heat model.
@@ -62,7 +62,7 @@ void heat_transfer_temperatures_to_device(struct device *dev,struct heat *therma
 	long double pos=0;
 
 	struct dimensions *dim=&(dev->ns.dim);
-	struct dim_heat *dim_t=&(thermal->dim);
+	struct dimensions *dim_t=&(thermal->dim);
 	struct epitaxy *epi=&(dev->my_epitaxy);
 
 	//struct newton_state *ns=&cell->ns;
@@ -74,7 +74,7 @@ void heat_transfer_temperatures_to_device(struct device *dev,struct heat *therma
 		{
 			for (y=0;y<dim->ylen;y++)
 			{
-				pos=epi->device_start+dim->ymesh[y];
+				pos=epi->device_start+dim->y[y];
 
 				Tl=interpolate_heat_zxy_long_double(dim_t, thermal->Tl, z, x, pos);
 				Te=interpolate_heat_zxy_long_double(dim_t, thermal->Te, z, x, pos);
@@ -110,7 +110,7 @@ void heat_transfer_device_heat_to_heat_mesh(struct simulation *sim,struct heat *
 	long double P=0.0;
 	long double H_parasitic=0.0;
 	struct dimensions *dim=&(dev->ns.dim);
-	struct dim_heat *dim_t=&(thermal->dim);
+	struct dimensions *dim_t=&(thermal->dim);
 	struct epitaxy *epi=&(dev->my_epitaxy);
 
 	Vapplied=contact_get_active_contact_voltage(sim,dev);
@@ -168,8 +168,8 @@ void heat_transfer_optical_heat_to_heat_mesh(struct heat *thermal, struct light 
 	long double y_start=0.0;
 	long double y_stop=0.0;
 
-	struct dim_light *dim_li=&(li->dim);
-	struct dim_heat *dim_t=&(thermal->dim);
+	struct dimensions *dim_li=&(li->dim);
+	struct dimensions *dim_t=&(thermal->dim);
 
 	for (z=0;z<dim_t->zlen;z++)
 	{
@@ -179,7 +179,7 @@ void heat_transfer_optical_heat_to_heat_mesh(struct heat *thermal, struct light 
 			for (y=0;y<dim_t->ylen;y++)
 			{
 				y_start=ypos;
-				ypos+=dim_t->dy[y];
+				ypos+=dim_t->dY[y];
 				y_stop=ypos;
 
 				//H=interpolate_light_zxy_long_double(dim_li, li->Htot, z, x, dim_t->y[y]);

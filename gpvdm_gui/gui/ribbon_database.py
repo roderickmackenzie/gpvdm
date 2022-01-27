@@ -51,7 +51,6 @@ from cal_path import get_spectra_path
 
 from util import wrap_text
 from gui_util import dlg_get_text
-from clone_materials import clone_material
 
 from cal_path import get_emission_path
 

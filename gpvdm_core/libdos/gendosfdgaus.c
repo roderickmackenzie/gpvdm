@@ -2,28 +2,28 @@
 // General-purpose Photovoltaic Device Model gpvdm.com - a drift diffusion
 // base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solarcells.
 // The model can simulate OLEDs, Perovskite cells, and OFETs.
-// 
+//
 // Copyright 2008-2022 Roderick C. I. MacKenzie https://www.gpvdm.com
 // r.c.i.mackenzie at googlemail.com
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+// the rights to use, copy, modify, merge, publish, distribute, sublicense,
 // and/or sell copies of the Software, and to permit persons to whom the
 // Software is furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included
 // in all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 // OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// 
+//
 
 /** @file gendosfdgause.c
 	@brief Generates the DoS files.
@@ -353,7 +353,7 @@ int first=FALSE;
 #endif
 
 struct dat_file dos_out;
-buffer_init(&dos_out);
+dat_file_init(&dos_out);
 
 if (get_dump_status(sim,dump_write_out_band_structure)==TRUE)
 {
@@ -632,7 +632,7 @@ printf_log(sim,"%d/%d\n",t,(int)tsteps);
 		if (in->dos_free_carrier_stats==fd_look_up_table)
 		{
 			w0=sum_E/sum;		//After 22 in Solid State Electron Vol. 32 No. 6 469-473 1989 R. Kishore and Azof
-			//printf("%Le %Le %Le\n",w0,sum_E/sum,(3.0/2.0)*kb*tpos);	
+			//printf("%Le %Le %Le\n",w0,sum_E/sum,(3.0/2.0)*kb*tpos);
 		}
 
 		//printf("%Le %Le\n",w0,(3.0/2.0)*kb*tpos);
@@ -744,7 +744,7 @@ if (get_dump_status(sim,dump_write_out_band_structure)==TRUE)
 		fprintf ( file,"%d %Le\n",i, buf[i]);
 	}
 	fclose (file);*/
-	
+
 	write_zip_buffer(sim,outfile,buf,buf_len);
 	free(buf);
 

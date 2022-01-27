@@ -28,6 +28,7 @@ from tab import tab_class
 from icon_lib import icon_get
 
 #qt
+from PIL import Image, ImageFilter,ImageOps, ImageDraw
 from PyQt5.QtCore import QSize, Qt
 from PyQt5.QtWidgets import QWidget,QVBoxLayout,QToolBar,QSizePolicy,QAction,QTabWidget, QDialog, QMenu
 from PyQt5.QtGui import QPainter,QIcon,QPixmap,QPen,QColor
@@ -153,6 +154,17 @@ class image_discretizer(QWidget):
 
 		self.build_mesh()
 
+	def mouseMoveEvent(self, event):
+		width, height = self.im.size
+		if event.buttons()==Qt.LeftButton:
+			x=int(width*event.x()/self.width())
+			y=int(height*event.y()/self.height())
+			drawer=ImageDraw.Draw(self.im)
+			drawer.rectangle([(x, y), (x+5, y+5)], fill="black")
+			self.update()
+
+	def mouseReleaseEvent(self, event):
+		self.im.save(self.image_in)
 
 	def paintEvent(self, event):
 		painter = QPainter(self)
@@ -160,7 +172,7 @@ class image_discretizer(QWidget):
 		if self.im==None:
 			return
 		width, height = self.im.size
-
+		#print(type(self.im))
 		qim = ImageQt(self.im)
 		pixmap = QPixmap.fromImage(qim)
 		#self.im=pixmap.toImage()

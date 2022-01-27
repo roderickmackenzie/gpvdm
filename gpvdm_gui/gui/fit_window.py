@@ -114,6 +114,7 @@ class fit_window(QWidgetSavePos):
 
 	def load_tabs(self):
 		data=gpvdm_data()
+		data.fits.fits.fix_identical_uids([])
 		for fit in data.fits.fits.segments:
 			if fit.import_config.data_file=="none":
 				fit.import_config.data_file=self.get_new_data_file()

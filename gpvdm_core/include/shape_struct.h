@@ -40,6 +40,7 @@
 #include <enabled_libs.h>
 #include <dos_struct.h>
 #include <heat_material.h>
+#include <exciton_material.h>
 
 struct shape
 {
@@ -74,6 +75,7 @@ struct shape
 	struct dos dosn;
 	struct dos dosp;
 	struct heat_material heat;
+	struct exciton_material ex;
 	long double Gnp;
 
 	long double color_r;

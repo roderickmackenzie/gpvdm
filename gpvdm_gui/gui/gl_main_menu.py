@@ -40,7 +40,6 @@ import io
 from PyQt5.QtCore import QTimer, Qt
 from cal_path import get_sim_path
 from PyQt5.QtWidgets import QDialog, QFontDialog, QColorDialog
-from dat_file_math import dat_file_max_min
 from open_save_dlg import save_as_filter
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtGui import QImage
@@ -85,6 +84,10 @@ class gl_main_menu():
 		self.menu_view_grid=view.addAction(_("Grid"))
 		self.menu_view_grid.triggered.connect(self.menu_toggle_view)
 		self.menu_view_grid.setCheckable(True)
+
+		self.menu_view_fdtd_grid=view.addAction(_("FDTD grid"))
+		self.menu_view_fdtd_grid.triggered.connect(self.menu_toggle_view)
+		self.menu_view_fdtd_grid.setCheckable(True)
 
 		self.menu_view_cords=view.addAction(_("Coordinates"))
 		self.menu_view_cords.triggered.connect(self.menu_toggle_view)
@@ -243,6 +246,7 @@ class gl_main_menu():
 		self.draw_device_cut_through=self.menu_view_draw_device_cut_through.isChecked()
 		self.view_options.render_photons=self.menu_view_render_photons.isChecked()
 		self.view_options.render_grid=self.menu_view_grid.isChecked()
+		self.view_options.render_fdtd_grid=self.menu_view_fdtd_grid.isChecked()
 		self.view_options.render_cords=self.menu_view_cords.isChecked()
 		self.view_options.draw_device=self.menu_view_draw_device.isChecked()
 		self.view_options.optical_mode=self.menu_view_optical_mode.isChecked()
@@ -281,6 +285,7 @@ class gl_main_menu():
 		self.menu_view_draw_device_cut_through.setChecked(self.draw_device_cut_through)
 		self.menu_view_render_photons.setChecked(self.view_options.render_photons)
 		self.menu_view_grid.setChecked(self.view_options.render_grid)
+		self.menu_view_fdtd_grid.setChecked(self.view_options.render_fdtd_grid)
 		self.menu_view_cords.setChecked(self.view_options.render_cords)
 		self.menu_view_draw_device.setChecked(self.view_options.draw_device)
 		self.menu_view_optical_mode.setChecked(self.view_options.optical_mode)

@@ -59,5 +59,6 @@ void cpy_zxy_p_object(struct dimensions *dim, struct object * (****out), struct 
 	free_3d((void****)out,dim->zlen,dim->xlen,dim->ylen,sizeof(struct object *));
 	malloc_3d((void****)out,dim->zlen,dim->xlen,dim->ylen,sizeof(struct object *));
 	cpy_3d((void****)out,(void****)in,dim->zlen,dim->xlen,dim->ylen,sizeof(struct object *));
+
 }
 

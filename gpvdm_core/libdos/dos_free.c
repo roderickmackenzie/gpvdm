@@ -63,6 +63,29 @@ ret= -((top*Qe)/kb)*N*gexp((top*Qe)/(kb*T))*gpow(T,-2.0);
 return ret;
 }
 
+void check_fermi_inversion_n(struct simulation *sim,struct shape *s,long double n,int do_check)
+{
+	if (do_check==TRUE)
+	{
+		if (fabs(n)>s->dosn.config.Nc)
+		{
+			ewe(sim,"The carrier density at a contact is larger than the effective density of states.\nThis is probably non-physical as it will mean your Fermi level is above that of the band.\n Either decrease the charge density on the contacts, or increase the effective density of states.\n For most devices I would recommend an effective density of states of around 1x10^25 m-3.\nIf you know what you are doing you can disable this error message in the mathematical settings but then you should turn on Fermi-Dirac stats.\n");
+		}
+	}
+
+}
+
+void check_fermi_inversion_p(struct simulation *sim,struct shape *s,long double p,int do_check)
+{
+	if (do_check==TRUE)
+	{
+		if (fabs(p)>s->dosn.config.Nv)
+		{
+			ewe(sim,"The carrier density at a contact is larger than the effective density of states.\nThis is probably non-physical as it will mean your Fermi level is above that of the band.\n Either decrease the charge density on the contacts, or increase the effective density of states.\n For most devices I would recommend an effective density of states of around 1x10^25 m-3.\nIf you know what you are doing you can disable this error message in the mathematical settings but then you should turn on Fermi-Dirac stats.\n");
+		}
+	}
+
+}
 long double get_top_from_n(struct shape *s,long double n,long double T)
 {
 long double ret=0.0;
@@ -530,6 +553,68 @@ long double get_n_muy(struct shape *s)
 long double get_p_muy(struct shape *s)
 {
 	return s->dosp.muy;
+}
+
+//Auger
+long double get_Cn(struct shape *s)
+{
+	if (s->dosn.auger_enabled==FALSE)
+	{
+		return 0.0;
+	}
+
+	return s->dosn.Cn;
+}
+
+long double get_Cp(struct shape *s)
+{
+	if (s->dosp.auger_enabled==FALSE)
+	{
+		return 0.0;
+	}
+
+	return s->dosp.Cp;
+}
+
+//Steady state SRH
+long double get_ss_srh_n1(struct shape *s)
+{
+	if (s->dosn.ss_srh_enabled==FALSE)
+	{
+		return 0.0;
+	}
+
+	return s->dosn.n1;
+}
+
+long double get_ss_srh_p1(struct shape *s)
+{
+	if (s->dosn.ss_srh_enabled==FALSE)
+	{
+		return 0.0;
+	}
+
+	return s->dosn.p1;
+}
+
+long double get_ss_srh_tau_n(struct shape *s)
+{
+	if (s->dosn.ss_srh_enabled==FALSE)
+	{
+		return 0.0;
+	}
+
+	return s->dosn.tau_n;
+}
+
+long double get_ss_srh_tau_p(struct shape *s)
+{
+	if (s->dosn.ss_srh_enabled==FALSE)
+	{
+		return 0.0;
+	}
+
+	return s->dosn.tau_p;
 }
 
 long double get_dos_B(struct shape *s)

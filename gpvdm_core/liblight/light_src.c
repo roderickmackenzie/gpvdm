@@ -2,28 +2,28 @@
 // General-purpose Photovoltaic Device Model gpvdm.com - a drift diffusion
 // base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solarcells.
 // The model can simulate OLEDs, Perovskite cells, and OFETs.
-// 
+//
 // Copyright 2008-2022 Roderick C. I. MacKenzie https://www.gpvdm.com
 // r.c.i.mackenzie at googlemail.com
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+// the rights to use, copy, modify, merge, publish, distribute, sublicense,
 // and/or sell copies of the Software, and to permit persons to whom the
 // Software is furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included
 // in all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 // OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// 
+//
 
 
 
@@ -53,49 +53,78 @@ void light_src_dump(struct simulation *sim,char *path,struct light_src *in)
 {
 	struct dat_file buf;
 	char file_name[200];
-	sprintf(file_name,"light_src_%s.dat",in->id);
-	buffer_init(&buf);
+	sprintf(file_name,"light_src_%s.csv",in->id);
+	dat_file_init(&buf);
 
-	buffer_malloc(&buf);
-	buf.data_mul=1.0;
-	buf.y_mul=1e9;
-	strcpy(buf.title,"Wavelength - Light intensity");
-	strcpy(buf.type,"xy");
-	strcpy(buf.y_label,"Wavelength");
-	strcpy(buf.data_label,"Light intensity");
-	strcpy(buf.y_units,"nm");
-	strcpy(buf.data_units,"W m^{-2} m^{-1}");
-	buf.logscale_x=0;
-	buf.logscale_y=0;
-	buf.x=1;
-	buf.y=in->spectra_tot.len;
-	buf.z=1;
-	buffer_add_info(sim,&buf);
-	buffer_add_xy_data(sim,&buf,in->spectra_tot.x, in->spectra_tot.data, in->spectra_tot.len);
-	buffer_dump_path(sim,path,file_name,&buf);
-	buffer_free(&buf);
+	if (buffer_set_file_name(sim,NULL,&buf,file_name)==0)
+	{
+		buffer_malloc(&buf);
+		buf.data_mul=1.0;
+		buf.y_mul=1e9;
+		strcpy(buf.title,"Wavelength - Light intensity");
+		strcpy(buf.type,"xy");
+		strcpy(buf.y_label,"Wavelength");
+		strcpy(buf.data_label,"Light intensity");
+		strcpy(buf.y_units,"nm");
+		strcpy(buf.data_units,"W m^{-2} m^{-1}");
+		buf.logscale_x=0;
+		buf.logscale_y=0;
+		buf.x=1;
+		buf.y=in->spectra_tot.len;
+		buf.z=1;
+		dat_file_add_xy_data(sim,&buf,in->spectra_tot.x, in->spectra_tot.data, in->spectra_tot.len);
+		buffer_dump_path(sim,path,NULL,&buf);
+		buffer_free(&buf);
+	}
 
-	sprintf(file_name,"light_src_filter_%s.dat",in->id);
-	buffer_init(&buf);
+	sprintf(file_name,"light_src_no_filter%s.csv",in->id);
+	dat_file_init(&buf);
 
-	buffer_malloc(&buf);
-	buf.data_mul=1.0;
-	buf.y_mul=1e9;
-	strcpy(buf.title,"Wavelength - Attenuation");
-	strcpy(buf.type,"xy");
-	strcpy(buf.y_label,"Wavelength");
-	strcpy(buf.data_label,"Attenuation");
-	strcpy(buf.y_units,"nm");
-	strcpy(buf.data_units,"au");
-	buf.logscale_x=0;
-	buf.logscale_y=0;
-	buf.x=1;
-	buf.y=in->filter_read.len;
-	buf.z=1;
-	buffer_add_info(sim,&buf);
-	buffer_add_xy_data(sim,&buf,in->filter_read.x, in->filter_read.data, in->filter_read.len);
-	buffer_dump_path(sim,path,file_name,&buf);
-	buffer_free(&buf);
+	if (buffer_set_file_name(sim,NULL,&buf,file_name)==0)
+	{
+		buffer_malloc(&buf);
+		buf.data_mul=1.0;
+		buf.y_mul=1e9;
+		strcpy(buf.title,"Wavelength - Light intensity");
+		strcpy(buf.type,"xy");
+		strcpy(buf.y_label,"Wavelength");
+		strcpy(buf.data_label,"Light intensity");
+		strcpy(buf.y_units,"nm");
+		strcpy(buf.data_units,"W m^{-2} m^{-1}");
+		buf.logscale_x=0;
+		buf.logscale_y=0;
+		buf.x=1;
+		buf.y=in->spectra_tot_no_filter.len;
+		buf.z=1;
+		dat_file_add_xy_data(sim,&buf,in->spectra_tot_no_filter.x, in->spectra_tot_no_filter.data, in->spectra_tot_no_filter.len);
+		buffer_dump_path(sim,path,NULL,&buf);
+		buffer_free(&buf);
+	}
+
+	sprintf(file_name,"light_src_filter_%s.csv",in->id);
+	dat_file_init(&buf);
+
+	if (buffer_set_file_name(sim,NULL,&buf,file_name)==0)
+	{
+		buffer_malloc(&buf);
+		buf.data_mul=1.0;
+		buf.y_mul=1e9;
+		strcpy(buf.title,"Wavelength - Attenuation");
+		strcpy(buf.type,"xy");
+		strcpy(buf.y_label,"Wavelength");
+		strcpy(buf.data_label,"Attenuation");
+		strcpy(buf.y_units,"nm");
+		strcpy(buf.data_units,"au");
+		buf.logscale_x=0;
+		buf.logscale_y=0;
+		buf.x=1;
+		buf.y=in->filter_read.len;
+		buf.z=1;
+		dat_file_add_xy_data(sim,&buf,in->filter_read.x, in->filter_read.data, in->filter_read.len);
+		buffer_dump_path(sim,path,NULL,&buf);
+		buffer_free(&buf);
+	}
+
 }
 
 void light_src_cpy(struct simulation *sim,struct light_src *out, struct light_src *in)
@@ -113,6 +142,7 @@ void light_src_cpy(struct simulation *sim,struct light_src *out, struct light_sr
 	}
 
 	inter_copy(&(out->spectra_tot),&(in->spectra_tot),TRUE);
+	inter_copy(&(out->spectra_tot_no_filter),&(in->spectra_tot_no_filter),TRUE);
 
 	//filter
 	out->filter_enabled=in->filter_enabled;
@@ -141,12 +171,16 @@ void light_src_cpy(struct simulation *sim,struct light_src *out, struct light_sr
 	out->phi_steps=in->phi_steps;
 	out->phi_start=in->phi_start;
 	out->phi_stop=in->phi_stop;
+
+	out->use_flat_sepctrum=in->use_flat_sepctrum;			
 }
 
 void light_src_build_spectra_tot(struct simulation *sim,struct light_src *in, long double min, long double max, int len)
 {
 	int i;
 	int l;
+	long double Power=0.0;
+	long double Power_no_filter=0.0;
 
 	inter_init_mesh(&(in->spectra_tot),len,min,max);
 
@@ -159,23 +193,29 @@ void light_src_build_spectra_tot(struct simulation *sim,struct light_src *in, lo
 	{
 		for (l=0;l<in->spectra_tot.len;l++)
 		{
-			in->spectra_tot.data[l]+=inter_get_hard(&(in->spectra[i]),in->spectra_tot.x[l])*in->light_multiplyer[i];
+			in->spectra_tot.data[l]+=inter_get_hard(&(in->spectra[i]),in->spectra_tot.x[l])*in->light_multiplyer[i]*in->local_ground_view_factor;
 		}
 	}
+	//FILE * out;
+	inter_copy(&(in->spectra_tot_no_filter),&(in->spectra_tot),TRUE);
 
 	if (in->filter_enabled==TRUE)
 	{
+		//out=fopen("filter2.dat","w");
 		if (in->filter_read.len>0)
 		{
 			for (l=0;l<in->spectra_tot.len;l++)
 			{
+				//fprintf(out,"%Le %Le %Le %Le\n",in->spectra_tot.x[l],inter_get_hard(&(in->filter_read),in->spectra_tot.x[l]),in->spectra_tot.data[l],in->spectra_tot.data[l]*inter_get_hard(&(in->filter_read),in->spectra_tot.x[l]));
 				in->spectra_tot.data[l]*=inter_get_hard(&(in->filter_read),in->spectra_tot.x[l]);
 			}
 		}
+		//fclose(out);
 	}
 
-	long double Power=inter_intergrate(&(in->spectra_tot));
-	printf_log(sim,"%s %Le Wm^{-2}\n",_("Power density of the optical spectra:"),Power);
+	Power=inter_intergrate(&(in->spectra_tot));
+	Power_no_filter=inter_intergrate(&(in->spectra_tot_no_filter));
+	printf_log(sim,"%s %Le (%Le) Wm^{-2}\n",_("Power density of the optical spectra (no filter):"),Power,Power_no_filter);
 }
 
 void light_src_cal_min_max(struct simulation *sim,long double  *min,long double  *max,struct light_src *in)
@@ -205,6 +245,7 @@ void light_src_init(struct simulation *sim,struct light_src *in)
 	in->nspectra=-1.0;
 	in->spectra=NULL;
 	inter_init(sim,&(in->spectra_tot));
+	inter_init(sim,&(in->spectra_tot_no_filter));
 	in->filter_enabled=FALSE;
 	strcpy(in->filter_path,"");
 	inter_init(sim,&(in->filter_read));
@@ -228,12 +269,14 @@ void light_src_init(struct simulation *sim,struct light_src *in)
 	in->phi_start=-1.0;
 	in->phi_stop=-1.0;
 
+	in->use_flat_sepctrum=FALSE;			
 }
 
 void light_src_free(struct simulation *sim, struct light_src *in)
 {
 	int i;
 	inter_free(&(in->spectra_tot));
+	inter_free(&(in->spectra_tot_no_filter));
 	if (in->spectra!=NULL)
 	{
 		for (i=0;i<in->nspectra;i++)
@@ -254,6 +297,7 @@ void light_src_free(struct simulation *sim, struct light_src *in)
 void light_src_load(struct simulation *sim,struct light_src *in, struct json_obj *json_light_src)
 {
 	int x;
+	int l;
 	char filter_path[PATH_MAX];
 	struct json_obj *json_filters;
 	struct json_obj *json_external_interface;
@@ -272,6 +316,10 @@ void light_src_load(struct simulation *sim,struct light_src *in, struct json_obj
 	char file_path[PATH_MAX];
 	int filter_invert;
 	long double val;
+	long double W_max;
+	long double photon_den_max;
+	long double E;
+	long double lam;
 
 	json_get_string(sim, json_light_src, in->id,"id");
 
@@ -298,7 +346,7 @@ void light_src_load(struct simulation *sim,struct light_src *in, struct json_obj
 
 	json_light_spectra=json_obj_find(virtual_spectra, "light_spectra");
 
-	
+
 	json_get_int(sim, json_light_spectra, &segments,"segments");
 	if (segments>0)
 	{
@@ -319,6 +367,7 @@ void light_src_load(struct simulation *sim,struct light_src *in, struct json_obj
 
 			join_path(3,file_path,get_spectra_path(sim),spectrum_name,"spectra.inp");
 
+
 			if (isfile(file_path)!=0)
 			{
 				ewe(sim,"%s: %s\n",_("File not found"),file_path);
@@ -326,8 +375,22 @@ void light_src_load(struct simulation *sim,struct light_src *in, struct json_obj
 			inter_init(sim,&(in->spectra[i]));
 			inter_load(sim,&(in->spectra[i]),file_path);
 			inter_sort(&(in->spectra[i]));
-
 			inter_mod(&(in->spectra[i]));
+
+			if (in->use_flat_sepctrum==TRUE)
+			{
+				
+				math_xy_get_max_and_pos(&(in->spectra[i]),&W_max, &lam);
+				E=hp*cl/lam;
+				photon_den_max=W_max/E;
+
+				for (l=0;l<in->spectra[i].len;l++)
+				{
+					E=hp*cl/in->spectra[i].x[l];
+					in->spectra[i].data[l]=photon_den_max*E;
+				}
+
+			}
 			//printf("%d %Le %Le\n",i,in->spectra_tot.x[l],in->spectra_tot.data[l]);
 			//getchar();
 
@@ -344,19 +407,20 @@ void light_src_load(struct simulation *sim,struct light_src *in, struct json_obj
 		ewe(sim,"json_filters not found\n");
 	}
 
-	json_get_int(sim, json_filters, &segments,"segments");	
+	json_get_int(sim, json_filters, &segments,"segments");
 
 	//If there is a spectra defined then use its wavelength range as the base of the filter
 	if (in->nspectra>0)
 	{
 		inter_copy(&in->filter_read,&(in->spectra[0]),TRUE);
-		inter_set_value(&in->filter_read,1.0);
+		math_xy_set_value(&in->filter_read,1.0);
 	}
 
 	int filter_enabled=FALSE;
 	in->filter_enabled=FALSE;
 	int first_load=TRUE;
-
+	FILE *out;
+	out=fopen("filter_test.dat","w");
 	for (i=0;i<segments;i++)
 	{
 		sprintf(temp_str,"segment%d",i);
@@ -391,7 +455,7 @@ void light_src_load(struct simulation *sim,struct light_src *in, struct json_obj
 					if (in->nspectra==0)
 					{
 						inter_copy(&in->filter_read,&filter,TRUE);
-						inter_set_value(&in->filter_read,1.0);
+						math_xy_set_value(&in->filter_read,1.0);
 					}
 					first_load=FALSE;
 				}
@@ -407,7 +471,7 @@ void light_src_load(struct simulation *sim,struct light_src *in, struct json_obj
 					//printf("%Le %Le %Le\n",val,powl(1.0-val,10*in->filter_dB),in->filter_dB);
 					in->filter_read.data[x]*=powl((1.0-val),10.0*in->filter_dB);
 
-					//printf("%Le %Le %Le\n",in->filter_read.data[x],val,in->filter_dB);
+					fprintf(out,"%Le %Le\n",in->filter_read.x[x],in->filter_read.data[x]);
 				}
 
 				inter_free(&filter);
@@ -417,10 +481,7 @@ void light_src_load(struct simulation *sim,struct light_src *in, struct json_obj
 
 	}
 
-
-
-	math_xy_mul_long_double(&(in->filter_read),in->local_ground_view_factor);
-
+	fclose(out);
 	//Reflection of external interface
 
 	json_external_interface=json_obj_find(virtual_spectra, "external_interface");
@@ -431,6 +492,6 @@ void light_src_load(struct simulation *sim,struct light_src *in, struct json_obj
 
 	json_get_english(sim, json_external_interface, &(in->external_interface_enabled),"enabled");
 	json_get_long_double(sim, json_external_interface, &(in->n),"light_external_n");
-	
+
 }
 

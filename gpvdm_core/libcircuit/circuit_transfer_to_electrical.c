@@ -83,14 +83,14 @@ void circuit_transfer_to_electrical_mesh(struct simulation * sim,struct circuit 
 
 				if (node->y==0)
 				{
-					A=dim->dx[node->x]*dim->dz[node->z];
+					A=dim->dX[node->x]*dim->dZ[node->z];
 					dev->Jn_y0[node->z][node->x]=-circuit_node_get_I(sim,cir,n)/A;
 					dev->Jp_y0[node->z][node->x]=0.0;
 				}else
 				{
 					long double current=circuit_node_get_I(sim,cir,n);
 					//printf("%d %d %d %Le %le\n",node->z,node->x,node->y,current,node->V);
-					A=dim->dx[node->x]*dim->dz[node->z];
+					A=dim->dX[node->x]*dim->dZ[node->z];
 					dev->Jn_y1[node->z][node->x]=0.0;
 					dev->Jp_y1[node->z][node->x]=current/A;
 				}
@@ -109,7 +109,7 @@ void circuit_transfer_to_electrical_mesh(struct simulation * sim,struct circuit 
 				{
 					for(x=0;x<dim->xlen;x++)
 					{
-						A=dim->dx[x]*dim->dz[z];
+						A=dim->dX[x]*dim->dZ[z];
 						dev->Jn_y0[z][x]=-circuit_node_get_I(sim,cir,n)/A;
 						dev->Jp_y0[z][x]=0.0;
 					}
@@ -121,7 +121,7 @@ void circuit_transfer_to_electrical_mesh(struct simulation * sim,struct circuit 
 				{
 					for(x=0;x<dim->xlen;x++)
 					{
-						A=dim->dx[x]*dim->dz[z];
+						A=dim->dX[x]*dim->dZ[z];
 						dev->Jn_y1[z][x]=0.0;
 						dev->Jp_y1[z][x]=circuit_node_get_I(sim,cir,n)/A;
 					}

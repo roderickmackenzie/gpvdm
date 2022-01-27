@@ -106,6 +106,7 @@ if gui_get()==True:
 	from PyQt5.QtWidgets import QWidget, QVBoxLayout,QHBoxLayout,QLabel,QDesktopWidget
 	from gpvdm_progress import gpvdm_progress
 	from spinner import spinner
+	from icon_lib import icon_get
 
 	#from help import my_help_class
 
@@ -114,14 +115,16 @@ if gui_get()==True:
 		def __init__(self):
 			QWidget.__init__(self)
 			progress_base.__init__(self)
-			self.setWindowFlags(Qt.FramelessWindowHint|Qt.WindowStaysOnTopHint)
-			self.setFixedSize(400, 90)
-
+			#self.setWindowFlags(Qt.FramelessWindowHint|Qt.WindowStaysOnTopHint)
+			self.setWindowTitle("Working...")
+			self.setWindowIcon(icon_get("icon"))
+			self.setMinimumSize(400, 90)
 			main_vbox = QVBoxLayout()
 			hbox= QHBoxLayout()
 			hbox.setContentsMargins(0, 0, 0, 0)
 			self.progress = gpvdm_progress()
 			self.spinner=spinner()
+
 			hbox.addWidget(self.progress, 0)
 			hbox.addWidget(self.spinner, 0)
 			w=QWidget()
@@ -159,7 +162,7 @@ if gui_get()==True:
 		def start(self):
 			shape=QDesktopWidget().screenGeometry()
 
-			w=shape.width()*2
+			w=shape.width()
 			h=shape.height()
 			win_w=self.frameGeometry().width()
 			win_h=self.frameGeometry().height()

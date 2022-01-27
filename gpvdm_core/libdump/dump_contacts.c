@@ -2,28 +2,28 @@
 // General-purpose Photovoltaic Device Model gpvdm.com - a drift diffusion
 // base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solarcells.
 // The model can simulate OLEDs, Perovskite cells, and OFETs.
-// 
+//
 // Copyright 2008-2022 Roderick C. I. MacKenzie https://www.gpvdm.com
 // r.c.i.mackenzie at googlemail.com
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+// the rights to use, copy, modify, merge, publish, distribute, sublicense,
 // and/or sell copies of the Software, and to permit persons to whom the
 // Software is furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included
 // in all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 // OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// 
+//
 
 /** @file dump_contacts.c
 @brief dump JV curves from the contacts.
@@ -67,16 +67,15 @@ void dump_contacts_init(struct simulation *sim,struct device *in,struct contacts
 
 void dump_contacts_save(struct simulation *sim,struct device *in,struct contacts_vti_store *store)
 {
+	int i;
+	int ii;
+	int active=0;
+	char temp[200];
 	char string[200];
 	if (in->ncontacts>2)
 	{
-		int i;
-		int ii;
-		int active=0;
-		int sub=TRUE;
-		char temp[200];
 		struct dat_file buf;
-		buffer_init(&buf);
+		dat_file_init(&buf);
 
 		active=contact_get_active_contact_index(sim,in);
 		for (i=0;i<in->ncontacts;i++)
@@ -94,11 +93,7 @@ void dump_contacts_save(struct simulation *sim,struct device *in,struct contacts
 				strcpy(buf.data_units,"A m^{-2}");
 				buf.logscale_y=0;
 				buf.logscale_data=0;
-				buf.x=1;
-				buf.y=store->J[i].len;
-				buf.z=1;
-				buffer_add_info(sim,&buf);
-				buffer_add_xy_data(sim,&buf,store->J[i].x, store->J[i].data, store->J[i].len);
+				dat_file_add_xy_data(sim,&buf,store->J[i].x, store->J[i].data, store->J[i].len);
 				sprintf(temp,"jv_contact%d.dat",i);
 				buffer_dump_path(sim,in->output_path,temp,&buf);
 				buffer_free(&buf);
@@ -169,11 +164,7 @@ void dump_contacts_save(struct simulation *sim,struct device *in,struct contacts
 				strcpy(buf.data_units,"A m^{-2}");
 				buf.logscale_y=0;
 				buf.logscale_data=0;
-				buf.x=1;
-				buf.y=store->time_J[i].len;
-				buf.z=1;
-				buffer_add_info(sim,&buf);
-				buffer_add_xy_data(sim,&buf,store->time_J[i].x, store->time_J[i].data, store->time_J[i].len);
+				dat_file_add_xy_data(sim,&buf,store->time_J[i].x, store->time_J[i].data, store->time_J[i].len);
 				sprintf(temp,"time_j_contact%d.dat",i);
 				buffer_dump_path(sim,in->output_path,temp,&buf);
 				buffer_free(&buf);
@@ -189,11 +180,7 @@ void dump_contacts_save(struct simulation *sim,struct device *in,struct contacts
 				strcpy(buf.data_units,"V");
 				buf.logscale_y=0;
 				buf.logscale_data=0;
-				buf.x=1;
-				buf.y=store->time_v[i].len;
-				buf.z=1;
-				buffer_add_info(sim,&buf);
-				buffer_add_xy_data(sim,&buf,store->time_v[i].x, store->time_v[i].data, store->time_v[i].len);
+				dat_file_add_xy_data(sim,&buf,store->time_v[i].x, store->time_v[i].data, store->time_v[i].len);
 				sprintf(temp,"time_v_contact%d.dat",i);
 				buffer_dump_path(sim,in->output_path,temp,&buf);
 				buffer_free(&buf);
@@ -204,21 +191,24 @@ void dump_contacts_save(struct simulation *sim,struct device *in,struct contacts
 
 void dump_contacts_add_data(struct simulation *sim,struct device *in,struct contacts_vti_store *store)
 {
+	int i=0;
+	gdouble x_value=0.0;
+	long double J=0.0;
+	long double Vdelta=0.0;
+	int ground=0;
+	//int active=0;
+	long double Jshunt=0.0;
+	long double Vdevice;
+
 	if (in->ncontacts>2)
 	{
-		int i=0;
-		gdouble x_value=0.0;
-		long double J=0.0;
-		long double Vdelta=0.0;
 
-		int ground=0;
-		int active=0;
 		ground=contacts_find_ground_contact(sim,in);
-		active=contact_get_active_contact_index(sim,in);
-		long double Jshunt=0.0;
-		long double Vground=in->contacts[ground].J*in->contacts[ground].contact_resistance_sq;
-		long double Vactive=in->contacts[ground].J*in->contacts[ground].contact_resistance_sq;
-		long double Vdevice=contact_get_active_contact_voltage(sim,in);
+		//active=contact_get_active_contact_index(sim,in);
+
+		//long double Vground=in->contacts[ground].J*in->contacts[ground].contact_resistance_sq;
+		//long double Vactive=in->contacts[ground].J*in->contacts[ground].contact_resistance_sq;
+		Vdevice=contact_get_active_contact_voltage(sim,in);
 		//printf("%Le %Le %Le\n",Vground,Vactive,Vdevice);
 		x_value=Vdevice;//Vground+Vactive+
 		//getchar();
@@ -235,7 +225,7 @@ void dump_contacts_add_data(struct simulation *sim,struct device *in,struct cont
 			inter_append(&(store->time_J[i]),in->time,J);
 			inter_append(&(store->J[i]),x_value,J);
 			inter_append(&(store->J_external[i]),x_value,J+Jshunt);
-			
+
 		}
 
 	}

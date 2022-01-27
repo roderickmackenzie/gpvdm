@@ -2,28 +2,28 @@
 // General-purpose Photovoltaic Device Model gpvdm.com - a drift diffusion
 // base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solarcells.
 // The model can simulate OLEDs, Perovskite cells, and OFETs.
-// 
+//
 // Copyright 2008-2022 Roderick C. I. MacKenzie https://www.gpvdm.com
 // r.c.i.mackenzie at googlemail.com
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+// the rights to use, copy, modify, merge, publish, distribute, sublicense,
 // and/or sell copies of the Software, and to permit persons to whom the
 // Software is furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included
 // in all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 // OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// 
+//
 
 /** @file initial.c
 @brief setup the initial guess for the solvers, this really is just a really bad guess.
@@ -67,127 +67,132 @@ if (get_dump_status(sim,dump_first_guess)==TRUE)
 
 	strcpy(out_dir,"equilibrium");
 
-	buffer_init(&buf);
+	dat_file_init(&buf);
 
-	buffer_malloc(&buf);
-	sprintf(name,"%s","init_Fi.dat");
-	buf.y_mul=1.0;
-	buf.x_mul=1e9;
-	sprintf(buf.title,"%s - %s",_("Equilibrium Fermi-level"),_("position"));
-	strcpy(buf.type,"xy");
-	strcpy(buf.x_label,_("Position"));
-	strcpy(buf.y_label,"Fi");
-	strcpy(buf.x_units,"nm");
-	strcpy(buf.y_units,"eV");
-	strcpy(buf.section_one,_("1D position space output"));
-	strcpy(buf.section_two,_("Transport"));
-	buf.logscale_x=0;
-	buf.logscale_y=0;
-	buf.x=dim->xlen;
-	buf.y=dim->ylen;
-	buf.z=dim->zlen;
-	buf.time=in->time;
-	buf.Vexternal=0.0;
-	buffer_add_info(sim,&buf);
-	buffer_add_3d_data(sim,&buf,dim,  in->Fi);
-	buffer_dump_path(sim,out_dir,name,&buf);
-	buffer_free(&buf);
+	if (buffer_set_file_name(sim,in,&buf,"init_Fi.csv")==0)
+	{
+		buffer_malloc(&buf);
+		buf.y_mul=1.0;
+		buf.x_mul=1e9;
+		sprintf(buf.title,"%s - %s",_("Equilibrium Fermi-level"),_("position"));
+		strcpy(buf.type,"xy");
+		strcpy(buf.x_label,_("Position"));
+		strcpy(buf.y_label,"Fi");
+		strcpy(buf.x_units,"nm");
+		strcpy(buf.y_units,"eV");
+		strcpy(buf.section_one,_("1D position space output"));
+		strcpy(buf.section_two,_("Transport"));
+		buf.logscale_x=0;
+		buf.logscale_y=0;
+		buf.x=dim->xlen;
+		buf.y=dim->ylen;
+		buf.z=dim->zlen;
+		buf.time=in->time;
+		buf.Vexternal=0.0;
+		dat_file_add_zxy_data(sim,&buf,dim,  in->Fi);
+		buffer_dump_path(sim,out_dir,NULL,&buf);
+		buffer_free(&buf);
+	}
 
-	buffer_malloc(&buf);
-	sprintf(name,"%s","init_Ec.dat");
-	buf.y_mul=1.0;
-	buf.x_mul=1e9;
-	sprintf(buf.title,"%s - %s",_("LUMO"),_("position"));
-	strcpy(buf.type,"xy");
-	strcpy(buf.x_label,_("Position"));
-	strcpy(buf.y_label,"E_{c}");
-	strcpy(buf.x_units,"nm");
-	strcpy(buf.y_units,"eV");
-	strcpy(buf.section_one,_("1D position space output"));
-	strcpy(buf.section_two,_("Transport"));
-	buf.logscale_x=0;
-	buf.logscale_y=0;
-	buf.x=dim->xlen;
-	buf.y=dim->ylen;
-	buf.z=dim->zlen;
-	buf.time=in->time;
-	buf.Vexternal=0.0;
-	buffer_add_info(sim,&buf);
-	buffer_add_3d_data(sim,&buf,dim,  in->Ec);
-	buffer_dump_path(sim,out_dir,name,&buf);
-	buffer_free(&buf);
+	if (buffer_set_file_name(sim,in,&buf,"init_Ec.csv")==0)
+	{
+		buffer_malloc(&buf);
+		buf.y_mul=1.0;
+		buf.x_mul=1e9;
+		sprintf(buf.title,"%s - %s",_("LUMO"),_("position"));
+		strcpy(buf.type,"xy");
+		strcpy(buf.x_label,_("Position"));
+		strcpy(buf.y_label,"E_{c}");
+		strcpy(buf.x_units,"nm");
+		strcpy(buf.y_units,"eV");
+		strcpy(buf.section_one,_("1D position space output"));
+		strcpy(buf.section_two,_("Transport"));
+		buf.logscale_x=0;
+		buf.logscale_y=0;
+		buf.x=dim->xlen;
+		buf.y=dim->ylen;
+		buf.z=dim->zlen;
+		buf.time=in->time;
+		buf.Vexternal=0.0;
+		dat_file_add_zxy_data(sim,&buf,dim,  in->Ec);
+		buffer_dump_path(sim,out_dir,NULL,&buf);
+		buffer_free(&buf);
+	}
 
-	buffer_malloc(&buf);
-	sprintf(name,"%s","init_Ev.dat");
-	buf.y_mul=1.0;
-	buf.x_mul=1e9;
-	sprintf(buf.title,"%s - %s",_("HOMO"),_("position"));
-	strcpy(buf.type,"xy");
-	strcpy(buf.x_label,_("Position"));
-	strcpy(buf.y_label,"E_{v}");
-	strcpy(buf.x_units,"nm");
-	strcpy(buf.y_units,"eV");
-	strcpy(buf.section_one,_("1D position space output"));
-	strcpy(buf.section_two,_("Transport"));
-	buf.logscale_x=0;
-	buf.logscale_y=0;
-	buf.x=dim->xlen;
-	buf.y=dim->ylen;
-	buf.z=dim->zlen;
-	buf.time=in->time;
-	buf.Vexternal=0.0;
-	buffer_add_info(sim,&buf);
-	buffer_add_3d_data(sim,&buf,dim,  in->Ev);
-	buffer_dump_path(sim,out_dir,name,&buf);
-	buffer_free(&buf);
+	if (buffer_set_file_name(sim,in,&buf,"init_Ev.csv")==0)
+	{
+		buffer_malloc(&buf);
+		buf.y_mul=1.0;
+		buf.x_mul=1e9;
+		sprintf(buf.title,"%s - %s",_("HOMO"),_("position"));
+		strcpy(buf.type,"xy");
+		strcpy(buf.x_label,_("Position"));
+		strcpy(buf.y_label,"E_{v}");
+		strcpy(buf.x_units,"nm");
+		strcpy(buf.y_units,"eV");
+		strcpy(buf.section_one,_("1D position space output"));
+		strcpy(buf.section_two,_("Transport"));
+		buf.logscale_x=0;
+		buf.logscale_y=0;
+		buf.x=dim->xlen;
+		buf.y=dim->ylen;
+		buf.z=dim->zlen;
+		buf.time=in->time;
+		buf.Vexternal=0.0;
+		dat_file_add_zxy_data(sim,&buf,dim,  in->Ev);
+		buffer_dump_path(sim,out_dir,NULL,&buf);
+		buffer_free(&buf);
+	}
 
-	buffer_malloc(&buf);
-	sprintf(name,"%s","init_n.dat");
-	buf.y_mul=1.0;
-	buf.x_mul=1e9;
-	sprintf(buf.title,"%s - %s",_("Electron density"),_("position"));
-	strcpy(buf.type,"xy");
-	strcpy(buf.x_label,_("Position"));
-	strcpy(buf.y_label,"n");
-	strcpy(buf.x_units,"nm");
-	strcpy(buf.y_units,"m^{-3}");
-	strcpy(buf.section_one,_("1D position space output"));
-	strcpy(buf.section_two,_("Transport"));
-	buf.logscale_x=0;
-	buf.logscale_y=0;
-	buf.x=dim->xlen;
-	buf.y=dim->ylen;
-	buf.z=dim->zlen;
-	buf.time=in->time;
-	buf.Vexternal=0.0;
-	buffer_add_info(sim,&buf);
-	buffer_add_3d_data(sim,&buf,dim,  in->n);
-	buffer_dump_path(sim,out_dir,name,&buf);
-	buffer_free(&buf);
+	if (buffer_set_file_name(sim,in,&buf,"init_n.csv")==0)
+	{
+		buffer_malloc(&buf);
+		buf.y_mul=1.0;
+		buf.x_mul=1e9;
+		sprintf(buf.title,"%s - %s",_("Electron density"),_("position"));
+		strcpy(buf.type,"xy");
+		strcpy(buf.x_label,_("Position"));
+		strcpy(buf.y_label,"n");
+		strcpy(buf.x_units,"nm");
+		strcpy(buf.y_units,"m^{-3}");
+		strcpy(buf.section_one,_("1D position space output"));
+		strcpy(buf.section_two,_("Transport"));
+		buf.logscale_x=0;
+		buf.logscale_y=0;
+		buf.x=dim->xlen;
+		buf.y=dim->ylen;
+		buf.z=dim->zlen;
+		buf.time=in->time;
+		buf.Vexternal=0.0;
+		dat_file_add_zxy_data(sim,&buf,dim,  in->n);
+		buffer_dump_path(sim,out_dir,NULL,&buf);
+		buffer_free(&buf);
+	}
 
-	buffer_malloc(&buf);
-	sprintf(name,"%s","init_p.dat");
-	buf.y_mul=1.0;
-	buf.x_mul=1e9;
-	sprintf(buf.title,"%s - %s",_("Hole density"),_("position"));
-	strcpy(buf.type,"xy");
-	strcpy(buf.x_label,_("Position"));
-	strcpy(buf.y_label,_("n"));
-	strcpy(buf.x_units,"nm");
-	strcpy(buf.y_units,"m^{-3}");
-	strcpy(buf.section_one,_("1D position space output"));
-	strcpy(buf.section_two,_("Transport"));
-	buf.logscale_x=0;
-	buf.logscale_y=0;
-	buf.x=dim->xlen;
-	buf.y=dim->ylen;
-	buf.z=dim->zlen;
-	buf.time=in->time;
-	buf.Vexternal=0.0;
-	buffer_add_info(sim,&buf);
-	buffer_add_3d_data(sim,&buf,dim,  in->p);
-	buffer_dump_path(sim,out_dir,name,&buf);
-	buffer_free(&buf);
+	if (buffer_set_file_name(sim,in,&buf,"init_p.csv")==0)
+	{
+		buffer_malloc(&buf);
+		buf.y_mul=1.0;
+		buf.x_mul=1e9;
+		sprintf(buf.title,"%s - %s",_("Hole density"),_("position"));
+		strcpy(buf.type,"xy");
+		strcpy(buf.x_label,_("Position"));
+		strcpy(buf.y_label,_("n"));
+		strcpy(buf.x_units,"nm");
+		strcpy(buf.y_units,"m^{-3}");
+		strcpy(buf.section_one,_("1D position space output"));
+		strcpy(buf.section_two,_("Transport"));
+		buf.logscale_x=0;
+		buf.logscale_y=0;
+		buf.x=dim->xlen;
+		buf.y=dim->ylen;
+		buf.z=dim->zlen;
+		buf.time=in->time;
+		buf.Vexternal=0.0;
+		dat_file_add_zxy_data(sim,&buf,dim,  in->p);
+		buffer_dump_path(sim,out_dir,NULL,&buf);
+		buffer_free(&buf);
+	}
 }
 }
 
@@ -224,6 +229,12 @@ void get_initial(struct simulation *sim,struct device *in,int guess)
 	struct dimensions *dim=&in->ns.dim;
 	struct epitaxy *epi=&(in->my_epitaxy);
 	struct shape *s;
+	struct json_obj *json_math;
+	int math_stop_on_inverted_fermi_level;
+
+	json_math=json_obj_find(&(in->config.obj), "math");
+	json_get_english(sim,json_math, &(math_stop_on_inverted_fermi_level),"math_stop_on_inverted_fermi_level");
+
 	Eg=in->Eg[0][0][0];
 	Xi=in->Xi[0][0][0];
 
@@ -250,11 +261,13 @@ void get_initial(struct simulation *sim,struct device *in,int guess)
 		s=in->obj_zxy[0][0][dim->ylen-1]->s;
 		top_r=get_top_from_n(s,charge_right,in->Te[0][0][dim->ylen-1]);
 		right_ref_to_zero=top_r-in->Xi[0][0][dim->ylen-1];
+		check_fermi_inversion_n(sim,s,charge_right,math_stop_on_inverted_fermi_level);
 	}else
 	{
 		s=in->obj_zxy[0][0][dim->ylen-1]->s;
 		top_r= get_top_from_p(s,charge_right,in->Te[0][0][dim->ylen-1]);
 		right_ref_to_zero=-(in->Eg[0][0][dim->ylen-1]+top_r)-in->Xi[0][0][dim->ylen-1];
+		check_fermi_inversion_p(sim,s,charge_right,math_stop_on_inverted_fermi_level);
 	}
 
 
@@ -275,17 +288,20 @@ void get_initial(struct simulation *sim,struct device *in,int guess)
 					s=in->obj_zxy[z][x][0]->s;
 					top_l=get_top_from_p(s,in->contacts[c].np,in->Te[z][x][0]);
 					in->Fi0_y0[z][x]= -(top_l+Xi+Eg);
+					check_fermi_inversion_p(sim,s,in->contacts[c].np,math_stop_on_inverted_fermi_level);
 				}else
 				{
 					s=in->obj_zxy[z][x][0]->s;
 					top_l= get_top_from_n(s,in->contacts[c].np,in->Te[z][x][0]);
 					in->Fi0_y0[z][x]= -Xi+top_l;
+					check_fermi_inversion_n(sim,s,in->contacts[c].np,math_stop_on_inverted_fermi_level);
 				}
 			}else
 			{		//No contact
 				s=in->obj_zxy[z][x][0]->s;
 				top_l=get_top_from_p(s,1e15,in->Te[z][x][0]);
 				in->Fi0_y0[z][x]= -(top_l+Xi+Eg);
+				check_fermi_inversion_p(sim,s,1e15,math_stop_on_inverted_fermi_level);
 			}
 
 			in->V_y0[z][x]=in->Fi0_y0[z][x]-in->Fi0_y0[0][0];		//Everything is referenced to the [0][0] point.
@@ -303,17 +319,20 @@ void get_initial(struct simulation *sim,struct device *in,int guess)
 					s=in->obj_zxy[z][x][dim->ylen-1]->s;
 					top_l=get_top_from_p(s,in->contacts[c].np,in->Te[z][x][dim->ylen-1]);
 					in->Fi0_y1[z][x]= -(top_l+Xi+Eg);
+					check_fermi_inversion_p(sim,s,in->contacts[c].np,math_stop_on_inverted_fermi_level);
 				}else
 				{
 					s=in->obj_zxy[z][x][dim->ylen-1]->s;
 					top_l= get_top_from_n(s,in->contacts[c].np,in->Te[z][x][dim->ylen-1]);
 					in->Fi0_y1[z][x]= -Xi+top_l;
+					check_fermi_inversion_n(sim,s,in->contacts[c].np,math_stop_on_inverted_fermi_level);
 				}
 			}else
 			{		//No contact
 				s=in->obj_zxy[z][x][dim->ylen-1]->s;
 				top_l=get_top_from_p(s,1e15,in->Te[z][x][dim->ylen-1]);
 				in->Fi0_y1[z][x]= -(top_l+Xi+Eg);
+				check_fermi_inversion_p(sim,s,1e15,math_stop_on_inverted_fermi_level);
 			}
 			//printf(">>a>%Le %Le\n",in->Fi0_y0[z][x],in->Fi0_y1[z][x]);
 			//getchar();
@@ -335,17 +354,20 @@ void get_initial(struct simulation *sim,struct device *in,int guess)
 					s=in->obj_zxy[z][0][y]->s;
 					top_l=get_top_from_p(s,in->contacts[c].np,in->Te[z][0][y]);
 					in->Fi0_x0[z][y]= -(top_l+Xi+Eg);
+					check_fermi_inversion_p(sim,s,in->contacts[c].np,math_stop_on_inverted_fermi_level);
 				}else
 				{
 					s=in->obj_zxy[z][0][y]->s;
 					top_l= get_top_from_n(s,in->contacts[c].np,in->Te[z][0][y]);
 					in->Fi0_x0[z][y]= -Xi+top_l;
+					check_fermi_inversion_n(sim,s,in->contacts[c].np,math_stop_on_inverted_fermi_level);
 				}
 			}else
 			{		//No contact
 				s=in->obj_zxy[z][0][y]->s;
 				top_l=get_top_from_p(s,1e15,in->Te[z][0][y]);
 				in->Fi0_x0[z][y]= -(top_l+Xi+Eg);
+				check_fermi_inversion_p(sim,s,1e15,math_stop_on_inverted_fermi_level);
 			}
 
 			in->V_x0[z][y]=in->Fi0_x0[z][y]-in->Fi0_y0[0][0];		//Everything is referenced to the [0][0] point.
@@ -363,17 +385,20 @@ void get_initial(struct simulation *sim,struct device *in,int guess)
 					s=in->obj_zxy[z][dim->xlen-1][y]->s;
 					top_l=get_top_from_p(s,in->contacts[c].np,in->Te[z][dim->xlen-1][y]);
 					in->Fi0_x1[z][y]= -(top_l+Xi+Eg);
+					check_fermi_inversion_p(sim,s,in->contacts[c].np,math_stop_on_inverted_fermi_level);
 				}else
 				{
 					s=in->obj_zxy[z][dim->xlen-1][y]->s;
 					top_l= get_top_from_n(s,in->contacts[c].np,in->Te[z][dim->xlen-1][y]);
 					in->Fi0_x1[z][y]= -Xi+top_l;
+					check_fermi_inversion_n(sim,s,in->contacts[c].np,math_stop_on_inverted_fermi_level);
 				}
 			}else
 			{		//No contact
 				s=in->obj_zxy[z][dim->xlen-1][y]->s;
 				top_l=get_top_from_p(s,1e15,in->Te[z][dim->xlen-1][y]);
 				in->Fi0_x1[z][y]= -(top_l+Xi+Eg);
+				check_fermi_inversion_p(sim,s,1e15,math_stop_on_inverted_fermi_level);
 			}
 
 
@@ -438,7 +463,7 @@ void get_initial(struct simulation *sim,struct device *in,int guess)
 
 				for (y=0;y<dim->ylen;y++)
 				{
-					phi_ramp=delta_phi*(dim->ymesh[y]/dim->ymesh[dim->ylen-1]);
+					phi_ramp=delta_phi*(dim->y[y]/dim->y[dim->ylen-1]);
 					//printf("%ld %ld %ld %Le\n",x,y,z,phi_ramp);
 					in->Fi[z][x][y]=Ef;
 
@@ -485,7 +510,7 @@ void get_initial(struct simulation *sim,struct device *in,int guess)
 						//printf("%s %Le\n",s->name,s->dosn.config.ion_density);
 						//getchar();
 					}
-					
+
 					//printf("%Le %Le\n",in->n[z][x][y],in->p[z][x][y]);
 					for (band=0;band<dim->srh_bands;band++)
 					{

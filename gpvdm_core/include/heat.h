@@ -48,7 +48,7 @@
 struct heat
 {
 	char dump_dir[PATH_MAX];
-	struct dim_heat dim;
+	struct dimensions dim;
 	int thermal_model_type;
 	int dump_verbosity;
 

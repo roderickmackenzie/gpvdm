@@ -58,8 +58,8 @@ for (z=0;z<dim->zlen;z++)
 	{
 		for (z=0;z<dim->zlen;z++)
 		{
-			navg+=(in->n[z][x][y]+in->nt_all[z][x][y]-in->n_orig[z][x][y])*dim->ymesh[y];
-			pavg+=(in->p[z][x][y]+in->pt_all[z][x][y]-in->p_orig[z][x][y])*dim->ymesh[y];
+			navg+=(in->n[z][x][y]+in->nt_all[z][x][y]-in->n_orig[z][x][y])*dim->y[y];
+			pavg+=(in->p[z][x][y]+in->pt_all[z][x][y]-in->p_orig[z][x][y])*dim->y[y];
 			nsum+=(in->n[z][x][y]+in->nt_all[z][x][y]-in->n_orig[z][x][y]);
 			psum+=in->p[z][x][y]+in->pt_all[z][x][y]-in->p_orig[z][x][y];
 		}
@@ -142,7 +142,7 @@ gdouble add=0.0;
 struct newton_state *ns=&in->ns;
 struct dimensions *dim=&in->ns.dim;
 
-gdouble dx=dim->ymesh[1]-dim->ymesh[0];
+gdouble dx=dim->y[1]-dim->y[0];
 
 
 
@@ -295,7 +295,7 @@ for (z=0;z<dim->zlen;z++)
 	{
 		for (y=0;y<dim->ylen;y++)
 		{
-			tot+=in->Gn[z][x][y]*dim->dy[y];
+			tot+=in->Gn[z][x][y]*dim->dY[y];
 		}
 	}
 }
@@ -373,7 +373,7 @@ if (in->mun_y==NULL)
 		{
 			for (y = 0; y < dim->ylen; y++)
 			{
-				sum+=in->mun_y[z][x][y]*(in->n[z][x][y]*dim->dx[x]*dim->dy[y]*dim->dz[z])/(in->nt_all[z][x][y]+in->n[z][x][y]);
+				sum+=in->mun_y[z][x][y]*(in->n[z][x][y]*dim->dX[x]*dim->dY[y]*dim->dZ[z])/(in->nt_all[z][x][y]+in->n[z][x][y]);
 			}
 
 		}
@@ -408,7 +408,7 @@ struct dimensions *dim=&in->ns.dim;
 		{
 			for (y = 0; y < dim->ylen; y++)
 			{
-				sum+=in->mup_y[z][x][y]*in->p[z][x][y]*dim->dx[x]*dim->dy[y]*dim->dz[z]/(in->pt_all[z][x][y]+in->p[z][x][y]);
+				sum+=in->mup_y[z][x][y]*in->p[z][x][y]*dim->dX[x]*dim->dY[y]*dim->dZ[z]/(in->pt_all[z][x][y]+in->p[z][x][y]);
 			}
 
 		}
@@ -639,14 +639,14 @@ for (z=0;z<dim->zlen;z++)
 				pl=in->p[z][x][0];
 				Ecl=in->Ec[z][x][0];
 				Evl=in->Ev[z][x][0];
-				xl=dim->ymesh[0];
+				xl=dim->y[0];
 			}else
 			{
 				nl=in->n[z][x][y-1];
 				pl=in->p[z][x][y-1];
 				Ecl=in->Ec[z][x][y-1];
 				Evl=in->Ev[z][x][y-1];
-				xl=dim->ymesh[y-1];
+				xl=dim->y[y-1];
 			}
 
 			if (y==dim->ylen-1)
@@ -655,14 +655,14 @@ for (z=0;z<dim->zlen;z++)
 				pr=in->p[z][x][dim->ylen-1];
 				Ecr=in->Ec[z][x][dim->ylen-1];
 				Evr=in->Ev[z][x][dim->ylen-1];
-				xr=dim->ymesh[dim->ylen-1];
+				xr=dim->y[dim->ylen-1];
 			}else
 			{
 				nr=in->n[z][x][y+1];
 				pr=in->p[z][x][y+1];
 				Ecr=in->Ec[z][x][y+1];
 				Evr=in->Ev[z][x][y+1];
-				xr=dim->ymesh[y+1];
+				xr=dim->y[y+1];
 			}
 			dn=(nr-nl);
 			dp=(pr-pl);

@@ -48,7 +48,4 @@ plot 'Rn.dat' using ($1*1e6):(($2*$2)**0.5) axis x1y1 with lp title 'Rn',\
 unset logscale y
 
 
-#plot 'Dex.dat' using ($1*1e6):($2) axis x1y1 with l title 'Te',\
-#'Dex.dat' using ($1*1e6):($3) axis x1y2 with l title 'Th',\
-#'Dex.dat' using ($1*1e6):($4) axis x1y2 with l title 'Tl'
 

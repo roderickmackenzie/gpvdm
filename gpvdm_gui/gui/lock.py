@@ -62,19 +62,19 @@ class lock():
 		self.update_available=False
 		self.website="www.gpvdm.com"
 		self.port="/api"
-		self.my_email="roderick.mackenzie@nottingham.ac.uk"
+		self.my_email="roderick.mackenzie@durham.ac.uk"
 
-		date_time = "01.01.2022"
-		pattern = "%d.%m.%Y"
-		change_time = int(time.mktime(time.strptime(date_time, pattern)))
-		now_time = time.time()
+		#date_time = "01.01.2022"
+		#pattern = "%d.%m.%Y"
+		#change_time = int(time.mktime(time.strptime(date_time, pattern)))
+		#now_time = time.time()
 
-		decode0 = time.gmtime(change_time)
-		decode1 = time.gmtime(now_time)
+		#decode0 = time.gmtime(change_time)
+		#decode1 = time.gmtime(now_time)
 
-		delta=time.mktime(decode1)-time.mktime(decode0)
-		if delta>0:
-			self.my_email="r.c.i.mackenzie at googlemail.com"
+		#delta=time.mktime(decode1)-time.mktime(decode0)
+		#if delta>0:
+		#	self.my_email="r.c.i.mackenzie at googlemail.com"
 
 		self.question="Questions? Contact: "
 		self.data_path=os.path.join(get_user_settings_dir(),"info.inp")

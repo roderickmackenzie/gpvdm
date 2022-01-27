@@ -105,7 +105,7 @@ void detectors_load(struct simulation *sim,struct world *w, struct json_obj *jso
 			detector_init(sim,det);
 
 
-			json_viewpoint=json_obj_find(json_segment, "viewpoint");
+			json_viewpoint=json_obj_find(json_segment, "config");
 
 			if (json_viewpoint==NULL)
 			{
@@ -195,8 +195,8 @@ void dectors_add_to_scene(struct simulation *sim,struct world *w,struct image *m
 			obj->epi_layer=-1;
 			strcpy(obj->name,"viewpoint");
 
-			dim_alloc_xyz(&(my_image->viewpoint_dim),'x');
-			dim_alloc_xyz(&(my_image->viewpoint_dim),'z');
+			dim_malloc_xyz(&(my_image->viewpoint_dim),'x');
+			dim_malloc_xyz(&(my_image->viewpoint_dim),'z');
 			dim_set_simple_mesh_z(&(my_image->viewpoint_dim), camera_z, camera_z+camera_dz);
 			dim_set_simple_mesh_x(&(my_image->viewpoint_dim), camera_x, camera_x+camera_dx);
 			if (d>1)

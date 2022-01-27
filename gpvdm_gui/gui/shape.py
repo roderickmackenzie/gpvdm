@@ -76,6 +76,9 @@ class shape_homo_lumo:
 
 		return out
 
+	def find_object_path_by_id(self,want_id,cur_path=""):
+		return None,None
+
 	def load_from_json(self,json):
 		self.segments=[]
 		nsegments=json['segments']
@@ -90,6 +93,32 @@ class shape_dos(json_base):
 		json_base.__init__(self,"shape_dos")
 		self.var_list=[]
 		self.var_list.append(["enabled",False])
+
+		#free carrier
+		self.var_list.append(["text_free_carrier",""])
+		self.var_list.append(["symmetric_mobility_e","symmetric"])
+		self.var_list.append(["mue_z",1e-15])
+		self.var_list.append(["mue_x",1e-15])
+		self.var_list.append(["mue_y",1.0e-05])
+		self.var_list.append(["symmetric_mobility_h","symmetric"])
+		self.var_list.append(["muh_z",1e-15])
+		self.var_list.append(["muh_x",1e-15])
+		self.var_list.append(["muh_y",1.0e-05])
+		self.var_list.append(["Nc",5e25])
+		self.var_list.append(["Nv",5e25])
+		self.var_list.append(["free_to_free_recombination",0.000000e+00])
+		self.var_list.append(["dos_free_carrier_stats","mb_equation"])
+
+		#Non-dynamic srh
+		self.var_list.append(["text_steay_srh",""])
+		self.var_list.append(["ss_srh_enabled",False])
+		self.var_list.append(["srh_n1",1e20])
+		self.var_list.append(["srh_p1",1e20])
+		self.var_list.append(["srh_tau_n",1e-15])
+		self.var_list.append(["srh_tau_p",1e-15])
+
+		#Dynamic traps
+		self.var_list.append(["text_dynamic_traps",""])
 		self.var_list.append(["dostype","exponential"])
 		self.var_list.append(["complex_lumo",shape_homo_lumo("complex_lumo")])
 		self.var_list.append(["complex_homo",shape_homo_lumo("complex_homo")])
@@ -99,15 +128,8 @@ class shape_dos(json_base):
 		self.var_list.append(["Etraph",60e-3])
 		self.var_list.append(["ion_density",0.0])
 		self.var_list.append(["ion_mobility",0.0])
-		self.var_list.append(["symmetric_mobility_e","symmetric"])
-		self.var_list.append(["mue_z",1e-15])
-		self.var_list.append(["mue_x",1e-15])
-		self.var_list.append(["mue_y",1.0e-05])
-		self.var_list.append(["symmetric_mobility_h","symmetric"])
-		self.var_list.append(["muh_z",1e-15])
-		self.var_list.append(["muh_x",1e-15])
-		self.var_list.append(["muh_y",1.0e-05])
-		self.var_list.append(["epsilonr",5.0])
+
+
 		self.var_list.append(["doping_start",0.0])
 		self.var_list.append(["doping_stop",0.0])
 		self.var_list.append(["Na0",0.0])
@@ -123,7 +145,7 @@ class shape_dos(json_base):
 		self.var_list.append(["pstart",-2.5])
 		self.var_list.append(["pstop",1.0])
 		self.var_list.append(["ppoints",1000])
-		self.var_list.append(["srh_bands",5])
+
 		self.var_list.append(["srh_start",-0.5])
 		self.var_list.append(["srhsigman_e",2.131895e-21])
 		self.var_list.append(["srhsigmap_e",3.142822e-22])
@@ -131,15 +153,34 @@ class shape_dos(json_base):
 		self.var_list.append(["srhsigman_h",3.142822e-22])
 		self.var_list.append(["srhsigmap_h",2.131895e-21])
 		self.var_list.append(["srhvth_h",1e5])
-		self.var_list.append(["Nc",5e25])
-		self.var_list.append(["Nv",5e25])
-		self.var_list.append(["Xi",1.6])
-		self.var_list.append(["Eg",1.3])
+		self.var_list.append(["srh_bands",5])
+
 		self.var_list.append(["Esteps",1000])
 		self.var_list.append(["dump_band_structure",0])
-		self.var_list.append(["free_to_free_recombination",0.000000e+00])
-		self.var_list.append(["dos_free_carrier_stats","mb_equation"])
+
+
+		#Auger
+		self.var_list.append(["text_auger",""])
+		self.var_list.append(["dos_enable_auger",False])
+		self.var_list.append(["dos_auger_Cn",1e-26])
+		self.var_list.append(["dos_auger_Cp",1e-26])
+
+		self.var_list.append(["text_electro",""])
+		self.var_list.append(["Xi",1.6])
+		self.var_list.append(["Eg",1.2])
+		self.var_list.append(["epsilonr",5.0])
 		self.var_list.append(["id",self.random_id()])
+
+		#Exciton solver
+		self.var_list.append(["text_exciton",""])
+		self.var_list.append(["exciton_enabled",False])
+		self.var_list.append(["exciton_L",1e-08])
+		self.var_list.append(["exciton_tau",1e-10])
+		self.var_list.append(["exciton_kpl",4e9])
+		self.var_list.append(["exciton_kfret",0.0])
+		self.var_list.append(["exciton_alpha",1E-13])
+		self.var_list.append(["exciton_kdis",1e11])
+
 		self.var_list_build()
 
 
@@ -181,6 +222,7 @@ class shape(json_base):
 		json_base.__init__(self,"shape")
 		self.var_list=[]
 		self.var_list.append(["shape_enabled",True])
+		self.var_list.append(["shape_hidden",False])
 		self.var_list.append(["shape_type","box"])
 		self.var_list.append(["rotate_y",0])
 		self.var_list.append(["rotate_x",0])
@@ -227,7 +269,7 @@ class shape(json_base):
 
 	def decode_from_json(self,json):
 		self.load_from_json(json)
-		self.shape_enabled=str2bool(self.shape_enabled)
+		#self.shape_enabled=str2bool(self.shape_enabled)
 		self.loaded_from_json=True
 		#backwards compatability take out after 22/08/22
 		if self.shape_dos.doping_start>0.0:

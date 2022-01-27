@@ -2,28 +2,28 @@
 // General-purpose Photovoltaic Device Model gpvdm.com - a drift diffusion
 // base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solarcells.
 // The model can simulate OLEDs, Perovskite cells, and OFETs.
-// 
+//
 // Copyright 2008-2022 Roderick C. I. MacKenzie https://www.gpvdm.com
 // r.c.i.mackenzie at googlemail.com
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+// the rights to use, copy, modify, merge, publish, distribute, sublicense,
 // and/or sell copies of the Software, and to permit persons to whom the
 // Software is furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included
 // in all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 // OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// 
+//
 
 /** @file pos.c
 @brief poisson solver - make a better guess at 0V in the dark.
@@ -64,121 +64,113 @@ if (config->pos_dump_verbosity>0)
 	}
 
 	struct dat_file buf;
-	buffer_init(&buf);
+	dat_file_init(&buf);
 	char name[200];
 	int band=0;
 	int i=0;
 
-	buffer_malloc(&buf);
-	sprintf(name,"%s%s","Fi",".dat");
-	buf.y_mul=1.0;
-	buf.x_mul=1e9;
-	strcpy(buf.title,_("Intrinsic Fermi - position"));
-	strcpy(buf.type,"xy");
-	strcpy(buf.x_label,_("Position"));
-	strcpy(buf.y_label,"Fi");
-	strcpy(buf.x_units,"nm");
-	strcpy(buf.y_units,"$E_{LUMO}$");
-	buf.logscale_x=0;
-	buf.logscale_y=0;
-	buffer_add_info(sim,&buf);
-	buffer_add_3d_data(sim,&buf,dim, in->Fi);
-	buffer_dump_path(sim,out_dir,name,&buf);
-	buffer_free(&buf);
+	if (buffer_set_file_name(sim,in,&buf,"Fi.csv")==0)
+	{
+		buffer_malloc(&buf);
+		buf.y_mul=1.0;
+		buf.x_mul=1e9;
+		strcpy(buf.title,_("Intrinsic Fermi - position"));
+		strcpy(buf.type,"xy");
+		strcpy(buf.x_label,_("Position"));
+		strcpy(buf.y_label,"Fi");
+		strcpy(buf.x_units,"nm");
+		strcpy(buf.y_units,"$E_{LUMO}$");
+		dat_file_add_zxy_data(sim,&buf,dim, in->Fi);
+		buffer_dump_path(sim,out_dir,NULL,&buf);
+		buffer_free(&buf);
+	}
 
-	buffer_malloc(&buf);
-	sprintf(name,"%s%s","Ec",".dat");
-	buf.y_mul=1.0;
-	buf.x_mul=1e9;
-	strcpy(buf.title,_("LUMO energy - position"));
-	strcpy(buf.type,"xy");
-	strcpy(buf.x_label,_("Position"));
-	strcpy(buf.y_label,"LUMO");
-	strcpy(buf.x_units,"nm");
-	strcpy(buf.y_units,"$E_{LUMO}$");
-	buf.logscale_x=0;
-	buf.logscale_y=0;
-	buffer_add_info(sim,&buf);
-	buffer_add_3d_data(sim,&buf,dim, in->Ec);
-	buffer_dump_path(sim,out_dir,name,&buf);
-	buffer_free(&buf);
+	if (buffer_set_file_name(sim,in,&buf,"Ec.csv")==0)
+	{
+		buffer_malloc(&buf);
+		buf.y_mul=1.0;
+		buf.x_mul=1e9;
+		strcpy(buf.title,_("LUMO energy - position"));
+		strcpy(buf.type,"xy");
+		strcpy(buf.x_label,_("Position"));
+		strcpy(buf.y_label,"LUMO");
+		strcpy(buf.x_units,"nm");
+		strcpy(buf.y_units,"$E_{LUMO}$");
+		dat_file_add_zxy_data(sim,&buf,dim, in->Ec);
+		buffer_dump_path(sim,out_dir,NULL,&buf);
+		buffer_free(&buf);
+	}
 
-	buffer_malloc(&buf);
-	sprintf(name,"%s%s","Ev",".dat");
-	buf.y_mul=1.0;
-	buf.x_mul=1e9;
-	strcpy(buf.title,_("HOMO energy - position"));
-	strcpy(buf.type,"xy");
-	strcpy(buf.x_label,"Position");
-	strcpy(buf.y_label,"LUMO");
-	strcpy(buf.x_units,"nm");
-	strcpy(buf.y_units,"$E_{HOMO}$");
-	buf.logscale_x=0;
-	buf.logscale_y=0;
-	buffer_add_info(sim,&buf);
-	buffer_add_3d_data(sim,&buf,dim, in->Ev);
-	buffer_dump_path(sim,out_dir,name,&buf);
-	buffer_free(&buf);
+	if (buffer_set_file_name(sim,in,&buf,"Ev.csv")==0)
+	{
+		buffer_malloc(&buf);
+		buf.y_mul=1.0;
+		buf.x_mul=1e9;
+		strcpy(buf.title,_("HOMO energy - position"));
+		strcpy(buf.type,"xy");
+		strcpy(buf.x_label,"Position");
+		strcpy(buf.y_label,"LUMO");
+		strcpy(buf.x_units,"nm");
+		strcpy(buf.y_units,"$E_{HOMO}$");
+		dat_file_add_zxy_data(sim,&buf,dim, in->Ev);
+		buffer_dump_path(sim,out_dir,NULL,&buf);
+		buffer_free(&buf);
+	}
 
 
-	buffer_malloc(&buf);
-	sprintf(name,"%s%s","n",".dat");
-	buf.y_mul=1.0;
-	buf.x_mul=1e9;
-	strcpy(buf.title,_("Electron density - position"));
-	strcpy(buf.type,"xy");
-	strcpy(buf.x_label,_("Position"));
-	strcpy(buf.y_label,_("Electron density"));
-	strcpy(buf.x_units,"nm");
-	strcpy(buf.y_units,"m^{-3}");
-	buf.logscale_x=0;
-	buf.logscale_y=0;
-	buffer_add_info(sim,&buf);
-	buffer_add_3d_data(sim,&buf,dim, in->n);
-	buffer_dump_path(sim,out_dir,name,&buf);
-	buffer_free(&buf);
+	if (buffer_set_file_name(sim,in,&buf,"n.csv")==0)
+	{
+		buffer_malloc(&buf);
+		buf.y_mul=1.0;
+		buf.x_mul=1e9;
+		strcpy(buf.title,_("Electron density - position"));
+		strcpy(buf.type,"xy");
+		strcpy(buf.x_label,_("Position"));
+		strcpy(buf.y_label,_("Electron density"));
+		strcpy(buf.x_units,"nm");
+		strcpy(buf.y_units,"m^{-3}");
+		dat_file_add_zxy_data(sim,&buf,dim, in->n);
+		buffer_dump_path(sim,out_dir,NULL,&buf);
+		buffer_free(&buf);
+	}
 
+	if (buffer_set_file_name(sim,in,&buf,"p.csv")==0)
+	{
+		buffer_malloc(&buf);
+		buf.y_mul=1.0;
+		buf.x_mul=1e9;
+		strcpy(buf.title,_("Hole density - position"));
+		strcpy(buf.type,"xy");
+		strcpy(buf.x_label,_("Position"));
+		strcpy(buf.y_label,_("Hole density"));
+		strcpy(buf.x_units,"nm");
+		strcpy(buf.y_units,"m^{-3}");
+		dat_file_add_zxy_data(sim,&buf,dim, in->p);
+		buffer_dump_path(sim,out_dir,NULL,&buf);
+		buffer_free(&buf);
+	}
 
-	buffer_malloc(&buf);
-	sprintf(name,"%s%s","p",".dat");
-	buf.y_mul=1.0;
-	buf.x_mul=1e9;
-	strcpy(buf.title,_("Hole density - position"));
-	strcpy(buf.type,"xy");
-	strcpy(buf.x_label,_("Position"));
-	strcpy(buf.y_label,_("Hole density"));
-	strcpy(buf.x_units,"nm");
-	strcpy(buf.y_units,"m^{-3}");
-	buf.logscale_x=0;
-	buf.logscale_y=0;
-	buffer_add_info(sim,&buf);
-	buffer_add_3d_data(sim,&buf,dim, in->p);
-	buffer_dump_path(sim,out_dir,name,&buf);
-	buffer_free(&buf);
-
-	buffer_malloc(&buf);
-	sprintf(name,"%s%s","phi",".dat");
-	buf.y_mul=1.0;
-	buf.x_mul=1e9;
-	strcpy(buf.title,_("Potential - position"));
-	strcpy(buf.type,"xy");
-	strcpy(buf.x_label,_("Position"));
-	strcpy(buf.y_label,_("Potential"));
-	strcpy(buf.x_units,"nm");
-	strcpy(buf.y_units,"V");
-	buf.logscale_x=0;
-	buf.logscale_y=0;
-	buffer_add_info(sim,&buf);
-	buffer_add_3d_data(sim,&buf,dim, ns->phi);
-	buffer_dump_path(sim,out_dir,name,&buf);
-	buffer_free(&buf);
-
+	if (buffer_set_file_name(sim,in,&buf,"phi.csv")==0)
+	{
+		buffer_malloc(&buf);
+		buf.y_mul=1.0;
+		buf.x_mul=1e9;
+		strcpy(buf.title,_("Potential - position"));
+		strcpy(buf.type,"xy");
+		strcpy(buf.x_label,_("Position"));
+		strcpy(buf.y_label,_("Potential"));
+		strcpy(buf.x_units,"nm");
+		strcpy(buf.y_units,"V");
+		dat_file_add_zxy_data(sim,&buf,dim, ns->phi);
+		buffer_dump_path(sim,out_dir,NULL,&buf);
+		buffer_free(&buf);
+	}
 
 
 	/*out=fopena(get_output_path(sim),"first_guess_np_trap.dat","w");
 	for (i=0;i<dim->ylen;i++)
 	{
-		fprintf(out,"%Le ",dim->ymesh[i]);
+		fprintf(out,"%Le ",dim->y[i]);
 		for (band=0;band<dim->srh_bands;band++)
 		{
 			fprintf(out,"%Le %Le ",in->nt[i][band],in->pt[i][band]);
@@ -343,31 +335,31 @@ gdouble kTq=(in->Te[z][x][0]*kb/Qe);
 			{
 				phil=in->V_y0[z][x];
 				el=in->epsilonr_e0[z][x][0];
-				yl=dim->ymesh[0]-(dim->ymesh[1]-dim->ymesh[0]);
+				yl=dim->y[0]-(dim->y[1]-dim->y[0]);
 
 
 			}else
 			{
 				el=in->epsilonr_e0[z][x][i-1];
 				phil=ns->phi[z][x][i-1];
-				yl=dim->ymesh[i-1];
+				yl=dim->y[i-1];
 			}
 
 			if (i==(dim->ylen-1))
 			{
 				phir=in->V_y1[z][x];
 				er=in->epsilonr_e0[z][x][i];
-				yr=dim->ymesh[i]+(dim->ymesh[i]-dim->ymesh[i-1]);
+				yr=dim->y[i]+(dim->y[i]-dim->y[i-1]);
 			}else
 			{
 				er=in->epsilonr_e0[z][x][i+1];
 				phir=ns->phi[z][x][i+1];
-				yr=dim->ymesh[i+1];
+				yr=dim->y[i+1];
 
 			}
 
 
-			yc=dim->ymesh[i];
+			yc=dim->y[i];
 			dyl=yc-yl;
 			dyr=yr-yc;
 			dyc=(dyl+dyr)/2.0;

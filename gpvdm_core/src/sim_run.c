@@ -59,6 +59,8 @@
 #include <device_fun.h>
 #include <heat.h>
 #include <heat_fun.h>
+#include <exciton.h>
+#include <exciton_fun.h>
 #include <json.h>
 #include <server.h>
 #include <light_srcs.h>
@@ -77,7 +79,7 @@ int device_run_simulation(struct simulation *sim, struct device *dev)
 	char json_path[PATH_MAX];
 	int layers;
 	int world_items;
-
+	int enable_transfer_matrix_light=TRUE;
 	FILE *file;
 
 	struct json_obj *json_world;
@@ -102,7 +104,7 @@ int device_run_simulation(struct simulation *sim, struct device *dev)
 	dump_init(sim,dev);
 
 
-
+	//json_dump_obj(&(dev->config.obj));
 	set_dump_status(sim,dump_stop_plot, FALSE);
 	set_dump_status(sim,dump_print_text, TRUE);
 	dump_load_config(sim,dev);
@@ -110,15 +112,7 @@ int device_run_simulation(struct simulation *sim, struct device *dev)
 	dev->kl_in_newton=FALSE;
 	struct dimensions *dim=&(dev->ns.dim);
 
-
-	join_path(2,temp,dev->output_path,"error.dat");
-	remove_file(sim,temp);
-
-	join_path(2,temp,dev->output_path,"equilibrium");
-	remove_dir(sim,temp);
-
-	join_path(2,temp,dev->output_path,"solver");
-	remove_dir(sim,temp);
+	clean_sim_dir(sim,dev);
 
 	if (get_dump_status(sim,dump_newton)==TRUE)
 	{
@@ -129,29 +123,6 @@ int device_run_simulation(struct simulation *sim, struct device *dev)
 			mkdir(temp, 0700);
 		}
 	}
-
-	//join_path(2,temp,get_output_path(sim),"snapshots");
-	//remove_dir(sim,temp);
-
-	dump_remove_snapshots(sim,dev->output_path);
-
-	join_path(2,temp,get_output_path(dev),"optics_output");
-	remove_dir(sim,temp);
-
-	join_path(2,temp,get_output_path(dev),"optical_snapshots");
-	remove_dir(sim,temp);
-
-	join_path(2,temp,get_output_path(dev),"ray_trace");
-	remove_dir(sim,temp);
-
-	join_path(2,temp,get_output_path(dev),"dynamic");
-	remove_dir(sim,temp);
-
-	join_path(2,temp,get_output_path(dev),"frequency");
-	remove_dir(sim,temp);
-
-	join_path(2,temp,get_output_path(dev),"matrix_times.dat");
-	remove_file(sim,temp);
 
 	device_load_math_config(sim,dev);
 
@@ -171,10 +142,11 @@ int device_run_simulation(struct simulation *sim, struct device *dev)
 		dev->drift_diffision_simulations_enabled=FALSE;
 	}
 
-	if (strcmp(dev->simmode,"fdtd@fdtd")==0)
+	if (strcmp_end(dev->simmode,"@fdtd")==0)
 	{
 		dev->electrical_simulation_enabled=FALSE;
 		dev->drift_diffision_simulations_enabled=FALSE;
+		enable_transfer_matrix_light=FALSE;
 	}
 
 	if (strcmp(dev->simmode,"trace@trace")==0)
@@ -284,6 +256,10 @@ int device_run_simulation(struct simulation *sim, struct device *dev)
 		heat_load_config(sim,&(dev->thermal), dev);
 	#endif
 
+	#ifdef libexciton_enabled
+		exciton_load_config(sim,&(dev->ex), dev);
+	#endif
+
 	dev->emission_enabled=FALSE;
 	dev->pl_use_experimental_emission_spectra=FALSE;
 
@@ -308,6 +284,7 @@ int device_run_simulation(struct simulation *sim, struct device *dev)
 	{
 		ewe(sim,"Object json_light_sources not found\n");
 	}
+
 
 	light_srcs_load(sim,&(dev->lights),json_light_sources);
 
@@ -387,9 +364,12 @@ int device_run_simulation(struct simulation *sim, struct device *dev)
 		gdouble old_Psun=0.0;
 		old_Psun=light_get_sun(&dev->mylight);
 
+		if (strcmp_end(dev->simmode,"@eqe")==0)
+		{
+			dev->mylight.use_flat_sepctrum=TRUE;
+		}
+
 		light_load_config(sim,&dev->mylight,dev);
-
-
 
 		if (dev->mylight.dump_verbosity>-1)
 		{

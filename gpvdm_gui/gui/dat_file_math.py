@@ -24,62 +24,182 @@
 #
 
 import os
-import shutil
 import re
-from dat_file import dat_file
 
-def dat_file_max_min(my_data,cur_min=None,cur_max=None):
-	my_max=False
-	my_min=False
-	
-	if my_data.data_max!=None and my_data.data_min!=None:
-		return [my_data.data_max,my_data.data_min]
+class dat_file_math():
 
-	if my_data.x_len>0 and my_data.y_len>0 and my_data.z_len>0:
-		my_max=my_data.data[0][0][0]
-		my_min=my_data.data[0][0][0]
+	def pow(self,val):
+		a=dat_file()
+		a.copy(self)
 
-		for z in range(0,my_data.z_len):
-			for x in range(0,my_data.x_len):
-				for y in range(0,my_data.y_len):
-					
-					if my_data.data[z][x][y]>my_max:
-						my_max=my_data.data[z][x][y]
+		for z in range(0,len(self.z_scale)):
+			for x in range(0,len(self.x_scale)):
+				for y in range(0,len(self.y_scale)):
+					a.data[z][x][y]=pow(self.data[z][x][y],val)
+		return a		
 
-					if my_data.data[z][x][y]<my_min:
-						my_min=my_data.data[z][x][y]
-	if cur_min!=None:
-		if cur_min<my_min:
-			my_min=cur_min
+	def intergrate(self):
+		sum=0.0
+		for y in range(0,len(self.y_scale)-1):
+			dy=self.y_scale[y+1]-self.y_scale[y]
+			sum=sum+self.data[0][0][y]*dy
 
-	if cur_max!=None:
-		if cur_max>my_max:
-			my_max=cur_max
+		return sum
 
-	return [my_max,my_min]
+	def set_neg_to_zero(self):
+		for y in range(0,len(self.y_scale)):
+			if self.data[0][0][y]<0.0:
+				self.data[0][0][y]=0.0
+
+	def set_neg_to_last(self):
+		last=0.0
+		for y in range(0,len(self.y_scale)):
+			if self.data[0][0][y]<0.0:
+				self.data[0][0][y]=last
+			else:
+				last=self.data[0][0][y]
+
+	def __sub__(self,val):
+		a=dat_file()
+		a.copy(self)
+
+		for z in range(0,len(self.z_scale)):
+			for x in range(0,len(self.x_scale)):
+				for y in range(0,len(self.y_scale)):
+					a.data[z][x][y]=self.data[z][x][y]-val
+		return a
+
+	def __add__(self,val):
+		a=dat_file()
+		a.copy(self)
+		if type(val)==float:
+			for z in range(0,len(self.z_scale)):
+				for x in range(0,len(self.x_scale)):
+					for y in range(0,len(self.y_scale)):
+						a.data[z][x][y]=self.data[z][x][y]+val
+		else:
+			for z in range(0,len(self.z_scale)):
+				for x in range(0,len(self.x_scale)):
+					for y in range(0,len(self.y_scale)):
+						a.data[z][x][y]=self.data[z][x][y]+val.data[z][x][y]
+
+		return a
+
+	def __truediv__(self,in_data):
+		a=dat_file()
+		a.copy(self)
+
+		for z in range(0,len(self.z_scale)):
+			for x in range(0,len(self.x_scale)):
+				for y in range(0,len(self.y_scale)):
+					a.data[z][x][y]=self.data[z][x][y]/in_data.data[z][x][y]
+		return a
+
+	def __rsub__(self,val):
+		a=dat_file()
+		a.copy(self)
+
+		for z in range(0,len(self.z_scale)):
+			for x in range(0,len(self.x_scale)):
+				for y in range(0,len(self.y_scale)):
+					a.data[z][x][y]=val-self.data[z][x][y]
+		return a
+
+	def set_float(self,val):
+		for z in range(0,len(self.z_scale)):
+			for x in range(0,len(self.x_scale)):
+				for y in range(0,len(self.y_scale)):
+					self.data[z][x][y]=val
+
+	def chop_y(self,y0,y1):
+		if y0==0 and y1==0:
+			return
+
+		self.y_scale=self.y_scale[y0:y1]
+		self.y_len=len(self.y_scale)
+
+		for z in range(0,len(self.z_scale)):
+			for x in range(0,len(self.x_scale)):
+				self.data[z][x]=self.data[z][x][y0:y1]
+				#for y in range(0,len(self.y_scale)):
+				#	self.data[z][x][y]=val
+
+	def __mul__(self,in_data):
+		a=dat_file()
+		a.copy(self)
+
+		if type(in_data)==float:
+			for z in range(0,len(self.z_scale)):
+				for x in range(0,len(self.x_scale)):
+					for y in range(0,len(self.y_scale)):
+						a.data[z][x][y]=in_data*self.data[z][x][y]
+		else:
+			for z in range(0,len(self.z_scale)):
+				for x in range(0,len(self.x_scale)):
+					for y in range(0,len(self.y_scale)):
+						a.data[z][x][y]=in_data.data[z][x][y]*self.data[z][x][y]
+
+		return a
+
+	def __rmul__(self, in_data):
+		return self.__mul__(in_data)
 
 
-def dat_file_sub(my_data,one):
-	if (my_data.x_len==one.x_len) and (my_data.y_len==one.y_len) and (my_data.z_len==one.z_len):
-		for z in range(0,my_data.z_len):
-			for x in range(0,my_data.x_len):
-				for y in range(0,my_data.y_len):
-					my_data.data[z][x][y]=my_data.data[z][x][y]-one.data[z][x][y]
+	def max_min(self,cur_min=None,cur_max=None,only_use_data=False):
+		my_max=False
+		my_min=False
+		
+		if only_use_data==False:
+			if self.data_max!=None and self.data_min!=None:
+				return [self.data_max,self.data_min]
 
-def dat_file_sub_float(my_data,val):
-		for z in range(0,my_data.z_len):
-			for x in range(0,my_data.x_len):
-				for y in range(0,my_data.y_len):
-					my_data.data[z][x][y]=my_data.data[z][x][y]-val
-					
-def dat_file_mul(my_data,val):
-		for z in range(0,my_data.z_len):
-			for x in range(0,my_data.x_len):
-				for y in range(0,my_data.y_len):
-					my_data.data[z][x][y]*=val
+		if self.x_len>0 and self.y_len>0 and self.z_len>0:
+			my_max=self.data[0][0][0]
+			my_min=self.data[0][0][0]
 
-def dat_file_abs(my_data):
-		for z in range(0,my_data.z_len):
-			for x in range(0,my_data.x_len):
-				for y in range(0,my_data.y_len):
-					my_data.data[z][x][y]=abs(my_data.data[z][x][y])
+			for z in range(0,self.z_len):
+				for x in range(0,self.x_len):
+					for y in range(0,self.y_len):
+						
+						if self.data[z][x][y]>my_max:
+							my_max=self.data[z][x][y]
+
+						if self.data[z][x][y]<my_min:
+							my_min=self.data[z][x][y]
+		if cur_min!=None:
+			if cur_min<my_min:
+				my_min=cur_min
+
+		if cur_max!=None:
+			if cur_max>my_max:
+				my_max=cur_max
+
+		return [my_max,my_min]
+
+
+	def dat_file_sub(self,one):
+		if (self.x_len==one.x_len) and (self.y_len==one.y_len) and (self.z_len==one.z_len):
+			for z in range(0,self.z_len):
+				for x in range(0,self.x_len):
+					for y in range(0,self.y_len):
+						self.data[z][x][y]=self.data[z][x][y]-one.data[z][x][y]
+
+	def dat_file_sub_float(self,val):
+			for z in range(0,self.z_len):
+				for x in range(0,self.x_len):
+					for y in range(0,self.y_len):
+						self.data[z][x][y]=self.data[z][x][y]-val
+						
+	def dat_file_mul(self,val):
+			for z in range(0,self.z_len):
+				for x in range(0,self.x_len):
+					for y in range(0,self.y_len):
+						self.data[z][x][y]*=val
+
+	def abs(self):
+			for z in range(0,self.z_len):
+				for x in range(0,self.x_len):
+					for y in range(0,self.y_len):
+						self.data[z][x][y]=abs(self.data[z][x][y])
+
+

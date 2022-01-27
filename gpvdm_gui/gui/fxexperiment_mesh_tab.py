@@ -50,7 +50,6 @@ from PyQt5.QtGui import QPainter,QIcon
 #windows
 from open_save_dlg import save_as_jpg
 
-from colors import get_color
 from cal_path import get_sim_path
 from gpvdm_tab2 import gpvdm_tab2
 

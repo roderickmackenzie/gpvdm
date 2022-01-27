@@ -55,11 +55,11 @@ int i=0;
 		for (i=0;i<in->ncontacts;i++)
 		{
 			c0=in->contacts[i].shape.x0+in->contacts[i].shape.dx;
-			if ((dim->xmesh[x]<c0)&&(dim->xmesh[x+1]>c0))
+			if ((dim->x[x]<c0)&&(dim->x[x+1]>c0))
 			{
-				dim->xmesh[x]=c0-2e-9;
-				dim->xmesh[x-1]=(dim->xmesh[x-2]+dim->xmesh[x])/2;
-				dim->xmesh[x+1]=(dim->xmesh[x]+dim->xmesh[x+2])/2;
+				dim->x[x]=c0-2e-9;
+				dim->x[x-1]=(dim->x[x-2]+dim->x[x])/2;
+				dim->x[x+1]=(dim->x[x]+dim->x[x+2])/2;
 
 			}
 

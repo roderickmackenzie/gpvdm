@@ -95,7 +95,6 @@ class gl_text():
 
 	def text_clear_lib(self):
 		self.text_lib=[]
-		print("clear")
 
 	def get_text(self,text):
 		for t in self.text_lib:

@@ -102,13 +102,15 @@ class gl_shapes:
 			#glScalef(1.0, 1.0, 1.0) 
 			#print(o.id,xyz.x,xyz.y,xyz.z)
 			glTranslatef(xyz.x,xyz.y,xyz.z)
-			glTranslatef(o.dxyz.x/2.0,o.dxyz.y/2.0,o.dxyz.z/2.0)
-			glRotatef(o.rotate_y, 0.0, 1.0, 0)
-			glRotatef(o.rotate_x, 1.0, 0.0, 0)
-			glTranslatef(-o.dxyz.x/2.0,-o.dxyz.y/2.0,-o.dxyz.z/2.0)
-			
+
 			if o.dxyz.x!=-1:
 				glScaled(o.dxyz.x,o.dxyz.y,o.dxyz.z)
+
+			glTranslatef(1.0/2.0,1.0/2.0,1.0/2.0)
+			glRotatef(o.rotate_y, 0.0, 1.0, 0)
+			glRotatef(o.rotate_x, 1.0, 0.0, 0)
+			glTranslatef(-1.0/2.0,-1.0/2.0,-1.0/2.0)
+
 			n=0
 
 			for b in o.blocks:

@@ -42,12 +42,12 @@
 #include "memory.h"
 
 
-void malloc_zxy_gdouble(struct dimensions *dim, gdouble * (***var))
+void malloc_zxy_long_double(struct dimensions *dim, gdouble * (***var))
 {
 	malloc_3d((void****)var,dim->zlen, dim->xlen, dim->ylen,sizeof(long double));
 }
 
-void free_zxy_gdouble(struct dimensions *dim, gdouble * (***var))
+void free_zxy_long_double(struct dimensions *dim, gdouble * (***var))
 {
 	free_3d((void****)var,dim->zlen, dim->xlen, dim->ylen,sizeof(long double));
 }
@@ -353,8 +353,8 @@ struct dimensions *dim=&(in->ns.dim);
 			for (y = 0; y < dim->ylen; y++)
 			{
 
-				sum+=src[z][x][y]*dim->dx[x]*dim->dy[y]*dim->dz[z];
-//				printf("%Le %Le %Le %Le %Le %Le\n",dim->dx[x],dim->dy[y],dim->dz[z],in->zlen,in->xlen,in->ylen);
+				sum+=src[z][x][y]*dim->dX[x]*dim->dY[y]*dim->dZ[z];
+//				printf("%Le %Le %Le %Le %Le %Le\n",dim->dx[x],dim->dy[y],dim->dZ[z],in->zlen,in->xlen,in->ylen);
 			}
 
 		}
@@ -408,7 +408,7 @@ struct dimensions *dim=&(in->ns.dim);
 		{
 			for (y = 0; y < dim->ylen; y++)
 			{
-				sum+=fabsl(src[z][x][y])*dim->dx[x]*dim->dy[y]*dim->dz[z];
+				sum+=fabsl(src[z][x][y])*dim->dX[x]*dim->dY[y]*dim->dZ[z];
 			}
 
 		}
@@ -431,7 +431,7 @@ long double sum=0.0;
 		{
 			for (y = 0; y < dim->ylen; y++)
 			{
-				sum+=src[z][x][y]*dim->dx[x]*dim->dy[y]*dim->dz[z];
+				sum+=src[z][x][y]*dim->dX[x]*dim->dY[y]*dim->dZ[z];
 			}
 
 		}
@@ -494,26 +494,26 @@ long double c;
 	for (x = 0; x < dim_out->xlen; x++)
 	{
 
-		x_out=dim_out->xmesh[x];
-		xi=hashget(dim_in->xmesh,dim_in->xlen,x_out);
+		x_out=dim_out->x[x];
+		xi=hashget(dim_in->x,dim_in->xlen,x_out);
 
 		for (y = 0; y < dim_out->ylen; y++)
 		{
-			y_out=dim_out->ymesh[y];
-			yi=hashget(dim_in->ymesh,dim_in->ylen,y_out);
+			y_out=dim_out->y[y];
+			yi=hashget(dim_in->y,dim_in->ylen,y_out);
 
-			y00=dim_in->ymesh[yi];
-			y01=dim_in->ymesh[yi+1];
+			y00=dim_in->y[yi];
+			y01=dim_in->y[yi+1];
 			yr=(y_out-y00)/(y01-y00);
 			y0=in[z][xi][yi]+yr*(in[z][xi][yi+1]-in[z][xi][yi]);
 
-			y10=dim_in->ymesh[yi];
-			y11=dim_in->ymesh[yi+1];
+			y10=dim_in->y[yi];
+			y11=dim_in->y[yi+1];
 			yr=(y_out-y10)/(y11-y10);
 			y1=in[z][xi+1][yi]+yr*(in[z][xi+1][yi+1]-in[z][xi+1][yi]);
 
-			x0=dim_in->xmesh[xi];
-			x1=dim_in->xmesh[xi+1];
+			x0=dim_in->x[xi];
+			x1=dim_in->x[xi+1];
 			xr=(x_out-x0)/(x1-x0);
 
 			c=y0+xr*(y1-y0);
@@ -544,7 +544,7 @@ char full_name[200];
 			{
 
 
-					fprintf(out,"%Le %Le %Le\n",dim->zmesh[z],dim->xmesh[x],in[z][x][y]);
+					fprintf(out,"%Le %Le %Le\n",dim->z[z],dim->x[x],in[z][x][y]);
 				//}
 
 
@@ -573,7 +573,7 @@ int z=0;
 
 			//for (y = 0; y < dim->ylen; y++)
 			//{
-				fprintf(out,"%Le %Le %Le\n",dim->zmesh[z],dim->xmesh[x],in[z][x][2]);
+				fprintf(out,"%Le %Le %Le\n",dim->z[z],dim->x[x],in[z][x][2]);
 			//}
 
 
@@ -695,7 +695,7 @@ void flip_zxy_long_double_y(struct simulation *sim, struct dimensions *dim,long 
 	int z=0;
 	long double ***temp=NULL;
 
-	malloc_zxy_gdouble(dim, &temp);
+	malloc_zxy_long_double(dim, &temp);
 
 	for (z=0;z<dim->zlen;z++)
 	{
@@ -723,7 +723,7 @@ void flip_zxy_long_double_y(struct simulation *sim, struct dimensions *dim,long 
 	}
 
 
-	free_zxy_gdouble(dim, &temp);
+	free_zxy_long_double(dim, &temp);
 }
 
 //This shoudl be 3D interpolation but we are assuming the meshes are aligned.
@@ -737,27 +737,27 @@ long double interpolate_zxy_long_double(struct dimensions *dim, long double ***d
 
 	long double ret;
 
-	if (y_in<dim->ymesh[0])
+	if (y_in<dim->y[0])
 	{
 		return 0.0;
 	}
 
 
-	if (y_in>=dim->ymesh[dim->ylen-1])
+	if (y_in>=dim->y[dim->ylen-1])
 	{
-		//printf("here %Le %Le\n",y_in,dim->ymesh[dim->ylen-1]);
+		//printf("here %Le %Le\n",y_in,dim->y[dim->ylen-1]);
 		y=dim->ylen-1;
-		x0=dim->ymesh[y-1];
-		x1=dim->ymesh[y];
+		x0=dim->y[y-1];
+		x1=dim->y[y];
 		y0=data[z][x][y-1];
 		y1=data[z][x][y];
 
 	}else
 	{
-		y=search(dim->ymesh,dim->ylen,y_in);
+		y=search(dim->y,dim->ylen,y_in);
 		//printf("%d\n",y);
-		x0=dim->ymesh[y];
-		x1=dim->ymesh[y+1];
+		x0=dim->y[y];
+		x1=dim->y[y+1];
 
 		y0=data[z][x][y];
 		y1=data[z][x][y+1];

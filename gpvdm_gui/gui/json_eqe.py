@@ -40,7 +40,7 @@ class json_eqe_simulation(json_base):
 		self.var_list.append(["english_name","EQE"])
 		self.var_list.append(["icon","qe"])
 		self.var_list.append(["eqe_voltage",-20.0])
-		self.var_list.append(["eqe_light_power",1500.0])
+		self.var_list.append(["eqe_light_power2",1.0])
 		self.var_list.append(["id",self.random_id()])
 		self.var_list_build()
 

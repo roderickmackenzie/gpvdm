@@ -390,6 +390,10 @@ if (strcmp(temp,"isothermal")==0)
 {
 	return ISOTHERMAL;
 }else
+if (strcmp(temp,"dirichlet")==0)
+{
+	return DIRICHLET;
+}else
 if (strcmp(temp,"neumann")==0)
 {
 	return NEUMANN;
@@ -465,11 +469,27 @@ if (strcmp(temp,"spm_box")==0)
 if (strcmp(temp,"spm_x_cut")==0)
 {
 	return SPM_X_CUT;
+}else
+if (strcmp(temp,"fdtd_sin")==0)
+{
+	return FDTD_SIN;
+}else
+if (strcmp(temp,"fdtd_pulse")==0)
+{
+	return FDTD_PULSE;
+}else
+if (strcmp(temp,"energy_space_map")==0)
+{
+	return ENERGY_SPACE_MAP;
+}else
+if (strcmp(temp,"single_mesh_point")==0)
+{
+	return SINGLE_MESH_POINT;
 }
 
 //printf("I don't understand: %s\n",in);
 //getchar();
-ewe(sim,"%s %s\n",_("I don't understand the command"),in);
+ewe(sim,"%s %s\n",_(">I don't understand the command"),in);
 return 0;
 }
 
@@ -848,6 +868,11 @@ void remove_dir_ittr(struct simulation *sim,char* dir_name,int depth, struct rem
 
 void remove_dir(struct simulation *sim,char* dir_name)
 {
+	if (strcmp(dir_name,"")==0)
+	{
+		return;
+	}
+
 	struct remove_dir_struct data;
 	data.delete=FALSE;
 	data.tot_files=0;

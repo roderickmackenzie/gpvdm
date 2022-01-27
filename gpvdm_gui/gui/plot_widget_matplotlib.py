@@ -28,7 +28,6 @@ from __future__ import unicode_literals
 import os
 import io
 from numpy import *
-from plot_io import plot_load_info
 
 
 #matplotlib
@@ -43,13 +42,13 @@ from matplotlib.pyplot import colorbar
 from matplotlib.colors import LogNorm
 
 from util_latex import latex
-from dat_file_math import dat_file_max_min
 from util import pygtk_to_latex_subscript
-from colors import get_color
-from colors import get_color_black
+from color_map import get_color
+from color_map import get_color_black
+from color_map import get_marker
 from util import fx_with_units
 from util import time_with_units
-from colors import get_marker
+
 from matplotlib.ticker import ScalarFormatter
 
 class plot_widget_matplotlib():
@@ -77,6 +76,16 @@ class plot_widget_matplotlib():
 			if self.data[0].x_len==1 and self.data[0].z_len==1:
 				self.plot_type="linegraph"
 			elif self.data[0].x_len>1 and self.data[0].y_len>1 and self.data[0].z_len==1:
+				if self.data[0].type=="3d":
+					self.plot_type="wireframe"
+				if self.data[0].type=="heat":
+					self.plot_type="heat"
+			elif self.data[0].x_len>1 and self.data[0].y_len==1 and self.data[0].z_len>1:
+				if self.data[0].type=="3d":
+					self.plot_type="wireframe"
+				if self.data[0].type=="heat":
+					self.plot_type="heat"
+			elif self.data[0].x_len==1 and self.data[0].y_len>1 and self.data[0].z_len>1:
 				if self.data[0].type=="3d":
 					self.plot_type="wireframe"
 				if self.data[0].type=="heat":
@@ -109,8 +118,8 @@ class plot_widget_matplotlib():
 				if self.data[i].data_min!=None:
 					self.ax[i].set_ylim([self.data[i].data_min,self.data[i].data_max])
 
-				if self.data[i].rgb()!=None:
-					col="#"+self.data[i].rgb()
+				if self.data[i].rgb_to_hex()!=None:
+					col="#"+self.data[i].rgb_to_hex()
 				else:
 					col=get_color(i)
 				cur_plot, = self.ax[i].plot(self.data[i].y_scale,self.data[i].data[0][0], linewidth=3 ,alpha=1.0,color=col,marker=get_marker(i))
@@ -140,16 +149,21 @@ class plot_widget_matplotlib():
 				#print(self.data[i].labels)
 		elif self.plot_type=="wireframe":
 
-			self.ax[0].set_xlabel('\n'+self.data[0].x_label+'\n ('+self.data[0].x_units+")")
-			self.ax[0].set_ylabel('\n'+self.data[0].y_label+'\n ('+self.data[0].y_units+")")
-			self.ax[0].set_zlabel('\n'+self.data[0].data_label+'\n ('+self.data[0].data_units+")")
+			if self.data[0].cols=="xzd":
+				self.ax[0].set_xlabel('\n'+self.data[0].x_label+'\n ('+self.data[0].x_units+")")
+				self.ax[0].set_ylabel('\n'+self.data[0].z_label+'\n ('+self.data[0].z_units+")")
+				self.ax[0].set_zlabel('\n'+self.data[0].data_label+'\n ('+self.data[0].data_units+")")
+			else:
+				self.ax[0].set_xlabel('\n'+self.data[0].x_label+'\n ('+self.data[0].x_units+")")
+				self.ax[0].set_ylabel('\n'+self.data[0].y_label+'\n ('+self.data[0].y_units+")")
+				self.ax[0].set_zlabel('\n'+self.data[0].data_label+'\n ('+self.data[0].data_units+")")
 
 			self.log_3d_workaround()
 
 			if self.force_data_max==False:
-				my_max,my_min=dat_file_max_min(self.data[0])
+				my_max,my_min=self.data[0].max_min()
 				for i in range(0,len(self.data)):
-					my_max,my_min=dat_file_max_min(self.data[i],cur_min=my_min,cur_max=my_max)
+					my_max,my_min=self.data[i].max_min(cur_min=my_min,cur_max=my_max)
 			else:
 				my_max=self.force_data_max
 				my_min=self.force_data_min
@@ -167,8 +181,16 @@ class plot_widget_matplotlib():
 				#if self.data[i].key_text!="":
 				key="$"+latex().numbers_to_latex(str(self.data[i].key_text))+ " "+pygtk_to_latex_subscript(self.data[0].key_units) +"$"
 
-				X, Y = meshgrid( self.data[i].y_scale,self.data[i].x_scale)
-				Z = self.data[i].data[0]
+				if self.data[i].cols=="xzd":
+					X, Y = meshgrid( self.data[i].z_scale,self.data[i].x_scale)
+					Z = self.data[i].data[0]
+				elif self.data[i].cols=="yzd":
+					X, Y = meshgrid( self.data[i].z_scale,self.data[i].y_scale)
+					Z = self.data[i].data[0]
+				else:
+					X, Y = meshgrid( self.data[i].y_scale,self.data[i].x_scale)
+					Z = self.data[i].data[0]
+
 
 				# Plot the surface
 				col=get_color(i)
@@ -180,7 +202,7 @@ class plot_widget_matplotlib():
 				elif self.data[i].plot_type=="contour":
 					im=self.ax[0].contourf( Y,X, array(Z),color=col)
 				elif self.data[i].plot_type=="heat":
-					my_max,my_min=dat_file_max_min(self.data[0])
+					my_max,my_min=self.data[0].dat_file()
 					im=self.ax[0].plot_surface(Y,X, array(Z), linewidth=0, vmin=my_min, vmax=my_max,cmap="hot", antialiased=False)
 
 				self.ax[0].legend()
@@ -190,7 +212,7 @@ class plot_widget_matplotlib():
 		elif self.plot_type=="heat":
 			self.ax[0].set_xlabel(self.data[0].y_label+" ("+self.data[0].y_units+")")
 			self.ax[0].set_ylabel(self.data[0].x_label+" ("+self.data[0].x_units+")")
-			my_max,my_min=dat_file_max_min(self.data[0])
+			my_max,my_min=self.data[0].max_min()
 			for i in range(0,len(self.data)):
 				if self.data[i].logdata==True:
 					if my_min==0:
@@ -207,10 +229,11 @@ class plot_widget_matplotlib():
 			i=0
 			y_scale=self.data[i].y_scale
 			x_scale=self.data[i].x_scale
+
 			X, Y = meshgrid( y_scale,x_scale)		#self.data[i].y_scale,self.data[i].x_scale
 			Z = self.data[i].data[0]
 			col=get_color(i)
-			my_max,my_min=dat_file_max_min(self.data[0])
+			my_max,my_min=self.data[0].max_min()
 		elif self.plot_type=="rgb":
 			self.ax[0].set_xlabel(self.data[0].y_label+" ("+str(self.data[0].y_units)+")")
 			self.ax[0].set_ylabel(self.data[0].data_label+" ("+self.data[0].data_units+")")
@@ -274,8 +297,12 @@ class plot_widget_matplotlib():
 		self.fig.canvas.draw()
 
 	def matplotlib_norm_data(self):
+
 		if len(self.data)>0:
 			if self.data[0].type=="rgb" or self.data[0].type=="quiver" or self.data[0].type=="poly":
+				return
+
+			if self.data[0].data==None:
 				return
 
 			if self.zero_frame_enable==True:
@@ -310,7 +337,7 @@ class plot_widget_matplotlib():
 
 
 			if self.data[0].add_min==True:
-				my_max,my_min=dat_file_max_min(self.data[0])
+				my_max,my_min=self.data[0].max_min()
 				for i in range(0,len(self.data)):
 					dat_file_sub_float(self.data[i],my_min)
 

@@ -36,18 +36,36 @@ from triangle import triangle
 from quiver import quiver
 from util_text import is_number
 from triangle import vec
+from util_zip import zip_get_raw_data
+import json
+import numpy as np
+from array import array
+from dat_file_math import dat_file_math
+from dat_file_trap_map import dat_file_trap_map
 
 #search first 40 lines for dims
 def dat_file_load_info(output,lines):
-	#print(lines[0])
-	if len(lines)>1:
+	found_x=False
+	found_y=False
+	found_z=False
 
-		if lines[0]=="#gpvdm":
+	if len(lines)>0:
+		if lines[0].startswith("#gpvdm_csv"):
+			line=lines[0][10:]
+
+			j_data=json.loads(line)
+			for j in j_data.keys():
+				setattr(output, j, j_data[j])
+				if j=="rgb":
+					output.r=float(int(j_data[j][0:2], 16)/255)
+					output.g=float(int(j_data[j][2:4], 16)/255)
+					output.b=float(int(j_data[j][4:6], 16)/255)
+
+		elif lines[0]=="#gpvdm":
 			max_lines=len(lines)
 			if max_lines>40:
 				max_lines=40
 
-			found_xyz=False
 			for i in range(0, max_lines):
 				if (len(lines[i])>0):
 					if (lines[i][0]!="#"):
@@ -112,20 +130,20 @@ def dat_file_load_info(output,lines):
 							output.data_min=float(command[1])
 						if (command[0]=="#x"):
 							output.x_len=int(command[1])
-							found_xyz=True
+							found_x=True
 						if (command[0]=="#y"):
 							output.y_len=int(command[1])
-							found_xyz=True
+							found_y=True
 						if (command[0]=="#z"):
 							output.z_len=int(command[1])
-							found_xyz=True
+							found_z=True
 						if (command[0]=="#rgb"):
 							output.decode_rgb("#rgb "+command[1])
 
-			if found_xyz==True and output.x_len != -1 and output.y_len != -1 and output.z_len != -1:
-				return True
-			else:
-				return False
+		if found_x == True and found_y == True and found_z == True:
+			return True
+		else:
+			return False
 				
 	return False
 
@@ -202,127 +220,9 @@ def decode_line(line,known_col_sep=None):
 		
 	return s,label
 
-			
 
-def read_data_2d(x_scale,y_scale,z,file_name):
-	if file_name==None:
-		return False
-	
-	found,lines=zip_get_data_file(file_name)
-	if found==True:
-		x_max=0
-		y_max=0
-		y_pos=0
-		z_store=[]
-		for i in range(0, len(lines)):
-			if len(lines[i])>0:
-				if lines[i][0]!="#" and lines[i]!="\n":
-					temp=lines[i]
-					temp=re.sub(' +',' ',temp)
-					temp=re.sub('\t',' ',temp)
-					temp=temp.rstrip()
-					sline=temp.split(" ")
+class dat_file(dat_file_math,dat_file_trap_map):
 
-					if len(sline)==3:
-						if x_max==0:
-							y_scale.append(float(lines[i].split(" ")[1]))
-						if y_pos==0:
-							x_scale.append(float(lines[i].split(" ")[0]))
-
-						z_store.append(float(lines[i].split(" ")[2]))
-					y_pos=y_pos+1
-
-					if x_max==0:
-						y_max=y_max+1
-
-			if lines[i]=="":
-				x_max=x_max+1
-				y_pos=0
-
-		if  lines[len(lines)-1]!="\n":
-			x_max=x_max+1
-
-		x_max=len(x_scale)
-		y_max=len(y_scale)
-
-		pos=0
-		for x in range(0, x_max):
-			z.append([])
-			for y in range(0, y_max):
-				z[x].append(z_store[pos])
-				pos=pos+1
-		return True
-	else:
-		return False
-
-def dat_file_print(dat):
-	print("valid_data",dat.valid_data)
-	print("grid",dat.grid)
-	print("show_pointer",dat.show_pointer)
-	print("logy",dat.logy)
-	print("logx",dat.logx)
-	print("logz",dat.logz)
-	print("logdata",dat.logdata)
-	print("label_data",dat.label_data)
-	print("invert_y",dat.invert_y)
-	print("normalize",dat.normalize)
-	print("norm_to_peak_of_all_data",dat.norm_to_peak_of_all_data)
-	print("subtract_first_point",dat.subtract_first_point)
-	print("add_min",dat.add_min)
-	print("legend_pos",dat.legend_pos)
-	print("ymax",dat.ymax)
-	print("ymin",dat.ymin)
-	print("x_label",dat.x_label)
-	print("y_label",dat.y_label)
-	print("z_label",dat.z_label)
-	print("data_label",dat.data_label)
-	print("x_units",dat.x_units)
-	print("y_units",dat.y_units)
-	print("z_units",dat.z_units)
-	print("rgb",dat.rgb)
-	print("data_units",dat.data_units)
-	print("x_mul",dat.x_mul)
-	print("y_mul",dat.y_mul)
-	print("z_mul",dat.z_mul)
-	print("data_mul",dat.data_mul)
-	print("key_units",dat.key_units)
-	print("file0",dat.file0)
-	print("tag0",dat.tag0)
-	print("file1",dat.file1)
-	print("tag1",dat.tag1)
-	print("file2",dat.file2)
-	print("tag2",dat.tag2)
-	print("example_file0",dat.example_file0)
-	print("example_file1",dat.example_file1)
-	print("example_file2",dat.example_file2)
-	print("time",dat.time)
-	print("Vexternal",dat.Vexternal)
-	print("file_name",dat.file_name)
-	print("other_file",dat.other_file)
-	print("title",dat.title)
-	print("type",dat.type)
-	print("section_one",dat.section_one)
-	print("section_two",dat.section_two)
-
-	print("x_start",dat.x_start)
-	print("x_stop",dat.x_stop)
-	print("x_points",dat.x_points)
-	print("y_start",dat.y_start)
-	print("y_stop",dat.y_stop)
-	print("y_points",dat.y_points)
-	print("x_len",dat.x_len)
-	print("y_len",dat.y_len)
-	print("z_len",dat.z_len)
-	
-	print("x_scale",dat.x_scale)
-	print("y_scale",dat.y_scale)
-	print("z_scale",dat.z_scale)
-	print("data",dat.data)
-	print("labels",dat.labels)
-
-
-
-class dat_file():
 	def __init__(self):
 		self.valid_data=False
 		self.grid=False
@@ -357,6 +257,7 @@ class dat_file():
 		self.r=None
 		self.g=None
 		self.b=None
+		self.srh_bands=None
 
 
 		self.x_mul=1.0
@@ -409,6 +310,8 @@ class dat_file():
 		self.file_age=0
 		self.new_read=True
 		self.file_name=None
+		self.cols=""
+		self.bin=False
 
 	def import_data(self,file_name,x_col=0,y_col=1,skip_lines=0,known_col_sep=None):
 		"""This is an import filter for xy data"""
@@ -475,127 +378,11 @@ class dat_file():
 		#print("3")
 		return True
 
-	def rgb(self):
+	def rgb_to_hex(self):
 		if self.r==None:
 			return None
 
 		return format(int(self.r*255), '02x')+format(int(self.g*255), '02x')+format(int(self.b*255), '02x')
-
-	def pow(self,val):
-		a=dat_file()
-		a.copy(self)
-
-		for z in range(0,len(self.z_scale)):
-			for x in range(0,len(self.x_scale)):
-				for y in range(0,len(self.y_scale)):
-					a.data[z][x][y]=pow(self.data[z][x][y],val)
-		return a		
-
-	def intergrate(self):
-		sum=0.0
-		for y in range(0,len(self.y_scale)-1):
-			dy=self.y_scale[y+1]-self.y_scale[y]
-			sum=sum+self.data[0][0][y]*dy
-
-		return sum
-
-	def set_neg_to_zero(self):
-		for y in range(0,len(self.y_scale)):
-			if self.data[0][0][y]<0.0:
-				self.data[0][0][y]=0.0
-
-	def set_neg_to_last(self):
-		last=0.0
-		for y in range(0,len(self.y_scale)):
-			if self.data[0][0][y]<0.0:
-				self.data[0][0][y]=last
-			else:
-				last=self.data[0][0][y]
-
-	def __sub__(self,val):
-		a=dat_file()
-		a.copy(self)
-
-		for z in range(0,len(self.z_scale)):
-			for x in range(0,len(self.x_scale)):
-				for y in range(0,len(self.y_scale)):
-					a.data[z][x][y]=self.data[z][x][y]-val
-		return a
-
-	def __add__(self,val):
-		a=dat_file()
-		a.copy(self)
-		if type(val)==float:
-			for z in range(0,len(self.z_scale)):
-				for x in range(0,len(self.x_scale)):
-					for y in range(0,len(self.y_scale)):
-						a.data[z][x][y]=self.data[z][x][y]+val
-		else:
-			for z in range(0,len(self.z_scale)):
-				for x in range(0,len(self.x_scale)):
-					for y in range(0,len(self.y_scale)):
-						a.data[z][x][y]=self.data[z][x][y]+val.data[z][x][y]
-
-		return a
-
-	def __truediv__(self,in_data):
-		a=dat_file()
-		a.copy(self)
-
-		for z in range(0,len(self.z_scale)):
-			for x in range(0,len(self.x_scale)):
-				for y in range(0,len(self.y_scale)):
-					a.data[z][x][y]=self.data[z][x][y]/in_data.data[z][x][y]
-		return a
-
-	def __rsub__(self,val):
-		a=dat_file()
-		a.copy(self)
-
-		for z in range(0,len(self.z_scale)):
-			for x in range(0,len(self.x_scale)):
-				for y in range(0,len(self.y_scale)):
-					a.data[z][x][y]=val-self.data[z][x][y]
-		return a
-
-	def set_float(self,val):
-		for z in range(0,len(self.z_scale)):
-			for x in range(0,len(self.x_scale)):
-				for y in range(0,len(self.y_scale)):
-					self.data[z][x][y]=val
-
-	def chop_y(self,y0,y1):
-		if y0==0 and y1==0:
-			return
-
-		self.y_scale=self.y_scale[y0:y1]
-		self.y_len=len(self.y_scale)
-
-		for z in range(0,len(self.z_scale)):
-			for x in range(0,len(self.x_scale)):
-				self.data[z][x]=self.data[z][x][y0:y1]
-				#for y in range(0,len(self.y_scale)):
-				#	self.data[z][x][y]=val
-
-	def __mul__(self,in_data):
-		a=dat_file()
-		a.copy(self)
-
-		if type(in_data)==float:
-			for z in range(0,len(self.z_scale)):
-				for x in range(0,len(self.x_scale)):
-					for y in range(0,len(self.y_scale)):
-						a.data[z][x][y]=in_data*self.data[z][x][y]
-		else:
-			for z in range(0,len(self.z_scale)):
-				for x in range(0,len(self.x_scale)):
-					for y in range(0,len(self.y_scale)):
-						a.data[z][x][y]=in_data.data[z][x][y]*self.data[z][x][y]
-
-		return a
-
-	def __rmul__(self, in_data):
-		return self.__mul__(in_data)
 
 	def copy(self,in_data):
 		self.x_len=in_data.x_len
@@ -759,6 +546,102 @@ class dat_file():
 
 		return False
 
+	def load_only_info(self,file_name):
+		self.file_name=file_name
+		data=zip_get_raw_data(file_name,bytes=2000)
+		if data==False:
+			return False
+		self.header_end=len(data)
+		for i in range(0,len(data)-1):
+			if chr(data[i])=="}":
+				if chr(data[i+1])=="*":
+					self.header_end=i+1
+					break
+
+		lines=data[:self.header_end].decode('utf-8')
+		lines=[str.strip() for str in lines.splitlines()]
+		dat_file_load_info(self,lines)
+
+		return True
+
+	def load_xyzd_csv(self):
+		y=0
+		x=0
+		z=0
+		pos=0
+
+		if self.bin==False:
+			data = np.loadtxt(self.file_name)
+		else:
+			data=zip_get_raw_data(self.file_name)
+			float_array = array('f',data[self.header_end+1:])
+			data=float_array.tolist()
+
+		self.init_mem()
+		if self.cols=="zxyEd":
+			self.load_trap_map(data)
+			return
+
+		if self.bin==True:
+			for z in range(0,self.z_len):
+				self.z_scale[z]=data[pos]
+				pos=pos+1
+
+			for x in range(0,self.x_len):
+				self.x_scale[x]=data[pos]
+				pos=pos+1
+
+			for y in range(0,self.y_len):
+				self.y_scale[y]=data[pos]
+				pos=pos+1
+
+			for z in range(0,self.z_len):
+				for x in range(0,self.x_len):
+					for y in range(0,self.y_len):
+						self.data[z][x][y]=data[pos]
+						pos=pos+1
+			return
+
+		if self.cols=="yd":
+			for y in range(0,self.y_len):
+					line=data[pos]
+					self.data[z][x][y]=float(line[1])
+					self.y_scale[y]=float(line[0])
+					pos=pos+1
+
+		elif self.cols=="xzd":
+			self.y_scale[0]=self.y_offset
+			for z in range(0,self.z_len):
+				for x in range(0,self.x_len):
+					line=data[pos]
+					self.data[z][x][y]=float(line[2])
+					if z==0:
+						self.x_scale[x]=float(line[0])
+					pos=pos+1
+				self.z_scale[z]=float(line[1])
+
+		elif self.cols=="yzd":
+			self.x_scale[0]=self.x_offset
+			for z in range(0,self.z_len):
+				for y in range(0,self.y_len):
+					line=data[pos]
+					self.data[z][x][y]=float(line[2])
+					if z==0:
+						self.y_scale[y]=float(line[0])
+					pos=pos+1
+				self.z_scale[z]=float(line[1])
+
+		elif self.cols=="xyd":
+			self.z_scale[0]=self.z_offset
+			for x in range(0,self.x_len):
+				for y in range(0,self.y_len):
+					line=data[pos]
+					self.data[z][x][y]=float(line[2])
+					if x==0:
+						self.y_scale[y]=float(line[1])
+					pos=pos+1
+				self.x_scale[x]=float(line[0])
+
 	def load(self,file_name,guess=True):
 		self.file_name=file_name
 
@@ -769,6 +652,11 @@ class dat_file():
 		if self.have_i_loaded_this(file_name)==True:
 			return True
 
+		self.load_only_info(file_name)
+		#if it has cols in it then it's a new data format csv file
+		if len(self.cols)>0:
+			self.load_xyzd_csv()
+			return
 		found,lines=zip_get_data_file(file_name)
 		if found==False:
 			return False
@@ -779,8 +667,8 @@ class dat_file():
 		self.z_scale=[]
 		self.data=[]
 
+
 		if dat_file_load_info(self,lines)==False:
-			#print("no dims")
 			if guess==True:
 				self.x_len, self.y_len, self.z_len = guess_dim(lines)
 			else:
@@ -805,9 +693,11 @@ class dat_file():
 		self.init_mem()
 
 		self.labels=[]
+		if len(self.z_scale)==1:
+			self.z_scale[0]=self.z_offset
 
 		data_started=False
-
+		#print(self.file_name)
 		x=0
 		y=0
 		z=0
@@ -819,7 +709,7 @@ class dat_file():
 		for line in lines:
 			s,label=decode_line(line)
 			l=len(s)
-
+			#print(line,s,self.z_len,self.x_len,self.y_len)
 			if l>0:
 								
 
@@ -911,8 +801,6 @@ class dat_file():
 		if data_started==False:
 			return False
 
-		#print(self.data)
-
 		return True
 
 	def save_as_csv(self,file_name):
@@ -1003,8 +891,8 @@ class dat_file():
 		if self.z_units!="":
 			lines.append("#y_units "+str(self.z_units))
 
-		if self.rgb()!=None:
-			lines.append("#rgb "+str(self.rgb()))
+		if self.rgb_to_hex()!=None:
+			lines.append("#rgb "+str(self.rgb_to_hex()))
 
 		if self.data_units!="":
 			lines.append("#data_units "+str(self.data_units))

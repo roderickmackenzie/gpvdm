@@ -34,6 +34,7 @@ import glob
 import hashlib
 from update_file_info import update_file_info
 from libcrypt import libcrypt_decrypt
+from safe_delete import gpvdm_delete_file
 
 ## Copy a file from one archive to another.
 def archive_copy_file(dest_archive,dest_file_name,src_archive,file_name,dest="archive"):
@@ -331,7 +332,7 @@ def archive_add_dir(archive_path,dir_name,base_dir, remove_src_dir=False,zf=None
 		if base_dir=="" or base_dir==dir_name or dir_name=="/" or dir_name=="/home/rod" or dir_name=="/home/rod/" or dir_name=="c:\\":	#paranoia
 			return
 
-		shutil.rmtree(dir_name)
+		gpvdm_delete_file(dir_name,allow_dir_removal=True)
 
 def read_lines_from_file(file_name):
 	if os.path.isfile(file_name)==True:

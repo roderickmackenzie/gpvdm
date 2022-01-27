@@ -46,6 +46,8 @@
 #include <shape.h>
 #include <heat.h>
 #include <heat_fun.h>
+#include <exciton.h>
+#include <exciton_fun.h>
 #include <gpvdm_const.h>
 #include <lib_fxdomain.h>
 #include <fxdomain_fun.h>
@@ -185,6 +187,7 @@ void device_cpy(struct simulation *sim,struct device *out,struct device *in)
 
 	//Recombination
 		cpy_zxy_long_double(dim, &(out->Rfree), &(in->Rfree));
+		cpy_zxy_long_double(dim, &(out->Rauger), &(in->Rauger));
 
 		cpy_zxy_long_double(dim, &(out->Rn), &(in->Rn));
 		cpy_zxy_long_double(dim, &(out->Rp), &(in->Rp));
@@ -204,6 +207,11 @@ void device_cpy(struct simulation *sim,struct device *out,struct device *in)
 		cpy_zxy_long_double(dim, &(out->interface_B), &(in->interface_B));
 		cpy_zxy_long_double(dim, &(out->interface_Bt), &(in->interface_Bt));
 		cpy_zxy_long_double(dim, &(out->interface_R), &(in->interface_R));
+		//Tunnel
+		out->interfaces_tunnels_e=in->interfaces_tunnels_e;
+		out->interfaces_tunnels_h=in->interfaces_tunnels_h;
+		cpy_zxy_long_double(dim, &(out->interface_Ge), &(in->interface_Ge));
+		cpy_zxy_long_double(dim, &(out->interface_Gh), &(in->interface_Gh));
 
 	//Rates
 		cpy_zxy_long_double(dim, &(out->nrelax), &(in->nrelax));
@@ -223,6 +231,18 @@ void device_cpy(struct simulation *sim,struct device *out,struct device *in)
 		cpy_zxy_long_double(dim, &(out->mup_y), &(in->mup_y));
 
 		cpy_zxy_long_double(dim, &(out->muion), &(in->muion));
+
+	//Auger
+		cpy_zxy_long_double(dim, &(out->Cn), &(in->Cn));
+		cpy_zxy_long_double(dim, &(out->Cp), &(in->Cp));
+		out->auger_enabled=in->auger_enabled;
+
+	//SS SRH
+		out->ss_srh_enabled=in->ss_srh_enabled;
+		cpy_zxy_long_double(dim, &(out->n1), &(in->n1));
+		cpy_zxy_long_double(dim, &(out->p1), &(in->p1));
+		cpy_zxy_long_double(dim, &(out->tau_n), &(in->tau_n));
+		cpy_zxy_long_double(dim, &(out->tau_p), &(in->tau_p));
 
 	//Electrostatics
 		cpy_zxy_long_double(dim, &(out->epsilonr), &(in->epsilonr));
@@ -289,15 +309,6 @@ void device_cpy(struct simulation *sim,struct device *out,struct device *in)
 
 		dim_alloc_zx_epitaxy(&(out->dim_epitaxy),in);
 		cpy_zx_epitaxy_int(&(in->dim_epitaxy), &(out->mask_epitaxy),&(in->mask_epitaxy));
-
-	//Exciton
-		cpy_zxy_long_double(dim, &(out->ex), &(in->ex));
-		cpy_zxy_long_double(dim, &(out->Dex), &(in->Dex));
-		cpy_zxy_long_double(dim, &(out->Hex), &(in->Hex));
-
-		cpy_zxy_long_double(dim, &(out->kf), &(in->kf));
-		cpy_zxy_long_double(dim, &(out->kd), &(in->kd));
-		cpy_zxy_long_double(dim, &(out->kr), &(in->kr));
 
 	//Trap control
 		out->ntrapnewton=in->ntrapnewton;
@@ -419,13 +430,6 @@ void device_cpy(struct simulation *sim,struct device *out,struct device *in)
 		out->contact_charge= in->contact_charge;
 
 	//Dump contorl
-		out->dump_energy_slice_xpos=in->dump_energy_slice_xpos;
-		out->dump_energy_slice_ypos=in->dump_energy_slice_ypos;
-		out->dump_energy_slice_zpos=in->dump_energy_slice_zpos;
-
-		out->dump_1d_slice_xpos=in->dump_1d_slice_xpos;
-		out->dump_1d_slice_zpos=in->dump_1d_slice_zpos;
-
 		out->dumpitdos=in->dumpitdos;
 
 		out->dump_dynamic_pl_energy=in->dump_dynamic_pl_energy;
@@ -498,6 +502,11 @@ void device_cpy(struct simulation *sim,struct device *out,struct device *in)
 	//thermal
 		#ifdef libheat_enabled
 			heat_cpy(sim,&(out->thermal), &(in->thermal));
+		#endif
+
+	//exciton
+		#ifdef libexciton_enabled
+			exciton_cpy(sim,&(out->ex), &(in->ex));
 		#endif
 
 	//Preovskite

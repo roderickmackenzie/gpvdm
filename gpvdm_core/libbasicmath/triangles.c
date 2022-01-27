@@ -2,28 +2,28 @@
 // General-purpose Photovoltaic Device Model gpvdm.com - a drift diffusion
 // base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solarcells.
 // The model can simulate OLEDs, Perovskite cells, and OFETs.
-// 
+//
 // Copyright 2008-2022 Roderick C. I. MacKenzie https://www.gpvdm.com
 // r.c.i.mackenzie at googlemail.com
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+// the rights to use, copy, modify, merge, publish, distribute, sublicense,
 // and/or sell copies of the Software, and to permit persons to whom the
 // Software is furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included
 // in all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 // OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// 
+//
 
 #include <stdio.h>
 #include <ray.h>
@@ -110,7 +110,7 @@ do
 					point++;
 				}
 			}
-			
+
 		}
 		//printf("%s %d %d\n",line,point,triangle_line);
 		if ((triangle_line==FALSE)&&(last_triangle_line==TRUE))
@@ -171,10 +171,10 @@ int i;
 }
 
 void triangles_save(struct simulation *sim,char *file_name,struct triangles *in)
-{	
+{
 	struct triangle *tri;
 	struct dat_file buf;
-	buffer_init(&buf);
+	dat_file_init(&buf);
 
 	buffer_malloc(&buf);
 	buf.y_mul=1.0;
@@ -203,7 +203,7 @@ void triangles_save(struct simulation *sim,char *file_name,struct triangles *in)
 }
 
 void triangles_to_dat_file(struct dat_file *buf,struct triangles *in)
-{	
+{
 	int i;
 	char temp[1000];
 	struct triangle *tri;
@@ -419,7 +419,7 @@ void triangles_replace_vec(	struct triangles *in,struct vec *find,struct vec *re
 		}
 	}
 
-	
+
 }
 
 struct triangle *triangles_find_by_zx(struct triangles *in,double z0,double x0,double z1,double x1,double z2,double x2)
@@ -637,7 +637,7 @@ void triangles_cal_angles(struct vectors* out,struct triangles* in)
 			//getchar();
 		}
 	}
-	
+
 }
 void triangles_vectors_to_triangles(struct triangles *out,struct vectors* in, int start)
 {
@@ -683,7 +683,7 @@ void triangles_delete_zero_area_triangles(struct triangles *in)
 	for (i=0;i<in->len;i++)
 	{
 		tri=&(in->data[i]);
-	
+
 		A=triangle_cal_area_zx(tri);
 		if (A==0.0)
 		{
@@ -761,7 +761,7 @@ void triangles_dump(struct triangles *in)
 	struct triangle *tri;
 	for (i=0;i<in->len;i++)
 	{
-		tri=&(in->data[i]);	
+		tri=&(in->data[i]);
 		printf("(%lf %lf %lf),(%lf %lf %lf),(%lf %lf %lf) %d\n", tri->xy0.z,tri->xy0.x,tri->xy0.y,
 																tri->xy1.z,tri->xy1.x,tri->xy1.y,
 																tri->xy2.z,tri->xy2.x,tri->xy2.y,
@@ -782,7 +782,7 @@ void triangles_dump(struct triangles *in)
 		y_few=triangles_interpolate(few,&(tri_many->cog));
 		sum+=fabs(y_many-y_few);
 	}
-	
+
 	return sum;
 }*/
 
@@ -801,7 +801,7 @@ double triangles_get_delta(struct triangles *many,struct triangles *few)
 		y_few=triangles_interpolate(few,&(tri_many->cog));
 		sum+=fabs(y_many-y_few);
 	}
-	
+
 	return sum;
 }
 

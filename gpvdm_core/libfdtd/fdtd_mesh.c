@@ -1,29 +1,29 @@
-// 
+//
 // General-purpose Photovoltaic Device Model gpvdm.com - a drift diffusion
-// base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solarcells.
-// The model can simulate OLEDs, Perovskite cells, and OFETs.
-// 
+// base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solardevs.
+// The model can simulate OLEDs, Perovskite devs, and OFETs.
+//
 // Copyright 2008-2022 Roderick C. I. MacKenzie https://www.gpvdm.com
 // r.c.i.mackenzie at googlemail.com
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+// the rights to use, copy, modify, merge, publish, distribute, sublicense,
 // and/or sell copies of the Software, and to permit persons to whom the
 // Software is furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included
 // in all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 // OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// 
+//
 
 /** @file fdtd_mesh.c
 	@brief Setup the FDTD mesh.
@@ -46,60 +46,108 @@
 #include <fdtd.h>
 #include <epitaxy_struct.h>
 #include <epitaxy.h>
-
+#include <world.h>
 #include "vec.h"
+#include <ray_fun.h>
 
-
-void fdtd_mesh(struct simulation *sim,struct fdtd_data *data,struct device *cell)
+int fdtd_world_x_to_mesh(struct fdtd_data *data,float x)
 {
-	float device_ysize=(float)epitaxy_get_optical_length(&cell->my_epitaxy);
-	data->ysize=device_ysize+400e-9;
+	struct dimensions *dim=&(data->dim);
+	int pos=(x-data->world_min.x)/dim->dx;
+	return (int)pos;
+}
 
-	data->xsize=data->xsize*device_ysize;
+int fdtd_world_y_to_mesh(struct fdtd_data *data,float y)
+{
+	struct dimensions *dim=&(data->dim);
+	int pos=(y-data->world_min.y)/dim->dy;
+	return (int)pos;
+}
 
-	float device_start=(float)epitaxy_get_device_start(&(cell->my_epitaxy));
-	float device_stop=(float)epitaxy_get_device_stop(&(cell->my_epitaxy));
+int fdtd_world_z_to_mesh(struct fdtd_data *data,float z)
+{
+	struct dimensions *dim=&(data->dim);
+	int pos=(z-data->world_min.z)/dim->dz;
+	return (int)pos;
+}
 
-	float start_y=device_start+(device_stop-device_start)/2.0;
-
-	data->excitation_mesh_point_x=data->xlen/2;
-	data->excitation_mesh_point_y=data->ylen*(start_y/data->ysize);
-
-
-
-	data->dz=data->zsize/((float)data->zlen);
-	data->dx=data->xsize/((float)data->xlen);
-	data->dy=data->ysize/((float)data->ylen);
-
-
-	printf ("dy=%lf nm, dz=%lf nm dt=%le %le\n",data->dy*1e9,data->dz*1e9,data->dt,data->time);
-
+void fdtd_mesh(struct simulation *sim,struct fdtd_data *data,struct device *dev)
+{
 	int z=0;
 	int x=0;
 	int y=0;
+	float Lx=0.0;
+	float Ly=0.0;
+	float Lz=0.0;
+	float zpos=0.0;
+	float xpos=0.0;
+	float ypos=0.0;
+	struct dimensions *dim=&(data->dim);
+	struct vec v;
+	struct vec max;
+	struct object *obj=NULL;
 
-	float zpos=data->dz/2.0;
-	float xpos=data->dx/2.0;
-	float ypos=data->dy/2.0;
+	world_size(sim,&(data->world_min),&max,&(dev->w), dev);
+	vec_print(&(data->world_min));
+	vec_print(&max);
 
-	for (z=0;z<data->zlen;z++)
+	Lx=max.x-data->world_min.x;
+	Ly=max.y-data->world_min.y;
+	Lz=max.z-data->world_min.z;
+
+
+	data->excitation_mesh_point_x=Lx/2.0;
+	data->excitation_mesh_point_y=Ly/2.0;
+
+	dim->dz=Lz/((float)dim->zlen);
+	dim->dx=Lx/((float)dim->xlen);
+	dim->dy=Ly/((float)dim->ylen);
+
+	printf_log(sim,"dx=%lf nm, dy=%lf nm, dz=%lf nm dt=%le %le\n",dim->dx*1e9,dim->dy*1e9,dim->dz*1e9,data->dt);
+
+
+	// The /4 is to make sure we don't go outside of the box at the end.
+	zpos=data->world_min.z+dim->dz/40.0;
+	xpos=data->world_min.x+dim->dx/40.0;
+	ypos=data->world_min.y+dim->dy/40.0;
+
+	for (z=0;z<dim->zlen;z++)
 	{
-		data->z_mesh[z]=zpos;
-		zpos+=data->dz;
+		zpos+=dim->dz/2.0;
+		dim->z[z]=zpos;
+		zpos+=dim->dz/2.0;
 	}
 
-	for (x=0;x<data->xlen;x++)
+	for (x=0;x<dim->xlen;x++)
 	{
-		data->x_mesh[x]=xpos;
-		xpos+=data->dx;
+		xpos+=dim->dx/2.0;
+		dim->x[x]=xpos;
+		xpos+=dim->dx/2.0;
 	}
 
-	for (y=0;y<data->ylen;y++)
+	for (y=0;y<dim->ylen;y++)
 	{
-		data->y_mesh[y]=ypos;
-		data->layer[y]=epitaxy_get_layer(&cell->my_epitaxy,ypos);
-		ypos+=data->dy;
+		ypos+=dim->dy/2.0;
+		dim->y[y]=ypos;
+		ypos+=dim->dy/2.0;
 	}
 
 
+
+
+	for (z=0;z<dim->zlen;z++)
+	{
+		for (x=0;x<dim->xlen;x++)
+		{
+			for (y=0;y<dim->ylen;y++)
+			{
+				v.z=dim->z[z];
+				v.x=dim->x[x];
+				v.y=dim->y[y];
+				//printf("%le %le %le\n",v.z,v.x,v.y);
+				obj=ray_obj_search_xyz(sim,dev,&v);
+				data->obj[z][x][y]=obj;
+			}
+		}
+	}
 }

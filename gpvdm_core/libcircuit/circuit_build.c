@@ -86,8 +86,8 @@ void circuit_build_nodes(struct simulation * sim,struct circuit *cir,struct devi
 							node=circuit_add_node(sim,cir,x,y,z,CIR_UNKNOWN);
 							if (node!=NULL)
 							{
-								node->z_pos=dim->zmesh[z];
-								node->x_pos=dim->xmesh[x];
+								node->z_pos=dim->z[z];
+								node->x_pos=dim->x[x];
 								node->y_pos=y_pos;
 								y++;
 							}
@@ -98,8 +98,8 @@ void circuit_build_nodes(struct simulation * sim,struct circuit *cir,struct devi
 							node=circuit_add_node(sim,cir,x,y,z,CIR_UNKNOWN);
 							if (node!=NULL)
 							{
-								node->z_pos=dim->zmesh[z];
-								node->x_pos=dim->xmesh[x];
+								node->z_pos=dim->z[z];
+								node->x_pos=dim->x[x];
 								node->y_pos=y_pos;
 								y++;
 							}
@@ -130,8 +130,8 @@ void circuit_build_nodes(struct simulation * sim,struct circuit *cir,struct devi
 				node=circuit_add_node(sim,cir,x,y,z,CIR_UNKNOWN);
 				if (node!=NULL)
 				{
-					node->z_pos=dim->zmesh[z];
-					node->x_pos=dim->xmesh[x];
+					node->z_pos=dim->z[z];
+					node->x_pos=dim->x[x];
 					node->y_pos=y_pos;
 					y++;
 				}
@@ -236,8 +236,8 @@ void circuit_build_device(struct simulation * sim,struct circuit *cir,struct dev
 					s=obj->s;
 					com=&(s->com);
 
-					dx=dim->dx[x];
-					dz=dim->dz[z];
+					dx=dim->dX[x];
+					dz=dim->dZ[z];
 					dy=epi->layer[l].width/2.0;
 					//printf("%d %s %s\n",l,s->name,com->component);
 					//getchar();
@@ -421,7 +421,7 @@ void circuit_build_device(struct simulation * sim,struct circuit *cir,struct dev
 
 								dx=dim_dl_xyz(dim, x0, 0, z, x1, 0, z);
 								dy=epi->layer[l].width;
-								dz=dim->dz[z];
+								dz=dim->dZ[z];
 
 								local_link.id=0;
 								local_link.dl=dx;
@@ -451,7 +451,7 @@ void circuit_build_device(struct simulation * sim,struct circuit *cir,struct dev
 							if ((start!=-1)&&(stop!=-1))
 							{
 
-								dx=dim->dx[x];
+								dx=dim->dX[x];
 								dy=epi->layer[l].width;
 								dz=dim_dl_xyz(dim, x, 0, z0, x, 0, z1);
 

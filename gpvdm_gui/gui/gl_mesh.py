@@ -93,19 +93,7 @@ class gl_mesh():
 			for xi in range(0,len(x)):
 				for yi in range(0,len(y)):
 					name="mesh:"+str(xi)+":"+str(yi)+":"+str(zi)
-					if yi==self.dump_energy_slice_ypos and xi==self.dump_energy_slice_xpos and zi==self.dump_energy_slice_zpos:
-						a=gl_base_object()
-						a.id=[name]
-						a.type="ball"
-						a.x=x[xi]
-						a.y=y[yi]
-						a.z=z[zi]
-						a.dx=0.08
-						a.r=0.0
-						a.g=1.0
-						a.b=0.0
-						self.gl_objects_add(a)
-					elif xi==self.dump_1d_slice_xpos and zi==self.dump_1d_slice_zpos:
+					if xi==self.dump_1d_slice_xpos and zi==self.dump_1d_slice_zpos:
 						a=gl_base_object()
 						a.id=[name]
 						a.type="ball"
@@ -189,12 +177,6 @@ class gl_mesh():
 
 		view=menu.addMenu(_("Dump"))
 
-		if self.dump_energy_slice_xpos==-1:
-			action=view.addAction(_("Dump slice in energy space"))
-		else:
-			action=view.addAction(_("Don't dump slice in energy space"))
-
-		action.triggered.connect(self.menu_energy_slice_dump)
 
 		if self.dump_1d_slice_xpos==-1:
 			action=view.addAction(_("Dump 1D slices"))
@@ -214,36 +196,6 @@ class gl_mesh():
 
 		menu.exec_(event.globalPos())
 
-	def menu_energy_slice_dump(self):
-		obj=self.gl_objects_get_first_selected()
-		if obj!=None:
-			s=obj.id_starts_with("mesh").split(":")
-
-			x=int(s[1])
-			y=int(s[2])
-			z=int(s[3])
-
-			if self.dump_energy_slice_xpos==x and self.dump_energy_slice_ypos==y and self.dump_energy_slice_zpos==z:
-				self.dump_energy_slice_xpos=-1
-				self.dump_energy_slice_ypos=-1
-				self.dump_energy_slice_zpos=-1
-			else:
-				self.dump_energy_slice_xpos=x
-				self.dump_energy_slice_ypos=y
-				self.dump_energy_slice_zpos=z
-
-			mesh=get_mesh()
-			f=inp()
-			f.load("dump.inp")
-			f.replace("#dump_energy_slice_xpos",str(x))
-			f.replace("#dump_energy_slice_ypos",str(len(mesh.y.points)-1-y))
-			f.replace("#dump_energy_slice_zpos",str(z))
-			f.save()
-
-			self.gl_objects_remove_regex("mesh")
-			self.draw_mesh()
-
-			self.do_draw()
 
 	def menu_1d_slice_dump(self):
 		obj=self.gl_objects_get_first_selected()

@@ -233,17 +233,42 @@ gdouble dJpdxipc_rightc=0.0;
 gdouble dJpdphi_rightc=0.0;
 gdouble dJdphi_rightc=0.0;
 
+//Interface
 gdouble Bfree=0.0;
 gdouble Binterface_c=0.0;
 gdouble Binterface_l=0.0;
+//Tunnel
+long double interface_Ge_l=0.0;
+long double interface_Ge_c=0.0;
+long double interface_Gh_l=0.0;
+long double interface_Gh_c=0.0;
 
+
+//Auger
+gdouble Cn=0.0;
+gdouble Cp=0.0;
+long double Rauger=0.0;
+
+//SS SRH
+long double Rss_srh=0.0;
+long double n1=0.0;
+long double p1=0.0;
+long double tau_n=0.0;
+long double tau_p=0.0;
+
+gdouble nleq=0.0;
 gdouble nceq=0.0;
-gdouble pceq=0.0;
 gdouble nreq=0.0;
+
 gdouble pleq=0.0;
+gdouble pceq=0.0;
+gdouble preq=0.0;
+
 gdouble Rfree=0.0;
+
 gdouble Rinterface_pc=0.0;
 gdouble Rinterface_nc=0.0;
+
 
 //gdouble nc0_l=0.0;
 //gdouble dnc0_l=0.0;
@@ -411,8 +436,8 @@ struct shape *s;
 
 				phil=in->Vapplied_y0[z][x];
 
-				yl=dim->ymesh[0]-(dim->ymesh[1]-dim->ymesh[0]);
-				//printf("%Le %Le %Le\n",yl,dim->ymesh[0],dim->ymesh[1]);
+				yl=dim->y[0]-(dim->y[1]-dim->y[0]);
+				//printf("%Le %Le %Le\n",yl,dim->y[0],dim->y[1]);
 				//getchar();
 //				Tll=thermal->Ty0;
 				Tel=in->Te[z][x][i];//thermal->Ty0;
@@ -450,16 +475,19 @@ struct shape *s;
 
 				mupl=in->mup_y[z][x][0];
 				Binterface_l=in->interface_B[z][x][0];
+				interface_Ge_l=in->interface_Ge[z][x][0];
+				interface_Gh_l=in->interface_Gh[z][x][0];
+
 //				kll=in->kl[i];
 				pleq=pl;
-
+				nleq=nl;
 
 			}else
 			{
 //				Dexl=in->Dex[i-1];
 //				exl=in->ex[z][x][i-1];
 				phil=ns->phi[z][x][i-1];
-				yl=dim->ymesh[i-1];
+				yl=dim->y[i-1];
 //				Tll=in->Tl[z][x][i-1];
 				Tel=in->Te[z][x][i-1];
 				Thl=in->Th[z][x][i-1];
@@ -485,7 +513,11 @@ struct shape *s;
 
 				epl=in->epsilonr_e0[z][x][i-1];//*epsilon0;
 				Binterface_l=in->interface_B[z][x][i-1];
-				pleq=in->nfequlib[z][x][i-1];
+				interface_Ge_l=in->interface_Ge[z][x][i-1];
+				interface_Gh_l=in->interface_Gh[z][x][i-1];
+
+				pleq=in->pfequlib[z][x][i-1];
+				nleq=in->nfequlib[z][x][i-1];
 //				kll=in->kl[i-1];
 			}
 
@@ -503,7 +535,7 @@ struct shape *s;
 				phir=(in->V_y1[z][x]+in->Vapplied_y1[z][x]);
 
 
-				yr=dim->ymesh[i]+(dim->ymesh[i]-dim->ymesh[i-1]);
+				yr=dim->y[i]+(dim->y[i]-dim->y[i-1]);
 //				Tlr=thermal->Ty1;
 				//Ter=thermal->Ty1;
 				//Thr=thermal->Ty1;
@@ -545,6 +577,7 @@ struct shape *s;
 				epr=in->epsilonr_e0[z][x][i];//*epsilon0;
 //				klr=in->kl[i];
 				nreq=nr;
+				preq=pr;
 				//printf("%Le %Le\n",pr,pri);
 				//getchar();
 			}else
@@ -553,7 +586,7 @@ struct shape *s;
 //				Dexr=in->Dex[z][x][i+1];
 //				exr=in->ex[z][x][i+1];
 				phir=ns->phi[z][x][i+1];
-				yr=dim->ymesh[i+1];
+				yr=dim->y[i+1];
 //				Tlr=in->Tl[z][x][i+1];
 				Ter=in->Te[z][x][i+1];
 				Thr=in->Th[z][x][i+1];
@@ -576,6 +609,7 @@ struct shape *s;
 				epr=in->epsilonr_e0[z][x][i+1];//*epsilon0;
 
 				nreq=in->nfequlib[z][x][i+1];
+				preq=in->pfequlib[z][x][i+1];
 //				klr=in->kl[i+1];
 			}
 
@@ -586,7 +620,7 @@ struct shape *s;
 
 //			exc=in->ex[z][x][i];
 //			Dexc=in->Dex[z][x][i];
-			yc=dim->ymesh[i];
+			yc=dim->y[i];
 			dyl=yc-yl;
 			dyr=yr-yc;
 			ddh=(dyl+dyr)/2.0;
@@ -645,7 +679,22 @@ struct shape *s;
 //				dpcdphic=in->dpdphi[z][x][i];
 
 				Bfree=in->B[z][x][i];
+
+				//Auger
+				Cn=in->Cn[z][x][i];
+				Cp=in->Cp[z][x][i];
+
+				//SS SRH
+				n1=in->n1[z][x][i];
+				p1=in->p1[z][x][i];
+				tau_n=in->tau_n[z][x][i];
+				tau_p=in->tau_p[z][x][i];
+
 				Binterface_c=in->interface_B[z][x][i];
+
+				interface_Ge_c=in->interface_Ge[z][x][i];
+				interface_Gh_c=in->interface_Gh[z][x][i];
+
 				Nad=in->Nad[z][x][i];
 
 
@@ -655,8 +704,25 @@ struct shape *s;
 				Rfree=Bfree*(nc*pc-nceq*pceq);
 				in->Rfree[z][x][i]=Rfree;
 
+				//https://www.iue.tuwien.ac.at/phd/ayalew/node73.html
+				if (in->auger_enabled==TRUE)
+				{
+					Rauger=(Cn*nc+Cp*pc)*(nc*pc-nceq*pceq);
+					in->Rauger[z][x][i]=Rauger;
+				}
+
+				//https://www.iue.tuwien.ac.at/phd/ayalew/node72.html
+				if (in->ss_srh_enabled==TRUE)
+				{
+					if ((tau_n>0.0)||(tau_p>0.0))
+					{
+						Rss_srh=(nc*pc-nceq*pceq)/(tau_p*(nc+n1)+tau_n*(pc+p1));
+					}
+				}
+
 				Rinterface_pc=Binterface_c*(pc*nr-pceq*nreq);
 				Rinterface_nc=Binterface_l*(nc*pl-nceq*pleq);
+
 				in->interface_R[z][x][i]=Rinterface_pc+Rinterface_nc;
 
 				//printf("%d %Le %Le %Le\n",i,Rinterface_pc,Rinterface_nc,Rfree);
@@ -867,6 +933,56 @@ struct shape *s;
 			gdouble dJprdphi_c= -(mupr/dyr)*(dBn*pc+dBp*pr);
 			gdouble dJprdphi_r=(mupr/dyr)*(dBn*pc+dBp*pr);
 
+			if (in->interfaces_tunnels_e>0)
+			{
+				//Jnr=(Dnr/dyr)*(Bn*nr-Bp*nc);
+				if (interface_Ge_c>0.0)
+				{
+					Jnr+=-interface_Ge_c*((nc-nceq)-(nr-nreq));
+					dJnrdxir_c+=-interface_Ge_c*(dnc);
+					dJnrdxir_r+=-interface_Ge_c*(-dnr);
+
+					dJnrdphi_c+=0.0;//interface_Ge_c*(-dnc);
+					dJnrdphi_r+=0.0;//interface_Ge_c*(dnr);
+				}
+	
+				//Jnl=(Dnl/dyl)*(Bn*nc-Bp*nl);
+				if (interface_Ge_l>0.0)
+				{
+					Jnl+=-interface_Ge_l*((nl-nleq)-(nc-nceq));
+					dJnldxil_l+=-interface_Ge_l*(dnl);
+					dJnldxil_c+=-interface_Ge_l*(-dnc);
+
+					dJnldphi_l+=0.0;//interface_Ge_l*(-dnl);
+					dJnldphi_c+=0.0;//interface_Ge_l*(dnc);
+				}
+				//printf("%ld %Le %Le %Le\n",i,interface_Ge_l,Jnl,interface_Ge_l*((nl-nleq)-(nc-nceq)));
+			}
+
+			if (in->interfaces_tunnels_h>0)
+			{
+				if (interface_Gh_c>0.0)
+				{
+					Jpr+=interface_Gh_c*((pc-pceq)-(pr-preq));
+					dJprdxipr_c+=interface_Gh_c*(dpc);
+					dJprdxipr_r+=interface_Gh_c*(-dpr);
+
+					dJprdphi_c+= 0.0;//interface_Gh_c*(dpc);
+					dJprdphi_r+=0.0;//interface_Gh_c*(-dpr);
+				}
+
+				if (interface_Gh_l>0.0)
+				{
+					Jpl+=interface_Gh_c*((pl-pleq)-(pc-pceq));
+					dJpldxipl_l+=interface_Gh_c*(dpl);
+					dJpldxipl_c+=interface_Gh_c*(-dpc);
+
+					dJpldphi_l+=0.0;//interface_Gh_c*(dpl);
+					dJpldphi_c+=0.0;//interface_Gh_c*(-dpc);
+				}
+
+			}
+
 
 			if (i==0)
 			{
@@ -961,6 +1077,7 @@ struct shape *s;
 			dJpdphic+=(-dJpldphi_c+dJprdphi_c)/(dylh+dyrh);
 			dJpdphir+=dJprdphi_r/(dylh+dyrh);
 
+
 			if (Bfree!=0.0)
 			{
 				dJdxic+= -Bfree*(dnc*pc);
@@ -982,6 +1099,32 @@ struct shape *s;
 
 			}
 
+			if (in->auger_enabled==TRUE)
+			{
+				if ((Cn>0.0)||(Cp>0.0))
+				{
+				dJdxic+= -((Cn*dnc)*(nc*pc-nceq*pceq)+(Cn*nc+Cp*pc)*(dnc*pc));
+				dJdxipc+= -((Cp*dpc)*(nc*pc-nceq*pceq)+(Cn*nc+Cp*pc)*(nc*dpc));
+
+				dJpdxipc+=(Cp*dpc)*(nc*pc-nceq*pceq)+(Cn*nc+Cp*pc)*(nc*dpc);
+				dJpdxic+=(Cn*dnc)*(nc*pc-nceq*pceq)+(Cn*nc+Cp*pc)*(dnc*pc);
+
+				//dJdphic+= -((Cn*dnc)*(nc*pc-nceq*pceq)+(Cn*nc+Cp*pc)*(dnc*pc));
+				//dJpdphic+=((Cp*dpc)*(nc*pc-nceq*pceq)+(Cn*nc+Cp*pc)*(nc*dpc));
+				}
+			}
+
+			if (in->ss_srh_enabled==TRUE)
+			{
+				if ((tau_n>0.0)||(tau_p>0.0))
+				{
+					dJdxic+=  -((dnc*pc)/(tau_p*(nc+n1)+tau_n*(pc+p1))-(nc*pc-nceq*pceq)*(tau_p*dnc)/powl((tau_p*(nc+n1)+tau_n*(pc+p1)),2.0));
+					dJdxipc+= -((nc*dpc)/(tau_p*(nc+n1)+tau_n*(pc+p1))-(nc*pc-nceq*pceq)*(tau_n*dpc)/powl((tau_p*(nc+n1)+tau_n*(pc+p1)),2.0));
+
+					dJpdxic+=((dnc*pc)/(tau_p*(nc+n1)+tau_n*(pc+p1))-(nc*pc-nceq*pceq)*(tau_p*dnc)/powl((tau_p*(nc+n1)+tau_n*(pc+p1)),2.0));
+					dJpdxipc+=((nc*dpc)/(tau_p*(nc+n1)+tau_n*(pc+p1))-(nc*pc-nceq*pceq)*(tau_n*dpc)/powl((tau_p*(nc+n1)+tau_n*(pc+p1)),2.0));
+				}
+			}
 			//Binterface*(pc*nr-pceq*nreq);
 			//
 			long double dJpdxinr=0.0;
@@ -1134,13 +1277,13 @@ struct shape *s;
 
 			//band=0;
 
-			in->Rn[z][x][i]=Rtrapn+Rfree+Rinterface_nc;
+			in->Rn[z][x][i]=Rtrapn+Rfree+Rauger+Rinterface_nc+Rss_srh;
 			//printf("%Le %Le %Le\n",Rtrapn,Rfree,Rinterface_nc);
 			//getchar();
-			in->Rp[z][x][i]=Rtrapp+Rfree+Rinterface_pc;
+			in->Rp[z][x][i]=Rtrapp+Rfree+Rauger+Rinterface_pc+Rss_srh;
 
-			in->Rn_srh[z][x][i]=Rtrapn;
-			in->Rp_srh[z][x][i]=Rtrapp;
+			in->Rn_srh[z][x][i]=Rtrapn+Rss_srh;
+			in->Rp_srh[z][x][i]=Rtrapp+Rss_srh;
 			//Rtrapp=1e24;
 			//Rtrapn=1e24;
 
@@ -1396,7 +1539,7 @@ struct shape *s;
 
 			//Electron
 			build=0.0;
-			build= -((Jnr-Jnl)/(dylh+dyrh)-Rtrapn-Rfree-Rinterface_nc);
+			build= -((Jnr-Jnl)/(dylh+dyrh)-Rtrapn-Rfree-Rauger-Rss_srh-Rinterface_nc);
 
 			if (in->go_time==TRUE)
 			{
@@ -1416,7 +1559,7 @@ struct shape *s;
 
 			//hole
 			build=0.0;
-			build= -((Jpr-Jpl)/(dylh+dyrh)+Rtrapp+Rfree+Rinterface_pc);
+			build= -((Jpr-Jpl)/(dylh+dyrh)+Rtrapp+Rfree+Rauger+Rss_srh+Rinterface_pc);
 
 			build-= -Gp;
 

@@ -40,7 +40,6 @@ from gpvdm_json import gpvdm_data
 class gl_photons():
 
 	def draw_photon(self,x,y,z,up,r,g,b):
-
 		length=0.9
 		glColor4f(r, g, b, 1.0)
 
@@ -76,9 +75,10 @@ class gl_photons():
 			glEnd()
 
 	def draw_photon_sheet(self,source,x0,z0):
+
 		up_photons=False
 		dx=gpvdm_data().mesh.mesh_x.get_len()*self.scale.x_mul
-
+		dz=gpvdm_data().mesh.mesh_z.get_len()*self.scale.z_mul
 		if source.light_illuminate_from=="y0":
 			y=-1.0
 		elif source.light_illuminate_from=="y1":
@@ -87,7 +87,7 @@ class gl_photons():
 		else:
 			return
 
-		suns=self.suns#*source.virtual_spectra.light_spectra.segments[0].light_multiplyer
+		suns=self.suns
 		if suns!=0:
 			if suns<=0.01:
 				den=dx/5
@@ -100,11 +100,14 @@ class gl_photons():
 			else:
 				den=dx/25
 			x=np.arange(x0+den/2.0, x0+dx , den)
-			z=np.arange(z0+den/2.0, z0+gpvdm_data().mesh.mesh_z.get_len()*self.scale.z_mul , den)
-
+			z=np.arange(z0+den/2.0, z0+dz , den)
+			count=0
 			for i in range(0,len(x)):
 				for ii in range(0,len(z)):
 					self.draw_photon(x[i],y,z[ii],not up_photons,0.0,1.0,0.0)
+					count=count+1
+				if count>1000:
+					break
 
 	def draw_photons(self,x0,z0):
 		if self.false_color==True:

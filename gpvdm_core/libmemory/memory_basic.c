@@ -112,26 +112,26 @@ long double c;
 	for (x = 0; x < dim_out->xlen; x++)
 	{
 
-		x_out=dim_out->xmesh[x];
-		xi=hashget(dim_in->xmesh,dim_in->xlen,x_out);
+		x_out=dim_out->x[x];
+		xi=hashget(dim_in->x,dim_in->xlen,x_out);
 
 		for (y = 0; y < dim_out->ylen; y++)
 		{
-			y_out=dim_out->ymesh[y];
-			yi=hashget(dim_in->ymesh,dim_in->ylen,y_out);
+			y_out=dim_out->y[y];
+			yi=hashget(dim_in->y,dim_in->ylen,y_out);
 
-			y00=dim_in->ymesh[yi];
-			y01=dim_in->ymesh[yi+1];
+			y00=dim_in->y[yi];
+			y01=dim_in->y[yi+1];
 			yr=(y_out-y00)/(y01-y00);
 			y0=in[z][xi][yi][band]+yr*(in[z][xi][yi+1][band]-in[z][xi][yi][band]);
 
-			y10=dim_in->ymesh[yi];
-			y11=dim_in->ymesh[yi+1];
+			y10=dim_in->y[yi];
+			y11=dim_in->y[yi+1];
 			yr=(y_out-y10)/(y11-y10);
 			y1=in[z][xi+1][yi][band]+yr*(in[z][xi+1][yi+1][band]-in[z][xi+1][yi][band]);
 
-			x0=dim_in->xmesh[xi];
-			x1=dim_in->xmesh[xi+1];
+			x0=dim_in->x[xi];
+			x1=dim_in->x[xi+1];
 			xr=(x_out-x0)/(x1-x0);
 
 			c=y0+xr*(y1-y0);
@@ -173,26 +173,26 @@ long double c;
 	for (x = 0; x < dim_out->xlen; x++)
 	{
 
-		x_out=dim_out->xmesh[x];
-		xi=hashget(dim_in->xmesh,dim_in->xlen,x_out);
+		x_out=dim_out->x[x];
+		xi=hashget(dim_in->x,dim_in->xlen,x_out);
 
 		for (y = 0; y < dim_out->ylen; y++)
 		{
-			y_out=dim_out->ymesh[y];
-			yi=hashget(dim_in->ymesh,dim_in->ylen,y_out);
+			y_out=dim_out->y[y];
+			yi=hashget(dim_in->y,dim_in->ylen,y_out);
 
-			y00=dim_in->ymesh[yi];
-			y01=dim_in->ymesh[yi+1];
+			y00=dim_in->y[yi];
+			y01=dim_in->y[yi+1];
 			yr=(y_out-y00)/(y01-y00);
 			y0=in[z][xi][yi][band]+yr*(in[z][xi][yi+1][band]-in[z][xi][yi][band]);
 
-			y10=dim_in->ymesh[yi];
-			y11=dim_in->ymesh[yi+1];
+			y10=dim_in->y[yi];
+			y11=dim_in->y[yi+1];
 			yr=(y_out-y10)/(y11-y10);
 			y1=in[z][xi+1][yi][band]+yr*(in[z][xi+1][yi+1][band]-in[z][xi+1][yi][band]);
 
-			x0=dim_in->xmesh[xi];
-			x1=dim_in->xmesh[xi+1];
+			x0=dim_in->x[xi];
+			x1=dim_in->x[xi+1];
 			xr=(x_out-x0)/(x1-x0);
 
 			c=y0+xr*(y1-y0);
@@ -219,7 +219,7 @@ int z=0;
 
 			for (y = 0; y < dim->ylen; y++)
 			{
-				fprintf(out,"%Le %Le %Le\n",dim->xmesh[x],dim->ymesh[y],in[z][x][y][band]);
+				fprintf(out,"%Le %Le %Le\n",dim->x[x],dim->y[y],in[z][x][y][band]);
 			}
 
 			fprintf(out,"\n");

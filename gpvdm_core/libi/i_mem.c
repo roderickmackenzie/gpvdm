@@ -159,13 +159,13 @@ void inter_malloc(struct math_xy* in,int len)
 {
 	if (in->x!=NULL)
 	{
-		printf("inter_malloc error in->x\n");
+		printf("inter_malloc error in->x!=NULL\n");
 		getchar();
 	}
 
 	if (in->data!=NULL)
 	{
-		printf("inter_malloc error in->data\n");
+		printf("inter_malloc error in->data!=NULL\n");
 		getchar();
 	}
 

@@ -57,6 +57,26 @@ void epitaxy_load_interface_file(struct simulation *sim, struct epi_layer *layer
 		layer->interface_R=0.0;
 	}
 
+	//Tuneling
+	json_get_english(sim,interface_json, &(layer->interface_tunnel_e),"interface_tunnel_e");
+	json_get_long_double(sim,interface_json, &(layer->interface_Ge),"interface_Ge");
+	layer->interface_Ge=fabsl(layer->interface_Ge);
+
+	if (layer->interface_tunnel_e==FALSE)
+	{
+		layer->interface_Ge=0.0;
+	}
+
+	json_get_english(sim,interface_json, &(layer->interface_tunnel_h),"interface_tunnel_h");
+	json_get_long_double(sim,interface_json, &(layer->interface_Gh),"interface_Gh");
+	layer->interface_Gh=fabsl(layer->interface_Gh);
+
+	if (layer->interface_tunnel_h==FALSE)
+	{
+		layer->interface_Gh=0.0;
+	}
+
+	//Doping
 	json_get_english(sim,interface_json, &(layer->interface_left_doping_enabled),"interface_left_doping_enabled");
 	json_get_long_double(sim,interface_json, &(layer->interface_left_doping),"interface_left_doping");
 
@@ -82,6 +102,8 @@ struct dimensions *dim=&(dev->ns.dim);
 struct epitaxy *epi=&(dev->my_epitaxy);
 dev->interfaces_n=0;
 dev->interfaces_n_srh=0;
+dev->interfaces_tunnels_e=0;
+dev->interfaces_tunnels_h=0;
 
 	if (dim->ylen==0)
 	{
@@ -105,7 +127,6 @@ dev->interfaces_n_srh=0;
 
 					if (epi->layer[l0].interface_type!=INTERFACE_NONE)
 					{
-
 						if (epi->layer[l0].interface_type==INTERFACE_RECOMBINATION)
 						{
 							dev->interface_B[z][x][y]=epi->layer[l0].interface_R;
@@ -118,6 +139,18 @@ dev->interfaces_n_srh=0;
 						}
 
 
+					}
+
+					if (epi->layer[l0].interface_tunnel_e==TRUE)
+					{
+						dev->interface_Ge[z][x][y]=epi->layer[l0].interface_Ge;
+						dev->interfaces_tunnels_e++;
+					}
+
+					if (epi->layer[l0].interface_tunnel_h==TRUE)
+					{
+						dev->interface_Gh[z][x][y]=epi->layer[l0].interface_Gh;
+						dev->interfaces_tunnels_h++;
 					}
 
 					dev->interface_type[z][x][y]=epi->layer[l0].interface_type;

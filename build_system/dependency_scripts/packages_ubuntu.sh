@@ -111,3 +111,5 @@ apt-get -y install python3-dev
 apt-get -y install dh-virtualenv
 #apt-get -y install license-reconcile
 echo "Done"
+
+#remove apt-get remove libopenblas0-pthread

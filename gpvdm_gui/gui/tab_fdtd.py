@@ -33,6 +33,7 @@ from PyQt5.QtWidgets import QWidget,QVBoxLayout,QToolBar,QSizePolicy,QAction,QTa
 from PyQt5.QtGui import QPainter,QIcon
 from tab import tab_class
 from css import css_apply
+from global_objects import global_object_run
 
 class tab_fdtd(QTabWidget):
 
@@ -46,10 +47,14 @@ class tab_fdtd(QTabWidget):
 
 		tab=tab_class(self.data)
 		self.addTab(tab,_("Configure"))
-
+		tab.tab.changed.connect(self.callback_value_changed)
 	def rename(self,tab_name):
 		self.data.english_name=tab_name
 		gpvdm_data().save()
 
 	def get_json_obj(self):
 		return self.data
+
+	def callback_value_changed(self,token):
+		if token=="fdtd_xzy":
+			global_object_run("gl_force_redraw")

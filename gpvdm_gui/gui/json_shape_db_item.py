@@ -82,6 +82,25 @@ class json_shape_db_item_honeycomb(json_base):
 		self.var_list.append(["honeycomb_rotate",0])
 		self.var_list_build()
 
+class json_shape_db_item_xtal(json_base):
+
+	def __init__(self):
+		json_base.__init__(self,"xtal")
+		self.var_list=[]
+		self.var_list.append(["xtal_dr",10])
+		self.var_list.append(["xtal_dx",30])
+		self.var_list.append(["xtal_dy",30])
+		self.var_list.append(["xtal_offset",30])
+		self.var_list_build()
+
+class json_shape_db_item_lens(json_base):
+
+	def __init__(self):
+		json_base.__init__(self,"lens")
+		self.var_list=[]
+		self.var_list.append(["lens_type","convex"])
+		self.var_list_build()
+
 class json_shape_db_item_gaus(json_base):
 
 	def __init__(self):
@@ -107,6 +126,8 @@ class shape_db_item(json_base):
 		self.var_list.append(["status","public"])
 		self.var_list.append(["gauss",json_shape_db_item_gaus()])
 		self.var_list.append(["honeycomb",json_shape_db_item_honeycomb()])
+		self.var_list.append(["xtal",json_shape_db_item_xtal()])
+		self.var_list.append(["lens",json_shape_db_item_lens()])
 		self.var_list.append(["import_config",json_shape_db_item_import()])
 		self.var_list.append(["boundary",json_shape_boundary()])
 		self.var_list.append(["mesh",json_shape_db_mesh()])

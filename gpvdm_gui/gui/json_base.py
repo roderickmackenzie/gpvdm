@@ -115,6 +115,32 @@ class json_base():
 						return ret
 		return None
 
+	def find_object_path_by_id(self,want_id,cur_path=""):
+		#print(self.segments_name)
+		for item in self.var_list:
+			m=item[0]
+			val=getattr(self, m)
+			if m=="id":
+				if val==want_id:
+					return self,cur_path
+			elif isclass(val)==True:
+				ret,new_path=val.find_object_path_by_id(want_id,cur_path=cur_path+"."+m)
+				if ret!=None:
+					return ret,new_path
+
+		for sn in self.segments_name:
+			s_obj=getattr(self, sn)
+			#print(sn,s_obj,want_id)
+			for s_int in range(0,len(s_obj)):
+				val=getattr(s_obj[s_int], "id","not found")
+				if val==want_id:
+					return s_obj[s_int], cur_path+"."+sn+"["+str(s_int)+"]"
+				elif isclass(s_obj[s_int])==True:
+					ret,new_path=s_obj[s_int].find_object_path_by_id(want_id,cur_path=cur_path+"."+sn+"["+str(s_int)+"]")
+					if ret!=None:
+						return ret,new_path
+		return None,None
+
 	def pop_object_by_id(self,want_id):
 		items=[attr for attr in dir(self) if not callable(getattr(self, attr)) and not attr.startswith("__")]
 		for item in items:
@@ -212,21 +238,22 @@ class json_base():
 		for item in self.var_list:
 			m=item[0]
 			val=getattr(self, m)
-			if type(val)==str:
-				val=val.replace("\n","\\n")
-				out.append("\t\""+m+"\":\""+val+"\",")
-			elif type(val)==int:
-				out.append("\t\""+m+"\":"+str(val)+",")
-			elif type(val)==float:
-				out.append("\t\""+m+"\":"+str(val)+",")
-			elif type(val)==bool:
-				out.append("\t\""+m+"\":\""+str(val)+"\",")
-			elif isclass(val)==True:
-				#print(type(val))
-				out.extend(val.gen_json())
-				out[-1]=out[-1]+","
-			else:
-				print(m,type(val))
+			if m.startswith("text_")==False:
+				if type(val)==str:
+					val=val.replace("\n","\\n")
+					out.append("\t\""+m+"\":\""+val+"\",")
+				elif type(val)==int:
+					out.append("\t\""+m+"\":"+str(val)+",")
+				elif type(val)==float:
+					out.append("\t\""+m+"\":"+str(val)+",")
+				elif type(val)==bool:
+					out.append("\t\""+m+"\":\""+str(val)+"\",")
+				elif isclass(val)==True:
+					#print(type(val))
+					out.extend(val.gen_json())
+					out[-1]=out[-1]+","
+				else:
+					print(m,type(val))
 
 		if self.segment_class==True:
 			for sn,item_name in zip(self.segments_name,self.segment_name):
@@ -252,6 +279,7 @@ class json_base():
 				self.text=""
 				self.value=""
 				self.units=""
+				self.token=item
 
 		for item in self.var_list:
 			dump=True
@@ -260,6 +288,9 @@ class json_base():
 				dump=False
 				if m in self.latex_allowed:
 					dump=True
+
+			if m in self.latex_banned:
+				dump=False
 
 			if dump==True:
 				value=str(getattr(self, m))
@@ -271,6 +302,7 @@ class json_base():
 						r.text=token_data.info
 						r.value=latex().number_to_latex(value)
 						r.units=pygtk_to_latex_subscript(token_data.units)
+						r.token=m
 						ret.append(r)
 
 		return ret

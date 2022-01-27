@@ -36,6 +36,7 @@ from math import sin
 from math import cos
 from math import exp
 from math import pow
+from math import sqrt
 
 from json_shape_db_item import shape_db_item
 
@@ -143,6 +144,64 @@ class shape_editor_io(shape_db_item):
 		self.apply_boundary(im)
 		#im=self.apply_rotate(im)
 		im=self.apply_blur(im)
+
+		im.save(os.path.join(path,"image.png"))
+
+	def draw_xtal(self):
+
+		path=os.path.dirname(self.file_name)
+		dx=self.xtal.xtal_dx
+		dy=self.xtal.xtal_dy
+		offset=self.xtal.xtal_offset
+		dr=self.xtal.xtal_dr
+
+		im= Image.new("RGB", (self.image_xlen, self.image_ylen), "#000000")
+		
+		x=dx/2
+		y=dy/2
+		shift=False
+		while(y<self.image_ylen):
+			x=0
+			if shift==True:
+				x=x+offset
+			while(x<self.image_xlen):
+				drawer=ImageDraw.Draw(im)
+				drawer.ellipse([(x-dr, y-dr), (x+dr, y+dr)], fill="white")
+				x=x+dx
+
+			shift = not shift
+
+			y=y+dy
+
+		im.save(os.path.join(path,"image.png"))
+
+	def draw_lens(self):
+
+		path=os.path.dirname(self.file_name)
+		convex=True
+		if self.lens.lens_type=="convex":
+			convex=True
+		else:
+			convex=False
+
+		dr=self.image_xlen/2
+		im= Image.new("RGB", (self.image_xlen, self.image_ylen), "#000000")
+		
+		for y in range(0,self.image_ylen):
+			for x in range(0,self.image_xlen):
+				mag=dr*dr-(x-dr)*(x-dr)-(y-dr)*(y-dr)
+				if mag<0:
+					mag=0.0
+				else:
+					mag=sqrt(mag)
+
+				mag=mag/dr
+				if convex==True:
+					mag=int(255*(mag))
+				else:
+					mag=int(255-255*(mag))
+
+				im.putpixel((x,y),(mag, mag, mag))
 
 		im.save(os.path.join(path,"image.png"))
 

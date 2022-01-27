@@ -1,7 +1,7 @@
 // 
 // General-purpose Photovoltaic Device Model gpvdm.com - a drift diffusion
-// base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solarcells.
-// The model can simulate OLEDs, Perovskite cells, and OFETs.
+// base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solardevs.
+// The model can simulate OLEDs, Perovskite devs, and OFETs.
 // 
 // Copyright 2008-2022 Roderick C. I. MacKenzie https://www.gpvdm.com
 // r.c.i.mackenzie at googlemail.com
@@ -58,7 +58,7 @@ free_all();
 
 }*/
 
-int do_fdtd(struct simulation *sim,struct device *cell)
+int do_fdtd(struct simulation *sim,struct device *dev)
 {
 	struct json_obj *json_config;
 	printf_log(sim,"**************************\n");
@@ -73,7 +73,7 @@ int do_fdtd(struct simulation *sim,struct device *cell)
 
 	fdtd_init(&data);
 
-	json_config=json_obj_find_by_path(sim,&(cell->config.obj), "fdtd.section0");
+	json_config=json_find_sim_struct(sim, &(dev->config),dev->simmode);
 	fdtd_load_config(sim,&data,json_config);
 
 
@@ -90,14 +90,7 @@ int do_fdtd(struct simulation *sim,struct device *cell)
 		fdtd_opencl_kernel_init(sim, &data);
 	}
 
-	fdtd_mesh(sim,&data,cell);
-
-	if (data.plot==1)
-	{
-		data.gnuplot = popen("gnuplot","w");
-		fprintf(data.gnuplot, "set terminal x11 title 'Solarsim' \n");
-		fflush(data.gnuplot);
-	}
+	fdtd_mesh(sim,&data,dev);
 
 
 	if (data.use_gpu==TRUE)
@@ -106,7 +99,7 @@ int do_fdtd(struct simulation *sim,struct device *cell)
 		fdtd_opencl_write_ctrl_data(sim,&data);
 	}
 
-	fdtd_solve_all_lambda(sim,cell,&data);
+	fdtd_solve_all_lambda(sim,dev,&data);
 
 	fdtd_free_all(sim,&data);
 

@@ -40,12 +40,11 @@
 void dump_load_config(struct simulation* sim,struct device *in)
 {
 	int dump;
-	struct dimensions *dim=&in->ns.dim;
 	struct json_obj *obj;
 	obj=json_obj_find(&(in->config.obj), "dump");
 	if (obj==NULL)
 	{
-		ewe(sim,"Object light not found\n");
+		ewe(sim,"Object dump not found in dump_config.c 2\n");
 	}
 
 
@@ -72,37 +71,8 @@ void dump_load_config(struct simulation* sim,struct device *in)
 	json_get_english(sim,obj, &(dump),"dump_norm_y_axis");
 	set_dump_status(sim,dump_norm_y_axis, dump);
 
-	set_dump_status(sim,dump_energy_slice_switch, TRUE);
-
-	json_get_int(sim,obj, &in->dump_energy_slice_xpos,"dump_energy_slice_xpos");
-	if (in->dump_energy_slice_xpos<0)
-	{
-			set_dump_status(sim,dump_energy_slice_switch, FALSE);
-	}
-	if (in->dump_energy_slice_xpos>=dim->xlen) in->dump_energy_slice_xpos=0;
-
-	json_get_int(sim,obj, &in->dump_energy_slice_ypos,"dump_energy_slice_ypos");
-	if (in->dump_energy_slice_xpos<0)
-	{
-			set_dump_status(sim,dump_energy_slice_switch, FALSE);
-	}
-	if (in->dump_energy_slice_ypos>=dim->ylen) in->dump_energy_slice_ypos=0;
-
-	json_get_int(sim,obj, &in->dump_energy_slice_zpos,"dump_energy_slice_zpos");
-	if (in->dump_energy_slice_xpos<0)
-	{
-			set_dump_status(sim,dump_energy_slice_switch, FALSE);
-	}
-	if (in->dump_energy_slice_zpos>=dim->zlen) in->dump_energy_slice_zpos=0;
-
 
 	set_dump_status(sim,dump_1d_slices, TRUE);
-
-	json_get_int(sim,obj, &in->dump_1d_slice_xpos,"dump_1d_slice_xpos");
-	if (in->dump_1d_slice_xpos<0) in->dump_1d_slice_xpos=-1;
-
-	json_get_int(sim,obj, &in->dump_1d_slice_zpos,"dump_1d_slice_zpos");
-	if (in->dump_1d_slice_zpos<0) in->dump_1d_slice_zpos=-1;
 
 
 	json_get_english(sim,obj, &(dump),"dump_verbose_electrical_solver_results");

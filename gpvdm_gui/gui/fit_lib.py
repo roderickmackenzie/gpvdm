@@ -60,21 +60,30 @@ class fit_lib(fit_lib_anal_results):
 			lx=latex()
 			lx.document_start()
 			lx.tab_start(["Parameter","Value","Units"])
-			for l in data.epi.layers:
-				if l.shape_dos.enabled==True:
-					for latex_line in l.shape_dos.dump_as_latex(token_lib=tokens()):
-						lx.tab_add_row([latex_line.text,"$"+latex_line.value+"$","$"+latex_line.units+"$"])
-
-
-			for c in data.epi.contacts.segments:
-				for latex_line in c.dump_as_latex(token_lib=tokens()):
-					lx.tab_add_row([latex_line.text+" "+c.shape_name,"$"+latex_line.value+"$","$"+latex_line.units+"$"])
 
 			for latex_line in data.light.dump_as_latex(token_lib=tokens()):
 				lx.tab_add_row([latex_line.text,"$"+latex_line.value+"$","$"+latex_line.units+"$"])
 
 			for latex_line in data.parasitic.dump_as_latex(token_lib=tokens()):
 				lx.tab_add_row([latex_line.text,"$"+latex_line.value+"$","$"+latex_line.units+"$"])
+
+			for l in data.epi.layers:
+				if l.shape_dos.enabled==True:
+					for latex_line in l.shape_dos.dump_as_latex(token_lib=tokens()):
+						ok=False
+						for v in data.fits.vars.segments:
+							print(latex_line.token, v.json_var.split("/")[-1])
+							if latex_line.token == v.json_var.split("/")[-1]:
+								ok=True
+								break
+						if ok==True:
+							lx.tab_add_row([latex_line.text,"$"+latex_line.value+"$","$"+latex_line.units+"$"])
+
+
+			for c in data.epi.contacts.segments:
+				for latex_line in c.dump_as_latex(token_lib=tokens()):
+					lx.tab_add_row([latex_line.text+" "+c.shape_name,"$"+latex_line.value+"$","$"+latex_line.units+"$"])
+
 
 			lx.tab_end()
 			lx.latex_document_end()

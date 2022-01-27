@@ -107,7 +107,7 @@ void mem_mul_zx_area(struct dimensions *dim, long double **data)
 	{
 		for (x = 0; x < dim->xlen; x++)
 		{
-			A=dim->dx[x]*dim->dz[z];
+			A=dim->dX[x]*dim->dZ[z];
 			data[z][x]*=A;
 		}
 	}

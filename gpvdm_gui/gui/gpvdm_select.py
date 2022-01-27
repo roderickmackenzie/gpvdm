@@ -26,7 +26,6 @@
 
 
 import os
-from plot_io import get_plot_file_info
 
 #qt
 try:

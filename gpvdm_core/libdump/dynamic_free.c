@@ -143,7 +143,7 @@ if (get_dump_status(sim,dump_dynamic)==TRUE)
 
 	//other
 	inter_free(&(store->dynamic_qe));
-	free_zxy_gdouble(dim,&store->band_snapshot);
+	free_zxy_long_double(dim,&store->band_snapshot);
 }
 }
 

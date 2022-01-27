@@ -107,7 +107,6 @@
 #define dump_write_converge 6
 #define dump_print_text 7
 #define dump_exit_on_dos_error 8
-#define dump_energy_slice_switch 9
 #define dump_zip_files 10
 #define dump_lock 11
 #define dump_norm_time_to_one 12
@@ -130,6 +129,10 @@
 #define dump_nothing				-1
 #define dump_verbosity_key_results	0	
 #define dump_verbosity_everything	1
+
+//energy space dump
+#define ENERGY_SPACE_MAP 1
+#define SINGLE_MESH_POINT 2
 
 //dos types
 #define dos_exp		0
@@ -172,9 +175,13 @@
 #define THERMAL_LATTICE 			1
 
 #define ISOTHERMAL	0
+#define DIRICHLET	0
 #define NEUMANN		1
 #define HEATSINK	2
 
+//Heat fdtd
+#define FDTD_SIN 	0
+#define FDTD_PULSE 	0
 
 
 #define measure_voltage		0
@@ -205,5 +212,6 @@
 #define SPM_WHOLE_DEVICE 0
 #define SPM_BOX 1
 #define SPM_X_CUT 2
+
 
 #endif

@@ -127,9 +127,10 @@ def build_token_lib():
 	lib.append(my_data("layer_type","type",_("Layer type"),"QComboBoxLang",defaults=[[("contact"),_("contact")],["active",_("active layer")],["other",_("other")]]))
 
 	#dos?.inp
-	lib.append(my_data("dostype","Edit",_("DoS distribution"),"generic_switch",units_widget="QPushButton",defaults=[[_("Complex"),"complex"],[_("Exponential"),"exponential"]],hide_on_token_eq=[["srh_bands",0]]))
+	##free carriers
 	lib.append(my_data("dos_free_carrier_stats","type",_("Free carrier statistics"),"QComboBoxLang",defaults=[[("mb_equation"),_("Maxwell Boltzmann - analytic")],["mb_look_up_table_analytic",_("Maxwell Boltzmann - numerical+analytic")],["mb_look_up_table",_("Maxwell Boltzmann - full numerical")],["fd_look_up_table",_("Ferm-Dirac - numerical")]]))
 
+	lib.append(my_data("text_free_carrier","",_("<b>Free carriers</b>"),"QLabel"))
 	lib.append(my_data("Nc","m^{-3}",_("Effective density of free electron states (@300K)"),"QLineEdit",min=1e10,max=1e27, ))
 	lib.append(my_data("Nv","m^{-3}",_("Effective density of free hole states (@300K)"),"QLineEdit",min=1e10,max=1e27 ))
 
@@ -144,6 +145,74 @@ def build_token_lib():
 	lib.append(my_data("muh_x","m^{2}V^{-1}s^{-1}",_("Hole mobility x"),"mobility_widget",min=1.0,max=1e-1,hidden=True))
 	lib.append(my_data("muh_y","m^{2}V^{-1}s^{-1}",_("Hole mobility y"),"mobility_widget",min=1.0,max=1e-1,hidden=True))
 
+	##Non dynamic SRH
+	lib.append(my_data("text_steay_srh","",_("<b>Equilibrium SRH traps</b>"),"QLabel",hide_on_token_eq=[["ss_srh_enabled",False]]))
+	lib.append(my_data("srh_n1","m^{-3}",_("n_{1}"),"QLineEdit",min=1e10,max=1e27,hide_on_token_eq=[["ss_srh_enabled",False]] ))
+	lib.append(my_data("srh_p1","m^{-3}",_("p_{1}"),"QLineEdit",min=1e10,max=1e27,hide_on_token_eq=[["ss_srh_enabled",False]] ))
+	lib.append(my_data("srh_tau_n","s^{-1}",_("tau_{n}"),"QLineEdit",min=1e10,max=1e27,hide_on_token_eq=[["ss_srh_enabled",False]] ))
+	lib.append(my_data("srh_tau_p","s^{-1}",_("tau_{p}"),"QLineEdit",min=1e10,max=1e27,hide_on_token_eq=[["ss_srh_enabled",False]] ))
+
+	##Dynamic SRH
+	lib.append(my_data("text_dynamic_traps","",_("<b>Non-equilibrium SRH traps</b>"),"QLabel",hide_on_token_eq=[["srh_bands",0]]))
+	lib.append(my_data("srh_bands","bands",_("Number of traps"),"QLineEdit",hide_on_token_eq=[["srh_bands",0]]))
+	lib.append(my_data("dostype","Edit",_("DoS distribution"),"generic_switch",units_widget="QPushButton",defaults=[[_("Complex"),"complex"],[_("Exponential"),"exponential"]],hide_on_token_eq=[["srh_bands",0]]))
+	lib.append(my_data("Ntrape","m^{-3} eV^{-1}",_("Electron trap density"),"QLineEdit",min=1e10,max=1e27,hide_on_token_eq=[["dostype","complex"],["srh_bands",0]] ))
+	lib.append(my_data("Ntraph","m^{-3} eV^{-1}",_("Hole trap density"),"QLineEdit",min=1e10,max=1e27,hide_on_token_eq=[["dostype","complex"],["srh_bands",0]] ))
+	lib.append(my_data("Etrape","eV",_("Electron tail slope"),"QLineEdit",min=20e-3,max=150e-3,hide_on_token_eq=[["dostype","complex"],["srh_bands",0]] ))
+	lib.append(my_data("Etraph","eV",_("Hole tail slope"),"QLineEdit",min=20e-3,max=150e-3,hide_on_token_eq=[["dostype","complex"],["srh_bands",0]] ))
+
+	lib.append(my_data("srhsigman_e","m^{-2}",_("Free electron to Trapped electron"),"QLineEdit",min=1e-27,max=1e-15,hide_on_token_eq=[["srh_bands",0]] ))
+	lib.append(my_data("srhsigmap_e","m^{-2}",_("Trapped electron to Free hole"),"QLineEdit",min=1e-27,max=1e-15,hide_on_token_eq=[["srh_bands",0]] ))
+	lib.append(my_data("srhsigman_h","m^{-2}",_("Trapped hole to Free electron"),"QLineEdit",min=1e-27,max=1e-15,hide_on_token_eq=[["srh_bands",0]] ))
+	lib.append(my_data("srhsigmap_h","m^{-2}",_("Free hole to Trapped hole"),"QLineEdit",min=1e-27,max=1e-15,hide_on_token_eq=[["srh_bands",0]]))
+
+	##Exciton
+	lib.append(my_data("text_exciton","",_("<b>Excitons</b>"),"QLabel",hide_on_token_eq=[["exciton_enabled",False]]))
+	lib.append(my_data("exciton_L","m",_("Scattering length"), "QLineEdit", hide_on_token_eq=[["exciton_enabled",False]]))
+	lib.append(my_data("exciton_tau","m",_("Life time"), "QLineEdit", hide_on_token_eq=[["exciton_enabled",False]]))
+	lib.append(my_data("exciton_kpl","s^{-1}",_("k_{pl}"),"QLineEdit", hide_on_token_eq=[["exciton_enabled",False]]))
+	lib.append(my_data("exciton_kfret","s^{-1}",_("k_{fret}"),"QLineEdit",hide_on_token_eq=[["exciton_enabled",False]]))
+	lib.append(my_data("exciton_alpha","m^{3} s^{-1}",_("k_{alpha}"),"QLineEdit",hide_on_token_eq=[["exciton_enabled",False]]))
+	lib.append(my_data("exciton_kdis","s^{-1}",_("k_{dis}"),"QLineEdit",hide_on_token_eq=[["exciton_enabled",False]]))
+
+	##Exciton boundaries
+	lib.append(my_data("n_y0","m^{-3}",_("Exciton density at y_{min}"),"QLineEdit",  hide_on_token_eq=[["y0_boundry", "neumann"]]))
+	lib.append(my_data("y0_boundry","au",_("Boundary condition for y_{min}"),"QComboBoxLang",defaults=[["dirichlet",_("Dirichlet")],["neumann",_("Neumann (==0)")],["heatsink",_("Heatsink")]]))
+	lib.append(my_data("heatsink_y0","W m^{-}K^{-1}",_("Conductivity of heat sink y_{min}"),"QLineEdit", hide_on_false_token=["thermal"],  hide_on_token_eq=[["y0_boundry", "neumann"],["y0_boundry", "isothermal"]]))
+	lib.append(my_data("heatsink_length_y0","m",_("Heat sink length y_{min}"),"QLineEdit",  hide_on_token_eq=[["y0_boundry", "neumann"],["y0_boundry", "isothermal"]]))
+
+	lib.append(my_data("n_y1","m^{-3}",_("Exciton density at y_{max}"),"QLineEdit",  hide_on_token_eq=[["y1_boundry", "neumann"],["y1_boundry", "heatsink"]]))
+	lib.append(my_data("y1_boundry","au",_("Boundary condition for y_{max}"),"QComboBoxLang",defaults=[["dirichlet",_("Dirichlet")],["neumann",_("Neumann (==0)")],["heatsink",_("Heatsink")]]))
+	lib.append(my_data("heatsink_y1","W m^{-2}K^{-1}",_("Conductivity of heat sink y_{max}"),"QLineEdit",  hide_on_token_eq=[["y1_boundry", "neumann"],["y1_boundry", "isothermal"]]))
+	lib.append(my_data("heatsink_length_y1","m",_("Heat sink length y_{max}"),"QLineEdit",  hide_on_token_eq=[["y1_boundry", "neumann"],["y1_boundry", "isothermal"]]))
+
+	lib.append(my_data("n_x0","m^{-3}",_("Exciton density at x_{min}"),"QLineEdit",  hide_on_token_eq=[["x0_boundry", "neumann"]]))
+	lib.append(my_data("x0_boundry","au",_("Boundary condition for x_{min}"),"QComboBoxLang",defaults=[["dirichlet",_("Dirichlet")],["neumann",_("Neumann (==0)")],["heatsink",_("Heatsink")]]))
+	lib.append(my_data("heatsink_x0","W m^{-2}K^{-1}",_("Conductivity of heat sink x_{min}"),"QLineEdit", hide_on_false_token=["thermal"],  hide_on_token_eq=[["x0_boundry", "neumann"],["x0_boundry", "isothermal"]]))
+	lib.append(my_data("heatsink_length_x0","m",_("Heat sink length x_{min}"),"QLineEdit",  hide_on_token_eq=[["x0_boundry", "neumann"],["x0_boundry", "isothermal"]]))
+
+	lib.append(my_data("n_x1","m^{-3}",_("Exciton density at x_{max}"),"QLineEdit",  hide_on_token_eq=[["x1_boundry", "neumann"]]))
+	lib.append(my_data("x1_boundry","au",_("Boundary condition for x_{max}"),"QComboBoxLang",defaults=[["dirichlet",_("Dirichlet")],["neumann",_("Neumann (==0)")],["heatsink",_("Heatsink")]]))
+	lib.append(my_data("heatsink_x1","W m^{-2}K^{-1}",_("Conductivity of heat sink x_{max}"),"QLineEdit", hide_on_false_token=["thermal"],  hide_on_token_eq=[["x1_boundry", "neumann"],["x1_boundry", "isothermal"]]))
+	lib.append(my_data("heatsink_length_x1","m",_("Heat sink length x_{max}"),"QLineEdit",  hide_on_token_eq=[["x1_boundry", "neumann"],["x1_boundry", "isothermal"]]))
+
+	lib.append(my_data("n_z0","Kelvin",_("Device temperature at z_{min}"),"QLineEdit",  hide_on_token_eq=[["z0_boundry", "neumann"]]))
+	lib.append(my_data("z0_boundry","au",_("Boundary condition for z_{min}"),"QComboBoxLang",defaults=[["dirichlet",_("Dirichlet")],["neumann",_("Neumann (==0)")],["heatsink",_("Heatsink")]]))
+	lib.append(my_data("heatsink_z0","W m^{-2}K^{-1}",_("Conductivity of heat sink z_{min}"),"QLineEdit", hide_on_false_token=["thermal"],  hide_on_token_eq=[["z0_boundry", "neumann"],["z0_boundry", "isothermal"]]))
+	lib.append(my_data("heatsink_length_z0","m",_("Heat sink length z_{min}"),"QLineEdit",  hide_on_token_eq=[["z0_boundry", "neumann"],["z0_boundry", "isothermal"]]))
+
+	lib.append(my_data("n_z1","m^{-3}",_("Exciton density at z_{max}"),"QLineEdit",  hide_on_token_eq=[["z1_boundry", "neumann"]]))
+	lib.append(my_data("z1_boundry","au",_("Boundary condition for z_{max}"),"QComboBoxLang",defaults=[["dirichlet",_("Dirichlet")],["neumann",_("Neumann (==0)")],["heatsink",_("Heatsink")]]))
+	lib.append(my_data("heatsink_z1","W m^{-2}K^{-1}",_("Conductivity of heat sink z_{max}"),"QLineEdit", hide_on_false_token=["thermal"],  hide_on_token_eq=[["z1_boundry", "neumann"],["z1_boundry", "isothermal"]]))
+	lib.append(my_data("heatsink_length_z1","m",_("Heat sink length z_{max}"),"QLineEdit",  hide_on_token_eq=[["z1_boundry", "neumann"],["z1_boundry", "isothermal"]]))
+
+	##auger
+	lib.append(my_data("text_auger","",_("<b>Auger recombination</b>"),"QLabel",hide_on_token_eq=[["dos_enable_auger",False]]))
+	lib.append(my_data("dos_auger_Cn","m^{6}s^{-1}",_("Auger C_{n}"),"QLineEdit",min=1e-30,max=1e-10,hide_on_token_eq=[["dos_enable_auger",False]] ))
+	lib.append(my_data("dos_auger_Cp","m^{6}s^{-1}",_("Auger C_{p}"),"QLineEdit",min=1e-30,max=1e-10,hide_on_token_eq=[["dos_enable_auger",False]] ))
+
+
+
 	lib.append(my_data("T_start","K",_("Start temperature"),"QLineEdit"))
 	lib.append(my_data("T_stop","K",_("Stop temperature"),"QLineEdit"))
 	lib.append(my_data("T_steps","au",_("Temperature steps"),"QLineEdit"))
@@ -157,18 +226,13 @@ def build_token_lib():
 	lib.append(my_data("doping_start","m^{-3}",_("Doping density (x=0)"),"QLineEdit",min=1.0,max=1e27,hidden=True))
 	lib.append(my_data("doping_stop","m^{-3}",_("Doping density (x=max)"),"QLineEdit",min=1.0,max=1e27,hidden=True))
 
-	lib.append(my_data("Ntrape","m^{-3} eV^{-1}",_("Electron trap density"),"QLineEdit",min=1e10,max=1e27,hide_on_token_eq=[["dostype","complex"],["srh_bands",0]] ))
-	lib.append(my_data("Ntraph","m^{-3} eV^{-1}",_("Hole trap density"),"QLineEdit",min=1e10,max=1e27,hide_on_token_eq=[["dostype","complex"],["srh_bands",0]] ))
-	lib.append(my_data("Etrape","eV",_("Electron tail slope"),"QLineEdit",min=20e-3,max=150e-3,hide_on_token_eq=[["dostype","complex"],["srh_bands",0]] ))
-	lib.append(my_data("Etraph","eV",_("Hole tail slope"),"QLineEdit",min=20e-3,max=150e-3,hide_on_token_eq=[["dostype","complex"],["srh_bands",0]] ))
-	lib.append(my_data("epsilonr","au",_("Relative permittivity"),"QLineEdit",min=1.0,max=10.0 ))
-	lib.append(my_data("srhsigman_e","m^{-2}",_("Free electron to Trapped electron"),"QLineEdit",min=1e-27,max=1e-15,hide_on_token_eq=[["srh_bands",0]] ))
-	lib.append(my_data("srhsigmap_e","m^{-2}",_("Trapped electron to Free hole"),"QLineEdit",min=1e-27,max=1e-15,hide_on_token_eq=[["srh_bands",0]] ))
-	lib.append(my_data("srhsigman_h","m^{-2}",_("Trapped hole to Free electron"),"QLineEdit",min=1e-27,max=1e-15,hide_on_token_eq=[["srh_bands",0]] ))
-	lib.append(my_data("srhsigmap_h","m^{-2}",_("Free hole to Trapped hole"),"QLineEdit",min=1e-27,max=1e-15,hide_on_token_eq=[["srh_bands",0]]))
+
 	lib.append(my_data("free_to_free_recombination","m^{3}s^{-1}",_("n_{free} to p_{free} Recombination rate constant"),"QLineEdit",min=1e-27,max=1e-15 ))
+
+	lib.append(my_data("text_electro","",_("<b>Electrostatics</b>"),"QLabel"))
 	lib.append(my_data("Eg","eV",_("Eg"),"QLineEdit"))
 	lib.append(my_data("Xi","eV",_("Xi"),"QLineEdit"))
+	lib.append(my_data("epsilonr","au",_("Relative permittivity"),"QLineEdit",min=1.0,max=10.0 ))
 
 	#materials database
 	#electrical constants
@@ -177,7 +241,7 @@ def build_token_lib():
 	lib.append(my_data("Xi0","eV",_("Xi_{0}"),"QLineEdit"))
 	lib.append(my_data("Eg1","eV",_("Eg_{1}"),"QLineEdit",hide_on_false_token=["material_blend"]))
 	lib.append(my_data("Xi1","eV",_("Xi_{1}"),"QLineEdit",hide_on_false_token=["material_blend"]))
-	lib.append(my_data("srh_bands","bands",_("Number of traps"),"QLineEdit"))
+
 	#thermal constants
 	lib.append(my_data("thermal_kl","W m^{-1} C^{-1}",_("Thermal conductivity"),"QLineEdit"))
 	lib.append(my_data("thermal_tau_e","s",_("Electron relaxation time"),"QLineEdit"))
@@ -220,7 +284,7 @@ def build_token_lib():
 	lib.append(my_data("dy_padding","m",_("dy padding"),"QLineEdit"))
 	lib.append(my_data("dz_padding","m",_("dz padding"),"QLineEdit"))
 
-
+	lib.append(my_data("shape_hidden","au",_("Hidden"),"gtkswitch"))
 	lib.append(my_data("shape_nx","au",_("Number of objects x"),"QLineEdit"))
 	lib.append(my_data("shape_ny","au",_("Number of objects y"),"QLineEdit"))
 	lib.append(my_data("shape_nz","au",_("Number of objects z"),"QLineEdit"))
@@ -239,6 +303,13 @@ def build_token_lib():
 
 	lib.append(my_data("interface_left_doping_enabled",_("True/False"),_("Interface doping LHS"),"gtkswitch"))
 	lib.append(my_data("interface_left_doping","m^{-3}",_("Doping LHS"),"QLineEdit", hide_on_false_token=["interface_left_doping_enabled"]))
+
+	lib.append(my_data("interface_tunnel_e",_("True/False"),_("Electron tunneling"),"gtkswitch"))
+	lib.append(my_data("interface_Ge","m^{3}s^{-1}",_("Electron tunneling (T)"),"QLineEdit", hide_on_false_token=["interface_tunnel_e"]))
+
+
+	lib.append(my_data("interface_tunnel_h",_("True/False"),_("Hole tunneling"),"gtkswitch"))
+	lib.append(my_data("interface_Gh","m^{3}s^{-1}",_("Hole tunneling (T)"),"QLineEdit", hide_on_false_token=["interface_tunnel_h"]))
 
 	lib.append(my_data("interface_right_doping_enabled",_("True/False"),_("Interface doping RHS"),"gtkswitch"))
 	lib.append(my_data("interface_right_doping","m^{-3}",_("Doping RHS"),"QLineEdit", hide_on_false_token=["interface_right_doping_enabled"]))
@@ -299,6 +370,11 @@ def build_token_lib():
 	lib.append(my_data("jv_Rshunt","V",_("JV curve shunt resistance"),"QParasitic"))
 	lib.append(my_data("jv_single_point",_("True/False"),_("Single point"),"gtkswitch"))
 	lib.append(my_data("jv_use_external_voltage_as_stop",_("True/False"),_("Use external\nvoltage as stop"),"gtkswitch"))
+	lib.append(my_data("text_output","",_("<b>Output</b>"),"QLabel"))
+	lib.append(my_data("dump_energy_space","au",_("Dump trap distribution"),"QComboBoxLang",defaults=[[("false"),_("False")],["energy_space_map",_("Energy space map")],["single_mesh_point",_("Single mesh point")]],hide_on_token_eq=[["dump_verbosity", -1],["dump_verbosity", 0]]))
+	lib.append(my_data("dump_x","au",_("x-position"),"QLineEdit",show_on_token_eq=[["dump_energy_space","single_mesh_point"]],hide_on_token_eq=[["dump_verbosity", -1],["dump_verbosity", 0]]))
+	lib.append(my_data("dump_y","au",_("y-position"),"QLineEdit",show_on_token_eq=[["dump_energy_space","single_mesh_point"]],hide_on_token_eq=[["dump_verbosity", -1],["dump_verbosity", 0]]))
+	lib.append(my_data("dump_z","au",_("z-position"),"QLineEdit",show_on_token_eq=[["dump_energy_space","single_mesh_point"]],hide_on_token_eq=[["dump_verbosity", -1],["dump_verbosity", 0]]))
 
 
 	#sim_info.dat (jv plugin)
@@ -415,6 +491,14 @@ def build_token_lib():
 	lib.append(my_data("image_ylen","pixels",_("y size"),"QLineEdit"))
 	lib.append(my_data("image_xlen","pixels",_("x size"),"QLineEdit"))
 
+	#xtal
+	lib.append(my_data("xtal_dr","pixels",_("dr"),"QLineEdit"))
+	lib.append(my_data("xtal_dx","pixels",_("dx"),"QLineEdit"))
+	lib.append(my_data("xtal_dy","pixels",_("dy"),"QLineEdit"))
+	lib.append(my_data("xtal_offset","pixels",_("offset"),"QLineEdit"))
+
+	#lens
+	lib.append(my_data("lens_type","au",_("Lens type"),"QComboBoxLang",defaults=[["convex",_("Convex")],["concave",_("Concave")]]))
 
 	#honeycomb
 	lib.append(my_data("shape_import_blur","pixels",_("pixels"),"QLineEdit"))
@@ -440,6 +524,7 @@ def build_token_lib():
 	lib.append(my_data("newton_min_itt","au",_("Newton minimum iterations"),"QLineEdit"))
 	lib.append(my_data("complex_solver_name",_("dll name"),_("Complex matrix solver to use"),"QLineEdit"))
 	lib.append(my_data("math_stop_on_convergence_problem",_("True/False"),_("Quit on convergence problem"),"gtkswitch"))
+	lib.append(my_data("math_stop_on_inverted_fermi_level",_("True/False"),_("Quit on inverted Fermi-level"),"gtkswitch"))
 
 	#pos
 	lib.append(my_data("pos_max_ittr","au",_("Poisson solver max itterations"),"QLineEdit"))
@@ -474,40 +559,40 @@ def build_token_lib():
 
 	#eqe.inp
 	lib.append(my_data("eqe_voltage","V",_("EQE Voltage"),"QLineEdit"))
-	lib.append(my_data("eqe_light_power","W m^{-2}",_("Optical power"),"QLineEdit"))
+	lib.append(my_data("eqe_light_power2","Suns",_("Optical power"),"QLineEdit"))
 
 	#thermal.inp
 	lib.append(my_data("thermal_model_type","au",_("Thermal model type"),"QComboBoxLang",defaults=[["thermal_hydrodynamic",_("Hydrodynamic")],["thermal_lattice",_("Lattice heat")]], hide_on_false_token=["thermal"]))
 
-	lib.append(my_data("Ty0","Kelvin",_("Device temperature at y_{min}"),"QLineEdit", hide_on_false_token=["#thermal"],  hide_on_token_eq=[["Ty0_boundry", "neumann"]]))
-	lib.append(my_data("Ty0_boundry","au",_("Boundary condition for y_{min}"),"QComboBoxLang",defaults=[["isothermal",_("Isothermal")],["neumann",_("Neumann (==0)")],["heatsink",_("Heatsink")]], hide_on_false_token=["#thermal"]))
+	lib.append(my_data("Ty0","Kelvin",_("Device temperature at y_{min}"),"QLineEdit",  hide_on_token_eq=[["Ty0_boundry", "neumann"]]))
+	lib.append(my_data("Ty0_boundry","au",_("Boundary condition for y_{min}"),"QComboBoxLang",defaults=[["isothermal",_("Isothermal")],["neumann",_("Neumann (==0)")],["heatsink",_("Heatsink")]]))
 	lib.append(my_data("heatsink_y0","W m^{-}K^{-1}",_("Conductivity of heat sink y_{min}"),"QLineEdit", hide_on_false_token=["thermal"],  hide_on_token_eq=[["Ty0_boundry", "neumann"],["Ty0_boundry", "isothermal"]]))
-	lib.append(my_data("heatsink_length_y0","m",_("Heat sink length y_{min}"),"QLineEdit", hide_on_false_token=["#thermal"],  hide_on_token_eq=[["Ty0_boundry", "neumann"],["Ty0_boundry", "isothermal"]]))
+	lib.append(my_data("heatsink_length_y0","m",_("Heat sink length y_{min}"),"QLineEdit",  hide_on_token_eq=[["Ty0_boundry", "neumann"],["Ty0_boundry", "isothermal"]]))
 
-	lib.append(my_data("Ty1","Kelvin",_("Device temperature at y_{max}"),"QLineEdit", hide_on_false_token=["#thermal"],  hide_on_token_eq=[["Ty1_boundry", "neumann"]]))
-	lib.append(my_data("Ty1_boundry","au",_("Boundary condition for y_{max}"),"QComboBoxLang",defaults=[["isothermal",_("Isothermal")],["neumann",_("Neumann (==0)")],["heatsink",_("Heatsink")]], hide_on_false_token=["#thermal"]))
+	lib.append(my_data("Ty1","Kelvin",_("Device temperature at y_{max}"),"QLineEdit",  hide_on_token_eq=[["Ty1_boundry", "neumann"]]))
+	lib.append(my_data("Ty1_boundry","au",_("Boundary condition for y_{max}"),"QComboBoxLang",defaults=[["isothermal",_("Isothermal")],["neumann",_("Neumann (==0)")],["heatsink",_("Heatsink")]]))
 	lib.append(my_data("heatsink_y1","W m^{-2}K^{-1}",_("Conductivity of heat sink y_{max}"),"QLineEdit", hide_on_false_token=["thermal"],  hide_on_token_eq=[["Ty1_boundry", "neumann"],["Ty1_boundry", "isothermal"]]))
-	lib.append(my_data("heatsink_length_y1","m",_("Heat sink length y_{max}"),"QLineEdit", hide_on_false_token=["#thermal"],  hide_on_token_eq=[["Ty1_boundry", "neumann"],["Ty1_boundry", "isothermal"]]))
+	lib.append(my_data("heatsink_length_y1","m",_("Heat sink length y_{max}"),"QLineEdit",  hide_on_token_eq=[["Ty1_boundry", "neumann"],["Ty1_boundry", "isothermal"]]))
 
-	lib.append(my_data("Tx0","Kelvin",_("Device temperature at x_{min}"),"QLineEdit", hide_on_false_token=["#thermal"],  hide_on_token_eq=[["Tx0_boundry", "neumann"]]))
-	lib.append(my_data("Tx0_boundry","au",_("Boundary condition for x_{min}"),"QComboBoxLang",defaults=[["isothermal",_("Isothermal")],["neumann",_("Neumann (==0)")],["heatsink",_("Heatsink")]], hide_on_false_token=["#thermal"]))
+	lib.append(my_data("Tx0","Kelvin",_("Device temperature at x_{min}"),"QLineEdit",  hide_on_token_eq=[["Tx0_boundry", "neumann"]]))
+	lib.append(my_data("Tx0_boundry","au",_("Boundary condition for x_{min}"),"QComboBoxLang",defaults=[["isothermal",_("Isothermal")],["neumann",_("Neumann (==0)")],["heatsink",_("Heatsink")]]))
 	lib.append(my_data("heatsink_x0","W m^{-2}K^{-1}",_("Conductivity of heat sink x_{min}"),"QLineEdit", hide_on_false_token=["thermal"],  hide_on_token_eq=[["Tx0_boundry", "neumann"],["Tx0_boundry", "isothermal"]]))
-	lib.append(my_data("heatsink_length_x0","m",_("Heat sink length x_{min}"),"QLineEdit", hide_on_false_token=["#thermal"],  hide_on_token_eq=[["Tx0_boundry", "neumann"],["Tx0_boundry", "isothermal"]]))
+	lib.append(my_data("heatsink_length_x0","m",_("Heat sink length x_{min}"),"QLineEdit",  hide_on_token_eq=[["Tx0_boundry", "neumann"],["Tx0_boundry", "isothermal"]]))
 
-	lib.append(my_data("Tx1","Kelvin",_("Device temperature at x_{max}"),"QLineEdit", hide_on_false_token=["#thermal"],  hide_on_token_eq=[["Tx1_boundry", "neumann"]]))
-	lib.append(my_data("Tx1_boundry","au",_("Boundary condition for x_{max}"),"QComboBoxLang",defaults=[["isothermal",_("Isothermal")],["neumann",_("Neumann (==0)")],["heatsink",_("Heatsink")]], hide_on_false_token=["#thermal"]))
+	lib.append(my_data("Tx1","Kelvin",_("Device temperature at x_{max}"),"QLineEdit",  hide_on_token_eq=[["Tx1_boundry", "neumann"]]))
+	lib.append(my_data("Tx1_boundry","au",_("Boundary condition for x_{max}"),"QComboBoxLang",defaults=[["isothermal",_("Isothermal")],["neumann",_("Neumann (==0)")],["heatsink",_("Heatsink")]]))
 	lib.append(my_data("heatsink_x1","W m^{-2}K^{-1}",_("Conductivity of heat sink x_{max}"),"QLineEdit", hide_on_false_token=["thermal"],  hide_on_token_eq=[["Tx1_boundry", "neumann"],["Tx1_boundry", "isothermal"]]))
-	lib.append(my_data("heatsink_length_x1","m",_("Heat sink length x_{max}"),"QLineEdit", hide_on_false_token=["#thermal"],  hide_on_token_eq=[["Tx1_boundry", "neumann"],["Tx1_boundry", "isothermal"]]))
+	lib.append(my_data("heatsink_length_x1","m",_("Heat sink length x_{max}"),"QLineEdit",  hide_on_token_eq=[["Tx1_boundry", "neumann"],["Tx1_boundry", "isothermal"]]))
 
-	lib.append(my_data("Tz0","Kelvin",_("Device temperature at z_{min}"),"QLineEdit", hide_on_false_token=["#thermal"],  hide_on_token_eq=[["Tz0_boundry", "neumann"]]))
-	lib.append(my_data("Tz0_boundry","au",_("Boundary condition for z_{min}"),"QComboBoxLang",defaults=[["isothermal",_("Isothermal")],["neumann",_("Neumann (==0)")],["heatsink",_("Heatsink")]], hide_on_false_token=["#thermal"]))
+	lib.append(my_data("Tz0","Kelvin",_("Device temperature at z_{min}"),"QLineEdit",  hide_on_token_eq=[["Tz0_boundry", "neumann"]]))
+	lib.append(my_data("Tz0_boundry","au",_("Boundary condition for z_{min}"),"QComboBoxLang",defaults=[["isothermal",_("Isothermal")],["neumann",_("Neumann (==0)")],["heatsink",_("Heatsink")]]))
 	lib.append(my_data("heatsink_z0","W m^{-2}K^{-1}",_("Conductivity of heat sink z_{min}"),"QLineEdit", hide_on_false_token=["thermal"],  hide_on_token_eq=[["Tz0_boundry", "neumann"],["Tz0_boundry", "isothermal"]]))
-	lib.append(my_data("heatsink_length_z0","m",_("Heat sink length z_{min}"),"QLineEdit", hide_on_false_token=["#thermal"],  hide_on_token_eq=[["Tz0_boundry", "neumann"],["Tz0_boundry", "isothermal"]]))
+	lib.append(my_data("heatsink_length_z0","m",_("Heat sink length z_{min}"),"QLineEdit",  hide_on_token_eq=[["Tz0_boundry", "neumann"],["Tz0_boundry", "isothermal"]]))
 
-	lib.append(my_data("Tz1","Kelvin",_("Device temperature at z_{max}"),"QLineEdit", hide_on_false_token=["#thermal"],  hide_on_token_eq=[["Tz1_boundry", "neumann"]]))
-	lib.append(my_data("Tz1_boundry","au",_("Boundary condition for z_{max}"),"QComboBoxLang",defaults=[["isothermal",_("Isothermal")],["neumann",_("Neumann (==0)")],["heatsink",_("Heatsink")]], hide_on_false_token=["#thermal"]))
+	lib.append(my_data("Tz1","Kelvin",_("Device temperature at z_{max}"),"QLineEdit",  hide_on_token_eq=[["Tz1_boundry", "neumann"]]))
+	lib.append(my_data("Tz1_boundry","au",_("Boundary condition for z_{max}"),"QComboBoxLang",defaults=[["isothermal",_("Isothermal")],["neumann",_("Neumann (==0)")],["heatsink",_("Heatsink")]]))
 	lib.append(my_data("heatsink_z1","W m^{-2}K^{-1}",_("Conductivity of heat sink z_{max}"),"QLineEdit", hide_on_false_token=["thermal"],  hide_on_token_eq=[["Tz1_boundry", "neumann"],["Tz1_boundry", "isothermal"]]))
-	lib.append(my_data("heatsink_length_z1","m",_("Heat sink length z_{max}"),"QLineEdit", hide_on_false_token=["#thermal"],  hide_on_token_eq=[["Tz1_boundry", "neumann"],["Tz1_boundry", "isothermal"]]))
+	lib.append(my_data("heatsink_length_z1","m",_("Heat sink length z_{max}"),"QLineEdit",  hide_on_token_eq=[["Tz1_boundry", "neumann"],["Tz1_boundry", "isothermal"]]))
 
 
 	lib.append(my_data("thermal_l",_("True/False"),_("Lattice heat model"),"gtkswitch",hide_on_token_eq=[["thermal_model_type", "thermal_lattice"]], hide_on_false_token=["thermal"]))
@@ -517,8 +602,8 @@ def build_token_lib():
 	lib.append(my_data("thermal_max_ittr","au",_("Max thermal solver iterations"),"QLineEdit"))
 	lib.append(my_data("thermal_min_error","au",_("Desired thermal error"),"QLineEdit"))
 
-	lib.append(my_data("Tliso",_("True/False"),_("Isothermal boundary on left"),"gtkswitch", hide_on_false_token=["#thermal"]))
-	lib.append(my_data("Triso",_("True/False"),_("Isothermal boundary on right"),"gtkswitch", hide_on_false_token=["#thermal"]))
+	lib.append(my_data("Tliso",_("True/False"),_("Isothermal boundary on left"),"gtkswitch"))
+	lib.append(my_data("Triso",_("True/False"),_("Isothermal boundary on right"),"gtkswitch"))
 
 	#electrical.inp
 	lib.append(my_data("electrical_y0_boundry","au",_("Boundary condition for y_{min}"),"QComboBoxLang",defaults=[["neumann",_("Neumann (==0)")],["interpolate",_("Interpolate")],["constant",_("Constant")]]))
@@ -838,11 +923,27 @@ def build_token_lib():
 
 	#fdtd.inp
 	lib.append(my_data("use_gpu","au",_("OpenCL GPU acceleration"),"gtkswitch"))
-	lib.append(my_data("fdtd_lambda_start","m",_("Start wavelength"),"QLineEdit"))
-	lib.append(my_data("fdtd_lambda_stop","m",_("Stop wavelength"),"QLineEdit"))
-	lib.append(my_data("fdtd_lambda_points","m",_("Wavelength steps"),"QLineEdit"))
-	lib.append(my_data("fdtd_xzy","au",_("FDTD Slice"),"QComboBoxLang",defaults=[["zy",_("zy")],["zx",_("zx")],["xy",_("xy")]]))
+	lib.append(my_data("text_excitation","",_("<b>Excitation type</b>"),"QLabel"))
+	lib.append(my_data("fdtd_excitation_type","au",_("FDTD Slice"),"QComboBoxLang",defaults=[["fdtd_sin",_("Sin")],["fdtd_pulse",_("Pulse")]]))
+	lib.append(my_data("fdtd_lambda_start","m",_("Start wavelength"),"QLineEdit",show_on_token_eq=[["fdtd_excitation_type","fdtd_sin"]]))
+	lib.append(my_data("fdtd_lambda_stop","m",_("Stop wavelength"),"QLineEdit",show_on_token_eq=[["fdtd_excitation_type","fdtd_sin"]]))
+	lib.append(my_data("fdtd_lambda_points","m",_("Wavelength steps"),"QLineEdit",show_on_token_eq=[["fdtd_excitation_type","fdtd_sin"]]))
+	lib.append(my_data("fdtd_pulse_length","steps",_("Pulse length"),"QLineEdit",show_on_token_eq=[["fdtd_excitation_type","fdtd_pulse"]]))
+	lib.append(my_data("fdtd_excite_Ex","steps",_("Excite Ex"),"gtkswitch"))
+	lib.append(my_data("fdtd_excite_Ey","steps",_("Excite Ey"),"gtkswitch"))
+	lib.append(my_data("fdtd_excite_Ez","steps",_("Excite Ez"),"gtkswitch"))
 
+
+	lib.append(my_data("text_fdtd_mesh","",_("<b>FDTD mesh</b>"),"QLabel"))
+	lib.append(my_data("fdtd_xzy","au",_("FDTD Slice"),"QComboBoxLang",defaults=[["zy",_("zy")],["zx",_("zx")],["xy",_("xy")]]))
+	lib.append(my_data("fdtd_zlen","m",_("Mesh points z"),"QLineEdit",hide_on_token_eq=[["fdtd_xzy","xy"]]))
+	lib.append(my_data("fdtd_xlen","m",_("Mesh points x"),"QLineEdit",hide_on_token_eq=[["fdtd_xzy","zy"]]))
+	lib.append(my_data("fdtd_ylen","m",_("Mesh points y"),"QLineEdit",hide_on_token_eq=[["fdtd_xzy","zx"]]))
+	lib.append(my_data("fdtd_use_gnuplot","au",_("Use gnuplot to visualize"),"gtkswitch"))
+
+	lib.append(my_data("text_fdtd_time","",_("<b>Simulation time</b>"),"QLabel"))
+	lib.append(my_data("fdtd_max_time","s",_("Stop time"),"QLineEdit"))
+	lib.append(my_data("fdtd_max_steps","m",_("Max steps"),"QLineEdit"))
 
 	#any files
 	lib.append(my_data("dump_verbosity","au",_("Output verbosity to disk"),"QComboBoxLang",defaults=[["-1",_("Nothing")],["0",_("Key results")],[("1"),_("Write everything to disk")],[("2"),_("Write everything to disk every 2nd step")],[("5"),_("Write everything to disk every 5th step")],[("10"),_("Write everything to disk every 10th step")]]))

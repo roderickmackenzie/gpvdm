@@ -67,6 +67,18 @@ void dos_init(struct dos *mydos)
 	mydos->mux=-1;
 	mydos->muy=-1;
 
+	//Auger
+	mydos->auger_enabled=FALSE;
+	mydos->Cn=-1.0;
+	mydos->Cp=-1.0;
+
+	//SS SRH
+	mydos->ss_srh_enabled=FALSE;
+	mydos->n1=-1.0;
+	mydos->p1=-1.0;
+	mydos->tau_n=-1.0;
+	mydos->tau_p=-1.0;
+
 	mydos->B=-1;
 
 	mydos->mobility_symmetric=-1;

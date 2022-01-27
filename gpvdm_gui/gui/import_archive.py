@@ -31,21 +31,15 @@ from scans_io import scans_io
 
 from util import copy_scan_dir
 
-from util import gpvdm_delete_file
-
 
 from util_zip import zip_lsdir
-from inp import inp_issequential_file
 from util_zip import zip_remove_file
 from util_zip import archive_copy_file
 from util_zip import archive_isfile
 from util_zip import read_lines_from_file
 
 from cal_path import get_materials_path
-from util_zip import archive_compress
 from util_zip import extract_file_from_archive
-
-from cal_path import get_default_material_path
 
 from progress_class import progress_class
 from process_events import process_events
@@ -108,8 +102,6 @@ def merge_archives(src_archive,dest_archive,only_over_write):
 
 	process_events()
 
-#	src_dir=os.path.dirname(src_archive)
-#	dest_dir=os.path.dirname(dest_archive)
 	dest_path=os.path.dirname(dest_archive)
 	template_archive=gpvdm_paths.get_inp_template_path()
 
@@ -155,7 +147,6 @@ def merge_archives(src_archive,dest_archive,only_over_write):
 			if ls[i].startswith(scan_dirs[ii])==True:
 				#print("Try to read",src_archive,ls[i])
 				extract_file_from_archive(dest_path,src_archive,ls[i])
-	print("search",scan_dirs)
 
 	progress_window.stop()
 
@@ -180,10 +171,6 @@ def import_scan_dirs(dest_dir,src_dir):
 	sim_dirs=scans.get_scan_dirs()
 	for my_file in sim_dirs:
 		dest=os.path.join(dest_dir,os.path.basename(my_file))
-		print("copy scan dir",my_file,"to",dest)
-
-		if os.path.exists(dest):
-			gpvdm_delete_file(dest)
 
 		copy_scan_dir(dest,my_file)
 

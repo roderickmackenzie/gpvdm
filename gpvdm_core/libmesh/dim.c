@@ -46,20 +46,20 @@ void dim_init_xyz(struct dimensions *dim,char xyz)
 {
 	if (xyz=='x')
 	{
-		dim->xmesh= NULL;
-		dim->dx= NULL;
+		dim->x= NULL;
+		dim->dX= NULL;
 		dim->xlen=-1;
 	}else
 	if (xyz=='y')
 	{
-		dim->ymesh= NULL;
-		dim->dy= NULL;
+		dim->y= NULL;
+		dim->dY= NULL;
 		dim->ylen=-1;
 	}else
 	if (xyz=='z')
 	{
-		dim->zmesh= NULL;
-		dim->dz= NULL;
+		dim->z= NULL;
+		dim->dZ= NULL;
 		dim->zlen=-1;
 	}
 
@@ -77,28 +77,28 @@ void dim_free_xyz(struct dimensions *dim,char xyz)
 {
 	if (xyz=='x')
 	{
-		if (dim->xmesh!=NULL)
+		if (dim->x!=NULL)
 		{
-			free(dim->xmesh);
-			free(dim->dx);
+			free(dim->x);
+			free(dim->dX);
 			dim_init_xyz(dim,'x');
 		}
 	}else
 	if (xyz=='y')
 	{
-		if (dim->ymesh!=NULL)
+		if (dim->y!=NULL)
 		{
-			free(dim->ymesh);
-			free(dim->dy);
+			free(dim->y);
+			free(dim->dY);
 			dim_init_xyz(dim,'y');
 		}
 	}else
 	if (xyz=='z')
 	{
-		if (dim->zmesh!=NULL)
+		if (dim->z!=NULL)
 		{
-			free(dim->zmesh);
-			free(dim->dz);
+			free(dim->z);
+			free(dim->dZ);
 			dim_init_xyz(dim,'z');
 		}
 	}
@@ -113,40 +113,40 @@ void dim_free(struct dimensions *dim)
 	dim_init(dim);
 }
 
-void dim_alloc_xyz(struct dimensions *dim,char xyz)
+void dim_malloc_xyz(struct dimensions *dim,char xyz)
 {
 
 	if (xyz=='x')
 	{
 		if (dim->xlen>0)
 		{
-			dim->xmesh = (gdouble *) malloc(dim->xlen * sizeof(gdouble));
-			memset(dim->xmesh, 0, dim->xlen * sizeof(gdouble));
+			dim->x = (gdouble *) malloc(dim->xlen * sizeof(gdouble));
+			memset(dim->x, 0, dim->xlen * sizeof(gdouble));
 
-			dim->dx = (gdouble *) malloc(dim->xlen * sizeof(gdouble));
-			memset(dim->dx, 0, dim->xlen * sizeof(gdouble));
+			dim->dX = (gdouble *) malloc(dim->xlen * sizeof(gdouble));
+			memset(dim->dX, 0, dim->xlen * sizeof(gdouble));
 		}
 	}else
 	if (xyz=='y')
 	{
 		if (dim->ylen>0)
 		{
-			dim->ymesh = (gdouble *) malloc(dim->ylen * sizeof(gdouble));
-			memset(dim->ymesh, 0, dim->ylen * sizeof(gdouble));
+			dim->y = (gdouble *) malloc(dim->ylen * sizeof(gdouble));
+			memset(dim->y, 0, dim->ylen * sizeof(gdouble));
 
-			dim->dy = (gdouble *) malloc(dim->ylen * sizeof(gdouble));
-			memset(dim->dy, 0, dim->ylen * sizeof(gdouble));
+			dim->dY = (gdouble *) malloc(dim->ylen * sizeof(gdouble));
+			memset(dim->dY, 0, dim->ylen * sizeof(gdouble));
 		}
 	}else
 	if (xyz=='z')
 	{
 		if (dim->zlen>0)
 		{
-			dim->zmesh = (gdouble *) malloc(dim->zlen * sizeof(gdouble));
-			memset(dim->zmesh, 0, dim->zlen * sizeof(gdouble));
+			dim->z = (gdouble *) malloc(dim->zlen * sizeof(gdouble));
+			memset(dim->z, 0, dim->zlen * sizeof(gdouble));
 
-			dim->dz = (gdouble *) malloc(dim->zlen * sizeof(gdouble));
-			memset(dim->dz, 0, dim->zlen * sizeof(gdouble));
+			dim->dZ = (gdouble *) malloc(dim->zlen * sizeof(gdouble));
+			memset(dim->dZ, 0, dim->zlen * sizeof(gdouble));
 		}
 	}
 
@@ -162,7 +162,7 @@ void dim_set_simple_mesh_x(struct dimensions *dim, long double start, long doubl
 
 	for (x=0;x<dim->xlen;x++)
 	{
-		dim->xmesh[x]=xpos;
+		dim->x[x]=xpos;
 		xpos+=dx;
 	}
 }
@@ -175,16 +175,16 @@ void dim_set_simple_mesh_z(struct dimensions *dim, long double start, long doubl
 
 	for (z=0;z<dim->zlen;z++)
 	{
-		dim->zmesh[z]=zpos;
+		dim->z[z]=zpos;
 		zpos+=dz;
 	}
 }
 
-void dim_alloc(struct dimensions *dim)
+void dim_malloc(struct dimensions *dim)
 {
-	dim_alloc_xyz(dim,'x');
-	dim_alloc_xyz(dim,'y');
-	dim_alloc_xyz(dim,'z');
+	dim_malloc_xyz(dim,'x');
+	dim_malloc_xyz(dim,'y');
+	dim_malloc_xyz(dim,'z');
 
 }
 
@@ -211,24 +211,24 @@ void dim_cpy(struct dimensions *out,struct dimensions *in)
 	out->ylen=in->ylen;
 	out->zlen=in->zlen;
 
-	dim_alloc(out);
+	dim_malloc(out);
 
 	for (x=0;x<out->xlen;x++)
 	{
-		out->xmesh[x]=in->xmesh[x];
-		out->dx[x]=in->dx[x];
+		out->x[x]=in->x[x];
+		out->dX[x]=in->dX[x];
 	}
 
 	for (y=0;y<out->ylen;y++)
 	{
-		out->ymesh[y]=in->ymesh[y];
-		out->dy[y]=in->dy[y];
+		out->y[y]=in->y[y];
+		out->dY[y]=in->dY[y];
 	}
 
 	for (z=0;z<out->zlen;z++)
 	{
-		out->zmesh[z]=in->zmesh[z];
-		out->dz[z]=in->dz[z];
+		out->z[z]=in->z[z];
+		out->dZ[z]=in->dZ[z];
 	}
 
 	out->srh_bands=in->srh_bands;
@@ -240,9 +240,29 @@ void dim_info_to_buf(struct dat_file *buf,struct dimensions *dim)
 	long double mul_y=0.0;
 	long double mul_z=0.0;
 
-	get_meter_dim(buf->x_units,&mul_x,dim->xmesh[dim->xlen-1]);
-	get_meter_dim(buf->y_units,&mul_y,dim->ymesh[dim->ylen-1]);
-	get_meter_dim(buf->z_units,&mul_z,dim->zmesh[dim->zlen-1]);
+	get_meter_dim(buf->x_units,&mul_x,dim->x[dim->xlen-1]);
+	get_meter_dim(buf->y_units,&mul_y,dim->y[dim->ylen-1]);
+	get_meter_dim(buf->z_units,&mul_z,dim->z[dim->zlen-1]);
+
+	buf->x=dim->xlen;
+	buf->y=dim->ylen;
+	buf->z=dim->zlen;
+
+	if (dim->zlen==1)
+	{
+		buf->z_offset=dim->z[0];
+	}
+
+	if (dim->xlen==1)
+	{
+		buf->x_offset=dim->x[0];
+	}
+
+	if (dim->ylen==1)
+	{
+		buf->y_offset=dim->y[0];
+	}
+
 	buf->y_mul=mul_y;
 	buf->x_mul=mul_x;
 	buf->z_mul=mul_z;
@@ -250,10 +270,6 @@ void dim_info_to_buf(struct dat_file *buf,struct dimensions *dim)
 	strcpy(buf->x_label,_("x-position"));
 	strcpy(buf->y_label,_("y-position"));
 	strcpy(buf->z_label,_("z-position"));
-
-	buf->x=dim->xlen;
-	buf->y=dim->ylen;
-	buf->z=dim->zlen;
 
 	buf->logscale_x=0;
 	buf->logscale_y=0;
@@ -266,6 +282,14 @@ void dim_info_to_buf(struct dat_file *buf,struct dimensions *dim)
 	{
 		strcpy(buf->type,"3d");
 	}else
+	if ((dim->zlen>1)&&(dim->xlen>1))
+	{
+		strcpy(buf->type,"3d");
+	}else
+	if ((dim->zlen>1)&&(dim->ylen>1))
+	{
+		strcpy(buf->type,"3d");
+	}else
 	{
 		strcpy(buf->type,"xy");
 	}
@@ -275,13 +299,13 @@ void dim_info_to_buf(struct dat_file *buf,struct dimensions *dim)
 
 long double dim_dl_xyz(struct dimensions *dim, int x0, int y0, int z0,int x1,int y1, int z1)
 {
-	long double pos_x0=dim->xmesh[x0];
-	long double pos_y0=dim->ymesh[y0];
-	long double pos_z0=dim->zmesh[z0];
+	long double pos_x0=dim->x[x0];
+	long double pos_y0=dim->y[y0];
+	long double pos_z0=dim->z[z0];
 
-	long double pos_x1=dim->xmesh[x1];
-	long double pos_y1=dim->ymesh[y1];
-	long double pos_z1=dim->zmesh[z1];
+	long double pos_x1=dim->x[x1];
+	long double pos_y1=dim->y[y1];
+	long double pos_z1=dim->z[z1];
 
 	return sqrtl(powl(pos_x0-pos_x1,2.0)+powl(pos_y0-pos_y1,2.0)+powl(pos_z0-pos_z1,2.0));
 }

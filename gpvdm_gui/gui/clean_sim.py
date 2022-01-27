@@ -26,9 +26,8 @@
 
 #import sys
 import os
-import shutil
 from cal_path import get_sim_path
-from util import gpvdm_delete_file
+from safe_delete import gpvdm_delete_file
 
 #import glob
 
@@ -71,23 +70,23 @@ def clean_sim_dir(path,clean_exp_data=True):
 	del_file=os.path.join(get_sim_path(),"pub")
 	if os.path.isdir(del_file):
 		print("Deleteing "+del_file)
-		shutil.rmtree(del_file)
+		gpvdm_delete_file(del_file,allow_dir_removal=True)
 
 	del_file=os.path.join(get_sim_path(),"dynamic")
 	if os.path.isdir(del_file):
 		print("Deleteing "+del_file)
-		shutil.rmtree(del_file)
+		gpvdm_delete_file(del_file,allow_dir_removal=True)
 
 	del_file=os.path.join(get_sim_path(),"snapshots")
 	if os.path.isdir(del_file):
 		print("Deleteing "+del_file)
-		shutil.rmtree(del_file)
+		gpvdm_delete_file(del_file,allow_dir_removal=True)
 
 	files = os.listdir(get_sim_path())
 	for file in files:
 		if file.startswith("snapshots_"):
 			print("deleting dir",file)
-			shutil.rmtree(file)
+			gpvdm_delete_file(file,allow_dir_removal=True)
 
 	files = os.listdir(get_sim_path())
 	for file in files:
@@ -125,7 +124,7 @@ def delete_files(dirs_to_del,parent_window=None):
 		process_events()
 	
 	for i in range(0, len(dirs_to_del)):
-		gpvdm_delete_file(dirs_to_del[i])
+		gpvdm_delete_file(dirs_to_del[i],allow_dir_removal=True)
 		if parent_window!=None:
 			progress_window.set_fraction(float(i)/float(len(dirs_to_del)))
 			progress_window.set_text("Deleting"+dirs_to_del[i])

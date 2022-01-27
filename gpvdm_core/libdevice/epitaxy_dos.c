@@ -60,6 +60,8 @@ void epitaxy_load_dos_files(struct simulation *sim,struct device *dev, struct ep
 		return;
 	}
 
+	dev->auger_enabled=FALSE;
+	dev->ss_srh_enabled=FALSE;
 	for (l=0;l<epi->layers;l++)
 	{
 		layer=&(epi->layer[l]);
@@ -73,6 +75,16 @@ void epitaxy_load_dos_files(struct simulation *sim,struct device *dev, struct ep
 		{
 			printf("Loading %d\n",pos);
 			load_dos(sim,dev,s,json_dos);
+			if (s->dosn.auger_enabled==TRUE)
+			{
+				dev->auger_enabled=TRUE;
+			}
+
+			if (s->dosn.ss_srh_enabled==TRUE)
+			{
+				dev->ss_srh_enabled=TRUE;
+			}
+
 			pos++;
 		}
 		
@@ -97,6 +109,16 @@ void epitaxy_load_dos_files(struct simulation *sim,struct device *dev, struct ep
 			if (enabled==TRUE)
 			{
 				load_dos(sim,dev,s,json_shape_dos);
+				if (s->dosn.auger_enabled==TRUE)
+				{
+					dev->auger_enabled=TRUE;
+				}
+
+				if (s->dosn.ss_srh_enabled==TRUE)
+				{
+					dev->ss_srh_enabled=TRUE;
+				}
+
 				pos++;
 			}
 

@@ -2,28 +2,28 @@
 // General-purpose Photovoltaic Device Model gpvdm.com - a drift diffusion
 // base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solarcells.
 // The model can simulate OLEDs, Perovskite cells, and OFETs.
-// 
+//
 // Copyright 2008-2022 Roderick C. I. MacKenzie https://www.gpvdm.com
 // r.c.i.mackenzie at googlemail.com
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+// the rights to use, copy, modify, merge, publish, distribute, sublicense,
 // and/or sell copies of the Software, and to permit persons to whom the
 // Software is furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included
 // in all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 // OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// 
+//
 
 /** @file mesh.c
 @brief This builds the electrical mesh
@@ -361,7 +361,7 @@ void mesh_load_file(struct simulation * sim, struct mesh *in,struct json_obj *me
 			ewe(sim,"Object light not found\n");
 		}
 		mesh_layer_init(sim, &(in->layers[i]));
-		
+
 		json_get_long_double(sim, json_seg, &(in->layers[i].len),"len");
 		json_get_int(sim, json_seg, &(in->layers[i].n_points),"points");
 
@@ -493,23 +493,23 @@ long double mesh_to_dim(struct simulation *sim,struct dimensions *dim, struct me
 	if (xyz=='x')
 	{
 		dim->xlen=in->tot_points;
-		dim_alloc_xyz(dim,'x');
-		mesh=dim->xmesh;
-		dmesh=dim->dx;
+		dim_malloc_xyz(dim,'x');
+		mesh=dim->x;
+		dmesh=dim->dX;
 	}else
 	if (xyz=='y')
 	{
 		dim->ylen=in->tot_points;
-		dim_alloc_xyz(dim,'y');
-		mesh=dim->ymesh;
-		dmesh=dim->dy;
+		dim_malloc_xyz(dim,'y');
+		mesh=dim->y;
+		dmesh=dim->dY;
 	}else
 	if (xyz=='z')
 	{
 		dim->zlen=in->tot_points;
-		dim_alloc_xyz(dim,'z');
-		mesh=dim->zmesh;
-		dmesh=dim->dz;
+		dim_malloc_xyz(dim,'z');
+		mesh=dim->z;
+		dmesh=dim->dZ;
 	}
 
 	ret_len=mesh_to_lin_array(sim,mesh, dmesh,in);
@@ -518,44 +518,6 @@ long double mesh_to_dim(struct simulation *sim,struct dimensions *dim, struct me
 
 }
 
-long double mesh_to_dim_heat(struct simulation *sim,struct dim_heat *dim, struct mesh *in,char xyz)
-{
-
-	long double *mesh;
-	long double *dmesh;
-	long double ret_len=0.0;
-
-	dim_heat_free_xyz(dim,xyz);
-
-	if (xyz=='x')
-	{
-		dim->xlen=in->tot_points;
-		dim_heat_malloc_xyz(dim,'x');
-		mesh=dim->x;
-		dmesh=dim->dx;
-	}else
-	if (xyz=='y')
-	{
-		dim->ylen=in->tot_points;
-		dim_heat_malloc_xyz(dim,'y');
-		mesh=dim->y;
-		dmesh=dim->dy;
-	}else
-	if (xyz=='z')
-	{
-		dim->zlen=in->tot_points;
-		dim_heat_malloc_xyz(dim,'z');
-		mesh=dim->z;
-		dmesh=dim->dz;
-	}
-
-	//printf("%d %d %d %c\n",dim->zlen,dim->xlen,dim->ylen,xyz);
-	//getchar();
-	ret_len=mesh_to_lin_array(sim,mesh, dmesh, in);
-
-	return ret_len;
-
-}
 
 long double mesh_to_dim_based_on_epitaxy(struct simulation *sim,struct dimensions *dim,struct device *in)
 {
@@ -563,15 +525,15 @@ long double mesh_to_dim_based_on_epitaxy(struct simulation *sim,struct dimension
 	struct epitaxy *epi=&(in->my_epitaxy);
 
 	dim->ylen=epi->layers+1;
-	dim_alloc_xyz(dim,'y');
+	dim_malloc_xyz(dim,'y');
 
 	for (y=0;y<epi->layers;y++)
 	{
-		dim->ymesh[y]=epi->layer[y].y_start;
-		//printf("%Le\n",dim->ymesh[y]);
+		dim->y[y]=epi->layer[y].y_start;
+		//printf("%Le\n",dim->y[y]);
 	}
 	//getchar();
-	dim->ymesh[epi->layers]=epi->layer[epi->layers-1].y_stop;
+	dim->y[epi->layers]=epi->layer[epi->layers-1].y_stop;
 
 	return epi->layer[epi->layers-1].y_stop-epi->layer[0].y_start;
 }
@@ -582,7 +544,7 @@ void mesh_dump(struct simulation *sim,struct dimensions *dim)
 
 	for (x=0;x<dim->xlen;x++)
 	{
-		printf("%Le\n",dim->xmesh[x]);
+		printf("%Le\n",dim->x[x]);
 	}
 }
 
@@ -592,7 +554,7 @@ void mesh_dump_y(struct simulation *sim,struct dimensions *dim)
 
 	for (y=0;y<dim->ylen;y++)
 	{
-		printf("%d %Le %Le\n",y,dim->ymesh[y],dim->dy[y]);
+		printf("%d %Le %Le\n",y,dim->y[y],dim->dY[y]);
 	}
 }
 
@@ -634,7 +596,7 @@ void mesh_numerate_points(struct simulation *sim,struct device *in)
 	//len=0.0;
 	for (y=0;y<dim->ylen;y++)
 	{
-		dpos=dim->ymesh[y];
+		dpos=dim->y[y];
 		//in->imat[0][0][y]=epitaxy_get_electrical_material_layer(&(in->my_epitaxy),dpos);
 		in->imat_epitaxy[0][0][y]=epitaxy_get_layer(&(in->my_epitaxy),in->my_epitaxy.device_start+dpos);
 		//epitaxy_get_epitaxy_layer_using_electrical_pos(&(in->my_epitaxy),dpos);
@@ -645,7 +607,7 @@ void mesh_numerate_points(struct simulation *sim,struct device *in)
 			{
 				//in->imat[z][x][y]=in->imat[0][0][y];
 				in->imat_epitaxy[z][x][y]=in->imat_epitaxy[0][0][y];
-				//shape=shape_get_index(sim,&(in->my_epitaxy),dim->xmesh[x],dim->ymesh[y],dim->zmesh[z]);
+				//shape=shape_get_index(sim,&(in->my_epitaxy),dim->xmesh[x],dim->y[y],dim->zmesh[z]);
 				//if (shape!=-1)
 				//{
 				//	in->imat[z][x][y]=shape;
@@ -672,13 +634,13 @@ for (i=0;i<dim->ylen;i++)
 {
 	if ((in->imat_epitaxy[0][0][i]!=cur_i)||(i==(dim->ylen-1)))
 	{
-		in->layer_stop[cur_i]=dim->ymesh[i-1];//+(dim->ymesh[i]-dim->ymesh[i-1])/2;
+		in->layer_stop[cur_i]=dim->y[i-1];//+(dim->y[i]-dim->y[i-1])/2;
 		if (i==(dim->ylen-1))
 		{
 			break;
 		}
 		cur_i=in->imat_epitaxy[0][0][i];
-		in->layer_start[cur_i]=dim->ymesh[i];//-(dim->ymesh[i]-dim->ymesh[i-1])/2;
+		in->layer_start[cur_i]=dim->y[i];//-(dim->y[i]-dim->y[i-1])/2;
 	}
 //printf_log("%d\n",in->imat_epitaxy[i]);
 }

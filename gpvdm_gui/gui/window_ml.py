@@ -155,32 +155,38 @@ class window_ml(experiment):
 				random_file_name=codecs.encode(os.urandom(int(16 / 2)), 'hex').decode()
 				cur_dir=os.path.join(self.ml_dir,random_file_name)
 
+				#build random vars for all sims
+				random_vars=[]
+				for random_item in self.obj.ml_random.segments:
+					if random_item.random_var_enabled:
+						if random_item.random_distribution=="log":
+							val=float(random_log(random_item.min,random_item.max))
+						else:
+							val=random.uniform(random_item.min, random_item.max)
+						random_vars.append([random_item.json_var,val])
+
 				for sim in self.obj.ml_sims.segments:
-					sub_sim_dir=os.path.join(cur_dir,sim.sim_name)
-					clone_sim_dir(sub_sim_dir,gpvdm_paths.get_sim_path())
-					clean_sim_dir(sub_sim_dir)
+					if sim.ml_sim_enabled==True:
+						sub_sim_dir=os.path.join(cur_dir,sim.sim_name)
+						clone_sim_dir(sub_sim_dir,gpvdm_paths.get_sim_path())
+						clean_sim_dir(sub_sim_dir)
 
-					data=all_gpvdm_data()
-					data.load(os.path.join(sub_sim_dir,"sim.json"))
+						data=all_gpvdm_data()
+						data.load(os.path.join(sub_sim_dir,"sim.json"))
 
-					for patch_item in self.obj.ml_patch.segments:
-						if patch_item.ml_patch_enabled:
-							data.set_val(patch_item.json_var,patch_item.ml_patch_val)
+						for patch_item in self.obj.ml_patch.segments:
+							if patch_item.ml_patch_enabled:
+								data.set_val(patch_item.json_var,patch_item.ml_patch_val)
 
-					for patch_item in sim.ml_patch.segments:
-						if patch_item.ml_patch_enabled:
-							data.set_val(patch_item.json_var,patch_item.ml_patch_val)
+						for patch_item in sim.ml_patch.segments:
+							if patch_item.ml_patch_enabled:
+								data.set_val(patch_item.json_var,patch_item.ml_patch_val)
 
-					for random_item in self.obj.ml_random.segments:
-						if random_item.random_var_enabled:
-							if random_item.random_distribution=="log":
-								val=float(random_log(random_item.min,random_item.max))
-							else:
-								val=random.uniform(random_item.min, random_item.max)
-							data.set_val(random_item.json_var,val)
-							
-					data.save(do_tab=False)
-					self.my_server.add_job(sub_sim_dir,"")
+						for random_item in random_vars:
+							data.set_val(random_item[0],random_item[1])
+								
+						data.save(do_tab=False)
+						self.my_server.add_job(sub_sim_dir,"")
 
 				self.progress_window.set_fraction(float(n)/float(self.obj.ml_config.ml_sims_per_archive))
 				self.progress_window.set_text(_("Building simulations: ")+str(n)+"/"+str(self.obj.ml_config.ml_sims_per_archive))

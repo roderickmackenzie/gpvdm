@@ -86,6 +86,7 @@ void epi_layer_init(struct simulation *sim,struct epi_layer *layer)
 	layer->electrical_layer=-1;
 
 	//strcpy(layer->dos_file,"none");
+	//Interface
 	layer->layer_type=-1;
 	layer->interface_type=0;
 	layer->interface_R=0.0;
@@ -95,6 +96,13 @@ void epi_layer_init(struct simulation *sim,struct epi_layer *layer)
 
 	layer->interface_right_doping_enabled=-1;
 	layer->interface_right_doping=0.0;
+
+	//Tunnel
+	layer->interface_tunnel_e=-1;
+	layer->interface_Ge=0.0;
+
+	layer->interface_tunnel_h=-1;
+	layer->interface_Gh=0.0;
 
 	layer->rgb[0]=-1;
 	layer->rgb[1]=-1;

@@ -105,7 +105,7 @@ void epitaxy_load_pl_file(struct simulation *sim, struct epi_layer *layer,struct
 		strcpy(layer->pl_spectrum_file,"none");
 	}
 	layer->photon_extract_eff=NULL;
-	layer->avg_photon_extract_eff=0.0;
+	layer->avg_photon_extract_eff=1.0;
 
 }
 
@@ -369,7 +369,7 @@ if ((dim->xlen==1)&&(dim->zlen==1))
 					for (c=0;c<dev->ncontacts;c++)
 					{
 						cont=&(dev->contacts[c]);
-						in_shape=shape_in_shape(sim,&(cont->shape),dim->zmesh[z],dim->xmesh[x],y_pos);
+						in_shape=shape_in_shape(sim,&(cont->shape),dim->z[z],dim->x[x],y_pos);
 						if (in_shape==0)
 						{
 							//dev->mask[z][x][y]=TRUE;

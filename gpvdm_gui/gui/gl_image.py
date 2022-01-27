@@ -88,7 +88,7 @@ class gl_image():
 	def __init__(self):
 		self.image_lib=[]
 
-	def text_clear_lib(self):
+	def clear_lib(self):
 		self.image_lib=[]
 
 	def get_image(self,image_path):
@@ -101,44 +101,66 @@ class gl_image():
 		self.image_lib.append(img)
 		return img
 
-	def image(self,x,y,z,image_path):
-		#if self.view_options.text==False:
-		#	return
-		#qobj = gluNewQuadric()
-		#gluQuadricTexture(qobj, GL_TRUE)
-		#print(image_path)
+	def image(self,obj):
+		x=obj.xyz[0].x
+		y=obj.xyz[0].y
+		z=obj.xyz[0].z
+
+		dx=obj.dxyz.x
+		dy=obj.dxyz.y
+		dz=obj.dxyz.z
+
 		glColor4f(1.0, 1.0, 1.0, 1.0)
 
 		glEnable(GL_BLEND)
 		glEnable(GL_TEXTURE_2D)
 		glDepthMask(GL_FALSE)
-		obj=self.get_image(image_path)
+		obj_img=self.get_image(obj.image_path)
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-		glBindTexture(GL_TEXTURE_2D, obj.texture)
-		#glBegin(GL_TRIANGLES)
-		#gluSphere(qobj, 1, 50, 50)
+		glBindTexture(GL_TEXTURE_2D, obj_img.texture)
+
 
 		size=0.4
-		dx=9.0#size*obj.x/obj.y
-		dz=4.0#size
-		#x=-5.0
-		y=2.0
-		#z=3.0
 
 		glBegin(GL_QUADS)
 		glTexCoord(0,0) 
-		glVertex3f(x, y, z)
+		if dy==0.0:
+			glVertex3f(x, y, z)
 
-		glTexCoord(1,0) 
-		glVertex3f(x+dx, y, z)
+			glTexCoord(1,0) 
+			glVertex3f(x+dx, y, z)
 
-		glTexCoord(1,1)
-		glVertex3f(x+dx, y, z+dz)
+			glTexCoord(1,1)
+			glVertex3f(x+dx, y, z+dz)
 
-		glTexCoord(0,1)
+			glTexCoord(0,1)
 
-		glVertex3f(x, y, z+dz)
+			glVertex3f(x, y, z+dz)
 
+		elif dz==0.0:
+			glVertex3f(x, y, z)
+
+			glTexCoord(1,0) 
+			glVertex3f(x+dx, y, z)
+
+			glTexCoord(1,1)
+			glVertex3f(x+dx, y+dy, z)
+
+			glTexCoord(0,1)
+
+			glVertex3f(x, y+dy, z)
+		elif dx==0.0:
+			glVertex3f(x, y, z)
+
+			glTexCoord(1,0) 
+			glVertex3f(x, y, z+dz)
+
+			glTexCoord(1,1)
+			glVertex3f(x, y+dy, z+dz)
+
+			glTexCoord(0,1)
+
+			glVertex3f(x, y+dy, z)
 		glEnd()
 
 		#gluDeleteQuadric(qobj)
@@ -147,8 +169,6 @@ class gl_image():
 		glDisable(GL_BLEND)
 
 	def gl_render_image(self,o):
-		for xyz in o.xyz:
-			self.image(xyz.x,xyz.y,xyz.z,o.image_path)
-			break
+		self.image(o)
 
 

@@ -285,13 +285,28 @@ return max;
 /**Get maximum value of an math_xy
 @param in input math_xy
 */
-long double inter_get_max(struct math_xy* in)
+long double math_xy_get_max(struct math_xy* in)
 {
 long double max=0.0;
 
 max=inter_get_max_range(in,0,in->len);
 
 return max;
+}
+
+void math_xy_get_max_and_pos(struct math_xy* in,long double *max, long double *x)
+{
+	int i;
+	*max=in->data[0];
+
+	for (i=0;i<in->len;i++)
+	{
+		if (in->data[i]>*max)
+		{
+			*max=in->data[i];
+			*x=in->x[i];
+		}
+	}
 }
 
 long double inter_get_max_range(struct math_xy* in,int start, int stop)
@@ -854,7 +869,7 @@ return -1;
 }
 
 
-void inter_set_value(struct math_xy* in,long double value)
+void math_xy_set_value(struct math_xy* in,long double value)
 {
 int i=0;
 for  (i=0;i<in->len;i++)

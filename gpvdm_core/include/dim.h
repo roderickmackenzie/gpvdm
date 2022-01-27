@@ -39,15 +39,21 @@ struct dimensions
 	int zlen;
 	int xlen;
 	int ylen;
+	int llen;
 
+	long double *y;
+	long double *x;
+	long double *z;
+	long double *l;
 
-	long double *ymesh;
-	long double *xmesh;
-	long double *zmesh;
+	long double *dY;
+	long double *dX;
+	long double *dZ;
 
-	long double *dy;
-	long double *dx;
-	long double *dz;
+	long double dy;
+	long double dx;
+	long double dz;
+	long double dl;
 
 	int srh_bands;
 };
@@ -59,39 +65,6 @@ struct dim_zx_epitaxy
 	int ylen;
 };
 
-struct dim_light
-{
-	int zlen;
-	int xlen;
-	int ylen;
-	int llen;
-
-	long double *y;
-	long double *x;
-	long double *z;
-	long double *l;
-
-	long double dy;
-	long double dx;
-	long double dz;
-	long double dl;
-
-};
-
-struct dim_heat
-{
-	int zlen;
-	int xlen;
-	int ylen;
-
-	long double *y;
-	long double *x;
-	long double *z;
-
-	long double *dy;
-	long double *dx;
-	long double *dz;
-};
 
 
 void dim_set_simple_mesh_x(struct dimensions *dim, long double start, long double stop);
@@ -100,9 +73,9 @@ void dim_set_simple_mesh_z(struct dimensions *dim, long double start, long doubl
 //dimension
 void dim_init(struct dimensions *dim);
 void dim_free(struct dimensions *dim);
-void dim_alloc(struct dimensions *dim);
+void dim_malloc(struct dimensions *dim);
 void dim_cpy(struct dimensions *out,struct dimensions *in);
-void dim_alloc_xyz(struct dimensions *dim,char xyz);
+void dim_malloc_xyz(struct dimensions *dim,char xyz);
 void dim_free_xyz(struct dimensions *dim,char xyz);
 void dim_swap(struct dimensions *out,struct dimensions *in);
 void dim_info_to_buf(struct dat_file *buf,struct dimensions *dim);
@@ -113,23 +86,16 @@ void dim_init_zx_epitaxy(struct dim_zx_epitaxy *dim);
 void dim_free_zx_epitaxy(struct dim_zx_epitaxy *dim);
 
 //dim_light
-void dim_light_init_xyzl(struct dim_light *dim,char xyzl);
-void dim_light_init(struct dim_light *dim);
-void dim_light_free_xyzl(struct dim_light *dim,char xyzl);
-void dim_light_free(struct dim_light *dim);
-void dim_light_malloc_xyzl(struct dim_light *dim,char xyzl);
-void dim_light_malloc(struct dim_light *dim);
-void dim_light_cpy(struct dim_light *out,struct dim_light *in);
-void dim_light_info_to_buf(struct dat_file *buf,struct dim_light *dim);
+void dim_light_init_xyzl(struct dimensions *dim,char xyzl);
+void dim_light_init(struct dimensions *dim);
+void dim_light_free_xyzl(struct dimensions *dim,char xyzl);
+void dim_light_free(struct dimensions *dim);
+void dim_light_malloc_xyzl(struct dimensions *dim,char xyzl);
+void dim_light_malloc(struct dimensions *dim);
+void dim_light_cpy(struct dimensions *out,struct dimensions *in);
 
 //dim_heat
-void dim_heat_init_xyz(struct dim_heat *dim,char xyz);
-void dim_heat_init(struct dim_heat *dim);
-void dim_heat_free_xyz(struct dim_heat *dim,char xyz);
-void dim_heat_free(struct dim_heat *dim);
-void dim_heat_malloc_xyz(struct dim_heat *dim,char xyz);
-void dim_heat_malloc(struct dim_heat *dim);
-void dim_heat_info_to_buf(struct dat_file *buf,struct dim_heat *dim);
+void dim_heat_malloc(struct dimensions *dim);
 
 
 #endif

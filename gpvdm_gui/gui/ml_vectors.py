@@ -27,7 +27,7 @@ import sys
 import os
 import shutil
 
-from util import gpvdm_delete_file
+from safe_delete import gpvdm_delete_file
 
 from math import log10
 from math import isnan
@@ -200,7 +200,7 @@ class ml_vectors:
 		rnd = "".join(rnd)
 		tmp_dir="/dev/shm/gpvdm_"+rnd
 		if os.path.isdir(tmp_dir)==True:
-			shutil.rmtree(tmp_dir)
+			gpvdm_delete_file(tmp_dir,allow_dir_removal=True)
 
 		os.mkdir(tmp_dir)
 
@@ -250,7 +250,7 @@ class ml_vectors:
 
 				for simulation in simulations:
 
-					tmp_dir=self.make_tmp_dir()
+					tmp_dir="gpvdm_"+simulation
 
 					extract_dir_from_archive(tmp_dir,"",simulation,zf=zf)
 					
@@ -403,7 +403,7 @@ class ml_vectors:
 						if sim_mode=="jv" and light>0.0:
 							f=inp()
 							json_data=f.load_json(os.path.join(tmp_dir,sub_sim,"sim_info.dat"))
-							for t in ["pce","ff", "voc", "voc_R", "jsc", "mu_jsc", "mu_pmax", "mu_voc", "mue_pmax", "muh_pmax", "tau_voc", "tau_pmax", "theta_srh_free", "theta_srh_free_trap"]:
+							for t in ["pce","ff", "voc", "voc_R", "jsc", "mu_jsc", "mu_pmax", "mu_voc", "mu_geom_jsc", "mu_geom_pmax", "mu_geom_voc", "mue_pmax", "muh_pmax", "tau_voc", "tau_pmax", "theta_srh_free", "theta_srh_free_trap"]:
 								val=json_get_val(json_data,t)
 								if val==None:
 									error=True
@@ -411,11 +411,14 @@ class ml_vectors:
 								getattr(base,sub_sim).var_list.append([t,val])
 
 					f=inp()
-					json_data=f.load_json(os.path.join(tmp_dir,sub_sims[0],"sim.json"))
+					json_file_name=os.path.join(tmp_dir,sub_sims[0],"sim.json")
+					json_data=f.load_json(json_file_name)
 
+					base.params.var_list=[]
 					for token_path in self.ml_tokens:
 						temp=str(json_get_val(json_data,token_path))
 						base.params.var_list.append([token_path,temp])
+						#print(simulation,token_path,temp,json_file_name)
 
 					#print(v,error)
 					if error==False:
@@ -443,7 +446,7 @@ class ml_vectors:
 					process_events()
 					#return
 
-					shutil.rmtree(tmp_dir)
+					gpvdm_delete_file(tmp_dir,allow_dir_removal=True)
 
 		out_json.seek(-2, os.SEEK_END)
 		out_json.write(str.encode("\n}"))

@@ -109,17 +109,17 @@ void newton_state_alloc_mesh(struct newton_state *ns,struct dimensions *dim, int
 		ns->dim.xlen=dim->xlen;
 		ns->dim.ylen=dim->ylen;
 		ns->dim.zlen=dim->zlen;
-		dim_alloc(&(ns->dim));
+		dim_malloc(&(ns->dim));
 	}
 
-	malloc_zxy_gdouble(dim,&(ns->phi));
+	malloc_zxy_long_double(dim,&(ns->phi));
 	if (ns->Nion_enabled==TRUE)
 	{
-		malloc_zxy_gdouble(dim,&(ns->x_Nion));
+		malloc_zxy_long_double(dim,&(ns->x_Nion));
 
 	}
-	malloc_zxy_gdouble(dim,&(ns->x));
-	malloc_zxy_gdouble(dim,&(ns->xp));
+	malloc_zxy_long_double(dim,&(ns->x));
+	malloc_zxy_long_double(dim,&(ns->xp));
 
 	//Fermi levels for schottky contact
 	malloc_zx_gdouble(dim,&(ns->x_y0));
@@ -127,26 +127,26 @@ void newton_state_alloc_mesh(struct newton_state *ns,struct dimensions *dim, int
 	malloc_zx_gdouble(dim,&(ns->x_y1));
 	malloc_zx_gdouble(dim,&(ns->xp_y1));
 
-	malloc_zxy_gdouble(dim,&(ns->By_xi_plus));
-	malloc_zxy_gdouble(dim,&(ns->By_xi_neg));
-	malloc_zxy_gdouble(dim,&(ns->By_xip_plus));
-	malloc_zxy_gdouble(dim,&(ns->By_xip_neg));
+	malloc_zxy_long_double(dim,&(ns->By_xi_plus));
+	malloc_zxy_long_double(dim,&(ns->By_xi_neg));
+	malloc_zxy_long_double(dim,&(ns->By_xip_plus));
+	malloc_zxy_long_double(dim,&(ns->By_xip_neg));
 
-	malloc_zxy_gdouble(dim,&(ns->Bx_xi_plus));
-	malloc_zxy_gdouble(dim,&(ns->Bx_xi_neg));
-	malloc_zxy_gdouble(dim,&(ns->Bx_xip_plus));
-	malloc_zxy_gdouble(dim,&(ns->Bx_xip_neg));
+	malloc_zxy_long_double(dim,&(ns->Bx_xi_plus));
+	malloc_zxy_long_double(dim,&(ns->Bx_xi_neg));
+	malloc_zxy_long_double(dim,&(ns->Bx_xip_plus));
+	malloc_zxy_long_double(dim,&(ns->Bx_xip_neg));
 
 
-	malloc_zxy_gdouble(dim,&(ns->dBy_xi_plus));
-	malloc_zxy_gdouble(dim,&(ns->dBy_xi_neg));
-	malloc_zxy_gdouble(dim,&(ns->dBy_xip_plus));
-	malloc_zxy_gdouble(dim,&(ns->dBy_xip_neg));
+	malloc_zxy_long_double(dim,&(ns->dBy_xi_plus));
+	malloc_zxy_long_double(dim,&(ns->dBy_xi_neg));
+	malloc_zxy_long_double(dim,&(ns->dBy_xip_plus));
+	malloc_zxy_long_double(dim,&(ns->dBy_xip_neg));
 
-	malloc_zxy_gdouble(dim,&(ns->dBx_xi_plus));
-	malloc_zxy_gdouble(dim,&(ns->dBx_xi_neg));
-	malloc_zxy_gdouble(dim,&(ns->dBx_xip_plus));
-	malloc_zxy_gdouble(dim,&(ns->dBx_xip_neg));
+	malloc_zxy_long_double(dim,&(ns->dBx_xi_plus));
+	malloc_zxy_long_double(dim,&(ns->dBx_xi_neg));
+	malloc_zxy_long_double(dim,&(ns->dBx_xip_plus));
+	malloc_zxy_long_double(dim,&(ns->dBx_xip_neg));
 
 }
 
@@ -162,11 +162,11 @@ void newton_state_alloc_traps(struct newton_state *ns,struct dimensions *dim)
 void newton_state_free(struct newton_state *ns)
 {
 
-	free_zxy_gdouble(&(ns->dim),&ns->phi);
-	free_zxy_gdouble(&(ns->dim), &ns->x_Nion);
+	free_zxy_long_double(&(ns->dim),&ns->phi);
+	free_zxy_long_double(&(ns->dim), &ns->x_Nion);
 
-	free_zxy_gdouble(&(ns->dim),&ns->x);
-	free_zxy_gdouble(&(ns->dim),&ns->xp);
+	free_zxy_long_double(&(ns->dim),&ns->x);
+	free_zxy_long_double(&(ns->dim),&ns->xp);
 
 	free_srh_bands(&(ns->dim), &ns->xt);
 	free_srh_bands(&(ns->dim), &ns->xpt);
@@ -177,25 +177,25 @@ void newton_state_free(struct newton_state *ns)
 	free_zx_gdouble(&(ns->dim),&ns->x_y1);
 	free_zx_gdouble(&(ns->dim),&ns->xp_y1);
 
-	free_zxy_gdouble(&(ns->dim),&(ns->By_xi_plus));
-	free_zxy_gdouble(&(ns->dim),&(ns->By_xi_neg));
-	free_zxy_gdouble(&(ns->dim),&(ns->By_xip_plus));
-	free_zxy_gdouble(&(ns->dim),&(ns->By_xip_neg));
+	free_zxy_long_double(&(ns->dim),&(ns->By_xi_plus));
+	free_zxy_long_double(&(ns->dim),&(ns->By_xi_neg));
+	free_zxy_long_double(&(ns->dim),&(ns->By_xip_plus));
+	free_zxy_long_double(&(ns->dim),&(ns->By_xip_neg));
 
-	free_zxy_gdouble(&(ns->dim),&(ns->Bx_xi_plus));
-	free_zxy_gdouble(&(ns->dim),&(ns->Bx_xi_neg));
-	free_zxy_gdouble(&(ns->dim),&(ns->Bx_xip_plus));
-	free_zxy_gdouble(&(ns->dim),&(ns->Bx_xip_neg));
+	free_zxy_long_double(&(ns->dim),&(ns->Bx_xi_plus));
+	free_zxy_long_double(&(ns->dim),&(ns->Bx_xi_neg));
+	free_zxy_long_double(&(ns->dim),&(ns->Bx_xip_plus));
+	free_zxy_long_double(&(ns->dim),&(ns->Bx_xip_neg));
 
-	free_zxy_gdouble(&(ns->dim),&(ns->dBy_xi_plus));
-	free_zxy_gdouble(&(ns->dim),&(ns->dBy_xi_neg));
-	free_zxy_gdouble(&(ns->dim),&(ns->dBy_xip_plus));
-	free_zxy_gdouble(&(ns->dim),&(ns->dBy_xip_neg));
+	free_zxy_long_double(&(ns->dim),&(ns->dBy_xi_plus));
+	free_zxy_long_double(&(ns->dim),&(ns->dBy_xi_neg));
+	free_zxy_long_double(&(ns->dim),&(ns->dBy_xip_plus));
+	free_zxy_long_double(&(ns->dim),&(ns->dBy_xip_neg));
 
-	free_zxy_gdouble(&(ns->dim),&(ns->dBx_xi_plus));
-	free_zxy_gdouble(&(ns->dim),&(ns->dBx_xi_neg));
-	free_zxy_gdouble(&(ns->dim),&(ns->dBx_xip_plus));
-	free_zxy_gdouble(&(ns->dim),&(ns->dBx_xip_neg));
+	free_zxy_long_double(&(ns->dim),&(ns->dBx_xi_plus));
+	free_zxy_long_double(&(ns->dim),&(ns->dBx_xi_neg));
+	free_zxy_long_double(&(ns->dim),&(ns->dBx_xip_plus));
+	free_zxy_long_double(&(ns->dim),&(ns->dBx_xip_neg));
 
 	dim_free(&(ns->dim));
 

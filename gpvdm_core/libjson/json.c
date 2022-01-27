@@ -46,6 +46,7 @@
 #include <cal_path.h>
 #include "lock.h"
 #include <json.h>
+#include <ctype.h>
 
 void json_obj_init(struct json_obj *obj)
 {
@@ -116,15 +117,9 @@ void gobble(struct json *j)
 {
 	while(j->pos<j->raw_data_len)
 	{
-		if (j->raw_data[j->pos]!=' ')
+		if (isspace(j->raw_data[j->pos])==0)	//If it is not white space
 		{
-			if (j->raw_data[j->pos]!='\n')
-			{
-				if (j->raw_data[j->pos]!='\t')
-				{
-					return;
-				}
-			}
+			return;
 		}
 
 		j->pos++;

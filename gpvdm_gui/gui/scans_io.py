@@ -26,7 +26,6 @@
 
 import sys
 import os
-import shutil
 
 
 from progress_class import progress_class
@@ -47,6 +46,7 @@ from inp import inp
 from inp import inp_lsdir
 from inp import inp_issequential_file
 from scan_io import scan_io
+from safe_delete import gpvdm_delete_file
 
 class scans_io:
 
@@ -102,7 +102,7 @@ class scans_io:
 
 		scan_dir=os.path.join(self.path,scan_name)
 		if os.path.isdir(scan_dir)==True:
-			shutil.rmtree(scan_dir)
+			gpvdm_delete_file(scan_dir,allow_dir_removal=True)
 
 	def new(self,scan_name):
 		config_file_new=self.get_new_scan_file()
@@ -118,7 +118,7 @@ class scans_io:
 
 		for s in scans:
 			#print("Deleteing ",my_file)
-			shutil.rmtree(s)
+			gpvdm_delete_file(s,allow_dir_removal=True)
 
 	def clean_all(self):
 		print("stub")

@@ -1,16 +1,16 @@
-\subsection{Carrier trapping and Shockley-Read-Hall recombination}
+\subsubsection{Non-equilibrium carrier trapping and recombination using Shockley-Read-Hall trap states} \label{sssec:dynamic}
+
+
+To describe charge becoming trapping into trap states and recombination associated with those states the model uses Shockley-Read-Hall (SRH) theory. A 0D depiction of this SRH recombination and trapping is shown in figure \ref{fig:dos_structure}, the free electron and hole carrier distributions are labeled as n free and p free respectively. The trapped carrier populations are denoted with n trap and p trap , they are depicted with filled red and blue boxes. SRH theory describes the rates at which electrons and holes become captured and escape from the carrier traps. If one considers a single electron trap, the change in population of this trap can be described by four carrier capture and escape rates as depicted in figure \ref{fig:dos_structure}. The rate rec describes the rate at which electrons become captured into the electron trap, $r_{ee}$ is the rate which electrons can escape from the trap back to the free electron population, $r_{hc}$ is the rate at which free holes get trapped and $r_{he}$ is the rate at which holes escape back to the free hole population. Recombination is described by holes becoming captured into electron space slice through our 1D traps. Analogous processes are also defined for the hole traps.
+
 
 
 \begin{figure}
-To describe charge becoming trapping into trap states and recombination associated with those states the model uses Shockley-Read-Hall (SRH) theory. A 0D depiction of this SRH recombination and trapping is shown in figure \ref{fig:dos_structure}, the free electron and hole carrier distributions are labeled as n free and p free respectively. The trapped carrier populations are denoted with n trap and p trap , they are depicted with filled red and blue boxes. SRH theory describes the rates at which electrons and holes become captured and escape from the carrier traps. If one considers a single electron trap, the change in population of this trap can be described by four carrier capture and escape rates as depicted in figure \ref{fig:dos_structure}. The rate rec describes the rate at which electrons become captured into the electron trap, $r_{ee}$ is the rate which electrons can escape from the trap back to the free electron population, $r_{hc}$ is the rate at which free holes get trapped and $r_{he}$ is the rate at which holes escape back to the free hole population. Recombination is described by holes becoming captured into electron space slice through our 1D traps. Analogous processes are also defined for the hole traps.
-
-\centering
 \includegraphics[width=40mm]{./images/dos_structure.jpg}
 \caption{Trap filling in both energy and position space as the solar cell is taken from a negative bias
 Carrier trapping, de-trapping, and recombination}
 \label{fig:dos_structure}
 \end{figure}
-
 
 \begin{table}
 \begin{center}
@@ -28,6 +28,7 @@ Hole escape rate & $r_{he}$ & $e_{p} N_{t} (1-f)$\\
 \caption{Shockley-Read-Hall trap capture and emission rates, where $f$ is the fermi-Dirac occupation function and $N_{t}$ is the trap density of a single carrier trap.}
 \label{tab:rates}
 \end{table}
+
 
 
 For each trap level the carrier balance \ref{eq:srhrate} is solved, giving each trap level an independent quasi-Fermi level. Each point in position space can be allocated between 10 and 160 independent trap states.  The rates of each process $r_{ec}$, $r_{ee}$, $r_{hc}$, and $r_{he}$ are give in table \ref{tab:rates}.
@@ -76,14 +77,4 @@ Where, $E_{t}$ is the trap level, and $F_{t}$ is the Fermi-Level of the trap.
 The carrier escape rates for electrons and holes are given by
 
 
-
-\subsubsection{Free-to-free carrier recombination}
-A free-carrier-to-free-carrier recombination pathway is also included in the model. However, most organic solar cells have a great deal of trap states and an ideality factor greater than 1.0 suggesting that free to free recombination is not the dominant mechanism.  It is also worth noting that since I included this recombination pathway in the model I have not found it useful to reproduce experimental results.
-
-Free-to-free recombination is described using equation \ref{equ:freetofree}
-
-\begin{equation}
-R_{free}=k_{r}(n_{f}p_{f}-n_{0}p_{0})
-\label{equ:freetofree}
-\end{equation}
 
