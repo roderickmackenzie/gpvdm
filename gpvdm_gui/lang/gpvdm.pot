@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gpvdm 5.0\n"
 "Report-Msgid-Bugs-To: roderick.mackenzie@nottingham.ac.uk\n"
-"POT-Creation-Date: 2022-02-18 12:56+0000\n"
+"POT-Creation-Date: 2022-02-18 16:17+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -378,12 +378,12 @@ msgstr ""
 #: ../../gpvdm_gui/gui/detectors_tab.py:48 ../../gpvdm_gui/gui/window_ml.py:79
 #: ../../gpvdm_gui/gui/tab_exciton.py:53
 #: ../../gpvdm_gui/gui/tab_light_src.py:66
-#: ../../gpvdm_gui/gui/ribbon_shape_import.py:209
+#: ../../gpvdm_gui/gui/ribbon_shape_import.py:159
 #: ../../gpvdm_gui/gui/window_light_src.py:61 ../../gpvdm_gui/gui/tab_eqe.py:53
 #: ../../gpvdm_gui/gui/fxexperiment_tab.py:64
 #: ../../gpvdm_gui/gui/config_window.py:59
 #: ../../gpvdm_gui/gui/jvexperiment_tab.py:53
-#: ../../gpvdm_gui/gui/shape_editor.py:394
+#: ../../gpvdm_gui/gui/shape_editor.py:407
 #: ../../gpvdm_gui/gui/cvexperiment_tab.py:53
 #: ../../gpvdm_gui/gui/cluster_config_window.py:73
 #: ../../gpvdm_gui/gui/ribbon.py:195 ../../gpvdm_gui/gui/tab_fdtd.py:49
@@ -436,7 +436,7 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/constraints.py:180
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_shape.py:79
 #: ../../gpvdm_gui/gui/ribbon_complex_dos.py:86
-#: ../../gpvdm_gui/gui/ribbon_shape_import.py:218
+#: ../../gpvdm_gui/gui/ribbon_shape_import.py:239
 #: ../../gpvdm_gui/gui/script_ribbon.py:123
 #: ../../gpvdm_gui/gui/ribbon_filter_db.py:85
 #: ../../gpvdm_gui/gui/ribbon_emission_db.py:85
@@ -792,9 +792,9 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/image_discretizer.py:447
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gpvdm_tab.py:78
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/scan_tab.py:552
-#: ../../gpvdm_gui/gui/json_viewer.py:139
-#: ../../gpvdm_gui/gui/shape_image_flat_view.py:178
-#: ../../gpvdm_gui/gui/shape_bildverarbeitung.py:164
+#: ../../gpvdm_gui/gui/json_viewer.py:140
+#: ../../gpvdm_gui/gui/shape_image_flat_view.py:177
+#: ../../gpvdm_gui/gui/shape_bildverarbeitung.py:209
 #: ../../gpvdm_gui/gui/gpvdm_viewer.py:254 ../../gpvdm_gui/gui/gpvdm_tab.py:73
 #: ../../gpvdm_gui/gui/gl_object_editor.py:74
 #: ../../gpvdm_gui/gui/QHTabBar.py:45 ../../gpvdm_gui/gui/QHTabBar.py:112
@@ -1166,9 +1166,9 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/image_discretizer.py:445
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_main_menu.py:63
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/fit_ribbon.py:162
-#: ../../gpvdm_gui/gui/json_viewer.py:156
-#: ../../gpvdm_gui/gui/shape_image_flat_view.py:176
-#: ../../gpvdm_gui/gui/shape_bildverarbeitung.py:162
+#: ../../gpvdm_gui/gui/json_viewer.py:157
+#: ../../gpvdm_gui/gui/shape_image_flat_view.py:175
+#: ../../gpvdm_gui/gui/shape_bildverarbeitung.py:207
 #: ../../gpvdm_gui/gui/gl_main_menu.py:57
 msgid "Export"
 msgstr ""
@@ -1193,8 +1193,8 @@ msgid ""
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/inp_viewer.py:290
-#: ../../gpvdm_gui/gui/json_viewer.py:506
 #: ../../gpvdm_gui/gui/json_viewer.py:513
+#: ../../gpvdm_gui/gui/json_viewer.py:520
 msgid "Electrical parameter editor for shape"
 msgstr ""
 
@@ -1311,7 +1311,7 @@ msgstr ""
 #: ../../gpvdm_gui/gui/materials_main.py:168
 #: ../../gpvdm_gui/gui/materials_main.py:199
 #: ../../gpvdm_gui/gui/materials_main.py:217
-#: ../../gpvdm_gui/gui/token_lib.py:837 ../../gpvdm_gui/gui/spectra_main.py:118
+#: ../../gpvdm_gui/gui/token_lib.py:844 ../../gpvdm_gui/gui/spectra_main.py:118
 #: ../../gpvdm_gui/gui/import_data_json.py:736
 #: ../../gpvdm_gui/gui/import_data_json.py:738
 #: ../../gpvdm_gui/gui/import_data_json.py:747
@@ -1518,7 +1518,7 @@ msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gpvdm_tab.py:82
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/scan_tab.py:556
-#: ../../gpvdm_gui/gui/json_viewer.py:153 ../../gpvdm_gui/gui/gpvdm_tab.py:77
+#: ../../gpvdm_gui/gui/json_viewer.py:154 ../../gpvdm_gui/gui/gpvdm_tab.py:77
 #: ../../gpvdm_gui/gui/gl_object_editor.py:77
 #: ../../gpvdm_gui/gui/QHTabBar.py:48 ../../gpvdm_gui/gui/QHTabBar.py:115
 #: ../../gpvdm_gui/gui/gpvdm_tab2.py:99
@@ -1682,7 +1682,7 @@ msgid "Triangle editor"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/shape_import.py:132
-#: ../../gpvdm_gui/gui/shape_editor.py:235
+#: ../../gpvdm_gui/gui/shape_editor.py:230
 msgid "Normalization editor"
 msgstr ""
 
@@ -1876,6 +1876,8 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/plot_ribbon.py:164
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:214
 #: ../../gpvdm_gui/gui/plot_ribbon.py:146 ../../gpvdm_gui/gui/token_lib.py:301
+#: ../../gpvdm_gui/gui/token_lib.py:515 ../../gpvdm_gui/gui/token_lib.py:517
+#: ../../gpvdm_gui/gui/token_lib.py:519 ../../gpvdm_gui/gui/token_lib.py:521
 msgid "Color"
 msgstr ""
 
@@ -2002,29 +2004,29 @@ msgid "Edit mesh"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_shape_import.py:113
-#: ../../gpvdm_gui/gui/ribbon_shape_import.py:115
+#: ../../gpvdm_gui/gui/ribbon_shape_import.py:171
 msgid "Blur"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_shape_import.py:120
-#: ../../gpvdm_gui/gui/ribbon_shape_import.py:122
+#: ../../gpvdm_gui/gui/ribbon_shape_import.py:178
 msgid "Edit Gaussian"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_shape_import.py:126
-#: ../../gpvdm_gui/gui/ribbon_shape_import.py:128
+#: ../../gpvdm_gui/gui/ribbon_shape_import.py:184
 msgid ""
 "Normalize\n"
 "y"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_shape_import.py:133
-#: ../../gpvdm_gui/gui/ribbon_shape_import.py:135
+#: ../../gpvdm_gui/gui/ribbon_shape_import.py:190
 msgid "Edit histogram"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_shape_import.py:139
-#: ../../gpvdm_gui/gui/ribbon_shape_import.py:141
+#: ../../gpvdm_gui/gui/ribbon_shape_import.py:196
 msgid ""
 "Normalize\n"
 "z"
@@ -2245,14 +2247,16 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:483
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_main_menu.py:120
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/optics_ribbon.py:180
-#: ../../gpvdm_gui/gui/ribbon_shape_import.py:164
-#: ../../gpvdm_gui/gui/ribbon_shape_import.py:175
-#: ../../gpvdm_gui/gui/ribbon_shape_import.py:186
-#: ../../gpvdm_gui/gui/ribbon_shape_import.py:198
+#: ../../gpvdm_gui/gui/ribbon_shape_import.py:119
+#: ../../gpvdm_gui/gui/ribbon_shape_import.py:130
+#: ../../gpvdm_gui/gui/ribbon_shape_import.py:141
+#: ../../gpvdm_gui/gui/ribbon_shape_import.py:153
+#: ../../gpvdm_gui/gui/ribbon_shape_import.py:205
+#: ../../gpvdm_gui/gui/ribbon_shape_import.py:223
 #: ../../gpvdm_gui/gui/gl_object_editor.py:82
 #: ../../gpvdm_gui/gui/token_lib.py:278 ../../gpvdm_gui/gui/token_lib.py:298
 #: ../../gpvdm_gui/gui/token_lib.py:299 ../../gpvdm_gui/gui/token_lib.py:300
-#: ../../gpvdm_gui/gui/token_lib.py:721 ../../gpvdm_gui/gui/token_lib.py:722
+#: ../../gpvdm_gui/gui/token_lib.py:728 ../../gpvdm_gui/gui/token_lib.py:729
 #: ../../gpvdm_gui/gui/optics_sources_tab.py:96
 #: ../../gpvdm_gui/gui/gl_main_menu.py:132
 msgid "Edit"
@@ -2271,7 +2275,7 @@ msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/scan_human_labels.py:123
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/scan_human_labels.py:138
-#: ../../gpvdm_gui/gui/token_lib.py:500
+#: ../../gpvdm_gui/gui/token_lib.py:503
 msgid "dy"
 msgstr ""
 
@@ -2304,7 +2308,7 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/import_data.py:304
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/import_data.py:305
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/import_data.py:306
-#: ../../gpvdm_gui/gui/token_lib.py:736 ../../gpvdm_gui/gui/token_lib.py:737
+#: ../../gpvdm_gui/gui/token_lib.py:743 ../../gpvdm_gui/gui/token_lib.py:744
 #: ../../gpvdm_gui/gui/import_data_json.py:659
 #: ../../gpvdm_gui/gui/import_data_json.py:661
 #: ../../gpvdm_gui/gui/import_data_json.py:672
@@ -2342,7 +2346,7 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/contacts.py:298
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:229
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:466
-#: ../../gpvdm_gui/gui/contacts.py:136 ../../gpvdm_gui/gui/token_lib.py:696
+#: ../../gpvdm_gui/gui/contacts.py:136 ../../gpvdm_gui/gui/token_lib.py:703
 msgid "Shunt resistance"
 msgstr ""
 
@@ -2351,7 +2355,7 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/scan_human_labels.py:140
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/scan_human_labels.py:141
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/doping.py:133
-#: ../../gpvdm_gui/gui/token_lib.py:961 ../../gpvdm_gui/gui/doping.py:200
+#: ../../gpvdm_gui/gui/token_lib.py:968 ../../gpvdm_gui/gui/doping.py:200
 msgid "Layer"
 msgstr ""
 
@@ -2410,42 +2414,42 @@ msgid "Steady state simulation"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/contacts.py:160
-#: ../../gpvdm_gui/gui/token_lib.py:703
+#: ../../gpvdm_gui/gui/token_lib.py:710
 msgid "top"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/contacts.py:161
-#: ../../gpvdm_gui/gui/token_lib.py:703
+#: ../../gpvdm_gui/gui/token_lib.py:710
 msgid "bottom"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/contacts.py:162
-#: ../../gpvdm_gui/gui/token_lib.py:703
+#: ../../gpvdm_gui/gui/token_lib.py:710
 msgid "right"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/contacts.py:163
-#: ../../gpvdm_gui/gui/token_lib.py:703
+#: ../../gpvdm_gui/gui/token_lib.py:710
 msgid "left"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/contacts.py:191
-#: ../../gpvdm_gui/gui/token_lib.py:705
+#: ../../gpvdm_gui/gui/token_lib.py:712
 msgid "Electron"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/contacts.py:192
-#: ../../gpvdm_gui/gui/token_lib.py:705
+#: ../../gpvdm_gui/gui/token_lib.py:712
 msgid "Hole"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/contacts.py:202
-#: ../../gpvdm_gui/gui/token_lib.py:706
+#: ../../gpvdm_gui/gui/token_lib.py:713
 msgid "Ohmic"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/contacts.py:203
-#: ../../gpvdm_gui/gui/token_lib.py:706
+#: ../../gpvdm_gui/gui/token_lib.py:713
 msgid "Schottky"
 msgstr ""
 
@@ -2564,7 +2568,7 @@ msgid "3D simulation"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/emesh.py:162
-#: ../../gpvdm_gui/gui/shape_editor.py:224
+#: ../../gpvdm_gui/gui/shape_editor.py:219
 #: ../../gpvdm_gui/gui/electrical_mesh_editor.py:159
 #: ../../gpvdm_gui/gui/electrical_mesh_editor.py:204
 msgid "Configure mesh"
@@ -2811,19 +2815,19 @@ msgstr ""
 #: ../../gpvdm_core/libdump/dump_zxy.c:703
 #: ../../gpvdm_core/libdump/dump_zxy.c:718
 #: ../../gpvdm_core/libdump/dump_zxy.c:732
-#: ../../gpvdm_core/libdump/dump_zxy.c:746
-#: ../../gpvdm_core/libdump/dump_zxy.c:760
-#: ../../gpvdm_core/libdump/dump_zxy.c:776
-#: ../../gpvdm_core/libdump/dump_zxy.c:791
-#: ../../gpvdm_core/libdump/dump_zxy.c:805
-#: ../../gpvdm_core/libdump/dump_zxy.c:833
-#: ../../gpvdm_core/libdump/dump_zxy.c:856
-#: ../../gpvdm_core/libdump/dump_zxy.c:894
-#: ../../gpvdm_core/libdump/dump_zxy.c:930
-#: ../../gpvdm_core/libdump/dump_zxy.c:943
-#: ../../gpvdm_core/libdump/dump_zxy.c:956
-#: ../../gpvdm_core/libdump/dump_zxy.c:971
-#: ../../gpvdm_core/libdump/dump_zxy.c:999
+#: ../../gpvdm_core/libdump/dump_zxy.c:747
+#: ../../gpvdm_core/libdump/dump_zxy.c:761
+#: ../../gpvdm_core/libdump/dump_zxy.c:777
+#: ../../gpvdm_core/libdump/dump_zxy.c:792
+#: ../../gpvdm_core/libdump/dump_zxy.c:806
+#: ../../gpvdm_core/libdump/dump_zxy.c:834
+#: ../../gpvdm_core/libdump/dump_zxy.c:857
+#: ../../gpvdm_core/libdump/dump_zxy.c:895
+#: ../../gpvdm_core/libdump/dump_zxy.c:931
+#: ../../gpvdm_core/libdump/dump_zxy.c:944
+#: ../../gpvdm_core/libdump/dump_zxy.c:957
+#: ../../gpvdm_core/libdump/dump_zxy.c:972
+#: ../../gpvdm_core/libdump/dump_zxy.c:1000
 #: ../../gpvdm_core/libdump/dump_zxy_interfaces.c:65
 #: ../../gpvdm_core/libdump/dump_zxy_interfaces.c:85
 #: ../../gpvdm_core/libdump/dump_zxy_interfaces.c:105
@@ -2978,9 +2982,9 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:372
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:377
 #: ../../gpvdm_gui/gui/thermal_isothermal_button.py:72
-#: ../../gpvdm_gui/gui/token_lib.py:571 ../../gpvdm_gui/gui/token_lib.py:576
-#: ../../gpvdm_gui/gui/token_lib.py:581 ../../gpvdm_gui/gui/token_lib.py:586
-#: ../../gpvdm_gui/gui/token_lib.py:591 ../../gpvdm_gui/gui/token_lib.py:596
+#: ../../gpvdm_gui/gui/token_lib.py:578 ../../gpvdm_gui/gui/token_lib.py:583
+#: ../../gpvdm_gui/gui/token_lib.py:588 ../../gpvdm_gui/gui/token_lib.py:593
+#: ../../gpvdm_gui/gui/token_lib.py:598 ../../gpvdm_gui/gui/token_lib.py:603
 msgid "Isothermal"
 msgstr ""
 
@@ -3046,30 +3050,30 @@ msgstr ""
 #: ../../gpvdm_gui/gui/token_lib.py:314 ../../gpvdm_gui/gui/token_lib.py:317
 #: ../../gpvdm_gui/gui/token_lib.py:355 ../../gpvdm_gui/gui/token_lib.py:374
 #: ../../gpvdm_gui/gui/token_lib.py:375 ../../gpvdm_gui/gui/token_lib.py:463
-#: ../../gpvdm_gui/gui/token_lib.py:526 ../../gpvdm_gui/gui/token_lib.py:529
-#: ../../gpvdm_gui/gui/token_lib.py:530 ../../gpvdm_gui/gui/token_lib.py:536
-#: ../../gpvdm_gui/gui/token_lib.py:551 ../../gpvdm_gui/gui/token_lib.py:601
-#: ../../gpvdm_gui/gui/token_lib.py:602 ../../gpvdm_gui/gui/token_lib.py:603
-#: ../../gpvdm_gui/gui/token_lib.py:608 ../../gpvdm_gui/gui/token_lib.py:609
-#: ../../gpvdm_gui/gui/token_lib.py:623 ../../gpvdm_gui/gui/token_lib.py:627
-#: ../../gpvdm_gui/gui/token_lib.py:628 ../../gpvdm_gui/gui/token_lib.py:629
-#: ../../gpvdm_gui/gui/token_lib.py:630 ../../gpvdm_gui/gui/token_lib.py:631
-#: ../../gpvdm_gui/gui/token_lib.py:632 ../../gpvdm_gui/gui/token_lib.py:633
-#: ../../gpvdm_gui/gui/token_lib.py:634 ../../gpvdm_gui/gui/token_lib.py:635
-#: ../../gpvdm_gui/gui/token_lib.py:636 ../../gpvdm_gui/gui/token_lib.py:637
-#: ../../gpvdm_gui/gui/token_lib.py:638 ../../gpvdm_gui/gui/token_lib.py:639
-#: ../../gpvdm_gui/gui/token_lib.py:640 ../../gpvdm_gui/gui/token_lib.py:641
-#: ../../gpvdm_gui/gui/token_lib.py:642 ../../gpvdm_gui/gui/token_lib.py:645
-#: ../../gpvdm_gui/gui/token_lib.py:646 ../../gpvdm_gui/gui/token_lib.py:647
-#: ../../gpvdm_gui/gui/token_lib.py:666 ../../gpvdm_gui/gui/token_lib.py:675
-#: ../../gpvdm_gui/gui/token_lib.py:715 ../../gpvdm_gui/gui/token_lib.py:727
-#: ../../gpvdm_gui/gui/token_lib.py:792 ../../gpvdm_gui/gui/token_lib.py:872
-#: ../../gpvdm_gui/gui/token_lib.py:873 ../../gpvdm_gui/gui/token_lib.py:888
-#: ../../gpvdm_gui/gui/token_lib.py:889 ../../gpvdm_gui/gui/token_lib.py:890
-#: ../../gpvdm_gui/gui/token_lib.py:892 ../../gpvdm_gui/gui/token_lib.py:893
-#: ../../gpvdm_gui/gui/token_lib.py:894 ../../gpvdm_gui/gui/token_lib.py:899
-#: ../../gpvdm_core/libdump/dump_zxy.c:944
-#: ../../gpvdm_core/libdump/dump_zxy.c:957
+#: ../../gpvdm_gui/gui/token_lib.py:533 ../../gpvdm_gui/gui/token_lib.py:536
+#: ../../gpvdm_gui/gui/token_lib.py:537 ../../gpvdm_gui/gui/token_lib.py:543
+#: ../../gpvdm_gui/gui/token_lib.py:558 ../../gpvdm_gui/gui/token_lib.py:608
+#: ../../gpvdm_gui/gui/token_lib.py:609 ../../gpvdm_gui/gui/token_lib.py:610
+#: ../../gpvdm_gui/gui/token_lib.py:615 ../../gpvdm_gui/gui/token_lib.py:616
+#: ../../gpvdm_gui/gui/token_lib.py:630 ../../gpvdm_gui/gui/token_lib.py:634
+#: ../../gpvdm_gui/gui/token_lib.py:635 ../../gpvdm_gui/gui/token_lib.py:636
+#: ../../gpvdm_gui/gui/token_lib.py:637 ../../gpvdm_gui/gui/token_lib.py:638
+#: ../../gpvdm_gui/gui/token_lib.py:639 ../../gpvdm_gui/gui/token_lib.py:640
+#: ../../gpvdm_gui/gui/token_lib.py:641 ../../gpvdm_gui/gui/token_lib.py:642
+#: ../../gpvdm_gui/gui/token_lib.py:643 ../../gpvdm_gui/gui/token_lib.py:644
+#: ../../gpvdm_gui/gui/token_lib.py:645 ../../gpvdm_gui/gui/token_lib.py:646
+#: ../../gpvdm_gui/gui/token_lib.py:647 ../../gpvdm_gui/gui/token_lib.py:648
+#: ../../gpvdm_gui/gui/token_lib.py:649 ../../gpvdm_gui/gui/token_lib.py:652
+#: ../../gpvdm_gui/gui/token_lib.py:653 ../../gpvdm_gui/gui/token_lib.py:654
+#: ../../gpvdm_gui/gui/token_lib.py:673 ../../gpvdm_gui/gui/token_lib.py:682
+#: ../../gpvdm_gui/gui/token_lib.py:722 ../../gpvdm_gui/gui/token_lib.py:734
+#: ../../gpvdm_gui/gui/token_lib.py:799 ../../gpvdm_gui/gui/token_lib.py:879
+#: ../../gpvdm_gui/gui/token_lib.py:880 ../../gpvdm_gui/gui/token_lib.py:895
+#: ../../gpvdm_gui/gui/token_lib.py:896 ../../gpvdm_gui/gui/token_lib.py:897
+#: ../../gpvdm_gui/gui/token_lib.py:899 ../../gpvdm_gui/gui/token_lib.py:900
+#: ../../gpvdm_gui/gui/token_lib.py:901 ../../gpvdm_gui/gui/token_lib.py:906
+#: ../../gpvdm_core/libdump/dump_zxy.c:945
+#: ../../gpvdm_core/libdump/dump_zxy.c:958
 msgid "True/False"
 msgstr ""
 
@@ -3105,7 +3109,7 @@ msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:68
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:711
-#: ../../gpvdm_gui/gui/token_lib.py:891
+#: ../../gpvdm_gui/gui/token_lib.py:898
 msgid "filename"
 msgstr ""
 
@@ -3501,8 +3505,8 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:167
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:419
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:420
-#: ../../gpvdm_gui/gui/token_lib.py:304 ../../gpvdm_gui/gui/token_lib.py:643
-#: ../../gpvdm_gui/gui/token_lib.py:644
+#: ../../gpvdm_gui/gui/token_lib.py:304 ../../gpvdm_gui/gui/token_lib.py:650
+#: ../../gpvdm_gui/gui/token_lib.py:651
 msgid "None"
 msgstr ""
 
@@ -3642,7 +3646,7 @@ msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:206
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:556
-#: ../../gpvdm_gui/gui/token_lib.py:352 ../../gpvdm_gui/gui/token_lib.py:799
+#: ../../gpvdm_gui/gui/token_lib.py:352 ../../gpvdm_gui/gui/token_lib.py:806
 #, python-brace-format
 msgid "R_{short}"
 msgstr ""
@@ -3763,7 +3767,7 @@ msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:230
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:583
-#: ../../gpvdm_gui/gui/token_lib.py:374 ../../gpvdm_gui/gui/token_lib.py:825
+#: ../../gpvdm_gui/gui/token_lib.py:374 ../../gpvdm_gui/gui/token_lib.py:832
 msgid "Single point"
 msgstr ""
 
@@ -3872,7 +3876,7 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:263
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:568
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/fxmesh.py:217
-#: ../../gpvdm_gui/gui/token_lib.py:433 ../../gpvdm_gui/gui/token_lib.py:811
+#: ../../gpvdm_gui/gui/token_lib.py:433 ../../gpvdm_gui/gui/token_lib.py:818
 #: ../../gpvdm_gui/gui/fxexperiment_mesh_tab.py:123
 #: ../../gpvdm_gui/gui/import_data_json.py:692
 #: ../../gpvdm_gui/gui/import_data_json.py:694
@@ -3999,176 +4003,176 @@ msgid "Percent of histogram to ignore"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:308
-#: ../../gpvdm_gui/gui/token_lib.py:517
+#: ../../gpvdm_gui/gui/token_lib.py:524
 msgid "Max Electrical itterations (first step)"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:309
-#: ../../gpvdm_gui/gui/token_lib.py:518
+#: ../../gpvdm_gui/gui/token_lib.py:525
 msgid "Electrical clamp (first step)"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:310
-#: ../../gpvdm_gui/gui/token_lib.py:519
+#: ../../gpvdm_gui/gui/token_lib.py:526
 msgid "Desired electrical solver error (first step)"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:311
-#: ../../gpvdm_gui/gui/token_lib.py:536
+#: ../../gpvdm_gui/gui/token_lib.py:543
 msgid "Enable poisson solver"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:312
-#: ../../gpvdm_gui/gui/token_lib.py:520
+#: ../../gpvdm_gui/gui/token_lib.py:527
 msgid "Max electrical itterations"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:313
-#: ../../gpvdm_gui/gui/token_lib.py:521
+#: ../../gpvdm_gui/gui/token_lib.py:528
 msgid "Electrical clamp"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:314
-#: ../../gpvdm_gui/gui/token_lib.py:535
+#: ../../gpvdm_gui/gui/token_lib.py:542
 msgid "Poisson clamping"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:315
-#: ../../gpvdm_gui/gui/token_lib.py:522 ../../gpvdm_gui/gui/token_lib.py:534
+#: ../../gpvdm_gui/gui/token_lib.py:529 ../../gpvdm_gui/gui/token_lib.py:541
 msgid "Minimum electrical error"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:316
-#: ../../gpvdm_gui/gui/token_lib.py:533
+#: ../../gpvdm_gui/gui/token_lib.py:540
 msgid "Poisson solver max itterations"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:318
-#: ../../gpvdm_gui/gui/token_lib.py:527
+#: ../../gpvdm_gui/gui/token_lib.py:534
 msgid "Newton minimum iterations"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:319
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:321
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:323
-#: ../../gpvdm_gui/gui/token_lib.py:528 ../../gpvdm_gui/gui/token_lib.py:539
-#: ../../gpvdm_gui/gui/token_lib.py:541
+#: ../../gpvdm_gui/gui/token_lib.py:535 ../../gpvdm_gui/gui/token_lib.py:546
+#: ../../gpvdm_gui/gui/token_lib.py:548
 msgid "dll name"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:319
-#: ../../gpvdm_gui/gui/token_lib.py:528
+#: ../../gpvdm_gui/gui/token_lib.py:535
 msgid "Complex matrix solver to use"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:321
-#: ../../gpvdm_gui/gui/token_lib.py:539
+#: ../../gpvdm_gui/gui/token_lib.py:546
 msgid "Matrix solver"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:323
-#: ../../gpvdm_gui/gui/token_lib.py:541
+#: ../../gpvdm_gui/gui/token_lib.py:548
 msgid "Newton solver to use"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:324
-#: ../../gpvdm_gui/gui/token_lib.py:542
+#: ../../gpvdm_gui/gui/token_lib.py:549
 msgid "Slotboom T0"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:325
-#: ../../gpvdm_gui/gui/token_lib.py:543
+#: ../../gpvdm_gui/gui/token_lib.py:550
 msgid "Slotboom D0"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:326
-#: ../../gpvdm_gui/gui/token_lib.py:544
+#: ../../gpvdm_gui/gui/token_lib.py:551
 msgid "Slotboom n0"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:327
-#: ../../gpvdm_gui/gui/token_lib.py:545
+#: ../../gpvdm_gui/gui/token_lib.py:552
 msgid "Use newton cache (experimental)"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:331
-#: ../../gpvdm_gui/gui/token_lib.py:550
+#: ../../gpvdm_gui/gui/token_lib.py:557
 msgid "Fit error multiplyer"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:332
-#: ../../gpvdm_gui/gui/token_lib.py:551
+#: ../../gpvdm_gui/gui/token_lib.py:558
 msgid "Randomize fit"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:333
-#: ../../gpvdm_gui/gui/token_lib.py:552
+#: ../../gpvdm_gui/gui/token_lib.py:559
 msgid "Number of iterations between random reset"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:334
-#: ../../gpvdm_gui/gui/token_lib.py:553
+#: ../../gpvdm_gui/gui/token_lib.py:560
 msgid "Stall steps"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:335
-#: ../../gpvdm_gui/gui/token_lib.py:554
+#: ../../gpvdm_gui/gui/token_lib.py:561
 msgid "Disable reset at level"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:336
-#: ../../gpvdm_gui/gui/token_lib.py:555
+#: ../../gpvdm_gui/gui/token_lib.py:562
 msgid "Fit define convergence"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:337
-#: ../../gpvdm_gui/gui/token_lib.py:556
+#: ../../gpvdm_gui/gui/token_lib.py:563
 msgid "Enable simplex reset"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:338
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:341
-#: ../../gpvdm_gui/gui/token_lib.py:557 ../../gpvdm_gui/gui/token_lib.py:560
+#: ../../gpvdm_gui/gui/token_lib.py:564 ../../gpvdm_gui/gui/token_lib.py:567
 msgid "Simplex reset steps"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:339
-#: ../../gpvdm_gui/gui/token_lib.py:558
+#: ../../gpvdm_gui/gui/token_lib.py:565
 msgid "Fiting method"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:340
-#: ../../gpvdm_gui/gui/token_lib.py:559
+#: ../../gpvdm_gui/gui/token_lib.py:566
 msgid "Start simplex step multiplication"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:344
-#: ../../gpvdm_gui/gui/token_lib.py:893
+#: ../../gpvdm_gui/gui/token_lib.py:900
 msgid "Subtract lowest point"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:345
-#: ../../gpvdm_gui/gui/token_lib.py:894
+#: ../../gpvdm_gui/gui/token_lib.py:901
 msgid "Set first point to zero="
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:349
-#: ../../gpvdm_gui/gui/token_lib.py:568
+#: ../../gpvdm_gui/gui/token_lib.py:575
 msgid "Thermal model type"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:349
-#: ../../gpvdm_gui/gui/token_lib.py:568
+#: ../../gpvdm_gui/gui/token_lib.py:575
 msgid "Hydrodynamic"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:349
-#: ../../gpvdm_gui/gui/token_lib.py:568
+#: ../../gpvdm_gui/gui/token_lib.py:575
 msgid "Lattice heat"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:351
-#: ../../gpvdm_gui/gui/token_lib.py:570
+#: ../../gpvdm_gui/gui/token_lib.py:577
 #, python-brace-format
 msgid "Device temperature at y_{min}"
 msgstr ""
@@ -4187,11 +4191,11 @@ msgstr ""
 #: ../../gpvdm_gui/gui/token_lib.py:183 ../../gpvdm_gui/gui/token_lib.py:188
 #: ../../gpvdm_gui/gui/token_lib.py:193 ../../gpvdm_gui/gui/token_lib.py:198
 #: ../../gpvdm_gui/gui/token_lib.py:203 ../../gpvdm_gui/gui/token_lib.py:208
-#: ../../gpvdm_gui/gui/token_lib.py:571 ../../gpvdm_gui/gui/token_lib.py:576
-#: ../../gpvdm_gui/gui/token_lib.py:581 ../../gpvdm_gui/gui/token_lib.py:586
-#: ../../gpvdm_gui/gui/token_lib.py:591 ../../gpvdm_gui/gui/token_lib.py:596
-#: ../../gpvdm_gui/gui/token_lib.py:612 ../../gpvdm_gui/gui/token_lib.py:613
-#: ../../gpvdm_gui/gui/token_lib.py:614 ../../gpvdm_gui/gui/token_lib.py:615
+#: ../../gpvdm_gui/gui/token_lib.py:578 ../../gpvdm_gui/gui/token_lib.py:583
+#: ../../gpvdm_gui/gui/token_lib.py:588 ../../gpvdm_gui/gui/token_lib.py:593
+#: ../../gpvdm_gui/gui/token_lib.py:598 ../../gpvdm_gui/gui/token_lib.py:603
+#: ../../gpvdm_gui/gui/token_lib.py:619 ../../gpvdm_gui/gui/token_lib.py:620
+#: ../../gpvdm_gui/gui/token_lib.py:621 ../../gpvdm_gui/gui/token_lib.py:622
 msgid "Neumann (==0)"
 msgstr ""
 
@@ -4204,26 +4208,26 @@ msgstr ""
 #: ../../gpvdm_gui/gui/token_lib.py:183 ../../gpvdm_gui/gui/token_lib.py:188
 #: ../../gpvdm_gui/gui/token_lib.py:193 ../../gpvdm_gui/gui/token_lib.py:198
 #: ../../gpvdm_gui/gui/token_lib.py:203 ../../gpvdm_gui/gui/token_lib.py:208
-#: ../../gpvdm_gui/gui/token_lib.py:571 ../../gpvdm_gui/gui/token_lib.py:576
-#: ../../gpvdm_gui/gui/token_lib.py:581 ../../gpvdm_gui/gui/token_lib.py:586
-#: ../../gpvdm_gui/gui/token_lib.py:591 ../../gpvdm_gui/gui/token_lib.py:596
+#: ../../gpvdm_gui/gui/token_lib.py:578 ../../gpvdm_gui/gui/token_lib.py:583
+#: ../../gpvdm_gui/gui/token_lib.py:588 ../../gpvdm_gui/gui/token_lib.py:593
+#: ../../gpvdm_gui/gui/token_lib.py:598 ../../gpvdm_gui/gui/token_lib.py:603
 msgid "Heatsink"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:353
-#: ../../gpvdm_gui/gui/token_lib.py:184 ../../gpvdm_gui/gui/token_lib.py:572
+#: ../../gpvdm_gui/gui/token_lib.py:184 ../../gpvdm_gui/gui/token_lib.py:579
 #, python-brace-format
 msgid "Conductivity of heat sink y_{min}"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:354
-#: ../../gpvdm_gui/gui/token_lib.py:185 ../../gpvdm_gui/gui/token_lib.py:573
+#: ../../gpvdm_gui/gui/token_lib.py:185 ../../gpvdm_gui/gui/token_lib.py:580
 #, python-brace-format
 msgid "Heat sink length y_{min}"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:356
-#: ../../gpvdm_gui/gui/token_lib.py:575
+#: ../../gpvdm_gui/gui/token_lib.py:582
 #, python-brace-format
 msgid "Device temperature at y_{max}"
 msgstr ""
@@ -4234,19 +4238,19 @@ msgid "Boundry condition for y_{max}"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:358
-#: ../../gpvdm_gui/gui/token_lib.py:189 ../../gpvdm_gui/gui/token_lib.py:577
+#: ../../gpvdm_gui/gui/token_lib.py:189 ../../gpvdm_gui/gui/token_lib.py:584
 #, python-brace-format
 msgid "Conductivity of heat sink y_{max}"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:359
-#: ../../gpvdm_gui/gui/token_lib.py:190 ../../gpvdm_gui/gui/token_lib.py:578
+#: ../../gpvdm_gui/gui/token_lib.py:190 ../../gpvdm_gui/gui/token_lib.py:585
 #, python-brace-format
 msgid "Heat sink length y_{max}"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:361
-#: ../../gpvdm_gui/gui/token_lib.py:580
+#: ../../gpvdm_gui/gui/token_lib.py:587
 #, python-brace-format
 msgid "Device temperature at x_{min}"
 msgstr ""
@@ -4257,19 +4261,19 @@ msgid "Boundry condition for x_{min}"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:363
-#: ../../gpvdm_gui/gui/token_lib.py:194 ../../gpvdm_gui/gui/token_lib.py:582
+#: ../../gpvdm_gui/gui/token_lib.py:194 ../../gpvdm_gui/gui/token_lib.py:589
 #, python-brace-format
 msgid "Conductivity of heat sink x_{min}"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:364
-#: ../../gpvdm_gui/gui/token_lib.py:195 ../../gpvdm_gui/gui/token_lib.py:583
+#: ../../gpvdm_gui/gui/token_lib.py:195 ../../gpvdm_gui/gui/token_lib.py:590
 #, python-brace-format
 msgid "Heat sink length x_{min}"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:366
-#: ../../gpvdm_gui/gui/token_lib.py:585
+#: ../../gpvdm_gui/gui/token_lib.py:592
 #, python-brace-format
 msgid "Device temperature at x_{max}"
 msgstr ""
@@ -4280,19 +4284,19 @@ msgid "Boundry condition for x_{max}"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:368
-#: ../../gpvdm_gui/gui/token_lib.py:199 ../../gpvdm_gui/gui/token_lib.py:587
+#: ../../gpvdm_gui/gui/token_lib.py:199 ../../gpvdm_gui/gui/token_lib.py:594
 #, python-brace-format
 msgid "Conductivity of heat sink x_{max}"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:369
-#: ../../gpvdm_gui/gui/token_lib.py:200 ../../gpvdm_gui/gui/token_lib.py:588
+#: ../../gpvdm_gui/gui/token_lib.py:200 ../../gpvdm_gui/gui/token_lib.py:595
 #, python-brace-format
 msgid "Heat sink length x_{max}"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:371
-#: ../../gpvdm_gui/gui/token_lib.py:202 ../../gpvdm_gui/gui/token_lib.py:590
+#: ../../gpvdm_gui/gui/token_lib.py:202 ../../gpvdm_gui/gui/token_lib.py:597
 #, python-brace-format
 msgid "Device temperature at z_{min}"
 msgstr ""
@@ -4303,19 +4307,19 @@ msgid "Boundry condition for z_{min}"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:373
-#: ../../gpvdm_gui/gui/token_lib.py:204 ../../gpvdm_gui/gui/token_lib.py:592
+#: ../../gpvdm_gui/gui/token_lib.py:204 ../../gpvdm_gui/gui/token_lib.py:599
 #, python-brace-format
 msgid "Conductivity of heat sink z_{min}"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:374
-#: ../../gpvdm_gui/gui/token_lib.py:205 ../../gpvdm_gui/gui/token_lib.py:593
+#: ../../gpvdm_gui/gui/token_lib.py:205 ../../gpvdm_gui/gui/token_lib.py:600
 #, python-brace-format
 msgid "Heat sink length z_{min}"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:376
-#: ../../gpvdm_gui/gui/token_lib.py:595
+#: ../../gpvdm_gui/gui/token_lib.py:602
 #, python-brace-format
 msgid "Device temperature at z_{max}"
 msgstr ""
@@ -4326,29 +4330,29 @@ msgid "Boundry condition for z_{max}"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:378
-#: ../../gpvdm_gui/gui/token_lib.py:209 ../../gpvdm_gui/gui/token_lib.py:597
+#: ../../gpvdm_gui/gui/token_lib.py:209 ../../gpvdm_gui/gui/token_lib.py:604
 #, python-brace-format
 msgid "Conductivity of heat sink z_{max}"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:379
-#: ../../gpvdm_gui/gui/token_lib.py:210 ../../gpvdm_gui/gui/token_lib.py:598
+#: ../../gpvdm_gui/gui/token_lib.py:210 ../../gpvdm_gui/gui/token_lib.py:605
 #, python-brace-format
 msgid "Heat sink length z_{max}"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:382
-#: ../../gpvdm_gui/gui/token_lib.py:601
+#: ../../gpvdm_gui/gui/token_lib.py:608
 msgid "Lattice heat model"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:383
-#: ../../gpvdm_gui/gui/token_lib.py:602
+#: ../../gpvdm_gui/gui/token_lib.py:609
 msgid "Electron heat model"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:384
-#: ../../gpvdm_gui/gui/token_lib.py:603
+#: ../../gpvdm_gui/gui/token_lib.py:610
 msgid "Hole heat model"
 msgstr ""
 
@@ -4368,22 +4372,22 @@ msgid "Thermal conductivity"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:389
-#: ../../gpvdm_gui/gui/token_lib.py:608
+#: ../../gpvdm_gui/gui/token_lib.py:615
 msgid "Isothermal boundary on left"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:390
-#: ../../gpvdm_gui/gui/token_lib.py:609
+#: ../../gpvdm_gui/gui/token_lib.py:616
 msgid "Isothermal boundary on right"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:394
-#: ../../gpvdm_gui/gui/token_lib.py:627
+#: ../../gpvdm_gui/gui/token_lib.py:634
 msgid "Dump from newton solver"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:395
-#: ../../gpvdm_gui/gui/token_lib.py:628
+#: ../../gpvdm_gui/gui/token_lib.py:635
 msgid "Plot bands etc.. "
 msgstr ""
 
@@ -4392,12 +4396,12 @@ msgid "dump slices by time"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:398
-#: ../../gpvdm_gui/gui/token_lib.py:629
+#: ../../gpvdm_gui/gui/token_lib.py:636
 msgid "Dump slices"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:399
-#: ../../gpvdm_gui/gui/token_lib.py:630
+#: ../../gpvdm_gui/gui/token_lib.py:637
 msgid "Dump dynamic"
 msgstr ""
 
@@ -4406,7 +4410,7 @@ msgid "Dump zip files"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:401
-#: ../../gpvdm_gui/gui/token_lib.py:631
+#: ../../gpvdm_gui/gui/token_lib.py:638
 msgid "Write out band structure"
 msgstr ""
 
@@ -4427,37 +4431,37 @@ msgid "Print solver convergence"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:406
-#: ../../gpvdm_gui/gui/token_lib.py:632
+#: ../../gpvdm_gui/gui/token_lib.py:639
 msgid "Write newton solver convergence to disk"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:407
-#: ../../gpvdm_gui/gui/token_lib.py:633
+#: ../../gpvdm_gui/gui/token_lib.py:640
 msgid "Print poisson solver convergence"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:408
-#: ../../gpvdm_gui/gui/token_lib.py:634
+#: ../../gpvdm_gui/gui/token_lib.py:641
 msgid "Normalize output x-time to one"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:409
-#: ../../gpvdm_gui/gui/token_lib.py:635
+#: ../../gpvdm_gui/gui/token_lib.py:642
 msgid "Dump the built in voltage."
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:410
-#: ../../gpvdm_gui/gui/token_lib.py:636
+#: ../../gpvdm_gui/gui/token_lib.py:643
 msgid "Dump optical probe spectrum"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:411
-#: ../../gpvdm_gui/gui/token_lib.py:637
+#: ../../gpvdm_gui/gui/token_lib.py:644
 msgid "Dump optical summary"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:412
-#: ../../gpvdm_gui/gui/token_lib.py:638
+#: ../../gpvdm_gui/gui/token_lib.py:645
 msgid "Dump raytrace plots"
 msgstr ""
 
@@ -4466,173 +4470,173 @@ msgid "Dump an excel workbook for each simulation run congaing the results."
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:415
-#: ../../gpvdm_gui/gui/token_lib.py:639
+#: ../../gpvdm_gui/gui/token_lib.py:646
 msgid "Write file access log to disk."
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:416
-#: ../../gpvdm_gui/gui/token_lib.py:640
+#: ../../gpvdm_gui/gui/token_lib.py:647
 msgid "Use cache for file writes"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:417
-#: ../../gpvdm_gui/gui/token_lib.py:641
+#: ../../gpvdm_gui/gui/token_lib.py:648
 msgid "Write headers to output files"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:418
-#: ../../gpvdm_gui/gui/token_lib.py:642
+#: ../../gpvdm_gui/gui/token_lib.py:649
 msgid "Write first guess to equations"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:419
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:420
-#: ../../gpvdm_gui/gui/token_lib.py:643 ../../gpvdm_gui/gui/token_lib.py:644
+#: ../../gpvdm_gui/gui/token_lib.py:650 ../../gpvdm_gui/gui/token_lib.py:651
 msgid "Log verbocity"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:419
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:420
-#: ../../gpvdm_gui/gui/token_lib.py:643 ../../gpvdm_gui/gui/token_lib.py:644
+#: ../../gpvdm_gui/gui/token_lib.py:650 ../../gpvdm_gui/gui/token_lib.py:651
 msgid "Screen"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:419
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:420
-#: ../../gpvdm_gui/gui/token_lib.py:643 ../../gpvdm_gui/gui/token_lib.py:644
+#: ../../gpvdm_gui/gui/token_lib.py:650 ../../gpvdm_gui/gui/token_lib.py:651
 msgid "Disk"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:419
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:420
-#: ../../gpvdm_gui/gui/token_lib.py:643 ../../gpvdm_gui/gui/token_lib.py:644
+#: ../../gpvdm_gui/gui/token_lib.py:650 ../../gpvdm_gui/gui/token_lib.py:651
 msgid "Screen and disk"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:421
-#: ../../gpvdm_gui/gui/token_lib.py:645
+#: ../../gpvdm_gui/gui/token_lib.py:652
 msgid "PL dump Energy"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:422
-#: ../../gpvdm_gui/gui/token_lib.py:646
+#: ../../gpvdm_gui/gui/token_lib.py:653
 msgid "Clean up DoS cache files"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:423
-#: ../../gpvdm_gui/gui/token_lib.py:647
+#: ../../gpvdm_gui/gui/token_lib.py:654
 msgid "Dump verbose electrical solver results"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:426
-#: ../../gpvdm_gui/gui/token_lib.py:650
+#: ../../gpvdm_gui/gui/token_lib.py:657
 msgid "Device state"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:426
-#: ../../gpvdm_gui/gui/token_lib.py:650
+#: ../../gpvdm_gui/gui/token_lib.py:657
 msgid "Voc"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:426
-#: ../../gpvdm_gui/gui/token_lib.py:650
+#: ../../gpvdm_gui/gui/token_lib.py:657
 msgid "Jsc"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:429
-#: ../../gpvdm_gui/gui/token_lib.py:653
+#: ../../gpvdm_gui/gui/token_lib.py:660
 msgid "Wavelength points"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:430
-#: ../../gpvdm_gui/gui/token_lib.py:654
+#: ../../gpvdm_gui/gui/token_lib.py:661
 msgid "Run the ray tracer"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:430
-#: ../../gpvdm_gui/gui/token_lib.py:654
+#: ../../gpvdm_gui/gui/token_lib.py:661
 msgid "Never"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:430
-#: ../../gpvdm_gui/gui/token_lib.py:654
+#: ../../gpvdm_gui/gui/token_lib.py:661
 msgid "Once per simulation"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:430
-#: ../../gpvdm_gui/gui/token_lib.py:654
+#: ../../gpvdm_gui/gui/token_lib.py:661
 msgid "Each simulation step"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:432
-#: ../../gpvdm_gui/gui/token_lib.py:656
+#: ../../gpvdm_gui/gui/token_lib.py:663
 msgid "Theta steps"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:433
-#: ../../gpvdm_gui/gui/token_lib.py:657
+#: ../../gpvdm_gui/gui/token_lib.py:664
 msgid "Theta start"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:434
-#: ../../gpvdm_gui/gui/token_lib.py:658
+#: ../../gpvdm_gui/gui/token_lib.py:665
 msgid "Theta stop"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:436
-#: ../../gpvdm_gui/gui/token_lib.py:660
+#: ../../gpvdm_gui/gui/token_lib.py:667
 msgid "Phi steps"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:437
-#: ../../gpvdm_gui/gui/token_lib.py:661
+#: ../../gpvdm_gui/gui/token_lib.py:668
 msgid "Phi start"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:438
-#: ../../gpvdm_gui/gui/token_lib.py:662
+#: ../../gpvdm_gui/gui/token_lib.py:669
 msgid "Phi stop"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:440
-#: ../../gpvdm_gui/gui/token_lib.py:664
+#: ../../gpvdm_gui/gui/token_lib.py:671
 msgid "Escape bins"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:442
-#: ../../gpvdm_gui/gui/token_lib.py:666
+#: ../../gpvdm_gui/gui/token_lib.py:673
 msgid "Automatic wavelength range"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:443
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:748
-#: ../../gpvdm_gui/gui/token_lib.py:667 ../../gpvdm_gui/gui/token_lib.py:929
+#: ../../gpvdm_gui/gui/token_lib.py:674 ../../gpvdm_gui/gui/token_lib.py:936
 msgid "Start wavelength"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:444
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:749
-#: ../../gpvdm_gui/gui/token_lib.py:668 ../../gpvdm_gui/gui/token_lib.py:930
+#: ../../gpvdm_gui/gui/token_lib.py:675 ../../gpvdm_gui/gui/token_lib.py:937
 msgid "Stop wavelength"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:446
-#: ../../gpvdm_gui/gui/token_lib.py:670
+#: ../../gpvdm_gui/gui/token_lib.py:677
 msgid "Emit from"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:446
-#: ../../gpvdm_gui/gui/token_lib.py:670
+#: ../../gpvdm_gui/gui/token_lib.py:677
 msgid "Each electrical mesh point"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:446
-#: ../../gpvdm_gui/gui/token_lib.py:670
+#: ../../gpvdm_gui/gui/token_lib.py:677
 msgid "Center of each layer"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:449
-#: ../../gpvdm_gui/gui/token_lib.py:675
+#: ../../gpvdm_gui/gui/token_lib.py:682
 msgid "Enable viewpoint"
 msgstr ""
 
@@ -4641,37 +4645,37 @@ msgid "View point size"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:451
-#: ../../gpvdm_gui/gui/token_lib.py:680
+#: ../../gpvdm_gui/gui/token_lib.py:687
 msgid "View point dz"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:452
-#: ../../gpvdm_gui/gui/token_lib.py:682 ../../gpvdm_gui/gui/token_lib.py:941
+#: ../../gpvdm_gui/gui/token_lib.py:689 ../../gpvdm_gui/gui/token_lib.py:948
 msgid "Mesh points x"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:453
-#: ../../gpvdm_gui/gui/token_lib.py:683 ../../gpvdm_gui/gui/token_lib.py:940
+#: ../../gpvdm_gui/gui/token_lib.py:690 ../../gpvdm_gui/gui/token_lib.py:947
 msgid "Mesh points z"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:458
-#: ../../gpvdm_gui/gui/token_lib.py:688
+#: ../../gpvdm_gui/gui/token_lib.py:695
 msgid "LED extraction efficiency"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:467
-#: ../../gpvdm_gui/gui/token_lib.py:697
+#: ../../gpvdm_gui/gui/token_lib.py:704
 msgid "Series resistance"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:468
-#: ../../gpvdm_gui/gui/token_lib.py:698
+#: ../../gpvdm_gui/gui/token_lib.py:705
 msgid "Other layers"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:469
-#: ../../gpvdm_gui/gui/token_lib.py:699
+#: ../../gpvdm_gui/gui/token_lib.py:706
 msgid "debug (ignore)"
 msgstr ""
 
@@ -4684,94 +4688,94 @@ msgid "Turn on luminescence"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:478
-#: ../../gpvdm_gui/gui/token_lib.py:716
+#: ../../gpvdm_gui/gui/token_lib.py:723
 #, python-brace-format
 msgid "n_{free} to p_{free} photon generation efficiency"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:479
-#: ../../gpvdm_gui/gui/token_lib.py:717
+#: ../../gpvdm_gui/gui/token_lib.py:724
 #, python-brace-format
 msgid "n_{free} to n_{trap} photon generation efficiency"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:480
-#: ../../gpvdm_gui/gui/token_lib.py:718
+#: ../../gpvdm_gui/gui/token_lib.py:725
 #, python-brace-format
 msgid "n_{trap} to p_{free} photon generation efficiency"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:481
-#: ../../gpvdm_gui/gui/token_lib.py:719
+#: ../../gpvdm_gui/gui/token_lib.py:726
 #, python-brace-format
 msgid "p_{trap} to n_{free} photon generation efficiency"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:482
-#: ../../gpvdm_gui/gui/token_lib.py:720
+#: ../../gpvdm_gui/gui/token_lib.py:727
 #, python-brace-format
 msgid "p_{free} to p_{trap} photon generation efficiency"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:483
-#: ../../gpvdm_gui/gui/token_lib.py:721
+#: ../../gpvdm_gui/gui/token_lib.py:728
 msgid "Experimental emission spectra"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:484
-#: ../../gpvdm_gui/gui/token_lib.py:723
+#: ../../gpvdm_gui/gui/token_lib.py:730
 msgid "Experimental emission efficiency"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:485
-#: ../../gpvdm_gui/gui/token_lib.py:715
+#: ../../gpvdm_gui/gui/token_lib.py:722
 msgid "Emission enabled from this layer"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:489
-#: ../../gpvdm_gui/gui/token_lib.py:727
+#: ../../gpvdm_gui/gui/token_lib.py:734
 msgid "Use experimental emission spectra"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:492
-#: ../../gpvdm_gui/gui/token_lib.py:731
+#: ../../gpvdm_gui/gui/token_lib.py:738
 msgid "Load resistor"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:493
-#: ../../gpvdm_gui/gui/token_lib.py:732
+#: ../../gpvdm_gui/gui/token_lib.py:739
 msgid "fx domain mesh points"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:494
-#: ../../gpvdm_gui/gui/token_lib.py:733
+#: ../../gpvdm_gui/gui/token_lib.py:740
 msgid "Cycles to simulate"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:495
-#: ../../gpvdm_gui/gui/token_lib.py:734
+#: ../../gpvdm_gui/gui/token_lib.py:741
 msgid "Voltage modulation depth"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:497
-#: ../../gpvdm_gui/gui/token_lib.py:736
+#: ../../gpvdm_gui/gui/token_lib.py:743
 msgid "Excite with"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:497
-#: ../../gpvdm_gui/gui/token_lib.py:736
+#: ../../gpvdm_gui/gui/token_lib.py:743
 msgid "Light"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:498
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_simulations.py:139
-#: ../../gpvdm_gui/gui/token_lib.py:737
+#: ../../gpvdm_gui/gui/token_lib.py:744
 msgid "Measure"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:498
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:661
-#: ../../gpvdm_gui/gui/token_lib.py:737 ../../gpvdm_gui/gui/token_lib.py:843
+#: ../../gpvdm_gui/gui/token_lib.py:744 ../../gpvdm_gui/gui/token_lib.py:850
 #: ../../gpvdm_core/libfxdomain/fxdomain_dump.c:82
 #: ../../gpvdm_core/libfxdomain/fxdomain_dump.c:83
 #: ../../gpvdm_core/libfxdomain/fxdomain_dump.c:141
@@ -4791,23 +4795,23 @@ msgid "Current"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:499
-#: ../../gpvdm_gui/gui/token_lib.py:738
+#: ../../gpvdm_gui/gui/token_lib.py:745
 msgid "Light modulation depth"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:501
-#: ../../gpvdm_gui/gui/token_lib.py:740
+#: ../../gpvdm_gui/gui/token_lib.py:747
 msgid "Run fit after simulation"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:502
-#: ../../gpvdm_gui/gui/token_lib.py:741
+#: ../../gpvdm_gui/gui/token_lib.py:748
 msgid "Periods to fit"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:503
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:564
-#: ../../gpvdm_gui/gui/token_lib.py:745 ../../gpvdm_gui/gui/token_lib.py:807
+#: ../../gpvdm_gui/gui/token_lib.py:752 ../../gpvdm_gui/gui/token_lib.py:814
 #: ../../gpvdm_core/plugins/cv/cv.c:277
 #: ../../gpvdm_core/plugins/fx_domain/is.c:330
 msgid "Re(i)"
@@ -4815,7 +4819,7 @@ msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:504
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:565
-#: ../../gpvdm_gui/gui/token_lib.py:746 ../../gpvdm_gui/gui/token_lib.py:808
+#: ../../gpvdm_gui/gui/token_lib.py:753 ../../gpvdm_gui/gui/token_lib.py:815
 #: ../../gpvdm_core/plugins/cv/cv.c:278 ../../gpvdm_core/plugins/cv/cv.c:307
 #: ../../gpvdm_core/plugins/cv/cv.c:322 ../../gpvdm_core/plugins/cv/cv.c:325
 #: ../../gpvdm_core/plugins/fx_domain/is.c:331
@@ -4827,110 +4831,110 @@ msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:505
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:566
-#: ../../gpvdm_gui/gui/token_lib.py:747 ../../gpvdm_gui/gui/token_lib.py:809
+#: ../../gpvdm_gui/gui/token_lib.py:754 ../../gpvdm_gui/gui/token_lib.py:816
 msgid "Re(J)"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:506
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:567
-#: ../../gpvdm_gui/gui/token_lib.py:748 ../../gpvdm_gui/gui/token_lib.py:810
+#: ../../gpvdm_gui/gui/token_lib.py:755 ../../gpvdm_gui/gui/token_lib.py:817
 msgid "Im(J)"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:507
-#: ../../gpvdm_gui/gui/token_lib.py:749
+#: ../../gpvdm_gui/gui/token_lib.py:756
 msgid "fx"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:508
-#: ../../gpvdm_gui/gui/token_lib.py:750
+#: ../../gpvdm_gui/gui/token_lib.py:757
 msgid "di"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:509
-#: ../../gpvdm_gui/gui/token_lib.py:751
+#: ../../gpvdm_gui/gui/token_lib.py:758
 msgid "dmodulation"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:510
-#: ../../gpvdm_gui/gui/token_lib.py:752
+#: ../../gpvdm_gui/gui/token_lib.py:759
 msgid "dphase"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:512
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon.py:145
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon.py:208
-#: ../../gpvdm_gui/gui/token_lib.py:753 ../../gpvdm_gui/gui/ribbon.py:136
+#: ../../gpvdm_gui/gui/token_lib.py:760 ../../gpvdm_gui/gui/ribbon.py:136
 #: ../../gpvdm_gui/gui/ribbon.py:197
 msgid "Simulation type"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:512
-#: ../../gpvdm_gui/gui/token_lib.py:753
+#: ../../gpvdm_gui/gui/token_lib.py:760
 msgid "Large signal"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:512
-#: ../../gpvdm_gui/gui/token_lib.py:753
+#: ../../gpvdm_gui/gui/token_lib.py:760
 msgid "Fourier"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:514
-#: ../../gpvdm_gui/gui/token_lib.py:730
+#: ../../gpvdm_gui/gui/token_lib.py:737
 #, python-brace-format
 msgid "V_{external}"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:517
-#: ../../gpvdm_gui/gui/token_lib.py:758
+#: ../../gpvdm_gui/gui/token_lib.py:765
 msgid "Node list"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:520
-#: ../../gpvdm_gui/gui/token_lib.py:761
+#: ../../gpvdm_gui/gui/token_lib.py:768
 msgid "Initialization vector"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:521
-#: ../../gpvdm_gui/gui/token_lib.py:762
+#: ../../gpvdm_gui/gui/token_lib.py:769
 msgid "Cryptographic key"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:530
-#: ../../gpvdm_gui/gui/token_lib.py:776
+#: ../../gpvdm_gui/gui/token_lib.py:783
 msgid "Intensity of the sun"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:532
-#: ../../gpvdm_gui/gui/token_lib.py:778
+#: ../../gpvdm_gui/gui/token_lib.py:785
 msgid "#saturation_n0"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:533
-#: ../../gpvdm_gui/gui/token_lib.py:779
+#: ../../gpvdm_gui/gui/token_lib.py:786
 msgid "#saturation_rate"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:534
-#: ../../gpvdm_gui/gui/token_lib.py:780
+#: ../../gpvdm_gui/gui/token_lib.py:787
 msgid "#imps_saturate"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:537
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/optics.py:131
-#: ../../gpvdm_gui/gui/token_lib.py:783
+#: ../../gpvdm_gui/gui/token_lib.py:790
 #: ../../gpvdm_core/liblight/light_dump.c:226
 #: ../../gpvdm_core/liblight/light_dump.c:228
 msgid "Photon density"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:538
-#: ../../gpvdm_gui/gui/token_lib.py:784
+#: ../../gpvdm_gui/gui/token_lib.py:791
 msgid "Absorption of material"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:539
-#: ../../gpvdm_gui/gui/token_lib.py:785
+#: ../../gpvdm_gui/gui/token_lib.py:792
 msgid "#simmode"
 msgstr ""
 
@@ -4940,17 +4944,17 @@ msgid "Mesh points (x)"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:542
-#: ../../gpvdm_gui/gui/token_lib.py:787
+#: ../../gpvdm_gui/gui/token_lib.py:794
 msgid "#function"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:543
-#: ../../gpvdm_gui/gui/token_lib.py:788
+#: ../../gpvdm_gui/gui/token_lib.py:795
 msgid "start voltage"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:544
-#: ../../gpvdm_gui/gui/token_lib.py:789
+#: ../../gpvdm_gui/gui/token_lib.py:796
 msgid "Max voltage"
 msgstr ""
 
@@ -4965,82 +4969,82 @@ msgid "Xi"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:547
-#: ../../gpvdm_gui/gui/token_lib.py:790
+#: ../../gpvdm_gui/gui/token_lib.py:797
 msgid "Time of pause"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:548
-#: ../../gpvdm_gui/gui/token_lib.py:791
+#: ../../gpvdm_gui/gui/token_lib.py:798
 msgid "Pause between iterations"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:549
-#: ../../gpvdm_gui/gui/token_lib.py:792
+#: ../../gpvdm_gui/gui/token_lib.py:799
 msgid "Invert output"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:552
-#: ../../gpvdm_gui/gui/token_lib.py:795
+#: ../../gpvdm_gui/gui/token_lib.py:802
 msgid "Use capacitor"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:557
-#: ../../gpvdm_gui/gui/token_lib.py:800
+#: ../../gpvdm_gui/gui/token_lib.py:807
 msgid "Backgroud light bias"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:558
-#: ../../gpvdm_gui/gui/token_lib.py:801
+#: ../../gpvdm_gui/gui/token_lib.py:808
 msgid "Modulation depth"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:559
-#: ../../gpvdm_gui/gui/token_lib.py:802
+#: ../../gpvdm_gui/gui/token_lib.py:809
 msgid "Modulation frequency"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:560
-#: ../../gpvdm_gui/gui/token_lib.py:803
+#: ../../gpvdm_gui/gui/token_lib.py:810
 msgid "High light multiplyer"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:569
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:570
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:571
-#: ../../gpvdm_gui/gui/token_lib.py:812 ../../gpvdm_gui/gui/token_lib.py:813
-#: ../../gpvdm_gui/gui/token_lib.py:814
+#: ../../gpvdm_gui/gui/token_lib.py:819 ../../gpvdm_gui/gui/token_lib.py:820
+#: ../../gpvdm_gui/gui/token_lib.py:821
 msgid "Phase shift"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:572
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/fxmesh.py:97
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/fxmesh.py:118
-#: ../../gpvdm_gui/gui/token_lib.py:815
+#: ../../gpvdm_gui/gui/token_lib.py:822
 msgid "points"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:573
-#: ../../gpvdm_gui/gui/token_lib.py:816
+#: ../../gpvdm_gui/gui/token_lib.py:823
 msgid "Wavelengths to simulate"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:574
-#: ../../gpvdm_gui/gui/token_lib.py:817
+#: ../../gpvdm_gui/gui/token_lib.py:824
 msgid "External voltage"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:576
-#: ../../gpvdm_gui/gui/token_lib.py:819
+#: ../../gpvdm_gui/gui/token_lib.py:826
 msgid "External C"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:577
-#: ../../gpvdm_gui/gui/token_lib.py:820
+#: ../../gpvdm_gui/gui/token_lib.py:827
 msgid "External R"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:579
-#: ../../gpvdm_gui/gui/token_lib.py:822
+#: ../../gpvdm_gui/gui/token_lib.py:829
 msgid "Resistance of scope"
 msgstr ""
 
@@ -5051,55 +5055,55 @@ msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:584
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:589
-#: ../../gpvdm_gui/gui/token_lib.py:826 ../../gpvdm_gui/gui/token_lib.py:831
+#: ../../gpvdm_gui/gui/token_lib.py:833 ../../gpvdm_gui/gui/token_lib.py:838
 msgid "Start intensity"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:585
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:590
-#: ../../gpvdm_gui/gui/token_lib.py:827 ../../gpvdm_gui/gui/token_lib.py:832
+#: ../../gpvdm_gui/gui/token_lib.py:834 ../../gpvdm_gui/gui/token_lib.py:839
 msgid "Stop intensity"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:586
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:592
-#: ../../gpvdm_gui/gui/token_lib.py:828 ../../gpvdm_gui/gui/token_lib.py:834
+#: ../../gpvdm_gui/gui/token_lib.py:835 ../../gpvdm_gui/gui/token_lib.py:841
 msgid "step multiplier"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:591
-#: ../../gpvdm_gui/gui/token_lib.py:833 ../../gpvdm_core/libfit/fit_dump.c:66
+#: ../../gpvdm_gui/gui/token_lib.py:840 ../../gpvdm_core/libfit/fit_dump.c:66
 #: ../../gpvdm_core/libfit/fit_dump.c:84
 msgid "Step"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:594
-#: ../../gpvdm_gui/gui/token_lib.py:836
+#: ../../gpvdm_gui/gui/token_lib.py:843
 msgid "Photon Flux"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:596
-#: ../../gpvdm_gui/gui/token_lib.py:838
+#: ../../gpvdm_gui/gui/token_lib.py:845
 msgid "device width"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:597
-#: ../../gpvdm_gui/gui/token_lib.py:839
+#: ../../gpvdm_gui/gui/token_lib.py:846
 msgid "device breadth"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:662
-#: ../../gpvdm_gui/gui/token_lib.py:546
+#: ../../gpvdm_gui/gui/token_lib.py:553
 msgid "Solve Kirchhoff's current law in Newton solver"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:692
-#: ../../gpvdm_gui/gui/token_lib.py:872
+#: ../../gpvdm_gui/gui/token_lib.py:879
 msgid "Enable 3d effects"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:693
-#: ../../gpvdm_gui/gui/token_lib.py:873
+#: ../../gpvdm_gui/gui/token_lib.py:880
 msgid "Use icons from OS"
 msgstr ""
 
@@ -5107,16 +5111,16 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:697
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:698
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:699
-#: ../../gpvdm_gui/gui/ml_anal.py:161 ../../gpvdm_gui/gui/token_lib.py:874
-#: ../../gpvdm_gui/gui/token_lib.py:877 ../../gpvdm_gui/gui/token_lib.py:878
-#: ../../gpvdm_gui/gui/token_lib.py:879 ../../gpvdm_gui/gui/token_lib.py:880
-#: ../../gpvdm_gui/gui/token_lib.py:881 ../../gpvdm_core/libfit/fit_dump.c:68
+#: ../../gpvdm_gui/gui/ml_anal.py:161 ../../gpvdm_gui/gui/token_lib.py:881
+#: ../../gpvdm_gui/gui/token_lib.py:884 ../../gpvdm_gui/gui/token_lib.py:885
+#: ../../gpvdm_gui/gui/token_lib.py:886 ../../gpvdm_gui/gui/token_lib.py:887
+#: ../../gpvdm_gui/gui/token_lib.py:888 ../../gpvdm_core/libfit/fit_dump.c:68
 #: ../../gpvdm_core/libfit/fit_dump.c:69
 msgid "au"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:694
-#: ../../gpvdm_gui/gui/token_lib.py:874
+#: ../../gpvdm_gui/gui/token_lib.py:881
 msgid "Matlab interpreter"
 msgstr ""
 
@@ -5145,22 +5149,22 @@ msgid "Layer offset (display only)"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:709
-#: ../../gpvdm_gui/gui/token_lib.py:888
+#: ../../gpvdm_gui/gui/token_lib.py:895
 msgid "log x"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:710
-#: ../../gpvdm_gui/gui/token_lib.py:889
+#: ../../gpvdm_gui/gui/token_lib.py:896
 msgid "log y"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:712
-#: ../../gpvdm_gui/gui/token_lib.py:892
+#: ../../gpvdm_gui/gui/token_lib.py:899
 msgid "Invert simulated data (y)"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:721
-#: ../../gpvdm_gui/gui/token_lib.py:914
+#: ../../gpvdm_gui/gui/token_lib.py:921
 msgid "Active layer width"
 msgstr ""
 
@@ -5185,12 +5189,12 @@ msgid "Bottom"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:747
-#: ../../gpvdm_gui/gui/token_lib.py:926
+#: ../../gpvdm_gui/gui/token_lib.py:933
 msgid "OpenCL GPU acceleration"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:750
-#: ../../gpvdm_gui/gui/token_lib.py:931
+#: ../../gpvdm_gui/gui/token_lib.py:938
 msgid "Wavelength steps"
 msgstr ""
 
@@ -5199,27 +5203,27 @@ msgid "Ouput verbosity to disk"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:753
-#: ../../gpvdm_gui/gui/token_lib.py:950
+#: ../../gpvdm_gui/gui/token_lib.py:957
 msgid "Key results"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:753
-#: ../../gpvdm_gui/gui/token_lib.py:537 ../../gpvdm_gui/gui/token_lib.py:950
+#: ../../gpvdm_gui/gui/token_lib.py:544 ../../gpvdm_gui/gui/token_lib.py:957
 msgid "Write everything to disk"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:753
-#: ../../gpvdm_gui/gui/token_lib.py:950
+#: ../../gpvdm_gui/gui/token_lib.py:957
 msgid "Write everything to disk every 2nd step"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:753
-#: ../../gpvdm_gui/gui/token_lib.py:950
+#: ../../gpvdm_gui/gui/token_lib.py:957
 msgid "Write everything to disk every 5th step"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:753
-#: ../../gpvdm_gui/gui/token_lib.py:950
+#: ../../gpvdm_gui/gui/token_lib.py:957
 msgid "Write everything to disk every 10th step"
 msgstr ""
 
@@ -5228,30 +5232,30 @@ msgid "Ouput verbosity to screen"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:754
-#: ../../gpvdm_gui/gui/token_lib.py:951
+#: ../../gpvdm_gui/gui/token_lib.py:958
 msgid "Show lots"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:754
-#: ../../gpvdm_gui/gui/token_lib.py:951
+#: ../../gpvdm_gui/gui/token_lib.py:958
 msgid "Show key results"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:757
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/circuit_editor.py:58
-#: ../../gpvdm_gui/gui/token_lib.py:956
+#: ../../gpvdm_gui/gui/token_lib.py:963
 #: ../../gpvdm_gui/gui/circuit_editor.py:63
 msgid "Resistor"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:758
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/circuit_editor.py:59
-#: ../../gpvdm_gui/gui/token_lib.py:957
+#: ../../gpvdm_gui/gui/token_lib.py:964
 msgid "Capacitor"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:759
-#: ../../gpvdm_gui/gui/token_lib.py:958
+#: ../../gpvdm_gui/gui/token_lib.py:965
 msgid "Inductance"
 msgstr ""
 
@@ -5260,7 +5264,7 @@ msgid "J0"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:761
-#: ../../gpvdm_gui/gui/token_lib.py:960
+#: ../../gpvdm_gui/gui/token_lib.py:967
 msgid "Ideality factor"
 msgstr ""
 
@@ -5411,7 +5415,7 @@ msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/display.py:105
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/display_mesh.py:105
-#: ../../gpvdm_gui/gui/token_lib.py:939 ../../gpvdm_gui/gui/gl_toolbar.py:70
+#: ../../gpvdm_gui/gui/token_lib.py:946 ../../gpvdm_gui/gui/gl_toolbar.py:70
 #: ../../gpvdm_gui/gui/display_mesh.py:76
 msgid "xy"
 msgstr ""
@@ -5430,7 +5434,7 @@ msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/display.py:117
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/display_mesh.py:117
-#: ../../gpvdm_gui/gui/ribbon_shape_import.py:154
+#: ../../gpvdm_gui/gui/ribbon_shape_import.py:213
 #: ../../gpvdm_gui/gui/token_lib.py:493 ../../gpvdm_gui/gui/gl_toolbar.py:105
 #: ../../gpvdm_gui/gui/display_mesh.py:88
 msgid "Rotate"
@@ -5680,7 +5684,7 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/shape_editor.py:75
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/shape_editor.py:159
 #: ../../gpvdm_gui/gui/shape_editor.py:89
-#: ../../gpvdm_gui/gui/shape_editor.py:364
+#: ../../gpvdm_gui/gui/shape_editor.py:373
 msgid "Shape"
 msgstr ""
 
@@ -5690,7 +5694,7 @@ msgid "<big><b>Shape file</b></big><br>"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/shape_editor.py:116
-#: ../../gpvdm_gui/gui/shape_editor.py:286
+#: ../../gpvdm_gui/gui/shape_editor.py:281
 msgid "Shape editor"
 msgstr ""
 
@@ -7972,31 +7976,31 @@ msgstr ""
 msgid "Make a new:"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/json_viewer.py:141
+#: ../../gpvdm_gui/gui/json_viewer.py:142
 msgid "Copy as JSON"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/json_viewer.py:144
+#: ../../gpvdm_gui/gui/json_viewer.py:145
 msgid "Copy json/python path"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/json_viewer.py:147
+#: ../../gpvdm_gui/gui/json_viewer.py:148
 msgid "Copy ObjID"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/json_viewer.py:150
+#: ../../gpvdm_gui/gui/json_viewer.py:151
 msgid "Copy as LaTex"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/json_viewer.py:157
+#: ../../gpvdm_gui/gui/json_viewer.py:158
 msgid "Copy as csv"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/json_viewer.py:161
+#: ../../gpvdm_gui/gui/json_viewer.py:162
 msgid "Reimport from database"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/json_viewer.py:367
+#: ../../gpvdm_gui/gui/json_viewer.py:374
 msgid "This simulation"
 msgstr ""
 
@@ -8093,6 +8097,7 @@ msgstr ""
 
 #: ../../gpvdm_gui/gui/filter_main.py:58
 #: ../../gpvdm_gui/gui/tab_light_src.py:63
+#: ../../gpvdm_gui/gui/ribbon_shape_import.py:245
 msgid "Filters"
 msgstr ""
 
@@ -8268,39 +8273,43 @@ msgid ""
 "Mesh"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/ribbon_shape_import.py:147
-msgid "Threshold"
-msgstr ""
-
-#: ../../gpvdm_gui/gui/ribbon_shape_import.py:159
+#: ../../gpvdm_gui/gui/ribbon_shape_import.py:114
 msgid ""
 "Generate\n"
 "Honeycomb"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/ribbon_shape_import.py:170
+#: ../../gpvdm_gui/gui/ribbon_shape_import.py:125
 msgid ""
 "Generate\n"
 "Xtal"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/ribbon_shape_import.py:181
+#: ../../gpvdm_gui/gui/ribbon_shape_import.py:136
 msgid ""
 "Generate\n"
 "lens"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/ribbon_shape_import.py:193
+#: ../../gpvdm_gui/gui/ribbon_shape_import.py:148
 msgid ""
 "Generate\n"
 "Gaussian"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/ribbon_shape_import.py:204
+#: ../../gpvdm_gui/gui/ribbon_shape_import.py:202
+msgid "Threshold"
+msgstr ""
+
+#: ../../gpvdm_gui/gui/ribbon_shape_import.py:217
 msgid "Boundary"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/ribbon_shape_import.py:221
+#: ../../gpvdm_gui/gui/ribbon_shape_import.py:228
+msgid "Apply"
+msgstr ""
+
+#: ../../gpvdm_gui/gui/ribbon_shape_import.py:242
 msgid "2D Image"
 msgstr ""
 
@@ -8583,8 +8592,8 @@ msgstr ""
 msgid "Exciton density at y_{min}"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:183 ../../gpvdm_gui/gui/token_lib.py:571
-#: ../../gpvdm_gui/gui/token_lib.py:612
+#: ../../gpvdm_gui/gui/token_lib.py:183 ../../gpvdm_gui/gui/token_lib.py:578
+#: ../../gpvdm_gui/gui/token_lib.py:619
 #, python-brace-format
 msgid "Boundary condition for y_{min}"
 msgstr ""
@@ -8600,8 +8609,8 @@ msgstr ""
 msgid "Exciton density at y_{max}"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:188 ../../gpvdm_gui/gui/token_lib.py:576
-#: ../../gpvdm_gui/gui/token_lib.py:613
+#: ../../gpvdm_gui/gui/token_lib.py:188 ../../gpvdm_gui/gui/token_lib.py:583
+#: ../../gpvdm_gui/gui/token_lib.py:620
 #, python-brace-format
 msgid "Boundary condition for y_{max}"
 msgstr ""
@@ -8611,8 +8620,8 @@ msgstr ""
 msgid "Exciton density at x_{min}"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:193 ../../gpvdm_gui/gui/token_lib.py:581
-#: ../../gpvdm_gui/gui/token_lib.py:614
+#: ../../gpvdm_gui/gui/token_lib.py:193 ../../gpvdm_gui/gui/token_lib.py:588
+#: ../../gpvdm_gui/gui/token_lib.py:621
 #, python-brace-format
 msgid "Boundary condition for x_{min}"
 msgstr ""
@@ -8622,13 +8631,13 @@ msgstr ""
 msgid "Exciton density at x_{max}"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:198 ../../gpvdm_gui/gui/token_lib.py:586
-#: ../../gpvdm_gui/gui/token_lib.py:615
+#: ../../gpvdm_gui/gui/token_lib.py:198 ../../gpvdm_gui/gui/token_lib.py:593
+#: ../../gpvdm_gui/gui/token_lib.py:622
 #, python-brace-format
 msgid "Boundary condition for x_{max}"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:203 ../../gpvdm_gui/gui/token_lib.py:591
+#: ../../gpvdm_gui/gui/token_lib.py:203 ../../gpvdm_gui/gui/token_lib.py:598
 #, python-brace-format
 msgid "Boundary condition for z_{min}"
 msgstr ""
@@ -8638,7 +8647,7 @@ msgstr ""
 msgid "Exciton density at z_{max}"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:208 ../../gpvdm_gui/gui/token_lib.py:596
+#: ../../gpvdm_gui/gui/token_lib.py:208 ../../gpvdm_gui/gui/token_lib.py:603
 #, python-brace-format
 msgid "Boundary condition for z_{max}"
 msgstr ""
@@ -8697,7 +8706,7 @@ msgstr ""
 msgid "Xi_{1}"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:270 ../../gpvdm_gui/gui/token_lib.py:704
+#: ../../gpvdm_gui/gui/token_lib.py:270 ../../gpvdm_gui/gui/token_lib.py:711
 #: ../../gpvdm_core/plugins/jv/jv.c:770 ../../gpvdm_core/plugins/jv/jv.c:789
 #: ../../gpvdm_core/plugins/jv/jv.c:808 ../../gpvdm_core/plugins/jv/jv.c:828
 #: ../../gpvdm_core/plugins/jv/jv.c:849 ../../gpvdm_core/plugins/jv/jv.c:868
@@ -8840,8 +8849,8 @@ msgstr ""
 #: ../../gpvdm_core/libmath2d/math_2d_dump.c:64
 #: ../../gpvdm_core/libcircuit/circuit_dump.c:531
 #: ../../gpvdm_core/libdump/dump_zxy_charge.c:296
-#: ../../gpvdm_core/libdump/dump_zxy.c:857
-#: ../../gpvdm_core/libdump/dump_zxy.c:895
+#: ../../gpvdm_core/libdump/dump_zxy.c:858
+#: ../../gpvdm_core/libdump/dump_zxy.c:896
 msgid "x-position"
 msgstr ""
 
@@ -8849,8 +8858,8 @@ msgstr ""
 #: ../../gpvdm_core/libmath2d/math_2d_dump.c:65
 #: ../../gpvdm_core/libcircuit/circuit_dump.c:532
 #: ../../gpvdm_core/libdump/dump_zxy_charge.c:297
-#: ../../gpvdm_core/libdump/dump_zxy.c:858
-#: ../../gpvdm_core/libdump/dump_zxy.c:896
+#: ../../gpvdm_core/libdump/dump_zxy.c:859
+#: ../../gpvdm_core/libdump/dump_zxy.c:897
 msgid "y-position"
 msgstr ""
 
@@ -8858,8 +8867,8 @@ msgstr ""
 #: ../../gpvdm_core/libmath2d/math_2d_dump.c:66
 #: ../../gpvdm_core/libcircuit/circuit_dump.c:533
 #: ../../gpvdm_core/libdump/dump_zxy_charge.c:298
-#: ../../gpvdm_core/libdump/dump_zxy.c:859
-#: ../../gpvdm_core/libdump/dump_zxy.c:897
+#: ../../gpvdm_core/libdump/dump_zxy.c:860
+#: ../../gpvdm_core/libdump/dump_zxy.c:898
 msgid "z-position"
 msgstr ""
 
@@ -8972,361 +8981,365 @@ msgid "x size"
 msgstr ""
 
 #: ../../gpvdm_gui/gui/token_lib.py:498
-msgid "dr"
-msgstr ""
-
-#: ../../gpvdm_gui/gui/token_lib.py:499
-msgid "dx"
+msgid "Threshold value"
 msgstr ""
 
 #: ../../gpvdm_gui/gui/token_lib.py:501
+msgid "dr"
+msgstr ""
+
+#: ../../gpvdm_gui/gui/token_lib.py:502
+msgid "dx"
+msgstr ""
+
+#: ../../gpvdm_gui/gui/token_lib.py:504
 msgid "offset"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:504
+#: ../../gpvdm_gui/gui/token_lib.py:507
 msgid "Lens type"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:504
+#: ../../gpvdm_gui/gui/token_lib.py:507
 msgid "Convex"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:504
+#: ../../gpvdm_gui/gui/token_lib.py:507
 msgid "Concave"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:507
+#: ../../gpvdm_gui/gui/token_lib.py:510
 msgid "pixels"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:511
+#: ../../gpvdm_gui/gui/token_lib.py:514
 msgid "Boundary x0"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:512
+#: ../../gpvdm_gui/gui/token_lib.py:516
 msgid "Boundary x1"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:513
+#: ../../gpvdm_gui/gui/token_lib.py:518
 msgid "Boundary y0"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:514
+#: ../../gpvdm_gui/gui/token_lib.py:520
 msgid "Boundary y1"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:529
+#: ../../gpvdm_gui/gui/token_lib.py:536
 msgid "Quit on convergence problem"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:530
+#: ../../gpvdm_gui/gui/token_lib.py:537
 msgid "Quit on inverted Fermi-level"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:537 ../../gpvdm_gui/gui/token_lib.py:950
+#: ../../gpvdm_gui/gui/token_lib.py:544 ../../gpvdm_gui/gui/token_lib.py:957
 msgid "Output verbosity to disk"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:537 ../../gpvdm_gui/gui/token_lib.py:950
-#: ../../gpvdm_gui/gui/token_lib.py:953
+#: ../../gpvdm_gui/gui/token_lib.py:544 ../../gpvdm_gui/gui/token_lib.py:957
+#: ../../gpvdm_gui/gui/token_lib.py:960
 msgid "Nothing"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:561
+#: ../../gpvdm_gui/gui/token_lib.py:568
 msgid "Set error to zero before"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:564
+#: ../../gpvdm_gui/gui/token_lib.py:571
 msgid "EQE Voltage"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:565
+#: ../../gpvdm_gui/gui/token_lib.py:572
 msgid "Optical power"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:605
+#: ../../gpvdm_gui/gui/token_lib.py:612
 msgid "Max thermal solver iterations"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:606
+#: ../../gpvdm_gui/gui/token_lib.py:613
 msgid "Desired thermal error"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:612 ../../gpvdm_gui/gui/token_lib.py:613
-#: ../../gpvdm_gui/gui/token_lib.py:614 ../../gpvdm_gui/gui/token_lib.py:615
+#: ../../gpvdm_gui/gui/token_lib.py:619 ../../gpvdm_gui/gui/token_lib.py:620
+#: ../../gpvdm_gui/gui/token_lib.py:621 ../../gpvdm_gui/gui/token_lib.py:622
 msgid "Interpolate"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:612 ../../gpvdm_gui/gui/token_lib.py:613
-#: ../../gpvdm_gui/gui/token_lib.py:614 ../../gpvdm_gui/gui/token_lib.py:615
+#: ../../gpvdm_gui/gui/token_lib.py:619 ../../gpvdm_gui/gui/token_lib.py:620
+#: ../../gpvdm_gui/gui/token_lib.py:621 ../../gpvdm_gui/gui/token_lib.py:622
 msgid "Constant"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:617
+#: ../../gpvdm_gui/gui/token_lib.py:624
 #, python-brace-format
 msgid "Boundary value for y_{min}"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:618
+#: ../../gpvdm_gui/gui/token_lib.py:625
 #, python-brace-format
 msgid "Boundary value for y_{max}"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:620
+#: ../../gpvdm_gui/gui/token_lib.py:627
 #, python-brace-format
 msgid "Boundary value for x_{min}"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:621
+#: ../../gpvdm_gui/gui/token_lib.py:628
 #, python-brace-format
 msgid "Boundary value for x_{max}"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:623
+#: ../../gpvdm_gui/gui/token_lib.py:630
 msgid "Couple to electrical solver"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:671
+#: ../../gpvdm_gui/gui/token_lib.py:678
 msgid "<b>Ray tracing</b>"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:676
+#: ../../gpvdm_gui/gui/token_lib.py:683
 msgid "View point x0"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:677
+#: ../../gpvdm_gui/gui/token_lib.py:684
 msgid "View point y0"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:678
+#: ../../gpvdm_gui/gui/token_lib.py:685
 msgid "View point z0"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:679
+#: ../../gpvdm_gui/gui/token_lib.py:686
 msgid "View point dx"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:702
+#: ../../gpvdm_gui/gui/token_lib.py:709
 msgid "Contact charge density"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:703
+#: ../../gpvdm_gui/gui/token_lib.py:710
 msgid "Contact position"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:705
+#: ../../gpvdm_gui/gui/token_lib.py:712
 msgid "Charge type"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:706
+#: ../../gpvdm_gui/gui/token_lib.py:713
 msgid "Physical model"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:710
+#: ../../gpvdm_gui/gui/token_lib.py:717
 msgid "Automatic remesh x"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:711
+#: ../../gpvdm_gui/gui/token_lib.py:718
 msgid "Automatic remesh y"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:712
+#: ../../gpvdm_gui/gui/token_lib.py:719
 msgid "Automatic remesh z"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:722
+#: ../../gpvdm_gui/gui/token_lib.py:729
 msgid "Icon"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:743
+#: ../../gpvdm_gui/gui/token_lib.py:750
 msgid "Normalize transfer functon by light intensity"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:877
+#: ../../gpvdm_gui/gui/token_lib.py:884
 msgid "Start light intensity"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:878
+#: ../../gpvdm_gui/gui/token_lib.py:885
 msgid "Stop light intensity"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:879
+#: ../../gpvdm_gui/gui/token_lib.py:886
 msgid "Numer of steps"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:880
+#: ../../gpvdm_gui/gui/token_lib.py:887
 msgid "CE light on time"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:881
+#: ../../gpvdm_gui/gui/token_lib.py:888
 msgid "CE light off time"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:890
+#: ../../gpvdm_gui/gui/token_lib.py:897
 msgid "Keep sign for log y "
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:895
+#: ../../gpvdm_gui/gui/token_lib.py:902
 msgid "Fit against simulation"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:899
+#: ../../gpvdm_gui/gui/token_lib.py:906
 msgid "Automatic world size"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:900
+#: ../../gpvdm_gui/gui/token_lib.py:907
 msgid "x0"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:901
+#: ../../gpvdm_gui/gui/token_lib.py:908
 msgid "x1"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:902
+#: ../../gpvdm_gui/gui/token_lib.py:909
 msgid "y0"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:903
+#: ../../gpvdm_gui/gui/token_lib.py:910
 msgid "y1"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:904
+#: ../../gpvdm_gui/gui/token_lib.py:911
 msgid "z0"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:905
+#: ../../gpvdm_gui/gui/token_lib.py:912
 msgid "z1"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:906
+#: ../../gpvdm_gui/gui/token_lib.py:913
 msgid "margin x0"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:907
+#: ../../gpvdm_gui/gui/token_lib.py:914
 msgid "margin x1"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:908
+#: ../../gpvdm_gui/gui/token_lib.py:915
 msgid "margin y0"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:909
+#: ../../gpvdm_gui/gui/token_lib.py:916
 msgid "margin y1"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:910
+#: ../../gpvdm_gui/gui/token_lib.py:917
 msgid "margin z0"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:911
+#: ../../gpvdm_gui/gui/token_lib.py:918
 msgid "margin z1"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:927
+#: ../../gpvdm_gui/gui/token_lib.py:934
 msgid "<b>Excitation type</b>"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:928 ../../gpvdm_gui/gui/token_lib.py:939
+#: ../../gpvdm_gui/gui/token_lib.py:935 ../../gpvdm_gui/gui/token_lib.py:946
 msgid "FDTD Slice"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:928
+#: ../../gpvdm_gui/gui/token_lib.py:935
 msgid "Sin"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:928
+#: ../../gpvdm_gui/gui/token_lib.py:935
 msgid "Pulse"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:932
+#: ../../gpvdm_gui/gui/token_lib.py:939
 msgid "Pulse length"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:933
+#: ../../gpvdm_gui/gui/token_lib.py:940
 msgid "Excite Ex"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:934
+#: ../../gpvdm_gui/gui/token_lib.py:941
 msgid "Excite Ey"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:935
+#: ../../gpvdm_gui/gui/token_lib.py:942
 msgid "Excite Ez"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:938
+#: ../../gpvdm_gui/gui/token_lib.py:945
 msgid "<b>FDTD mesh</b>"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:939
+#: ../../gpvdm_gui/gui/token_lib.py:946
 msgid "zy"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:939
+#: ../../gpvdm_gui/gui/token_lib.py:946
 msgid "zx"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:942
+#: ../../gpvdm_gui/gui/token_lib.py:949
 msgid "Mesh points y"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:943
+#: ../../gpvdm_gui/gui/token_lib.py:950
 msgid "Use gnuplot to visualize"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:945
+#: ../../gpvdm_gui/gui/token_lib.py:952
 msgid "<b>Simulation time</b>"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:946
+#: ../../gpvdm_gui/gui/token_lib.py:953
 msgid "Stop time"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:947
+#: ../../gpvdm_gui/gui/token_lib.py:954
 msgid "Max steps"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:951
+#: ../../gpvdm_gui/gui/token_lib.py:958
 msgid "Output verbosity to screen"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:953
+#: ../../gpvdm_gui/gui/token_lib.py:960
 msgid "Solver output verbosity"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:953
+#: ../../gpvdm_gui/gui/token_lib.py:960
 msgid "As answers are found"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:953
+#: ../../gpvdm_gui/gui/token_lib.py:960
 msgid "Each step"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:959
+#: ../../gpvdm_gui/gui/token_lib.py:966
 msgid "I0"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:964
+#: ../../gpvdm_gui/gui/token_lib.py:971
 msgid "x rotation"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:965
+#: ../../gpvdm_gui/gui/token_lib.py:972
 msgid "y rotation"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:966
+#: ../../gpvdm_gui/gui/token_lib.py:973
 msgid "z rotation"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:967
+#: ../../gpvdm_gui/gui/token_lib.py:974
 msgid "x pos"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:968
+#: ../../gpvdm_gui/gui/token_lib.py:975
 msgid "y pos"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/token_lib.py:969
+#: ../../gpvdm_gui/gui/token_lib.py:976
 msgid "zoom"
 msgstr ""
 
@@ -9470,28 +9483,32 @@ msgstr ""
 msgid "Explore the simulation data structure"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/shape_editor.py:220
+#: ../../gpvdm_gui/gui/shape_editor.py:215
 msgid "Blur menu"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/shape_editor.py:374
+#: ../../gpvdm_gui/gui/shape_editor.py:383
 msgid "Configure honeycomb"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/shape_editor.py:378
+#: ../../gpvdm_gui/gui/shape_editor.py:387
 msgid "Configure photonic xtal"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/shape_editor.py:382
+#: ../../gpvdm_gui/gui/shape_editor.py:391
 msgid "Configure photonic lens"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/shape_editor.py:386
+#: ../../gpvdm_gui/gui/shape_editor.py:395
 msgid "Configure gaussian"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/shape_editor.py:390
+#: ../../gpvdm_gui/gui/shape_editor.py:399
 msgid "Configure boundary"
+msgstr ""
+
+#: ../../gpvdm_gui/gui/shape_editor.py:403
+msgid "Configure threshold"
 msgstr ""
 
 #: ../../gpvdm_gui/gui/about.py:115
@@ -10229,7 +10246,7 @@ msgstr ""
 #: ../../gpvdm_core/libdump/dump_zxy.c:286
 #: ../../gpvdm_core/libdump/dump_zxy.c:314
 #: ../../gpvdm_core/libdump/dump_zxy.c:328
-#: ../../gpvdm_core/libdump/dump_zxy.c:819
+#: ../../gpvdm_core/libdump/dump_zxy.c:820
 msgid "position"
 msgstr ""
 
@@ -11113,78 +11130,78 @@ msgid "Free electron loss due to SRH processes (including trapping)"
 msgstr ""
 
 #: ../../gpvdm_core/libdump/dump_zxy.c:733
-#: ../../gpvdm_core/libdump/dump_zxy.c:747
-#: ../../gpvdm_core/libdump/dump_zxy.c:761
-#: ../../gpvdm_core/libdump/dump_zxy.c:777
+#: ../../gpvdm_core/libdump/dump_zxy.c:748
+#: ../../gpvdm_core/libdump/dump_zxy.c:762
+#: ../../gpvdm_core/libdump/dump_zxy.c:778
 msgid "Recombination rate"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:746
+#: ../../gpvdm_core/libdump/dump_zxy.c:747
 #: ../../gpvdm_core/libdump/dynamic.c:159
 msgid "Free hole loss due to SRH processes (including trapping)"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:760
+#: ../../gpvdm_core/libdump/dump_zxy.c:761
 #: ../../gpvdm_core/libdump/dynamic.c:119
 #: ../../gpvdm_core/libdump/dynamic.c:132
 msgid "Free electron -> Free hole recombination rate"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:776
+#: ../../gpvdm_core/libdump/dump_zxy.c:777
 msgid "Auger recombination"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:791
+#: ../../gpvdm_core/libdump/dump_zxy.c:792
 #: ../../gpvdm_core/libdump/dynamic.c:228
 msgid "SRH recombination free holes -> trapped electrons"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:792
-#: ../../gpvdm_core/libdump/dump_zxy.c:806
-#: ../../gpvdm_core/libdump/dump_zxy.c:820
-#: ../../gpvdm_core/libdump/dump_zxy.c:834
+#: ../../gpvdm_core/libdump/dump_zxy.c:793
+#: ../../gpvdm_core/libdump/dump_zxy.c:807
+#: ../../gpvdm_core/libdump/dump_zxy.c:821
+#: ../../gpvdm_core/libdump/dump_zxy.c:835
 msgid "Rate"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:805
+#: ../../gpvdm_core/libdump/dump_zxy.c:806
 #: ../../gpvdm_core/libdump/dynamic.c:216
 msgid "SRH recombination free electrons -> trapped holes"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:819
+#: ../../gpvdm_core/libdump/dump_zxy.c:820
 #: ../../gpvdm_core/libdump/dynamic.c:185
 msgid "SRH relaxation free holes -> trapped holes"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:833
+#: ../../gpvdm_core/libdump/dump_zxy.c:834
 #: ../../gpvdm_core/libdump/dynamic.c:172
 msgid "SRH relaxation free electrons -> trapped electrons"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:856
-#: ../../gpvdm_core/libdump/dump_zxy.c:894
+#: ../../gpvdm_core/libdump/dump_zxy.c:857
+#: ../../gpvdm_core/libdump/dump_zxy.c:895
 msgid "Trap fermi level"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:860
-#: ../../gpvdm_core/libdump/dump_zxy.c:898
+#: ../../gpvdm_core/libdump/dump_zxy.c:861
+#: ../../gpvdm_core/libdump/dump_zxy.c:899
 msgid "Electron Fermi level"
-msgstr ""
-
-#: ../../gpvdm_core/libdump/dump_zxy.c:930
-#: ../../gpvdm_core/libdump/dump_zxy.c:971
-#: ../../gpvdm_core/libdump/dump_zxy.c:999
-msgid "Material number"
 msgstr ""
 
 #: ../../gpvdm_core/libdump/dump_zxy.c:931
 #: ../../gpvdm_core/libdump/dump_zxy.c:972
 #: ../../gpvdm_core/libdump/dump_zxy.c:1000
+msgid "Material number"
+msgstr ""
+
+#: ../../gpvdm_core/libdump/dump_zxy.c:932
+#: ../../gpvdm_core/libdump/dump_zxy.c:973
+#: ../../gpvdm_core/libdump/dump_zxy.c:1001
 msgid "Number"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_zxy.c:943
-#: ../../gpvdm_core/libdump/dump_zxy.c:956
+#: ../../gpvdm_core/libdump/dump_zxy.c:944
+#: ../../gpvdm_core/libdump/dump_zxy.c:957
 msgid "Passivated"
 msgstr ""
 

@@ -56,11 +56,16 @@ def dat_file_load_info(output,lines):
 
 			j_data=json.loads(line)
 			for j in j_data.keys():
-				setattr(output, j, j_data[j])
-				if j=="rgb":
+				if j=="logscale_data":
+					setattr(output, "logdata", str2bool(str(j_data[j])))
+				elif j=="rgb":
 					output.r=float(int(j_data[j][0:2], 16)/255)
 					output.g=float(int(j_data[j][2:4], 16)/255)
 					output.b=float(int(j_data[j][4:6], 16)/255)
+				else:
+					setattr(output, j, j_data[j])
+
+
 
 		elif lines[0]=="#gpvdm":
 			max_lines=len(lines)

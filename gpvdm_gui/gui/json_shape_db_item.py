@@ -33,6 +33,7 @@ class json_shape_db_threshold(json_base):
 		json_base.__init__(self,"threshold")
 		self.var_list=[]
 		self.var_list.append(["threshold_enabled",False])
+		self.var_list.append(["threshold_value",200])
 		self.var_list_build()
 
 class json_shape_db_blur(json_base):
@@ -61,10 +62,15 @@ class json_shape_boundary(json_base):
 	def __init__(self):
 		json_base.__init__(self,"boundary")
 		self.var_list=[]
+		self.var_list.append(["boundary_enabled",False])
 		self.var_list.append(["image_boundary_x0",0])
+		self.var_list.append(["image_boundary_x0_color","1.0,1.0,1.0,1.0"])
 		self.var_list.append(["image_boundary_x1",0])
+		self.var_list.append(["image_boundary_x1_color","1.0,1.0,1.0,1.0"])
 		self.var_list.append(["image_boundary_y0",0])
+		self.var_list.append(["image_boundary_y0_color","1.0,1.0,1.0,1.0"])
 		self.var_list.append(["image_boundary_y1",0])
+		self.var_list.append(["image_boundary_y1_color","1.0,1.0,1.0,1.0"])
 		self.var_list_build()
 
 class json_shape_db_item_import(json_base):

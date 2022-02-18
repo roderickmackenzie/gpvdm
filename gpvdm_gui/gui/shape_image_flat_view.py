@@ -86,17 +86,18 @@ class shape_image_flat_view(QWidget):
 		self.load_image()
 
 	def build_mesh(self):
-		width, height = self.im.size
+		if self.config.mesh.mesh_show==True:
+			width, height = self.im.size
 
-		self.dat_file=dat_file()
-		if self.dat_file.load(os.path.join(self.path,"shape.inp"))==True:
-			if len(self.dat_file.data)!=0:
-				width, height = self.im.size
-				min=triangles_get_min(self.dat_file.data)
-				self.dat_file.data=triangles_sub_vec(self.dat_file.data,min)
-				max=triangles_get_max(self.dat_file.data)
-				
-				self.dat_file.data=triangles_div_vec(self.dat_file.data,max)
+			self.dat_file=dat_file()
+			if self.dat_file.load(os.path.join(self.path,"shape.inp"))==True:
+				if len(self.dat_file.data)!=0:
+					width, height = self.im.size
+					min=triangles_get_min(self.dat_file.data)
+					self.dat_file.data=triangles_sub_vec(self.dat_file.data,min)
+					max=triangles_get_max(self.dat_file.data)
+					
+					self.dat_file.data=triangles_div_vec(self.dat_file.data,max)
 
 
 	def force_update(self):
@@ -148,6 +149,9 @@ class shape_image_flat_view(QWidget):
 		painter.setPen(pen)
 
 		if self.config.mesh.mesh_show==True:
+			if self.dat_file.data==None:
+				self.build_mesh()
+
 			if self.dat_file.data!=None:
 				for t in self.dat_file.data:
 					#print(t.xyz0.x,t.xyz0.x*x_mul,self.width())

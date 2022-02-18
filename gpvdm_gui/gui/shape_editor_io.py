@@ -84,23 +84,6 @@ class shape_editor_io(shape_db_item):
 		#seg_len=pow(pow((ret[0][0]-ret[1][0]),2.0)+pow((ret[0][1]-ret[1][1]),2.0),0.5)
 		return w,h,ret
 
-	def apply_boundary(self,im):
-		x0=self.boundary.image_boundary_x0
-		x1=self.boundary.image_boundary_x1
-		y0=self.boundary.image_boundary_y0
-		y1=self.boundary.image_boundary_y1
-		w, h = im.size
-		dr=ImageDraw.Draw(im)
-		dr.rectangle([(0, 0), (x0, h)], fill="white")
-		dr.rectangle([(w-x1, 0), (w, h)], fill="white")
-
-		if y0!=0:
-			dr.rectangle([(0, 0), (w, y0)], fill="white")
-
-		if y1!=0:
-			dr.rectangle([(0, h-y1), (w, h)], fill="white")
-
-
 	def draw_honeycomb(self):
 		dx=self.honeycomb.honeycomb_dx
 		dy=self.honeycomb.honeycomb_dy
@@ -140,7 +123,7 @@ class shape_editor_io(shape_db_item):
 				delta=0
 
 		im=im.rotate(self.honeycomb.honeycomb_rotate)
-		self.apply_boundary(im)
+
 
 		return im
 

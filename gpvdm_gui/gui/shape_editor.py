@@ -204,6 +204,7 @@ class shape_editor(QWidgetSavePos):
 		self.io.blur.shape_import_blur_enabled=self.ribbon.tb_blur.isChecked()
 		self.io.threshold.threshold_enabled=self.ribbon.tb_threshold.isChecked()
 		self.io.import_config.shape_import_z_norm=self.ribbon.tb_norm_z.isChecked()
+		self.io.boundary.boundary_enabled=self.ribbon.tb_boundary.isChecked()
 		self.io.save()
 		im=self.io.load_image()
 		f=shape_bildverarbeitung(self.path,self.io)
@@ -290,9 +291,10 @@ class shape_editor(QWidgetSavePos):
 		self.ribbon=ribbon_shape_import()
 
 		self.ribbon.tb_norm_y.setChecked(self.io.import_config.shape_import_y_norm)
-		self.ribbon.tb_norm_z.setChecked(self.io.import_config.shape_import_z_norm)
-		self.ribbon.tb_blur.setChecked(self.io.blur.shape_import_blur_enabled)
-		self.ribbon.tb_threshold.setChecked(self.io.threshold.threshold_enabled)
+
+
+
+		self.ribbon.menu_threshold.triggered.connect(self.callback_threshold_menu_edit)
 
 		self.ribbon.mesh_edit.triggered.connect(self.callback_mesh_editor)
 		self.ribbon.mesh_build.clicked.connect(self.callback_mesh_build)
@@ -304,24 +306,32 @@ class shape_editor(QWidgetSavePos):
 		self.ribbon.tb_honeycomb_menu_edit.triggered.connect(self.callback_honeycomb_menu_edit)
 		self.ribbon.tb_xtal_menu_edit.triggered.connect(self.callback_xtal_menu_edit)
 		self.ribbon.tb_lens_menu_edit.triggered.connect(self.callback_lens_menu_edit)
-		#self.ribbon.tb_boundary_menu_edit.triggered.connect(self.callback_boundary_menu_edit)
 
 
 		self.ribbon.tb_gaus_menu_edit.triggered.connect(self.callback_gaus_menu_edit)
+		self.ribbon.menu_boundary.triggered.connect(self.callback_boundary_menu_edit)
 		self.ribbon.tb_gaus.triggered.connect(self.callback_tb_gaus)
 		self.ribbon.tb_honeycomb.triggered.connect(self.callback_tb_honeycomb)
 		self.ribbon.tb_xtal.triggered.connect(self.callback_tb_xtal)
 		self.ribbon.tb_lens.triggered.connect(self.callback_tb_lens)
-		self.ribbon.tb_boundary.triggered.connect(self.callback_boundary_menu_edit)
 		self.ribbon.tb_configure.triggered.connect(self.callback_configure)
 
 		#On button depress filters
 		self.ribbon.tb_norm_z.triggered.connect(self.callback_filters_update)
+		self.ribbon.tb_norm_z.setChecked(self.io.import_config.shape_import_z_norm)
+
 		self.ribbon.tb_blur.triggered.connect(self.callback_filters_update)
+		self.ribbon.tb_blur.setChecked(self.io.blur.shape_import_blur_enabled)
+
 		self.ribbon.tb_threshold.triggered.connect(self.callback_filters_update)
+		self.ribbon.tb_threshold.setChecked(self.io.threshold.threshold_enabled)
+
+		self.ribbon.tb_boundary.triggered.connect(self.callback_filters_update)
+		self.ribbon.tb_boundary.setChecked(self.io.boundary.boundary_enabled)
 
 		self.ribbon.tb_norm_y.triggered.connect(self.callback_norm_y)
 		self.ribbon.tb_rotate.triggered.connect(self.callback_rotate)
+		self.ribbon.tb_apply.triggered.connect(self.callback_filters_update)
 
 		self.ribbon.import_image.clicked.connect(self.callback_open_image)
 		self.ribbon.save_data.clicked.connect(self.callback_import)
@@ -387,6 +397,10 @@ class shape_editor(QWidgetSavePos):
 
 	def callback_boundary_menu_edit(self):
 		self.config_window=class_config_window([self.io.boundary],[_("Configure boundary")],data=self.io)
+		self.config_window.show()
+
+	def callback_threshold_menu_edit(self):
+		self.config_window=class_config_window([self.io.threshold],[_("Configure threshold")],data=self.io)
 		self.config_window.show()
 
 	def callback_configure(self):

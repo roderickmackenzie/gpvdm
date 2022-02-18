@@ -734,6 +734,7 @@ dat_file_init(&buf);
 		strcpy(buf.data_units,"m^{-3} s^{-1}");
 		buf.time=in->time;
 		buf.Vexternal=Vexternal;
+		buf.logscale_data=TRUE;
 		dat_file_add_zxy_data(sim,&buf,dim,  in->Rn_srh);
 		buffer_dump_path(sim,out_dir,NULL,&buf);
 		buffer_free(&buf);

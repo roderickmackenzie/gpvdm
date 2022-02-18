@@ -111,55 +111,6 @@ class ribbon_shape_import(ribbon_base):
 		toolbar.setIconSize(QSize(42, 42))
 
 
-		#blur
-		self.tb_blur= QAction_lock("blur", wrap_text(_("Blur"),2), self,"ribbon_shape_blur")
-		self.tb_blur.setCheckable(True)
-		#self.tb_blur.setChecked(True)
-
-		self.menu_blur = QMenu(self)
-		self.tb_blur.setMenu(self.menu_blur)
-
-		self.edit_blur=QAction(_("Edit Gaussian"), self)
-		self.menu_blur.addAction(self.edit_blur)
-
-		toolbar.addAction(self.tb_blur)
-
-		#norm y
-		self.tb_norm_y= QAction_lock("plot_norm", wrap_text(_("Normalize\ny"),2), self,"ribbon_shape_norm_y")
-		self.tb_norm_y.setCheckable(True)
-		#self.tb_norm_y.setChecked(True)
-
-		self.menu_norm_y = QMenu(self)
-		self.tb_norm_y.setMenu(self.menu_norm_y)
-
-		self.edit_norm_y=QAction(_("Edit histogram"), self)
-		self.menu_norm_y.addAction(self.edit_norm_y)
-
-		toolbar.addAction(self.tb_norm_y)
-
-		#norm z
-		self.tb_norm_z= QAction_lock("plot_norm", wrap_text(_("Normalize\nz"),2), self,"ribbon_shape_norm_z")
-		self.tb_norm_z.setCheckable(True)
-		#self.tb_norm_z.setChecked(True)
-		toolbar.addAction(self.tb_norm_z)
-
-		#threshold
-		self.tb_threshold= QAction_lock("image_threshold", wrap_text(_("Threshold"),2), self,"image_threshold")
-		self.tb_threshold.setCheckable(True)
-		self.menu_threshold = QMenu(self)
-		self.edit_threshold=QAction(_("Edit"), self)
-		self.menu_threshold.addAction(self.edit_threshold)
-
-		self.tb_threshold.setMenu(self.menu_threshold)
-
-		toolbar.addAction(self.tb_threshold)
-
-		#rotate
-		self.tb_rotate= QAction_lock("rotate_right", wrap_text(_("Rotate"),2), self,"ribbon_rotate_right")
-		toolbar.addAction(self.tb_rotate)
-
-
-		##########################
 		self.tb_honeycomb= QAction_lock("honeycomb", wrap_text(_("Generate\nHoneycomb"),2), self,"ribbon_shape_honeycomb")
 
 		self.tb_honeycomb_menu = QMenu(self)
@@ -203,18 +154,84 @@ class ribbon_shape_import(ribbon_base):
 		self.tb_gaus_menu.addAction(self.tb_gaus_menu_edit)
 
 		toolbar.addAction(self.tb_gaus)
-		##########################
-
-		self.tb_boundary= QAction_lock("boundary", wrap_text(_("Boundary"),2), self,"ribbon_shape_boundary")
-
-		toolbar.addAction(self.tb_boundary)
 
 		###########3
 		self.tb_configure= QAction_lock("cog", wrap_text(_("Configure"),2), self,"ribbon_configure")
 		toolbar.addAction(self.tb_configure)
 
+		return toolbar
+
+	def filters_toolbar(self):
+		toolbar = QToolBar()
+		toolbar.setToolButtonStyle( Qt.ToolButtonTextUnderIcon)
+		toolbar.setIconSize(QSize(42, 42))
+
+
+		#blur
+		self.tb_blur= QAction_lock("blur", wrap_text(_("Blur"),2), self,"ribbon_shape_blur")
+		self.tb_blur.setCheckable(True)
+		#self.tb_blur.setChecked(True)
+
+		self.menu_blur = QMenu(self)
+		self.tb_blur.setMenu(self.menu_blur)
+
+		self.edit_blur=QAction(_("Edit Gaussian"), self)
+		self.menu_blur.addAction(self.edit_blur)
+
+		toolbar.addAction(self.tb_blur)
+
+		#norm y
+		self.tb_norm_y= QAction_lock("plot_norm", wrap_text(_("Normalize\ny"),2), self,"ribbon_shape_norm_y")
+		self.tb_norm_y.setCheckable(True)
+
+		self.menu_norm_y = QMenu(self)
+		self.tb_norm_y.setMenu(self.menu_norm_y)
+
+		self.edit_norm_y=QAction(_("Edit histogram"), self)
+		self.menu_norm_y.addAction(self.edit_norm_y)
+
+		toolbar.addAction(self.tb_norm_y)
+
+		#norm z
+		self.tb_norm_z= QAction_lock("plot_norm", wrap_text(_("Normalize\nz"),2), self,"ribbon_shape_norm_z")
+		self.tb_norm_z.setCheckable(True)
+		#self.tb_norm_z.setChecked(True)
+		toolbar.addAction(self.tb_norm_z)
+
+		#threshold
+		self.tb_threshold= QAction_lock("image_threshold", wrap_text(_("Threshold"),2), self,"image_threshold")
+		self.tb_threshold.setCheckable(True)
+		self.menu_threshold = QMenu(self)
+		self.edit_threshold=QAction(_("Edit"), self)
+		self.menu_threshold.addAction(self.edit_threshold)
+
+		self.tb_threshold.setMenu(self.menu_threshold)
+
+		toolbar.addAction(self.tb_threshold)
+
+		#rotate
+		self.tb_rotate= QAction_lock("rotate_right", wrap_text(_("Rotate"),2), self,"ribbon_rotate_right")
+		toolbar.addAction(self.tb_rotate)
+
+		#boundary
+		self.tb_boundary= QAction_lock("boundary", wrap_text(_("Boundary"),2), self,"ribbon_shape_boundary")
+		self.tb_boundary.setCheckable(True)
+
+		self.menu_boundary = QMenu(self)
+		self.tb_boundary.setMenu(self.menu_boundary)
+
+		self.edit_boundary=QAction(_("Edit"), self)
+		self.menu_boundary.addAction(self.edit_boundary)
+		toolbar.addAction(self.tb_boundary)
+
+		#apply
+		self.tb_apply= QAction_lock("media-playback-start", wrap_text(_("Apply"),2), self,"filters_apply")
+		toolbar.addAction(self.tb_apply)
+
 
 		return toolbar
+
+
 	def __init__(self):
 		ribbon_base.__init__(self)
 		self.setMaximumHeight(140)
@@ -223,6 +240,9 @@ class ribbon_shape_import(ribbon_base):
 
 		w=self.image_toolbar()
 		self.addTab(w,_("2D Image"))
+
+		w=self.filters_toolbar()
+		self.addTab(w,_("Filters"))
 
 		sheet=self.readStyleSheet(os.path.join(get_css_path(),"style.css"))
 		if sheet!=None:

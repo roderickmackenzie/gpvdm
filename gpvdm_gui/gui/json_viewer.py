@@ -51,6 +51,7 @@ from PyQt5.QtGui import QPixmap, QIcon
 
 from QComboBoxLang import QComboBoxLang
 from QColorPicker import QColorPicker
+from QColorPicker import QColorPicker_one_line
 from QComboBoxNewtonSelect import QComboBoxNewtonSelect
 from QComboBoxFits import QComboBoxFits
 
@@ -358,6 +359,12 @@ class json_viewer(QWidget,tab_base):
 					b=float(self.template_widget.color_b)
 					alpha=float(self.template_widget.color_alpha)
 					a.edit_box=QColorPicker(r,g,b,alpha)
+					a.edit_box.setMinimumSize(150, 25)
+					a.edit_box.changed.connect(functools.partial(self.callback_edit,token,a.edit_box,unit,result))
+				elif result.widget=="QColorPicker_one_line":
+					vals=getattr(self.template_widget,token)
+					a.edit_box=QColorPicker_one_line()
+					a.edit_box.setText(vals)
 					a.edit_box.setMinimumSize(150, 25)
 					a.edit_box.changed.connect(functools.partial(self.callback_edit,token,a.edit_box,unit,result))
 				elif result.token=="fit_against":

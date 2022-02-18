@@ -494,6 +494,9 @@ def build_token_lib():
 	lib.append(my_data("image_ylen","pixels",_("y size"),"QLineEdit"))
 	lib.append(my_data("image_xlen","pixels",_("x size"),"QLineEdit"))
 
+	#threshold
+	lib.append(my_data("threshold_value","0-255",_("Threshold value"),"QLineEdit"))
+
 	#xtal
 	lib.append(my_data("xtal_dr","pixels",_("dr"),"QLineEdit"))
 	lib.append(my_data("xtal_dx","pixels",_("dx"),"QLineEdit"))
@@ -509,9 +512,13 @@ def build_token_lib():
 
 	#boundary
 	lib.append(my_data("image_boundary_x0","pixels",_("Boundary x0"),"QLineEdit"))
+	lib.append(my_data("image_boundary_x0_color","rgb",_("Color"),"QColorPicker_one_line"))
 	lib.append(my_data("image_boundary_x1","pixels",_("Boundary x1"),"QLineEdit"))
+	lib.append(my_data("image_boundary_x1_color","rgb",_("Color"),"QColorPicker_one_line"))
 	lib.append(my_data("image_boundary_y0","pixels",_("Boundary y0"),"QLineEdit"))
+	lib.append(my_data("image_boundary_y0_color","rgb",_("Color"),"QColorPicker_one_line"))
 	lib.append(my_data("image_boundary_y1","pixels",_("Boundary y1"),"QLineEdit"))
+	lib.append(my_data("image_boundary_y1_color","rgb",_("Color"),"QColorPicker_one_line"))
 
 	#math.inp
 	lib.append(my_data("maxelectricalitt_first","au",_("Max Electrical itterations (first step)"),"QLineEdit"))

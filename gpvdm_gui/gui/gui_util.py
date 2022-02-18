@@ -48,6 +48,7 @@ if gui_get()==True:
 	from gpvdm_select import gpvdm_select
 	from QComboBoxLang import QComboBoxLang
 	from QColorPicker import QColorPicker
+	from QColorPicker import QColorPicker_one_line
 	from QComboBoxNewtonSelect import QComboBoxNewtonSelect
 	from QChangeLog import QChangeLog
 	from QParasitic import QParasitic
@@ -119,7 +120,9 @@ def widget_get_value(widget):
 	elif type(widget)==QComboBoxLang:
 		return widget.currentText_english()
 	elif type(widget)==QColorPicker:
-		return [str(widget.r),str(widget.g),str(widget.b)]
+		return widget.text()
+	elif type(widget)==QColorPicker_one_line:
+		return str(widget.r)+","+str(widget.g)+","+str(widget.b)+","+str(widget.alpha)
 	elif type(widget)==QChangeLog:
 		return widget.toPlainText()
 	elif type(widget)==QComboBoxNewtonSelect:
@@ -170,6 +173,8 @@ def widget_set_value(widget,value):
 		widget.setValue_using_english(value)
 	elif type(widget)==QColorPicker:
 		pass
+	elif type(widget)==QColorPicker_one_line:
+		widget.setText(value)
 	elif type(widget)==QChangeLog:
 		widget.setText(value)
 	elif type(widget)==QComboBoxNewtonSelect:

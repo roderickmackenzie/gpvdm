@@ -75,10 +75,10 @@ class QColorPicker(QWidget):
 		self.edit.setStyleSheet("QLineEdit { border: none;  background-color: rgb(%d,%d,%d)  }" % rgb);
 		
 	def callback_button_click(self):
-		col = QColorDialog()
-		col.setCurrentColor(QColor(int(self.r*255),int(self.g*255),int(self.b*255)))
+		self.col = QColorDialog()
+		self.col.setCurrentColor(QColor(int(self.r*255),int(self.g*255),int(self.b*255)))
 		#col.setCurrentColor(Qt.red)
-		ret=col.getColor(Qt.white, self, options=QColorDialog.DontUseNativeDialog and QColorDialog.DontUseNativeDialog)
+		ret=self.col.getColor(Qt.white, self, options=QColorDialog.DontUseNativeDialog and QColorDialog.DontUseNativeDialog)
 		#col.setOption(QColorDialog::ShowAlphaChannel)
 		#col.setOption(QColorDialog.DontUseNativeDialog)
 		if ret.isValid():
@@ -91,4 +91,22 @@ class QColorPicker(QWidget):
 
 	def get_value(self):
 		return self.edit.text()
-		
+
+class QColorPicker_one_line(QColorPicker):
+
+	def __init__(self):
+		QColorPicker.__init__(self,1.0,1.0,1.0,1.0)
+
+	def setText(self,val):
+		vals=val.split(",")
+		self.r=float(vals[0])
+		self.g=float(vals[1])
+		self.b=float(vals[2])
+		self.alpha=float(vals[3])
+		self.update_color()
+		#self.col.setCurrentColor(QColor(int(self.r*255),int(self.g*255),int(self.b*255)))
+
+	def text(self):
+		return str(self.r)+","+str(self.g)+","+str(self.b)+","+str(self.alpha)
+
+

@@ -51,6 +51,41 @@ class shape_bildverarbeitung():
 		self.image_in=os.path.join(self.path,"image.png")
 		self.image_out=os.path.join(self.path,"image_out.png")
 
+	def apply_boundary(self,im):
+		if self.json_obj.boundary.boundary_enabled==True:
+			x0=self.json_obj.boundary.image_boundary_x0
+			x0_r=int(float(self.json_obj.boundary.image_boundary_x0_color.split(",")[0])*255)
+			x0_g=int(float(self.json_obj.boundary.image_boundary_x0_color.split(",")[1])*255)
+			x0_b=int(float(self.json_obj.boundary.image_boundary_x0_color.split(",")[2])*255)
+
+			x1=self.json_obj.boundary.image_boundary_x1
+			x1_r=int(float(self.json_obj.boundary.image_boundary_x1_color.split(",")[0])*255)
+			x1_g=int(float(self.json_obj.boundary.image_boundary_x1_color.split(",")[1])*255)
+			x1_b=int(float(self.json_obj.boundary.image_boundary_x1_color.split(",")[2])*255)
+
+			y0=self.json_obj.boundary.image_boundary_y0
+			y0_r=int(float(self.json_obj.boundary.image_boundary_y0_color.split(",")[0])*255)
+			y0_g=int(float(self.json_obj.boundary.image_boundary_y0_color.split(",")[1])*255)
+			y0_b=int(float(self.json_obj.boundary.image_boundary_y0_color.split(",")[2])*255)
+
+			y1=self.json_obj.boundary.image_boundary_y1
+			y1_r=int(float(self.json_obj.boundary.image_boundary_x1_color.split(",")[0])*255)
+			y1_g=int(float(self.json_obj.boundary.image_boundary_x1_color.split(",")[1])*255)
+			y1_b=int(float(self.json_obj.boundary.image_boundary_x1_color.split(",")[2])*255)
+
+			w, h = im.size
+			dr=ImageDraw.Draw(im)
+			dr.rectangle([(0, 0), (x0, h)], fill=(x0_r,x0_g,x0_b))
+			dr.rectangle([(w-x1, 0), (w, h)], fill=(x1_r,x1_g,x1_b))
+
+			if y0!=0:
+				dr.rectangle([(0, 0), (w, y0)], fill=(y0_r,y0_g,y0_b))
+
+			if y1!=0:
+				dr.rectangle([(0, h-y1), (w, h)], fill=(y1_r,y1_g,y1_b))
+
+		return im
+
 	def apply_blur(self,im):
 		if self.json_obj.blur.shape_import_blur_enabled==True:
 			im = im.filter(ImageFilter.GaussianBlur(radius = self.json_obj.blur.shape_import_blur))
@@ -69,10 +104,11 @@ class shape_bildverarbeitung():
 		return im
 
 	def threshold(self,im):
-		thresh=150
 		if self.json_obj.threshold.threshold_enabled==True:
-			fn = lambda x : 255 if x > thresh else 0
+			fn = lambda x : 255 if x > self.json_obj.threshold.threshold_value else 0
 			im = im.convert('L').point(fn, mode='1')
+			im = im.convert('RGB')
+
 		return im
 
 	def apply(self,im):
@@ -81,11 +117,12 @@ class shape_bildverarbeitung():
 		im=self.apply_blur(im)
 		im=self.apply_rotate(im)
 		im=self.threshold(im)
+		im=self.apply_boundary(im)
 		im.save(self.image_out)
 
 
 
-	def put_back_in_later(self):
+	def this_was_z_norm(self):
 		if os.path.isfile(self.image_in)==False:
 			self.im=None
 			return
