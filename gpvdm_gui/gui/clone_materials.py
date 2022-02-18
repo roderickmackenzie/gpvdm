@@ -49,6 +49,8 @@ def clone_material(dest_material_dir,src_material_dir):
 	all_files.append("shape_import.inp")
 	all_files.append("data.json")
 	all_files.append("image.png")
+	all_files.append("image_original.png")
+
 
 	for i in range(0,len(files)):
 		if files[i] in all_files:

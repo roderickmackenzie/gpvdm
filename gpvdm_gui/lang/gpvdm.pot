@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gpvdm 5.0\n"
 "Report-Msgid-Bugs-To: roderick.mackenzie@nottingham.ac.uk\n"
-"POT-Creation-Date: 2022-02-17 12:04+0000\n"
+"POT-Creation-Date: 2022-02-18 12:56+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -378,12 +378,12 @@ msgstr ""
 #: ../../gpvdm_gui/gui/detectors_tab.py:48 ../../gpvdm_gui/gui/window_ml.py:79
 #: ../../gpvdm_gui/gui/tab_exciton.py:53
 #: ../../gpvdm_gui/gui/tab_light_src.py:66
-#: ../../gpvdm_gui/gui/ribbon_shape_import.py:202
+#: ../../gpvdm_gui/gui/ribbon_shape_import.py:209
 #: ../../gpvdm_gui/gui/window_light_src.py:61 ../../gpvdm_gui/gui/tab_eqe.py:53
 #: ../../gpvdm_gui/gui/fxexperiment_tab.py:64
 #: ../../gpvdm_gui/gui/config_window.py:59
 #: ../../gpvdm_gui/gui/jvexperiment_tab.py:53
-#: ../../gpvdm_gui/gui/shape_editor.py:358
+#: ../../gpvdm_gui/gui/shape_editor.py:394
 #: ../../gpvdm_gui/gui/cvexperiment_tab.py:53
 #: ../../gpvdm_gui/gui/cluster_config_window.py:73
 #: ../../gpvdm_gui/gui/ribbon.py:195 ../../gpvdm_gui/gui/tab_fdtd.py:49
@@ -436,7 +436,7 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/constraints.py:180
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_shape.py:79
 #: ../../gpvdm_gui/gui/ribbon_complex_dos.py:86
-#: ../../gpvdm_gui/gui/ribbon_shape_import.py:211
+#: ../../gpvdm_gui/gui/ribbon_shape_import.py:218
 #: ../../gpvdm_gui/gui/script_ribbon.py:123
 #: ../../gpvdm_gui/gui/ribbon_filter_db.py:85
 #: ../../gpvdm_gui/gui/ribbon_emission_db.py:85
@@ -793,9 +793,9 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gpvdm_tab.py:78
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/scan_tab.py:552
 #: ../../gpvdm_gui/gui/json_viewer.py:139
-#: ../../gpvdm_gui/gui/gpvdm_viewer.py:254
-#: ../../gpvdm_gui/gui/image_discretizer.py:209
-#: ../../gpvdm_gui/gui/gpvdm_tab.py:73
+#: ../../gpvdm_gui/gui/shape_image_flat_view.py:178
+#: ../../gpvdm_gui/gui/shape_bildverarbeitung.py:164
+#: ../../gpvdm_gui/gui/gpvdm_viewer.py:254 ../../gpvdm_gui/gui/gpvdm_tab.py:73
 #: ../../gpvdm_gui/gui/gl_object_editor.py:74
 #: ../../gpvdm_gui/gui/QHTabBar.py:45 ../../gpvdm_gui/gui/QHTabBar.py:112
 #: ../../gpvdm_gui/gui/plot_widget_menu.py:42
@@ -1167,7 +1167,8 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_main_menu.py:63
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/fit_ribbon.py:162
 #: ../../gpvdm_gui/gui/json_viewer.py:156
-#: ../../gpvdm_gui/gui/image_discretizer.py:207
+#: ../../gpvdm_gui/gui/shape_image_flat_view.py:176
+#: ../../gpvdm_gui/gui/shape_bildverarbeitung.py:162
 #: ../../gpvdm_gui/gui/gl_main_menu.py:57
 msgid "Export"
 msgstr ""
@@ -1681,7 +1682,7 @@ msgid "Triangle editor"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/shape_import.py:132
-#: ../../gpvdm_gui/gui/shape_editor.py:217
+#: ../../gpvdm_gui/gui/shape_editor.py:235
 msgid "Normalization editor"
 msgstr ""
 
@@ -1977,7 +1978,6 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_import.py:72
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_materials.py:110
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_spectra.py:96
-#: ../../gpvdm_gui/gui/ribbon_shape_import.py:61
 #: ../../gpvdm_gui/gui/import_data_json.py:221
 #: ../../gpvdm_gui/gui/ribbon_import.py:64 ../../gpvdm_gui/gui/fit_ribbon.py:96
 msgid "Import data"
@@ -2245,10 +2245,10 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/token_lib.py:483
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_main_menu.py:120
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/optics_ribbon.py:180
-#: ../../gpvdm_gui/gui/ribbon_shape_import.py:157
-#: ../../gpvdm_gui/gui/ribbon_shape_import.py:168
-#: ../../gpvdm_gui/gui/ribbon_shape_import.py:179
-#: ../../gpvdm_gui/gui/ribbon_shape_import.py:191
+#: ../../gpvdm_gui/gui/ribbon_shape_import.py:164
+#: ../../gpvdm_gui/gui/ribbon_shape_import.py:175
+#: ../../gpvdm_gui/gui/ribbon_shape_import.py:186
+#: ../../gpvdm_gui/gui/ribbon_shape_import.py:198
 #: ../../gpvdm_gui/gui/gl_object_editor.py:82
 #: ../../gpvdm_gui/gui/token_lib.py:278 ../../gpvdm_gui/gui/token_lib.py:298
 #: ../../gpvdm_gui/gui/token_lib.py:299 ../../gpvdm_gui/gui/token_lib.py:300
@@ -2564,7 +2564,7 @@ msgid "3D simulation"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/emesh.py:162
-#: ../../gpvdm_gui/gui/shape_editor.py:202
+#: ../../gpvdm_gui/gui/shape_editor.py:224
 #: ../../gpvdm_gui/gui/electrical_mesh_editor.py:159
 #: ../../gpvdm_gui/gui/electrical_mesh_editor.py:204
 msgid "Configure mesh"
@@ -5430,7 +5430,7 @@ msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/display.py:117
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/display_mesh.py:117
-#: ../../gpvdm_gui/gui/ribbon_shape_import.py:147
+#: ../../gpvdm_gui/gui/ribbon_shape_import.py:154
 #: ../../gpvdm_gui/gui/token_lib.py:493 ../../gpvdm_gui/gui/gl_toolbar.py:105
 #: ../../gpvdm_gui/gui/display_mesh.py:88
 msgid "Rotate"
@@ -5679,18 +5679,18 @@ msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/shape_editor.py:75
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/shape_editor.py:159
-#: ../../gpvdm_gui/gui/shape_editor.py:86
-#: ../../gpvdm_gui/gui/shape_editor.py:328
+#: ../../gpvdm_gui/gui/shape_editor.py:89
+#: ../../gpvdm_gui/gui/shape_editor.py:364
 msgid "Shape"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/shape_editor.py:79
-#: ../../gpvdm_gui/gui/shape_editor.py:90
+#: ../../gpvdm_gui/gui/shape_editor.py:93
 msgid "<big><b>Shape file</b></big><br>"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/shape_editor.py:116
-#: ../../gpvdm_gui/gui/shape_editor.py:250
+#: ../../gpvdm_gui/gui/shape_editor.py:286
 msgid "Shape editor"
 msgstr ""
 
@@ -8250,6 +8250,12 @@ msgstr ""
 msgid "Filters (y0)"
 msgstr ""
 
+#: ../../gpvdm_gui/gui/ribbon_shape_import.py:61
+msgid ""
+"Original\n"
+"image"
+msgstr ""
+
 #: ../../gpvdm_gui/gui/ribbon_shape_import.py:86
 msgid ""
 "Edit\n"
@@ -8262,35 +8268,39 @@ msgid ""
 "Mesh"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/ribbon_shape_import.py:152
+#: ../../gpvdm_gui/gui/ribbon_shape_import.py:147
+msgid "Threshold"
+msgstr ""
+
+#: ../../gpvdm_gui/gui/ribbon_shape_import.py:159
 msgid ""
 "Generate\n"
 "Honeycomb"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/ribbon_shape_import.py:163
+#: ../../gpvdm_gui/gui/ribbon_shape_import.py:170
 msgid ""
 "Generate\n"
 "Xtal"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/ribbon_shape_import.py:174
+#: ../../gpvdm_gui/gui/ribbon_shape_import.py:181
 msgid ""
 "Generate\n"
 "lens"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/ribbon_shape_import.py:186
+#: ../../gpvdm_gui/gui/ribbon_shape_import.py:193
 msgid ""
 "Generate\n"
 "Gaussian"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/ribbon_shape_import.py:197
+#: ../../gpvdm_gui/gui/ribbon_shape_import.py:204
 msgid "Boundary"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/ribbon_shape_import.py:214
+#: ../../gpvdm_gui/gui/ribbon_shape_import.py:221
 msgid "2D Image"
 msgstr ""
 
@@ -9460,27 +9470,27 @@ msgstr ""
 msgid "Explore the simulation data structure"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/shape_editor.py:197
+#: ../../gpvdm_gui/gui/shape_editor.py:220
 msgid "Blur menu"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/shape_editor.py:338
+#: ../../gpvdm_gui/gui/shape_editor.py:374
 msgid "Configure honeycomb"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/shape_editor.py:342
+#: ../../gpvdm_gui/gui/shape_editor.py:378
 msgid "Configure photonic xtal"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/shape_editor.py:346
+#: ../../gpvdm_gui/gui/shape_editor.py:382
 msgid "Configure photonic lens"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/shape_editor.py:350
+#: ../../gpvdm_gui/gui/shape_editor.py:386
 msgid "Configure gaussian"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/shape_editor.py:354
+#: ../../gpvdm_gui/gui/shape_editor.py:390
 msgid "Configure boundary"
 msgstr ""
 

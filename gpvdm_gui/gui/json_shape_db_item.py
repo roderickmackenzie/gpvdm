@@ -27,6 +27,14 @@
 
 from json_base import json_base
 
+class json_shape_db_threshold(json_base):
+
+	def __init__(self):
+		json_base.__init__(self,"threshold")
+		self.var_list=[]
+		self.var_list.append(["threshold_enabled",False])
+		self.var_list_build()
+
 class json_shape_db_blur(json_base):
 
 	def __init__(self):
@@ -41,6 +49,7 @@ class json_shape_db_mesh(json_base):
 	def __init__(self):
 		json_base.__init__(self,"mesh")
 		self.var_list=[]
+		self.var_list.append(["mesh_show",True])
 		self.var_list.append(["mesh_gen_nx",20])
 		self.var_list.append(["mesh_gen_ny",20])
 		self.var_list.append(["mesh_gen_opp","node_reduce"])
@@ -132,6 +141,7 @@ class shape_db_item(json_base):
 		self.var_list.append(["boundary",json_shape_boundary()])
 		self.var_list.append(["mesh",json_shape_db_mesh()])
 		self.var_list.append(["blur",json_shape_db_blur()])
+		self.var_list.append(["threshold",json_shape_db_threshold()])
 
 		self.var_list_build()
 		self.include_name=False

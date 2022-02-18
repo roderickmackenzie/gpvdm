@@ -56,7 +56,7 @@ from PIL import Image, ImageFilter,ImageOps, ImageDraw
 from PIL.ImageQt import ImageQt
 from json_dialog import json_dialog
 
-from image_discretizer import image_discretizer
+from shape_image_flat_view import shape_image_flat_view
 from scripts import scripts
 
 from config_window import class_config_window
@@ -78,6 +78,9 @@ from triangle_io import triangles_div_vec
 from triangle_io import triangles_mul_vec
 from triangle_io import triangles_rotate_y
 from triangle import vec
+from json_base import json_base
+import shutil
+from shape_bildverarbeitung import shape_bildverarbeitung
 
 class shape_editor(QWidgetSavePos):
 
@@ -91,7 +94,7 @@ class shape_editor(QWidgetSavePos):
 
 
 	def reload(self):
-		self.discretizer.force_update()
+		self.shape_image_flat_view.force_update()
 		self.load_data()
 		self.three_d_shape.do_draw()
 
@@ -155,28 +158,34 @@ class shape_editor(QWidgetSavePos):
 	def callback_norm_y(self):
 		self.io.import_config.shape_import_y_norm=self.ribbon.tb_norm_y.isChecked()
 		self.io.save()
-		self.discretizer.force_update()
+		im=self.io.load_image()
+		f=shape_bildverarbeitung(self.path,self.io)
+		f.apply(im)
+		self.shape_image_flat_view.force_update()
 
 	def callback_tb_gaus(self):
-		self.io.draw_gauss()
-		self.discretizer.force_update()
+		im=self.io.draw_gauss()
+		f=shape_bildverarbeitung(self.path,self.io)
+		f.apply(im)	
+		self.shape_image_flat_view.force_update()
 
 	def callback_tb_honeycomb(self):
-		self.io.draw_honeycomb()
-		self.discretizer.force_update()
+		im=self.io.draw_honeycomb()
+		f=shape_bildverarbeitung(self.path,self.io)
+		f.apply(im)	
+		self.shape_image_flat_view.force_update()
 
 	def callback_tb_xtal(self):
-		self.io.draw_xtal()
-		self.discretizer.force_update()
+		im=self.io.draw_xtal()
+		f=shape_bildverarbeitung(self.path,self.io)
+		f.apply(im)	
+		self.shape_image_flat_view.force_update()
 
 	def callback_tb_lens(self):
-		self.io.draw_lens()
-		self.discretizer.force_update()
-
-	def callback_norm_z(self):
-		self.io.import_config.shape_import_z_norm=self.ribbon.tb_norm_z.isChecked()
-		self.io.save()
-		self.discretizer.force_update()
+		im=self.io.draw_lens()
+		f=shape_bildverarbeitung(self.path,self.io)
+		f.apply(im)	
+		self.shape_image_flat_view.force_update()
 
 	def callback_rotate(self):
 		rotate=self.io.import_config.shape_import_rotate
@@ -185,18 +194,25 @@ class shape_editor(QWidgetSavePos):
 			rotate=0
 		self.io.import_config.shape_import_rotate=rotate
 		self.io.save()
-		self.discretizer.force_update()
+		im=self.io.load_image()
+		f=shape_bildverarbeitung(self.path,self.io)
+		f.apply(im)
+		self.shape_image_flat_view.force_update()
 
 
-	def callback_blur_enable(self):
+	def callback_filters_update(self):
 		self.io.blur.shape_import_blur_enabled=self.ribbon.tb_blur.isChecked()
+		self.io.threshold.threshold_enabled=self.ribbon.tb_threshold.isChecked()
+		self.io.import_config.shape_import_z_norm=self.ribbon.tb_norm_z.isChecked()
 		self.io.save()
-		self.discretizer.force_update()
+		im=self.io.load_image()
+		f=shape_bildverarbeitung(self.path,self.io)
+		f.apply(im)
+		self.shape_image_flat_view.force_update()
 
 	def callback_menu_blur(self):
 		self.config_window=class_config_window([self.io.blur],[_("Blur menu")],data=self.io)
 		self.config_window.show()
-		self.discretizer.force_update()
 
 	def callback_mesh_editor(self):
 		self.config_window=class_config_window([self.io.mesh],[_("Configure mesh")],data=self.io)
@@ -210,25 +226,29 @@ class shape_editor(QWidgetSavePos):
 		self.my_server.start()
 
 	def callback_edit_norm_y(self):
-		f=inp()
-		f.load(os.path.join(self.path,"shape_import.inp"))
-		shape_import_y_norm_percent=f.get_token("#shape_import_y_norm_percent")
-
 		self.a=json_dialog(title=_("Normalization editor"),icon="shape")
-		ret=self.a.run(["#shape_import_y_norm_percent",shape_import_y_norm_percent,"#end"])
+		data=json_base("dlg")
+		data.var_list.append(["shape_import_y_norm_percent",self.io.import_config.shape_import_y_norm_percent])
+		data.var_list_build()
+		ret=self.a.run(data)
+
 		if ret==QDialog.Accepted:
-			f.replace("#shape_import_y_norm_percent",self.a.tab.f.get_token("#shape_import_y_norm_percent"))
-			f.save()
-			self.discretizer.force_update()
+			self.io.import_config.shape_import_y_norm_percent=data.shape_import_y_norm_percent
+			self.io.save()
+			im=self.io.load_image()
+			f=shape_bildverarbeitung(self.path,self.io)
+			f.apply(im)
+			self.shape_image_flat_view.force_update()
 
 
 	def callback_open_image(self):
 		file_name=open_as_filter(self,"png (*.png);;jpg (*.jpg)",path=self.path)
 		if file_name!=None:
 			im = Image.open(file_name)
-			im.save(os.path.join(self.path,"image.png"))
-			self.discretizer.load_image()
-			self.discretizer.build_mesh()
+			im.save(os.path.join(self.path,"image.png"))				#This is the edited one
+			im.save(os.path.join(self.path,"image_original.png"))		#This is the original image
+			self.shape_image_flat_view.load_image()
+			self.shape_image_flat_view.build_mesh()
 
 	def callback_script(self):
 		self.scripts.show()
@@ -236,11 +256,21 @@ class shape_editor(QWidgetSavePos):
 	def __init__(self,path):
 		QWidgetSavePos.__init__(self,"shape_import")
 		self.path=path
+
+		#backward compatibility
+		self.orig_image_file=os.path.join(path,"image_original.png")
+		self.image_file=os.path.join(path,"image.png")
+		if os.path.isfile(self.orig_image_file)==False:
+			if os.path.isfile(self.image_file)==True:
+				shutil.copyfile(self.image_file, self.orig_image_file)
+
+
+
 		self.io=shape_editor_io()
 		self.io.load(os.path.join(self.path,"data.json"))
 		self.io.loaded=True
 		self.io.save()
-		self.discretizer=image_discretizer(self.path)
+		self.shape_image_flat_view=shape_image_flat_view(self.path,self.io)
 
 
 		self.setMinimumSize(900, 900)
@@ -249,7 +279,7 @@ class shape_editor(QWidgetSavePos):
 		#self.setWindowTitle(_("Import microscope image")+" (https://www.gpvdm.com)") 
 		self.setWindowTitle(os.path.basename(self.path)+" "+_("Shape editor")) 
 
-		self.scripts=scripts(path=self.path,api_callback=self.discretizer.force_update)
+		self.scripts=scripts(path=self.path,api_callback=self.shape_image_flat_view.force_update)
 
 		self.scripts.ribbon.help.setVisible(False)
 		self.scripts.ribbon.plot.setVisible(False)
@@ -262,6 +292,7 @@ class shape_editor(QWidgetSavePos):
 		self.ribbon.tb_norm_y.setChecked(self.io.import_config.shape_import_y_norm)
 		self.ribbon.tb_norm_z.setChecked(self.io.import_config.shape_import_z_norm)
 		self.ribbon.tb_blur.setChecked(self.io.blur.shape_import_blur_enabled)
+		self.ribbon.tb_threshold.setChecked(self.io.threshold.threshold_enabled)
 
 		self.ribbon.mesh_edit.triggered.connect(self.callback_mesh_editor)
 		self.ribbon.mesh_build.clicked.connect(self.callback_mesh_build)
@@ -284,14 +315,18 @@ class shape_editor(QWidgetSavePos):
 		self.ribbon.tb_boundary.triggered.connect(self.callback_boundary_menu_edit)
 		self.ribbon.tb_configure.triggered.connect(self.callback_configure)
 
+		#On button depress filters
+		self.ribbon.tb_norm_z.triggered.connect(self.callback_filters_update)
+		self.ribbon.tb_blur.triggered.connect(self.callback_filters_update)
+		self.ribbon.tb_threshold.triggered.connect(self.callback_filters_update)
+
 		self.ribbon.tb_norm_y.triggered.connect(self.callback_norm_y)
-		self.ribbon.tb_norm_z.triggered.connect(self.callback_norm_z)
-		self.ribbon.tb_blur.triggered.connect(self.callback_blur_enable)
 		self.ribbon.tb_rotate.triggered.connect(self.callback_rotate)
 
 		self.ribbon.import_image.clicked.connect(self.callback_open_image)
 		self.ribbon.save_data.clicked.connect(self.callback_import)
 		self.ribbon.show_mesh.clicked.connect(self.callback_show_mesh)
+		self.ribbon.show_mesh.setChecked(self.io.mesh.mesh_show)
 
 		self.ribbon.tb_script.clicked.connect(self.callback_script)
 		#self.ribbon.help.triggered.connect(self.callback_help)
@@ -323,11 +358,11 @@ class shape_editor(QWidgetSavePos):
 		layout = QHBoxLayout()
 		display.setLayout(layout)
 		layout.addWidget(self.three_d_shape)
-		layout.addWidget(self.discretizer)
+		layout.addWidget(self.shape_image_flat_view)
 
 		self.notebook.addTab(display,_("Shape"))
 
-		#self.notebook.addTab(self.discretizer,_("Image"))
+		#self.notebook.addTab(self.shape_image_flat_view,_("Image"))
 
 		self.setLayout(self.main_vbox)
 		
@@ -359,11 +394,14 @@ class shape_editor(QWidgetSavePos):
 		self.config_window.show()
 
 	def callback_show_mesh(self):
-		self.discretizer.show_mesh=self.ribbon.show_mesh.isChecked()
-		self.discretizer.repaint()
+		self.io.mesh.mesh_show=self.ribbon.show_mesh.isChecked()
+		self.shape_image_flat_view.repaint()
+		self.io.save()
 
 	def callback_import(self):
-		self.discretizer.save_mesh()
-
-
+		shutil.copyfile( self.orig_image_file,self.image_file)
+		im=self.io.load_image()
+		f=shape_bildverarbeitung(self.path,self.io)
+		f.apply(im)
+		self.shape_image_flat_view.force_update()
 

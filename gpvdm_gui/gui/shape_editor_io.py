@@ -102,7 +102,6 @@ class shape_editor_io(shape_db_item):
 
 
 	def draw_honeycomb(self):
-		path=os.path.dirname(self.file_name)
 		dx=self.honeycomb.honeycomb_dx
 		dy=self.honeycomb.honeycomb_dy
 		shift_x=self.honeycomb.honeycomb_x_shift
@@ -142,14 +141,10 @@ class shape_editor_io(shape_db_item):
 
 		im=im.rotate(self.honeycomb.honeycomb_rotate)
 		self.apply_boundary(im)
-		#im=self.apply_rotate(im)
-		im=self.apply_blur(im)
 
-		im.save(os.path.join(path,"image.png"))
+		return im
 
 	def draw_xtal(self):
-
-		path=os.path.dirname(self.file_name)
 		dx=self.xtal.xtal_dx
 		dy=self.xtal.xtal_dy
 		offset=self.xtal.xtal_offset
@@ -173,11 +168,9 @@ class shape_editor_io(shape_db_item):
 
 			y=y+dy
 
-		im.save(os.path.join(path,"image.png"))
+		return im
 
 	def draw_lens(self):
-
-		path=os.path.dirname(self.file_name)
 		convex=True
 		if self.lens.lens_type=="convex":
 			convex=True
@@ -203,25 +196,25 @@ class shape_editor_io(shape_db_item):
 
 				im.putpixel((x,y),(mag, mag, mag))
 
-		im.save(os.path.join(path,"image.png"))
-
-	def apply_rotate(self,im):
-		rotate=self.import_config.shape_import_rotate
-		if rotate!=0:
-			im=im.rotate(360-rotate)
 		return im
+
 
 	def add_job_to_server(self,sim_path,server):
 		path=os.path.dirname(self.file_name)
 		server.add_job(sim_path,"--simmode data@mesh_gen --path "+path)
 
-	def apply_blur(self,im):
-		if self.blur.shape_import_blur_enabled==True:
-			im = im.filter(ImageFilter.GaussianBlur(radius = self.blur.shape_import_blur))
-		return im
+	def load_image(self):
+		file_to_load=os.path.join(os.path.dirname(self.file_name),"image.png")
+		if os.path.isfile(file_to_load)==False:
+			return None
+
+		img=Image.open(file_to_load)
+		if img.mode!="RGB":
+			img=img.convert('RGB')
+
+		return img.convert('RGB')
 
 	def draw_gauss(self):
-		path=os.path.dirname(self.file_name)
 
 		sigma=self.gauss.gauss_sigma
 		gauss_offset_x=self.gauss.gauss_offset_x
@@ -235,7 +228,5 @@ class shape_editor_io(shape_db_item):
 
 				im.putpixel((x,y),(mag, mag, mag))
 
-		im=self.apply_rotate(im)
-		im=self.apply_blur(im)
-		im.save(os.path.join(path,"image.png"))
+		return im
 		

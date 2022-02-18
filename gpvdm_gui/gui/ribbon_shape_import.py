@@ -58,7 +58,7 @@ class ribbon_shape_import(ribbon_base):
 		self.import_image= QAction_lock("import_image", wrap_text(_("Load new image"),7), self,"ribbon_shape_import_import_image")
 		toolbar.addAction(self.import_image)
 
-		self.save_data= QAction_lock("document-save-as", wrap_text(_("Import data"),4), self,"ribbon_shape_import_save")
+		self.save_data= QAction_lock("backup", wrap_text(_("Original\nimage"),4), self,"image_revert")
 		toolbar.addAction(self.save_data)
 
 		#self.xy_triangles= QAction_lock("shape", wrap_text(_("xy triangles"),2), self,"ribbon_shape_xy_tri")
@@ -142,6 +142,17 @@ class ribbon_shape_import(ribbon_base):
 		self.tb_norm_z.setCheckable(True)
 		#self.tb_norm_z.setChecked(True)
 		toolbar.addAction(self.tb_norm_z)
+
+		#threshold
+		self.tb_threshold= QAction_lock("image_threshold", wrap_text(_("Threshold"),2), self,"image_threshold")
+		self.tb_threshold.setCheckable(True)
+		self.menu_threshold = QMenu(self)
+		self.edit_threshold=QAction(_("Edit"), self)
+		self.menu_threshold.addAction(self.edit_threshold)
+
+		self.tb_threshold.setMenu(self.menu_threshold)
+
+		toolbar.addAction(self.tb_threshold)
 
 		#rotate
 		self.tb_rotate= QAction_lock("rotate_right", wrap_text(_("Rotate"),2), self,"ribbon_rotate_right")

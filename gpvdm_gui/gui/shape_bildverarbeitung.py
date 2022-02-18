@@ -19,7 +19,7 @@
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #   
 
-## @package shape_editor
+## @package shape_bildverarbeitung
 #  The shape editor
 #
 
@@ -38,79 +38,54 @@ import webbrowser
 
 from help import help_window
 
-from plot_widget import plot_widget
-from win_lin import desktop_open
-
-from QWidgetSavePos import QWidgetSavePos
-
-from ribbon_shape_import import ribbon_shape_import
-
-from open_save_dlg import open_as_filter
-
-from shutil import copyfile
-from dat_file import dat_file
-
-from triangle import triangle
-
 from PyQt5.QtCore import pyqtSignal
 from PIL import Image, ImageFilter,ImageOps 
 from PIL.ImageQt import ImageQt
-from inp import inp
-from str2bool import str2bool
 
-from PyQt5.QtWidgets import QApplication
-import time
-from triangle_io import triangles_get_min
-from triangle_io import triangles_sub_vec
-from triangle_io import triangles_get_max
-from triangle_io import triangles_mul_vec
-from triangle_io import triangles_div_vec
+class shape_bildverarbeitung():
 
-class image_discretizer(QWidget):
-	changed = pyqtSignal()
-
-	def __init__(self,path):
+	def __init__(self,path,json_obj):
 		super().__init__()
 		self.path=path
+		self.json_obj=json_obj
 		self.image_in=os.path.join(self.path,"image.png")
 		self.image_out=os.path.join(self.path,"image_out.png")
-		self.setGeometry(30, 30, 500, 300)
-		self.len_x=800e-9
-		self.len_y=800e-9
-		self.len_z=800e-9
-		self.im=None
 
-		self.triangles=[]
-		self.show_mesh=True
-		self.gaussian_blur=0
-		self.blur_enable=False
-		self.y_norm=False
-		self.x_norm=False
-		self.z_norm=False
+	def apply_blur(self,im):
+		if self.json_obj.blur.shape_import_blur_enabled==True:
+			im = im.filter(ImageFilter.GaussianBlur(radius = self.json_obj.blur.shape_import_blur))
+		return im
 
-		self.load_image()
+	def apply_rotate(self,im):
+		rotate=self.json_obj.import_config.shape_import_rotate
+		if rotate!=0:
+			im=im.rotate(360-rotate)
+		return im
 
-	def build_mesh(self):
-		width, height = self.im.size
+	def norm_y(self,im):
+		if self.json_obj.import_config.shape_import_y_norm==True:
+			print(self.json_obj.import_config.shape_import_y_norm_percent,im.mode)
+			im=ImageOps.autocontrast(im, cutoff=self.json_obj.import_config.shape_import_y_norm_percent, ignore=None)
+		return im
 
-		self.dat_file=dat_file()
-		if self.dat_file.load(os.path.join(self.path,"shape.inp"))==True:
-			if len(self.dat_file.data)!=0:
-				width, height = self.im.size
-				min=triangles_get_min(self.dat_file.data)
-				self.dat_file.data=triangles_sub_vec(self.dat_file.data,min)
-				max=triangles_get_max(self.dat_file.data)
-				
-				self.dat_file.data=triangles_div_vec(self.dat_file.data,max)
+	def threshold(self,im):
+		thresh=150
+		if self.json_obj.threshold.threshold_enabled==True:
+			fn = lambda x : 255 if x > thresh else 0
+			im = im.convert('L').point(fn, mode='1')
+		return im
 
-
-	def force_update(self):
-		self.load_image()
-		self.build_mesh()
-		self.repaint()
+	def apply(self,im):
+		im.save(self.image_in)
+		im=self.norm_y(im)
+		im=self.apply_blur(im)
+		im=self.apply_rotate(im)
+		im=self.threshold(im)
+		im.save(self.image_out)
 
 
-	def load_image(self):
+
+	def put_back_in_later(self):
 		if os.path.isfile(self.image_in)==False:
 			self.im=None
 			return
@@ -119,11 +94,9 @@ class image_discretizer(QWidget):
 		if img.mode!="RGB":
 			img=img.convert('RGB')
 
-		f=inp()
-		f.load(os.path.join(self.path,"shape_import.inp"))
-		self.y_norm=str2bool(f.get_token("#shape_import_y_norm"))
-		self.z_norm=str2bool(f.get_token("#shape_import_z_norm"))
-		self.y_norm_percent=int(f.get_token("#shape_import_y_norm_percent"))
+		self.y_norm=self.json_obj.shape_import_y_norm
+		self.z_norm=self.json_obj.shape_import_z_norm
+		self.y_norm_percent=self.json_obj.shape_import_y_norm_percent
 
 		if self.z_norm==True:
 			img2 = img.resize((1, 1))
@@ -143,16 +116,6 @@ class image_discretizer(QWidget):
 					c=(color[0]+color[1]+color[2])/3
 					img.putpixel((x,z),(int(c+delta),int(c+delta),int(c+delta)))
 
-
-		if self.y_norm==True:
-			print(self.y_norm_percent,img.mode)
-			img=ImageOps.autocontrast(img, cutoff=self.y_norm_percent, ignore=None)
-
-
-		self.im = img.convert('RGB')
-		self.im.save(self.image_out)
-
-		self.build_mesh()
 
 	def mouseMoveEvent(self, event):
 		width, height = self.im.size
