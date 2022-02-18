@@ -428,8 +428,6 @@ void device_init(struct simulation *sim,struct device *dev)
 		dev->contact_charge= -1.0;
 
 	//Dump control
-		dev->dumpitdos= -1;
-
 		dev->dump_dynamic_pl_energy= -1;
 
 		dev->snapshot_number= -1;

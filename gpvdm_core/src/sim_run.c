@@ -142,6 +142,12 @@ int device_run_simulation(struct simulation *sim, struct device *dev)
 		dev->drift_diffision_simulations_enabled=FALSE;
 	}
 
+	if (strcmp_end(dev->simmode,"@exciton")==0)
+	{
+		dev->electrical_simulation_enabled=FALSE;
+		dev->drift_diffision_simulations_enabled=FALSE;
+	}
+
 	if (strcmp_end(dev->simmode,"@fdtd")==0)
 	{
 		dev->electrical_simulation_enabled=FALSE;

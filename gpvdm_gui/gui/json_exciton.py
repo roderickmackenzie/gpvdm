@@ -31,11 +31,30 @@ import shutil
 import json
 from json_base import json_base
 
+class json_exciton_config(json_base):
+
+	def __init__(self):
+		json_base.__init__(self,"exciton_config")
+		self.var_list=[]
+		self.var_list.append(["test","JV\\ncurve"])
+		self.var_list_build()
+
+class json_exciton_simulation(json_base):
+
+	def __init__(self):
+		json_base.__init__(self,"exciton_segment")
+		self.var_list=[]
+		self.var_list.append(["english_name","Exciton"])
+		self.var_list.append(["icon","exciton"])
+		self.var_list.append(["config",json_exciton_config()])
+		self.var_list.append(["id",self.random_id()])
+		self.var_list_build()
+
 
 class json_exciton(json_base):
 
 	def __init__(self):
-		json_base.__init__(self,"exciton")
+		json_base.__init__(self,"exciton",segment_class=True,segment_example=json_exciton_simulation())
 		self.var_list=[]
 		self.var_list.append(["exciton_enabled",False])
 		self.var_list.append(["exciton_max_ittr",20])

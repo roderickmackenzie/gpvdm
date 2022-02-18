@@ -208,7 +208,6 @@ class gl_view_options():
 		self.render_fdtd_grid=True
 		self.render_cords=True
 		self.render_photons=True
-		self.render_text=True
 		self.render_plot=True
 		self.draw_device=True
 		self.optical_mode=True

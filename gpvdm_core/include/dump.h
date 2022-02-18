@@ -61,6 +61,7 @@ void dump_zx(struct simulation *sim,struct device *in,char *out_dir);
 void dump_zxy_charge(struct simulation *sim,struct device *in,char *out_dir);
 void dump_zxy_interfaces(struct simulation *sim,struct device *dev,char *out_dir);
 void dump_write_to_disk(struct simulation *sim,struct device* in);
+void dat_file_write_zxy_snapshot_as_slices(struct simulation *sim,char * path, struct dat_file *buf,struct dimensions *dim,long double ***data);
 
 //energy cut through
 void dump_energy_slice(struct simulation *sim,struct device *in,int x, int y, int z);

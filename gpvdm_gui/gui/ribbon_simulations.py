@@ -60,6 +60,7 @@ class ribbon_simulations(ribbon_page):
 		ribbon_page.__init__(self)
 
 		self.jvexperiment_window=None
+		self.exciton_window=None
 		self.experiment_window=None
 		self.fxexperiment_window=None
 		self.capacitance_voltage_window=None
@@ -117,6 +118,11 @@ class ribbon_simulations(ribbon_page):
 		self.pl.clicked.connect(self.callback_pl_window)
 		if gpvdm_paths.is_plugin("pl_ss")==True:
 			self.addAction(self.pl)
+
+		self.exciton = QAction_lock("exciton", _("Exciton\neditor"), self,"ribbon_simulations_exciton")
+		self.exciton.clicked.connect(self.callback_exciton_window)
+		if gpvdm_paths.is_plugin("exciton")==True:
+			self.addAction(self.exciton)
 
 		self.qe = QAction_lock("qe", _("Quantum\nefficiency"), self,"ribbon_simulations_qe")
 		self.qe.clicked.connect(self.callback_qe_window)
@@ -182,6 +188,10 @@ class ribbon_simulations(ribbon_page):
 			del self.jvexperiment_window
 			self.jvexperiment_window=None
 
+		if self.exciton_window!=None:
+			del self.exciton_window
+			self.exciton_window=None
+
 		#self.mode.update()
 
 	def setEnabled(self,val):
@@ -199,6 +209,7 @@ class ribbon_simulations(ribbon_page):
 		self.pl.setEnabled(val)
 		self.spm.setEnabled(val)
 		self.jv.setEnabled(val)
+		self.exciton.setEnabled(val)
 		self.server_config.setEnabled(val)
 
 	def callback_edit_experiment_window(self):
@@ -319,11 +330,23 @@ class ribbon_simulations(ribbon_page):
 			self.jvexperiment_window=jv_experiment()
 			#self.experiment_window.changed.connect(self.callback_experiments_changed)
 
-		help_window().help_set_help(["jv.png",_("<big><b>JV simulation editor</b></big><br> Use this window to configure the Suns Voc simulations.")])
+		help_window().help_set_help(["jv.png",_("<big><b>JV simulation editor</b></big><br> Use this window to configure JV simulations.")])
 		if self.jvexperiment_window.isVisible()==True:
 			self.jvexperiment_window.hide()
 		else:
 			self.jvexperiment_window.show()
+
+	def callback_exciton_window(self):
+		from window_exciton import window_exciton
+		if self.exciton_window==None:
+			self.exciton_window=window_exciton()
+			#self.experiment_window.changed.connect(self.callback_experiments_changed)
+
+		help_window().help_set_help(["exciton.png",_("<big><b>Exciton simulation editor</b></big><br> Use this window to configure exciton simulations.")])
+		if self.exciton_window.isVisible()==True:
+			self.exciton_window.hide()
+		else:
+			self.exciton_window.show()
 
 	def callback_server_config(self):
 		help_window().help_set_help(["cpu.png",_("<big><b>Simulation hardware</b></big><br>Use this window to change how the model uses the computer's hardware.")])

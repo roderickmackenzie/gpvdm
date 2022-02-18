@@ -80,8 +80,13 @@ void clean_sim_dir(struct simulation *sim, struct device *dev)
 	join_path(2,temp,get_output_path(dev),"frequency");
 	remove_dir(sim,temp);
 
+	join_path(2,temp,get_output_path(dev),"exciton_output");
+	remove_dir(sim,temp);
+
 	join_path(2,temp,get_output_path(dev),"matrix_times.dat");
 	remove_file(sim,temp);
+
+
 
 }
 

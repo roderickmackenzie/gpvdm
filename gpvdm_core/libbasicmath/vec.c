@@ -390,14 +390,14 @@ void vec_add_values(struct vec *my_vec, double x,double y, double z)
 	my_vec->z+=z;
 }
 
-///Compare two vector
-int vec_cmp(struct vec *my_vec1,struct vec *my_vec2)
+///Compare two vectors
+int vec_cmp_tol(struct vec *my_vec1,struct vec *my_vec2, double tol)
 {
-	if (fabs(my_vec2->z-my_vec1->z)<1e-12)
+	if (fabs(my_vec2->z-my_vec1->z)<tol)
 	{
-		if (fabs(my_vec2->x-my_vec1->x)<1e-12)
+		if (fabs(my_vec2->x-my_vec1->x)<tol)
 		{
-			if (fabs(my_vec2->y-my_vec1->y)<1e-12)
+			if (fabs(my_vec2->y-my_vec1->y)<tol)
 			{
 				return 0;
 			}
@@ -405,6 +405,12 @@ int vec_cmp(struct vec *my_vec1,struct vec *my_vec2)
 	}
 		
 	return 1;
+}
+
+///Compare two vectors
+int vec_cmp(struct vec *my_vec1,struct vec *my_vec2)
+{
+	return vec_cmp_tol(my_vec1,my_vec2, 1e-12);
 }
 
 int vec_cmp_exact(struct vec *my_vec1,struct vec *my_vec2)

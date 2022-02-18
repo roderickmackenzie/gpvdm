@@ -37,7 +37,6 @@ class mesh_zxy:
 		self.tot_points=0
 
 	def calculate_points(self):
-		total_pos=0.0
 		out_x=[]
 		out_y=[]
 		epi=get_epi()
@@ -62,11 +61,11 @@ class mesh_zxy:
 				if l.points!=0:
 					dx=l.len/l.points
 					temp_x=[]
-					temp_mag=[]
 					while(pos<l.len):
+						if pos+dx/2>l.len:
+							break
 						pos=pos+dx/2
 						temp_x.append(pos)
-						temp_mag.append(1.0)
 						pos=pos+dx/2
 
 						dx=dx*l.mul
@@ -77,22 +76,26 @@ class mesh_zxy:
 					l.mesh=[]
 					for i in range(0,len(temp_x)):
 						if l.left_right=="left":
-							l.mesh.append((temp_x[i]+total_pos))
+							l.mesh.append((temp_x[i]))
 						else:
-							l.mesh.append((l.len-temp_x[i]+total_pos))
-
-
-						out_y.append(temp_mag[i])
+							l.mesh.append((l.len-temp_x[i]))
 
 					l.mesh.sort()
+					#print(l.mesh)
 
-				total_pos=total_pos+l.len
 
-			out_x=[]	
+			out_x=[]
+			out_y=[]
+			last_l=0.0
 			for l in self.data.segments:
-				out_x.extend(l.mesh)
+				#print(l.mesh,last_l)
+				for p in l.mesh:
+					out_x.append(p+last_l)
 
+					out_y.append(1.0)
+				last_l=last_l+l.len
 		self.points=out_x
+
 		return out_x,out_y
 
 	def do_remesh(self,to_size):

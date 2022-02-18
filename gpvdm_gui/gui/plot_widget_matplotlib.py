@@ -183,14 +183,19 @@ class plot_widget_matplotlib():
 
 				if self.data[i].cols=="xzd":
 					X, Y = meshgrid( self.data[i].z_scale,self.data[i].x_scale)
-					Z = self.data[i].data[0]
+					Z=array(self.data[i].data)
+					#a=Z.flatten(len(self.data[i].z_scale),len(self.data[i].x_scale))
+					#a.reshape()
+					Z = reshape(self.data[i].data,(len(self.data[i].z_scale),len(self.data[i].x_scale)))
 				elif self.data[i].cols=="yzd":
 					X, Y = meshgrid( self.data[i].z_scale,self.data[i].y_scale)
-					Z = self.data[i].data[0]
+					#Z = self.data[i].data[0]
+					Z=array(self.data[i].data)
+					Z = reshape(self.data[i].data,(len(self.data[i].z_scale),len(self.data[i].y_scale)))
 				else:
 					X, Y = meshgrid( self.data[i].y_scale,self.data[i].x_scale)
 					Z = self.data[i].data[0]
-
+					Z = array(Z)
 
 				# Plot the surface
 				col=get_color(i)
@@ -198,12 +203,12 @@ class plot_widget_matplotlib():
 				if self.data[i].plot_type=="wireframe" or self.data[i].plot_type=="":
 					if self.show_key==False:
 						key=None
-					im=self.ax[0].plot_wireframe( Y,X, array(Z),color=col, label=key, clip_on=True)
+					im=self.ax[0].plot_wireframe( Y,X, Z,color=col, label=key, clip_on=True)
 				elif self.data[i].plot_type=="contour":
-					im=self.ax[0].contourf( Y,X, array(Z),color=col)
+					im=self.ax[0].contourf( Y,X, Z,color=col)
 				elif self.data[i].plot_type=="heat":
 					my_max,my_min=self.data[0].dat_file()
-					im=self.ax[0].plot_surface(Y,X, array(Z), linewidth=0, vmin=my_min, vmax=my_max,cmap="hot", antialiased=False)
+					im=self.ax[0].plot_surface(Y,X, Z, linewidth=0, vmin=my_min, vmax=my_max,cmap="hot", antialiased=False)
 
 				self.ax[0].legend()
 				#im=self.ax[0].contourf( Y,X, Z,color=col)

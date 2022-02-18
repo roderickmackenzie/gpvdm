@@ -175,6 +175,9 @@ def build_token_lib():
 	lib.append(my_data("exciton_alpha","m^{3} s^{-1}",_("k_{alpha}"),"QLineEdit",hide_on_token_eq=[["exciton_enabled",False]]))
 	lib.append(my_data("exciton_kdis","s^{-1}",_("k_{dis}"),"QLineEdit",hide_on_token_eq=[["exciton_enabled",False]]))
 
+	lib.append(my_data("exciton_max_ittr","au",_("Max itterations"),"QLineEdit"))
+	lib.append(my_data("exciton_min_error","au",_("Convergence error"),"QLineEdit"))
+
 	##Exciton boundaries
 	lib.append(my_data("n_y0","m^{-3}",_("Exciton density at y_{min}"),"QLineEdit",  hide_on_token_eq=[["y0_boundry", "neumann"]]))
 	lib.append(my_data("y0_boundry","au",_("Boundary condition for y_{min}"),"QComboBoxLang",defaults=[["dirichlet",_("Dirichlet")],["neumann",_("Neumann (==0)")],["heatsink",_("Heatsink")]]))
@@ -625,7 +628,6 @@ def build_token_lib():
 	lib.append(my_data("plot",_("True/False"),_("Plot bands etc.. "),"gtkswitch"))
 	lib.append(my_data("dump_slices",_("True/False"),_("Dump slices"),"gtkswitch"))
 	lib.append(my_data("dump_dynamic",_("True/False"),_("Dump dynamic"),"gtkswitch"))
-	lib.append(my_data("dump_zip_files",_("True/False"),_("Dump zip files"),"gtkswitch"))
 	lib.append(my_data("dump_write_out_band_structure",_("True/False"),_("Write out band structure"),"gtkswitch"))
 	lib.append(my_data("dump_write_converge",_("True/False"),_("Write newton solver convergence to disk"),"gtkswitch"))
 	lib.append(my_data("dump_print_pos_error",_("True/False"),_("Print poisson solver convergence"),"gtkswitch"))
@@ -634,7 +636,6 @@ def build_token_lib():
 	lib.append(my_data("dump_optical_probe_spectrum",_("True/False"),_("Dump optical probe spectrum"),"gtkswitch"))
 	lib.append(my_data("dump_optics_summary",_("True/False"),_("Dump optical summary"),"gtkswitch"))
 	lib.append(my_data("dump_ray_trace_map",_("True/False"),_("Dump raytrace plots"),"gtkswitch"))
-	lib.append(my_data("dumpitdos",_("True/False"),_("Dump DoS"),"gtkswitch"))
 	lib.append(my_data("dump_file_access_log",_("True/False"),_("Write file access log to disk."),"gtkswitch"))
 	lib.append(my_data("dump_use_cache",_("True/False"),_("Use cache for file writes"),"gtkswitch"))
 	lib.append(my_data("dump_write_headers",_("True/False"),_("Write headers to output files"),"gtkswitch"))

@@ -1,0 +1,45 @@
+{
+	"item_type":"shape",
+	"color_r":0.8,
+	"color_g":0.8,
+	"color_b":0.8,
+	"image_ylen":200,
+	"image_xlen":200,
+	"color_alpha":0.8,
+	"status":"public",
+	"gauss": {
+		"gauss_sigma":100.0,
+		"gauss_offset_x":0,
+		"gauss_offset_y":0
+		},
+	"honeycomb": {
+		"honeycomb_dx":30,
+		"honeycomb_dy":30,
+		"honeycomb_x_shift":0,
+		"honeycomb_y_shift":0,
+		"honeycomb_line_width":10,
+		"honeycomb_rotate":0
+		},
+	"import_config": {
+		"shape_import_y_norm":"False",
+		"shape_import_z_norm":"False",
+		"shape_import_y_norm_percent":2,
+		"shape_import_rotate":0
+		},
+	"boundary": {
+		"image_boundary_x0":0,
+		"image_boundary_x1":0,
+		"image_boundary_y0":0,
+		"image_boundary_y1":0
+		},
+	"mesh": {
+		"mesh_gen_nx":20,
+		"mesh_gen_ny":20,
+		"mesh_gen_opp":"node_reduce",
+		"mesh_min_ang":25
+		},
+	"blur": {
+		"shape_import_blur_enabled":"False",
+		"shape_import_blur":10
+		}
+	}

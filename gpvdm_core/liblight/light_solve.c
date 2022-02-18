@@ -152,8 +152,15 @@ int light_zx_lambda_solver(struct simulation *sim, struct light *li, struct devi
 
 	if (strcmp(li->mode,"constant")==0)
 	{
-		light_solve_lam_slice(sim,cell,li,li->sun_E_y0,z,x,l,nw,FALSE);
+		for (z=0;z<dim->zlen;z++)
+		{
+			for (x=0;x<dim->xlen;x++)
+			{
+				light_solve_lam_slice(sim,cell,li,li->sun_E_y0,z,x,l,nw,FALSE);
+			}
+		}
 		all_finished=TRUE;
+
 		return all_finished;
 	}
 

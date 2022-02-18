@@ -41,7 +41,7 @@
 #include <json.h>
 
 //General
-int exciton_solve(struct simulation *sim, struct exciton *ex,struct device *dev, int z, int x);
+int exciton_solve(struct simulation *sim, struct exciton *ex,struct device *dev);
 void exciton_load_config(struct simulation *sim,struct exciton *ex, struct device *dev);
 void exciton_load_config_file(struct simulation *sim,struct exciton *ex, struct json_obj *json_config);
 void exciton_setup_dump_dir(struct simulation *sim, char *path,struct exciton *ex);
@@ -59,11 +59,11 @@ void exciton_transfer_temperatures_to_device(struct device *dev,struct exciton *
 //New ex model
 void exciton_build_obj_pointer_array(struct simulation *sim,struct exciton *ex, struct device *dev);
 void exciton_build_materials_arrays(struct simulation *sim,struct exciton *ex, struct device *dev);
+int exciton_sim_info(struct simulation *sim, struct exciton *ex,struct device *dev);
 
-
-//Lattice exciton model
+//Exciton model
 long double exciton_get_error(struct exciton *ex);
-int exciton_newton_solve(struct simulation *sim, struct exciton *ex,struct device *dev, int z, int x);
+int exciton_newton_solve(struct simulation *sim, struct exciton *ex,struct device *dev);
 void exciton_set_initial_distribution(struct exciton *ex);
 
 //exciton material

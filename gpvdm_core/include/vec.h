@@ -72,7 +72,6 @@ double vec_overlap(struct vec *a,struct vec *b);
 double vec_get_dihedral(struct vec *a,struct vec *b,struct vec *c,struct vec *d);
 void vec_rot(struct vec *in,struct vec *unit,struct vec *base, double ang);
 void vec_add_values(struct vec *my_vec, double x,double y, double z);
-int vec_cmp(struct vec *my_vec1,struct vec *my_vec2);
 void rotx_vec(struct vec *out, struct vec *in,double a);
 void roty_vec(struct vec *out, struct vec *in,double a);
 void rotz_vec(struct vec *out, struct vec *in,double a);
@@ -82,4 +81,6 @@ void vec_flip_y_axis(struct vec *one,double y);
 int vec_within_box(struct vec *l,struct vec *h,struct vec *v);
 void vec_dump_to_file(char *file_name,struct vec *one);
 int vec_cmp_exact(struct vec *my_vec1,struct vec *my_vec2);
+int vec_cmp(struct vec *my_vec1,struct vec *my_vec2);
+int vec_cmp_tol(struct vec *my_vec1,struct vec *my_vec2, double tol);
 #endif

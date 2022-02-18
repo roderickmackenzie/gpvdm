@@ -80,7 +80,7 @@ class gl_image_item():
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
 		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL)
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img.size[0], img.size[1], 0, GL_RGBA, GL_UNSIGNED_BYTE, img_data)
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img.size[0], img.size[1], 0, GL_RGBA, GL_UNSIGNED_BYTE, img_data)
 		self.texture=textID
 
 class gl_image():
@@ -110,11 +110,11 @@ class gl_image():
 		dy=obj.dxyz.y
 		dz=obj.dxyz.z
 
-		glColor4f(1.0, 1.0, 1.0, 1.0)
+		glColor4f(0.0, 0.0, 0.0, 1.0)
 
 		glEnable(GL_BLEND)
 		glEnable(GL_TEXTURE_2D)
-		glDepthMask(GL_FALSE)
+		#glDepthMask(GL_TRUE)
 		obj_img=self.get_image(obj.image_path)
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 		glBindTexture(GL_TEXTURE_2D, obj_img.texture)
@@ -165,7 +165,7 @@ class gl_image():
 
 		#gluDeleteQuadric(qobj)
 		glDisable(GL_TEXTURE_2D)
-		glDepthMask(GL_TRUE)
+		#glDepthMask(GL_TRUE)
 		glDisable(GL_BLEND)
 
 	def gl_render_image(self,o):

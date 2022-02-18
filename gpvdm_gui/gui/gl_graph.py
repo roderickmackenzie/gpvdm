@@ -110,6 +110,18 @@ class gl_graph():
 		len_z=len(data.z_scale)
 
 		if os.path.isfile(image_file)==False:
+			r_val=1.0
+			g_val=0.0
+			b_val=0.0
+			if data.r!=None:
+				r_val=data.r
+
+			if data.g!=None:
+				g_val=data.g
+
+			if data.b!=None:
+				b_val=data.b
+
 			my_max,my_min=data.max_min()
 			my_min=0.0
 			#my_max=my_max*0.7
@@ -121,24 +133,31 @@ class gl_graph():
 				im= Image.new("RGBA", (len(data.z_scale), len(data.y_scale)), "#000000")
 			elif data.cols=="xzd":
 				im= Image.new("RGBA", (len(data.x_scale), len(data.z_scale)), "#000000")
-
+			my_max=my_max#5e17
+			#y_min=0.0
 			for xi in range(0,len_x):
 				for yi in range(0,len_y):
 					for zi in range(0,len_z):
-						r=int(255*clamp(2.0*(data.data[zi][xi][yi]-my_min)/(my_max-my_min))*data.r)
-						g=int(255*clamp(2.0*(data.data[zi][xi][yi]-my_min)/(my_max-my_min))*data.g)
-						b=int(255*clamp(2.0*(data.data[zi][xi][yi]-my_min)/(my_max-my_min))*data.b)
+
+						r=int(255*clamp((data.data[zi][xi][yi]-my_min)/(my_max-my_min))*r_val)
+						g=int(255*clamp((data.data[zi][xi][yi]-my_min)/(my_max-my_min))*g_val)
+						b=int(255*clamp((data.data[zi][xi][yi]-my_min)/(my_max-my_min))*b_val)
 						#print(pos,data.data[zi][xi][yi],my_min,my_max)
 						#if pos>len(self.color_map):
 						#	pos=len(self.color_map)-1
 
 						#rgb=self.color_map[pos]
+				
+						a=255
+						if r==0 and g==0 and b==0:
+							a=0
+
 						if data.cols=="xyd":
-							im.putpixel((xi,yi),(r, g, b))
+							im.putpixel((xi,yi),(r, g, b,a))
 						elif data.cols=="yzd":
-							im.putpixel((zi,yi),(r, g, b))
+							im.putpixel((zi,yi),(r, g, b,a))
 						elif data.cols=="xzd":
-							im.putpixel((xi,zi),(r, g, b))
+							im.putpixel((xi,zi),(r, g, b,a))
 			#print(image_file)
 			im.save(image_file)
 
@@ -152,7 +171,7 @@ class gl_graph():
 		y0=self.scale.project_m2screen_y(data.y_scale[0])
 		y1=self.scale.project_m2screen_y(data.y_scale[len(data.y_scale)-1])
 
-		o=self.gl_objects_find("graph")
+		o=self.gl_objects_find("graph_"+data.id)
 		if o==None:
 			o=gl_base_object()
 			xyz=vec()
@@ -164,8 +183,9 @@ class gl_graph():
 			o.dxyz.x=x1-x0
 			o.dxyz.y=y1-y0
 			o.dxyz.z=z1-z0
-			o.id=["graph"]
+			o.id=["graph_"+data.id]
 			o.type="image"
+			#o.alpha=0.0
 
 			o.image_path=image_file
 			self.gl_objects_add(o)

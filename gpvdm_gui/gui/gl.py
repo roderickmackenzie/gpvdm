@@ -181,7 +181,6 @@ if open_gl_ok==True:
 			self.scene_built=False
 			#view pos
 
-			self.tab_active_layers=True
 			self.dy_layer_offset=0.05
 
 			self.draw_electrical_mesh=False
@@ -263,7 +262,7 @@ if open_gl_ok==True:
 					self.shape_to_screen(obj,epitaxy=True)			
 
 				if obj.layer_type=="active":
-					if self.view_options.render_text==True:
+					if self.view_options.text==True:
 						o=gl_base_object()
 						xyz=vec()
 						xyz.x=self.scale.project_m2screen_x(gpvdm_data().mesh.mesh_x.get_len())+0.1
@@ -283,7 +282,7 @@ if open_gl_ok==True:
 						display_name=display_name+" ("+_("active")+")"
 						self.gl_objects_add(o)
 
-				if self.view_options.render_text==True:
+				if self.view_options.text==True:
 					if self.views[0].zoom<40:
 						if self.views[0].enabled==True:
 							o=gl_base_object()
@@ -503,7 +502,7 @@ if open_gl_ok==True:
 
 					self.gl_objects_add_grid(x0,x1,y0,None,z0,z1,color=[0.8,0.0,0.8,1.0],dx=dx,dz=dz)
 
-					if self.view_options.render_text==True:
+					if self.view_options.text==True:
 						if self.views[0].zoom<40:
 							o=gl_base_object()
 							o.r=1.0
@@ -633,11 +632,12 @@ if open_gl_ok==True:
 		def initializeGL(self):
 			self.load_data()
 			#try:
-			glClearDepth(1.0)              
+			glClearDepth(5.0)              
 			glDepthFunc(GL_LESS)
 			glEnable(GL_DEPTH_TEST)
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE);	#GL_ONE_MINUS_SRC_ALPHA
 			glEnable(GL_BLEND)
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);	#GL_ONE
+			
 			glEnableClientState(GL_VERTEX_ARRAY)
 			glShadeModel(GL_SMOOTH)
 			glColorMaterial(GL_FRONT, GL_DIFFUSE)		#This means we can set the color of a material using glColor and not glMaterialfv

@@ -141,7 +141,7 @@ int shape_load_from_json(struct simulation *sim,struct shape *s, struct json_obj
 		ewe(sim,"shape_heat not found\n");
 	}
 
-	json_exciton=json_dos;//json_obj_find(obj, "shape_heat");
+	json_exciton=json_obj_find(obj, "shape_dos");
 	if (json_exciton!=NULL)
 	{
 		exciton_material_load_from_json(sim,&(s->ex),json_exciton );

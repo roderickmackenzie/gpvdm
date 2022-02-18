@@ -155,6 +155,8 @@ def search_known_paths(file_or_dir_to_find,ext,key_file,is_file):
 		paths.append(os.path.join(os.getcwd(),"gpvdm_data",file_or_dir_to_find)+ex)
 		paths.append(os.path.join(os.getcwd(),"gpvdm_gui",file_or_dir_to_find)+ex)
 		paths.append(os.path.join(os.getcwd(),"gpvdm_core",file_or_dir_to_find)+ex)
+		paths.append(os.path.join("C:\\Program Files\\gpvdm",file_or_dir_to_find)+ex)
+		paths.append(os.path.join("D:\\Program Files\\gpvdm",file_or_dir_to_find)+ex)
 		#check where the root directory for a normal install
 		paths.append(os.path.join(root_dir_rel_to_script_for_source_code,"gpvdm_data",file_or_dir_to_find)+ex)
 		paths.append(os.path.join(root_dir_rel_to_script_for_source_code,"gpvdm_gui",file_or_dir_to_find)+ex)

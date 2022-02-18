@@ -100,8 +100,8 @@ char temp[400];
 
 void dump_init(struct simulation *sim,struct device* in)
 {
-in->snapshot_number=0;
-set_dump_status(sim,dump_lock, FALSE);
+	in->snapshot_number=0;
+	set_dump_status(sim,dump_lock, FALSE);
 }
 
 void buffer_add_3d_to_2d_projection(struct simulation *sim,struct dat_file *buf,struct device *in,gdouble ***data)
@@ -174,81 +174,7 @@ if (get_dump_status(sim,dump_write_headers)==TRUE)
 
 void dat_file_add_zxy_data(struct simulation *sim,struct dat_file *buf,struct dimensions *dim,gdouble ***data)
 {
-	int x=0;
-	int y=0;
-	int z=0;
-	int csv=FALSE;
-	char string[200];
-
-	if (strcmp_end(buf->file_name,"csv")==0)
-	{
-		csv=TRUE;
-	}else
-	{
-		buffer_add_info(sim,buf);
-	}
-
-	if ((dim->xlen>1)&&(dim->ylen>1)&&(dim->zlen>1))
-	{
-
-		if (csv==TRUE)
-		{
-			strcpy(buf->cols,"xyzd");
-			buffer_add_json(sim,buf);
-			buffer_add_csv_header(sim,buf);
-		}
-
-		for (z=0;z<dim->zlen;z++)
-		{
-			for (x=0;x<dim->xlen;x++)
-			{
-				for (y=0;y<dim->ylen;y++)
-				{
-					sprintf(string,"%Le %Le %Le %Le\n",dim->x[x],dim->y[y],dim->z[z],data[z][x][y]);
-					buffer_add_string(buf,string);
-				}
-			}
-		}
-	}else
-	if ((dim->xlen>1)&&(dim->ylen>1))
-	{
-		z=0;
-
-		if (csv==TRUE)
-		{
-			strcpy(buf->cols,"xyd");
-			buffer_add_json(sim,buf);
-			buffer_add_csv_header(sim,buf);
-		}
-
-		for (x=0;x<dim->xlen;x++)
-		{
-			for (y=0;y<dim->ylen;y++)
-			{
-				sprintf(string,"%Le %Le %Le\n",dim->x[x],dim->y[y],data[z][x][y]);
-				buffer_add_string(buf,string);
-			}
-			buffer_add_string(buf,"\n");
-		}
-	}else
-	{
-		x=0;
-		z=0;
-		if (csv==TRUE)
-		{
-			strcpy(buf->cols,"yd");
-			buffer_add_json(sim,buf);
-			buffer_add_csv_header(sim,buf);
-		}
-
-		for (y=0;y<dim->ylen;y++)
-		{
-			sprintf(string,"%Le %Le\n",dim->y[y],data[z][x][y]);
-			buffer_add_string(buf,string);
-		}
-	}
-
-
+	dat_file_add_zxy(sim,buf,dim,(void ***)data,GPVDM_LONG_DOUBLE);
 }
 
 

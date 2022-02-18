@@ -92,6 +92,7 @@ class json_sim(json_base):
 		self.var_list.append(["stoppoint",0])
 		self.var_list.append(["version","v7.88.17"])
 		self.var_list.append(["notes",""])
+		self.var_list.append(["first_sim_message",""])
 		self.var_list.append(["use_gpvdm_local",True])
 		self.var_list.append(["opengl",json_opengl_config()])
 		self.var_list_build()

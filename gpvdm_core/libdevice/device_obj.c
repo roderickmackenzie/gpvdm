@@ -107,8 +107,8 @@ void device_build_obj_pointer_array(struct simulation *sim,struct device *dev)
 	//printf("%d\n",dev->circuit_simulation);
 	//getchar();
 
-	v.z=dim->z[0];
-	v.x=dim->x[dim->xlen/2];
+	//v.z=dim->z[0];
+	//v.x=dim->x[dim->xlen/2];
 	/*for (y=0;y<dim->ylen;y++)
 	{
 		v.y=dim->y[y];

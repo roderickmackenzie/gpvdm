@@ -358,7 +358,7 @@ void buffer_add_json(struct simulation *sim,struct dat_file *in)
 	}
 
 	in->buf[in->len--]=0;
-	buffer_add_string(in,"}*");
+	buffer_add_string(in,"}*\n");
 }
 
 void buffer_add_csv_header(struct simulation *sim,struct dat_file *in)
@@ -371,7 +371,7 @@ int len=0;
 
 len=strlen(in->cols);
 
-buffer_add_string(in,"\n#");
+buffer_add_string(in,"#");
 for (i=0;i<len;i++)
 {
 	col=in->cols[i];

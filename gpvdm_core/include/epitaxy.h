@@ -61,6 +61,7 @@ void epitaxy_load_interface_file(struct simulation *sim, struct epi_layer *layer
 void epitaxy_setup_interfaces(struct simulation *sim,struct device *dev);
 long double epitaxy_get_total_length_y(struct epitaxy *in);
 void epitaxy_load_pl_file(struct simulation *sim, struct epi_layer *layer,struct json_obj *pl_json);
+void epitaxy_debug(struct simulation *sim,struct epitaxy *in);
 
 //optical
 long double epitaxy_get_optical_problem_start(struct epitaxy *in);

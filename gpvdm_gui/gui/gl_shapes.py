@@ -88,7 +88,6 @@ class gl_shapes:
 
 
 	def paint_from_array(self,o):
-		#self.set_color(o)
 		glEnableClientState(GL_VERTEX_ARRAY)
 		if self.false_color==True:
 			glColor3f(o.r_false,o.g_false,o.b_false)

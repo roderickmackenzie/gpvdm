@@ -59,8 +59,6 @@ void dump_load_config(struct simulation* sim,struct device *in)
 
 	json_get_english(sim,obj, &(in->stop_start),"startstop");
 
-	json_get_english(sim,obj, &(in->dumpitdos),"dumpitdos");
-
 	json_get_string(sim, obj, in->plot_file,"plotfile");
 
 	json_get_long_double(sim,obj, &(in->start_stop_time),"start_stop_time");
@@ -82,10 +80,6 @@ void dump_load_config(struct simulation* sim,struct device *in)
 
 	json_get_english(sim,obj, &(dump),"dump_write_converge");
 	set_dump_status(sim,dump_write_converge, dump);
-
-
-	json_get_english(sim,obj, &(dump),"dump_zip_files");
-	set_dump_status(sim,dump_zip_files, dump);
 
 	json_get_english(sim,obj, &(dump),"dump_write_out_band_structure");
 	set_dump_status(sim,dump_write_out_band_structure, dump);

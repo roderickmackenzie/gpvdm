@@ -47,7 +47,7 @@ from lib_html import lib_html
 class fit_lib_anal_results:
 	def get_fit_quality(self,path):
 		f=inp()
-		if f.load(os.path.join(path,"fitlog.dat"))==False:
+		if f.load(os.path.join(path,"fitlog.csv"))==False:
 			return -1.0
 		last=f.lines[-2].split()
 

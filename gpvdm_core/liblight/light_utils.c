@@ -606,6 +606,12 @@ void light_transfer_gen_rate_to_device(struct simulation *sim,struct device *dev
 	struct exciton *ex=&(dev->ex);
 	struct dimensions *dim_ex=&(ex->dim);
 
+	if (dev->ex.exciton_enabled==TRUE)
+	{
+		printf("Running exciton solver\n");
+		exciton_solve(sim, ex,dev);
+	}
+
 	if (dev->electrical_simulation_enabled==FALSE)
 	{
 		return;
@@ -615,22 +621,11 @@ void light_transfer_gen_rate_to_device(struct simulation *sim,struct device *dev
 	//struct newton_state *ns=&cell->ns;
 
 
-
 	for (z=0;z<dim->zlen;z++)
 	{
 		for (x=0;x<dim->xlen;x++)
 		{
-			if (dev->ex.exciton_enabled==TRUE)
-			{
-				printf("Running exciton solver\n");
-				exciton_solve(sim, ex,dev, z, x);
-			}
 
-			//for (y=0;y<dim_ex->ylen;y++)
-			//{
-			//	printf("%Le %Le\n",ex->G[z][x][y],ex->Gn[z][x][y]);
-			//}
-			//getchar();
 			for (y=0;y<dim->ylen;y++)
 			{
 

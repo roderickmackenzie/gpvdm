@@ -29,4 +29,7 @@ dnf -y install python-crypto python-awake python3-qt5-devel python3-crypto pytho
 
 dnf -y install indent unifdef indent libcurl-devel poedit ElectricFence kcachegrind help2man
 
+#windows build chain
+dnf -y install mingw32-binutils
+yum -y install mingw32-gcc
 echo "Done"

@@ -57,7 +57,7 @@ class fit_progress(QTabWidget):
 
 		self.setMovable(True)
 		self.plot_widgets=[]
-		for file_name in ["fitlog.dat"]:	#,"fitlog_time_error.dat","fitlog_time_odes.dat"
+		for file_name in ["fitlog.csv"]:	#,"fitlog_time_error.dat","fitlog_time_odes.dat"
 			f_name=os.path.join(get_sim_path(),file_name)
 			self.plot_widgets.append(plot_widget(enable_toolbar=False))
 			self.plot_widgets[-1].set_labels([os.path.basename(f_name)])

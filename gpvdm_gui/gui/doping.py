@@ -115,15 +115,17 @@ class doping_window(QWidgetSavePos):
 		data=gpvdm_data()
 		mesh=get_mesh().y
 		x,y =	mesh.calculate_points()
+		#print(x)
 		device_start=self.epi.get_device_start(data)
 
 		layer=self.epi.get_next_dos_layer(-1)
 
 		for i in range(0,len(x)):
-			Nad0=getattr(self.epi.layers[layer].shape_dos,token0)
-			Nad1=getattr(self.epi.layers[layer].shape_dos,token1)
 			if x[i]+device_start>self.epi.layers[layer].end:
 				layer=layer+1
+
+			Nad0=getattr(self.epi.layers[layer].shape_dos,token0)
+			Nad1=getattr(self.epi.layers[layer].shape_dos,token1)
 
 			dy=self.epi.layers[layer].dy
 			y[i]=Nad0+(Nad1-Nad0)*(x[i]-self.epi.layers[layer].start+device_start)/dy
@@ -148,7 +150,7 @@ class doping_window(QWidgetSavePos):
 
 			if Nd>1.0:
 				self.Nd_enabled=True
-			print(Nd)
+			#print(Nd)
 
 		return True
 

@@ -20,6 +20,15 @@
 		"honeycomb_line_width":19,
 		"honeycomb_rotate":0
 		},
+	"xtal": {
+		"xtal_dr":10,
+		"xtal_dx":30,
+		"xtal_dy":30,
+		"xtal_offset":30
+		},
+	"lens": {
+		"lens_type":"convex"
+		},
 	"import_config": {
 		"shape_import_y_norm":"False",
 		"shape_import_z_norm":"False",

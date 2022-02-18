@@ -109,25 +109,25 @@ class plot_ribbon(ribbon_base):
 
 		self.math_opps=[]
 		self.math_subtract_first_point = QAction(icon_get("plot_log_x"), _("Subtract first point"), self)
-		toolbar.addAction(self.math_subtract_first_point)
+		#toolbar.addAction(self.math_subtract_first_point)
 
 		self.math_add_min_point = QAction(icon_get("plot_log_x"), _("Add min point"), self)
-		toolbar.addAction(self.math_add_min_point)
+		#toolbar.addAction(self.math_add_min_point)
 
 		self.math_invert_y_axis = QAction(icon_get("plot_invert_y"), _("Invert y-axis"), self)
-		toolbar.addAction(self.math_invert_y_axis)
+		#toolbar.addAction(self.math_invert_y_axis)
 
 		self.math_opps.append([QAction(icon_get("plot_abs"), _("abs(f())"), self),"abs"])
-		toolbar.addAction(self.math_opps[-1][0])
+		#toolbar.addAction(self.math_opps[-1][0])
 
 		self.math_norm_to_peak_of_all_data = QAction(icon_get("plot_log_x"), _("Norm to peak of all data"), self)
-		toolbar.addAction(self.math_norm_to_peak_of_all_data)
+		#toolbar.addAction(self.math_norm_to_peak_of_all_data)
 
 		self.math_heat_map = QAction(icon_get("plot_log_x"), _("Heat map"), self)
-		toolbar.addAction(self.math_heat_map)
+		#toolbar.addAction(self.math_heat_map)
 
 		self.math_heat_map_edit = QAction(icon_get("plot_log_x"), _("Heat map edit"), self)
-		toolbar.addAction(self.math_heat_map_edit)
+		#toolbar.addAction(self.math_heat_map_edit)
 
 		return toolbar
 

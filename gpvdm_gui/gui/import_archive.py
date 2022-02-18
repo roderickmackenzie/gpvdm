@@ -115,8 +115,9 @@ def merge_archives(src_archive,dest_archive,only_over_write):
 			if info.copy_opp==file_type().JUST_COPY:
 				#print(ls[i])
 				archive_copy_file(dest_archive,ls[i],src_archive,ls[i],dest=info.dest)
+		elif ls[i].endswith(".m"):
+			archive_copy_file(dest_archive,ls[i],src_archive,ls[i],dest="file")
 
-		
 		progress_window.set_fraction(float(i)/float(len(ls)))
 		progress_window.set_text("Importing "+ls[i])
 		process_events()

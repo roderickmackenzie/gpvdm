@@ -50,6 +50,7 @@ class gl_object_editor():
 		if obj in gpvdm_data().epi.layers:
 			is_epi_layer=True
 
+
 		if is_epi_layer==True:
 			action=menu.addAction(icon_get("go-up"),_("Move up"))
 			action.triggered.connect(self.layer_move_up)
@@ -60,11 +61,15 @@ class gl_object_editor():
 			action=menu.addAction(icon_get("list-add"),_("Add layer"))
 			action.triggered.connect(self.layer_add)
 
+			menu.addSeparator()
+
 		action=menu.addAction(icon_get("list-remove"),_("Delete"))
 		action.triggered.connect(self.layer_delete)
 
 		action=menu.addAction(icon_get("rename"),_("Rename"))
 		action.triggered.connect(self.layer_rename)
+
+		menu.addSeparator()
 
 		action=menu.addAction(icon_get("edit-copy"),_("Copy"))
 		action.triggered.connect(self.object_copy)
@@ -72,12 +77,51 @@ class gl_object_editor():
 		action=menu.addAction(icon_get("edit-paste"),_("Paste"))
 		action.triggered.connect(self.object_paste)
 
+		menu.addSeparator()
+
 		action=menu.addAction(_("Edit"))
 		action.triggered.connect(self.layer_object_editor)
 
-		menu.addSeparator()
+		view=menu.addMenu(_("View"))
+
+		self.menu_show_solid=view.addAction(_("Show solid"))
+		self.menu_show_solid.triggered.connect(self.menu_toggle_object_view)
+		self.menu_show_solid.setCheckable(True)
+
+		self.menu_show_mesh=view.addAction(_("Show mesh"))
+		self.menu_show_mesh.triggered.connect(self.menu_toggle_object_view)
+		self.menu_show_mesh.setCheckable(True)
+
+		self.menu_show_cut_through=view.addAction(_("Show cut through"))
+		self.menu_show_cut_through.triggered.connect(self.menu_toggle_object_view)
+		self.menu_show_cut_through.setCheckable(True)
+
+		self.menu_hidden=view.addAction(_("Hidden"))
+		self.menu_hidden.triggered.connect(self.menu_toggle_object_view)
+		self.menu_hidden.setCheckable(True)
+
+		self.menu_show_solid.setChecked(obj.display_options.show_solid)
+		self.menu_show_mesh.setChecked(obj.display_options.show_mesh)
+		self.menu_show_cut_through.setChecked(obj.display_options.show_cut_through)
+		self.menu_hidden.setChecked(obj.display_options.hidden)
 
 		menu.exec_(event.globalPos())
+
+	def menu_toggle_object_view(self):
+		data=gpvdm_data()
+
+		obj=self.gl_objects_get_first_selected()
+		if obj!=None:
+			s=data.find_object_by_id(obj.id[0])
+			if s!=None:
+				s.display_options.show_solid=self.menu_show_solid.isChecked()
+				s.display_options.show_mesh=self.menu_show_mesh.isChecked()
+				s.display_options.show_cut_through=self.menu_show_cut_through.isChecked()
+				s.display_options.hidden=self.menu_hidden.isChecked()
+				data.save()
+		self.force_redraw()
+
+
 
 	def object_copy(self):
 		data=gpvdm_data()

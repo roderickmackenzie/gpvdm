@@ -46,10 +46,8 @@ class shape_layer():
 		x_mesh=gpvdm_data().mesh.mesh_x
 		a=gl_base_object()
 		a.moveable=shape0.moveable
-		if shape0.shape_enabled==True and shape0.shape_hidden==False:
+		if shape0.shape_enabled==True and shape0.display_options.hidden==False:
 			a.type="solid_and_mesh"
-			if self.draw_device_cut_through==True:
-					a.type="box_cut_through"
 		else:
 			a.type="marker"
 
@@ -97,9 +95,15 @@ class shape_layer():
 			a.triangles.extend(shape0.triangles.data)
 
 		self.gl_objects_add(a)
+		slice_plane=-1e6
+		if shape0.display_options.show_cut_through==True:
+			slice_plane=0.3
 
-		self.objects[-1].compile("triangles_solid",[shape0.color_r,shape0.color_g,shape0.color_b,0.5])
-		self.objects[-1].compile("triangles_open",[shape0.color_r*0.9,shape0.color_g*0.9,shape0.color_b*0.9,shape0.color_alpha],line_width=5)
+		if shape0.display_options.show_solid==True:
+			self.objects[-1].compile("triangles_solid",[shape0.color_r,shape0.color_g,shape0.color_b,0.5],slice_plane=slice_plane)
+
+		if shape0.display_options.show_mesh==True:
+			self.objects[-1].compile("triangles_open",[shape0.color_r*0.9,shape0.color_g*0.9,shape0.color_b*0.9,shape0.color_alpha],line_width=3,slice_plane=slice_plane)
 
 		
 		#now itterate over other shapes in this shape

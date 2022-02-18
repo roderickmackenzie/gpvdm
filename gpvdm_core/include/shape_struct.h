@@ -81,6 +81,8 @@ struct shape
 	long double color_r;
 	long double color_g;
 	long double color_b;
+
+	long double sum[10];			//A general counter for doing math
 };
 
 #endif

@@ -475,7 +475,14 @@ class gpvdm_viewer(QListWidget,gpvdm_viewer_new):
 			for f in files:
 				itm=get_dir_type(os.path.join(self.path,f))
 				if itm!=None:
-					if itm.type!="scan_dir":
+					add=True
+					if get_sim_path()==self.path:
+						if f=="sim.gpvdm":
+							add=False
+					if itm.type=="scan_dir":
+						add=False
+
+					if add==True:
 						ret.append(itm)
 
 			if get_sim_path()==self.path:
@@ -584,6 +591,9 @@ class gpvdm_viewer(QListWidget,gpvdm_viewer_new):
 				elif (ext==".gmat"):
 						itm.icon="gmat"
 
+				elif (ext==".m"):
+						itm.icon="gpvdm_matlab"
+
 				elif os.path.basename(file_name)=="sim_info.dat":
 					itm.icon="info"
 
@@ -626,7 +636,7 @@ class gpvdm_viewer(QListWidget,gpvdm_viewer_new):
 			if len(self.show_only)!=0:
 				if itm.type not in self.show_only:
 					itm.hidden=True
-
+			
 			self.file_list.append(itm)
 
 		for i in range(0,len(self.file_list)):

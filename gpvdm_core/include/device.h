@@ -487,8 +487,6 @@ struct device
 		long double contact_charge;
 
 	//Dump contorl
-		int dumpitdos;
-
 		long double dump_dynamic_pl_energy;
 
 		int snapshot_number;

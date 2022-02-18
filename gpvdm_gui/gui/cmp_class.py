@@ -67,6 +67,12 @@ class cmp_class(QWidgetSavePos):
 				types.append(graph_types[i])
 
 		if len(files)!=0:
+			if self.tb_subtract_first_frame.isChecked()==True:
+				base_file_names,graph_types=self.slider.get_file_name(pos=0)
+				self.plot.base_file_names=base_file_names
+			else:
+				self.plot.base_file_names=None
+
 			self.plot.load_data(files)
 			self.plot.set_labels(key)
 			self.plot.set_plot_types(types)
@@ -237,6 +243,11 @@ class cmp_class(QWidgetSavePos):
 		self.plot.setMinimumHeight(300)
 		#force_2d3d="3d"
 
+		self.tb_subtract_first_frame = QAction(icon_get("plot_log_x"), _("Subtract\nfirst frame"), self)
+		self.tb_subtract_first_frame.setCheckable(True)
+		self.tb_subtract_first_frame.setChecked(False)
+		self.plot.plot_ribbon.tab_math.addAction(self.tb_subtract_first_frame)
+
 		if force_2d3d=="3d":
 			self.plot.plot_ribbon.tb_video.addAction(self.slider.tb_play)
 		else:
@@ -270,6 +281,5 @@ class cmp_class(QWidgetSavePos):
 	def closeEvent(self, event):
 		self.slider.anim_stop()
 		event.accept()
-
 
 

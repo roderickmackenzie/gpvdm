@@ -148,7 +148,7 @@ class gl_base_object(json_base):
 			self.gl_line_width=[]
 			#self.gl_array_false_colors_float32=[]
 
-	def compile(self,gl_render_type,color,line_width=3):
+	def compile(self,gl_render_type,color,line_width=3,slice_plane=-1e6):
 		self.points=[]
 		colors=[]
 		false_colors=[]
@@ -163,39 +163,41 @@ class gl_base_object(json_base):
 			b.gl_array_type=GL_TRIANGLES
 			points_per_tri=3
 			for t in self.triangles:
-				self.points.append([t.xyz0.x,t.xyz0.y,t.xyz0.z])
-				colors.append(color)
-				false_colors.append(false_color)
-				self.points.append([t.xyz1.x,t.xyz1.y,t.xyz1.z])
-				colors.append(color)
-				false_colors.append(false_color)
-				self.points.append([t.xyz2.x,t.xyz2.y,t.xyz2.z])
-				colors.append(color)
-				false_colors.append(false_color)
+				if t.xyz0.x>slice_plane:
+					self.points.append([t.xyz0.x,t.xyz0.y,t.xyz0.z])
+					colors.append(color)
+					false_colors.append(false_color)
+					self.points.append([t.xyz1.x,t.xyz1.y,t.xyz1.z])
+					colors.append(color)
+					false_colors.append(false_color)
+					self.points.append([t.xyz2.x,t.xyz2.y,t.xyz2.z])
+					colors.append(color)
+					false_colors.append(false_color)
 		elif gl_render_type=="triangles_open":
 			b.gl_array_type=GL_LINES
 			points_per_tri=6
 			for t in self.triangles:
-				self.points.append([t.xyz0.x,t.xyz0.y,t.xyz0.z])
-				colors.append(color)
-				false_colors.append(false_color)
-				self.points.append([t.xyz1.x,t.xyz1.y,t.xyz1.z])
-				colors.append(color)
-				false_colors.append(false_color)
+				if t.xyz0.x>slice_plane:
+					self.points.append([t.xyz0.x,t.xyz0.y,t.xyz0.z])
+					colors.append(color)
+					false_colors.append(false_color)
+					self.points.append([t.xyz1.x,t.xyz1.y,t.xyz1.z])
+					colors.append(color)
+					false_colors.append(false_color)
 
-				self.points.append([t.xyz1.x,t.xyz1.y,t.xyz1.z])
-				colors.append(color)
-				false_colors.append(false_color)
-				self.points.append([t.xyz2.x,t.xyz2.y,t.xyz2.z])
-				colors.append(color)
-				false_colors.append(false_color)
+					self.points.append([t.xyz1.x,t.xyz1.y,t.xyz1.z])
+					colors.append(color)
+					false_colors.append(false_color)
+					self.points.append([t.xyz2.x,t.xyz2.y,t.xyz2.z])
+					colors.append(color)
+					false_colors.append(false_color)
 
-				self.points.append([t.xyz2.x,t.xyz2.y,t.xyz2.z])
-				colors.append(color)
-				false_colors.append(false_color)
-				self.points.append([t.xyz0.x,t.xyz0.y,t.xyz0.z])
-				colors.append(color)
-				false_colors.append(false_color)
+					self.points.append([t.xyz2.x,t.xyz2.y,t.xyz2.z])
+					colors.append(color)
+					false_colors.append(false_color)
+					self.points.append([t.xyz0.x,t.xyz0.y,t.xyz0.z])
+					colors.append(color)
+					false_colors.append(false_color)
 		elif gl_render_type=="lines":
 			b.gl_array_type=GL_LINES
 			points_per_tri=1
@@ -210,7 +212,7 @@ class gl_base_object(json_base):
 				pos=pos+1
 
 		b.gl_line_width=line_width
-		b.gl_array_points=len(self.triangles)*points_per_tri
+		b.gl_array_points=len(self.points)#len(self.triangles)*points_per_tri
 
 		b.gl_array_colors_float32=np.array(colors, dtype='float32')
 		b.gl_array_float32=np.array(self.points, dtype='float32')

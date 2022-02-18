@@ -117,7 +117,7 @@ class fit_lib(fit_lib_anal_results):
 		for root, dirs, files in os.walk(scan_dir):
 			for name in files:
 				full_name=os.path.join(root, name)
-				if full_name.endswith("fitlog.dat"):		
+				if full_name.endswith("fitlog.csv"):		
 					lines=lines+"\'"+full_name+"\' with lp,"
 
 		lines=lines.rstrip()[:-1]

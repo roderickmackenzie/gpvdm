@@ -210,35 +210,36 @@ class gpvdm_tab2(QTableWidget):
 
 	def callback_value_changed(self):
 		segments=self.get_json_obj()
-		y=0
-		for segment in segments:
-			x=0
-			for t in self.json_tokens:
-				s=segment
-				found=True
-				for a in t.split("."):
-					s_last=s
-					t_last=a
-					try:
-						s=getattr(s,a)
-					except:
-						found=False
-						break
-
-				if found==True:
-					orig_json_type=type(s)
-
-					if orig_json_type==str:
-						setattr(s_last,t_last,str(self.get_value(y,x)))
-					if orig_json_type==bool:
-						setattr(s_last,t_last,bool(self.get_value(y,x)))
-					elif orig_json_type==float:
+		if segments!=None:
+			y=0
+			for segment in segments:
+				x=0
+				for t in self.json_tokens:
+					s=segment
+					found=True
+					for a in t.split("."):
+						s_last=s
+						t_last=a
 						try:
-							setattr(s_last,t_last,float(self.get_value(y,x)))
+							s=getattr(s,a)
 						except:
-							pass
-				x=x+1
-			y=y+1
+							found=False
+							break
+
+					if found==True:
+						orig_json_type=type(s)
+
+						if orig_json_type==str:
+							setattr(s_last,t_last,str(self.get_value(y,x)))
+						if orig_json_type==bool:
+							setattr(s_last,t_last,bool(self.get_value(y,x)))
+						elif orig_json_type==float:
+							try:
+								setattr(s_last,t_last,float(self.get_value(y,x)))
+							except:
+								pass
+					x=x+1
+				y=y+1
 		self.changed.emit()
 
 	def callback_value_changed_direct(self):
@@ -246,6 +247,8 @@ class gpvdm_tab2(QTableWidget):
 
 	def get_json_obj(self):
 		if self.uid==None:
+			if self.json_search_path==None:
+				return None
 			ret=eval(self.json_search_path)
 		else:
 			path=eval(self.json_search_path)

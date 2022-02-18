@@ -93,12 +93,24 @@ void epitaxy_shapes_load(struct simulation *sim,struct epitaxy *in, struct json_
 				}
 				nshape++;
 			}
-
 		}
 		in->layer[l].nshape=nshape;
 
+
 	}
 
+	//epitaxy_debug(sim,in);
 }
 
+void epitaxy_debug(struct simulation *sim,struct epitaxy *in)
+{
+	int l;
+	struct shape *s;
+	for (l=0;l<in->layers;l++)
+	{
+		s=&(in->layer[l].s);
+		printf("%d %s\n",in->layer[l].nshape,s->name);
+	}
 
+	getchar();
+}

@@ -66,7 +66,7 @@ void dat_file_add_xy_data(struct simulation *sim,struct dat_file *in,gdouble *x,
 void buffer_add_string(struct dat_file *in,char * string);
 void dat_file_add_zxyt_long_double(struct simulation *sim,struct dat_file *buf,struct device *dev);
 void dat_file_add_zxy_double_l(struct simulation *sim,struct dat_file *buf,struct dimensions *dim,double ****data, int l);
-
+void dat_file_add_zxy(struct simulation *sim,struct dat_file *buf,struct dimensions *dim,void ***data,int var_type);
 //zxy
 void dat_file_add_zxy_data(struct simulation *sim,struct dat_file *buf,struct dimensions *dim, gdouble ***data);
 

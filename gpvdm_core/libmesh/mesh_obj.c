@@ -107,7 +107,7 @@ void mesh_obj_apply_srh_contacts(struct simulation *sim,struct mesh_obj *mesh,st
 	//printf("oh %d",dev->boundry_y0);
 	if (dev->boundry_y0==contact_schottky)
 	{
-		layer->start_at_edge_left=TRUE;
+		//layer->start_at_edge_left=TRUE;
 		//layer->n_points++;
 		//layer->dmesh=realloc (layer->dmesh, layer->n_points * sizeof(long double));
 		m->tot_points++;

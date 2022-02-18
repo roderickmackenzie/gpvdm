@@ -107,7 +107,6 @@
 #define dump_write_converge 6
 #define dump_print_text 7
 #define dump_exit_on_dos_error 8
-#define dump_zip_files 10
 #define dump_lock 11
 #define dump_norm_time_to_one 12
 #define dump_band_structure 14
@@ -212,6 +211,10 @@
 #define SPM_WHOLE_DEVICE 0
 #define SPM_BOX 1
 #define SPM_X_CUT 2
+
+#define GPVDM_FLOAT 0
+#define GPVDM_DOUBLE 1
+#define GPVDM_LONG_DOUBLE 2
 
 
 #endif

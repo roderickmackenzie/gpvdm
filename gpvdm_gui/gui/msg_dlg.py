@@ -63,7 +63,6 @@ class msg_dlg(QDialog):
 
 		self.ok=QPushButton("Ok", self)
 		self.ok.clicked.connect(self.callback_ok)
-		#self.register.clicked.connect(self.callback_register)
 		button_box.addWidget(self.ok)
 
 		button_box_widget=QWidget()
@@ -72,7 +71,6 @@ class msg_dlg(QDialog):
 		self.text.setWordWrap(True)
 		self.setLayout(vbox)
 		self.setMinimumWidth(500)
-		#self.resize(400,-1)
 
 	def setText(self,data):
 		self.text.setText(data)

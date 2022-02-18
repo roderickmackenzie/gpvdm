@@ -216,13 +216,23 @@ class shape_heat(json_base):
 		self.var_list.append(["thermal_tau_h",1.0])
 		self.var_list_build()
 
+class shape_display_options(json_base):
+	def __init__(self):
+		json_base.__init__(self,"display_options")
+		self.var_list=[]
+		self.var_list.append(["show_solid",True])
+		self.var_list.append(["show_mesh",True])
+		self.var_list.append(["show_cut_through",False])
+		self.var_list.append(["hidden",False])
+		self.var_list_build()
+
 class shape(json_base):
 
 	def __init__(self):
 		json_base.__init__(self,"shape")
 		self.var_list=[]
 		self.var_list.append(["shape_enabled",True])
-		self.var_list.append(["shape_hidden",False])
+		self.var_list.append(["display_options",shape_display_options()])
 		self.var_list.append(["shape_type","box"])
 		self.var_list.append(["rotate_y",0])
 		self.var_list.append(["rotate_x",0])

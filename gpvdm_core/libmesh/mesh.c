@@ -420,13 +420,13 @@ long double mesh_to_lin_array(struct simulation *sim,long double *mesh, long dou
 		for (ii=0;ii<in->layers[i].n_points;ii++)
 		{
 			//printf("%d %d %d %Le\n",pos,in->layers[i].n_points,in->nlayers,in->layers[i].len);
-			if ((in->layers[i].start_at_edge_left==TRUE)&&(ii==0))		//Insert extra point
+			/*if ((in->layers[i].start_at_edge_left==TRUE)&&(ii==0))		//Insert extra point
 			{
-				//printf("yes\n");
-				//getchar();
+				printf("yes\n");
+				getchar();
 				mesh[pos]=0.0;
 				pos++;
-			}
+			}*/
 
 			if (in->layers[i].left_right==LEFT)
 			{
@@ -435,13 +435,14 @@ long double mesh_to_lin_array(struct simulation *sim,long double *mesh, long dou
 			{
 				mesh[pos]=len+in->layers[i].len-in->layers[i].dmesh[in->layers[i].n_points-1-ii];
 			}
-
+			//printf("%d %d\n",pos,in->layers[i].n_points);
 			//printf("%c %ld %Le %d %d %ld\n",direction,pos,mesh[pos],i,ii,meshdata[i].n_points);
 			pos++;
 		}
 		in->layers[i].start=len;
 		len+=in->layers[i].len;
 		in->layers[i].end=len;
+
 	}
 
 	//rebuild dmesh from main mesh
@@ -499,6 +500,7 @@ long double mesh_to_dim(struct simulation *sim,struct dimensions *dim, struct me
 	}else
 	if (xyz=='y')
 	{
+
 		dim->ylen=in->tot_points;
 		dim_malloc_xyz(dim,'y');
 		mesh=dim->y;
@@ -512,8 +514,8 @@ long double mesh_to_dim(struct simulation *sim,struct dimensions *dim, struct me
 		dmesh=dim->dZ;
 	}
 
+	
 	ret_len=mesh_to_lin_array(sim,mesh, dmesh,in);
-
 	return ret_len;
 
 }

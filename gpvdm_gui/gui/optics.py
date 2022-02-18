@@ -188,6 +188,7 @@ class class_optical(QWidgetSavePos):
 		data.save()
 
 		self.my_server.clear_cache()
+		self.my_server.clear_jobs()
 		self.my_server.add_job(get_sim_path(),"--simmode opticalmodel@optics")
 		self.my_server.sim_finished.connect(self.optics_sim_finished)
 		self.my_server.start()

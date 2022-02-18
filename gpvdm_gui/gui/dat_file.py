@@ -42,6 +42,7 @@ import numpy as np
 from array import array
 from dat_file_math import dat_file_math
 from dat_file_trap_map import dat_file_trap_map
+import codecs
 
 #search first 40 lines for dims
 def dat_file_load_info(output,lines):
@@ -146,6 +147,7 @@ def dat_file_load_info(output,lines):
 			return False
 				
 	return False
+
 
 def guess_dim(lines):
 	x=0
@@ -312,6 +314,17 @@ class dat_file(dat_file_math,dat_file_trap_map):
 		self.file_name=None
 		self.cols=""
 		self.bin=False
+		self.id="id"+codecs.encode(os.urandom(int(16 / 2)), 'hex').decode()
+
+	def guess_dim_csv(self,data):
+		if self.cols=="yd":
+			self.x_len=1
+			self.z_len=1
+			if len(data)==0:
+				self.y_len=0
+			else:
+				self.y_len=len(data)
+
 
 	def import_data(self,file_name,x_col=0,y_col=1,skip_lines=0,known_col_sep=None):
 		"""This is an import filter for xy data"""
@@ -577,6 +590,20 @@ class dat_file(dat_file_math,dat_file_trap_map):
 			float_array = array('f',data[self.header_end+1:])
 			data=float_array.tolist()
 
+		if self.y_len==-1:		#If it's a file with an unknown length
+			dim=0				#This sorts out the case where numpy gives [] instead of [[]]
+			d=data
+			if len(data)!=0:
+				for i in range(0,4):
+					#print(type(d),dim)
+					if type(d)==np.float64:
+						break
+					d=d[0]
+					dim=dim+1
+				if dim==1:
+					data=[data]
+			self.guess_dim_csv(data)
+
 		self.init_mem()
 		if self.cols=="zxyEd":
 			self.load_trap_map(data)
@@ -667,7 +694,7 @@ class dat_file(dat_file_math,dat_file_trap_map):
 		self.z_scale=[]
 		self.data=[]
 
-
+		#print(file_name)
 		if dat_file_load_info(self,lines)==False:
 			if guess==True:
 				self.x_len, self.y_len, self.z_len = guess_dim(lines)
@@ -709,7 +736,7 @@ class dat_file(dat_file_math,dat_file_trap_map):
 		for line in lines:
 			s,label=decode_line(line)
 			l=len(s)
-			#print(line,s,self.z_len,self.x_len,self.y_len)
+			#print(line,s,self.z_len,self.x_len,self.y_len,self.file_name)
 			if l>0:
 								
 
@@ -756,6 +783,7 @@ class dat_file(dat_file_math,dat_file_trap_map):
 							b=float(int(s[1][4:6], 16)/255)
 							self.data[z][x][y]=[r,g,b]
 						else:
+							#print(s,"*",line)
 							self.data[z][x][y]=float(s[1])
 						a0=s[0]
 						a1=0.0

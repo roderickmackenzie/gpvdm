@@ -25,26 +25,10 @@
 
 
 import os
-from tab import tab_class
-from icon_lib import icon_get
-
-#qt
-from PyQt5.QtCore import QSize, Qt 
-from PyQt5.QtWidgets import QWidget,QVBoxLayout,QToolBar,QSizePolicy,QAction,QTabWidget
-from PyQt5.QtGui import QPainter,QIcon
-
-#python modules
-import webbrowser
-
-from help import help_window
-from QWidgetSavePos import QWidgetSavePos
-from css import css_apply
-
-from gpvdm_json import gpvdm_data
-
 import i18n
 _ = i18n.language.gettext
 from experiment import experiment
+from tab_eqe import tab_eqe
 
 class window_eqe(experiment):
 

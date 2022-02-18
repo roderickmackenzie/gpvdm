@@ -109,6 +109,7 @@ from cal_path import get_base_scripts_path
 from icon_lib import icon_init_db
 import shutil
 from check_lib_in_bash_rc import check_lib_in_bash_rc
+from msg_dlg import msg_dlg
 
 def do_import():
 	global webbrowser
@@ -123,7 +124,6 @@ def do_import():
 	global ribbon
 
 	global error_dlg
-
 	global to_native_path
 	global get_sim_path
 	global global_object_run
@@ -219,6 +219,7 @@ class gpvdm_main_window(QMainWindow):
 	def callback_simulate(self):
 
 		self.my_server.clear_cache()
+		self.my_server.clear_jobs()
 		self.my_server.add_job(get_sim_path(),"")
 		self.my_server.start()
 
@@ -247,8 +248,13 @@ class gpvdm_main_window(QMainWindow):
 		dialog=new_simulation()
 		dialog.exec_()
 		ret=dialog.ret_path
+
 		if ret!=None:
 			self.change_dir_and_refresh_interface(dialog.ret_path)
+			if gpvdm_data().sim.first_sim_message!="":
+				msgBox = msg_dlg(title="www.gpvdm.com")
+				msgBox.setText(gpvdm_data().sim.first_sim_message.replace("%DIR",dialog.ret_path))
+				reply = msgBox.exec_()
 
 	def update_interface(self):
 		if self.notebook.is_loaded()==True:

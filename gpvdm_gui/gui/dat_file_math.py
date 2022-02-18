@@ -25,6 +25,7 @@
 
 import os
 import re
+import copy
 
 class dat_file_math():
 
@@ -60,13 +61,19 @@ class dat_file_math():
 				last=self.data[0][0][y]
 
 	def __sub__(self,val):
-		a=dat_file()
-		a.copy(self)
-
-		for z in range(0,len(self.z_scale)):
-			for x in range(0,len(self.x_scale)):
-				for y in range(0,len(self.y_scale)):
-					a.data[z][x][y]=self.data[z][x][y]-val
+		a = copy.deepcopy(self)
+		a.name="hello"
+		if type(val)==float:
+			for z in range(0,len(self.z_scale)):
+				for x in range(0,len(self.x_scale)):
+					for y in range(0,len(self.y_scale)):
+						a.data[z][x][y]=self.data[z][x][y]-val
+		elif type(val)==type(self):
+			for z in range(0,len(self.z_scale)):
+				for x in range(0,len(self.x_scale)):
+					for y in range(0,len(self.y_scale)):
+						a.data[z][x][y]=self.data[z][x][y]-val.data[z][x][y]
+						#print("a",self.data[z][x][y],val.data[z][x][y],a.data[z][x][y])
 		return a
 
 	def __add__(self,val):
@@ -96,13 +103,18 @@ class dat_file_math():
 		return a
 
 	def __rsub__(self,val):
-		a=dat_file()
-		a.copy(self)
-
-		for z in range(0,len(self.z_scale)):
-			for x in range(0,len(self.x_scale)):
-				for y in range(0,len(self.y_scale)):
-					a.data[z][x][y]=val-self.data[z][x][y]
+		a = copy.deepcopy(self)
+		if type(val)==float:
+			for z in range(0,len(self.z_scale)):
+				for x in range(0,len(self.x_scale)):
+					for y in range(0,len(self.y_scale)):
+						a.data[z][x][y]=valself.data[z][x][y]
+		elif type(val)==type(self):
+			for z in range(0,len(self.z_scale)):
+				for x in range(0,len(self.x_scale)):
+					for y in range(0,len(self.y_scale)):
+						a.data[z][x][y]=val.data[z][x][y]-self.data[z][x][y]
+		
 		return a
 
 	def set_float(self,val):

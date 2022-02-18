@@ -119,5 +119,4 @@ void sim_free(struct simulation *sim)
 	dos_cache_dump(&(sim->doscache));
 	dos_cache_free(&(sim->doscache));
 	errors_free(sim);
-	printf("SIM FREE!!!!!!!!!\n");
 }

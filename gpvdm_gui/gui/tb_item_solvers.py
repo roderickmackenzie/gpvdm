@@ -118,7 +118,7 @@ class tb_item_solvers(QToolBar):
 	def callback_newton(self):
 		from tab_banned_files import tab_banned_files
 		data=gpvdm_data()
-		self.mesh_config=class_config_window([data.math,data.dump],[_("Newton solver"),_("Output files")],title=_("Newton solver configuration"),icon="newton")
+		self.mesh_config=class_config_window([data.math,data.dump,data.exciton],[_("Newton solver"),_("Output files"),_("Exciton solver")],title=_("Newton solver configuration"),icon="newton")
 
 		tab=tab_banned_files()
 		self.mesh_config.notebook.addTab(tab,_("Banned files"))

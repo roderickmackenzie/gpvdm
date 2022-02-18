@@ -102,10 +102,14 @@ class snapshot_slider(QWidget):
 		self.label0.setText(str(value))
 		self.changed.emit()
 
-	def get_file_name(self):
+	def get_file_name(self,pos=-1):
 		ret=[]
 		plot_types=[]
-		val=self.slider0.value()
+		if pos==-1:
+			val=self.slider0.value()
+		else:
+			val=pos
+
 		if self.slider_dir_exists()==False:
 			return ret
 

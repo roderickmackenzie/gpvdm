@@ -516,7 +516,7 @@ if (in->ncontacts==2)
 	}
 
 
-	if (buffer_set_file_name(sim,in,&buf,"time_v.csv")==0)
+	if (buffer_set_file_name(sim,in,&buf,"time_v.dat")==0)
 	{
 		buffer_malloc(&buf);
 		buf.y_mul=1.0;

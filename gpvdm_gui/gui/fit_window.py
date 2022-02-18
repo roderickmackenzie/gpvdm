@@ -126,15 +126,19 @@ class fit_window(QWidgetSavePos):
 	def callback_one_fit(self):
 		my_server=server_get()
 		my_server.clear_cache()
+		my_server.clear_jobs()
 		my_server.set_fit_update_function(self.update)
 		my_server.add_job(get_sim_path(),"--1fit")
+		print(my_server.print_jobs())
 		my_server.start()
 
 	def callback_do_fit(self):
 		my_server=server_get()
+		my_server.clear_jobs()
 		my_server.clear_cache()
 		my_server.set_fit_update_function(self.update)
 		my_server.add_job(get_sim_path(),"--fit")
+		print(my_server.print_jobs())
 		my_server.start()
 
 	def callback_enable(self):

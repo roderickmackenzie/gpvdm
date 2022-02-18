@@ -86,6 +86,7 @@ void dim_free_xyz(struct dimensions *dim,char xyz)
 	}else
 	if (xyz=='y')
 	{
+		//printf("free y: %p",dim->y);
 		if (dim->y!=NULL)
 		{
 			free(dim->y);

@@ -63,6 +63,13 @@ struct exciton
 	long double ***k_fret;	//denotes the rate of Förster resonance energy transfer (FRET) in the presence of a neighboring material.
 	long double ***alpha;	//exciton–exciton annihilation rate constant
 	long double ***k_dis;	//Dissociation
+
+	//Saved rates
+	long double ***Rk_pl;
+	long double ***Rk_fret;
+	long double ***Ralpha;
+	long double ***Rk_dis;
+
 	//objects
 	struct object ****obj;
 

@@ -430,8 +430,6 @@ void device_cpy(struct simulation *sim,struct device *out,struct device *in)
 		out->contact_charge= in->contact_charge;
 
 	//Dump contorl
-		out->dumpitdos=in->dumpitdos;
-
 		out->dump_dynamic_pl_energy=in->dump_dynamic_pl_energy;
 
 		out->snapshot_number=in->snapshot_number;

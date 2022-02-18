@@ -210,9 +210,27 @@ struct intersections
 {
 	int intersections;
 	int uid;
-	struct vec point;
+	struct vec points[20];
+	int n_points;
 };
 
+int vec_in_list(struct intersections *ft, struct vec *in)
+{
+int i;
+for (i=0;i<ft->n_points;i++)
+{
+	//printf("%le %le %le\n",ft->points[i].x,ft->points[i].y,ft->points[i].z);
+	//printf("%le %le %le\n\n",in->x,in->y,in->z);
+
+	if (vec_cmp_tol(&(ft->points[i]),in,1e-11)==0)
+	{
+		//printf("0\n");
+		return 0;
+	}
+}
+//printf("-1\n");
+return -1;
+}
 //Searches which object a given xyz point is within.
 struct object *ray_obj_search_xyz(struct simulation *sim,struct device *dev,struct vec *xyz)
 {
@@ -225,7 +243,7 @@ struct world *w=&(dev->w);
 int min_dist_index=-1;
 //double min_dist=1000.0;
 
-int nfound=0;
+int objs_found=0;
 
 struct intersections ft[100];	//found triangles
 
@@ -234,6 +252,13 @@ int uid=0;
 int ii;
 int in_list=FALSE;
 int o;
+
+for (ii=0;ii<100;ii++)
+{
+	ft[ii].n_points=0;
+}
+
+
 struct vec ret;
 vec_init(&ret);
 
@@ -247,7 +272,8 @@ vec_set(&tmp,0.0,1.0,0.0);
 vec_cpy(&(my_ray.xy),xyz);
 vec_cpy(&(my_ray.dir),&tmp);
 
-
+	//FILE *out;
+	//out=fopen("inter.dat","w");
 	for (o=0;o<w->objects;o++)
 	{
 		obj=&(w->obj[o]);
@@ -256,7 +282,7 @@ vec_cpy(&(my_ray.dir),&tmp);
 		//getchar();
 		if (vec_within_box(&(obj->min),&(obj->max),&(my_ray.xy))==0)
 		{
-			//printf("%s\n",obj->name);
+			//printf("%s %le %le %le\n",obj->name,my_ray.xy.x,my_ray.xy.y,my_ray.xy.z);
 			for (i=0;i<obj->tri.len;i++)
 			{
 				if (obj->tri.edges_calculated==FALSE)
@@ -269,7 +295,12 @@ vec_cpy(&(my_ray.dir),&tmp);
 				//dump_plane_to_file("triangles.dat",in);
 
 				found=ray_intersect(&ret,&(obj->tri.data[i]),&(my_ray));
-				//printf("found %d \n",found);
+
+
+				/*if (found!=0)
+				{
+					printf("found %d \n",found);
+				}*/
 				//if (found!=0)
 				//{
 				//	exit(0);
@@ -278,18 +309,27 @@ vec_cpy(&(my_ray.dir),&tmp);
 
 				if (found!=0)
 				{
+
 					//ray_dump_triangle(sim,in,i);
 					//getchar();
 					in_list=FALSE;
 					//printf("%d\n",uid);
-					for (ii=0;ii<nfound;ii++)
+					for (ii=0;ii<objs_found;ii++)
 					{
 						if (ft[ii].uid==uid)
 						{
 							in_list=TRUE;
-							if (vec_cmp(&(ft[ii].point),&ret)!=0)		//If two triangles share the same plane then don't add (these would be triangles sharing an edge)
+							if (vec_in_list(&(ft[ii]),&ret)!=0)		//If two triangles share the same plane then don't add (these would be triangles sharing an edge)
 							{
+								//if (uid==2)
+								//{
+								//	fprintf(out,"%le %le %le\n\n",ret.x,ret.y,ret.z);
+								//}
+
+								vec_cpy(&(ft[ii].points[ft[ii].n_points]),&ret);
 								ft[ii].intersections++;
+								ft[ii].n_points++;
+								
 								//vec_print(&(points[ii]));
 								//vec_print(&ret);
 								//FILE *oh1=fopen("oh.dat","a");
@@ -305,16 +345,24 @@ vec_cpy(&(my_ray.dir),&tmp);
 
 					if (in_list==FALSE)
 					{
-						ft[nfound].uid=uid;
+						ft[objs_found].uid=uid;
 
-						vec_cpy(&(ft[nfound].point),&ret);	//store xyz intersect point
 
-						//dist[nfound]=vec_fabs(&tmp);
-						ft[nfound].intersections=1;
+						vec_cpy(&(ft[objs_found].points[0]),&ret);	//store xyz intersect point
+
+						//if (uid==2)
+						//{
+						//	fprintf(out,"%le %le %le\n\n",ret.x,ret.y,ret.z);
+						//}
+						//vec_print(&ret);
+
+						//dist[objs_found]=vec_fabs(&tmp);
+						ft[objs_found].intersections=1;
+						ft[objs_found].n_points=1;
 						//FILE *oh=fopen("oh.dat","w");
 						//fclose(oh);
 						//printf("here1\n");
-						nfound++;
+						objs_found++;
 					}
 
 				}
@@ -323,7 +371,8 @@ vec_cpy(&(my_ray.dir),&tmp);
 		}
 	}
 
-	//printf(">>>>%le %le %le %d %d\n",xyz->x,xyz->y,xyz->z,nfound);
+	//fclose(out);
+	//printf(">>>>%le %le %le %d %d\n",xyz->x,xyz->y,xyz->z,objs_found);
 
 	//vec_dump_to_file("point.dat",xyz);
 	//if ((fabs(xyz->x-1.000000e-10)<1e-10)&&(fabs(xyz->y-0.000000e+00)<1e-10)&&(fabs(xyz->z-5.333333e-07)<1e-10))
@@ -336,8 +385,8 @@ vec_cpy(&(my_ray.dir),&tmp);
 		//exit(0);
 	//}
 	//getchar();
-	//printf("nfound=%d\n",nfound);
-	if (nfound==0)
+	//printf("objs_found=%d\n",objs_found);
+	if (objs_found==0)
 	{
 		//So we think the point is outside the box. We could have a floating point issue so just check we are not in the big box.
 		if (w->objects>0)
@@ -353,13 +402,18 @@ vec_cpy(&(my_ray.dir),&tmp);
 		return NULL;
 	}
 
-	/*for (ii=nfound-1;ii>=0;ii--)
+
+	/*for (ii=objs_found-1;ii>=0;ii--)
 	{
 		uid=ft[ii].uid;
 		printf(">>%d inter=%d %s %d\n",uid,ft[ii].intersections,w->obj[uid].name,ft[ii].intersections %2);
+		for (n=0;n<ft[ii].n_points;n++)
+		{
+			printf("%le %le %le\n",ft[ii].points[n].x,ft[ii].points[n].y,ft[ii].points[n].z);
+		}
 	}*/
 
-	for (ii=nfound-1;ii>=0;ii--)
+	for (ii=objs_found-1;ii>=0;ii--)
 	{
 		//printf("%d\n",ii);
 		if ((ft[ii].intersections % 2) != 0 )

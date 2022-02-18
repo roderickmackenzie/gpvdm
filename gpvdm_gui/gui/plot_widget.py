@@ -274,6 +274,11 @@ class plot_widget(plot_widget_menu,plot_widget_matplotlib):
 		for i in range(0,len(self.input_files)):
 			dat=dat_file()
 			ret=dat.load(self.input_files[i])
+			if self.base_file_names!=None:
+				sub=dat_file()
+				sub.load(self.base_file_names[i])
+				dat=dat-sub
+
 			if ret!=False:
 				#dat.chop_y(0,-3)
 				self.data.append(dat)
@@ -466,7 +471,7 @@ class plot_widget(plot_widget_menu,plot_widget_matplotlib):
 		self.y1_y2=[]
 		self.setWindowIcon(icon_get("plot"))
 		self.force_2d3d=force_2d3d
-
+		self.base_file_names=None
 		self.ax=[]
 		self.last_plot=[]
 

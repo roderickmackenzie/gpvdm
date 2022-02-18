@@ -36,7 +36,7 @@ from inp import inp_update_token_value
 from epitaxy import epitaxy_get_layers
 
 #windows
-from gpvdm_tab import gpvdm_tab
+from gpvdm_tab2 import gpvdm_tab2
 from error_dlg import error_dlg
 
 #qt
@@ -69,10 +69,10 @@ class generation_rate_editor(QWidgetSavePos):
 		data=gpvdm_data()
 		epi=get_epi()
 
-		y=0
-		for l in epi.layers:
-			l.Gnp=float(self.tab.get_value(y,1))
-			y=y+1
+		for i in range(0,self.tab.rowCount()):
+			uid=self.tab.get_value(i,2)
+			obj=epi.find_object_by_id(uid)
+			obj.Gnp=float(self.tab.get_value(i,1))
 
 		data.save()
 
@@ -85,7 +85,7 @@ class generation_rate_editor(QWidgetSavePos):
 
 		self.main_vbox=QVBoxLayout()
 
-		self.tab = gpvdm_tab()
+		self.tab = gpvdm_tab2()
 
 		self.tab.verticalHeader().setVisible(False)
 		self.create_model()
@@ -99,29 +99,34 @@ class generation_rate_editor(QWidgetSavePos):
 		epi=get_epi()
 		self.tab.blockSignals(True)
 		self.tab.clear()
-		self.tab.setColumnCount(2)
+		self.tab.setColumnCount(3)
 
 		self.tab.setSelectionBehavior(QAbstractItemView.SelectRows)
-		self.tab.setHorizontalHeaderLabels([_("Layer name"), _("Generation rate (m^{-3}s^{-1})")])
+		self.tab.setHorizontalHeaderLabels([_("Layer name"), _("Generation rate (m^{-3}s^{-1})"), _("json id")])
 		self.tab.setColumnWidth(1, 250)
-		self.tab.setRowCount(epitaxy_get_layers())
+		self.tab.setColumnWidth(2, 10)
 
-		i=0
 		for l in epi.layers:
-			self.add_row(i,l.shape_name,l.Gnp)
-			i=i+1
+			self.add_row(l.shape_name,l.Gnp,l.id)
+			for s in l.shapes:
+				self.add_row(s.shape_name,s.Gnp,s.id)
+
 
 		self.tab.blockSignals(False)
 
-	def add_row(self,i,name,Gnp):
+	def add_row(self,name,Gnp,uid):
 
 		self.tab.blockSignals(True)
-		
+		i=self.tab.rowCount()
+		self.tab.insertRow ( i )
 		item1 = QTableWidgetItem(str(name))
 		self.tab.setItem(i,0,item1)
 
 		item2 = QTableWidgetItem(str(Gnp))
 		self.tab.setItem(i,1,item2)
+
+		item2 = QTableWidgetItem(str(uid))
+		self.tab.setItem(i,2,item2)
 
 		self.tab.blockSignals(False)
 

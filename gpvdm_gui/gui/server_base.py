@@ -177,15 +177,21 @@ class server_base():
 
 
 	def exe_command(self,path,command,background=True):
-		cmd="cd "+path+";"
+		if running_on_linux()==True:
+			command_sep=";"
+		else:
+			command_sep=" & "
+
+		cmd="cd "+path+command_sep
 		cmd=cmd+command
-		if self.pipe_to_null==True:
-			cmd=cmd+" >/dev/null "
-			if background==True:
-				cmd=cmd+" &"
+		if running_on_linux()==True:
+			if self.pipe_to_null==True:
+				cmd=cmd+" >/dev/null "
+				if background==True:
+					cmd=cmd+" &"
 
 		cmd=cmd+"\n"
-		#print(cmd)
+		print(cmd)
 		os.system(cmd)
 
 	def server_base_process_jobs(self):
@@ -195,6 +201,7 @@ class server_base():
 			path,command=self.server_base_get_next_job_to_run(lock_file=True)
 			if path!=False:
 				#print(command)
+				print(">>",path,">",command)
 				self.exe_command(path,command)
 				if len(self.jobs)>1:
 					jobs_per_second="%.2f" % self.jobs_per_second
@@ -284,6 +291,7 @@ class server_base():
 					print("crashed:"+j.path)
 
 	def server_base_get_next_job_to_run(self,lock_file=False):
+		#print(get_exe_command())
 		if (len(self.jobs)==0):
 			return False,False
 
@@ -303,8 +311,12 @@ class server_base():
 						command_lock=" --lockfile "+os.path.join(self.sim_dir,"lock"+str(i)+".dat")
 					else:
 						command_lock=" --lock "+"lock"+str(i)
+					my_command=get_exe_command()
+					
+					#if running_on_linux()==False:
+					#	my_command="\""+get_exe_command()+"\""
 
-					full_command=get_exe_command()+command_lock+" "+self.jobs[i].args+" "+get_exe_args()
+					full_command=my_command+command_lock+" "+self.jobs[i].args+" "+get_exe_args()
 					self.jobs[i].full_command=full_command
 					return self.jobs[i].path,full_command
 

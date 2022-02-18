@@ -127,6 +127,7 @@ class ribbon_sim_mode(ribbon_page):
 		sims.append([data.fdtd.segments, "fdtd","segment"])
 		sims.append([data.ray.segments, "trace","segment"])
 		sims.append([data.spm.segments, "spm","segment"])
+		sims.append([data.exciton.segments, "exciton","segment"])
 		#print(data.pl.simulations)
 		for sim in sims:
 			i=0
