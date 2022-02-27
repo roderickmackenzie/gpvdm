@@ -38,7 +38,7 @@ from PyQt5.QtCore import pyqtSignal
 from cal_path import get_sim_path
 from QWidgetSavePos import QWidgetSavePos
 from gpvdm_json import gpvdm_data
-
+from help import QAction_help
 
 class server_config(QWidget):
 
@@ -67,10 +67,8 @@ class server_config(QWidget):
 		toolbar.addWidget(spacer)
 
 
-		self.undo = QAction(icon_get("help"), _("Help"), self)
-		self.undo.setStatusTip(_("Help"))
-		self.undo.triggered.connect(self.callback_help)
-		toolbar.addAction(self.undo)
+		self.help = QAction_help()
+		toolbar.addAction(self.help)
 
 		self.main_vbox.addWidget(toolbar)
 
@@ -92,9 +90,6 @@ class server_config(QWidget):
 	
 		self.setLayout(self.main_vbox)
 
-
-	def callback_help(self,widget):
-		webbrowser.open('http://www.gpvdm.com/man/index.html')
 
 
 

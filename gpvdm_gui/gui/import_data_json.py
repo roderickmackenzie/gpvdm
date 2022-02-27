@@ -32,9 +32,6 @@ from PyQt5.QtCore import QSize, Qt
 from PyQt5.QtWidgets import QWidget,QVBoxLayout,QHBoxLayout,QSpinBox,QToolBar,QSizePolicy,QAction,QTabWidget,QTextEdit,QComboBox,QLabel,QLineEdit,QDialog,QCheckBox
 from PyQt5.QtGui import QPainter,QIcon
 
-#python modules
-import webbrowser
-
 #windows
 from PyQt5.QtCore import pyqtSignal
 
@@ -230,8 +227,6 @@ class import_data_json(QDialog):
 
 		self.ribbon.plot.triggered.connect(self.callback_plot)
 				
-		self.ribbon.tb_help.triggered.connect(self.callback_help)
-
 		self.main_vbox.addWidget(self.ribbon)
 		
 		self.input_output_hbox=QHBoxLayout()
@@ -287,9 +282,6 @@ class import_data_json(QDialog):
 			self.open_file()
 		self.load_file()
 		self.update()
-
-	def callback_help(self,widget):
-		webbrowser.open('https://www.gpvdm.com/man/index.html')
 
 	def build_top_widget(self):
 		self.build_decoder()

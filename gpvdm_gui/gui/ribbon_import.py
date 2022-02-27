@@ -51,6 +51,7 @@ from cal_path import get_sim_path
 from util import wrap_text
 
 from ribbon_base import ribbon_base
+from help import QAction_help
 
 class ribbon_import(ribbon_base):
 	def main_toolbar(self):
@@ -69,8 +70,7 @@ class ribbon_import(ribbon_base):
 		spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 		toolbar.addWidget(spacer)
 
-		self.tb_help = QAction(icon_get("help"), _("Help"), self)
-		self.tb_help.setStatusTip(_("Help"))
+		self.tb_help = QAction_help()
 		toolbar.addAction(self.tb_help)
 
 		return toolbar

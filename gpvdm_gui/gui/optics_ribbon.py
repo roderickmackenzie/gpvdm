@@ -48,6 +48,7 @@ from gui_util import dlg_get_text
 from generation_rate_editor import generation_rate_editor
 from str2bool import str2bool
 from gpvdm_json import gpvdm_data
+from help import QAction_help
 
 class mode_button(QAction_lock):
 	def __init__(self,image,text,s,name):
@@ -77,7 +78,7 @@ class ribbon_optics_files(QToolBar):
 		self.addWidget(spacer)
 
 
-		self.help = QAction(icon_get("help"), _("Help"), self)
+		self.help = QAction_help()
 		self.addAction(self.help)
 
 	def build_action_group(self):

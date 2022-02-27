@@ -33,9 +33,6 @@ from PyQt5.QtWidgets import QWidget,QVBoxLayout,QToolBar,QSizePolicy,QAction,QAb
 from PyQt5.QtGui import QPainter,QIcon
 from gpvdm_tab import gpvdm_tab
 
-#python modules
-import webbrowser
-
 from help import help_window
 
 from epitaxy import epitaxy_get_layers
@@ -49,19 +46,13 @@ try:
 except:
 	print("python3-openpyxl not found")
 
-
 from cal_path import get_materials_path
-
 from inp import inp_get_token_value
 from QWidgetSavePos import QWidgetSavePos
-
-articles = []
+from help import QAction_help
 
 class cost(QWidgetSavePos):
 
-
-	def callback_help(self):
-		webbrowser.open('http://www.gpvdm.com/man/index.html')
 
 	def __init__(self):
 		QWidgetSavePos.__init__(self,"cost")
@@ -85,8 +76,7 @@ class cost(QWidgetSavePos):
 		toolbar.addWidget(spacer)
 
 
-		self.help = QAction(icon_get("help"), _("Help"), self)
-		self.help.triggered.connect(self.callback_help)
+		self.help = QAction_help()
 		toolbar.addAction(self.help)
 
 		self.main_vbox.addWidget(toolbar)

@@ -25,7 +25,6 @@
 
 import os
 import shutil
-import webbrowser
 from util_zip import zip_lsdir
 from global_objects import global_object_get
 from icon_lib import icon_get
@@ -81,9 +80,6 @@ class fit_window(QWidgetSavePos):
 			self.fit_configure_window.hide()
 		else:
 			self.fit_configure_window.show()
-
-	def callback_help(self):
-		webbrowser.open('https://www.gpvdm.com/man/index.html')
 
 	#def callback_add_page(self,file_name):
 	#	new_tab=fit_tab(file_name)
@@ -189,7 +185,6 @@ class fit_window(QWidgetSavePos):
 
 		self.ribbon=fit_ribbon()
 
-		self.ribbon.help.triggered.connect(self.callback_help)
 		self.ribbon.play.start_sim.connect(self.callback_do_fit)
 
 		self.ribbon.play_one.start_sim.connect(self.callback_one_fit)

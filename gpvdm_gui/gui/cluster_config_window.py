@@ -193,8 +193,6 @@ class cluster_config_window(experiment):
 		command="ssh -n -f "+self.user_name+"@"+self.ip+" \"sh -c \'cd "+self.cluster_dir+"; ./remove.sh\'\""
 		os.system(command)
 
-	def callback_help(self,widget):
-		webbrowser.open('http://www.gpvdm.com/man/index.html')
 
 
 

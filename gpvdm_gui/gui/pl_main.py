@@ -43,6 +43,7 @@ from icon_lib import icon_get
 
 from css import css_apply
 from gpvdm_json import gpvdm_data
+from help import QAction_help
 
 class pl_main(QWidget):
 
@@ -63,9 +64,7 @@ class pl_main(QWidget):
 		toolbar.addWidget(spacer)
 
 
-		self.help = QAction(icon_get("help"), _("Help"), self)
-		self.help.setStatusTip(_("Help"))
-		self.help.triggered.connect(self.callback_help)
+		self.help = QAction_help()
 		toolbar.addAction(self.help)
 
 		self.main_vbox.addWidget(toolbar)
@@ -100,9 +99,6 @@ class pl_main(QWidget):
 				widget=tab_class(l.shape_pl)
 
 				self.notebook.addTab(widget,name)
-
-	def callback_help(self,widget):
-		webbrowser.open('http://www.gpvdm.com/man/index.html')
 
 	def help(self):
 		help_window().help_set_help(["tab.png",_("<big><b>Luminescence</b></big>\nIf you set 'Turn on luminescence' to true, the simulation will assume recombination is a raditave process and intergrate it to produce Voltage-Light intensity curves (lv.dat).  Each number in the tab tells the model how efficient each recombination mechanism is at producing photons.")])

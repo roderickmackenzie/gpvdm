@@ -93,7 +93,7 @@ class script_ribbon(ribbon_base):
 		toolbar.addAction(self.hashtag)
 		self.hashtag.triggered.connect(self.callback_view_json)
 
-		self.help = QAction(icon_get("help"), _("Help"), self)
+		self.help = QAction_help()
 		toolbar.addAction(self.help)
 		return toolbar
 

@@ -44,6 +44,7 @@ from ribbon_base import ribbon_base
 from play import play
 from tick_cross import tick_cross
 from QAction_lock import QAction_lock
+from help import QAction_help
 
 class fit_ribbon(ribbon_base):
 		
@@ -123,8 +124,7 @@ class fit_ribbon(ribbon_base):
 		toolbar.addWidget(spacer)
 
 
-		self.help = QAction(icon_get("help"), _("Help"), self)
-
+		self.help = QAction_help()
 		toolbar.addAction(self.help)
 
 		return toolbar

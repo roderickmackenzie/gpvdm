@@ -34,15 +34,13 @@ from PyQt5.QtGui import QPainter,QIcon
 
 #windows
 
-from inp import inp
 from tab import tab_class
-
-import webbrowser
 
 from bibtex import bibtex
 
 from QWidgetSavePos import QWidgetSavePos
 from QWidgetSavePos import resize_window_to_be_sane
+from help import QAction_help
 
 class ref_window(QWidgetSavePos):
 	def __init__(self,bib_file,token,show_toolbar=True):
@@ -64,9 +62,7 @@ class ref_window(QWidgetSavePos):
 		spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 		self.toolbar.addWidget(spacer)
 
-		self.tb_help = QAction(icon_get("help"), _("Help"), self)
-		self.tb_help.setStatusTip(_("Help"))
-		self.tb_help.triggered.connect(self.callback_help)
+		self.tb_help = QAction_help()
 		self.toolbar.addAction(self.tb_help)
 
 		if show_toolbar==True:
@@ -97,7 +93,4 @@ class ref_window(QWidgetSavePos):
 		self.vbox.addWidget(self.button_widget)
 		self.setLayout(self.vbox)
 
-
-	def callback_help(self):
-		webbrowser.open('http://www.gpvdm.com/man/index.html')
 

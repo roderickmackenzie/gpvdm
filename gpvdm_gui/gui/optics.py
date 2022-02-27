@@ -30,7 +30,6 @@ from icon_lib import icon_get
 import zipfile
 import glob
 from tab import tab_class
-import webbrowser
 from progress_class import progress_class
 from help import my_help_class
 
@@ -91,8 +90,6 @@ class class_optical(QWidgetSavePos):
 		self.main_vbox=QVBoxLayout()
 
 		self.ribbon.optics.run.start_sim.connect(self.callback_run)
-
-		self.ribbon.optics.help.triggered.connect(self.callback_help)
 
 		self.ribbon.optics.configwindow.triggered.connect(self.callback_configwindow)
 
@@ -193,7 +190,4 @@ class class_optical(QWidgetSavePos):
 		self.my_server.sim_finished.connect(self.optics_sim_finished)
 		self.my_server.start()
 
-
-	def callback_help(self, widget, data=None):
-		webbrowser.open('https://www.gpvdm.com/man/index.html')
 

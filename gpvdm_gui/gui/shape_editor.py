@@ -149,9 +149,6 @@ class shape_editor(QWidgetSavePos):
 			self.three_d_shape.scene_built=True
 			self.three_d_shape.gl_objects_add_grid(-18,20,self.three_d_shape.scale.project_m2screen_y(self.three_d_shape.scale.world_max.y),None,-18,20)
 
-	def callback_help(self):
-		webbrowser.open("https://www.gpvdm.com/docs.html")
-
 	def update(self):
 		self.alpha.update()
 
@@ -339,7 +336,6 @@ class shape_editor(QWidgetSavePos):
 		self.ribbon.show_mesh.setChecked(self.io.mesh.mesh_show)
 
 		self.ribbon.tb_script.clicked.connect(self.callback_script)
-		#self.ribbon.help.triggered.connect(self.callback_help)
 
 		self.main_vbox.addWidget(self.ribbon)
 

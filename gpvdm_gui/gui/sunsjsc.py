@@ -39,12 +39,10 @@ from help import help_window
 from QWidgetSavePos import QWidgetSavePos
 from css import css_apply
 from gpvdm_json import gpvdm_data
-
+from help import QAction_help
 
 class sunsjsc(QWidgetSavePos):
 
-	def callback_help(self):
-		webbrowser.open('http://www.gpvdm.com/man/index.html')
 
 	def __init__(self):
 		QWidgetSavePos.__init__(self,"sunsjsc")
@@ -64,9 +62,7 @@ class sunsjsc(QWidgetSavePos):
 		toolbar.addWidget(spacer)
 
 
-		self.help = QAction(icon_get("help"), _("Help"), self)
-		self.help.setStatusTip(_("Close"))
-		self.help.triggered.connect(self.callback_help)
+		self.help = QAction_help()
 		toolbar.addAction(self.help)
 
 		self.main_vbox.addWidget(toolbar)

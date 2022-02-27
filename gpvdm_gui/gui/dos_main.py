@@ -47,7 +47,7 @@ from inp import inp
 from cal_path import get_sim_path
 
 from gpvdm_json import gpvdm_data
-import webbrowser
+from help import QAction_help
 
 class dos_main(QWidget,tab_base):
 
@@ -90,9 +90,7 @@ class dos_main(QWidget,tab_base):
 
 		toolbar.addWidget(spacer)
 
-		self.help = QAction(icon_get("help"), _("Help"), self)
-		self.help.setStatusTip(_("Help"))
-		self.help.triggered.connect(self.callback_help)
+		self.help = QAction_help()
 		toolbar.addAction(self.help)
 
 		self.main_vbox.addWidget(toolbar)
@@ -184,9 +182,6 @@ class dos_main(QWidget,tab_base):
 			self.traps.setEnabled(False)
 			self.steady_state_srh.setEnabled(False)
 	
-	def callback_help(self,widget):
-		webbrowser.open('http://www.gpvdm.com/man/index.html')
-
 	def callback_auger(self):
 		data=gpvdm_data()
 		if data.electrical_solver.solver_type!="circuit":

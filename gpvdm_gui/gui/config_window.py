@@ -47,6 +47,7 @@ from QWidgetSavePos import QWidgetSavePos
 
 from css import css_apply
 from gpvdm_json import gpvdm_data
+from help import QAction_help
 
 class class_config_window(QWidgetSavePos):
 
@@ -74,10 +75,8 @@ class class_config_window(QWidgetSavePos):
 		spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 		self.toolbar.addWidget(spacer)
 
-		self.undo = QAction(icon_get("help"), _("Help"), self)
-		self.undo.setStatusTip(_("Help"))
-		self.undo.triggered.connect(self.callback_help)
-		self.toolbar.addAction(self.undo)
+		self.help = QAction_help()
+		self.toolbar.addAction(self.help)
 
 		self.main_vbox.addWidget(self.toolbar)
 
@@ -96,9 +95,6 @@ class class_config_window(QWidgetSavePos):
 				self.notebook.addTab(tab,description[i])
 
 		self.setLayout(self.main_vbox)
-
-	def callback_help(self):
-		webbrowser.open('http://www.gpvdm.com/man/index.html')
 
 
 

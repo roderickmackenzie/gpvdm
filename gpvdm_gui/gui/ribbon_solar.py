@@ -44,6 +44,7 @@ from util import wrap_text
 
 from ribbon_base import ribbon_base
 from play import play
+from help import QAction_help
 
 class ribbon_solar(ribbon_base):
 
@@ -63,7 +64,7 @@ class ribbon_solar(ribbon_base):
 		toolbar.addWidget(spacer)
 
 
-		self.help = QAction(icon_get("help"), _("Help"), self)
+		self.help = QAction_help()
 		toolbar.addAction(self.help)
 		return toolbar
 

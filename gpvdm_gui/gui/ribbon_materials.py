@@ -87,7 +87,7 @@ class ribbon_materials(ribbon_base):
 
 		return toolbar
 
-		return toolbar
+
 	def __init__(self):
 		ribbon_base.__init__(self)
 

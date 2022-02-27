@@ -42,6 +42,7 @@ from about import about_dlg
 from util import wrap_text
 
 from ribbon_base import ribbon_base
+from help import QAction_help
 
 class ribbon_experiment(ribbon_base):
 		
@@ -70,7 +71,7 @@ class ribbon_experiment(ribbon_base):
 		self.spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 		toolbar.addWidget(self.spacer)
 
-		self.home_help = QAction(icon_get("internet-web-browser"), _("Help"), self)
+		self.home_help = QAction_help()
 		toolbar.addAction(self.home_help)
 
 		return toolbar

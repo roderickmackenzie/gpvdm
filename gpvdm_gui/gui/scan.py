@@ -28,7 +28,6 @@ import shutil
 from icon_lib import icon_get
 from gui_util import dlg_get_text
 from search import return_file_list
-import webbrowser
 from search import find_fit_log
 from inp import inp_update_token_value
 from inp import inp_get_token_value
@@ -64,9 +63,6 @@ class scan_class(QWidgetSavePos):
 	def callback_report(self):
 		tab = self.notebook.currentWidget()
 		tab.gen_report()
-
-	def callback_help(self):
-		webbrowser.open('http://www.gpvdm.com/man/index.html')
 
 	def callback_new_scan(self):
 		new_sim_name=dlg_get_text( _("New simulation name:"), _("Simulation ")+str(self.notebook.count()+1),"document-new.png")

@@ -26,7 +26,6 @@
 import os
 import sys
 from gui_util import dlg_get_text
-import webbrowser
 from util import fx_with_units
 from icon_lib import icon_get
 
@@ -153,9 +152,6 @@ class equation_editor(QWidgetSavePos):
 			frequency, = self.ax1.plot(y_nm,self.data.data[0][0], 'ro-', linewidth=3 ,alpha=1.0)
 
 		self.ax1.set_xlabel(_("Wavelength")+" (nm)")
-
-	def callback_help(self):
-		webbrowser.open("https://www.gpvdm.com/man/index.html")
 
 	def load_data(self):
 		self.tab.clear()

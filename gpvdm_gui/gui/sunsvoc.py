@@ -32,14 +32,12 @@ from PyQt5.QtCore import QSize, Qt
 from PyQt5.QtWidgets import QWidget,QVBoxLayout,QToolBar,QSizePolicy,QAction,QTabWidget
 from PyQt5.QtGui import QPainter,QIcon
 
-#python modules
-import webbrowser
-
 from help import help_window
 from QWidgetSavePos import QWidgetSavePos
 from css import css_apply
 
 from gpvdm_json import gpvdm_data
+from help import QAction_help
 
 class sunsvoc(QWidgetSavePos):
 
@@ -53,8 +51,6 @@ class sunsvoc(QWidgetSavePos):
 		if self.notebook.tabText(self.notebook.currentIndex()).strip()==_("Suns v.s. Voc"):
 			help_window().help_set_help(["jv.png",_("<big><b>Suns v.s. Voc</b></big><br>Configure the sun v.s. Voc plot.")])
 
-	def callback_help(self):
-		webbrowser.open('http://www.gpvdm.com/man/index.html')
 
 	def __init__(self):
 		QWidgetSavePos.__init__(self,"sunsvoc")
@@ -74,9 +70,7 @@ class sunsvoc(QWidgetSavePos):
 		toolbar.addWidget(spacer)
 
 
-		self.help = QAction(icon_get("help"), _("Help"), self)
-		self.help.setStatusTip(_("Close"))
-		self.help.triggered.connect(self.callback_help)
+		self.help = QAction_help()
 		toolbar.addAction(self.help)
 
 		self.main_vbox.addWidget(toolbar)

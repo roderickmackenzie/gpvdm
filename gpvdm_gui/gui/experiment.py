@@ -68,9 +68,6 @@ class experiment(QWidgetSavePos):
 			w=self.notebook.widget(i)
 			w.update()
 
-	def callback_help(self):
-		webbrowser.open('http://www.gpvdm.com/man/index.html')
-
 
 	def callback_save(self):
 		tab = self.notebook.currentWidget()

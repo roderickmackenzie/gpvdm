@@ -71,8 +71,6 @@ class window_simulation_notes(QWidgetSavePos):
 
 		self.main_vbox=QVBoxLayout()
 
-		self.ribbon.help.triggered.connect(self.callback_help)
-
 		self.ribbon.tb_save.clicked.connect(self.callback_save)
 
 		#self.ribbon.tb_rename.clicked.connect(self.callback_rename_page)
@@ -131,8 +129,4 @@ class window_simulation_notes(QWidgetSavePos):
 	def callback_run(self):
 		tab = self.notebook.currentWidget()
 		tab.run()
-
-
-	def callback_help(self, widget, data=None):
-		webbrowser.open('https://www.gpvdm.com/man/index.html')
 

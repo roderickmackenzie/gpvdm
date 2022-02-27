@@ -62,6 +62,7 @@ from QWidgetSavePos import QWidgetSavePos
 
 from gpvdm_json import gpvdm_data
 from tab import tab_class
+from help import QAction_help
 
 class dim_editor(QWidgetSavePos):
 
@@ -86,7 +87,7 @@ class dim_editor(QWidgetSavePos):
 		spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 		self.toolbar.addWidget(spacer)
 
-		self.help = QAction(icon_get("internet-web-browser"), _("Help"), self)
+		self.help = QAction_help()
 		self.toolbar.addAction(self.help)
 
 		#self.main_vbox.addWidget(self.toolbar)

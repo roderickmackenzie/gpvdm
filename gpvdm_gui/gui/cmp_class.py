@@ -161,9 +161,6 @@ class cmp_class(QWidgetSavePos):
 		QApplication.clipboard().setImage(QImage.fromData(buf.getvalue()))
 		buf.close()
 
-	def callback_help(self, widget, data=None):
-		webbrowser.open('http://www.gpvdm.com/man/gpvdm.html')
-
 
 	def callback_toggle_subtract(self, widget, data):
 		self.plot.zero_frame_enable=data.get_active()

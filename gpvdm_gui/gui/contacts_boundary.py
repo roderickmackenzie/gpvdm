@@ -30,22 +30,13 @@ from icon_lib import icon_get
 from PyQt5.QtCore import QSize
 from PyQt5.QtWidgets import QWidget,QVBoxLayout,QToolBar,QSizePolicy,QAction,QTabWidget
 
-#python modules
-import webbrowser
-
 #windows
 from tab import tab_class
-
 from PyQt5.QtCore import pyqtSignal
-
 from QWidgetSavePos import QWidgetSavePos
-
 from help import help_window
-
 from dos_main import dos_main
-
-articles = []
-mesh_articles = []
+from help import QAction_help
 
 class contacts_boundary(QWidgetSavePos):
 
@@ -68,11 +59,8 @@ class contacts_boundary(QWidgetSavePos):
 		spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 		toolbar.addWidget(spacer)
 
-
-		self.undo = QAction(icon_get("help"), _("Help"), self)
-		self.undo.setStatusTip(_("Help"))
-		self.undo.triggered.connect(self.callback_help)
-		toolbar.addAction(self.undo)
+		self.help = QAction_help()
+		toolbar.addAction(self.help)
 
 		self.main_vbox.addWidget(toolbar)
 
@@ -88,8 +76,6 @@ class contacts_boundary(QWidgetSavePos):
 						
 		self.setLayout(self.main_vbox)
 
-	def callback_help(self,widget):
-		webbrowser.open('http://www.gpvdm.com/man/index.html')
 
 	def update(self):
 		for i in range(0,self.count()):

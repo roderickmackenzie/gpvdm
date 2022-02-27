@@ -37,14 +37,13 @@ from PyQt5.QtGui import QPainter,QIcon
 import webbrowser
 
 from help import help_window
+from help import QAction_help
+
 from QWidgetSavePos import QWidgetSavePos
 from inp import inp
 from json_base import json_base
 
 class window_json_ro_viewer(QWidgetSavePos):
-
-	def callback_help(self):
-		webbrowser.open("https://www.gpvdm.com/man/index.html")
 
 	def __init__(self,file_name,icon="json_file",title=_("Simulation information")):
 		QWidgetSavePos.__init__(self,"info")
@@ -63,9 +62,7 @@ class window_json_ro_viewer(QWidgetSavePos):
 		toolbar.addWidget(spacer)
 
 
-		self.help = QAction(icon_get("help"), _("Help"), self)
-		self.help.setStatusTip(_("Close"))
-		self.help.triggered.connect(self.callback_help)
+		self.help = QAction_help()
 		toolbar.addAction(self.help)
 
 		self.main_vbox.addWidget(toolbar)

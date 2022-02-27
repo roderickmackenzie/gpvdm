@@ -24,9 +24,6 @@
 #
 
 import os
-from numpy import *
-import webbrowser
-from inp import inp_search_token_value
 from icon_lib import icon_get
 from epitaxy import get_epi
 
@@ -35,33 +32,25 @@ _ = i18n.language.gettext
 
 
 #qt
-from PyQt5.QtWidgets import QMainWindow, QAction, QApplication
+from PyQt5.QtWidgets import  QAction
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import QSize, Qt 
-from PyQt5.QtWidgets import QWidget,QSizePolicy,QDialog,QFileDialog,QToolBar, QMessageBox, QVBoxLayout, QGroupBox, QTableWidget,QAbstractItemView, QTableWidgetItem, QComboBox
+from PyQt5.QtWidgets import QWidget,QSizePolicy,QToolBar, QMessageBox, QVBoxLayout, QTableWidget,QAbstractItemView, QTableWidgetItem
 
 from PyQt5.QtCore import pyqtSignal
 
-
-from str2bool import str2bool
 from error_dlg import error_dlg
-
 from global_objects import global_object_run
 
-from QComboBoxLang import QComboBoxLang
-
 from QWidgetSavePos import QWidgetSavePos
-
-from contacts_boundary import contacts_boundary
 from gpvdm_tab2 import gpvdm_tab2
-
-#from file_watch import get_watch
 
 from energy_to_charge import energy_to_charge
 
 from gpvdm_applied_voltage import gpvdm_applied_voltage
 from gpvdm_json import gpvdm_data
 from contacts_io import contact
+from help import QAction_help
 
 class contacts_window(QWidgetSavePos):
 
@@ -100,9 +89,6 @@ class contacts_window(QWidgetSavePos):
 		self.changed.emit()
 		gpvdm_data().save()
 		global_object_run("gl_force_redraw")
-
-	def callback_help(self):
-		webbrowser.open('http://www.gpvdm.com/man/index.html')
 
 	def update(self):
 		#self.tab.clear()
@@ -162,9 +148,7 @@ class contacts_window(QWidgetSavePos):
 		spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 		self.toolbar.addWidget(spacer)
 
-		self.help = QAction(icon_get("help"), _("Help"), self)
-		self.help.setStatusTip(_("Close"))
-		self.help.triggered.connect(self.callback_help)
+		self.help = QAction_help()
 		self.toolbar.addAction(self.help)
 
 		#get_contactsio().changed.connect(self.update)

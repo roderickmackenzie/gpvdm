@@ -58,6 +58,7 @@ from error_dlg import error_dlg
 from gpvdm_tab2 import gpvdm_tab2
 from epitaxy import get_epi
 from gpvdm_json import gpvdm_data
+from help import QAction_help
 
 class doping_window(QWidgetSavePos):
 
@@ -108,8 +109,6 @@ class doping_window(QWidgetSavePos):
 				self.save_image(file_name+".png")
 
 
-	def callback_help(self):
-		webbrowser.open("https://www.gpvdm.com/man/index.html")
 
 	def project(self,token0,token1):
 		data=gpvdm_data()
@@ -166,6 +165,7 @@ class doping_window(QWidgetSavePos):
 		self.main_vbox=QVBoxLayout()
 
 		toolbar=QToolBar()
+		toolbar.setToolButtonStyle( Qt.ToolButtonTextUnderIcon)
 		toolbar.setIconSize(QSize(48, 48))
 
 		self.save = QAction(icon_get("document-save-as"), _("Save"), self)
@@ -177,8 +177,7 @@ class doping_window(QWidgetSavePos):
 		toolbar.addWidget(spacer)
 
 
-		self.help = QAction(icon_get("help"), _("Help"), self)
-		self.help.triggered.connect(self.callback_help)
+		self.help = QAction_help()
 		toolbar.addAction(self.help)
 
 		self.main_vbox.addWidget(toolbar)

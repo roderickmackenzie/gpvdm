@@ -43,6 +43,15 @@ from bibtex import bibtex
 from icon_lib import icon_get
 my_help_class=None
 
+class QAction_help(QAction):
+	def __init__(self):
+		QAction.__init__(self,icon_get("internet-web-browser"), _("Help"), None)
+		self.setStatusTip(_("Help"))
+		self.triggered.connect(self.callback_help)
+
+	def callback_help(self):
+		webbrowser.open('http://www.gpvdm.com/docs.html')
+
 class help_data():
 	def __init__(self,token,icon,text):
 		self.token=token

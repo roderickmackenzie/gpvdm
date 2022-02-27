@@ -60,9 +60,6 @@ class spectra_main(QWidgetSavePos):
 				text=b.get_text()
 				help_window().help_set_help(["spectra_file.png",_("<big><b>Spectra</b></big><br>"+text)])
 
-	def callback_help(self):
-		webbrowser.open("https://www.gpvdm.com/docs.html")
-
 	def update(self):
 		self.alpha.update()
 
@@ -91,9 +88,6 @@ class spectra_main(QWidgetSavePos):
 
 		self.ribbon.import_data.clicked.connect(self.callback_import)
 		self.ribbon.tb_ref.triggered.connect(self.callback_ref)
-
-		self.ribbon.help.triggered.connect(self.callback_help)
-
 
 		self.main_vbox.addWidget(self.ribbon)
 

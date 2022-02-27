@@ -32,9 +32,6 @@ from PyQt5.QtCore import QSize, Qt
 from PyQt5.QtWidgets import QWidget,QVBoxLayout,QToolBar,QSizePolicy,QAction,QTabWidget,QDialog
 from PyQt5.QtGui import QPainter,QIcon
 
-#python modules
-import webbrowser
-
 from help import help_window
 
 from win_lin import desktop_open
@@ -60,9 +57,6 @@ class filter_main(QWidgetSavePos):
 			self.ribbon.tb_save.setEnabled(True)
 			self.ribbon.import_data.setEnabled(True)
 
-	def callback_help(self):
-		webbrowser.open("https://www.gpvdm.com/man/index.html")
-
 
 	def __init__(self,path):
 		QWidgetSavePos.__init__(self,"filter_main")
@@ -81,9 +75,6 @@ class filter_main(QWidgetSavePos):
 		self.ribbon.equation.clicked.connect(self.callback_equation_editor)
 
 		self.ribbon.tb_ref.triggered.connect(self.callback_ref)
-
-		self.ribbon.help.triggered.connect(self.callback_help)
-
 
 		self.main_vbox.addWidget(self.ribbon)
 

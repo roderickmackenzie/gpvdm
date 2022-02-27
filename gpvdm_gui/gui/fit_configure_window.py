@@ -31,17 +31,14 @@ from PyQt5.QtCore import QSize, Qt
 from PyQt5.QtWidgets import QWidget,QVBoxLayout,QToolBar,QSizePolicy,QAction,QTabWidget
 from PyQt5.QtGui import QPainter,QIcon
 
-#python modules
-import webbrowser
-
 #windows
 from tab import tab_class
 
 from PyQt5.QtCore import pyqtSignal
 
-from cal_path import get_sim_path
 from QWidgetSavePos import QWidgetSavePos
 from gpvdm_json import gpvdm_data
+from help import QAction_help
 
 class fit_configure_window(QWidgetSavePos):
 
@@ -72,20 +69,13 @@ class fit_configure_window(QWidgetSavePos):
 		spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 		toolbar.addWidget(spacer)
 
+		self.help = QAction_help()
+		toolbar.addAction(self.help)
 
-		self.undo = QAction(icon_get("help"), _("Help"), self)
-		self.undo.setStatusTip(_("Close"))
-		self.undo.triggered.connect(self.callback_help)
-		toolbar.addAction(self.undo)
-
-		self.main_vbox.addWidget(toolbar)
-
-		
+		self.main_vbox.addWidget(toolbar)		
 
 		self.notebook = QTabWidget()
-
 		self.notebook.setMovable(True)
-
 		self.main_vbox.addWidget(self.notebook)
 
 		data=gpvdm_data()
@@ -105,6 +95,4 @@ class fit_configure_window(QWidgetSavePos):
 		self.setLayout(self.main_vbox)
 
 
-	def callback_help(self,widget):
-		webbrowser.open('http://www.gpvdm.com/man/index.html')
 

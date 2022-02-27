@@ -76,9 +76,6 @@ class ribbon_information(ribbon_page):
 		self.hints.triggered.connect(self.callback_language)
 		self.addAction(self.hints)
 
-		#self.about = QAction(icon_get("help"), _("About")+"\n", self)
-		#self.addAction(self.about)
-
 
 
 		self.paper = QAction(icon_get("pdf"), wrap_text(_("Assosiated paper"),8), self)

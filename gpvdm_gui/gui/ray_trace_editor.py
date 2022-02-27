@@ -32,19 +32,14 @@ from PyQt5.QtCore import QSize, Qt
 from PyQt5.QtWidgets import QWidget,QVBoxLayout,QToolBar,QSizePolicy,QAction,QTabWidget
 from PyQt5.QtGui import QPainter,QIcon
 
-#python modules
-import webbrowser
-
 from help import help_window
 from QWidgetSavePos import QWidgetSavePos
 from css import css_apply
 from gpvdm_json import gpvdm_data
-
+from help import QAction_help
 
 class ray_trace_editor(QWidgetSavePos):
 
-	def callback_help(self):
-		webbrowser.open('http://www.gpvdm.com/man/index.html')
 
 	def __init__(self):
 		QWidgetSavePos.__init__(self,"ray_trace")
@@ -64,9 +59,7 @@ class ray_trace_editor(QWidgetSavePos):
 		toolbar.addWidget(spacer)
 
 
-		self.help = QAction(icon_get("help"), _("Help"), self)
-		self.help.setStatusTip(_("Close"))
-		self.help.triggered.connect(self.callback_help)
+		self.help = QAction_help()
 		toolbar.addAction(self.help)
 
 		self.main_vbox.addWidget(toolbar)

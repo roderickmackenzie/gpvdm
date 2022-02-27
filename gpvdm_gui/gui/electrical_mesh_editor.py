@@ -28,7 +28,6 @@ from cal_path import get_exe_command
 from numpy import *
 from matplotlib.figure import Figure
 from icon_lib import icon_get
-import webbrowser
 
 #qt
 from PyQt5.QtWidgets import QMainWindow, QTextEdit, QAction, QApplication
@@ -53,6 +52,7 @@ from config_window import class_config_window
 from tab_view import tab_view
 
 from gpvdm_json import gpvdm_data
+from help import QAction_help
 
 class electrical_mesh_editor(QWidgetSavePos):
 
@@ -64,9 +64,6 @@ class electrical_mesh_editor(QWidgetSavePos):
 		self.emesh_editor_y.update()
 		self.emesh_editor_z.update()
 		self.update_dim()
-
-	def callback_help(self, widget, data=None):
-		webbrowser.open('https://www.gpvdm.com/man/index.html')
 
 	def callback_dim_1d(self):
 		self.emesh_editor_y.enable_dim()
@@ -164,10 +161,8 @@ class electrical_mesh_editor(QWidgetSavePos):
 		spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 		toolbar.addWidget(spacer)
 
-		self.undo = QAction(icon_get("help"), _("Help"), self)
-		self.undo.setStatusTip(_("Close"))
-		self.undo.triggered.connect(self.callback_help)
-		toolbar.addAction(self.undo)
+		self.help = QAction_help()
+		toolbar.addAction(self.help)
 
 		self.main_vbox.addWidget(toolbar)
 		

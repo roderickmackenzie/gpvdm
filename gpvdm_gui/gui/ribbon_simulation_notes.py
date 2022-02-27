@@ -44,10 +44,7 @@ from util import wrap_text
 from ribbon_base import ribbon_base
 from play import play
 from QAction_lock import QAction_lock
-from cal_path import get_sim_path
-import webbrowser
 from gpvdm_open import gpvdm_open
-from inp import inp
 from cal_path import gpvdm_paths
 
 class mode_button(QAction_lock):
@@ -74,7 +71,7 @@ class ribbon_simulation_notes(ribbon_base):
 		toolbar.addWidget(spacer)
 
 
-		self.help = QAction(icon_get("help"), _("Help"), self)
+		self.help = QAction_help()
 		toolbar.addAction(self.help)
 		return toolbar
 
