@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gpvdm 5.0\n"
 "Report-Msgid-Bugs-To: roderick.mackenzie@nottingham.ac.uk\n"
-"POT-Creation-Date: 2022-02-18 16:17+0000\n"
+"POT-Creation-Date: 2022-02-27 18:57+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -793,7 +793,7 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gpvdm_tab.py:78
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/scan_tab.py:552
 #: ../../gpvdm_gui/gui/json_viewer.py:140
-#: ../../gpvdm_gui/gui/shape_image_flat_view.py:177
+#: ../../gpvdm_gui/gui/shape_image_flat_view.py:176
 #: ../../gpvdm_gui/gui/shape_bildverarbeitung.py:209
 #: ../../gpvdm_gui/gui/gpvdm_viewer.py:254 ../../gpvdm_gui/gui/gpvdm_tab.py:73
 #: ../../gpvdm_gui/gui/gl_object_editor.py:74
@@ -1126,6 +1126,7 @@ msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/license_key.py:60
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/register.py:113
+#: ../../gpvdm_gui/gui/register.py:110
 #: ../../gpvdm_core/old/lock_py/register.py:113
 msgid "Registration window (www.gpvdm.com)"
 msgstr ""
@@ -1167,7 +1168,7 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_main_menu.py:63
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/fit_ribbon.py:162
 #: ../../gpvdm_gui/gui/json_viewer.py:157
-#: ../../gpvdm_gui/gui/shape_image_flat_view.py:175
+#: ../../gpvdm_gui/gui/shape_image_flat_view.py:174
 #: ../../gpvdm_gui/gui/shape_bildverarbeitung.py:207
 #: ../../gpvdm_gui/gui/gl_main_menu.py:57
 msgid "Export"
@@ -6476,36 +6477,43 @@ msgid "Simulation mode:"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/register.py:65
+#: ../../gpvdm_gui/gui/register.py:62
 #: ../../gpvdm_core/old/lock_py/register.py:65
 msgid "This is not a valide e-mail address"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/register.py:69
+#: ../../gpvdm_gui/gui/register.py:66
 #: ../../gpvdm_core/old/lock_py/register.py:69
 msgid "The e-mail addresses do not match."
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/register.py:73
+#: ../../gpvdm_gui/gui/register.py:70
 #: ../../gpvdm_core/old/lock_py/register.py:73
 msgid "Please enter your first name."
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/register.py:77
+#: ../../gpvdm_gui/gui/register.py:74
 #: ../../gpvdm_core/old/lock_py/register.py:77
 msgid "Please enter your surname."
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/register.py:82
+#: ../../gpvdm_gui/gui/register.py:79
 #: ../../gpvdm_core/old/lock_py/register.py:82
 msgid "Please enter your Company/University."
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/register.py:96
+#: ../../gpvdm_gui/gui/register.py:93
 #: ../../gpvdm_core/old/lock_py/register.py:96
 msgid "I can't access the internet, or gpvdm.com is down."
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/register.py:99
+#: ../../gpvdm_gui/gui/register.py:96
 #: ../../gpvdm_core/old/lock_py/register.py:99
 msgid ""
 "Your version of gpvdm is too old to register, please download the latest "
@@ -6513,36 +6521,43 @@ msgid ""
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/register.py:118
+#: ../../gpvdm_gui/gui/register.py:115
 #: ../../gpvdm_core/old/lock_py/register.py:118
 msgid "Please register to use gpvdm. Thanks!"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/register.py:134
+#: ../../gpvdm_gui/gui/register.py:131
 #: ../../gpvdm_core/old/lock_py/register.py:134
 msgid "First name"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/register.py:140
+#: ../../gpvdm_gui/gui/register.py:137
 #: ../../gpvdm_core/old/lock_py/register.py:140
 msgid "Surname"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/register.py:152
+#: ../../gpvdm_gui/gui/register.py:149
 #: ../../gpvdm_core/old/lock_py/register.py:152
 msgid "Company/University"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/register.py:162
+#: ../../gpvdm_gui/gui/register.py:159
 #: ../../gpvdm_core/old/lock_py/register.py:162
 msgid "E-mail"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/register.py:172
+#: ../../gpvdm_gui/gui/register.py:169
 #: ../../gpvdm_core/old/lock_py/register.py:172
 msgid "Confirm e-mail"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/register.py:217
+#: ../../gpvdm_gui/gui/register.py:212
 #: ../../gpvdm_core/old/lock_py/register.py:217
 msgid ""
 "Gpvdm will not work until you register.  Would do you want to exit gpvdm?"
@@ -9521,6 +9536,16 @@ msgstr ""
 
 #: ../../gpvdm_gui/gui/optics_filters_tab.py:96
 msgid "Attenuation"
+msgstr ""
+
+#: ../../gpvdm_gui/gui/cite_me.py:64
+msgid "Please cite these papers:"
+msgstr ""
+
+#: ../../gpvdm_gui/gui/cite_me.py:69
+msgid ""
+"If you publish a paper, book or thesis using results from gpvdm. You must "
+"cite these three papers listed below:"
 msgstr ""
 
 #: ../../gpvdm_gui/gui/fit_duplicate.py:70

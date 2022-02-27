@@ -596,9 +596,9 @@ class gpvdm_main_window(QMainWindow):
 		self.timer.timeout.connect(gpvdm_data().check_reload)
 		self.timer.start(1000)
 
-		from shape_editor import shape_editor
-		self.a=shape_editor("/home/rod/gpvdm_local/shape/martin2")
-		self.a.show()
+		#from shape_editor import shape_editor
+		#self.a=shape_editor("/home/rod/gpvdm_local/shape/martin2")
+		#self.a.show()
 
 	def dragEnterEvent(self, event):
 		if event.mimeData().hasUrls:

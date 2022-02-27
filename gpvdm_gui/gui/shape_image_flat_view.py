@@ -81,15 +81,14 @@ class shape_image_flat_view(QWidget):
 		self.len_z=800e-9
 		self.im=None
 
+		self.dat_file=dat_file()
 		self.triangles=[]
-
 		self.load_image()
 
 	def build_mesh(self):
 		if self.config.mesh.mesh_show==True:
 			width, height = self.im.size
 
-			self.dat_file=dat_file()
 			if self.dat_file.load(os.path.join(self.path,"shape.inp"))==True:
 				if len(self.dat_file.data)!=0:
 					width, height = self.im.size
