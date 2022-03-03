@@ -40,6 +40,7 @@ from icon_lib import icon_get
 from msg_dlg import msg_dlg
 
 from lock import get_lock
+from lock_trial import lock_trial
 
 class QAction_lock(QAction):
 	clicked=pyqtSignal(QAction)
@@ -65,6 +66,13 @@ class QAction_lock(QAction):
 			self.clicked.emit(self)
 		else:
 			self.setChecked(False)
-			pass
+
+			self.trial=trial(override_text="<br><br><br><br>Upgrade today to gpvdm professional to use this function!.<br><br><br>",show_text=False,title_font_size=14)
+			self.trial.title_text.setAlignment(Qt.AlignCenter)
+			ret=self.trial.run()
+			if ret==QDialog.Accepted:
+				msgBox = msg_dlg()
+				msgBox.setText("Thank you for buying gpvdm")
+				reply = msgBox.exec_()
 
 

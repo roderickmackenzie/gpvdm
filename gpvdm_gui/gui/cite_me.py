@@ -77,12 +77,11 @@ class cite_me(QLabel):
 		
 		self.win.setLayout(vbox)
 
-		self.win.setFixedWidth(300)
+		self.win.setFixedWidth(350)
 		self.win.setMinimumHeight(500)
 		self.win.show()
 
-
-
+		
 	def __init__(self):
 		QLabel.__init__(self)
 		try:

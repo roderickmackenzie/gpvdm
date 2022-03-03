@@ -110,6 +110,7 @@ from icon_lib import icon_init_db
 import shutil
 from check_lib_in_bash_rc import check_lib_in_bash_rc
 from msg_dlg import msg_dlg
+from lock_gui import lock_gui
 
 def do_import():
 	global webbrowser
@@ -360,6 +361,7 @@ class gpvdm_main_window(QMainWindow):
 		self.splash.inc_value()
 
 		if self.notebook.is_loaded()==True:
+			self.l.run()
 			self.notebook.tab_main.three_d.update()
 
 		self.ribbon.electrical.tb_solvers.changed.connect(self.notebook.update_circuit_window)
@@ -474,6 +476,8 @@ class gpvdm_main_window(QMainWindow):
 		self.setAcceptDrops(True)
 		#self.setGeometry(200, 100, 1300, 600)
 		self.setWindowTitle("General-purpose Photovoltaic Device Model (https://www.gpvdm.com)")
+
+		self.l=lock_gui()
 
 		self.my_server.sim_started.connect(self.gui_sim_start)
 		self.splash.inc_value()

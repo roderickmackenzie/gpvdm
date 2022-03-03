@@ -340,6 +340,16 @@ int json_load_from_path(struct simulation *sim,struct json *j,char *path,char *f
 	return json_load(sim,j,full_file_name);
 }
 
+void json_from_buffer(struct simulation *sim,struct json *j,char *buf,int len)
+{
+	j->raw_data_len = len;
+	j->raw_data = malloc(((j->raw_data_len) + 1)*sizeof(char));
+	memcpy(j->raw_data, buf, j->raw_data_len);
+	j->raw_data[j->raw_data_len]=0;
+
+	json_decode(j,&(j->obj));
+}
+
 int json_load(struct simulation *sim,struct json *j,char *full_file_name)
 {
 	strcpy(j->file_path,full_file_name);

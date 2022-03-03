@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # 
 #   General-purpose Photovoltaic Device Model - a drift diffusion base/Shockley-Read-Hall
 #   model for 1st, 2nd and 3rd generation solar cells.
@@ -19,51 +20,44 @@
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #   
 
-## @package inp_util
-#  utility functions for inp these functions should not touch the disk.
+## @package lock_util
+#  Utils for lock
 #
 
-def inp_file_to_list(lines):
-	sub_items=[]
-	items=[]
-	for l in lines:
-		if l.startswith("#") and len(sub_items)!=0:
-			items.append(sub_items)
-			sub_items=[]
+import sys
+import os
 
-		if l=="#end" or l=="#ver":
-			break
-
-		sub_items.append(l)
-
-	return items
-
-def inp_search_token_value_multiline(lines, token):
-	ret=[]
-	for i in range(0, len(lines)):
-		if lines[i]==token:
-			pos=i+1
-			while (lines[pos][0]!="#"):
-				ret.append(lines[pos])
-				pos=pos+1
-
-			return ret
-
-	return False
-
-
-def inp_check_ver(file_path, ver):
-	"""Check ver of file"""
-	lines=inp_load_file(file_path)
-	if lines==False:
+def lock_load(file_name):
+	if os.path.isfile(file_name)==False:
 		return False
 
-	for i in range(0, len(lines)):
-		if lines[i]=="#ver":
-			if len(lines)>i+2:
-				if lines[i+1]==ver:
-					if lines[i+2]=="#end":
-						return True
-			return False
+	key="ahja"
 
-	return False
+
+	kpos=0
+	kmax=len(key)
+	key=bytearray(key.encode())
+	f = open(file_name, mode='rb')
+	data = f.read()
+	f.close()
+
+	if data.startswith(b"gpvdmenc")==True:
+		data=list(data[8:])
+		for i in range(0,len(data)):
+			data[i]=data[i] ^ key[kpos]
+			kpos=kpos+1
+			if kpos>=kmax:
+				kpos=0
+		data=bytearray(data)
+
+		if data.startswith(b"gpvdm")==False:
+			return False
+		data=data[5:]
+		ret=data.decode("utf-8", "strict").split("\n")
+	else:
+		data=data.decode('utf-8')
+		ret=data.split("\n")
+
+	return ret
+
+	return

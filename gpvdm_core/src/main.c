@@ -163,7 +163,31 @@ set_logging_level(&sim,log_level_screen);
 cal_path(&sim);
 
 //<strip>
+	lock_gather_info(&sim);
 
+	if (scanarg( argv,argc,"--register")==TRUE)
+	{
+		lock_register(&sim,&(sim.lock_data));
+		exit(0);
+	}
+
+	if (scanarg( argv,argc,"--license")==TRUE)
+	{
+		lock_get_li(&sim,&(sim.lock_data));
+		exit(0);
+	}
+
+	if (scanarg( argv,argc,"--validate")==TRUE)
+	{
+		lock_validate_key(&sim,&(sim.lock_data),get_arg_plusone( argv,argc,"--validate"));
+		exit(0);
+	}
+
+	if (scanarg( argv,argc,"--use")==TRUE)
+	{
+		lock_update_license(&sim,&(sim.lock_data));
+		exit(0);
+	}
 //</strip>
 
 

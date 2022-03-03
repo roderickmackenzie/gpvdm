@@ -120,7 +120,7 @@ AC_SUBST(LIBS, " -lumfpack -lm -rdynamic -export-dynamic -ldl -lzip -lz -lpng -L
 
 	AC_SUBST(COMPILE_FLAG, " -g -fPIC " )
 	AC_SUBST(LIBS, "-lumfpack  -lm -rdynamic -export-dynamic -ldl -lzip -lz -lpng -g `pkg-config --libs dbus-1` ")
-	AC_SUBST(WIN_INTERNET,[""])
+	AC_SUBST(INTERNET_LIB,["-lcurl"])
  	#-I/usr/lib/x86_64-linux-gnu/openmpi/include/ -lmpi -ldmumps for mumps
 	#-lgsl -lgslcblas
 	

@@ -378,11 +378,16 @@ class json_base():
 	def random_id(self):
 		return "id"+codecs.encode(os.urandom(int(16 / 2)), 'hex').decode()
 
-	def save_as(self,file_name):
+	def save_as(self,file_name,do_tab=True):
 		self.file_name=file_name
 		lines=self.gen_json()
 		self.f.lines=lines
-		self.f.tab()
+		if do_tab==True:
+			self.f.tab()
+		else:
+			tot=""
+			for i in range(0,len(self.f.lines)):
+				self.f.lines[i]=self.f.lines[i].replace("\t","")
 		self.f.save_as(file_name)
 		self.last_time=self.f.time()
 

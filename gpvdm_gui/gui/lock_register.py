@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # 
 #   General-purpose Photovoltaic Device Model - a drift diffusion base/Shockley-Read-Hall
 #   model for 1st, 2nd and 3rd generation solar cells.
@@ -39,11 +40,9 @@ from PyQt5.QtCore import QSize, Qt
 
 from inp import inp_load_file
 import re
-
 from error_dlg import error_dlg
 from gui_util import yes_no_dlg
 from lock import lock
-from code_ctrl import am_i_rod
 from spinner import spinner
 
 def isValidEmail(email):
@@ -53,6 +52,8 @@ def isValidEmail(email):
 	return False
 
 from lock import get_lock
+from cal_path import gpvdm_paths
+from json_base import json_base
 
 class register(QDialog):
 
@@ -86,8 +87,17 @@ class register(QDialog):
 		#self.working.show()
 
 		self.register.setEnabled(False)
+		user_data=json_base("register")
+		user_data.include_name=False
+		user_data.var_list=[]
+		user_data.var_list.append(["email",self.email0.text()])
+		user_data.var_list.append(["title",self.title.currentText()])
+		user_data.var_list.append(["first_name",self.first_name.text()])
+		user_data.var_list.append(["surname",self.surname.text()])
+		user_data.var_list.append(["company",self.company.text()])
+		user_data.var_list_build()
 
-		ret=get_lock().register(email=self.email0.text(),name=self.title.currentText()+" "+self.first_name.text()+" "+self.surname.text(),company=self.company.text())
+		ret=get_lock().register(user_data)
 		if ret==False:
 			if get_lock().error=="no_internet":
 				error_dlg(self,_("I can't access the internet, or gpvdm.com is down."))
@@ -200,7 +210,9 @@ class register(QDialog):
 		self.setMinimumWidth(400)
 
 
-		if am_i_rod()==True:
+		if gpvdm_paths.am_i_rod()==True:
+			self.first_name.setText("Rod")
+			self.surname.setText("MacKenzie")
 			self.email0.setText("r.c.i.mackenzie@googlemail.com")
 			self.email1.setText("r.c.i.mackenzie@googlemail.com")
 			self.company.setText("my company")

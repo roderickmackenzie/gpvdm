@@ -170,6 +170,24 @@ int json_get_int(struct simulation *sim,struct json_obj *obj, int *out,char *nam
 
 }
 
+int json_get_long_long(struct simulation *sim,struct json_obj *obj, long long *out,char *name)
+{
+	struct json_obj *found;
+	found=json_obj_find(obj, name);
+	if (found!=NULL)
+	{
+		//printf("%s %s\n",name,found->data);
+		sscanf(found->data,"%lld",out);
+		return 0;
+	}else
+	{
+		getchar();
+		ewe(sim,"Not found %s\n",name);
+	}
+	return -1;
+
+}
+
 int json_get_long_double(struct simulation *sim,struct json_obj *obj, long double *out,char *name)
 {
 	struct json_obj *found;

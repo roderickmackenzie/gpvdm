@@ -6,9 +6,9 @@ AROPT=
 inc=-I../include/ -L../
 
 all: main.c $(OBJS)
-	$(CC) -shared -o ../libgpvdm_core.@DLIB_EXT@ @GPVDM_CORE_LIB_FILES@ -L/home/rod/windll/compiled_dlls2/ @WIN_INTERNET@ -lzip @PNG_LIB@
+	$(CC) -shared -o ../libgpvdm_core.@DLIB_EXT@ @GPVDM_CORE_LIB_FILES@ -L/home/rod/windll/compiled_dlls2/ @INTERNET_LIB@ -lzip @PNG_LIB@
 	@WIN_ICON@
-	$(CC) main.c $(OBJS) -o ../gpvdm_core@EXE_EXT@ @WIN_RES_FILE@ $(inc) @COMPILE_FLAG@ -Wl,--whole-archive @LOCAL_LINK@ -Wl,--no-whole-archive @LDFLAGS@ @LIBS@ @OPEN_CL_LINK@ -lpthread -pg @SRC_DEBUG@ 
+	$(CC) main.c $(OBJS) -o ../gpvdm_core@EXE_EXT@ @WIN_RES_FILE@ $(inc) @COMPILE_FLAG@ -Wl,--whole-archive @LOCAL_LINK@ -Wl,--no-whole-archive @LDFLAGS@ @LIBS@ @OPEN_CL_LINK@ @INTERNET_LIB@ -lpthread -pg @SRC_DEBUG@ 
 	ln -s -f gpvdm_core@EXE_EXT@ ../go@EXE_EXT@
 	ln -s -f ./gpvdm_core/gpvdm_core@EXE_EXT@ ../../go@EXE_EXT@
 	@echo "$(DESTDIR)$(bindir)" > bindir

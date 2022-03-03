@@ -505,6 +505,12 @@ class gpvdm_paths:
 	def get_spectra_path():
 		return os.path.join(get_user_settings_dir(),"spectra")
 
+	def am_i_rod():
+		path=os.path.join(get_home_path(),"gpvdm_rod")
+		if os.path.isfile(path):
+			return True
+		return False
+
 def get_flag_file_path():
 	global flag_path
 	return flag_path

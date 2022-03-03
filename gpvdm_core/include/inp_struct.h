@@ -35,15 +35,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "advmath.h"
-
+	#include <linux/limits.h>
 struct inp_file
 {
-char *data;
-long fsize;
-char full_name[1000];
-int pos;
-int edited;
+	char *data;
+	long fsize;
+	char full_name[PATH_MAX];
+	int pos;
+	int edited;
 };
 
 #endif

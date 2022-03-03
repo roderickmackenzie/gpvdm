@@ -111,4 +111,6 @@ void json_string_init(struct json_string *in);
 void json_string_free(struct json_string *in);
 void json_cat_str(struct json_string *buf,char *data);
 int json_is_token(struct simulation *sim,struct json_obj *obj,char *name);
+void json_from_buffer(struct simulation *sim,struct json *j,char *buf,int len);
+int json_get_long_long(struct simulation *sim,struct json_obj *obj, long long *out,char *name);
 #endif

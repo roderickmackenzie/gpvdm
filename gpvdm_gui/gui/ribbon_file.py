@@ -178,6 +178,7 @@ class ribbon_file(ribbon_page):
 		self.tb_ml_build_vectors.setEnabled(val)
 		self.run.setEnabled(val)
 		self.optics.setEnabled(val)
+		self.cite_me.setEnabled(val)
 
 	def on_new_backup(self):
 		new_backup_name=dlg_get_text( _("New backup:"), _("New backup name"),"add_backup")

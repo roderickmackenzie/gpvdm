@@ -35,7 +35,7 @@
 #include <sim_struct.h>
 #include <lock_struct.h>
 
-
+void lock_init(struct lock *l);
 void lock_gather_info(struct simulation *sim);
 int lock_decrypt(char *buf,long *len, char *key);
 void lock_ecrypt(char **out,char *in,int *len_out,int len_in,char *key);
