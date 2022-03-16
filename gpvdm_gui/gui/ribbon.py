@@ -64,7 +64,6 @@ from PyQt5.QtCore import pyqtSignal
 import webbrowser
 
 from help import help_window
-from lock import get_email
 from lock import get_lock
 from ribbon_thermal import ribbon_thermal
 
@@ -152,8 +151,9 @@ class ribbon(ribbon_base):
 		self.database=ribbon_database()
 		self.addTab(self.database,_("Databases"))
 
+		self.tb_cluster=ribbon_cluster()
 		if gpvdm_local().gui_config.enable_betafeatures==True:
-			self.tb_cluster=ribbon_cluster()
+
 			self.addTab(self.tb_cluster,_("Cluster"))
 
 		self.information=ribbon_information()

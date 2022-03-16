@@ -392,7 +392,6 @@ int device_run_simulation(struct simulation *sim, struct device *dev)
 
 		contacts_force_to_zero(sim,dev);
 
-
 		int y;
 
 

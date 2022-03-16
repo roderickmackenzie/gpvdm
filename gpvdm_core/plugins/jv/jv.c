@@ -113,6 +113,7 @@ return n;//roundl(log(1.0+(fabs(V)/fabs(step0))*log(step_mul))/log(step_mul));
 
 void sim_jv(struct simulation *sim,struct device *in)
 {
+
 long double Vapplied=0.0;
 int up=TRUE;
 struct jv config;
@@ -122,7 +123,7 @@ long double Pden;
 int first=TRUE;
 long double Vlast;
 long double Jlast;
-long double Pdenlast;
+long double Pdenlast=-1e6;
 long double Vexternal;
 long double V=0.0;
 
@@ -209,6 +210,9 @@ inter_init(sim,&n_list);
 
 struct math_xy tau_list;
 inter_init(sim,&tau_list);
+
+struct math_xy tau_all_list;
+inter_init(sim,&tau_all_list);
 
 struct math_xy Tl;
 inter_init(sim,&Tl);
@@ -309,6 +313,8 @@ long double r_pmax=0.0;
 long double n_pmax=0.0;
 long double mue_pmax=0.0;
 long double muh_pmax=0.0;
+long double mue_jsc=0.0;
+long double muh_jsc=0.0;
 
 //Device characterisation
 long double Voc=-1.0;
@@ -339,8 +345,18 @@ long double mu_jsc=0.0;
 long double mu_geom_pmax=-1.0;
 long double mu_geom_voc=-1.0;
 long double mu_geom_jsc=0.0;
+
+long double mu_geom_micro_pmax=-1.0;
+long double mu_geom_micro_voc=0.0;
+long double mu_geom_micro_jsc=0.0;
+
 long double tau_voc=-1.0;
 long double tau_pmax=-1.0;
+long double tau_all_voc=-1.0;
+long double tau_all_pmax=-1.0;
+long double tau=-1.0;
+long double tau_all=-1.0;
+
 long double theta_srh_free=-1.0;
 long double theta_srh_free_trap=-1.0;
 long double k_voc=-1.0;
@@ -438,19 +454,22 @@ if (config.Vstop<config.Vstart)
 			//check if we have crossed 0V
 			if (dump_sim_info==TRUE)
 			{
+				//Jsc
 				if ((Vlast<=0)&&(Vexternal>=0.0))
 				{
 					nsc=get_extracted_np(in);
-					mue=get_avg_mue(in);
-					muh=get_avg_muh(in);
-					mu_jsc=(mue+muh)/2.0;
-					mu_geom_jsc=sqrt(mue*muh);
+					get_avg_mu(in,&mue_jsc,&muh_jsc);
+					mu_jsc=(mue_jsc+muh_jsc)/2.0;
+					mu_geom_jsc=sqrt(mue_jsc*muh_jsc);
 
+					get_avg_geom_micro_mu(in,&mu_geom_micro_jsc);
 					found_jsc=TRUE;
 				}
 
 				if (light_get_sun(&(in->mylight))!=0.0)
 				{
+
+					//Voc
 					if ((Jlast<=0)&&(J>=0.0))
 					{
 
@@ -459,25 +478,33 @@ if (config.Vstop<config.Vstart)
 						n_free_voc=get_free_n_charge(in);
 						p_trap_voc=get_p_trapped_charge(in);
 						p_free_voc=get_free_p_charge(in);
-						mue=get_avg_mue(in);
-						muh=get_avg_muh(in);
+						get_avg_mu(in,&mue,&muh);
 						mu_voc=(mue+muh)/2.0;
 						mu_geom_voc=sqrt(mue*muh);
+
+						get_avg_geom_micro_mu(in,&mu_geom_micro_voc);
+
 						found_voc=TRUE;
 					}
 				}
 
+				//Pmax
 				if ((Pden>Pdenlast)&&(Vexternal>0.0)&&(J<0.0))
 				{
-					mue_pmax=get_avg_mue(in);
-					muh_pmax=get_avg_muh(in);
+					get_avg_mu(in,&mue_pmax,&muh_pmax);
 					mu_pmax=(mue_pmax+muh_pmax)/2.0;
 					mu_geom_pmax=sqrt(mue_pmax*muh_pmax);
+
+					get_avg_geom_micro_mu(in,&mu_geom_micro_pmax);
+					Pdenlast=Pden;
 				}
 
 				inter_append(&R_list,Vexternal,get_avg_recom(in));
 				inter_append(&n_list,Vexternal,get_extracted_np(in));
-				inter_append(&tau_list,Vexternal,get_tau(in));
+				get_tau(in,&tau,&tau_all);
+
+				inter_append(&tau_list,Vexternal,tau);
+				inter_append(&tau_all_list,Vexternal,tau_all);
 
 			}
 
@@ -512,7 +539,7 @@ if (config.Vstop<config.Vstart)
 
 		Jlast=J;
 		Vlast=Vexternal;
-		Pdenlast=Pden;
+
 		first=FALSE;
 
 		if (config.dump_verbosity!=0)
@@ -622,14 +649,19 @@ if (power_den.len>0)
 		Pmax=-1.0*power_den.data[power_min_pos];
 		r_pmax=R_list.data[power_min_pos];
 		n_pmax=n_list.data[power_min_pos];
-		//inter_dump(sim,&tau_list);
+
 		tau_pmax=tau_list.data[power_min_pos];
+		tau_all_pmax=tau_all_list.data[power_min_pos];
+
 		V_pmax=power_den.x[power_min_pos];
 		J_pmax=jvexternal.data[power_min_pos];
 		Voc=inter_get(&vjexternal,0.0);
 		r_voc=inter_get(&R_list,Voc);
 		n_voc=inter_get(&n_list,Voc);
+
 		tau_voc=inter_get(&tau_list,Voc);
+		tau_all_voc=inter_get(&tau_all_list,Voc);
+
 		k_voc=r_voc/n_voc;
 		FF=gfabs(Pmax/(Jsc*Voc));
 		pce=gfabs(100.0*Pmax/(1000.0*light_get_sun(&(in->mylight))));
@@ -704,13 +736,21 @@ if (config.dump_verbosity>=0)
 			fprintf(out,"\t\"mu_jsc\":\"%Le\",\n",mu_jsc);
 			fprintf(out,"\t\"mu_pmax\":\"%Le\",\n",mu_pmax);
 			fprintf(out,"\t\"mu_voc\":\"%Le\",\n",mu_voc);
-			fprintf(out,"\t\"mu_geom_jsc\":\"%Le\",\n",mu_jsc);
-			fprintf(out,"\t\"mu_geom_pmax\":\"%Le\",\n",mu_pmax);
-			fprintf(out,"\t\"mu_geom_voc\":\"%Le\",\n",mu_voc);
+			fprintf(out,"\t\"mu_geom_jsc\":\"%Le\",\n",mu_geom_jsc);
+			fprintf(out,"\t\"mu_geom_pmax\":\"%Le\",\n",mu_geom_pmax);
+			fprintf(out,"\t\"mu_geom_voc\":\"%Le\",\n",mu_geom_voc);
+			fprintf(out,"\t\"mu_geom_micro_jsc\":\"%Le\",\n",mu_geom_micro_jsc);
+			fprintf(out,"\t\"mu_geom_micro_pmax\":\"%Le\",\n",mu_geom_micro_pmax);
+			fprintf(out,"\t\"mu_geom_micro_voc\":\"%Le\",\n",mu_geom_micro_voc);
 			fprintf(out,"\t\"mue_pmax\":\"%Le\",\n",mue_pmax);
 			fprintf(out,"\t\"muh_pmax\":\"%Le\",\n",muh_pmax);
+			fprintf(out,"\t\"mue_jsc\":\"%Le\",\n",mue_jsc);
+			fprintf(out,"\t\"muh_jsc\":\"%Le\",\n",muh_jsc);
 			fprintf(out,"\t\"tau_voc\":\"%Le\",\n",tau_voc);
 			fprintf(out,"\t\"tau_pmax\":\"%Le\",\n",tau_pmax);
+			fprintf(out,"\t\"tau_all_voc\":\"%Le\",\n",tau_all_voc);
+			fprintf(out,"\t\"tau_all_pmax\":\"%Le\",\n",tau_all_pmax);
+
 			fprintf(out,"\t\"theta_srh_free\":\"%Le\",\n",theta_srh_free);
 			fprintf(out,"\t\"theta_srh_free_trap\":\"%Le\",\n",theta_srh_free_trap);
 			fprintf(out,"\t\"device_C\":\"%Le\"\n",in->C);
@@ -952,6 +992,7 @@ inter_free(&klist);
 inter_free(&R_list);
 inter_free(&n_list);
 inter_free(&tau_list);
+inter_free(&tau_all_list);
 inter_free(&Tl);
 inter_free(&v_optical_efficiency);
 inter_free(&charge_tot);

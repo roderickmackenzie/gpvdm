@@ -30,7 +30,7 @@ import hashlib
 import glob
 import sys
 from util_zip import zip_get_data_file
-from inp import inp_load_file
+from inp import inp
 from str2bool import str2bool
 from triangle import triangle
 from quiver import quiver
@@ -320,6 +320,7 @@ class dat_file(dat_file_math,dat_file_trap_map):
 		self.cols=""
 		self.bin=False
 		self.id="id"+codecs.encode(os.urandom(int(16 / 2)), 'hex').decode()
+		self.error=""
 
 	def guess_dim_csv(self,data):
 		if self.cols=="yd":
@@ -336,19 +337,24 @@ class dat_file(dat_file_math,dat_file_trap_map):
 		if self.have_i_loaded_this(file_name)==True:
 			return True
 
-		lines=[]
 		#print("1")
-		lines=inp_load_file(file_name)
-		if lines==False:
+		f=inp()
+		if f.load(os.path.join(file_name))==False:
+			self.error="Problem loading file"
 			return False
 
-		if len(lines)<skip_lines:
+		if f.lines==False:
+			self.error="Problem loading file"
 			return False
 
-		x_col=col_name_to_pos(lines,x_col,known_col_sep)
-		y_col=col_name_to_pos(lines,y_col,known_col_sep)
+		if len(f.lines)<skip_lines:
+			self.error="Not enough lines"
+			return False
 
-		lines=lines[skip_lines:]
+		x_col=col_name_to_pos(f.lines,x_col,known_col_sep)
+		y_col=col_name_to_pos(f.lines,y_col,known_col_sep)
+
+		lines=f.lines[skip_lines:]
 
 		self.x_scale=[]
 		self.y_scale=[]
@@ -592,7 +598,7 @@ class dat_file(dat_file_math,dat_file_trap_map):
 			data = np.loadtxt(self.file_name)
 		else:
 			data=zip_get_raw_data(self.file_name)
-			float_array = array('f',data[self.header_end+1:])
+			float_array = array('f',data[self.header_end+2:])
 			data=float_array.tolist()
 
 		if self.y_len==-1:		#If it's a file with an unknown length

@@ -29,7 +29,6 @@ import re
 import hashlib
 import glob
 from util_zip import zip_get_data_file
-from inp import inp_load_file
 from str2bool import str2bool
 from triangle import triangle
 from inp import inp_save_lines_to_file

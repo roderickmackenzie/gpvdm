@@ -2516,8 +2516,6 @@ int dllinternal_solve_cur(struct simulation *sim,struct device *in, int z, int x
 	FILE *file;
 	int i;
 
-	if (lock_feature_enabled(sim)!=0)
-	{
 		for (i=0;i<in->ncontacts;i++)
 		{
 			if (fabs(in->contacts[i].voltage_want)>10.0)
@@ -2526,7 +2524,6 @@ int dllinternal_solve_cur(struct simulation *sim,struct device *in, int z, int x
 			}
 
 		}
-	}
 
 double stop_time;
 double start_time= timer_get_time_in_ms();

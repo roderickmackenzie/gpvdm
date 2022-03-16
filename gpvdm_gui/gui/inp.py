@@ -112,6 +112,15 @@ class inp:
 		self.load(file_path)
 		return self.get_token("#ver")
 
+	def check_if_i_can_read(self,file_name):
+		try:
+			f = open(file_name, "r")
+			lines = f.readlines()
+			f.close()
+			return True
+		except:
+			return False
+
 	def load(self,file_path,archive="sim.gpvdm",mode="l"):
 		self.set_file_name(file_path,archive=archive,mode=mode)
 

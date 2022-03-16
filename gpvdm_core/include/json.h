@@ -31,43 +31,14 @@
 
 #ifndef json_h
 #define json_h
-#include <sim_struct.h>
-#include <md5.h>
-
 #define json_enabled
 
-struct json_obj
-{
-	char type;
-	char name[100];
-	int len;
-	int max_len;
-	void *objs;
+#include <sim_struct.h>
+#include <md5.h>
+#include <json_struct.h>
 
-	char *data;
-	int data_len;
-	int node;
-};
 
-struct json_string
-{
-	char *data;
-	int len;
-	int pos;
-	int compact;
-};
 
-struct json
-{
-	char *raw_data;
-	long raw_data_len;
-	int pos;
-	int level;
-	char path[PATH_MAX];
-	struct json_obj obj;
-	char file_path[PATH_MAX];
-	int compact;
-};
 
 void json_obj_init(struct json_obj *obj);
 void json_obj_realloc(struct json_obj *obj);

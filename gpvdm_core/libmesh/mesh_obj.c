@@ -103,7 +103,7 @@ void mesh_obj_load(struct simulation *sim,struct mesh_obj *mesh,struct json_obj 
 void mesh_obj_apply_srh_contacts(struct simulation *sim,struct mesh_obj *mesh,struct device *dev)
 {
 	struct mesh* m=&(mesh->meshdata_y);
-	struct mesh_layer* layer=&(m->layers[0]);
+	//struct mesh_layer* layer=&(m->layers[0]);
 	//printf("oh %d",dev->boundry_y0);
 	if (dev->boundry_y0==contact_schottky)
 	{

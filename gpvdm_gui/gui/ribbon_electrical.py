@@ -113,7 +113,10 @@ class ribbon_electrical(ribbon_page2):
 		self.perovskite.setCheckable(True)
 		pan.addAction(self.perovskite)
 
-
+		self.singlet = QAction_lock("singlet", _("Excited\nstates"), self,"ribbon_device_mobile_singlet")
+		self.singlet.clicked.connect(self.callback_singlet)
+		self.singlet.setCheckable(True)
+		pan.addAction(self.singlet)
 
 		#a.setStyleSheet("QToolBar {margin-top: 0px;margin-bottom: 0px; padding 0px;}")
 #		spacer = QWidget()
@@ -165,6 +168,12 @@ class ribbon_electrical(ribbon_page2):
 		self.perovskite.setChecked(data.perovskite.perovskite_enabled)
 
 	def callback_perovskite(self):
+		data=gpvdm_data()
+		data.perovskite.perovskite_enabled=self.perovskite.isChecked()
+		data.save()
+
+	def callback_singlet(self):
+		return
 		data=gpvdm_data()
 		data.perovskite.perovskite_enabled=self.perovskite.isChecked()
 		data.save()

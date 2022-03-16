@@ -41,7 +41,6 @@ from bibtex import bibtex
 
 from gpvdm_open import gpvdm_open
 
-
 from QWidgetSavePos import QWidgetSavePos
 from plot_widget import plot_widget
 
@@ -49,18 +48,22 @@ from ribbon_materials import ribbon_materials
 from import_data_json import import_data_json
 from equation_editor import equation_editor
 from json_material_db_item import json_material_db_item
+import webbrowser
+from inp import inp
 
 class materials_main(QWidgetSavePos):
 
 	def changed_click(self):
+		self.ribbon.import_data.setEnabled(False)
+		self.ribbon.equation.setEnabled(False)
+		self.ribbon.tb_ref.setEnabled(False)
+
 		if self.notebook.tabText(self.notebook.currentIndex()).strip()==_("Electrical parameters"):
 			help_window().help_set_help(["tab.png",_("<big><b>Electrical parameters</b></big><br>Use this tab to configure the electrical parameters for the material.")])
-			self.ribbon.tb_save.setEnabled(False)
-			self.ribbon.import_data.setEnabled(False)
+
 
 		if self.notebook.tabText(self.notebook.currentIndex()).strip()==_("Luminescence"):
 			help_window().help_set_help(["tab.png",_("<big><b>Luminescence</b></big><br>Use this tab to edit the materials Luminescence.")])
-			self.ribbon.tb_save.setEnabled(False)
 			self.ribbon.import_data.setEnabled(False)
 
 		if self.notebook.tabText(self.notebook.currentIndex()).strip()==_("Absorption"):
@@ -70,8 +73,9 @@ class materials_main(QWidgetSavePos):
 				if text!=False:
 					help_window().help_set_help(["alpha.png",_("<big><b>Absorption</b></big><br>"+text)])
 
-			self.ribbon.tb_save.setEnabled(True)
 			self.ribbon.import_data.setEnabled(True)
+			self.ribbon.equation.setEnabled(True)
+			self.ribbon.tb_ref.setEnabled(True)
 
 		if self.notebook.tabText(self.notebook.currentIndex()).strip()==_("Refractive index"):
 			b=bibtex()
@@ -80,8 +84,9 @@ class materials_main(QWidgetSavePos):
 				if text!=False:
 					help_window().help_set_help(["n.png",_("<big><b>Refractive index</b></big><br>"+text)])
 
-			self.ribbon.tb_save.setEnabled(True)
 			self.ribbon.import_data.setEnabled(True)
+			self.ribbon.equation.setEnabled(True)
+			self.ribbon.tb_ref.setEnabled(True)
 
 	def callback_cost(self):
 		desktop_open(os.path.join(self.path,"cost.xlsx"))
@@ -90,7 +95,8 @@ class materials_main(QWidgetSavePos):
 	def __init__(self,path):
 		QWidgetSavePos.__init__(self,"materials_main")
 		self.path=path
-		self.setFixedSize(900, 600)
+		#self.setFixedSize(900, 600)
+		self.setMinimumSize(900, 600)
 		self.setWindowIcon(icon_get("organic_material"))
 
 		self.setWindowTitle(_("Material editor")+" (https://www.gpvdm.com)"+" "+os.path.basename(self.path)) 
@@ -99,25 +105,25 @@ class materials_main(QWidgetSavePos):
 		self.main_vbox = QVBoxLayout()
 
 		self.ribbon=ribbon_materials()
-
+		self.ribbon.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
 		self.ribbon.cost.triggered.connect(self.callback_cost)
-		self.ribbon.folder_open.triggered.connect(self.callback_dir_open)
 		self.ribbon.import_data.clicked.connect(self.import_data)
 		self.ribbon.equation.clicked.connect(self.callback_equation_editor)
 
 		self.ribbon.tb_ref.triggered.connect(self.callback_ref)
-
+		self.ribbon.help.triggered.connect(self.callback_help)
 
 		self.main_vbox.addWidget(self.ribbon)
 
 		self.notebook = QTabWidget()
-
+		self.notebook.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 		self.notebook.setMovable(True)
 
 		self.main_vbox.addWidget(self.notebook)
 
 		fname=os.path.join(self.path,"alpha.gmat")
 		self.alpha=plot_widget(enable_toolbar=False)
+		self.alpha.show_title=False
 		self.alpha.set_labels([_("Absorption")])
 		self.alpha.load_data([fname])
 
@@ -126,6 +132,7 @@ class materials_main(QWidgetSavePos):
 
 		fname=os.path.join(self.path,"n.gmat")
 		self.n=plot_widget(enable_toolbar=False)
+		self.n.show_title=False
 		self.n.set_labels([_("Refractive index")])
 		self.n.load_data([fname])
 		self.n.do_plot()
@@ -224,3 +231,6 @@ class materials_main(QWidgetSavePos):
 
 		if ret==QDialog.Accepted:
 			desktop_open(dialog.get_filename())
+
+	def callback_help(self):
+		webbrowser.open("https://www.gpvdm.com/docs.html")

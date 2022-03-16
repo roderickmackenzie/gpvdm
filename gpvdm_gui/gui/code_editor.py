@@ -50,8 +50,6 @@ from cal_path import get_sim_path
 from PyQt5.QtCore import QFile, QRegExp, Qt
 from PyQt5.QtGui import QFont, QSyntaxHighlighter, QTextCharFormat
 
-from inp import inp_load_file
-
 class QLineNumberArea(QWidget):
     def __init__(self, editor):
         super().__init__(editor)

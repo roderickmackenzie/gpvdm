@@ -49,6 +49,7 @@ import webbrowser
 from gpvdm_open import gpvdm_open
 from inp import inp
 from cal_path import gpvdm_paths
+from help import QAction_help
 
 class mode_button(QAction_lock):
 	def __init__(self,image,text,s,name):

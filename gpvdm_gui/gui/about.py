@@ -125,7 +125,7 @@ class about_dlg(QDialog):
 		text=text+"<b>"+_("Binary path")+":</b>"+get_bin_path()+"<br>"
 		text=text+"<b>"+_("Plugins path")+":</b>"+get_plugins_path()+"<br>"
 		text=text+"<b>"+_("Binary name")+":</b>"+get_exe_name()+"<br>"
-		text=text+"<b>"+_("Install ID")+":</b>"+get_lock().uid+"<br>"
+		text=text+"<b>"+_("Install ID")+":</b>"+get_lock().data.uid+"<br>"
 
 		self.paths.setText(text)
 		self.right.addTab(self.paths,_("Paths"))

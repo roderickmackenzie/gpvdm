@@ -95,6 +95,7 @@ if gui_get()==True:
 			status_icon_init()
 			self.gui_update_time= time.time()
 			self.timer=QTimer()
+			self.terminal=None
 
 		def init(self,sim_dir):
 			self.server_base_init(sim_dir)
@@ -166,9 +167,13 @@ if gui_get()==True:
 			
 			path=True
 			while(path!=False):
+				if self.terminal==None:
+					return False
+
 				path,command=self.server_base_get_next_job_to_run()
 				self.jobs_update.emit()
 				if path!=False:
+
 					if self.terminal.run(path,command)==True:
 						time.sleep(0.1)
 						return True
@@ -197,8 +202,9 @@ if gui_get()==True:
 
 		def my_timer(self):
 			#This is to give the QProcess timer enough time to update
-			if self.terminal.test_free_cpus()!=0:
-				self.process_jobs()
+			if self.terminal!=None:
+				if self.terminal.test_free_cpus()!=0:
+					self.process_jobs()
 
 
 		def timer_start(self):
@@ -263,7 +269,8 @@ if gui_get()==True:
 					
 						if self.fit_update!=None:
 							self.fit_update()
-							self.terminal.clear()
+							if self.terminal!=None:
+								self.terminal.clear()
 			else:
 				print("rx",data_in)
 

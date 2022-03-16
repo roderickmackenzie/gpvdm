@@ -50,7 +50,6 @@ from gui_util import yes_no_dlg
 
 
 from inp import inp_get_token_value
-from inp import inp_load_file
 from inp import inp_get_token_value_from_list
 from inp import inp
 
@@ -752,91 +751,90 @@ class gpvdm_viewer(QListWidget,gpvdm_viewer_new):
 			return
 		
 		dir_info=get_dir_type(full_path)
-
-		if self.open_own_files==True:
-			self.file_path=full_path
-
-			if dir_info.type=="spectra":
-				from spectra_main import spectra_main
-				self.mat_window=spectra_main(full_path)
-				self.mat_window.show()
-				return
-			if dir_info.type=="shape":
-				from shape_editor import shape_editor
-				self.windows.append(shape_editor(full_path))
-				self.windows[-1].show()
-				return
-			if dir_info.type=="light":
-				from optics import class_optical 
-				self.optics_window=class_optical()
-				self.optics_window.show()
-
-			if dir_info.type=="material":
-				from materials_main import materials_main
-				self.mat_window=materials_main(full_path)
-				self.mat_window.show()
-				return
-
-			if dir_info.type=="emission":
-				from emission_main import emission_main
-				self.emission_window=emission_main(full_path)
-				self.emission_window.show()
-				return
-
-			if dir_info.type=="filter":
-				from filter_main import filter_main
-				self.filter_window=filter_main(full_path)
-				self.filter_window.show()
-				return
-
-			if dir_info.type=="snapshots":
-				from cmp_class import cmp_class
-
-				help_window().help_set_help(["plot_time.png",_("<big><b>Examine the results in time domain</b></big><br> After you have run a simulation in time domain, if is often nice to be able to step through the simulation and look at the results.  This is what this window does.  Use the slider bar to move through the simulation.  When you are simulating a JV curve, the slider sill step through voltage points rather than time points.")])
-				widget_mode="matplotlib"
-				if text=="optical_snapshots":
-					widget_mode="band_graph"
-				self.snapshot_window.append(cmp_class(full_path,widget_mode=widget_mode))
-				self.snapshot_window[-1].show()
-				#print("snapshots!!")
-				return
-
-			if dir_info.type=="backup":
-				ret=yes_no_dlg(self,_("Are you sure you want restore this file from the backup, it will overwrite all files in the simulation directory?")+"\n\n"+full_path)
-				if ret==True:
-					from backup import backup_restore
-					backup_restore(get_sim_path(),full_path)
-
-
-			if dir_info.type=="file":
+		if dir_info!=None:
+			if self.open_own_files==True:
 				self.file_path=full_path
-				if os.path.basename(full_path)=="sim_info.dat":
-					self.sim_info_window=window_json_ro_viewer(full_path)
-					self.sim_info_window.show()
+
+				if dir_info.type=="spectra":
+					from spectra_main import spectra_main
+					self.mat_window=spectra_main(full_path)
+					self.mat_window.show()
+					return
+				if dir_info.type=="shape":
+					from shape_editor import shape_editor
+					self.windows.append(shape_editor(full_path))
+					self.windows[-1].show()
+					return
+				if dir_info.type=="light":
+					from optics import class_optical 
+					self.optics_window=class_optical()
+					self.optics_window.show()
+
+				if dir_info.type=="material":
+					from materials_main import materials_main
+					self.mat_window=materials_main(full_path)
+					self.mat_window.show()
 					return
 
-				if isfiletype(full_path,"dat")==True or isfiletype(full_path,"csv")==True:
-					text=peek_data(full_path)
-					if text.startswith(b"#multiplot"):
-						my_multiplot=multiplot()
-						my_multiplot.plot(full_path)
-					else:
-						plot_gen([full_path],[],"auto")
+				if dir_info.type=="emission":
+					from emission_main import emission_main
+					self.emission_window=emission_main(full_path)
+					self.emission_window.show()
 					return
 
-				if  isfiletype(full_path,"gpvdm")==True:
+				if dir_info.type=="filter":
+					from filter_main import filter_main
+					self.filter_window=filter_main(full_path)
+					self.filter_window.show()
 					return
 
-				desktop_open(full_path)
-				return
+				if dir_info.type=="snapshots":
+					from cmp_class import cmp_class
 
-		print(dir_info.type)
-		if dir_info.type=="dir" or dir_info.type=="backup_main" or dir_info.type=="multi_plot_dir" :
-			self.file_path=full_path
-			self.set_path(full_path)
-			self.fill_store()
-		else:
-			self.accept.emit()
+					help_window().help_set_help(["plot_time.png",_("<big><b>Examine the results in time domain</b></big><br> After you have run a simulation in time domain, if is often nice to be able to step through the simulation and look at the results.  This is what this window does.  Use the slider bar to move through the simulation.  When you are simulating a JV curve, the slider sill step through voltage points rather than time points.")])
+					widget_mode="matplotlib"
+					if text=="optical_snapshots":
+						widget_mode="band_graph"
+					self.snapshot_window.append(cmp_class(full_path,widget_mode=widget_mode))
+					self.snapshot_window[-1].show()
+					#print("snapshots!!")
+					return
+
+				if dir_info.type=="backup":
+					ret=yes_no_dlg(self,_("Are you sure you want restore this file from the backup, it will overwrite all files in the simulation directory?")+"\n\n"+full_path)
+					if ret==True:
+						from backup import backup_restore
+						backup_restore(get_sim_path(),full_path)
+
+
+				if dir_info.type=="file":
+					self.file_path=full_path
+					if os.path.basename(full_path)=="sim_info.dat":
+						self.sim_info_window=window_json_ro_viewer(full_path)
+						self.sim_info_window.show()
+						return
+
+					if isfiletype(full_path,"dat")==True or isfiletype(full_path,"csv")==True:
+						text=peek_data(full_path)
+						if text.startswith(b"#multiplot"):
+							my_multiplot=multiplot()
+							my_multiplot.plot(full_path)
+						else:
+							plot_gen([full_path],[],"auto")
+						return
+
+					if  isfiletype(full_path,"gpvdm")==True:
+						return
+
+					desktop_open(full_path)
+					return
+
+			if dir_info.type=="dir" or dir_info.type=="backup_main" or dir_info.type=="multi_plot_dir" :
+				self.file_path=full_path
+				self.set_path(full_path)
+				self.fill_store()
+			else:
+				self.accept.emit()
 
 
 	def on_selection_changed(self):

@@ -65,8 +65,10 @@ from color_map import color_map
 from math import log10
 from util import time_with_units
 
+svgwrite_enabled=False
 try:
 	import svgwrite
+	svgwrite_enabled=True
 except:
 	pass
 
@@ -77,6 +79,7 @@ class gpvdm_graph(QWidget):
 
 	def __init__(self):
 		QWidget.__init__(self)
+		global svgwrite_enabled
 		self.show_labels=True
 		self.show_energies=True
 		self.show_data=True
@@ -94,7 +97,8 @@ class gpvdm_graph(QWidget):
 		self.E_max=None
 		self.E_min=None
 		self.menu_copy.triggered.connect(self.do_clip)
-		self.menu_save_as_svg.triggered.connect(self.callback_save_as_svg)
+		if svgwrite_enabled==True:
+			self.menu_save_as_svg.triggered.connect(self.callback_save_as_svg)
 		self.data_x0=None
 		self.data_x1=None
 		self.x0_mul=0.1
@@ -127,7 +131,7 @@ class gpvdm_graph(QWidget):
 		self.load_data(self.optical_mode_file)
 
 	def build_menu(self):
-
+		global svgwrite_enabled
 		self.menu = QMenu(self)
 
 		self.menu_show_labels=self.menu.addAction(_("Show labels"))
@@ -151,8 +155,8 @@ class gpvdm_graph(QWidget):
 		self.menu_normalize_x_axis.setChecked(False)
 
 		self.menu_copy=self.menu.addAction(_("Copy to clipboard"))
-		self.menu_save_as_svg=self.menu.addAction(_("Save as SVG"))
-
+		if svgwrite_enabled==True:
+			self.menu_save_as_svg=self.menu.addAction(_("Save as SVG"))
 		self.menu_redraw=self.menu.addAction(_("Redraw"))
 		self.menu_redraw.triggered.connect(self.menu_toggle)
 

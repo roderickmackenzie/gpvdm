@@ -1,0 +1,23 @@
+\newpage
+\section{Troubleshooting}
+\subsection{Windows gives warms me the software is unsigned}
+
+\subsection{Why don't I get a 3D view of the device}
+
+If your simulation window looks like figure \ref{fig:nothreed} and not like figure \ref{fig:threed}.  It means  either you do not have any 3D acceleration hardware on your computer, or you do not have the drivers for it installed.  If you have an ATI/Nvidia/Intel graphics card check that the drivers are installed.  Currently, not having working 3D hardware will not affect your ability to perform simulations. This is not a gpvdm bug it's a driver/hardware issue on your computer.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{./images/3d.jpg}
+\caption{gpvdm with working 3D acceleration hardware.}
+\label{fig:threed}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{./images/no_3d.jpg}
+\caption{gpvdm with no 3D acceleration hardware.}
+\label{fig:nothreed}
+\end{figure}
+
+

@@ -162,33 +162,8 @@ int log_level=0;
 set_logging_level(&sim,log_level_screen);
 cal_path(&sim);
 
-//<strip>
-	lock_gather_info(&sim);
 
-	if (scanarg( argv,argc,"--register")==TRUE)
-	{
-		lock_register(&sim,&(sim.lock_data));
-		exit(0);
-	}
 
-	if (scanarg( argv,argc,"--license")==TRUE)
-	{
-		lock_get_li(&sim,&(sim.lock_data));
-		exit(0);
-	}
-
-	if (scanarg( argv,argc,"--validate")==TRUE)
-	{
-		lock_validate_key(&sim,&(sim.lock_data),get_arg_plusone( argv,argc,"--validate"));
-		exit(0);
-	}
-
-	if (scanarg( argv,argc,"--use")==TRUE)
-	{
-		lock_update_license(&sim,&(sim.lock_data));
-		exit(0);
-	}
-//</strip>
 
 
 char *b=NULL;
@@ -258,13 +233,13 @@ dbus_init();
 
 if (scanarg( argv,argc,"--version2")==TRUE)
 {
-	if (lock_feature_enabled(&sim)==0)
-	{
-		printf_log(&sim,_("gpvdm_core/gpvdm_next, Version %s\n"),gpvdm_ver);
-	}else
-	{
-		printf_log(&sim,_("gpvdm_core, Version %s\n"),gpvdm_ver);
-	}
+	//if (lock_feature_enabled(&sim)==0)
+	//{
+	//	printf_log(&sim,_("gpvdm_core/gpvdm_next, Version %s\n"),gpvdm_ver);
+	//}else
+	//{
+	//	printf_log(&sim,_("gpvdm_core, Version %s\n"),gpvdm_ver);
+	//}
 	printf_log(&sim,"%s\n",_("gpvdm (General-purpose Photovoltaic Device Model) core."));
 	printf_log(&sim,"%s\n",_("Copyright Roderick MacKenzie, released under the MIT License 2010-2019"));
 	printf_log(&sim,_("There is ABSOLUTELY NO WARRANTY; not even for MERCHANTABILITY or\n"));

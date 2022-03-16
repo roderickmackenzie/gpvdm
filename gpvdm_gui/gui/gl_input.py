@@ -227,13 +227,13 @@ class gl_input():
 			obj=self.event_to_3d_obj(event)
 
 			if obj!=None:
-				self.dxdx,self.dydx,self.dzdx,self.dxdy,self.dydy,self.dzdy = self.get_3d_pos(event)
-
-				self.gl_object_deselect_all()
-				self.gl_objects_select_by_id(obj.id)
-				self.set_cursor(QCursor(Qt.SizeAllCursor))
-				self.text_output.emit(obj.id[0]+" "+obj.text)
-				self.force_redraw(level="no_rebuild")
+				if len(obj.id)>0:
+					self.dxdx,self.dydx,self.dzdx,self.dxdy,self.dydy,self.dzdy = self.get_3d_pos(event)
+					self.gl_object_deselect_all()
+					self.gl_objects_select_by_id(obj.id)
+					self.set_cursor(QCursor(Qt.SizeAllCursor))
+					self.text_output.emit(obj.id[0]+" "+obj.text)
+					self.force_redraw(level="no_rebuild")
 			else:
 				self.gl_object_deselect_all()
 				self.force_redraw(level="no_rebuild")

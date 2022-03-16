@@ -72,12 +72,6 @@ int fit_simplex(struct simulation *sim,struct fitvars *fitconfig)
 
 	multimin_init(&data);
 
-	/*if (lock_is_trial(&(sim->lock_data))==TRUE)
-	{
-		exit(0);
-	}
-	getchar();*/
-
 	data.ndim=fitconfig->fitvars;
 	data.fn=&my_f;
 	data.p0=(void *)sim;

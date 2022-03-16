@@ -102,7 +102,6 @@ struct simulation
 	char tmp_path[PATH_MAX];
 	char command_line_path[PATH_MAX];
 
-
 	//solver name
 	char solver_name[20];
 	char complex_solver_name[20];

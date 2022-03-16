@@ -703,14 +703,19 @@ if open_gl_ok==True:
 		def boom(self):
 			print("oh")
 else:
-	class glWidget(gl_fallback):
+	class glWidget(gl_fallback, gl_toolbar,gl_views):
 
 		def __init__(self, parent):
 			QWidget.__init__(self)
 			gl_fallback.__init__(self)
+			gl_toolbar.__init__(self)
 			self.views=[]
+			self.scale=gl_scale()
 			self.failed=True
 			self.open_gl_working=False
 
 		def rebuild_scene(self):
+			pass
+
+		def do_draw(self):
 			pass

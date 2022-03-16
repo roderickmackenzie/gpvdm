@@ -64,6 +64,8 @@ gdouble Vapplied=0.0;
 struct newton_state *ns=&(dev->ns);
 struct dimensions *dim=&dev->ns.dim;
 struct heat *thermal=&(dev->thermal);
+long double mue=0.0;
+long double muh=0.0;
 long double H_joule=0.0;
 long double H_recombination=0.0;
 long double H_parasitic=0.0;
@@ -121,9 +123,10 @@ if (get_dump_status(sim,dump_dynamic)==TRUE)
 
 
 	//mobility
-	inter_append(&(store->mu_n),x_value,fabs(get_avg_mue(dev)));
-	inter_append(&(store->mu_p),x_value,fabs(get_avg_muh(dev)));
-	inter_append(&(store->mu_n_p_avg),x_value,(fabs(get_avg_mue(dev))+fabs(get_avg_muh(dev)))/2.0);
+	get_avg_mu(dev,&mue,&muh);
+	inter_append(&(store->mu_n),x_value,fabs(mue));
+	inter_append(&(store->mu_p),x_value,fabs(muh));
+	inter_append(&(store->mu_n_p_avg),x_value,(fabs(mue)+fabs(muh))/2.0);
 
 	//Thermal
 	if (thermal->newton_enable_external_thermal==TRUE)
@@ -135,7 +138,6 @@ if (get_dump_status(sim,dump_dynamic)==TRUE)
 	}
 	//getchar();
 
-	//printf(">>%Le %Le\n",1.0000e-5*get_free_n_charge(dev)/(get_free_n_charge(dev)+get_n_trapped_charge(dev)),get_avg_mue(dev));
 	//srh rates
 
 	int band;

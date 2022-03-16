@@ -1,11 +1,7 @@
-\section{File formats}
-All input and output files associated with gpvdm are human readable, meaning that they are straight up text files.  All output files can be directly plotted in gnuplot/excel as can the input files.  Output files are currently called .dat, but they are simply text files. All configuration files are in json format so can be edit directly or by using the python json library.
+\newpage
+\section{Input files and the databases}
 
-\subsection{.dat files}
-
-\subsection{.csv files}
-
-\subsection{the .gpvdm file format}
+\subsection{the .gpvdm simulation file format}
 This is a zip file, if you rename the file to .zip you will be able to open the file and in the file you will see a sim.json file.  You can view this file in any text editor but the file is quite complex and long so I recommend you use firefox to view it as it has a built in json viewer.  If you make a copy of this file outside the .gpvdm archive, gpvdm will ignore the sim.json file within the sim.gpvdm archive and revert to the plain text file stored in the simulation directory.  This feature can be useful for automation of simulations.
 
 \subsection{Databases}
@@ -31,6 +27,13 @@ This contains emission spectra for OLED materials.
 
 \subsubsection{Shape database}
 This defines all the shapes used within the model.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=0.7\textwidth]{./images/shape_db.png}
+\caption{The shape database}
+\label{fig:shapedb}
+\end{figure}
 
 \subsubsection{Filters database}
 This contains optical filters.

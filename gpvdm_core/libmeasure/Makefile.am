@@ -2,7 +2,7 @@ COMPILE_FLAG=@COMPILE_FLAG@
 LINK_FLAG=@LINK_FLAG@
 
 inc=-I../include/
-OBJS=exp.o measure.o recombination.o thermal.o charge.o
+OBJS=exp.o measure.o recombination.o thermal.o charge.o mobility.o
 
 all: $(OBJS)
 	$(AR) rcs libgpvdm_measure.@SLIB_EXT@ $(OBJS)

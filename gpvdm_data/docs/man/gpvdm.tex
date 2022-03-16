@@ -11,7 +11,7 @@
 \usepackage{listings}
 \usepackage{float}
 \usepackage{hyperref}
-
+\usepackage{lscape}
 
 %\providecommand{\e}[1]{\ensuremath{\times 10^{#1}}}
 
@@ -48,12 +48,7 @@ Please do not cite this manual.  Please see the section \ref{sec:using_gvpdm} on
 \input{introduction.tex}
 \newpage
 
-\section{Running the model}
-
-\subsection{Installing gpvdm for windows}
-Go to the download page for gpvdm at \url{http://www.gpvdm.com/windows.php} and download the latest version.  Simply double click on it and say yes to all questions.  In general I release a new version every couple of weeks and it's worth keeping your version up-to-date. On modern versions of windows, windows will ask you if you want to install an unsigned executable from an unknown author, and warn you that this could damage your computer.  The reason you get this message is because I have not cryptographically signed the .exe file. I have not signed it because I do not own a private cryptographic key with which to do this.  To get such a key I would have to send my passport off to a key authority to prove who I am and then pay them 500 pounds/year for the privilege of them validating who I am.  Needless to say, that I am not very excited about paying 500 pounds/year so you will just have to click away the warnings from windows.
-
-\input{linux.tex}
+\input{installing.tex}
 \input{running.tex}
 
 
@@ -63,8 +58,9 @@ Go to the download page for gpvdm at \url{http://www.gpvdm.com/windows.php} and 
 \input{optical.tex}
 \input{meshing.tex}
 \input{database.tex}
-\section{Text past this point needs to be rewritten}
+\input{output_files.tex}
 \input{scripting.tex}
+\input{troubleshooting.tex}
 \input{editing.tex}
 \input{the_rest.tex}
 

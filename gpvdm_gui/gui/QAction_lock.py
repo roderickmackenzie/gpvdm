@@ -53,9 +53,6 @@ class QAction_lock(QAction):
 		if get_lock().is_function_locked(id)==True:
 			self.locked=True
 
-		if get_lock().is_function_not_locked(id)==True:
-			self.locked=False
-
 		if self.locked==True:
 			sub_icon="lock"
 		QAction.__init__(self,icon_get(icon_name,sub_icon=sub_icon), text, s)
@@ -67,7 +64,7 @@ class QAction_lock(QAction):
 		else:
 			self.setChecked(False)
 
-			self.trial=trial(override_text="<br><br><br><br>Upgrade today to gpvdm professional to use this function!.<br><br><br>",show_text=False,title_font_size=14)
+			self.trial=lock_trial(override_text="<br><br><br><br>Upgrade today to gpvdm professional to use this function!.<br><br><br>",show_text=False,title_font_size=14)
 			self.trial.title_text.setAlignment(Qt.AlignCenter)
 			ret=self.trial.run()
 			if ret==QDialog.Accepted:

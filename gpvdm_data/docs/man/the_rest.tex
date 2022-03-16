@@ -1,5 +1,5 @@
 
-
+\section{Text past this point needs to be rewritten}
 \subsubsection{The layer editor}
 To set up and edit the vertical device structure, use the layer editor this is shown in figure \ref{fig:layer_editor}. Using this tool, you can add layers, remove layers, and move layers up and down.
 \linebreak
@@ -119,25 +119,7 @@ Step 7: Click the run button.}
 \subsubsection{1D, 2D and 3D simulations with gpvdm}
 When deciding if you should perform 1D, 2D or 3D, simulations, consider the dimensionality of your problem.  For example if you consider a solar cell, it is only a few micros thick, and there is rapid variation in the structure, charge densities, mobilities, and doping as a function of depth (y).  However, the structure will not vary very quickly in the lateral (xz) plane.  Therefore, in general  to capture all interesting effects present within a solar cell one only needs a 1D model.  If one now considers OFETs, there is both vertical an lateral current flow, therefore one can not get away with a 1D model any more, as one must simulate both vertical current flow, and current between the source and the drain, thus one needs a 2D simulation.  As the number of dimensions increases, computation speed will decrease, therefore my general advice is to use the minimum number of dimensions possible to solve your problem.
 
-\subsubsection{Why don't I get a 3D view of the device}
-If your simulation window looks like figure \ref{fig:nothreed} and not like figure \ref{fig:threed}.  It means  either you do not have any 3D acceleration hardware on your computer, or you do not have the drivers for it installed.  If you have an ATI/Nvidia/Intel graphics card check that the drivers are installed.  Currently, not having working 3D hardware will not affect your ability to perform simulations.
 
-\begin{figure}[ht!]
-\centering
-\includegraphics[width=\textwidth]{./images/3d.jpg}
-\caption{gpvdm with working 3D acceleration hardware.}
-\label{fig:threed}
-\end{figure}
-
-\begin{figure}[ht!]
-\centering
-\includegraphics[width=\textwidth]{./images/no_3d.jpg}
-\caption{gpvdm with no 3D acceleration hardware.}
-\label{fig:nothreed}
-\end{figure}
-
-\vfill
-\clearpage
 
 
 \newpage
@@ -185,80 +167,11 @@ The short answer is yes.  The model is an effective medium model, meaning that i
 \newpage
 
 
-\section{Output directories}
-\textbf{equilibrium}\newline
-Before the solver starts any simulation it solves the device equations in the dark with 0V applied bias.  The result of this calculation are placed in this directory.  The practical reason for doing this is that Newton's method only works if you give it a reasonable starting guess for any given problem.  Thus to start the solver, we guess the carrier densities at 0V in the dark, we then use Newton's method to calculate the exact carrier density profiles at 0V in the dark (results are stored in the equilibrium directory), then from this point we can work our way to other solutions say at +1V in the light.\cite{0953-8984-25-21-215301}
-\newline
-
-\section{Output files}
-Writing to disk is slow on even the most modern of computers with an SSD.  The seek speed of mechanical disks has increased little of their history.  Thus often writing the output data to the hard disk is the most time consuming part of any simulation.  By default gpvdm writes all output files to disk.  If you want to speed up your simulation, you can only write the files you need to disk.  This can be done in a fine grained way through the configure window and clicking on the detailed dump control tab.  You will from there be able to turn on and off output files.
-
-\begin{figure}
-\centering
-\includegraphics[width=\textwidth]{./images/output_files.png}
-\caption{Selecting which output files are witten to disk.}
-\end{figure}
 
 \input{files}
+\input{privicy.tex}
 
-\textbf{sim\_info.dat}\newline
-This file contains quantities calculated from the simulation such as $V_{oc}$, $J_{sc}$ what is in the file depends on what type of simulation you whish to carry out.  The file is a JSON formatted file file some common tokens are defined below:
-
-JV curve simulation:
-
-\begin{center}
-\begin{tabular}{ |c|c|c| c|} 
-\hline
-JSON token & Meaning & Units & Ref \\
-\hline
-ff & Fill factor&au&\\
-pce & 			PCE& percent&\\
-Pmax & 			Power at Pmax&&\\
-voc & 			$V_{oc}$ &&\\
-$voc_{R}$ & 		Recombination rate at $P_{max}$& &\\
-$jv_{voc}$  & 		&&\\
-$jv_{pmax}$ & 	&&\\
-$voc_{nt}$ & Trapped electron carrier densiyt at $V_oc$		&&\\
-$voc_{pt}$ & Trapped hole carrier density at $V_oc$		&&\\
-$voc_{nf}$ & Free electron carrier densiyt at $V_oc$		&&\\
-$voc_{pf}$ & Free hole carrier density at $V_oc$		&&\\
-jsc 				  & 	$J_{sc}$		& $Am^{-2}$&\\
-$jv_{jsc}$ & Average charge density at $J_{sc}$	& $m^{-3}$&\\
-$jv_{vbi}$ & Built in voltage		& V&\\
-$jv_{gen}$ & Average generation rate		&&\\
-$voc_{np}$ & 	&&\\
-$j_{pmax}$ & Current at $P_{max}$		& $Am^{-2}$&\\
-$v_{pmax}$ & Voltage at $P_{max}$    & V &\\
-$mu_{jsc}$ & 		&$m^{2} V^{-1} s^{-1}$&\\
-$mu_{pmax}$ & 		&$m^{2} V^{-1} s^{-1}$&\\
-$mu_{voc}$ & 	Average mobility at $V_{oc}$	& $m^{2} V^{-1} s^{-1}$&\\
-$mue_{pmax}$ & Average electron mobility at $P_{max}$	&$m^{2} V^{-1} s^{-1}$&\\
-$muh_{pmax}$ & Average hole mobility at $P_{max}$ &$m^{2} V^{-1} s^{-1}$&\\
-$tau_{voc}$ & 	Recombination time constant at $V_{oc}$	 & s &\\
-$tau_{pmax}$ & 	Recombination time constant at $P_{max}$	&s&\\
-
-$theta_{srh}$ & $\theta_{SRH}$ Collection coefficient at $P_{max}$ y & au &p.100 5.2a\cite{Summon-FETCH-bonn_catalog_45326403},\cite{PhysRevApplied.6.024001}\\
-$theta_{srh}$ & $\theta_{SRH}$ Collection coefficient at $P_{max}$ & au &p.100 5.2a\cite{Summon-FETCH-bonn_catalog_45326403},\cite{PhysRevApplied.6.024001}\\
-
-\hline
-\end{tabular}
-\end{center}
-
-Optical simulation
-
-\begin{center}
-\begin{tabular}{ |c|c|c| c|} 
-\hline
-JSON token & Meaning & Units & Ref \\
-\hline
-$J_{photo}$ & Photo current density $Am^{-2}$& &\\
-$I_{photo}$ & Photo current $A$& &\\
-
-
-\hline
-\end{tabular}
-\end{center}
-
+\newpage
 \section{Copyright of the manual}
 This manual is released under CC-BY license.
 

@@ -44,7 +44,6 @@ from help import help_window
 from error_dlg import error_dlg
 
 from inp import inp_get_token_value
-from inp import inp_load_file
 from inp import inp_get_token_value_from_list
 from inp import inp_update_token_value
 from cal_path import get_sim_path

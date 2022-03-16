@@ -566,12 +566,3 @@ void device_init(struct simulation *sim,struct device *dev)
 	world_init(sim,&(dev->w));
 }
 
-void stop_if_not_registered_and_gpvdm_next(struct simulation *sim)
-{
-	return;
-}
-
-int lock_feature_enabled(struct simulation *sim)
-{
-	return -1;
-}

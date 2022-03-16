@@ -36,11 +36,10 @@
 #include <lock_struct.h>
 
 void lock_init(struct lock *l);
+void lock_free(struct simulation *sim,struct lock *l);
 void lock_gather_info(struct simulation *sim);
 int lock_decrypt(char *buf,long *len, char *key);
 void lock_ecrypt(char **out,char *in,int *len_out,int len_in,char *key);
-int lock_is_trial(struct lock *l);
-int lock_is_expired(struct lock *l);
 int get_file_from_web(char **buffer, const char * const szUrl);
 void lock_register(struct simulation *sim,struct lock *l);
 void url_encode(char *enc, char * name,unsigned char *in);
@@ -52,13 +51,12 @@ void lock_get_li(struct simulation *sim,struct lock *l);
 void lock_validate_key(struct simulation *sim,struct lock *l,char *key);
 void lock_update_license(struct simulation *sim,struct lock *l);
 int lock_update_token(struct simulation *sim,struct lock *l,char *token,char *value);
-void lock_check(struct simulation *sim,struct lock *l);
 int lock_is_item_locked(struct simulation *sim, struct lock *l,char *test);
 void lock_dump(struct simulation *sim,struct lock *l);
 void lock_tx_uid_to_ui(struct simulation *sim,struct lock *l);
-int lock_feature_enabled(struct simulation *sim);
+void lock_feature_enabled(struct simulation *sim,char *feature);
 int lock_update_key(struct simulation *sim,struct lock *l);
 void lock_user_key_gen(struct simulation *sim,struct lock *l);
 void lock_cal_answer(struct simulation *sim,char *out, char *in);
-void stop_if_not_registered_and_gpvdm_next(struct simulation *sim);
+void lock_send_data(struct simulation *sim,char *data);
 #endif

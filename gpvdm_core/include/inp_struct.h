@@ -35,7 +35,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <enabled_libs.h>
+
 	#include <linux/limits.h>
+
 struct inp_file
 {
 	char *data;

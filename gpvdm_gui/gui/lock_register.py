@@ -38,7 +38,6 @@ from icon_lib import icon_get
 
 from PyQt5.QtCore import QSize, Qt
 
-from inp import inp_load_file
 import re
 from error_dlg import error_dlg
 from gui_util import yes_no_dlg
@@ -54,6 +53,7 @@ def isValidEmail(email):
 from lock import get_lock
 from cal_path import gpvdm_paths
 from json_base import json_base
+from i18n import get_full_language
 
 class register(QDialog):
 
@@ -80,6 +80,10 @@ class register(QDialog):
 			error_dlg(self,_("Please enter your Company/University."))
 			return
 
+		if self.use_for.currentText()=="Choose option":
+			error_dlg(self,_("Please enter what you plan on using gpvdm for."))
+			return
+
 		#QApplication.processEvents()
 		#QApplication.processEvents()
 
@@ -90,11 +94,13 @@ class register(QDialog):
 		user_data=json_base("register")
 		user_data.include_name=False
 		user_data.var_list=[]
-		user_data.var_list.append(["email",self.email0.text()])
+		user_data.var_list.append(["email",str(self.email0.text().encode('ascii', 'xmlcharrefreplace'))[2:-1]])
 		user_data.var_list.append(["title",self.title.currentText()])
-		user_data.var_list.append(["first_name",self.first_name.text()])
-		user_data.var_list.append(["surname",self.surname.text()])
-		user_data.var_list.append(["company",self.company.text()])
+		user_data.var_list.append(["first_name",str(self.first_name.text().encode('ascii', 'xmlcharrefreplace'))[2:-1]])
+		user_data.var_list.append(["surname",str(self.surname.text().encode('ascii', 'xmlcharrefreplace'))[2:-1]])
+		user_data.var_list.append(["company",str(self.company.text().encode('ascii', 'xmlcharrefreplace'))[2:-1]])
+		user_data.var_list.append(["use_for",self.use_for.currentText()])
+		user_data.var_list.append(["lang",get_full_language()])
 		user_data.var_list_build()
 
 		ret=get_lock().register(user_data)
@@ -107,8 +113,6 @@ class register(QDialog):
 
 			return
 
-		get_lock().get_license()
-
 		self.allow_exit=True
 
 		self.accept()
@@ -119,7 +123,6 @@ class register(QDialog):
 		self.setWindowIcon(icon_get("icon"))
 		self.setWindowTitle(_("Registration window (www.gpvdm.com)")) 
 		self.setWindowFlags(Qt.WindowStaysOnTopHint)
-		#Qt.FramelessWindowHint|
 		vbox=QVBoxLayout()
 
 		l=QLabel(_("Please register to use gpvdm. Thanks!"))
@@ -152,7 +155,7 @@ class register(QDialog):
 
 		vbox.addWidget(hbox_widget)
 
-
+		#Company
 		hbox_widget=QWidget()
 		hbox=QHBoxLayout()
 		hbox_widget.setLayout(hbox)
@@ -163,6 +166,7 @@ class register(QDialog):
 		hbox.addWidget(self.company)
 		vbox.addWidget(hbox_widget)
 
+		#Email 1
 		hbox_widget=QWidget()
 		hbox=QHBoxLayout()
 		hbox_widget.setLayout(hbox)
@@ -173,6 +177,7 @@ class register(QDialog):
 		hbox.addWidget(self.email0)
 		vbox.addWidget(hbox_widget)
 
+		#Email 2
 		hbox_widget=QWidget()
 		hbox=QHBoxLayout()
 		hbox_widget.setLayout(hbox)
@@ -183,16 +188,31 @@ class register(QDialog):
 		hbox.addWidget(self.email1)
 		vbox.addWidget(hbox_widget)
 
+		#Use for
+		hbox_widget=QWidget()
+		hbox=QHBoxLayout()
+		hbox_widget.setLayout(hbox)
+		l=QLabel("<b>"+_("I am most interested in simulating:")+"</b>:")
+		l.setFont(QFont('SansSerif', 14))
+		hbox.addWidget(l)
+		self.use_for = QComboBox()
+		self.use_for.addItem("Choose option")
+		self.use_for.addItem("Organic PV ")
+		self.use_for.addItem("Perovskite PV")
+		self.use_for.addItem("Other 3rd gen PV")
+		self.use_for.addItem("2rd gen PV")
+		self.use_for.addItem("1st gen PV")
+		self.use_for.addItem("OLEDs")
+		self.use_for.addItem("Micro optics")
+		self.use_for.addItem("Ray tracing")
+		self.use_for.addItem("FDTD")
+		self.use_for.addItem("Thermal effects")
+		self.use_for.addItem("Other")
+
+		hbox.addWidget(self.use_for)
+		vbox.addWidget(hbox_widget)
+
 		button_box=QHBoxLayout()
-
-		#self.spinner=spinner()
-		#self.spinner.hide()
-		#button_box.addWidget(self.spinner)
-
-		#self.working=QLabel("Registering....")
-		#self.working.setFont(QFont('SansSerif', 14))
-		#self.working.hide()
-		#button_box.addWidget(self.working)
 
 		spacer = QWidget()
 		spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
@@ -212,11 +232,11 @@ class register(QDialog):
 
 		if gpvdm_paths.am_i_rod()==True:
 			self.first_name.setText("Rod")
-			self.surname.setText("MacKenzie")
+			self.surname.setText("Rod")
 			self.email0.setText("r.c.i.mackenzie@googlemail.com")
 			self.email1.setText("r.c.i.mackenzie@googlemail.com")
 			self.company.setText("my company")
-
+			self.use_for.setCurrentIndex(1)
 
 
 	def closeEvent(self, event):

@@ -37,13 +37,10 @@ from PyQt5.QtCore import QSize, Qt
 from PyQt5.QtWidgets import QWidget,QVBoxLayout,QToolBar,QSizePolicy,QAction,QTabWidget,QAbstractItemView, QMenuBar, QTableWidgetItem
 from PyQt5.QtGui import QPainter,QIcon
 
-from inp import inp_load_file
-from inp import inp_save_lines_to_file
 from gpvdm_select import gpvdm_select
 
 from open_save_dlg import open_as_filter
 from error_dlg import error_dlg
-from cal_path import get_sim_path
 from gtkswitch import gtkswitch
 from str2bool import str2bool
 

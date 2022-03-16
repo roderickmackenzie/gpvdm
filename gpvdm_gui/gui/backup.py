@@ -26,7 +26,6 @@
 import os
 import shutil
 #import glob
-from util_zip import read_lines_from_archive
 from util_zip import write_lines_to_archive
 from shutil import copyfile
 from inp import inp_search_token_value

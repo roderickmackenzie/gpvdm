@@ -403,7 +403,26 @@ class ml_vectors:
 						if sim_mode=="jv" and light>0.0:
 							f=inp()
 							json_data=f.load_json(os.path.join(tmp_dir,sub_sim,"sim_info.dat"))
-							for t in ["pce","ff", "voc", "voc_R", "jsc", "mu_jsc", "mu_pmax", "mu_voc", "mu_geom_jsc", "mu_geom_pmax", "mu_geom_voc", "mue_pmax", "muh_pmax", "tau_voc", "tau_pmax", "theta_srh_free", "theta_srh_free_trap"]:
+							tokens=["pce","ff", "voc", "voc_R", "jsc", "theta_srh_free", "theta_srh_free_trap"]
+							tokens.append("mu_jsc")
+							tokens.append("mu_pmax")
+							tokens.append("mu_voc")
+							tokens.append("mu_geom_jsc")
+							tokens.append("mu_geom_pmax")
+							tokens.append("mu_geom_voc")
+							tokens.append("mu_geom_micro_jsc")
+							tokens.append("mu_geom_micro_pmax")
+							tokens.append("mu_geom_micro_voc")
+							tokens.append("mue_jsc")
+							tokens.append("muh_jsc")
+							tokens.append("mue_pmax")
+							tokens.append("muh_pmax")
+							tokens.append("tau_voc")
+							tokens.append("tau_pmax")
+							tokens.append("tau_all_voc")
+							tokens.append("tau_all_pmax")
+
+							for t in tokens:
 								val=json_get_val(json_data,t)
 								if val==None:
 									error=True

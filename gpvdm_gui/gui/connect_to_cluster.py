@@ -42,7 +42,6 @@ from error_dlg import error_dlg
 from cal_path import get_exe_path
 
 from help import help_window
-from inp import inp_load_file
 from inp import inp_get_token_value_from_list
 from inp import inp_get_token_value
 
@@ -54,6 +53,7 @@ from cal_path import get_sim_path
 
 from server import server_get
 from gpvdm_local import gpvdm_local
+from json_cluster import json_cluster_node
 
 class connect_to_cluster(QDialog):
 
@@ -71,6 +71,9 @@ class connect_to_cluster(QDialog):
 		self.setWindowTitle(_("Connect to cluster")+" (https://www.gpvdm.com)")
 		self.setWindowIcon(icon_get("si"))
 
+		if data.cluster.segments==[]:
+			data.cluster.segments.append(json_cluster_node())
+
 		active_cluster_config=data.cluster.find_enabled_segment()
 
 		self.viewer=tab_class(active_cluster_config.config)
@@ -83,6 +86,7 @@ class connect_to_cluster(QDialog):
 		self.myserver=server_get()
 		if self.myserver.cluster==False:
 			self.nextButton = QPushButton(_("Connect"))
+			self.nextButton.setEnabled(False)
 		else:
 			self.nextButton = QPushButton(_("Disconnect"))
 

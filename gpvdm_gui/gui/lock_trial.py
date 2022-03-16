@@ -38,7 +38,6 @@ from icon_lib import icon_get
 
 from PyQt5.QtCore import QSize, Qt
 
-from inp import inp_load_file
 import re
 
 from error_dlg import error_dlg
@@ -54,7 +53,7 @@ from msg_dlg import msg_dlg
 class lock_trial(QDialog):
 
 	def callback_trial(self):
-		webbrowser.open("https://www.gpvdm.com/buy.html")
+		webbrowser.open("https://www.gpvdm.com/buy.php")
 		self.reject()
 
 	def callback_close(self):

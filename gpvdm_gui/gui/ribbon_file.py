@@ -189,6 +189,7 @@ class ribbon_file(ribbon_page):
 			self.dialog.viewer.fill_store()
 
 	def callback_script(self):
+		adsasd
 		self.scripts=scripts()
 		self.scripts.show()
 

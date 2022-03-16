@@ -20,6 +20,15 @@
 		"honeycomb_line_width":20,
 		"honeycomb_rotate":90
 		},
+	"xtal": {
+		"xtal_dr":10,
+		"xtal_dx":30,
+		"xtal_dy":30,
+		"xtal_offset":30
+		},
+	"lens": {
+		"lens_type":"convex"
+		},
 	"import_config": {
 		"shape_import_y_norm":"False",
 		"shape_import_z_norm":"False",
@@ -27,12 +36,18 @@
 		"shape_import_rotate":360
 		},
 	"boundary": {
+		"boundary_enabled":"False",
 		"image_boundary_x0":0,
+		"image_boundary_x0_color":"1.0,1.0,1.0,1.0",
 		"image_boundary_x1":0,
+		"image_boundary_x1_color":"1.0,1.0,1.0,1.0",
 		"image_boundary_y0":40,
-		"image_boundary_y1":0
+		"image_boundary_y0_color":"1.0,1.0,1.0,1.0",
+		"image_boundary_y1":0,
+		"image_boundary_y1_color":"1.0,1.0,1.0,1.0"
 		},
 	"mesh": {
+		"mesh_show":"True",
 		"mesh_gen_nx":50,
 		"mesh_gen_ny":50,
 		"mesh_gen_opp":"node_reduce",
@@ -41,5 +56,9 @@
 	"blur": {
 		"shape_import_blur_enabled":"False",
 		"shape_import_blur":5
+		},
+	"threshold": {
+		"threshold_enabled":"False",
+		"threshold_value":200
 		}
 	}

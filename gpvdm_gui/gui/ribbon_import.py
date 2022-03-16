@@ -75,25 +75,12 @@ class ribbon_import(ribbon_base):
 
 		return toolbar
 
-	def plot_toolbar(self):
-		toolbar = QToolBar()
-		toolbar.setToolButtonStyle( Qt.ToolButtonTextUnderIcon)
-		toolbar.setIconSize(QSize(42, 42))
-
-		self.plot= QAction(icon_get("plot"), wrap_text(_("Plot"),4), self)
-		toolbar.addAction(self.plot)
-
-		return toolbar
-
 
 	def __init__(self):
 		ribbon_base.__init__(self)
 		self.setMaximumHeight(140)
 		w=self.main_toolbar()
 		self.addTab(w,_("Load/Import"))
-
-		w=self.plot_toolbar()
-		self.addTab(w,_("Plot"))
 
 		sheet=self.readStyleSheet(os.path.join(get_css_path(),"style.css"))
 		if sheet!=None:

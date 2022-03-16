@@ -37,7 +37,6 @@ from icon_lib import icon_get
 
 from PyQt5.QtCore import QSize, Qt
 
-from inp import inp_load_file
 import re
 
 from error_dlg import error_dlg

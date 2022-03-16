@@ -56,8 +56,8 @@ gdouble get_avg_recom_p(struct device *in);
 gdouble get_avg_Rn(struct device *in);
 gdouble get_avg_Rp(struct device *in);
 gdouble get_avg_k(struct device *in);
-gdouble get_avg_mue(struct device *in);
-gdouble get_avg_muh(struct device *in);
+void get_avg_mu(struct device *in,long double *ret_mue,long double *ret_muh);
+void get_avg_geom_micro_mu(struct device *in,long double *ret_mu);
 gdouble get_free_n_charge(struct device *in);
 gdouble get_free_p_charge(struct device *in);
 gdouble get_free_n_charge_delta(struct device *in);
@@ -95,7 +95,8 @@ gdouble get_tot_photons_abs(struct device *in);
 gdouble get_i_intergration(struct device *in);
 gdouble get_avg_J_std(struct device *in);
 gdouble get_max_Jsc(struct device *in);
-long double get_tau(struct device *dev);
+void get_tau(struct device *dev, long double *ret_tau, long double *ret_tau_all);
+
 //thermal 
 
 long double get_avg_Tl(struct device *in);

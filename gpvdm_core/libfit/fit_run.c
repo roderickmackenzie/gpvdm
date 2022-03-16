@@ -81,8 +81,7 @@ static int unused __attribute__((unused));
 #endif
 double fit_run_sims(struct simulation *sim,struct fitvars *fitconfig)
 {
-
-	stop_if_not_registered_and_gpvdm_next(sim);
+	lock_feature_enabled(sim,"fitting");
 //getchar();
 int i;
 double error=0.0;

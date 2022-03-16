@@ -35,6 +35,8 @@
 
 #define crypt_key "8367c849c6ec3d42d45f04fdda468766f340523e6975de94fe878f09760b7636"
 
+#include <sim_struct.h>
+#include <json_struct.h>
 struct lock
 {
 	char status[100];
@@ -59,6 +61,7 @@ struct lock
 	char simple_id_ans[1000];
 	char simple_id_file[1000];
 	int unlocked;
+	struct json j;
 };
 
 #endif

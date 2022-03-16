@@ -56,17 +56,15 @@ from cal_path import get_user_settings_dir
 from cal_path import gpvdm_paths
 import json
 from json_base import json_base
+from str2bool import str2bool
 
 class lock():
 	def __init__(self):
+		self.lock_enabled=True
 		self.registered=False
-
 		self.error=""
 		self.open_gl_working=True
 		self.reg_client_ver="ver"
-		self.locked=[]
-		self.not_locked=[]
-		self.update_available=False
 		self.website="www.gpvdm.com"
 		self.port="/api"
 		self.my_email="roderick.mackenzie@durham.ac.uk"
@@ -76,35 +74,48 @@ class lock():
 		self.data=json_base("lock")
 		self.data.var_list.append(["uid",""])
 		self.data.var_list.append(["no_key",""])
+		self.data.var_list.append(["status",""])
+		self.data.var_list.append(["gpvdm_next",False])
+		self.data.var_list.append(["message",""])
+		self.data.var_list.append(["update_available",False])
 		self.data.var_list_build()
-
+		self.data.locked={}
 		if self.load()==True:
 			if self.data.client_ver!=self.reg_client_ver:
 				self.get_license()
 
 	def check_license(self):
+		if self.lock_enabled==False:
+			return None
+
 		command=multiplatform_exe_command(get_exe_command()+" --use")
 		os.system(command)
 
 	def report_bug(self,data):
-		#Transmit debug info
 		a=http_get()
-		params = {'action':"crash_report",'ver_core': const_ver()+" "+self.reg_client_ver, 'uid': self.get_uid(),'data':data.replace("\n"," ")}
+		params = {'action':"crash_report",'ver_core': const_ver()+" "+self.reg_client_ver, 'uid': self.data.uid,'data':data}
 		tx_string="http://"+self.website+self.port+"/debug?"+urllib.parse.urlencode(params)
+		print(tx_string)
 		lines=a.get(tx_string)
 
 	def check_license_thread(self):
+		if self.lock_enabled==False:
+			return True
+
 		p = Thread(target=self.check_license)
 		p.daemon = True
 		p.start()
 
 	def register(self,user_data):
+		if self.lock_enabled==False:
+			return None
+
 		reg_path=os.path.join(gpvdm_paths.get_tmp_path(),"reg.txt")
 		user_data.save_as(reg_path,do_tab=False)
 
 		command=multiplatform_exe_command(get_exe_command()+" --register")
 		os.system(command)
-		print("done")
+		#print("done")
 		#l.delete()
 
 		l=inp()
@@ -114,11 +125,15 @@ class lock():
 		if lines==False:
 			return False
 
-		if lines=="no_internet":
+		if lines=="error:no_internet":
 			self.error="no_internet"
 			return False
 
-		if lines=="tooold":
+		if lines=="error:error_server":
+			self.error="no_internet"
+			return False
+
+		if lines=="error:too_old":
 			self.error="too_old"
 			return False
 
@@ -132,6 +147,9 @@ class lock():
 		return text
 
 	def get_license(self,key="none",uid=None):
+		if self.lock_enabled==False:
+			return None
+
 		if uid==None:
 			uid=self.data.uid
 
@@ -144,11 +162,11 @@ class lock():
 		if lines==False:
 			return False
 
-		if lines=="tooold":
+		if lines=="error:too_old":
 			self.error="too_old"
 			return False
 
-		if lines=="error":
+		if lines=="error:error":
 			self.error="uid_not_found"
 			return False
 
@@ -161,30 +179,32 @@ class lock():
 		return self.data.uid
 
 	def is_gpvdm_next(self):
-		if os.path.isfile(os.path.join(get_user_settings_dir(),"settings2.inp"))==True:
-			return True
-		return False
+		return self.data.gpvdm_next
 
 
 	def get_next_gui_action(self):
+		if self.lock_enabled==False:
+			return "ok"
+
 		if self.registered==False:
 			return "register"
 
 		return "ok"
 
-
 	def is_function_locked(self,id):
-		return True
-		if id in self.locked:
-			return True
+		if self.lock_enabled==False:
+			return False
+
+		for key in self.data.locked:
+			if key==id:
+				return True
 		return False
 
-	def is_function_not_locked(self,id):
-		if id in self.not_locked:
-			return True
-		return False
 
 	def load_new(self):
+		if self.lock_enabled==False:
+			return None
+
 		if self.get_reg_key("new_install")=="true":
 			print("fresh install.....")
 			return False
@@ -205,20 +225,25 @@ class lock():
 
 
 		json_data="\n".join(lines)
-		json_data=json.loads(json_data)
-		self.data.import_raw_json(json_data)	
 
-		if self.data.ver=="2.0":
+		#print(json_data)
+
+		try:
+			json_data=json.loads(json_data)
+		except:
 			return False
 
+		self.data.import_raw_json(json_data)
+		self.data.gpvdm_next=str2bool(self.data.gpvdm_next)
+		self.data.update_available=str2bool(self.data.update_available)
 		self.use_count=self.data.use_count
-		self.locked=self.data.locked.split(";")
-		self.not_locked=self.data.not_locked.split(";")
 
 		self.registered=True
 		return True
 
 	def load(self):
+		if self.lock_enabled==False:
+			return None
 
 		if self.load_new()==True:
 			return
@@ -240,11 +265,6 @@ class lock():
 				pass
 		return False
 
-
-	def is_expired(self):
-		if self.data.status=="expired":
-			return True
-		return False
 
 	def is_trial(self):
 		if self.data.status=="no_key":
@@ -270,7 +290,7 @@ class lock():
 		if lines=="ok":
 			self.load()
 			return True
-		elif lines=="tooold":
+		elif lines=="error:too_old":
 			self.error="too_old"
 			return False
 
@@ -285,5 +305,3 @@ def get_lock():
 	global my_lock
 	return my_lock
 
-def get_email():
-	return "roderick.mackenzie@nottingham.ac.uk"

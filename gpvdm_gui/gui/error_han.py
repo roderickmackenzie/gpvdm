@@ -45,7 +45,7 @@ import traceback
 import sys
 
 from report_error import report_error
-from lock import get_email
+from lock import get_lock
 from gpvdm_local import gpvdm_local
 
 def error_han(type, value, tback):
@@ -89,7 +89,7 @@ class widget_error_han(QDialog):
 		
 		self.message = QTextEdit()
 		help_text="<big><b>An error has occurred please report this error by clicking ok:<b></big><br><br>"
-		help_text2="<br><br><big><b>It would also help if you e-mailed the error message to "+get_email()+" and described what you were doing with the model to make it crash.  Very often there is not enough information in bug reports alone to fix the problem.<br><br>All error reports are gratefully received.<br><br>Rod 5/9/16<b></big>"
+		help_text2="<br><br><big><b>It would also help if you e-mailed the error message to "+get_lock().my_email+" and described what you were doing with the model to make it crash.  Very often there is not enough information in bug reports alone to fix the problem.<br><br>All error reports are gratefully received.<br><br>Rod 5/9/16<b></big>"
 		self.message.setText(help_text+long_error+help_text2)
 		h_box.addWidget(self.message)
 		
@@ -125,10 +125,10 @@ class widget_error_han(QDialog):
 		self.label_reporting.hide()
 		self.spin.hide()
 		if sucess==True:
-			error_dlg(self,"I have reported the error, for more information e-mail "+get_email())
+			error_dlg(self,"I have reported the error, for more information e-mail "+get_lock().my_email)
 			self.close()
 		else:
-			error_dlg(self,"I could not report the error please send the error message to "+get_email())
+			error_dlg(self,"I could not report the error please send the error message to "+get_lock().my_email)
 			self.close()
 
 	def close_clicked(self):

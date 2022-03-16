@@ -31,8 +31,6 @@ import os
 from PyQt5.QtCore import Qt 
 from PyQt5.QtWidgets import QWidget,QDialog
 
-from inp import inp_load_file
-
 from error_dlg import error_dlg
 from lock import lock
 from PyQt5.QtCore import QTimer
@@ -53,10 +51,8 @@ class lock_gui(QWidget):
 
 	def timer_callback(self):
 		self.timer.stop()
-		#self.register=register()
-		#ret=self.register.run()
+
 		if get_lock().get_next_gui_action()=="register":
-			#self.disable_all.emit()
 			self.register=register()
 			ret=self.register.run()
 			if ret==QDialog.Accepted:
@@ -74,6 +70,7 @@ class lock_gui(QWidget):
 
 				#msgBox.exec_()
 				#self.enable_all.emit()
+				return
 			else:
 				return
 
@@ -96,9 +93,13 @@ class lock_gui(QWidget):
 			reply = msgBox.exec_()
 			return
 
-		if get_lock().update_available==True:
+		if get_lock().data.update_available==True:
 			help_window().help_append(["star.png",_("<big><b>Update available!</b></big><br>Download it now from <a href=\"www.gpvdm.com\">www.gpvdm.com</a>")])
 
+		if get_lock().data.message!="":
+			msgBox = msg_dlg()
+			msgBox.setText(get_lock().data.message)
+			msgBox.exec_()
 
 	def __init__(self):
 		QWidget.__init__(self)

@@ -116,7 +116,12 @@ class gl_fallback(QWidget,gl_base_widget):
 				self.draw_photon(qp,240+x,140,True)
 
 		self.draw_mode(qp,200,250)
-		qp.drawText(40, 540+40, "No OpenGL support, using 2D fallback mode")
+		y=500
+		qp.drawText(40, y+40, "You do not have working 3D graphics hardware acceleration on your PC.")
+		qp.drawText(40, y+70, "If your PC is modern it is likely that you don't have the correct drivers installed")
+		qp.drawText(40, y+100, "Gpvdm is using 2D fallback mode - the model will still work")
+		qp.drawText(40, y+130, "It will just not look as pretty.")
+
 
 
 	def draw_photon(self,qp,start_x,start_y,up):

@@ -109,11 +109,11 @@ class cost(QWidgetSavePos):
 
 		energy_tot=0.0
 		cost_tot=0.0
-		for i in range(0,epitaxy_get_layers()):
+		for l in epi.layers:
 			
-			volume=epitaxy_get_dy(i)*1.0*1.0
-			name=self.epi.layers[i].shape.optical_material
-			xls_file_name=os.path.join(get_materials_path(),self.epi.layers[i].shape.optical_material,"cost.xlsx")
+			volume=l.shape.dy*1.0*1.0
+			name=l.shape.optical_material
+			xls_file_name=os.path.join(get_materials_path(),l.shape.optical_material,"cost.xlsx")
 			if os.path.isfile(xls_file_name):
 				wb = load_workbook(xls_file_name)
 				ws= wb.get_sheet_by_name("results")

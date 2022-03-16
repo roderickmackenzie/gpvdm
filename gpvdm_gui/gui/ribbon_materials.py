@@ -38,14 +38,10 @@ from PyQt5.QtWidgets import QWidget,QSizePolicy,QVBoxLayout,QHBoxLayout,QPushBut
 from PyQt5.QtWidgets import QTabWidget
 
 from win_lin import desktop_open
-
 from icon_lib import icon_get
-
 from cal_path import get_sim_path
 from util import wrap_text
-
 from ribbon_base import ribbon_base
-
 from QAction_lock import QAction_lock
 
 class ribbon_materials(ribbon_base):
@@ -54,11 +50,14 @@ class ribbon_materials(ribbon_base):
 		toolbar.setToolButtonStyle( Qt.ToolButtonTextUnderIcon)
 		toolbar.setIconSize(QSize(42, 42))
 
-		self.import_data= QAction_lock("import", _("From file"), self,"ribbon_materials_import")
+		self.import_data= QAction_lock("import", _("Import data\nfrom file"), self,"ribbon_materials_import")
 		toolbar.addAction(self.import_data)
 
 		self.equation= QAction_lock("vars", _("From\nEquation"), self,"ribbon_materials_vars")
 		toolbar.addAction(self.equation)
+
+		self.tb_ref= QAction(icon_get("ref"), wrap_text(_("Reference information"),8), self)
+		toolbar.addAction(self.tb_ref)
 
 		toolbar.addSeparator()
 
@@ -66,17 +65,6 @@ class ribbon_materials(ribbon_base):
 		self.cost.setStatusTip(_("Cost of material"))
 		#self.cost.triggered.connect(self.callback_cost)
 		toolbar.addAction(self.cost)
-
-		self.folder_open= QAction(icon_get("folder"), _("Material\ndirectory"), self)
-		toolbar.addAction(self.folder_open)
-
-		self.tb_ref= QAction(icon_get("ref"), wrap_text(_("Insert reference information"),8), self)
-		toolbar.addAction(self.tb_ref)
-
-		toolbar.addSeparator()
-
-		self.tb_save = QAction_lock("export_image", _("Export\nimage"), self,"ribbon_materials_export_image")
-		toolbar.addAction(self.tb_save)
 
 		spacer = QWidget()
 		spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)

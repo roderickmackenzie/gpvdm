@@ -198,8 +198,8 @@ class tab_terminal(QWidget,tab_base):
 
 				command=multiplatform_exe_command(command)
 				#os.system(command)
-				print("path: "+path)
-				print("call: "+command)
+				#print("path: "+path)
+				#print("call: "+command)
 				self.process[i].start(command)
 				return True
 

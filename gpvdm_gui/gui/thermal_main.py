@@ -111,7 +111,7 @@ class thermal_main(QWidget,tab_base):
 				#print(l.shape_dos)
 				db_json_file=os.path.join(get_materials_path(),l.optical_material,"data.json")
 				db_json_sub_path="thermal_constants"
-				widget=tab_class(l.shape_heat,db_json_file=db_json_file,db_json_sub_path=db_json_sub_path)
+				widget=tab_class(l.shape_heat,db_json_file=db_json_file,json_path=db_json_sub_path)
 				self.notebook.addTab(widget,name)
 
 

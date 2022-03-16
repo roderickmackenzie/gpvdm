@@ -64,10 +64,6 @@ class ribbon_information(ribbon_page):
 		spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 		self.addWidget(spacer)
 
-		self.ref = QAction(icon_get("ref"), _("How to\ncite"), self)
-		self.ref.triggered.connect(self.callback_ref)
-		self.addAction(self.ref)
-
 		self.hints = QAction(icon_get("hints.png"), _("Hints\nWindow"), self)
 		self.hints.triggered.connect(self.callback_help)
 		self.addAction(self.hints)
@@ -91,7 +87,7 @@ class ribbon_information(ribbon_page):
 		self.youtube.triggered.connect(self.callback_youtube)
 		self.addAction(self.youtube)
 
-		self.man = QAction(icon_get("internet-web-browser"), _("Help")+"\n", self)
+		self.man = QAction(icon_get("internet-web-browser"), _("Documentation")+"\n", self)
 		self.man.triggered.connect(self.callback_on_line_help)
 		self.addAction(self.man)
 
@@ -126,9 +122,6 @@ class ribbon_information(ribbon_page):
 					webbrowser.open(r.url)#
 
 
-	def callback_ref(self):
-		webbrowser.open("https://gpvdm.com/how_to_cite.html")
-
 	def callback_on_line_help(self):
 		#print("here")
 		#self.a=cool_menu(self.ribbon.home.help.icon())
@@ -138,7 +131,7 @@ class ribbon_information(ribbon_page):
 		#self.a.setFocusPolicy(Qt.StrongFocus)
 		#self.a.setFocus(True)
 		#self.a.hasFocus()
-		webbrowser.open("https://www.gpvdm.com")
+		webbrowser.open("http://www.gpvdm.com/docs.html")
 
 	def callback_help(self, widget, data=None):
 		help_window().toggle_visible()

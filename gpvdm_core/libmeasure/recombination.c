@@ -113,26 +113,27 @@ long double get_avg_recom(struct device *in)
 	return ret;
 }
 
-long double get_tau(struct device *dev)
+void get_tau(struct device *dev, long double *ret_tau, long double *ret_tau_all)
 {
-
-	if (dev->n==NULL)
-	{
-		return 0.0;
-	}
-
 	int x=0;
 	int y=0;
 	int z=0;
 
 	long double R=0.0;
-	long double Rtot=0.0;
+	long double tau=0.0;
+	long double tau_all=0.0;
 	long double n0=0.0;
 	long double n_all=0.0;
 	long double dy=0.0;
 	long double y_tot=0.0;
+
 	struct newton_state *ns=&dev->ns;
 	struct dimensions *dim=&dev->ns.dim;
+
+	if (dev->n==NULL)
+	{
+		return;
+	}
 
 	dy=dim->y[1]-dim->y[0];
 
@@ -144,16 +145,34 @@ long double get_tau(struct device *dev)
 			{
 
 				R=dev->ptrap_to_n[z][x][y]+dev->ntrap_to_p[z][x][y]+dev->Rfree[z][x][y];
-				n0=dev->nfequlib[z][x][y]+dev->ntequlib[z][x][y]+dev->pfequlib[z][x][y]+dev->ptequlib[z][x][y];
-				n_all=dev->n[z][x][y]+dev->p[z][x][y]+dev->pt_all[z][x][y]+dev->nt_all[z][x][y];
-				//printf("%Le %Le %Le\n",n_all,n0,R);
-				Rtot+=((n_all-n0)/R)*dy;
+
+				n0=dev->nfequlib[z][x][y]+dev->ntequlib[z][x][y];		//n
+				n0+=dev->pfequlib[z][x][y]+dev->ptequlib[z][x][y];		//p
+				n0/=2.0;
+
+				n_all=dev->n[z][x][y]+dev->nt_all[z][x][y];				//n
+				n_all+=dev->p[z][x][y]+dev->pt_all[z][x][y];			//p
+				n_all/=2.0;
+
+				tau+=((n_all-n0)/R)*dy;
+				tau_all+=(n_all/R)*dy;
+
 				y_tot+=dy;
 			}
 		}
 	}
 
-	Rtot/=y_tot;
+	tau/=y_tot;
+	tau_all/=y_tot;
 
-	return Rtot;
+
+	if (ret_tau!=NULL)
+	{
+		*ret_tau=tau;
+	}
+
+	if (ret_tau_all!=NULL)
+	{ 
+		*ret_tau_all=tau_all;
+	}
 }

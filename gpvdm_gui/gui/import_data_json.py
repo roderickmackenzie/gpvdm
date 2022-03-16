@@ -44,7 +44,6 @@ from PyQt5.QtCore import pyqtSignal
 from QWidgetSavePos import QWidgetSavePos
 
 from util import wrap_text
-from plot_gen import plot_gen
 from cal_path import get_sim_path
 
 from ribbon_import import ribbon_import
@@ -208,7 +207,6 @@ class import_data_json(QDialog):
 	def __init__(self,data,export_path=get_sim_path()):
 		QDialog.__init__(self)
 		self.data=data
-		print("setting export path:",export_path,get_sim_path())
 		self.export_path=export_path
 		self.disable_callbacks=False
 		resize_window_to_be_sane(self,0.6,0.7)
@@ -225,8 +223,7 @@ class import_data_json(QDialog):
 
 		self.ribbon.import_data.triggered.connect(self.callback_import)
 
-		self.ribbon.plot.triggered.connect(self.callback_plot)
-				
+			
 		self.main_vbox.addWidget(self.ribbon)
 		
 		self.input_output_hbox=QHBoxLayout()
@@ -280,7 +277,7 @@ class import_data_json(QDialog):
 		self.out_data_path.setText(os.path.join(self.export_path,self.data.data_file))
 		if self.load_config()==False:
 			self.open_file()
-		self.load_file()
+		self.load_file(self.data.import_file_path)
 		self.update()
 
 	def build_top_widget(self):
@@ -447,13 +444,6 @@ class import_data_json(QDialog):
 				data.y_scale, data.data[0][0] = zip(*sorted(zip(data.y_scale, data.data[0][0])))
 
 		return data
-
-	def callback_plot(self):
-		file_name=os.path.join(get_sim_path(),"temp.dat")
-		a = open(file_name, "w")
-		a.write(self.out_data.toPlainText())
-		a.close()
-		plot_gen(file_name,[],"auto")
 		
 	def callback_import(self):
 		data=self.transform(self.data.import_file_path)
@@ -464,24 +454,31 @@ class import_data_json(QDialog):
 		file_name=open_as_filter(self,"dat (*.dat);;csv (*.csv);;txt (*.txt);;tdf (*.tdf)",path=self.path)
 
 		if file_name!=None:
-			self.data.import_file_path=file_name
-			self.load_file()
+			if self.load_file(file_name)==False:
+				return
+
 			self.update()
 
-	def load_file(self):
-		if os.path.isfile(self.data.import_file_path)==True:
-			f = open(self.data.import_file_path, "r")
-			lines = f.readlines()
-			f.close()
-			text=""
-			for l in range(0, len(lines)):
-				text=text+lines[l].rstrip()+"\n"
-			self.raw_data_path.setText(self.data.import_file_path)
-			self.raw_data.setText(text)
+	def load_file(self,file_name):
+		if os.path.isfile(file_name)==True:
+			try:
+				f = open(file_name, "r")
+				lines = f.readlines()
+				f.close()
+				text=""
+				for l in range(0, len(lines)):
+					text=text+lines[l].rstrip()+"\n"
+				self.raw_data_path.setText(file_name)
+				self.raw_data.setText(text)
+
+				self.data.import_file_path=file_name		#do this last
+			except:
+				error_dlg(self,_("I can't read the file: ")+file_name+_("I can only read plain text files such as csv formats. I can not read binary files such as excel documents."))
+				return False
 
 			self.ribbon.import_data.setEnabled(True)
-			self.ribbon.plot.setEnabled(True)
-
+			return True
+		return False
 
 
 	def callback_open(self):

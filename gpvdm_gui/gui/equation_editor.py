@@ -199,7 +199,7 @@ class equation_editor(QWidgetSavePos):
 				for ii in range(0,self.tab.rowCount()):
 					range_min=float(self.tab.get_value(ii, 0))
 					range_max=float(self.tab.get_value(ii, 1))
-					command=self.tab.get_value(self.tab,ii, 2)
+					command=self.tab.get_value(ii, 2)
 					try:
 						equ=eval(command)
 					except:

@@ -38,6 +38,7 @@
 #include <dos.h>
 #include <color.h>
 #include <solver_interface.h>
+#include <lock.h>
 
 void sim_init(struct simulation *sim)
 {
@@ -103,6 +104,7 @@ void sim_init(struct simulation *sim)
 	{
 		sim->dump_array[i]=FALSE;
 	}
+
 }
 
 
@@ -118,5 +120,7 @@ void sim_free(struct simulation *sim)
 	hard_limit_free(sim,&(sim->hl));
 	dos_cache_dump(&(sim->doscache));
 	dos_cache_free(&(sim->doscache));
+
+
 	errors_free(sim);
 }
