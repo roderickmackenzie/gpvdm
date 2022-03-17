@@ -6,7 +6,7 @@ On both windows and linux gpvdm will install on the start menu, click on it to l
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=100mm]{./images/new_open.png}
+\includegraphics[width=100mm,height=70mm]{./images/new_open.png}
 \caption{The main gpvdm simulation window.}
 \label{fig:new_open}
 \end{figure}
@@ -15,7 +15,7 @@ Click on the $new~simulation$ button.  This will bring up the new simulation win
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=50mm]{./images/new.png}
+\includegraphics[width=100mm,height=70mm]{./images/new.png}
 \caption{New simulation window}
 \label{fig:new_new}
 \end{figure}
@@ -25,7 +25,7 @@ Once you have saved the simulation, the main gpvdm simulation window will be bro
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=100mm]{./images/simple_interface.png}
+\includegraphics[width=100mm,height=70mm]{./images/simple_interface.png}
 \caption{The main gpvdm simulation window}
 \label{fig:simple_interface}
 \end{figure}
@@ -67,7 +67,7 @@ Try opening $jv.dat$. This is a plot of the voltage applied to the solar cell ag
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=100mm]{./images/jv_curve.png}
+\includegraphics[width=100mm,height=70mm]{./images/jv_curve.png}
 \caption{The output tab}
 \label{fig:jv_curve}
 \end{figure}
@@ -76,15 +76,38 @@ Try opening $jv.dat$. This is a plot of the voltage applied to the solar cell ag
 Now try opening up the file $sim\_info.dat$, this file displays information on the performance of the solar cell, such as the Open Circuit Voltage ($V_{oc}$ - the maximum Voltage the solar cell can produce when iluminated), efficiency ($\eta$ - the efficiency of the cell) , and short circuit current ($J_{sc}$ - the maximum current the cell can produce when it is illuminated).  Figure \ref{fig:jv_curve}, shows where you can find these values on the JV curve.
 
 \subsection{Editing device layers}
+Any device in gpvdm consists of a series of layers (this is sometimes refereed to as the epitaxy - this is a term which comes from inorganic semiconductors). The layer editor can be accessed from the main simulation window, under the "device structure" tab. This is visible towards the top of figure \ref{sec:simple_interface}.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=100mm,height=70mm]{./images/layer_editor.png}
-\caption{The output tab}
+\caption{The layer editor window.}
 \label{fig:jv_curve}
 \end{figure}
 
-\subsection{Editing electrical materials}
+\begin{itemize}
+  \item Layer name: Is the English name describing the layer. You can call your layers what you want (i.e. ITO, PEDOT, fred or bob) it has no physical meaning.
+  \item Thickness: Is the layer thickness given in meters.
+  \item Optical material: Specifies the n/k data which is used to describe the materials optical properties. In the simulation the n/k data are taken from experimental values stored in the optical database \ref{sec:materialdatabase} and have nothing to do with the electrical material properties such as effective band gap.
+  \item Layer type: Specifies to the simulation how the layer is treated when performing a simulation. There are three types of layer
+	\begin{itemize}
+	  \item active: This type of layer is electrically active and the drift diffusion solver will solve the electrical equations in this layer type. See section \ref{sec:electrical}. You can have as many active layers as you like but they must be contiguous.
+ 	  \item contact: This tells the model that a layer is a contact and a voltage should be applied, see section \ref{sec:contacteditor} for more details.
+ 	  \item other: Any layer which is not a contact or active.
+
+	\end{itemize}
+\end{itemize}
+
+Which layers should be active?: A common mistake people make when starting to simulate devices is to try to make all the layers in their device active because their logic is: Current must be flowing through them so they must be active right?  However, in for example a solar cell only the BHJ or in a perovskite device the perovskite layer will have both species of carriers (electrons+holes) and complex effects such as photogeneration, recombination and carrier trapping. So in this layer it makes sense to solver the drift diffusion equations.  Other layers which don't have both species of carriers can be treated simple parasitic resistances see section \ref{sec:parasitic}. I would only recommend setting other layers of the device to active (such as the HTL/ETL) if you are trying to investigate effects such as s-shaped JV curves or devices which clearly need multiple active layers such as OLEDs. In general, try to minimize the number of active layers and always keep simulations as simple as possible to explain the physical effects you see.  
+
+\subsection{The contact editor}
+\label{sec:contacteditor}
+
+\subsection{Parasitic elements}
+\label{sec:parasitic}
+
+
+\subsection{Electrical materials}
 
 \begin{figure}[H]
 \centering

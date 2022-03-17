@@ -25,43 +25,22 @@
 // SOFTWARE.
 // 
 
-//<stripall>
-
 /** @file lock_struct.h
 	@brief Header file for lock_struct.c
 */
 #ifndef lock_struct_h
 #define lock_struct_h
-
-#define crypt_key "8367c849c6ec3d42d45f04fdda468766f340523e6975de94fe878f09760b7636"
-
 #include <sim_struct.h>
 #include <json_struct.h>
+#include <enabled_libs.h>
+
+
+
+
 struct lock
 {
 	char status[100];
-	int use_count;
 
-	char uid[100];
-	char mac[100];
-	char win_id[100];
-	char reg_ver[100];
-	char lver[10];
-	long long renew_date;
-	int loaded_ok;
-	int use_count_check_web;
-	int use_count_max;
-	long long li_renew_date;
-	long long li_expire_date;
-	int encode_output;
-	char locked_items[4000];
-
-	//simple lock
-	char simple_id_tx[1000];
-	char simple_id_ans[1000];
-	char simple_id_file[1000];
-	int unlocked;
-	struct json j;
 };
 
 #endif

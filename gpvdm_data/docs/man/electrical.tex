@@ -1,5 +1,6 @@
 \newpage
 \section{The drift diffusion electrical model}
+\label{sec:electrical}
 
 \subsection{Outline}
 Gpvdm's electrical model is a 1D/2D drift-diffusion model (like many others) however the special thing about gpvdm which makes it very good for disordered materials (Think organics, perovskites and a-Si) is that it goes to the trouble of explicitly solving the Shockley-Read-Hall equations as a function of energy and position space.  This enables one to model effects such as mobility/recombination rates changing as a function of carrier population and enables one to correctly model transients as one does not have to assume all the carriers in the trap states have reached equilibrium.  Things such as ToF transients, CELIV transients etc.. can be modelled with ease. Of course can be used for more ordered materials as well, you then just need to turn the traps off.

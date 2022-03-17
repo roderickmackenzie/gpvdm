@@ -100,7 +100,7 @@ class layer_widget(QWidgetSavePos):
 
 		self.tab2 = gpvdm_tab2(toolbar=self.toolbar)
 		self.tab2.set_tokens(["shape_name","dy","optical_material","layer_type","solve_optical_problem","solve_thermal_problem","id"])
-		self.tab2.set_labels([_("Layer name"), _("Thicknes"), _("Optical material"), _("Layer type"), _("Solve optical\nproblem"), _("Solve thermal\nproblem"), _("ID")])
+		self.tab2.set_labels([_("Layer name"), _("Thicknes")+" (m)", _("Optical material"), _("Layer type"), _("Solve optical\nproblem"), _("Solve thermal\nproblem"), _("ID")])
 		self.tab2.json_search_path="gpvdm_data().epitaxy.layers"
 		self.tab2.setColumnWidth(2, 250)
 		self.tab2.setColumnWidth(6, 10)

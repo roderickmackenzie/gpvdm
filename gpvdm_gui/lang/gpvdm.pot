@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gpvdm 5.0\n"
 "Report-Msgid-Bugs-To: roderick.mackenzie@nottingham.ac.uk\n"
-"POT-Creation-Date: 2022-03-16 19:27+0000\n"
+"POT-Creation-Date: 2022-03-17 15:59+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -10790,11 +10790,11 @@ msgstr ""
 msgid "Fit error j/v"
 msgstr ""
 
-#: ../../gpvdm_core/plugins/spm/spm.c:76
+#: ../../gpvdm_core/plugins/spm/spm.c:81
 msgid "Running scanning probe microscopy\n"
 msgstr ""
 
-#: ../../gpvdm_core/plugins/spm/spm.c:81
+#: ../../gpvdm_core/plugins/spm/spm.c:86
 msgid "no spm config file found"
 msgstr ""
 

@@ -34,29 +34,7 @@
 #define key_h
 #include <sim_struct.h>
 #include <lock_struct.h>
+#include <enabled_libs.h>
 
-void lock_init(struct lock *l);
-void lock_free(struct simulation *sim,struct lock *l);
-void lock_gather_info(struct simulation *sim);
-int lock_decrypt(char *buf,long *len, char *key);
-void lock_ecrypt(char **out,char *in,int *len_out,int len_in,char *key);
-int get_file_from_web(char **buffer, const char * const szUrl);
-void lock_register(struct simulation *sim,struct lock *l);
-void url_encode(char *enc, char * name,unsigned char *in);
-int lock_get_mac(char *out_mac);
-void get_win_id(char * out_winid);
-void reg_get_data(char * data,char *key);
-void lock_write_data_to_reg(struct simulation *sim,char *key,char *data);
-void lock_get_li(struct simulation *sim,struct lock *l);
-void lock_validate_key(struct simulation *sim,struct lock *l,char *key);
-void lock_update_license(struct simulation *sim,struct lock *l);
-int lock_update_token(struct simulation *sim,struct lock *l,char *token,char *value);
-int lock_is_item_locked(struct simulation *sim, struct lock *l,char *test);
-void lock_dump(struct simulation *sim,struct lock *l);
-void lock_tx_uid_to_ui(struct simulation *sim,struct lock *l);
-void lock_feature_enabled(struct simulation *sim,char *feature);
-int lock_update_key(struct simulation *sim,struct lock *l);
-void lock_user_key_gen(struct simulation *sim,struct lock *l);
-void lock_cal_answer(struct simulation *sim,char *out, char *in);
-void lock_send_data(struct simulation *sim,char *data);
+
 #endif
