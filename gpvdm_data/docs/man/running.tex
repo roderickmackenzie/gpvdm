@@ -76,6 +76,7 @@ Try opening $jv.dat$. This is a plot of the voltage applied to the solar cell ag
 Now try opening up the file $sim\_info.dat$, this file displays information on the performance of the solar cell, such as the Open Circuit Voltage ($V_{oc}$ - the maximum Voltage the solar cell can produce when iluminated), efficiency ($\eta$ - the efficiency of the cell) , and short circuit current ($J_{sc}$ - the maximum current the cell can produce when it is illuminated).  Figure \ref{fig:jv_curve}, shows where you can find these values on the JV curve.
 
 \subsection{Editing device layers}
+\label{sec:layereditor}
 Any device in gpvdm consists of a series of layers (this is sometimes refereed to as the epitaxy - this is a term which comes from inorganic semiconductors). The layer editor can be accessed from the main simulation window, under the "device structure" tab. This is visible towards the top of figure \ref{sec:simple_interface}.
 
 \begin{figure}[H]
@@ -102,12 +103,45 @@ Which layers should be active?: A common mistake people make when starting to si
 
 \subsection{The contact editor}
 \label{sec:contacteditor}
+The contact editor is used to configure the electrical contacts.  Which layers act as contacts is configured in the layer editor see section \\ref{sec:layereditor}  The contact editor has the following fields:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=100mm,height=70mm]{./images/contact_editor.png}
+\caption{The contact editor}
+\label{fig:contacteditor}
+\end{figure}
+
+\begin{itemize}
+  \item Name: The name of the contact, this can be any English text. It has no physical meaning.
+  \item Top/Bottom: Sets if the contact is on the top, bottom or in 2D simulation left and right of the device are also valid.
+  \item Applied voltage: Sets the applied voltage on the contact. You first have to select what type of applied voltage you want:
+		\begin{itemize}
+		\item Ground: This will set the contact to zero volts i.e. ground. 0V is always taken as ground.
+		\item Constant bias: This will apply a constant bias to a contact.  It can be set to zero, and would then be equivalent to ground.  In OFET simulations the voltage value can be set to bias one contact to a desired constant voltage.
+		\item Change: If a contact is set to 'Change' this tells the simulation to apply a changing voltage to this contact. For example if you are performing a JV sweep, the sweep voltage will be applied to this contact.  Similarly if you are doing an IS simulation (TPV, TPC, ToF etc..) the voltage will be applied/measured to this contact.
+		\end{itemize}
+  \item Charge density: This sets the majority charge density on the contacts. The Fermi-offset is calculated from the charge density. The model does not use Fermi-offset as an input, it uses charge density.
+  \item Majority carrier: This sets the majority carrier density to electrons or holes.
+  \item Physical model: This selects if you have ohmic contacts or schottky contacts. I recommend using ohmic contacts schottky are a bit temperamental.
+
+\end{itemize}
+
+
 
 \subsection{Parasitic elements}
 \label{sec:parasitic}
 
+\begin{figure}[H]
+\centering
+\includegraphics[width=100mm,height=70mm]{./images/parasitic.png}
+\caption{The parasitic component editor}
+\label{fig:parasitic}
+\end{figure}
 
-\subsection{Electrical materials}
+
+\subsection{Electrical parameters}
+The electrical parameter editor can be accessed through 
 
 \begin{figure}[H]
 \centering
