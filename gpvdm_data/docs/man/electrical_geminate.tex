@@ -13,6 +13,7 @@ where $G$ is the charge carrier generation rate in $m^{-3}s^{-1}$ in equations \
 This factor can be obtained to a reasonable degree by comparing the difference between the simulated and experimental $J_{sc}$.  This parameter can set in the configuration section of the optical simulation window. So therefore my advice is that in most cases you should not be modelling excitons explicitly but rather using the 'photon efficiency factor'. If you really want to model excitons read on..
 
 \subsubsection{Modelling excitons}
+\label{sec:excitions}
 So if you have read section \ref{sec:dont_do_excitions} and still think you want to model excitons this section will explain how to do it.  Gvpdm includes an exciton solver. This sits between the optical model and electrical model.  If the exciton model is turned off then generation is simply the number of photons absorbed at any point in the device multiplied by the \emph{photon efficiency factor} see equation \ref{eq:contn}. If the exciton model is turned on then optical absorption will feed straight into the exciton diffusion equation.
 
 \begin{equation}

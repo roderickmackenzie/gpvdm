@@ -132,6 +132,19 @@ The contact editor is used to configure the electrical contacts.  Which layers a
 \subsection{Parasitic elements}
 \label{sec:parasitic}
 
+Many devices have parasitic shunt and series resistances associated with them.  Shunt resistances ($R_{s}$) are caused by conduction straight through the device in thin novel devices this is often caused by impurities in the material system.  Parasitic series resistances ($R_{s}$) are often associated with the resistance of the contacts, the resistance of the HTL/ETL or any other resistances which are not associated with the active layer.  These resistance can be seen for a typical solar cell in figure \ref{fig:parasitic_circuit} also shown in the figure is the ideal diode of the device. These resistances can be set in the parasitic component window shown in figure \ref{fig:parasitic}
+
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=100mm]{./images/parasitic_circuit.png}
+\caption{Circuit model of a solar cell.}
+\label{fig:parasitic_circuit}
+\end{figure}
+
+
+You can change the values of series and shunt resistance in gpvdm, by going to the 'Device structure' tab and then clicking on the 'Parasitic components' button.
+
 \begin{figure}[H]
 \centering
 \includegraphics[width=100mm,height=70mm]{./images/parasitic.png}
@@ -139,13 +152,31 @@ The contact editor is used to configure the electrical contacts.  Which layers a
 \label{fig:parasitic}
 \end{figure}
 
+Due to the flat broad contacts on a solar cell, there is often a capacitance associated with the device, this is important for transient measurements and can be calculated with the equation:
+
+\begin{equation}
+C=\frac{\epsilon_r \epsilon_0 A}{d+\Delta}
+\end{equation}
+
+where $A$ is the area of the device $\epsilon$ are the hyperactivities, and $d$ is the thickness of the device.  Often for various reasons the measured capacitance of the device does not match what one would expect from the above equation. Therefore the term "Other layers" ($\Delta$) has been added to the parasitic window to account for differences between measured capacitance and layer measured layer thicknesses.
 
 \subsection{Electrical parameters}
-The electrical parameter editor can be accessed through 
+The electrical parameter editor enables you to change the electrical parameters associated with the active layers. Here you can change mobilities, trap constants etc.  The toolbar at the top of the window allows you to turn off and on various electrical mechanisms including:
+
+\begin{itemize}
+  \item Auger recombination: This switches on and off Auger recombination. See \ref{sec:auger} for more information.
+  \item Dynamic SRH traps: This is used to turn on and off dynamic SRH traps.  See section \ref{sec:SRHintro} for more information.
+  \item Equilibrium SRH traps: This can be used to introduce a single equilibrium trap level.  See section \ref{sec:SRHintro} for more information.
+  \item Excitons: This enables the excition diffusion equation to be solved along with the electrical equations. See section \ref{sec:excitions} for more information.
+\end{itemize}
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=100mm,height=70mm]{./images/dos_editor.png}
-\caption{The output tab}
+\caption{Electrical parameter window}
 \label{fig:jv_curve}
 \end{figure}
+
+\subsubsection{Complex DoS}
+Tomorrow
+
