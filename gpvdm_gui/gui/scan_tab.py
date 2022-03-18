@@ -383,7 +383,7 @@ class scan_vbox(QWidget):
 	def callback_build_plots(self):
 		a=multiplot(gnuplot=True)
 		a.find_files(self.scan_io.scan_dir)
-		a.save()
+		a.save(gnuplot=True,multi_plot=True)
 
 	def callback_notes(self):
 		notes_path=os.path.join(self.scan_io.scan_dir,"notes.txt")

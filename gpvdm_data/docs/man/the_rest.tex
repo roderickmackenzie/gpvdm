@@ -1,123 +1,6 @@
 
 \section{Text past this point needs to be rewritten}
-\subsubsection{The layer editor}
-To set up and edit the vertical device structure, use the layer editor this is shown in figure \ref{fig:layer_editor}. Using this tool, you can add layers, remove layers, and move layers up and down.
-\linebreak
-\linebreak 
-\textbf{The first column}: This is a human readable name for the layer.
-\linebreak 
-\linebreak 
-\textbf{The second column}: The thickness of the layer in meters.
-\linebreak
-\linebreak 
-\textbf{Third column}: Sets the optical material properties.
-\linebreak
-\linebreak 
-\textbf{Forth column}: Sets how the model treats the layer.  The optical equations are solved over all layers.  However, if the layer is set as 'active layer', then gpvdm will the also solve the electrical equations over this layer.  More than one layer can be set as an active layer, in this case, the electrical equations will be solved over all, the layers marked 'active layer', this is useful when simulating heterojunctions.  A layer type 'other', means that the electrical equations will not be solved over that layer, but the optical equations will be.  A layer type contact, denotes that the layer represents a contact layer.  This is only affects/is needed for 2/3D simulations.
 
-
-\begin{figure}[ht!]
-\centering
-\includegraphics[width=\textwidth]{./images/layer_editor.png}
-{\caption{The contact editor.}}
-\label{fig:layer_editor}
-\end{figure}
-
-\subsubsection{The contact editor}
-
-The contact editor is used to edit the contacts on the device, and what voltages are applied to which contacts, see figure \ref{fig:contact_editor}.  For a 1D simulation you can pretty much ignore this window.
-\linebreak
-\linebreak 
-\textbf{The first column}: The human readable name for the contact.
-\linebreak 
-\linebreak 
-\textbf{The second column}: Sets if the contact is at the top or bottom of the device.  There should be at least one contact at the top and one contact at the bottom of the device.  Some devices (OFETs) can have more than one contact at the top of the device. 
-\linebreak
-\linebreak 
-\textbf{Third column}: This sets if the contact is 'active'.  In it's simplest form, an active contact is the contact to which the voltage ramp is applied during a JV curve simulation.  In a JV curve simulation, one contact will be held at 0 volts, while a steadily increasing voltage is applied to the other 'active' contact of the device.  If you are performing a transient voltage simulation, such as CELIV, the 'active' contact will have the CELIV voltage transient applied to it.  Swapping around the active contacts is equivalent to picking up the diode and turning it through 180 degrees and placing it back in the circuit.  This feature is most useful, when simulating OFETs, when one wants to apply a voltage ramp to one contact (i.e. the gate) out of three or four.
-\linebreak
-\linebreak 
-\textbf{Forth column}: The start of the contact, not used in 1D simulations
-\linebreak
-\linebreak 
-\textbf{Fifth column}: The width of the contact, not used in 1D simulations.
-\linebreak
-\linebreak
-\textbf{Sixth column}: Sets the pasavation depth under the contact. Not used in 1D simulations.
-\linebreak
-\linebreak  
-\textbf{Seventh column}: The sets the default voltage for a contact.  If the contact type is set as 'active', this value is ignored.  However, it the contact is not active, this voltage will appear on the contact.  This use useful in OFET simulations, where you want to hold a given contact at a set voltage. 
-\linebreak
-\linebreak  
-
-
-\begin{figure}[ht!]
-\centering
-\includegraphics[width=\textwidth]{./images/contact_editor.png}
-{\caption{The contact editor.}}
-\label{fig:contact_editor}
-\end{figure}
-
-
-
-\subsubsection{Scanning parameters}
-Sometimes one wishes to systematically vary a simulation parameter, this is how to do it:
-
-
-
-
-\begin{figure}[ht!]
-\centering
-\includegraphics[width=\textwidth]{./images/1.jpg}
-{\caption*{Step 1: Select the 'Parameter scan' tool.}}
-\label{overflow}
-\end{figure}
-
-
-\begin{figure}[ht!]
-\centering
-\includegraphics[width=\textwidth]{./images/2.jpg}
-\caption*{Step 2: Add a 'scan line' to the scan.}
-\end{figure}
-
-\begin{figure}[ht!]
-\centering
-\includegraphics[width=\textwidth]{./images/3.jpg}
-\caption*{Step 3: Select the new 'scan line' and the click on the 'select parameter to change' tool.}
-\label{overflow}
-\end{figure}
-
-
-\begin{figure}[ht!]
-\centering
-\includegraphics[width=\textwidth]{./images/4.jpg}
-\caption*{Step 4: Select the parameter you want to change, click apply.}
-\end{figure}
-
-
-\begin{figure}[ht!]
-\centering
-\includegraphics[width=\textwidth]{./images/5.jpg}
-\caption*{Step 5: The 'scan line' should now be updated with the parameter you want to scan.}
-\end{figure}
-
-
-\begin{figure}[ht!]
-\centering
-\includegraphics[width=\textwidth]{./images/6.jpg}
-\caption*{Step 6: Now enter the parameters you wish to scan, in this case 0.0-0.5 suns.
-Step 7: Click the run button.}
-\end{figure}
-
-
-\begin{figure}[ht!]
-\centering
-\includegraphics[width=\textwidth]{./images/7.jpg}
-\caption*{Step 8: Select the output file you want to plot.  gpvdm will plot all simulation results.}
-\end{figure}
-
-\subsubsection{1D, 2D and 3D simulations with gpvdm}
-When deciding if you should perform 1D, 2D or 3D, simulations, consider the dimensionality of your problem.  For example if you consider a solar cell, it is only a few micros thick, and there is rapid variation in the structure, charge densities, mobilities, and doping as a function of depth (y).  However, the structure will not vary very quickly in the lateral (xz) plane.  Therefore, in general  to capture all interesting effects present within a solar cell one only needs a 1D model.  If one now considers OFETs, there is both vertical an lateral current flow, therefore one can not get away with a 1D model any more, as one must simulate both vertical current flow, and current between the source and the drain, thus one needs a 2D simulation.  As the number of dimensions increases, computation speed will decrease, therefore my general advice is to use the minimum number of dimensions possible to solve your problem.
 
 
 
@@ -125,6 +8,10 @@ When deciding if you should perform 1D, 2D or 3D, simulations, consider the dime
 \newpage
 
 
+
+\subsubsection{1D, 2D and 3D simulations with gpvdm}
+
+When deciding if you should perform 1D, 2D or 3D, simulations, consider the dimensionality of your problem.  For example if you consider a solar cell, it is only a few micros thick, and there is rapid variation in the structure, charge densities, mobilities, and doping as a function of depth (y).  However, the structure will not vary very quickly in the lateral (xz) plane.  Therefore, in general  to capture all interesting effects present within a solar cell one only needs a 1D model.  If one now considers OFETs, there is both vertical an lateral current flow, therefore one can not get away with a 1D model any more, as one must simulate both vertical current flow, and current between the source and the drain, thus one needs a 2D simulation.  As the number of dimensions increases, computation speed will decrease, therefore my general advice is to use the minimum number of dimensions possible to solve your problem.
 
 
 \section{The user interface}

@@ -80,7 +80,7 @@ class multiplot:
 				for name in files:
 					full_name=os.path.join(root, name)
 					rel_path=subtract_paths(sim_data.path,full_name)
-					if full_name.endswith(".dat"):
+					if full_name.endswith(".dat") or full_name.endswith(".csv"):
 
 						add=False
 						if name==rel_path:		#find files which are only on the first level directory
@@ -135,26 +135,27 @@ class multiplot:
 				#print("saving as:",out_file)
 				f.save_as(out_file)
 
-	def save(self):
-		if self.gnuplot==True:
+	def save(self,gnuplot=True,multi_plot=True):
+		if gnuplot==True:
 			self.gen_gnu_plot_files()
-			return
-		path=self.path
-		if len(self.sims)>0:
-			for cur_file in self.sims[0].files:
-				found_files=["#multiplot"]
-				for s in self.sims:
-					#print("compare>>",cur_file)
-					#s.dump()
-					if cur_file in s.files:
-						found_files.append(os.path.join(s.path,cur_file))
 
-				#print("save to>",os.path.join(path,cur_file))
-				out_file=os.path.join(path,cur_file)
-				self.make_dirs(os.path.splitext(out_file)[0]+".plot")
-				f=inp()
-				f.lines=found_files
-				f.save_as(out_file)
+		if 	multi_plot==True:
+			path=self.path
+			if len(self.sims)>0:
+				for cur_file in self.sims[0].files:
+					found_files=["#multiplot"]
+					for s in self.sims:
+						#print("compare>>",cur_file)
+						#s.dump()
+						if cur_file in s.files:
+							found_files.append(os.path.join(s.path,cur_file))
+
+					#print("save to>",os.path.join(path,cur_file))
+					out_file=os.path.join(path,cur_file)
+					self.make_dirs(os.path.splitext(out_file)[0]+".plot")
+					f=inp()
+					f.lines=found_files
+					f.save_as(out_file)
 
 	def plot(self,file_name):
 		f=inp()
