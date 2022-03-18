@@ -2,8 +2,97 @@
 \section{Input files and the databases}
 
 \subsection{the .gpvdm simulation file format}
-\label{sec:gpvdmfileformat}
-This is a zip file, if you rename the file to .zip you will be able to open the file and in the file you will see a sim.json file.  You can view this file in any text editor but the file is quite complex and long so I recommend you use firefox to view it as it has a built in json viewer.  If you make a copy of this file outside the .gpvdm archive, gpvdm will ignore the sim.json file within the sim.gpvdm archive and revert to the plain text file stored in the simulation directory.  This feature can be useful for automation of simulations.
+\label{sec:gpvdmfileformat} 
+The .gpvdm file is simply a zip file. If you rename the file so to be called gpvdm.zip you will be able to open it in windows explorer or your favourite zip viwer.  Inside the .gpvdm file is another file called sim.json. You can view this file in any text editor but the file is quite long so I recommend you use firefox to view it as it has a built in json viewer.  Json is a simple way of storing text and configuration information first developed for Java, you can see examples here: \url{https://json.org/example.html}. Or below in code listing \ref{json-example}.
+
+\begin{listing}
+\begin{minted}[frame=single,
+               framesep=3mm,
+               linenos=true,
+               xleftmargin=21pt,
+               tabsize=4]{js}
+{
+  "color_of_dog": "brown",
+  "dog_age": 5,
+  "dogs_toys": {
+				"rabbit": "True",
+				"stick": "False"
+				}
+
+}
+\end{minted}
+\caption{JSON example} 
+\label{json-example}
+\end{listing}
+
+
+If you make a copy of sim.json outside the .gpvdm archive, then rename the sim.zip back to sim.gpvdm, gpvdm will ignore the sim.json file within the sim.gpvdm archive and revert to the plain text file stored in the simulation directory.  This feature can be useful for automation of simulations as you can simply edit the sim.json file using your favourite programming language without having to learn about reading and writing zip files. If you open the sim.json file in firefox it will look like \ref{fig:jsonfirefox}, also have a look at the file in notepad to get a sense of what is in it.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.5\textwidth]{./images/json_firefox.png}
+\caption{An example sim.json file opened in firefox.}
+\label{fig:jsonfirefox}
+\end{figure}
+
+You can see that the json file has various headings, key headings are listed below in table \ref{fig:jsontab}
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{ |c|c| } 
+ \hline
+	Heading 			& 	Description  \\ 
+ \hline
+	sim					&	General simulation information \\
+	jv					&	JV curve configuration \\
+	dump				&	Defines how much information is written to disk \\
+	math				&	Math configuration for the solver \\
+	light				&	Optical transfer matrix configuration \\
+	light\_sources		&	Configuration of light sources\\
+	epitaxy				&	Defines the structure of the device\\
+	thermal				&	Thermal configuration\\
+	thermal\_boundary	&	Thermal boundary config.\\
+	exciton				&	Exciton config\\
+	exciton\_boundary	&	Exciton boundary config. \\
+	ray					&	Ray tracing config.\\
+	suns\_voc			&	Suns-Voc\\
+	suns\_jsc			&	Suns-Jsc\\
+	ce					&	Charge Extraction config.\\
+	transfer\_matrix	&	Light transfer matrix config\\
+	pl\_ss				&	PL in steady state\\
+	eqe					&	EQE config.\\
+	fdtd				&	FDTD config.\\
+	fits				&	Fitting config.\\
+	mesh				&	Electrical mesh config.\\
+	time\_domain		&	Time domain config.\\
+	fx\_domain			&	FX-domain config\\
+	cv					&	CV config.\\
+	parasitic			&	Parasitic components\\
+	spm					&	Scanning Probe Microscopy config.\\
+	hard\_limit			&	Setting hard limits for sim params.\\
+	perovskite			&	Perovskite solver config.\\
+	electrical\_solver	&	Electrical solver config.\\
+	spctral2			&	SPCTRAL2\\
+	lasers				&	fs Lasers \\
+	circuit				&	Circuit solver config.\\
+	gl					&	OpenGL config\\
+	world				&	Defines the world box\\
+ \hline
+\end{tabular}
+\caption{Key headings/sections in the sim.json file.}
+\label{fig:jsontab}
+\end{center}
+\end{table}
+
+If you wish to programmatically drive gpvdm you can simply use one of the many available json editors most languages have them freely available. 
+
+\subsubsection{Qwerks of the gpvdm json format}
+\begin{itemize}
+  \item Gpvdm json does not support standard json lists.  If there is a list of items it is defined by firstly declaring the variable segments, with the number of items in the list so for example "segments",0 . Each item in the list is then stored under, "segment0", "segment1" etc... This is because gpvdm does not implement json arrays.  This can be seen in figure \ref{fig:jsonfirefox} where there is a list with 1 segment.
+  \item Many items in the json file will be given an id number which is a 16 digit hex code, this can be used to uniquely reference the item. An ID number can also be seen in figure \ref{fig:jsonfirefox}
+\end{itemize}
+
+
 
 \subsection{Databases}
 There are a series of databases used to define material parameters, shapes, emission spectra and solar spectra etc...  These are described within this section.  There are two copies of these databases, one copy in the install directory of gpvdm  C:$\backslash$Program Files$\backslash$gpvdm$\backslash$ and one in your home directory in a folder called gpvdm\_local.   When the model starts for the first time it copies the read only materials database from, to the gpvdm\_local folder in your home directory.  If you delete the copy of the materials database in the gpvdm\_local folder it will get copied back next time you start the model, this way you can always revert to the original databases if you damage the copy in gpvdm\_local.

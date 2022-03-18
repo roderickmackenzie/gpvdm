@@ -125,9 +125,12 @@ Although the scan window is convenient in that it provides a quick way to scan s
 
 \newpage
 \subsection{Python scripting}
+There are two ways to interact with .gpvdm files via python.
+
+\subsubsection{The native python way}
+As described in section \ref{sec:gpvdmfileformat}, .gpvdm files are simply json files zipped up in an archive. If you extract the sim.json file form the sim.gpvdm file you can use Python's json reading/writing code to edit the .json config file directly, this is a quick and dirty approach which will work. You can then use the $os.system$ call to run "gpvdm\_core.exe" to execute gpvdm.
+\subsubsection{The gpvdm way}
+
 \label{sec:pythonscripts}
 
-\newpage
-\subsection{MATLAB scripting}
-\label{sec:matlabscripts}
-
+\input{scripting_matlab.tex}

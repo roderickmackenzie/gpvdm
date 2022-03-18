@@ -76,6 +76,10 @@ apt-get -y install python3-matplotlib
 apt-get -y install texlive
 apt-get install texlive-latex-extra
 
+#for latex minted for nice source code in boxes in manual
+apt-get install python-pygments
+apt install python3-pygments
+
 #use these to fix python distro
 #pip3 install --upgrade PyOpenGL
 #pip3 install --upgrade numpy

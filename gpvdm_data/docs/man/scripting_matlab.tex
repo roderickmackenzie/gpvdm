@@ -1,0 +1,67 @@
+\newpage
+\subsection{MATLAB scripting}
+\label{sec:matlabscripts}
+As described in section \ref{sec:gpvdmfileformat} gpvdm simulations are stored in .json files zipped up inside a zip archive. Matlab has both a zip decompressor and a json decoder.  Therefore it is straight forward to edit and read and edit .gpvdm files in MATLAB. You can then use MATLAB to perform quite complex parameter scans.  The example script below demonstrates how to run multiple simulations with mobilities ranging from 1e-7 to 1e-5 $m^{2}V^{-1}s^{-1})$. The script starts off by unzipping the sim.json file, if you already have extracted your sim.json file from the sim.gpvdm file you don't need these lines. The code then reads in sim.json using the MATLAB json decoder $jsondecode$. A new directory is made which corresponds to the mobility value, the sim.gpvdm file copied into that directory. Then $json\_data.epitaxy.layer0.shape\_dos.mue_y$ is set to the desired value of mobility and the simulation saved using $jsonencode$ and $fopen,fprintf,fclose$.  The $system$ call is then used to run $gpvdm\_core.exe$ to perform the simulation. Out put parameters such as $J_{sc}$ are stored in sim\_data.dat again in json format, see section \ref{sec:siminfo}, although this is not done in this simple script.
+
+Before using this script make sure you have added gpvdm to your windows paths:
+\url{https://docs.microsoft.com/en-us/previous-versions/office/developer/sharepoint-2010/ee537574(v=office.14)}
+
+
+\begin{listing}[H]
+\begin{minted}[frame=single,
+               framesep=3mm,
+               linenos=false,
+               xleftmargin=21pt,
+               tabsize=4]{matlab}
+
+
+if exist("sim.gpvmd", 'file')==false
+ sprintf("No sim.gpvdm file found"); %Check if we have a sim.gpvdm file
+end
+
+if exist("sim.json", 'file')==false
+ unzip("sim.gpvdm")  %if we don't have a sim.json file
+					 %try to extract it
+end
+
+A = fileread("sim.json");  %Read the json file.
+json_data=jsondecode(A);  %Decode the json file
+
+mobility=1e-7  %Start mobility
+origonal_path=pwd  %working with the current dir
+base_dir="mobility_scan"  %output directory name
+while(mobility<1e-5)
+    dir_name=sprintf("%e",mobility);
+    full_path=fullfile(origonal_path,base_dir,dir_name)	%join paths
+    mkdir(full_path)  %make the dir
+    cd(full_path)  %cd to the dir
+
+	%Update the json mobility
+    json_data.epitaxy.layer0.shape_dos.mue_y=mobility  %Change mobility
+													   %of layer0
+    
+    copyfile(fullfile(origonal_path,"sim.gpvdm"),\\
+		fullfile(origonal_path,base_dir,dir_name,"sim.gpvdm"))
+
+	%now write the json file back to disk
+    out=jsonencode(json_data);
+    json_data
+    fid = fopen("sim.json",'w');
+    fprintf(fid, '%s', out);
+    fclose(fid);
+
+	%run gpvdm - This won't work if you have not added the gpvdm
+	%install directory to your windows paths 
+    system("gpvdm_core.exe")
+    
+	%Multiply mobility by 10
+    mobility=mobility*10;
+end
+
+%Move back to the original dir
+cd(origonal_path)
+
+\end{minted}
+\caption{JSON example} 
+\label{json-example}
+\end{listing}

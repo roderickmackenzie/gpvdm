@@ -1,5 +1,6 @@
 HELP2MAN=help2man
 #latex2html gpvdm  -html_version 5,math
+# -shell-escape is for minted
 lib=-L../../
 inc=-I../../include/
 
@@ -7,9 +8,9 @@ all: gpvdm.pdf
 	echo "Docs built"
 
 gpvdm.pdf: *.tex gpvdm.bib
-	pdflatex gpvdm
+	pdflatex -shell-escape gpvdm
 	bibtex gpvdm
-	pdflatex gpvdm
+	pdflatex -shell-escape  gpvdm
 	
 
 clean:
