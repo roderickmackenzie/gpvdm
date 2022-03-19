@@ -74,4 +74,9 @@ long double epitaxy_get_heat_problem_stop(struct epitaxy *in);
 //exciton
 long double epitaxy_get_exciton_problem_start(struct epitaxy *in);
 long double epitaxy_get_exciton_problem_stop(struct epitaxy *in);
+
+//singlet
+long double epitaxy_get_singlet_problem_start(struct epitaxy *in);
+long double epitaxy_get_singlet_problem_stop(struct epitaxy *in);
+
 #endif

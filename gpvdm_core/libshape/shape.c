@@ -45,6 +45,7 @@
 #include <dos.h>
 #include <heat_fun.h>
 #include <exciton_fun.h>
+#include <singlet_fun.h>
 
 int shape_in_shape(struct simulation *sim,struct shape *s,long double z,long double x,long double y)
 {
@@ -119,6 +120,7 @@ void shape_free(struct simulation *sim,struct shape *s)
 	dos_free(&(s->dosp));
 	heat_material_free(&(s->heat));
 	exciton_material_free(&(s->ex));
+	singlet_material_free(&(s->sing));
 }
 
 
@@ -161,6 +163,7 @@ void shape_init(struct simulation *sim,struct shape *s)
 	dos_init(&(s->dosp));
 	heat_material_init(&(s->heat));
 	exciton_material_init(&(s->ex));
+	singlet_material_init(&(s->sing));
 
 	s->color_r=0.5;
 	s->color_g=0.5;
@@ -176,6 +179,7 @@ void shape_cpy(struct simulation *sim,struct shape *out,struct shape *in)
 	dos_cpy(&(out->dosp),&(in->dosp));
 	heat_material_cpy(&(out->heat),&(in->heat));
 	exciton_material_cpy(&(out->ex),&(in->ex));
+	singlet_material_cpy(&(out->sing),&(in->sing));
 	strcpy(out->dos_file,in->dos_file);
 	out->Gnp=in->Gnp;
 

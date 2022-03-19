@@ -843,6 +843,7 @@ dat_file_init(&buf);
 	//Charge
 
 	dump_zxy_charge(sim,in,out_dir);
+	dump_zxy_singlet(sim,in,out_dir);
 
 	//Interfaces
 	dump_zxy_interfaces(sim,in,out_dir);

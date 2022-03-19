@@ -507,8 +507,15 @@ void get_initial(struct simulation *sim,struct device *in,int guess)
 						in->Nion[z][x][y]=get_dos_ion_density(s);
 						long double top=get_top_from_ion(in->Nion[z][x][y]);
 						ns->x_Nion[z][x][y]=-(ns->phi[z][x][y]+in->Ev[z][x][y]-top);
-						//printf("%s %Le\n",s->name,s->dosn.config.ion_density);
-						//getchar();
+					}
+
+					if (ns->singlet_enabled==TRUE)
+					{
+						ns->Ns[z][x][y]=1e20;
+						ns->Nt[z][x][y]=1e20;
+						ns->Nsd[z][x][y]=1e20;
+						ns->Ntd[z][x][y]=1e20;
+						ns->Nho[z][x][y]=1e20;
 					}
 
 					//printf("%Le %Le\n",in->n[z][x][y],in->p[z][x][y]);

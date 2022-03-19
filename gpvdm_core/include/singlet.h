@@ -1,4 +1,4 @@
-//
+// 
 // General-purpose Photovoltaic Device Model gpvdm.com - a drift diffusion
 // base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solarcells.
 // The model can simulate OLEDs, Perovskite cells, and OFETs.
@@ -25,67 +25,42 @@
 // SOFTWARE.
 // 
 
-
-/** @file shape_struct.h
-	@brief A structure to hold shapes
+/** @file singlet.h
+@brief a structure for the heat model
 */
 
-
-#ifndef shape_struct_h
-#define shape_struct_h
+#ifndef h_singlet
+#define h_singlet
+#include <complex.h>
 #include "advmath.h"
+#include "i.h"
 #include <sim_struct.h>
-#include <triangle.h>
-#include <component.h>
-#include <enabled_libs.h>
-#include <dos_struct.h>
-#include <heat_material.h>
-#include <exciton_material.h>
+#include <epitaxy_struct.h>
+#include <ray.h>
+#include <matrix.h>
+#include <object.h>
+#include <dat_file_struct.h>
+#include <dim.h>
+#include <mesh_struct.h>
 #include <singlet_material.h>
 
-struct shape
+
+struct singlet
 {
-	int enabled;
-	long double dx;
-	long double dy;
-	long double dz;
-	long double dx_padding;
-	long double dy_padding;
-	long double dz_padding;
-	int nx;
-	int ny;
-	int nz;
-	char name[100];
-	char shape_type[20];
-	char optical_material[100];
-	long double x0;
-	long double y0;
-	long double z0;
-	int epi_index;
-	struct math_xy alpha;
-	struct math_xy n;
-	struct triangles tri;
-	long double rotate_x;
-	long double rotate_y;
-	#ifdef libcircuit_enabled
-		struct component com;
-	#endif
+	int singlet_enabled;
 
-	char dos_file[100];
-	char id[100];
-	struct dos dosn;
-	struct dos dosp;
-	struct heat_material heat;
-	struct exciton_material ex;
-	struct singlet_material sing;
+	int ystart;
+	int ystop;
+	int ylen;
 
-	long double Gnp;
+	struct matrix mx;
 
-	long double color_r;
-	long double color_g;
-	long double color_b;
+	long double error;
 
-	long double sum[10];			//A general counter for doing math
+	long double Nion_mul;
+	int singlet_conv;
+	int full_newton;
+
 };
 
 #endif

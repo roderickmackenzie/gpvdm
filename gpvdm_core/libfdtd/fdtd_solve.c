@@ -52,10 +52,10 @@
 
 THREAD_FUNCTION solve_E(void * in)
 {
-	int nw;
+	//int nw;
 	struct job *j=(struct job *)in;
-	struct worker *my_worker=j->w;
-	nw=my_worker->worker_n;
+	//struct worker *my_worker=j->w;
+	//nw=my_worker->worker_n;
 
 	struct simulation *sim=(struct simulation *)j->sim;
 	struct fdtd_data *data=(struct fdtd_data *)j->data0;
@@ -155,6 +155,10 @@ THREAD_FUNCTION solve_E(void * in)
 	j->data0=NULL;
 	server2_job_finished(sim,j);
 
+	if (z==-1)
+	{
+		printf("%f",dHydy+dHxdx);
+	}
 	return 0;
 
 }
@@ -163,10 +167,10 @@ THREAD_FUNCTION solve_E(void * in)
 
 THREAD_FUNCTION solve_H(void * in)
 {
-	int nw;
+	//int nw;
 	struct job *j=(struct job *)in;
-	struct worker *my_worker=j->w;
-	nw=my_worker->worker_n;
+	//struct worker *my_worker=j->w;
+	//nw=my_worker->worker_n;
 
 	struct simulation *sim=(struct simulation *)j->sim;
 	struct fdtd_data *data=(struct fdtd_data *)j->data0;
@@ -281,6 +285,12 @@ for (z=z0;z<z1;z++)
 }
 	j->data0=NULL;
 	server2_job_finished(sim,j);
+
+	if (z==-1)
+	{
+		printf("%f",dEzdz+dEydy+dExdx);
+	}
+
 	return 0;
 }
 

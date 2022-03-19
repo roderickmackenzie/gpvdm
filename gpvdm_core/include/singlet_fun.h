@@ -1,4 +1,4 @@
-//
+// 
 // General-purpose Photovoltaic Device Model gpvdm.com - a drift diffusion
 // base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solarcells.
 // The model can simulate OLEDs, Perovskite cells, and OFETs.
@@ -25,67 +25,28 @@
 // SOFTWARE.
 // 
 
-
-/** @file shape_struct.h
-	@brief A structure to hold shapes
+/** @file singlet_fun.h
+@brief singlet functions from libsinglet
 */
 
-
-#ifndef shape_struct_h
-#define shape_struct_h
+#ifndef h_singlet_fun
+#define h_singlet_fun
+#include <complex.h>
 #include "advmath.h"
+#include "i.h"
 #include <sim_struct.h>
-#include <triangle.h>
-#include <component.h>
-#include <enabled_libs.h>
-#include <dos_struct.h>
-#include <heat_material.h>
-#include <exciton_material.h>
-#include <singlet_material.h>
+#include <epitaxy_struct.h>
+#include <singlet.h>
+#include <device.h>
+#include <json.h>
 
-struct shape
-{
-	int enabled;
-	long double dx;
-	long double dy;
-	long double dz;
-	long double dx_padding;
-	long double dy_padding;
-	long double dz_padding;
-	int nx;
-	int ny;
-	int nz;
-	char name[100];
-	char shape_type[20];
-	char optical_material[100];
-	long double x0;
-	long double y0;
-	long double z0;
-	int epi_index;
-	struct math_xy alpha;
-	struct math_xy n;
-	struct triangles tri;
-	long double rotate_x;
-	long double rotate_y;
-	#ifdef libcircuit_enabled
-		struct component com;
-	#endif
 
-	char dos_file[100];
-	char id[100];
-	struct dos dosn;
-	struct dos dosp;
-	struct heat_material heat;
-	struct exciton_material ex;
-	struct singlet_material sing;
+void singlet_load(struct simulation *sim,struct device *dev);
 
-	long double Gnp;
-
-	long double color_r;
-	long double color_g;
-	long double color_b;
-
-	long double sum[10];			//A general counter for doing math
-};
+//singlet material
+void singlet_material_init(struct singlet_material *mat);
+void singlet_material_cpy(struct singlet_material *out,struct singlet_material *in);
+void singlet_material_free(struct singlet_material *mat);
+void singlet_material_load_from_json(struct simulation *sim,struct singlet_material *mat, struct json_obj *json_singlet_material);
 
 #endif

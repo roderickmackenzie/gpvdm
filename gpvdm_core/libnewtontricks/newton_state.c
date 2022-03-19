@@ -59,6 +59,13 @@ void newton_state_init(struct newton_state *ns)
 	ns->phi=NULL;
 	ns->x_Nion=NULL;
 
+	//Singlet
+	ns->Ns=NULL;
+	ns->Nt=NULL;
+	ns->Nsd=NULL;
+	ns->Ntd=NULL;
+	ns->Nho=NULL;
+
 	ns->x=NULL;
 	ns->xp=NULL;
 
@@ -99,6 +106,7 @@ void newton_state_init(struct newton_state *ns)
 	ns->dBx_xip_neg=NULL;
 
 	ns->Nion_enabled=FALSE;
+	ns->singlet_enabled=FALSE;
 }
 
 void newton_state_alloc_mesh(struct newton_state *ns,struct dimensions *dim, int alloc_dim)
@@ -118,6 +126,16 @@ void newton_state_alloc_mesh(struct newton_state *ns,struct dimensions *dim, int
 		malloc_zxy_long_double(dim,&(ns->x_Nion));
 
 	}
+
+	if (ns->singlet_enabled==TRUE)
+	{
+		malloc_zxy_long_double(dim,&(ns->Ns));
+		malloc_zxy_long_double(dim,&(ns->Nt));
+		malloc_zxy_long_double(dim,&(ns->Nsd));
+		malloc_zxy_long_double(dim,&(ns->Ntd));
+		malloc_zxy_long_double(dim,&(ns->Nho));
+	}
+
 	malloc_zxy_long_double(dim,&(ns->x));
 	malloc_zxy_long_double(dim,&(ns->xp));
 
@@ -165,6 +183,12 @@ void newton_state_free(struct newton_state *ns)
 	free_zxy_long_double(&(ns->dim),&ns->phi);
 	free_zxy_long_double(&(ns->dim), &ns->x_Nion);
 
+	free_zxy_long_double(&(ns->dim),&ns->Ns);
+	free_zxy_long_double(&(ns->dim),&ns->Nt);
+	free_zxy_long_double(&(ns->dim),&ns->Nsd);
+	free_zxy_long_double(&(ns->dim),&ns->Ntd);
+	free_zxy_long_double(&(ns->dim),&ns->Nho);
+
 	free_zxy_long_double(&(ns->dim),&ns->x);
 	free_zxy_long_double(&(ns->dim),&ns->xp);
 
@@ -211,6 +235,12 @@ void newton_state_cpy(struct newton_state *out,struct newton_state *in)
 
 	cpy_zxy_long_double(&in->dim,&(out->phi),&(in->phi));
 	cpy_zxy_long_double(&in->dim,&(out->x_Nion),&(in->x_Nion));
+
+	cpy_zxy_long_double(&in->dim,&(out->Ns),&(in->Ns));
+	cpy_zxy_long_double(&in->dim,&(out->Nt),&(in->Nt));
+	cpy_zxy_long_double(&in->dim,&(out->Nsd),&(in->Nsd));
+	cpy_zxy_long_double(&in->dim,&(out->Ntd),&(in->Ntd));
+	cpy_zxy_long_double(&in->dim,&(out->Nho),&(in->Nho));
 
 	cpy_zxy_long_double(&in->dim,&(out->x),&(in->x));
 	cpy_zxy_long_double(&in->dim,&(out->xp),&(in->xp));

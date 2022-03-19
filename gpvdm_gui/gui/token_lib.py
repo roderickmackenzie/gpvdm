@@ -237,6 +237,35 @@ def build_token_lib():
 	lib.append(my_data("Xi","eV",_("Xi"),"QLineEdit"))
 	lib.append(my_data("epsilonr","au",_("Relative permittivity"),"QLineEdit",min=1.0,max=10.0 ))
 
+	##Exciton
+	lib.append(my_data("text_singlet","",_("<b>Excited states</b>"),"QLabel",hide_on_token_eq=[["singlet_enabled",False]]))
+	lib.append(my_data("singlet_k_fret","s^{-1}",_("Forster transfer rate"), "QLineEdit", hide_on_token_eq=[["singlet_enabled",False]]))
+	lib.append(my_data("singlet_k_s","s^{-1}",_("Host singlet-exciton decay rate"), "QLineEdit", hide_on_token_eq=[["singlet_enabled",False]]))
+	lib.append(my_data("singlet_k_isc","s^{-1}",_("Host inter-system crossing rate"), "QLineEdit", hide_on_token_eq=[["singlet_enabled",False]]))
+	lib.append(my_data("singlet_k_ss","m^{3} s^{-1}",_("Host singlet-singlet annihilation (SSA) rate"), "QLineEdit", hide_on_token_eq=[["singlet_enabled",False]]))
+	lib.append(my_data("singlet_k_sp","m^{3} s^{-1}",_("Host singlet-polaron annihilation (SPA) rate"), "QLineEdit", hide_on_token_eq=[["singlet_enabled",False]]))
+	lib.append(my_data("singlet_k_st","m^{3} s^{-1}",_("Host singlet-triplet annihilation (STA) rate"), "QLineEdit", hide_on_token_eq=[["singlet_enabled",False]]))
+	lib.append(my_data("singlet_k_dext","s^{-1}",_("Dexter transfer rate"), "QLineEdit", hide_on_token_eq=[["singlet_enabled",False]]))
+	lib.append(my_data("singlet_k_t","s^{-1}",_("Host triplet decay rate"), "QLineEdit", hide_on_token_eq=[["singlet_enabled",False]]))
+	lib.append(my_data("singlet_k_tp","m^{3} s^{-1}",_("Host triplet-polaron annihilation (TPA) rate"), "QLineEdit", hide_on_token_eq=[["singlet_enabled",False]]))
+	lib.append(my_data("singlet_k_tt","m^{3} s^{-1}",_("Host triplet-triplet annihilation (TTA) rate"), "QLineEdit", hide_on_token_eq=[["singlet_enabled",False]]))
+	lib.append(my_data("singlet_k_sd","s^{-1}",_("Dopant singlet-exciton decay rate"), "QLineEdit", hide_on_token_eq=[["singlet_enabled",False]]))
+	lib.append(my_data("singlet_k_iscd","s^{-1}",_("Dopant inter-system crossing rate"), "QLineEdit", hide_on_token_eq=[["singlet_enabled",False]]))
+	lib.append(my_data("singlet_k_spd","m^{3} s^{-1}",_("Dopant singlet-polaron annihilation (SPA) rate"), "QLineEdit", hide_on_token_eq=[["singlet_enabled",False]]))
+	lib.append(my_data("singlet_k_std","m^{3} s^{-1}",_("Dopant singlet-triplet annihilation (STA) rate"), "QLineEdit", hide_on_token_eq=[["singlet_enabled",False]]))
+	lib.append(my_data("singlet_k_ssd","m^{3} s^{-1}",_("Dopant singlet-singlet annihilation (SSA) rate"), "QLineEdit", hide_on_token_eq=[["singlet_enabled",False]]))
+	lib.append(my_data("singlet_k_td","s^{-1}",_("Dopant triplet decay rate"), "QLineEdit", hide_on_token_eq=[["singlet_enabled",False]]))
+	lib.append(my_data("singlet_k_ttd","m^{3} s^{-1}",_("Dopant triplet-triplet annihilation (TTA) rate"), "QLineEdit", hide_on_token_eq=[["singlet_enabled",False]]))
+	lib.append(my_data("singlet_k_tpd","m^{3} s^{-1}",_("Dopant triplet-polaron annihilation (TPA) rate"), "QLineEdit", hide_on_token_eq=[["singlet_enabled",False]]))
+	lib.append(my_data("singlet_gamma","au",_("Confinement factor"), "QLineEdit", hide_on_token_eq=[["singlet_enabled",False]]))
+	lib.append(my_data("singlet_zeta","m^{3} s^{-1}",_("Stimulated emission gain coefficient"), "QLineEdit", hide_on_token_eq=[["singlet_enabled",False]]))
+	lib.append(my_data("singlet_k_cav","s^{-1}",_("Cavity photon decay rate"), "QLineEdit", hide_on_token_eq=[["singlet_enabled",False]]))
+	lib.append(my_data("singlet_beta_sp","au",_("Spontaneous emission factor"), "QLineEdit", hide_on_token_eq=[["singlet_enabled",False]]))
+	lib.append(my_data("singlet_C","0.0-1.0",_("Dopant concentration"), "QLineEdit", hide_on_token_eq=[["singlet_enabled",False]]))
+	lib.append(my_data("singlet_N_dop","m^{-3}",_("Density of guest molecules"), "QLineEdit", hide_on_token_eq=[["singlet_enabled",False]]))
+	lib.append(my_data("singlet_W","0.0-1.0",_("Spectral overlap"), "QLineEdit", hide_on_token_eq=[["singlet_enabled",False]]))
+
+
 	#materials database
 	#electrical constants
 	lib.append(my_data("material_blend",_("True/False"),_("Blended material"),"gtkswitch" ))

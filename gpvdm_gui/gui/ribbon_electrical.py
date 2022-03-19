@@ -152,20 +152,24 @@ class ribbon_electrical(ribbon_page2):
 				self.parasitic.setEnabled(True)
 				self.boundary.setEnabled(True)
 				self.perovskite.setEnabled(True)
+				self.singlet.setEnabled(True)
 			elif data.electrical_solver.solver_type=="poisson":
 				self.doping.setEnabled(True)
 				self.interfaces.setEnabled(False)
 				self.parasitic.setEnabled(False)
 				self.boundary.setEnabled(True)
 				self.perovskite.setEnabled(False)
+				self.singlet.setEnabled(False)
 			else:
 				self.doping.setEnabled(False)
 				self.interfaces.setEnabled(False)
 				self.parasitic.setEnabled(False)
 				self.boundary.setEnabled(False)
 				self.perovskite.setEnabled(False)
+				self.singlet.setEnabled(False)
 
 		self.perovskite.setChecked(data.perovskite.perovskite_enabled)
+		self.singlet.setChecked(data.singlet.singlet_enabled)
 
 	def callback_perovskite(self):
 		data=gpvdm_data()
@@ -175,7 +179,7 @@ class ribbon_electrical(ribbon_page2):
 	def callback_singlet(self):
 		return
 		data=gpvdm_data()
-		data.perovskite.perovskite_enabled=self.perovskite.isChecked()
+		data.singlet.singlet_enabled=self.singlet.isChecked()
 		data.save()
 
 	def setEnabled(self,val):
@@ -187,6 +191,7 @@ class ribbon_electrical(ribbon_page2):
 		self.tb_solvers.setEnabled(val)
 		self.boundary.setEnabled(val)
 		self.perovskite.setEnabled(val)
+		self.singlet.setEnabled(val)
 		self.update_buttons()
 
 

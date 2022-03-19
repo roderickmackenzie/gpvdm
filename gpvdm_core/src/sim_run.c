@@ -66,6 +66,8 @@
 #include <light_srcs.h>
 #include <world.h>
 #include <detector.h>
+#include <singlet.h>
+#include <singlet_fun.h>
 
 int device_run_simulation(struct simulation *sim, struct device *dev)
 {

@@ -59,8 +59,16 @@ struct newton_state *ns=&(in->ns);
 struct dimensions *dim=&in->ns.dim;
 struct matrix *mx=&in->mx;
 struct perovskite *ion=&(in->mobileion);
+struct singlet *sing=&(in->sing);
 
 int Nion_offset=get_offset_nion(in);
+int singlet_offset=get_offset_singlet_Ns(in);
+//int singlet_offset=get_offset_singlet_Nt(in);
+//int singlet_offset=get_offset_singlet_Nsd(in);
+//int singlet_offset=get_offset_singlet_Ntd(in);
+//int singlet_offset=get_offset_singlet_Nho(in);
+
+
 int offset_Je=get_offset_Je(in);
 int offset_Jh=get_offset_Jh(in);
 int offset_srh_e=get_offset_srh_e(in);

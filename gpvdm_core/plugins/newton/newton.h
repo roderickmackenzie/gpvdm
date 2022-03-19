@@ -44,10 +44,20 @@ void dllinternal_solver_free_memory(struct simulation *sim,struct device *in);
 int dllinternal_solve_cur(struct simulation *sim,struct device *in, int z, int x);
 void dllinternal_solver_realloc(struct simulation *sim,struct device *in, int dim);
 void update_solver_vars(struct simulation *sim,struct device *in,int z,int x,int clamp);
+
+int get_offset_nion(struct device *dev);
 int get_offset_nion(struct device *dev);
 int get_offset_Je(struct device *dev);
 int get_offset_Jh(struct device *dev);
 int get_offset_srh_e(struct device *dev);
 int get_offset_srh_h(struct device *dev);
 int get_offset_kcl(struct device *dev);
+
+//singlet offset
+int get_offset_singlet_Ns(struct device *dev);
+int get_offset_singlet_Nt(struct device *dev);
+int get_offset_singlet_Nsd(struct device *dev);
+int get_offset_singlet_Ntd(struct device *dev);
+int get_offset_singlet_Nho(struct device *dev);
+
 #endif

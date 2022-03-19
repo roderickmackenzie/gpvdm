@@ -25,67 +25,66 @@
 // SOFTWARE.
 // 
 
-
-/** @file shape_struct.h
-	@brief A structure to hold shapes
+/** @file epitaxy_singlet.c
+ * @brief Do the maths for the singlet parts of the epitaxy
 */
 
+#include <string.h>
+#include "epitaxy.h"
+#include "inp.h"
+#include "util.h"
+#include "gpvdm_const.h"
+#include <cal_path.h>
+#include <shape.h>
+#include <contacts.h>
 
-#ifndef shape_struct_h
-#define shape_struct_h
-#include "advmath.h"
-#include <sim_struct.h>
-#include <triangle.h>
-#include <component.h>
-#include <enabled_libs.h>
-#include <dos_struct.h>
-#include <heat_material.h>
-#include <exciton_material.h>
-#include <singlet_material.h>
 
-struct shape
+long double epitaxy_get_singlet_problem_start(struct epitaxy *in)
 {
-	int enabled;
-	long double dx;
-	long double dy;
-	long double dz;
-	long double dx_padding;
-	long double dy_padding;
-	long double dz_padding;
-	int nx;
-	int ny;
-	int nz;
-	char name[100];
-	char shape_type[20];
-	char optical_material[100];
-	long double x0;
-	long double y0;
-	long double z0;
-	int epi_index;
-	struct math_xy alpha;
-	struct math_xy n;
-	struct triangles tri;
-	long double rotate_x;
-	long double rotate_y;
-	#ifdef libcircuit_enabled
-		struct component com;
-	#endif
+int i=0;
+gdouble pos=0.0;
+for (i=0;i<in->layers;i++)
+{
 
-	char dos_file[100];
-	char id[100];
-	struct dos dosn;
-	struct dos dosp;
-	struct heat_material heat;
-	struct exciton_material ex;
-	struct singlet_material sing;
+	if (in->layer[i].electrical_layer==TRUE)
+	{
+		return pos;
+	}
+	pos+=in->layer[i].width;
 
-	long double Gnp;
+}
 
-	long double color_r;
-	long double color_g;
-	long double color_b;
+return -1;
+}
 
-	long double sum[10];			//A general counter for doing math
-};
 
-#endif
+long double epitaxy_get_singlet_problem_stop(struct epitaxy *in)
+{
+int i=0;
+gdouble pos=0.0;
+int found=FALSE;
+for (i=0;i<in->layers;i++)
+{
+
+	if (in->layer[i].electrical_layer==TRUE)
+	{
+		found=TRUE;
+	}
+
+	if ((in->layer[i].electrical_layer==FALSE)&&(found==TRUE))
+	{
+		return pos;
+	}
+
+	pos+=in->layer[i].width;
+}
+
+if (found==TRUE)
+{
+	return pos;
+}
+
+
+return -1;
+}
+

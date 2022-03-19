@@ -1,4 +1,4 @@
-//
+// 
 // General-purpose Photovoltaic Device Model gpvdm.com - a drift diffusion
 // base/Shockley-Read-Hall model for 1st, 2nd and 3rd generation solarcells.
 // The model can simulate OLEDs, Perovskite cells, and OFETs.
@@ -25,67 +25,40 @@
 // SOFTWARE.
 // 
 
-
-/** @file shape_struct.h
-	@brief A structure to hold shapes
+/** @file singlet_material.h
+@brief a structure for the singlet model
 */
 
+#ifndef h_singlet_material
+#define h_singlet_material
 
-#ifndef shape_struct_h
-#define shape_struct_h
-#include "advmath.h"
-#include <sim_struct.h>
-#include <triangle.h>
-#include <component.h>
-#include <enabled_libs.h>
-#include <dos_struct.h>
-#include <heat_material.h>
-#include <exciton_material.h>
-#include <singlet_material.h>
-
-struct shape
+struct singlet_material
 {
-	int enabled;
-	long double dx;
-	long double dy;
-	long double dz;
-	long double dx_padding;
-	long double dy_padding;
-	long double dz_padding;
-	int nx;
-	int ny;
-	int nz;
-	char name[100];
-	char shape_type[20];
-	char optical_material[100];
-	long double x0;
-	long double y0;
-	long double z0;
-	int epi_index;
-	struct math_xy alpha;
-	struct math_xy n;
-	struct triangles tri;
-	long double rotate_x;
-	long double rotate_y;
-	#ifdef libcircuit_enabled
-		struct component com;
-	#endif
-
-	char dos_file[100];
-	char id[100];
-	struct dos dosn;
-	struct dos dosp;
-	struct heat_material heat;
-	struct exciton_material ex;
-	struct singlet_material sing;
-
-	long double Gnp;
-
-	long double color_r;
-	long double color_g;
-	long double color_b;
-
-	long double sum[10];			//A general counter for doing math
+	long double singlet_k_fret;
+	long double singlet_k_s;
+	long double singlet_k_isc;
+	long double singlet_k_ss;
+	long double singlet_k_sp;
+	long double singlet_k_st;
+	long double singlet_k_dext;
+	long double singlet_k_t;
+	long double singlet_k_tp;
+	long double singlet_k_tt;
+	long double singlet_k_sd;
+	long double singlet_k_iscd;
+	long double singlet_k_spd;
+	long double singlet_k_std;
+	long double singlet_k_ssd;
+	long double singlet_k_td;
+	long double singlet_k_ttd;
+	long double singlet_k_tpd;
+	long double singlet_gamma;
+	long double singlet_zeta;
+	long double singlet_k_cav;
+	long double singlet_beta_sp;
+	long double singlet_C;
+	long double singlet_N_dop;
+	long double singlet_W;
 };
 
 #endif

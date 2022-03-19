@@ -12,6 +12,7 @@
 #define libjson_enabled
 #define libheat_enabled
 #define libexciton_enabled
+#define libsinglet_enabled
 #define libray_enabled
 #define libcolor_enabled
 #define libmeasure_enabled

@@ -90,6 +90,10 @@ def make_m4_core(path,hpc=False, win=False,usear=False,dbus=True,windows=False):
 		config_files.append("libexciton")
 		gpvdm_lib.append("libexciton")
 
+	if os.path.isdir(os.path.join(path,"libsinglet")):
+		config_files.append("libsinglet")
+		gpvdm_lib.append("libsinglet")
+
 	if os.path.isdir(os.path.join(path,"libray")):
 		config_files.append("libray")
 		gpvdm_lib.append("libray")

@@ -133,6 +133,7 @@ class all_gpvdm_data(json_base,json_world_stats):
 		self.var_list.append(["spm",json_spm()])
 		self.var_list.append(["hard_limit",json_hard_limit()])
 		self.var_list.append(["perovskite",json_perovskite()])
+		self.var_list.append(["singlet",json_singlet()])
 		self.var_list.append(["electrical_solver",json_electrical_solver()])
 		self.var_list.append(["spctral2",json_spctral2()])
 		self.var_list.append(["lasers",json_lasers()])

@@ -44,6 +44,7 @@
 #include <shape_struct.h>
 #include <heat.h>
 #include <exciton.h>
+#include <singlet.h>
 #include <mesh_struct.h>
 #include <lib_fxdomain.h>
 #include <time_mesh.h>
@@ -69,6 +70,13 @@ struct newton_state
 	long double ***phi;
 	long double ***x_Nion;
 
+	//Singlet
+	long double ***Ns;
+	long double ***Nt;
+	long double ***Nsd;
+	long double ***Ntd;
+	long double ***Nho;
+
 	long double ***x;
 	long double ***xp;
 
@@ -87,6 +95,7 @@ struct newton_state
 
 	//What so solver for
 	int Nion_enabled;
+	int singlet_enabled;
 
 	//for accelerating the Bernoulli fucntion
 	long double ***By_xi_plus;
@@ -555,6 +564,9 @@ struct device
 
 	//exciton
 		struct exciton ex;
+
+	//singlet
+		struct singlet sing;
 
 	//Preovskite
 		struct perovskite mobileion;

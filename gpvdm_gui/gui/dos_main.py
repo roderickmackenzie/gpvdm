@@ -88,6 +88,11 @@ class dos_main(QWidget,tab_base):
 		self.exciton.triggered.connect(self.callback_exciton)
 		toolbar.addAction(self.exciton)
 
+		self.singlet = QAction(icon_get("singlet"), _("Excited\nstates"), self)
+		self.singlet.setCheckable(True)
+		self.singlet.triggered.connect(self.callback_singlet)
+		toolbar.addAction(self.singlet)
+
 		toolbar.addWidget(spacer)
 
 		self.help = QAction_help()
@@ -159,6 +164,7 @@ class dos_main(QWidget,tab_base):
 		if data.electrical_solver.solver_type!="circuit":
 			self.auger.setEnabled(True)
 			self.traps.setEnabled(True)
+			self.singlet.setEnabled(True)
 			self.steady_state_srh.setEnabled(True)
 			tab = self.notebook.currentWidget()
 			tab.tab.refind_template_widget()
@@ -181,7 +187,8 @@ class dos_main(QWidget,tab_base):
 			self.auger.setEnabled(False)
 			self.traps.setEnabled(False)
 			self.steady_state_srh.setEnabled(False)
-	
+			self.singlet.setEnabled(False)
+
 	def callback_auger(self):
 		data=gpvdm_data()
 		if data.electrical_solver.solver_type!="circuit":
@@ -221,6 +228,26 @@ class dos_main(QWidget,tab_base):
 			tab.tab.hide_show_widgets()
 			data.save()
 
+	def callback_singlet(self):
+		data=gpvdm_data()
+		if data.electrical_solver.solver_type!="circuit":
+			tab = self.notebook.currentWidget()
+			tab.tab.refind_template_widget()
+
+			for l in data.epi.layers:
+				l.shape_dos.singlet_enabled=self.singlet.isChecked()
+				for s in l.shapes:
+					s.shape_dos.singlet_enabled=self.singlet.isChecked()
+
+			for i in range(0,self.notebook.count()):
+				tab=self.notebook.widget(i)
+				tab.tab.update_values()
+				tab.tab.hide_show_widgets()
+
+			data.singlet.singlet_enabled=self.singlet.isChecked()
+
+			tab.tab.hide_show_widgets()
+			data.save()
 
 	def callback_traps(self):
 		data=gpvdm_data()

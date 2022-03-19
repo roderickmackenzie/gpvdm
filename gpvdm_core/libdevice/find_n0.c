@@ -110,45 +110,6 @@ light_solve_and_update(sim,in,&(in->mylight),0.0);
 			in->mobileion.Nion_mul=1e-10;
 			in->mobileion.full_newton=TRUE;
 			solve_all(sim,in);
-
-			/*int y=0;
-			for (y=0;y<dim->ylen;y++)
-			{
-				in->Nad[0][0][y]-=in->Nion[0][0][y];
-			}*/
-			/*int y=0;
-			long double orig=in->Nion[0][0][10];
-			long double mul=1e-5;
-			while(mul<1.0)
-			{
-				for (y=0;y<dim->ylen;y++)
-				{
-					s=in->obj_zxy[0][0][y]->s;
-					in->Nion[0][0][y]=get_dos_ion_density(s)*mul;
-					printf("%Le\n",in->Nion[0][0][y]);
-					long double top=get_top_from_ion(in->Nion[0][0][y]);
-					ns->x_Nion[0][0][y]=-(ns->phi[0][0][y]+in->Ev[0][0][y]-top);
-				}
-				solve_all(sim,in);
-				FILE *out=fopen("out.dat","w");
-				for (y=0;y<dim->ylen;y++)
-				{
-					fprintf(out,"%Le %Le\n",dim->ymesh[y],in->Nion[0][0][y]);
-				}
-				fclose(out);
-
-				out=fopen("phi.dat","w");
-				for (y=0;y<dim->ylen;y++)
-				{
-					fprintf(out,"%Le %Le\n",dim->ymesh[y],ns->phi[0][0][y]);
-				}
-				fclose(out);
-				printf("mul=%Le\n",mul);
-				mul=mul*1.5;
-				//getchar();
-			}
-
-			getchar();*/
 			
 		}
 		//getchar();
