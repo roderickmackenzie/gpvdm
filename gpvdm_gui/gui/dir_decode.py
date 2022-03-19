@@ -84,10 +84,7 @@ def get_dir_type(path):
 
 		mat_file=os.path.join(path,"mat.inp")
 		token=inp_get_token_value(os.path.join(path,"mat.inp"), "#gpvdm_file_type")
-		if token=="backup_main":
-			ret.type="backup_main"
-			return ret
-		elif token=="backup":
+		if token=="backup":
 			ret.type="backup"
 			return ret
 		elif token=="multi_plot_dir":

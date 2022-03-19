@@ -43,12 +43,10 @@ from used_files import used_files_load
 from PyQt5.QtCore import pyqtSignal
 
 from gpvdm_open import gpvdm_open
-from cal_path import get_sim_path
 
 from util import wrap_text
 
 from gui_util import dlg_get_text
-from backup import backup
 from scripts import scripts
 from cite_me import cite_me
 from ribbon_page import ribbon_page
@@ -179,14 +177,6 @@ class ribbon_file(ribbon_page):
 		self.run.setEnabled(val)
 		self.optics.setEnabled(val)
 		self.cite_me.setEnabled(val)
-
-	def on_new_backup(self):
-		new_backup_name=dlg_get_text( _("New backup:"), _("New backup name"),"add_backup")
-		new_backup_name=new_backup_name.ret
-		if new_backup_name!=None:
-			new_backup=os.path.join(self.dialog.viewer.path,new_backup_name)
-			backup(new_backup,get_sim_path())
-			self.dialog.viewer.fill_store()
 
 	def callback_script(self):
 		adsasd

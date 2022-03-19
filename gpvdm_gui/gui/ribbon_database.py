@@ -64,6 +64,8 @@ from cal_path import gpvdm_paths
 from lock import get_lock
 from ribbon_page import ribbon_page
 from gpvdm_json import gpvdm_data
+from json_base import json_base
+from cal_path import get_sim_path
 
 class ribbon_database(ribbon_page):
 	def __init__(self):
@@ -180,17 +182,18 @@ class ribbon_database(ribbon_page):
 
 	def callback_home_backup(self):
 		from cal_path import get_backup_path
-		from util_zip import write_lines_to_archive
 		backup_path=get_backup_path()
 		if os.path.isdir(backup_path)==False:
 			os.makedirs(backup_path)
 
-		lines=[]
-		lines.append("#gpvdm_file_type")
-		lines.append("backup_main")
-		lines.append("#end")
+		data=json_base("backup")
+		data.include_name=False
+		data.var_list.append(["icon","backup"])
+		data.var_list.append(["item_type","backup_main"])
+		data.var_list.append(["hidden","True"])
+		data.var_list_build()
 
-		write_lines_to_archive(os.path.join(backup_path,"sim.gpvdm"),"mat.inp",lines,mode="l",dest="file")
+		data.save_as(os.path.join(backup_path,"data.json"))
 
 		self.dialog=gpvdm_open(backup_path,big_toolbar=True)
 		self.new_backup = QAction_lock("add_backup", wrap_text(_("New backup"),2), self,"add_backup")
@@ -200,3 +203,11 @@ class ribbon_database(ribbon_page):
 		self.dialog.viewer.show_inp_files=False
 		ret=self.dialog.exec_()
 
+	def on_new_backup(self):
+		from backup import backup
+		new_backup_name=dlg_get_text( _("New backup:"), _("New backup name"),"add_backup")
+		new_backup_name=new_backup_name.ret
+		if new_backup_name!=None:
+			new_backup=os.path.join(self.dialog.viewer.path,new_backup_name)
+			backup(new_backup,get_sim_path())
+			self.dialog.viewer.fill_store()

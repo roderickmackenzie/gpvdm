@@ -26,30 +26,27 @@
 import os
 import shutil
 #import glob
-from util_zip import write_lines_to_archive
 from shutil import copyfile
-from inp import inp_search_token_value
-
 import datetime
+from json_base import json_base
 
 def backup(dest,src,notes=""):
 
 	if os.path.isdir(dest)==False:
 		os.makedirs(dest)
 
-	lines=[]
-	lines.append("#gpvdm_file_type")
-	lines.append("backup")
-	lines.append("#date")
-	lines.append(str(datetime.datetime.now()))
-	lines.append("#notes")
-	lines.append(notes)
-	lines.append("#end")
+	data=json_base("backup")
+	data.include_name=False
+	data.var_list.append(["icon","backup"])
+	data.var_list.append(["item_type","backup"])
+	data.var_list.append(["hidden","False"])
+	data.var_list.append(["date","False"])
 
-	write_lines_to_archive(os.path.join(dest,"sim.gpvdm"),"mat.inp",lines,mode="l",dest="file")
+	data.var_list_build()
+	data.save_as(os.path.join(dest,"data.json"))
 
 	for f in os.listdir(src):
-		if f.endswith(".inp") or f=="sim.gpvdm":
+		if f.endswith(".inp") or f=="sim.gpvdm" or f=="sim.json":
 			src_file=os.path.join(src,f)
 			dst_file=os.path.join(dest,f)
 			copyfile(src_file,dst_file)
@@ -57,12 +54,12 @@ def backup(dest,src,notes=""):
 def backup_restore(dest,src):
 
 	for f in os.listdir(dest):
-		if f.endswith(".inp") or f=="sim.gpvdm":
+		if f.endswith(".inp") or f=="sim.gpvdm" or f=="sim.json":
 			os.remove(os.path.join(dest,f))
 
 	for f in os.listdir(src):
-		if f.endswith(".inp") or f=="sim.gpvdm":
-			if f!="mat.inp":
+		if f.endswith(".inp") or f=="sim.gpvdm" or f=="sim.json":
+			if f!="data.json":
 				src_file=os.path.join(src,f)
 				dst_file=os.path.join(dest,f)
 				copyfile(src_file,dst_file)

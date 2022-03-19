@@ -632,6 +632,9 @@ class gpvdm_viewer(QListWidget,gpvdm_viewer_new):
 			if itm.display_name=="":
 				itm.display_name=itm.file_name
 
+			if os.path.basename(file_name)=="data.json":
+				itm.hidden=True
+
 			if len(self.show_only)!=0:
 				if itm.type not in self.show_only:
 					itm.hidden=True
