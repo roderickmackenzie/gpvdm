@@ -128,6 +128,19 @@ void device_init(struct simulation *sim,struct device *dev)
 		dev->dNiondphi= NULL;
 		dev->Nion_last= NULL;
 
+	//Singlet
+		dev->Ns=NULL;
+		dev->Nt=NULL;
+		dev->Nsd=NULL;
+		dev->Ntd=NULL;
+		dev->Nho=NULL;
+
+		dev->dNs=NULL;
+		dev->dNt=NULL;
+		dev->dNsd=NULL;
+		dev->dNtd=NULL;
+		dev->dNho=NULL;
+
 	//Generation
 		dev->G= NULL;
 		dev->Gn= NULL;

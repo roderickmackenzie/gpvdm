@@ -59,6 +59,7 @@ struct dimensions *dim=&in->ns.dim;
 //struct matrix *mx=&(in->mx);
 struct perovskite *ion=&(in->mobileion);
 int contact_left=in->contacts[in->n_contact_y0[0][0]].type;
+struct singlet *sing=&(in->sing);
 //in->contact_shift_l=0;
 
 
@@ -96,6 +97,50 @@ if (ion->full_newton==TRUE)
 		N+=delta*3-2;		//dNion/dphi
 		N+=delta;			//dphi/dNion
 		M+=delta;			//Nion
+	}
+}
+
+if (sing->full_newton==TRUE)
+{
+	if (ns->singlet_enabled==TRUE)
+	{
+		N+=dim->ylen;		//dNs
+		N+=dim->ylen;		//dNs_build_dNt
+		N+=dim->ylen;		//dNs_build_dxic
+		N+=dim->ylen;		//dNs_build_dxipc
+		N+=dim->ylen;		//dNs_build_dNsd
+		N+=dim->ylen;		//dNs_build_dNtd
+
+		N+=dim->ylen;		//dNt
+		N+=dim->ylen;		//dNt_build_dNs
+		N+=dim->ylen;		//dNt_build_dxic
+		N+=dim->ylen;		//dNt_build_dxipc
+		N+=dim->ylen;		//dNt_build_dNsd;
+		N+=dim->ylen;		//dNt_build_dNtd;
+
+		N+=dim->ylen;		//dNsd
+		N+=dim->ylen;		//dNsd_build_dNs
+		N+=dim->ylen;		//dNsd_build_dNtd
+		N+=dim->ylen;		//dNsd_build_dxic
+		N+=dim->ylen;		//dNsd_build_dxipc
+		N+=dim->ylen;		//dNsd_build_dNho
+
+		N+=dim->ylen;		//dNtd
+		N+=dim->ylen;		//dNtd_build_dNsd
+		N+=dim->ylen;		//dNtd_build_dxic
+		N+=dim->ylen;		//dNtd_build_dxipc
+		N+=dim->ylen;		//dNtd_build_dNt;
+
+		N+=dim->ylen;		//dNho
+		N+=dim->ylen;		//dNho_build_dNsd
+		N+=dim->ylen;		//dNho_build_dNtd
+
+		M+=dim->ylen;		//Ns
+		M+=dim->ylen;		//Nt
+		M+=dim->ylen;		//Nsd
+		M+=dim->ylen;		//Ntd
+		M+=dim->ylen;		//Nho
+
 	}
 }
 

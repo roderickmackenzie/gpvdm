@@ -258,7 +258,7 @@ def build_token_lib():
 	lib.append(my_data("singlet_k_ttd","m^{3} s^{-1}",_("Dopant triplet-triplet annihilation (TTA) rate"), "QLineEdit", hide_on_token_eq=[["singlet_enabled",False]]))
 	lib.append(my_data("singlet_k_tpd","m^{3} s^{-1}",_("Dopant triplet-polaron annihilation (TPA) rate"), "QLineEdit", hide_on_token_eq=[["singlet_enabled",False]]))
 	lib.append(my_data("singlet_gamma","au",_("Confinement factor"), "QLineEdit", hide_on_token_eq=[["singlet_enabled",False]]))
-	lib.append(my_data("singlet_zeta","m^{3} s^{-1}",_("Stimulated emission gain coefficient"), "QLineEdit", hide_on_token_eq=[["singlet_enabled",False]]))
+	lib.append(my_data("singlet_zeta","m^{3} s^{-1}",_("\u03BE Stimulated emission gain coefficient"), "QLineEdit", hide_on_token_eq=[["singlet_enabled",False]]))
 	lib.append(my_data("singlet_k_cav","s^{-1}",_("Cavity photon decay rate"), "QLineEdit", hide_on_token_eq=[["singlet_enabled",False]]))
 	lib.append(my_data("singlet_beta_sp","au",_("Spontaneous emission factor"), "QLineEdit", hide_on_token_eq=[["singlet_enabled",False]]))
 	lib.append(my_data("singlet_C","0.0-1.0",_("Dopant concentration"), "QLineEdit", hide_on_token_eq=[["singlet_enabled",False]]))

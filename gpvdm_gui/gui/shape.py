@@ -203,7 +203,7 @@ class shape_dos(json_base):
 		self.var_list.append(["singlet_k_ttd",2.4e-21])
 		self.var_list.append(["singlet_k_tpd",5.6e-19])
 		self.var_list.append(["singlet_gamma",0.29])
-		self.var_list.append(["singlet_zeta",1.4e-5])
+		self.var_list.append(["singlet_zeta",1.4e-11])
 		self.var_list.append(["singlet_k_cav",1e12])
 		self.var_list.append(["singlet_beta_sp",1e-4])
 		self.var_list.append(["singlet_C",0.02])

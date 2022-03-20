@@ -51,7 +51,7 @@
 
 void update_solver_vars(struct simulation *sim,struct device *in,int z,int x,int clamp)
 {
-int i;
+int y;
 int band=0;
 long double Vapplied=0.0;
 long double clamp_temp=300.0;
@@ -62,11 +62,11 @@ struct perovskite *ion=&(in->mobileion);
 struct singlet *sing=&(in->sing);
 
 int Nion_offset=get_offset_nion(in);
-int singlet_offset=get_offset_singlet_Ns(in);
-//int singlet_offset=get_offset_singlet_Nt(in);
-//int singlet_offset=get_offset_singlet_Nsd(in);
-//int singlet_offset=get_offset_singlet_Ntd(in);
-//int singlet_offset=get_offset_singlet_Nho(in);
+int Ns_offset=get_offset_singlet_Ns(in);
+int Nt_offset=get_offset_singlet_Nt(in);
+int Nsd_offset=get_offset_singlet_Nsd(in);
+int Ntd_offset=get_offset_singlet_Ntd(in);
+int Nho_offset=get_offset_singlet_Nho(in);
 
 
 int offset_Je=get_offset_Je(in);
@@ -79,36 +79,36 @@ int contact_left=in->contacts[in->n_contact_y0[0][0]].type;
 
 gdouble update=0.0;
 
-	for (i=0;i<dim->ylen;i++)
+	for (y=0;y<dim->ylen;y++)
 	{
 
-		update=(gdouble)mx->b[i];
+		update=(gdouble)mx->b[y];
 		if (clamp==TRUE)
 		{
-			ns->phi[z][x][i]+=update/(1.0+gfabs(update/in->electrical_clamp/(clamp_temp*kb/Qe)));
+			ns->phi[z][x][y]+=update/(1.0+gfabs(update/in->electrical_clamp/(clamp_temp*kb/Qe)));
 		}else
 		{
-			ns->phi[z][x][i]+=update;
+			ns->phi[z][x][y]+=update;
 		}
 
 
-		update=(gdouble)(mx->b[offset_Je+i]);
+		update=(gdouble)(mx->b[offset_Je+y]);
 		if (clamp==TRUE)
 		{
-			ns->x[z][x][i]+=update/(1.0+gfabs(update/in->electrical_clamp/(clamp_temp*kb/Qe)));
+			ns->x[z][x][y]+=update/(1.0+gfabs(update/in->electrical_clamp/(clamp_temp*kb/Qe)));
 		}else
 		{
-			ns->x[z][x][i]+=update;
+			ns->x[z][x][y]+=update;
 		}
 
 
-		update=(gdouble)(mx->b[offset_Jh+i]);
+		update=(gdouble)(mx->b[offset_Jh+y]);
 		if (clamp==TRUE)
 		{
-			ns->xp[z][x][i]+=update/(1.0+gfabs(update/in->electrical_clamp/(clamp_temp*kb/Qe)));
+			ns->xp[z][x][y]+=update/(1.0+gfabs(update/in->electrical_clamp/(clamp_temp*kb/Qe)));
 		}else
 		{
-			ns->xp[z][x][i]+=update;
+			ns->xp[z][x][y]+=update;
 
 		}
 
@@ -117,14 +117,14 @@ gdouble update=0.0;
 		{
 			for (band=0;band<dim->srh_bands;band++)
 			{
-				update=(gdouble)(mx->b[offset_srh_e+dim->ylen*band+i]);
+				update=(gdouble)(mx->b[offset_srh_e+dim->ylen*band+y]);
 				if (clamp==TRUE)
 				{
-					ns->xt[z][x][i][band]+=update/(1.0+gfabs(update/in->electrical_clamp/(clamp_temp*kb/Qe)));
+					ns->xt[z][x][y][band]+=update/(1.0+gfabs(update/in->electrical_clamp/(clamp_temp*kb/Qe)));
 
 				}else
 				{
-					ns->xt[z][x][i][band]+=update;
+					ns->xt[z][x][y][band]+=update;
 				}
 			}
 		}
@@ -134,13 +134,13 @@ gdouble update=0.0;
 		{
 			for (band=0;band<dim->srh_bands;band++)
 			{
-				update=(gdouble)(mx->b[offset_srh_h+dim->ylen*band+i]);
+				update=(gdouble)(mx->b[offset_srh_h+dim->ylen*band+y]);
 				if (clamp==TRUE)
 				{
-					ns->xpt[z][x][i][band]+=update/(1.0+gfabs(update/in->electrical_clamp/(clamp_temp*kb/Qe)));
+					ns->xpt[z][x][y][band]+=update/(1.0+gfabs(update/in->electrical_clamp/(clamp_temp*kb/Qe)));
 				}else
 				{
-					ns->xpt[z][x][i][band]+=update;
+					ns->xpt[z][x][y][band]+=update;
 
 				}
 			}

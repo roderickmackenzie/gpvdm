@@ -1,0 +1,29 @@
+\newpage
+\begin{landscape}
+
+\section{Excited states}
+This is a new feautre and is not yet finished. I am writing the equations as I implment them in the solver.
+\label{sec:electrical}
+
+\begin{equation}
+\frac{dN_{S}}{dt}=\frac{1}{4}R_{free}+\frac{1}{4}\kappa_{TT} N_{T}^{2}-\\
+\\
+(\kappa_{S}+\kappa_{ISC})N_{s}\\
+\\
+-(\frac{7}{4}\kappa_{SS} N_{S} -\kappa_{ST} N_{T})N_{S}
+\end{equation}
+
+\begin{equation}
+\frac{dN_{t}}{dt}=\frac{3}{4}R_{free}+\kappa_{ISC} N_{S} + \frac{3}{4}\kappa_{SS} N_{S}^2
+\end{equation}
+
+\begin{equation}
+\frac{dN_{SD}}{dt}=\frac{\kappa_{FRET}}{N_{DOP}} (N_{DOP}-N_{SD}-N_{TD})N_{s}\\
+\\
++\frac{1}{4}\kappa_{TTD}N_{TD}^{2}
+\\
+-(\frac{7}{4}\kappa_{SSD} N_{SD}+\kappa_{STD}N_{TD}) N_{SD}
+\end{equation}
+
+\end{landscape}
+

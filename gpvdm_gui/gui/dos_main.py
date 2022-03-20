@@ -166,11 +166,15 @@ class dos_main(QWidget,tab_base):
 			self.traps.setEnabled(True)
 			self.singlet.setEnabled(True)
 			self.steady_state_srh.setEnabled(True)
+			self.singlet.setEnabled(True)
+
 			tab = self.notebook.currentWidget()
 			tab.tab.refind_template_widget()
 			self.auger.setChecked(tab.tab.template_widget.dos_enable_auger)
 			self.steady_state_srh.setChecked(tab.tab.template_widget.ss_srh_enabled)
 			self.exciton.setChecked(tab.tab.template_widget.exciton_enabled)
+			self.singlet.setChecked(tab.tab.template_widget.singlet_enabled)
+
 			traps_enabled=False
 			for l in data.epi.layers:
 				if l.shape_dos.enabled==True and l.shape_enabled==True:

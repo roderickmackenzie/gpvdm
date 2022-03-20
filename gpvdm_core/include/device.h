@@ -71,11 +71,11 @@ struct newton_state
 	long double ***x_Nion;
 
 	//Singlet
-	long double ***Ns;
-	long double ***Nt;
-	long double ***Nsd;
-	long double ***Ntd;
-	long double ***Nho;
+	long double ***x_Ns;
+	long double ***x_Nt;
+	long double ***x_Nsd;
+	long double ***x_Ntd;
+	long double ***x_Nho;
 
 	long double ***x;
 	long double ***xp;
@@ -198,6 +198,19 @@ struct device
 		long double ***dNion;
 		long double ***dNiondphi;
 		long double ***Nion_last;
+
+	//Singlet
+		long double ***Ns;
+		long double ***Nt;
+		long double ***Nsd;
+		long double ***Ntd;
+		long double ***Nho;
+
+		long double ***dNs;
+		long double ***dNt;
+		long double ***dNsd;
+		long double ***dNtd;
+		long double ***dNho;
 
 	//Generation
 		long double ***G;

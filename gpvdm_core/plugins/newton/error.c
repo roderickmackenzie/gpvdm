@@ -64,11 +64,18 @@ gdouble ttp=0.0;
 gdouble i0=0.0;
 gdouble nion=0.0;
 long double x_y0=0.0;
+long double Ns=0.0;
+long double Nt=0.0;
+long double Nsd=0.0;
+long double Ntd=0.0;
+long double Nho=0.0;
+
 int band=0;
 struct dimensions *dim=&in->ns.dim;
 struct matrix *mx = &(in->mx);
 struct newton_state *ns=&(in->ns);
 struct perovskite *ion=&(in->mobileion);
+struct singlet *sing=&(in->sing);
 
 int Nion_offset=get_offset_nion(in);
 int offset_Je=get_offset_Je(in);
@@ -76,6 +83,11 @@ int offset_Jh=get_offset_Jh(in);
 int offset_srh_e=get_offset_srh_e(in);
 int offset_srh_h=get_offset_srh_h(in);
 int offset_kcl=get_offset_kcl(in);
+int offset_Ns=get_offset_singlet_Ns(in);
+int offset_Nt=get_offset_singlet_Nt(in);
+int offset_Nsd=get_offset_singlet_Nsd(in);
+int offset_Ntd=get_offset_singlet_Ntd(in);
+int offset_Nho=get_offset_singlet_Nho(in);
 
 int contact_left=in->contacts[in->n_contact_y0[0][0]].type;
 
@@ -119,7 +131,7 @@ int contact_left=in->contacts[in->n_contact_y0[0][0]].type;
 	}
 
 
-	gdouble tot=phi+n+p+x+te+th+tl+ttn+ttp+i0+nion+x_y0;
+	gdouble tot=phi+n+p+x+te+th+tl+ttn+ttp+i0+nion+x_y0+Ns+Nt+Nsd+Ntd+Nho;
 	if (isnan( tot))
 	{
 		printf_log(sim,"%Le %Le %Le %Le %Le %Le %Le %Le %Le %Le %Le\n",phi,n,p,x,te,th,tl,ttn,ttp,nion,x_y0);

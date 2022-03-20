@@ -60,11 +60,11 @@ void newton_state_init(struct newton_state *ns)
 	ns->x_Nion=NULL;
 
 	//Singlet
-	ns->Ns=NULL;
-	ns->Nt=NULL;
-	ns->Nsd=NULL;
-	ns->Ntd=NULL;
-	ns->Nho=NULL;
+	ns->x_Ns=NULL;
+	ns->x_Nt=NULL;
+	ns->x_Nsd=NULL;
+	ns->x_Ntd=NULL;
+	ns->x_Nho=NULL;
 
 	ns->x=NULL;
 	ns->xp=NULL;
@@ -129,11 +129,11 @@ void newton_state_alloc_mesh(struct newton_state *ns,struct dimensions *dim, int
 
 	if (ns->singlet_enabled==TRUE)
 	{
-		malloc_zxy_long_double(dim,&(ns->Ns));
-		malloc_zxy_long_double(dim,&(ns->Nt));
-		malloc_zxy_long_double(dim,&(ns->Nsd));
-		malloc_zxy_long_double(dim,&(ns->Ntd));
-		malloc_zxy_long_double(dim,&(ns->Nho));
+		malloc_zxy_long_double(dim,&(ns->x_Ns));
+		malloc_zxy_long_double(dim,&(ns->x_Nt));
+		malloc_zxy_long_double(dim,&(ns->x_Nsd));
+		malloc_zxy_long_double(dim,&(ns->x_Ntd));
+		malloc_zxy_long_double(dim,&(ns->x_Nho));
 	}
 
 	malloc_zxy_long_double(dim,&(ns->x));
@@ -183,11 +183,12 @@ void newton_state_free(struct newton_state *ns)
 	free_zxy_long_double(&(ns->dim),&ns->phi);
 	free_zxy_long_double(&(ns->dim), &ns->x_Nion);
 
-	free_zxy_long_double(&(ns->dim),&ns->Ns);
-	free_zxy_long_double(&(ns->dim),&ns->Nt);
-	free_zxy_long_double(&(ns->dim),&ns->Nsd);
-	free_zxy_long_double(&(ns->dim),&ns->Ntd);
-	free_zxy_long_double(&(ns->dim),&ns->Nho);
+
+	free_zxy_long_double(&(ns->dim),&ns->x_Ns);
+	free_zxy_long_double(&(ns->dim),&ns->x_Nt);
+	free_zxy_long_double(&(ns->dim),&ns->x_Nsd);
+	free_zxy_long_double(&(ns->dim),&ns->x_Ntd);
+	free_zxy_long_double(&(ns->dim),&ns->x_Nho);
 
 	free_zxy_long_double(&(ns->dim),&ns->x);
 	free_zxy_long_double(&(ns->dim),&ns->xp);
@@ -236,11 +237,11 @@ void newton_state_cpy(struct newton_state *out,struct newton_state *in)
 	cpy_zxy_long_double(&in->dim,&(out->phi),&(in->phi));
 	cpy_zxy_long_double(&in->dim,&(out->x_Nion),&(in->x_Nion));
 
-	cpy_zxy_long_double(&in->dim,&(out->Ns),&(in->Ns));
-	cpy_zxy_long_double(&in->dim,&(out->Nt),&(in->Nt));
-	cpy_zxy_long_double(&in->dim,&(out->Nsd),&(in->Nsd));
-	cpy_zxy_long_double(&in->dim,&(out->Ntd),&(in->Ntd));
-	cpy_zxy_long_double(&in->dim,&(out->Nho),&(in->Nho));
+	cpy_zxy_long_double(&in->dim,&(out->x_Ns),&(in->x_Ns));
+	cpy_zxy_long_double(&in->dim,&(out->x_Nt),&(in->x_Nt));
+	cpy_zxy_long_double(&in->dim,&(out->x_Nsd),&(in->x_Nsd));
+	cpy_zxy_long_double(&in->dim,&(out->x_Ntd),&(in->x_Ntd));
+	cpy_zxy_long_double(&in->dim,&(out->x_Nho),&(in->x_Nho));
 
 	cpy_zxy_long_double(&in->dim,&(out->x),&(in->x));
 	cpy_zxy_long_double(&in->dim,&(out->xp),&(in->xp));

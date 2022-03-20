@@ -153,14 +153,16 @@ int shape_load_from_json(struct simulation *sim,struct shape *s, struct json_obj
 		ewe(sim,"shape_exciton not found\n");
 	}
 
-	json_singlet=json_obj_find(obj, "shape_dos");
-	if (json_singlet!=NULL)
-	{
-		singlet_material_load_from_json(sim,&(s->sing),json_singlet );
-	}else
-	{
-		ewe(sim,"shape_singlet not found\n");
-	}
+	#ifdef libsinglet_enabled
+		json_singlet=json_obj_find(obj, "shape_dos");
+		if (json_singlet!=NULL)
+		{
+			singlet_material_load_from_json(sim,&(s->sing),json_singlet );
+		}else
+		{
+			ewe(sim,"shape_singlet not found\n");
+		}
+	#endif
 return TRUE;
 }
 

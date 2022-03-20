@@ -157,7 +157,7 @@ int get_offset_singlet_Ns(struct device *dev)
 	{
 		if (ns->Nion_enabled==TRUE)
 		{
-			offset+=dim->ylen;
+			offset+=ion->ylen;
 		}
 	}
 
@@ -169,13 +169,13 @@ int get_offset_singlet_Nt(struct device *dev)
 	int offset=0;
 	struct newton_state *ns=&(dev->ns);
 	struct dimensions *dim=&(ns->dim);
-	struct perovskite *ion=&(dev->mobileion);
+	struct singlet *sing=&(dev->sing);
 
 	offset=get_offset_singlet_Ns(dev);
 
-	if (ion->full_newton==TRUE)
+	if (sing->full_newton==TRUE)
 	{
-		if (ns->Nion_enabled==TRUE)
+		if (ns->singlet_enabled==TRUE)
 		{
 			offset+=dim->ylen;
 		}
@@ -189,13 +189,13 @@ int get_offset_singlet_Nsd(struct device *dev)
 	int offset=0;
 	struct newton_state *ns=&(dev->ns);
 	struct dimensions *dim=&(ns->dim);
-	struct perovskite *ion=&(dev->mobileion);
+	struct singlet *sing=&(dev->sing);
 
 	offset=get_offset_singlet_Nt(dev);
 
-	if (ion->full_newton==TRUE)
+	if (sing->full_newton==TRUE)
 	{
-		if (ns->Nion_enabled==TRUE)
+		if (ns->singlet_enabled==TRUE)
 		{
 			offset+=dim->ylen;
 		}
@@ -209,13 +209,13 @@ int get_offset_singlet_Ntd(struct device *dev)
 	int offset=0;
 	struct newton_state *ns=&(dev->ns);
 	struct dimensions *dim=&(ns->dim);
-	struct perovskite *ion=&(dev->mobileion);
+	struct singlet *sing=&(dev->sing);
 
 	offset=get_offset_singlet_Nsd(dev);
 
-	if (ion->full_newton==TRUE)
+	if (sing->full_newton==TRUE)
 	{
-		if (ns->Nion_enabled==TRUE)
+		if (ns->singlet_enabled==TRUE)
 		{
 			offset+=dim->ylen;
 		}
@@ -229,13 +229,13 @@ int get_offset_singlet_Nho(struct device *dev)
 	int offset=0;
 	struct newton_state *ns=&(dev->ns);
 	struct dimensions *dim=&(ns->dim);
-	struct perovskite *ion=&(dev->mobileion);
+	struct singlet *sing=&(dev->sing);
 
 	offset=get_offset_singlet_Ntd(dev);
 
-	if (ion->full_newton==TRUE)
+	if (sing->full_newton==TRUE)
 	{
-		if (ns->Nion_enabled==TRUE)
+		if (ns->singlet_enabled==TRUE)
 		{
 			offset+=dim->ylen;
 		}

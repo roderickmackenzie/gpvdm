@@ -68,7 +68,7 @@ from json_world_stats import json_world_stats
 from json_detectors import json_detectors
 from json_ml import json_ml
 from json_dump import json_dump
-
+from json_singlet import json_singlet
 
 
 class json_parasitic(json_base):

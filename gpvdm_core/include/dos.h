@@ -124,6 +124,9 @@ void dos_cache_free(struct dos_cache *cache);
 long double get_top_from_ion(long double n);
 void get_ion_den(long double top,long double *n, long double *dn);
 
+long double get_top_from_singlet(long double n);
+void get_singlet_den(long double top,long double *n, long double *dn);
+
 void check_fermi_inversion_n(struct simulation *sim,struct shape *s,long double n,int do_check);
 void check_fermi_inversion_p(struct simulation *sim,struct shape *s,long double p,int do_check);
 #endif

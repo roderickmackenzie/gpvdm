@@ -1,6 +1,39 @@
 \subsection{Transfer matrix model}
-The transfer matrix model is used for simulating external light incident on the device. 
+The transfer matrix model is used for simulating external light incident on the device. It assumes light hits the device normal to the surface.  The model can can calculate 
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1.0\textwidth,height=0.6\textwidth]{./images/opticalsimulation4.png}
+\caption{The output tab this is just like windows file explorer, you can explore the simulation directory tree.}
+\label{fig:transfermatrix0}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{tabular}{ c c }
+
+\includegraphics[width=0.5\textwidth,height=0.4\textwidth]{./images/opticalsimulation.png}
+
+&
+\includegraphics[width=0.5\textwidth,height=0.4\textwidth]{./images/opticalsimulation1.png}
+
+\\
+\includegraphics[width=0.5\textwidth,height=0.4\textwidth]{./images/opticalsimulation2.png}
+
+&
+\includegraphics[width=0.5\textwidth,height=0.4\textwidth]{./images/opticalsimulation3.png}
+
+\\
+\end{tabular}
+\caption{The optical simulation window}
+\label{fig:transfermatrix1}
+\end{figure}
+
+
+
+\subsubsection{Theory}
 On the left of the interface the electric field is given by
+
 \begin{equation}
 E_{1}=E^{+}_{1} e^{-j k_1 z}+E^{-}_{1} e^{j k_1 z}
 \label{efield1}
@@ -61,4 +94,15 @@ The local ground view factor is given as \cite{neryterrain}
 \begin{equation}
 F_{ground}=sin^2 \left ( \frac{\theta_t}{2}\right )=\frac{1-cos(\theta_t)}{2}
 \end{equation}
+
+
+\subsubsection{Meshing}
+The optical mesh automatically extends to cover the optical simulation window, so one does not usually need to worry about configuring it.  The optical material layers are defined in the list at the bottom of figure \ref{fig:emesh}.  The first column is a unique identifier, it must start with a hash symbol, but apart from that you can call it what you want.  The second column is the thickness of the layer.  The forth column is the material system, data files describing the material system are stored in the 'phys' directory.  Finally, the forth column tells the model if the layer is part of the active layer or not (more about that in the next section.)
+
+
+
+\subsubsection{Interfacing the electrical and optical models}
+In gpvdm there is both an electrical model and an optical model.  The optical simulation usually includes the glass substrate, the contacts and layers such as PEDOT:PSS.  The electrical simulation usually only covers the active layer of the device, thus a typically optical simulation is much bigger than the electrical simulation window.  The optical model feeds the calculated optical profile of the light into the electrical simulation.  You must therefore tell the optical model which layer in the optical simulation represents the active layer.  This is done by placing a 'yes' in the column 'Active layer' in figure \ref{fig:opticalsimulation}.
+\newpage
+\vfill
 

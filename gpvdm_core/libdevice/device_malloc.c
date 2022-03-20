@@ -130,6 +130,26 @@ void device_get_memory(struct simulation *sim,struct device *in)
 		malloc_zxy_long_double(dim,&(in->Nion_last));
 	}
 
+
+	if (in->drift_diffision_simulations_enabled==TRUE)
+	{
+		if (ns->singlet_enabled==TRUE)
+		{
+			malloc_zxy_long_double(dim,&(in->Ns));
+			malloc_zxy_long_double(dim,&(in->Nt));
+			malloc_zxy_long_double(dim,&(in->Nsd));
+			malloc_zxy_long_double(dim,&(in->Ntd));
+			malloc_zxy_long_double(dim,&(in->Nho));
+
+			malloc_zxy_long_double(dim,&(in->dNs));
+			malloc_zxy_long_double(dim,&(in->dNt));
+			malloc_zxy_long_double(dim,&(in->dNsd));
+			malloc_zxy_long_double(dim,&(in->dNtd));
+			malloc_zxy_long_double(dim,&(in->dNho));
+		}
+
+	}
+
 	//Generation
 	malloc_zxy_long_double(dim,&(in->G));
 	malloc_zxy_long_double(dim,&(in->Gn));
@@ -443,10 +463,14 @@ void device_to_dim(struct simulation *sim,struct dimensions *dim,struct device *
 {
 	struct newton_state *ns=(&dev->ns);
 	struct json_obj *json_perovskite;
+	#ifdef libsinglet_enabled
+		struct json_obj *json_singlet;
+	#endif
 
 	dim->zlen=dev->mesh_data.meshdata_z.tot_points;
 	dim->xlen=dev->mesh_data.meshdata_x.tot_points;
 	dim->ylen=dev->mesh_data.meshdata_y.tot_points;
+	//perovskite
 	json_perovskite=json_obj_find(&(dev->config.obj), "perovskite");
 	if (json_perovskite==NULL)
 	{
@@ -454,5 +478,16 @@ void device_to_dim(struct simulation *sim,struct dimensions *dim,struct device *
 	}
 	json_get_english(sim, json_perovskite, &(ns->Nion_enabled),"perovskite_enabled");
 
+
+	#ifdef libsinglet_enabled
+		json_singlet=json_obj_find(&(dev->config.obj), "singlet");
+		if (json_singlet==NULL)
+		{
+			ewe(sim,"Singlet object not found\n");
+		}
+		json_get_english(sim, json_singlet, &(ns->singlet_enabled),"singlet_enabled");
+	#else
+		ns->singlet_enabled=FALSE;
+	#endif
 }
 

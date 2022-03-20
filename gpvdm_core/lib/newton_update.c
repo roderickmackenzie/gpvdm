@@ -68,6 +68,18 @@ long double Th=0.0;
 long double ion=0.0;
 long double dion=0.0;
 
+long double Ns;
+long double Nt;
+long double Nsd;
+long double Ntd;
+long double Nho;
+
+long double dNs;
+long double dNt;
+long double dNsd;
+long double dNtd;
+long double dNho;
+
 struct shape* s;
 
 	for (y=0;y<dim->ylen;y++)
@@ -108,6 +120,8 @@ struct shape* s;
 				in->dNiondphi[z][x][y]= -dion;
 			}
 		}
+
+
 
 		if (in->ntrapnewton)
 		{

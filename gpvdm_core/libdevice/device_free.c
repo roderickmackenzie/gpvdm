@@ -129,6 +129,19 @@ void device_free(struct simulation *sim,struct device *dev)
 		free_zxy_long_double(dim,&dev->dNiondphi);
 		free_zxy_long_double(dim,&dev->Nion_last);
 
+	//Singlet
+		free_zxy_long_double(dim,&dev->Ns);
+		free_zxy_long_double(dim,&dev->Nt);
+		free_zxy_long_double(dim,&dev->Nsd);
+		free_zxy_long_double(dim,&dev->Ntd);
+		free_zxy_long_double(dim,&dev->Nho);
+
+		free_zxy_long_double(dim,&dev->dNs);
+		free_zxy_long_double(dim,&dev->dNt);
+		free_zxy_long_double(dim,&dev->dNsd);
+		free_zxy_long_double(dim,&dev->dNtd);
+		free_zxy_long_double(dim,&dev->dNho);
+
 	//Generation
 		free_zxy_long_double(dim,&dev->G);
 		free_zxy_long_double(dim,&dev->Gn);

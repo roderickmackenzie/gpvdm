@@ -403,48 +403,30 @@ long double Ns_build=-1.0;
 long double dNs_build=-1.0;
 long double dNs_build_dNt=-1.0;
 long double dNs_build_dxic=-1.0;
-long double dNs_build_dxipc=-1.0;
-long double dNs_build_dNsd=-1.0;
-long double dNs_build_dNtd=-1.0;
 
 int Ns_offset=get_offset_singlet_Ns(in);
 
 long double Nt_build=-1.0;
 long double dNt_build=-1.0;
 long double dNt_build_dNs=-1.0;
-long double dNt_build_dxic=-1.0;
-long double dNt_build_dxipc=-1.0;
-long double dNt_build_dNsd=-1.0;
-long double dNt_build_dNtd=-1.0;
-
 int Nt_offset=get_offset_singlet_Nt(in);
 
 long double Nsd_build=-1.0;
 long double dNsd_build_dNs=-1.0;
 long double dNsd_build=-1.0;
 long double dNsd_build_dNtd=-1.0;
-long double dNsd_build_dxic=-1.0;
-long double dNsd_build_dxipc=-1.0;
-long double dNsd_build_dNho=-1.0;
 
 int Nsd_offset=get_offset_singlet_Nsd(in);
 
 long double Ntd_build=-1.0;
 long double dNtd_build=-1.0;
 long double dNtd_build_dNsd=-1.0;
-long double dNtd_build_dxic=-1.0;
-long double dNtd_build_dxipc=-1.0;
-long double dNtd_build_dNt=-1.0;
-
 int Ntd_offset=get_offset_singlet_Ntd(in);
 
 long double Nho_build=-1.0;
 long double dNho_build=-1.0;
 long double dNho_build_dNsd=-1.0;
-long double dNho_build_dNtd=-1.0;
 int Nho_offset=get_offset_singlet_Nho(in);
-
-long double Ndop=0.0;
 
 long double dphi_dNion=0.0;
 

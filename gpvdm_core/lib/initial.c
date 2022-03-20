@@ -225,6 +225,7 @@ void get_initial(struct simulation *sim,struct device *in,int guess)
 	long double delta_phi=0.0;
 	int c=0;
 	int type=0;
+	long double top;
 	struct newton_state *ns=&(in->ns);
 	struct dimensions *dim=&in->ns.dim;
 	struct epitaxy *epi=&(in->my_epitaxy);
@@ -505,17 +506,25 @@ void get_initial(struct simulation *sim,struct device *in,int guess)
 					if (ns->Nion_enabled==TRUE)
 					{
 						in->Nion[z][x][y]=get_dos_ion_density(s);
-						long double top=get_top_from_ion(in->Nion[z][x][y]);
+						top=get_top_from_ion(in->Nion[z][x][y]);
 						ns->x_Nion[z][x][y]=-(ns->phi[z][x][y]+in->Ev[z][x][y]-top);
 					}
 
 					if (ns->singlet_enabled==TRUE)
 					{
-						ns->Ns[z][x][y]=1e20;
-						ns->Nt[z][x][y]=1e20;
-						ns->Nsd[z][x][y]=1e20;
-						ns->Ntd[z][x][y]=1e20;
-						ns->Nho[z][x][y]=1e20;
+						top=get_top_from_singlet(1e22);
+						ns->x_Ns[z][x][y]=top;
+						ns->x_Nt[z][x][y]=top;
+						ns->x_Nsd[z][x][y]=top;
+						ns->x_Ntd[z][x][y]=top;
+						ns->x_Nho[z][x][y]=top;
+
+						in->Ns[z][x][y]=1e22;
+						in->Nt[z][x][y]=1e22;
+						in->Nsd[z][x][y]=1e22;
+						in->Ntd[z][x][y]=1e22;
+						in->Nho[z][x][y]=1e22;
+
 					}
 
 					//printf("%Le %Le\n",in->n[z][x][y],in->p[z][x][y]);

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gpvdm 5.0\n"
 "Report-Msgid-Bugs-To: roderick.mackenzie@nottingham.ac.uk\n"
-"POT-Creation-Date: 2022-03-19 14:19+0000\n"
+"POT-Creation-Date: 2022-03-20 16:32+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2813,11 +2813,16 @@ msgstr ""
 #: ../../gpvdm_core/libdump/dump_zxy_interfaces.c:105
 #: ../../gpvdm_core/libdump/dump_zxy_interfaces.c:125
 #: ../../gpvdm_core/libdump/dump_zxy_interfaces.c:141
-#: ../../gpvdm_core/libdump/dump_singlet.c:69
-#: ../../gpvdm_core/libdump/dump_singlet.c:87
-#: ../../gpvdm_core/libdump/dump_singlet.c:105
-#: ../../gpvdm_core/libdump/dump_singlet.c:123
-#: ../../gpvdm_core/libdump/dump_singlet.c:141
+#: ../../gpvdm_core/libdump/dump_singlet.c:70
+#: ../../gpvdm_core/libdump/dump_singlet.c:88
+#: ../../gpvdm_core/libdump/dump_singlet.c:106
+#: ../../gpvdm_core/libdump/dump_singlet.c:124
+#: ../../gpvdm_core/libdump/dump_singlet.c:142
+#: ../../gpvdm_core/libdump/dump_singlet.c:163
+#: ../../gpvdm_core/libdump/dump_singlet.c:181
+#: ../../gpvdm_core/libdump/dump_singlet.c:199
+#: ../../gpvdm_core/libdump/dump_singlet.c:217
+#: ../../gpvdm_core/libdump/dump_singlet.c:235
 msgid "Position"
 msgstr ""
 
@@ -4910,8 +4915,8 @@ msgstr ""
 #: ../../gpvdm_gui/gui/token_lib.py:819
 #: ../../gpvdm_core/liblight/light_dump.c:226
 #: ../../gpvdm_core/liblight/light_dump.c:228
-#: ../../gpvdm_core/libdump/dump_singlet.c:141
 #: ../../gpvdm_core/libdump/dump_singlet.c:142
+#: ../../gpvdm_core/libdump/dump_singlet.c:143
 msgid "Photon density"
 msgstr ""
 
@@ -8783,7 +8788,7 @@ msgid "Confinement factor"
 msgstr ""
 
 #: ../../gpvdm_gui/gui/token_lib.py:261
-msgid "Stimulated emission gain coefficient"
+msgid "\\u03BE Stimulated emission gain coefficient"
 msgstr ""
 
 #: ../../gpvdm_gui/gui/token_lib.py:262
@@ -10675,11 +10680,11 @@ msgstr ""
 msgid "Runing simulation"
 msgstr ""
 
-#: ../../gpvdm_core/src/sim_run.c:507
+#: ../../gpvdm_core/src/sim_run.c:511
 msgid "Solved"
 msgstr ""
 
-#: ../../gpvdm_core/src/sim_run.c:507
+#: ../../gpvdm_core/src/sim_run.c:511
 msgid "Equations"
 msgstr ""
 
@@ -11128,7 +11133,7 @@ msgid "Perovskite mobile ion density"
 msgstr ""
 
 #: ../../gpvdm_core/libdump/dump_zxy_charge.c:343
-#: ../../gpvdm_core/libdump/dump_singlet.c:124
+#: ../../gpvdm_core/libdump/dump_singlet.c:125
 msgid "Ion density"
 msgstr ""
 
@@ -11587,21 +11592,58 @@ msgstr ""
 msgid "file name not set\n"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_singlet.c:69
 #: ../../gpvdm_core/libdump/dump_singlet.c:70
-#: ../../gpvdm_core/libdump/dump_singlet.c:106
+#: ../../gpvdm_core/libdump/dump_singlet.c:71
+#: ../../gpvdm_core/libdump/dump_singlet.c:107
 msgid "Singlet density"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_singlet.c:87
 #: ../../gpvdm_core/libdump/dump_singlet.c:88
+#: ../../gpvdm_core/libdump/dump_singlet.c:89
 msgid "Triplet density"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_singlet.c:105
+#: ../../gpvdm_core/libdump/dump_singlet.c:106
 msgid "Singlet in donor density"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_singlet.c:123
+#: ../../gpvdm_core/libdump/dump_singlet.c:124
 msgid "Triplet in donor density"
+msgstr ""
+
+#: ../../gpvdm_core/libdump/dump_singlet.c:163
+msgid "Singlet 'IMREF'"
+msgstr ""
+
+#: ../../gpvdm_core/libdump/dump_singlet.c:164
+#: ../../gpvdm_core/libdump/dump_singlet.c:200
+msgid "Singlet energy"
+msgstr ""
+
+#: ../../gpvdm_core/libdump/dump_singlet.c:181
+msgid "Triplet 'IMREF'"
+msgstr ""
+
+#: ../../gpvdm_core/libdump/dump_singlet.c:182
+msgid "Triplet energy"
+msgstr ""
+
+#: ../../gpvdm_core/libdump/dump_singlet.c:199
+msgid "Singlet in donor 'IMREF'"
+msgstr ""
+
+#: ../../gpvdm_core/libdump/dump_singlet.c:217
+msgid "Triplet in donor 'IMREF'"
+msgstr ""
+
+#: ../../gpvdm_core/libdump/dump_singlet.c:218
+msgid "Ion energy"
+msgstr ""
+
+#: ../../gpvdm_core/libdump/dump_singlet.c:235
+msgid "Photon 'IMREF'"
+msgstr ""
+
+#: ../../gpvdm_core/libdump/dump_singlet.c:236
+msgid "Photon energy"
 msgstr ""
