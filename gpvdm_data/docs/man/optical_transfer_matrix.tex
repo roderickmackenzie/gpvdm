@@ -1,5 +1,27 @@
 \subsection{Transfer matrix model}
-The transfer matrix model is used for simulating external light incident on the device. It assumes light hits the device normal to the surface.  The model can can calculate 
+The transfer matrix model is used for simulating external light incident on the device. It assumes light hits the device normal to the surface and the light has reached steady state. This method is good for understanding optical absorption, reflection and transition in structures such as solar cells, optical filters or sensors.  In general any structure where the structure can generally be described as 1D. There are other methods which can be used for this such as FDTD, however general speaking the transfer matrix model will be orders of magnitude faster.
+
+\subsubsection{The user interface}
+This simulation can be reached from the file ribbon and selection "Optical simulation".  If you click "Run optical simulation" (see \ref{fig:transfermatrix0}) the distribution of light within the structure will be calculated as a function of position and wavelength. You can see from the top of the figure that there are various simulation modes. The full transfer matrix method is selected by selecting "Transfer matrix", this will do full optical simulation.  There are also other simplified simulation modes which allow the user to explore more simple charge carrier generation profiles and answer "what if" questions.
+
+\begin{itemize}
+  \item Transfer matrix: This is a full transfer matrix simulation which takes into account multiple reflections from the interfaces and optical loss within the structure. This is in effect solving the wave equation in 1D and is an accurate (and recommended) optical model to use.
+
+  \item Exponential profile: This is a very simple optical model which assumes light decays exponentially according to the relation
+\begin{equation}
+I=I_{0}e^{-\alpha x}
+\label{efield2}
+\end{equation}
+between layers and and assumes light is transmitted between layers according to the formula:
+\begin{equation}
+T=1.0-\frac{n_1-n_0}{n_1+n_0}
+\label{equ:transfermatrixreflection}
+\end{equation}
+  \item Flat profile: The flat profile assumes light is constant within layers and only decreases at material interfaces according to equation \ref{equ:transfermatrixreflection}.
+
+  \item From file: This can be used to import generation profiles from a file. It us generally used to import the results of more complex optical simulations such as those from external FDTD solvers.
+  \item Constant value: If you click on the arrow to the right of the simulation button you will be able to set the charge carrier generation rate within each layer by hand.
+\end{itemize}
 
 \begin{figure}[H]
 \centering
@@ -8,6 +30,7 @@ The transfer matrix model is used for simulating external light incident on the 
 \label{fig:transfermatrix0}
 \end{figure}
 
+The optical simulation window has various tabs which can be used to explore how light interacts with the device. These can be seen in figure \ref{fig:transfermatrix1}. The the top left hand image shows the photon density within the device, the image on the right shows the \emph{total} photon density within the layers of the device.  Notice how the reflection of the light of various layers causes interfearance patterns.  Bottom left shows the configuration of the optical model, you can set here things like the number of wavelengths which are simulated or the number of x-points which are used to describe the device in position space. Bottom right shows the same figure as in the top right of the figure, except by right clicking and playing with the menu options the figure has been converted into band diagram.  This can be useful for generating band diagram figures for papers.  
 \begin{figure}[H]
 \centering
 \begin{tabular}{ c c }
@@ -25,13 +48,13 @@ The transfer matrix model is used for simulating external light incident on the 
 
 \\
 \end{tabular}
-\caption{The optical simulation window}
+\caption{Various views of the optical simulation window}
 \label{fig:transfermatrix1}
 \end{figure}
 
 
 
-\subsubsection{Theory}
+\subsubsection{Theory of the transfer matrix method}
 On the left of the interface the electric field is given by
 
 \begin{equation}
@@ -88,21 +111,7 @@ e^{-\alpha x}=e^{\frac{2\pi\kappa z}{\lambda}}
 \alpha=-\frac{4\pi\kappa}{\lambda_0}
 \end{equation}
 
-\subsubsection{Local ground view factor}
-The local ground view factor is given as \cite{neryterrain}
 
-\begin{equation}
-F_{ground}=sin^2 \left ( \frac{\theta_t}{2}\right )=\frac{1-cos(\theta_t)}{2}
-\end{equation}
-
-
-\subsubsection{Meshing}
-The optical mesh automatically extends to cover the optical simulation window, so one does not usually need to worry about configuring it.  The optical material layers are defined in the list at the bottom of figure \ref{fig:emesh}.  The first column is a unique identifier, it must start with a hash symbol, but apart from that you can call it what you want.  The second column is the thickness of the layer.  The forth column is the material system, data files describing the material system are stored in the 'phys' directory.  Finally, the forth column tells the model if the layer is part of the active layer or not (more about that in the next section.)
-
-
-
-\subsubsection{Interfacing the electrical and optical models}
-In gpvdm there is both an electrical model and an optical model.  The optical simulation usually includes the glass substrate, the contacts and layers such as PEDOT:PSS.  The electrical simulation usually only covers the active layer of the device, thus a typically optical simulation is much bigger than the electrical simulation window.  The optical model feeds the calculated optical profile of the light into the electrical simulation.  You must therefore tell the optical model which layer in the optical simulation represents the active layer.  This is done by placing a 'yes' in the column 'Active layer' in figure \ref{fig:opticalsimulation}.
 \newpage
 \vfill
 
