@@ -1,7 +1,97 @@
-\subsection{FDTD code}
+\subsection{Finite Difference Time Domain}
+Finite Difference Time Domain (FDTD) is a very computationally intensive way to simulate the propagation of electromagnetic radiation.  It solves full on Maxwell's equations in time domain making no assumptions.  This approach has only been possible in the last few years with the increase in computing power.
+
+Food for thought: Before using FDTD, you should be aware that in many cases when simulating a device, using FDTD is like using a sledge hammer to crack a nut.  For example when simulating a standard solar cell, one could use FDTD, this would involve simulating a wave front entering the cell through the top contact in time domain and waiting until the optical field reaches steady state then calculating how much light is being absorbed. This would require thousands of time domain simulation steps per wavelength.  However usually one is not interested in the time evolution of light in a solar cell as sunlight varies very slowly indeed, so one is better off not using a steady state method but other methods which assume light has already reached steady state, such as the transfer matrix method discussed above.
+
+Never the less, FDTD is an import method, and can be used to design and understand complex devices.
+
+\subsubsection{Running an FDTD simulation}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{./images/fdtd_1.png}
+\caption{FDTD  }
+\label{fig:build}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{./images/fdtd_2.png}
+\caption{FDTD  }
+\label{fig:build}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{./images/fdtd_3.png}
+\caption{FDTD  }
+\label{fig:build}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{./images/fdtd_4.png}
+\caption{FDTD  }
+\label{fig:build}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{./images/fdtd_5.png}
+\caption{FDTD  }
+\label{fig:build}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{./images/fdtd_6.png}
+\caption{FDTD  }
+\label{fig:build}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{./images/fdtd_7.png}
+\caption{FDTD  }
+\label{fig:build}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{./images/fdtd_8.png}
+\caption{FDTD  }
+\label{fig:build}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{./images/fdtd_9.png}
+\caption{FDTD  }
+\label{fig:build}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{./images/fdtd_10.png}
+\caption{FDTD  }
+\label{fig:build}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{./images/fdtd_11.png}
+\caption{FDTD  }
+\label{fig:build}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{./images/fdtd_12.png}
+\caption{FDTD  }
+\label{fig:build}
+\end{figure}
+\subsubsection{Theoretical background}
 References for this section are \cite{FDTD_Schneider}. This section of the manual aims to describe the FDTD code in full with verbose derivations to help understanding/pick up errors.
-\subsubsection{Graphical user interface}
-\subsubsection{Derivation}
 
 Ampere’s law is given as  \cite{FDTD_Schneider}
 \begin{equation}
