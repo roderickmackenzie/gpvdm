@@ -6,90 +6,84 @@ Food for thought: Before using FDTD, you should be aware that in many cases when
 Never the less, FDTD is an import method, and can be used to design and understand complex devices.
 
 \subsubsection{Running an FDTD simulation}
+There is a demo FDTD simulation in the new simulations window. To open this click on new simulation in the file ribbon of the main window. The window in figure \ref{fig:fdtdnewdemo} will appear. Double click on the "Photonic-xtal FDTD" simulation to open it.  Save the simulation on your local hard disk, don't save it on a remote disk, USB disk or OneDrive they will be too slow to run the simulation.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.7\textwidth]{./images/fdtd_1.png}
-\caption{FDTD  }
-\label{fig:build}
+\caption{The new simulation window}
+\label{fig:fdtdnewdemo}
 \end{figure}
+
+Once you have opened the simulation you should get a window which appears figure \ref{fig:fdtdfirstwindow}. If you click on the play button the FDTD simulation will run, it will take around 30 seconds to run.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.7\textwidth]{./images/fdtd_2.png}
-\caption{FDTD  }
-\label{fig:build}
+\caption{The initial FDTD simulation window. Use the slider to look at the results in time domain, and the drop down menu to select which field you are going to look at.}
+\label{fig:fdtdfirstwindow}
 \end{figure}
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.7\textwidth]{./images/fdtd_3.png}
-\caption{FDTD  }
-\label{fig:build}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.7\textwidth]{./images/fdtd_4.png}
-\caption{FDTD  }
-\label{fig:build}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.7\textwidth]{./images/fdtd_5.png}
-\caption{FDTD  }
-\label{fig:build}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.7\textwidth]{./images/fdtd_6.png}
-\caption{FDTD  }
-\label{fig:build}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.7\textwidth]{./images/fdtd_7.png}
-\caption{FDTD  }
-\label{fig:build}
-\end{figure}
+After the simulation has run click on the \emph{Output} tab and \ref{fig:fdtdoutputs} you will see the FDTD \emph{snapshots} folder, this can be seen in figure \ref{fig:fdtdoutputs}.  If you double click on this the FDTD snapshots window will appear which is shown in figure \ref{fig:fdtdsnapshots}.  This window will allow you to step through the simulations. If you click in the files to plot box, you will be able to select which field you plot. You will be able to select the \emph{Ey}, \emph{Ex} or \emph{Ez} fields.  In this case select the Ey field. Then use the slider bar to step through the field as a function of time.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.7\textwidth]{./images/fdtd_8.png}
-\caption{FDTD  }
-\label{fig:build}
+\caption{The output tab after having run an FDTD simulation, the key output is the Snapshots folder where the fields are stored.}
+\label{fig:fdtdoutputs}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.7\textwidth]{./images/fdtd_9.png}
-\caption{FDTD  }
-\label{fig:build}
+\caption{The FDTD snapshots window.}
+\label{fig:fdtdsnapshots}
+\end{figure}
+
+\subsubsection{Manipulating objects in gpvdm}
+Now close the snapshot viewer and go back to the main simulation window and select the \emph{Device tab}.  On the left of the window, you will see four buttons \emph{xy}, \emph{yz}, \emph{xz} and for little square boxes this can be seen in figure \ref{fig:fdtdmainwindow}. Try clicking them to see what happens to the view of the device.  After you have had a play select the \emph{xz} option, so that the screen looks like the left hand side of \ref{fig:fdtdmovingobjects}.  If you left click on the lenses, you will notice that you will be able to move them around. Try to move the lenses back in the device so that your device looks more like the right hand side of figure \ref{fig:fdtdmainwindow}.  If you hold shift down while dragging an object you can rotate it on the spot.
+
+If you right click on the lenses and select \emph{Edit} you will be able to bring up the object Editor.  This shows the user all the object properties, this is visible in figure \ref{fig:objectviewer}. Try changing the object type from $convex\_lens$ to $concave\_ lens$ by clicking the edit button and rerunning the simulation.  If you want to add your own shapes to the shape data base see section \ref{sec:shapedatabase}. Using this window you can also change the material which is used in the FDTD simulation, the color of the object as well as its position or rotational angle.
+
+The \emph{shape enabled} button enables you to turn off the shape if you don't want it in the simulation. If this shape were also electrically active you could also use this window to configure the electrical parameters.
+
+ 
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{./images/fdtd_7.png}
+\caption{Changing the object view in gpvdm}
+\label{fig:fdtdmainwindow}
 \end{figure}
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.7\textwidth]{./images/fdtd_10.png}
-\caption{FDTD  }
-\label{fig:build}
+\begin{tabular}{ c c }
+
+\includegraphics[width=0.5\textwidth,height=0.4\textwidth]{./images/fdtd_5.png}
+
+&
+\includegraphics[width=0.5\textwidth,height=0.4\textwidth]{./images/fdtd_6.png}
+
+\\
+
+\end{tabular}
+\caption{An example of moving objects in the simulation window.}
+\label{fig:fdtdmovingobjects}
 \end{figure}
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.7\textwidth]{./images/fdtd_11.png}
-\caption{FDTD  }
-\label{fig:build}
-\end{figure}
+
+
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.7\textwidth]{./images/fdtd_12.png}
-\caption{FDTD  }
-\label{fig:build}
+\caption{The object viewer. This window is brought up by right clicking on an object and selecting \emph{Edit}.}
+\label{fig:objectviewer}
 \end{figure}
+
+\subsubsection{Manipulating light sources in gpvdm}
+ Also visible in figure \ref{fig:fdtdmovingobjects} is the light source given by the green arrow. Try moving this more forward in the device.
+
 \subsubsection{Theoretical background}
 References for this section are \cite{FDTD_Schneider}. This section of the manual aims to describe the FDTD code in full with verbose derivations to help understanding/pick up errors.
 
