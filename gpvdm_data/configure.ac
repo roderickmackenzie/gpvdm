@@ -4,8 +4,8 @@ AC_CANONICAL_TARGET
 AC_CANONICAL_HOST
 #AM_GNU_GETTEXT([external])
 
-AC_CONFIG_FILES([Makefile docs/man/Makefile cie_color/Makefile])
-
+#AC_CONFIG_FILES
+m4_include([config_files.m4])
 
 
 AC_ARG_ENABLE(nodocs, "used to disable compilation of docs",

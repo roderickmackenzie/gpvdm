@@ -95,6 +95,9 @@ If you wish to programmatically drive gpvdm you can simply use one of the many a
 
 
 \subsection{Databases}
+
+
+
 There are a series of databases used to define material parameters, shapes, emission spectra and solar spectra etc...  These are described within this section.  From the graphical user interface they can be accessed from the database ribbon, see figure \ref{fig:database}.
 
 \begin{figure}[H]
@@ -111,6 +114,19 @@ The structure of the databases are simple, they are a series of directories with
 
 \subsubsection{Materials database}
 \label{sec:materialdatabase}
+Related YouTube videos:
+\begin{figure}[H]
+
+\begin{tabular}{ c l }
+
+\includegraphics[width=0.05\textwidth]{./images/youtube.png}
+
+&
+\href{https://www.youtube.com/watch?v=0u6_jRVhZwU}{A tutorial on adding new materials to gvpdm}
+
+\end{tabular}
+\end{figure}
+
 This database primarily contains n/k data but also contains some electrical information and thermal information. Each subdirectory within the materials database identifies the material name.  In each sub directory there are two key files $alpha.gmat$ and $n.gmat$, these files are standard text files can be opened with any text editor such as wordpad.    Alpha.gmat contains the absorption coefficient of the material while n.gmat contains the the refractive index.  The first column of the file contains the wavelength in $m$ (not $cm$ or $nm$), and the second column of the file contains the absorption coefficient in $m^{-1}$ (for alpha.omat) and the real part of the refractive index (i.e. n) in au (for n.omat). The data.json defines the material color and any known electrical or thermal data.
 
 
