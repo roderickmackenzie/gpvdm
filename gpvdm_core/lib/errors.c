@@ -144,7 +144,7 @@ int ewe( struct simulation *sim, const char *format, ...)
 
 	va_end(args);
 
-		getchar();
+		//getchar();
 
 
 

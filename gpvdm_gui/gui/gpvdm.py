@@ -600,7 +600,7 @@ class gpvdm_main_window(QMainWindow):
 		self.timer.start(1000)
 
 		#from shape_editor import shape_editor
-		#self.a=shape_editor("/home/rod/gpvdm_local/shape/martin2")
+		#self.a=shape_editor("/home/rod/gpvdm_local/shape/morphology/3")
 		#self.a.show()
 
 	def dragEnterEvent(self, event):

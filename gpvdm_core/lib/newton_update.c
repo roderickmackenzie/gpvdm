@@ -271,11 +271,19 @@ struct shape* s;
 					Nad0=s->dosn.config.Nd0;
 					Nad1=s->dosn.config.Nd1;
 					in->Nad[z][x][y]=Nad0+(Nad1-Nad0)*(pos/dy);
+					double k=0.1;
+					long double mul=1.0;
+					//mul=1.0/(1.0+exp(-2.0*k*(in->Te[z][x][y]-265)));
 
-					Nad0=s->dosn.config.Na0;
-					Nad1=s->dosn.config.Na1;
+
+					//mul=0.0;
+					Nad0=s->dosn.config.Na0*mul;
+					Nad1=s->dosn.config.Na1*mul;
+
+
+
 					in->Nad[z][x][y]-=Nad0+(Nad1-Nad0)*(pos/dy);
-
+					printf("%Le %Le\n",in->Te[z][x][y],mul);
 					if (ns->Nion_enabled==TRUE)
 					{
 						in->Nad[z][x][y]-=s->dosn.config.ion_density;

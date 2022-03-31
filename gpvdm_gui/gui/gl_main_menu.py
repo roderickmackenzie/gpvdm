@@ -19,8 +19,8 @@
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #   
 
-## @package gl_view_point
-#  The gl_view_point class for the OpenGL display.
+## @package gl_main_menu
+#  The gl_main_menu class for the OpenGL display.
 #
 
 import sys
@@ -69,9 +69,6 @@ class gl_main_menu():
 		self.menu_view_draw_electrical_mesh.triggered.connect(self.menu_toggle_view)
 		self.menu_view_draw_electrical_mesh.setCheckable(True)
 
-		self.menu_view_draw_device_cut_through=view.addAction(_("Device cut through"))
-		self.menu_view_draw_device_cut_through.triggered.connect(self.menu_toggle_view)
-		self.menu_view_draw_device_cut_through.setCheckable(True)
 
 		self.menu_view_render_photons=view.addAction(_("Show photons"))
 		self.menu_view_render_photons.triggered.connect(self.menu_toggle_view)
@@ -243,7 +240,6 @@ class gl_main_menu():
 		action = self.sender()
 		text=action.text()
 		self.draw_electrical_mesh=self.menu_view_draw_electrical_mesh.isChecked()
-		self.draw_device_cut_through=self.menu_view_draw_device_cut_through.isChecked()
 		self.view_options.render_photons=self.menu_view_render_photons.isChecked()
 		self.view_options.render_grid=self.menu_view_grid.isChecked()
 		self.view_options.render_fdtd_grid=self.menu_view_fdtd_grid.isChecked()
@@ -282,7 +278,6 @@ class gl_main_menu():
 
 	def menu_update(self):
 		self.menu_view_draw_electrical_mesh.setChecked(self.draw_electrical_mesh)
-		self.menu_view_draw_device_cut_through.setChecked(self.draw_device_cut_through)
 		self.menu_view_render_photons.setChecked(self.view_options.render_photons)
 		self.menu_view_grid.setChecked(self.view_options.render_grid)
 		self.menu_view_fdtd_grid.setChecked(self.view_options.render_fdtd_grid)

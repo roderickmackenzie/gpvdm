@@ -247,6 +247,7 @@ class shape_editor(QWidgetSavePos):
 			im.save(os.path.join(self.path,"image_original.png"))		#This is the original image
 			self.shape_image_flat_view.load_image()
 			self.shape_image_flat_view.build_mesh()
+			self.callback_filters_update()
 
 	def callback_script(self):
 		self.scripts.show()

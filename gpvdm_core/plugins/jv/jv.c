@@ -129,7 +129,7 @@ long double V=0.0;
 
 long double mue=0.0;
 long double muh=0.0;
-
+ 
 struct json_obj *json_jv;
 struct dimensions *dim=&in->ns.dim;
 
@@ -219,6 +219,9 @@ inter_init(sim,&Tl);
 
 struct math_xy v_optical_efficiency;
 inter_init(sim,&v_optical_efficiency);
+
+struct math_xy sigma;		//conductivity
+inter_init(sim,&sigma);
 
 //contact_set_active_contact_voltage(sim,in,Vapplied);
 //char json_path[PATH_MAX];
@@ -429,7 +432,12 @@ if (config.Vstop<config.Vstart)
 		inter_append(&charge_tot,Vexternal,get_np_tot(in));
 
 		inter_append(&charge_with_surface_charge,Vexternal,np_extracted+(cal_contact_charge(in)-in->contact_charge));
-		//printf("%Le\n",cal_contact_charge(in)-in->contact_charge);
+
+		double R;
+		double rho;
+		R=Vexternal/(get_avg_J(in)*in->A);
+		rho=R*in->A/in->ylen;
+		inter_append(&sigma,Vexternal,1.0/rho);
 
 		Pden=gfabs(J*Vexternal);
 
@@ -634,6 +642,8 @@ if (config.Vstop<config.Vstart)
 		}
 	}while(1);
 
+double sigma_out=inter_get(&sigma,0.3);
+
 if (power_den.len>0)
 {
 	Jsc=inter_get(&jvexternal,0.0);
@@ -750,6 +760,8 @@ if (config.dump_verbosity>=0)
 			fprintf(out,"\t\"tau_pmax\":\"%Le\",\n",tau_pmax);
 			fprintf(out,"\t\"tau_all_voc\":\"%Le\",\n",tau_all_voc);
 			fprintf(out,"\t\"tau_all_pmax\":\"%Le\",\n",tau_all_pmax);
+
+			fprintf(out,"\t\"sigma\":\"%le\",\n",sigma_out);
 
 			fprintf(out,"\t\"theta_srh_free\":\"%Le\",\n",theta_srh_free);
 			fprintf(out,"\t\"theta_srh_free_trap\":\"%Le\",\n",theta_srh_free_trap);
@@ -977,6 +989,23 @@ if (in->emission_enabled==TRUE)
 	}
 
 
+	if (buffer_set_file_name(sim,in,&buf,"sigma.csv")==0)
+	{
+		buffer_malloc(&buf);
+		buf.y_mul=1.0;
+		buf.data_mul=1.0;
+		sprintf(buf.title,"%s - %s",_("Voltage"),_("Conductivity"));
+		strcpy(buf.type,"xy");
+		strcpy(buf.y_label,("Voltage"));
+		strcpy(buf.data_label,_("Conductivity"));
+		strcpy(buf.y_units,"V");
+		strcpy(buf.data_units,"S/m");
+		buf.logscale_x=0;
+		buf.logscale_y=0;
+		dat_file_add_xy_data(sim,&buf,sigma.x, sigma.data, sigma.len);
+		buffer_dump_path(sim,in->output_path,NULL,&buf);
+		buffer_free(&buf);
+	}
 }
 
 inter_free(&jvexternal);
@@ -995,6 +1024,7 @@ inter_free(&tau_list);
 inter_free(&tau_all_list);
 inter_free(&Tl);
 inter_free(&v_optical_efficiency);
+inter_free(&sigma);
 inter_free(&charge_tot);
 
 dump_dynamic_save(sim,in,in->output_path,&store);

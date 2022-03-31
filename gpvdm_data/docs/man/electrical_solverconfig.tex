@@ -1,0 +1,70 @@
+\newpage
+\subsection{Configuring the electrical solver}
+\label{sec:solverconfig}
+
+
+
+
+Behind gpvdm are a series of non-linear solvers that solve the electrical equations in a highly efficient way.  These can be configured by going to the electrical tab. There you will see the Drift diffusion button, to the left of that is an arrow. If you click on this it will bring up a window which allows you to configure the "Newton solver". The options are described below.
+
+Related YouTube videos:
+\begin{figure}[H]
+
+\begin{tabular}{ c l }
+
+\includegraphics[width=0.05\textwidth]{./images/youtube.png}
+
+&
+\href{https://www.youtube.com/watch?v=D2WG1_wTbdc}{How to optimize simulations in gpvdm so they run faster}
+
+\end{tabular}
+\end{figure}
+
+\begin{itemize}
+  \item Max Electrical iterations (first step): The maximum number of steps the solver can after it's cold started onto a new problem.  This is usually at 0V in the dark.  The solver usually takes more steps on it's first go.
+  \item Electrical clamp (first step): This is a number by which the maximum newton step is clamped to.  0.1 will make the solver very stable but very slow, 4.0 will make the solver very fast but unstable.  A recommended value of 1.0 is suggested for normal problems.  If you are solving for high doping or other unusual conditions it can be worth reducing the step.  Likewise if you want the solver to be fast and you know the problem is easy set the value to 2.0 or higher. For the first step, I would consider setting this value to be slightly lower than for the subsequent steps.
+  \item Desired solver error (first step): This is the desired error, smaller is more accurate and slower. I would generally not accept answers above $1x10^{-5}$
+
+  \item Max Electrical iterations: Maximum number of electrical iterations on all but the first step.
+  \item Electrical clamp: Electrical clamp (first step): This is a number by which the maximum newton step is clamped to.  0.1 will make the solver very stable but very slow, 4.0 will make the solver very fast but unstable.  A recommended value of 1.0 is suggested for normal problems.  If you are solving for high doping or other unusual conditions it can be worth reducing the step.  Likewise if you want the solver to be fast and you know the problem is easy set the value to 2.0 or higher.
+  \item Desired solver error: This is the desired error, smaller is more accurate and slower. I would generally not accept answers above $1x10^{-5}$
+
+  \item Newton solver clever exit: If the solver starts bouncing in the noise then assume we can't get a better answer and quit.
+  \item Newton minimum iterations: Don't allow the solver to quit before doing this number of steps.  Often the error in the first few steps of the solution can be below "Desired solver error", thus the solver can quit before finding the true answer.
+  \item Solve Kirchhoff's current law in Newton solver: Solve Kirchhoff's current law in the main Newton Jacobian.
+
+  \item Matrix solver:  This selects the matrix solver to use.
+  \item Newton solver to use:
+	\begin{itemize}
+	  \item none: No electrical solver is selected, this is used when only solving optical or thermal problems.
+	  \item newton: The standard 1D Newton solver.
+	  \item newton\textunderscore 2D: The standard 2D Newton solver.
+ 	  \item newton\textunderscore norm: The standard 1D Newton solver but with Slotboom normalization.  This is handy when solving systems with large difference in density between minority and majority carrier density.
+ 	  \item poisson\textunderscore 2d: A 2D Poisson solver with no drift diffusion equations. 
+	\end{itemize}
+  \item Complex matrix solver:
+
+  \item Slotboom T0: Slotboom variable for the newton\textunderscore norm solver.
+  \item Slotboom D0: Slotboom variable for the newton\textunderscore norm solver.
+  \item Slotboom n0: Slotboom variable for the newton\textunderscore norm solver.
+
+  \item Use newton cache (experimental): Cache large problems to disk - experimental.
+  \item Quit on convergence problem: Quit on convergence problem. Quite often 
+  \item Quit on inverted Fermi-level:
+  \item Solver output verbosity:
+
+\end{itemize}
+
+\subsubsection{Solver stability}
+\label{sec:solverstability}
+
+\emph{Avoiding very big and very small numbers}: Try opening up MATLAB (Octave if you are on Linux) and typing in the following equation $((1e-1+1e1)-1e1)/1e-1$. Before pressing enter, try to evaluate it in your head. the $1e1$ and the $-1e1$ cancel leaving $\frac{1e-1}{1e-1}$ which equates to $1$.  Now try replacing the powers to 1 with to the 19, so type in $((1e-19+1e19)-1e19)/1e-19$, again evaluate this in your head.  Again , $1e19$ and the $-1e19$ cancel leaving $\frac{1e-19}{1e-19}$ which equates to $1$  Now let the computer evaluate the expression.  In fact this time the computer does not give you $1$ but gives you $0$. Double check that you typed it in correctly... you did so what is happening. Why is the computer giving me an answer which is 100\% wrong.  The answer is easy, computers have a limited precision. This means that they can only store a limited number of decimal places. On a modern PC it's about 15 decimal places. After this the computer starts ignoring the numbers.  So when we added $(1e-19+1e19)$ the computer could not keep track of the decimal places so it assumed that the answer was exactly $1.000000000000000e19$ and not $1.0000000000000000001e19$, then when we subtracted $-1e19$ from the answer the computer gave us zero instead of $1e-19$.  The $1e-19$ was lost in the precision.
+
+All computers are affected by this no matter how powerful they are, this has important implications when solving device equations.  If you have too big a spread of numbers in your simulation (matrix/Jacobian) the computer won't be able to solve it easily.  So if you have very low values of mobility say $1e-19$ and very big values say $1e5$ the computer wills start to have problems solving the electrical problem. There fore generally try to reduce the spread of parameters in you model. This is important when simulating insulators.
+\\
+\\
+\emph{Avoid zeros}: Zeros are bad because they cause divide by zero errors. So don't have zero mobilities, carrier cross sections, tail slopes or densities of states.  It's fine to have zero recombination constants though.
+\\
+\\
+\emph{Very big steps in the band gap}: Big steps in the band gap will produce very small and very large carrier densities - see \emph{Avoiding very big and very small numbers} above.
+\\

@@ -319,7 +319,12 @@ void device_get_memory(struct simulation *sim,struct device *in)
 
 			malloc_zxy_long_double(dim,&(in->Jp_x_drift));
 			malloc_zxy_long_double(dim,&(in->Jp_x_diffusion));
+
+			malloc_zxy_long_double(dim,&(in->Jion));
+
 		}
+
+
 	//Applied voltages
 		malloc_zx_gdouble(dim,&(in->Vapplied_y0));
 		malloc_zx_gdouble(dim,&(in->Vapplied_y1));

@@ -295,6 +295,7 @@ void device_init(struct simulation *sim,struct device *dev)
 		dev->Jp_x_diffusion= NULL;
 		dev->Jp_x_drift= NULL;
 
+		dev->Jion= NULL;
 	//Applied voltages
 		dev->Vapplied_y0=NULL;
 		dev->Vapplied_y1=NULL;

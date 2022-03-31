@@ -19,8 +19,8 @@
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #   
 
-## @package gl_view_point
-#  The gl_view_point class for the OpenGL display.
+## @package gl_views
+#  The gl_views class for the OpenGL display.
 #
 
 import sys
@@ -31,14 +31,14 @@ from PyQt5.QtCore import QTimer
 
 from epitaxy import get_epi
 
-from gl_view_point import view_point
+from json_gl import json_gl_view
 import os
 
 class gl_views():
 
 	def __init__(self):
 		self.views=[]
-		v=view_point()
+		v=json_gl_view()
 		v.window_x=0.0
 		v.window_y=0.0
 		v.window_w=0.5
@@ -46,7 +46,7 @@ class gl_views():
 		v.name="3d"
 		self.views.append(v)
 
-		v=view_point()
+		v=json_gl_view()
 		v.window_x=0.5
 		v.window_y=0.5
 		v.window_w=0.5
@@ -55,7 +55,7 @@ class gl_views():
 		v.set_xy()
 		self.views.append(v)
 
-		v=view_point()
+		v=json_gl_view()
 		v.window_x=0.0
 		v.window_y=0.5
 		v.window_w=0.5
@@ -64,7 +64,7 @@ class gl_views():
 		v.set_xz()
 		self.views.append(v)
 
-		v=view_point()
+		v=json_gl_view()
 		v.window_x=0.5
 		v.window_y=0.0
 		v.window_w=0.5
@@ -73,7 +73,7 @@ class gl_views():
 		v.set_yz()
 		self.views.append(v)
 
-		self.viewtarget=view_point()
+		self.viewtarget=json_gl_view()
 
 		self.viewtarget.xRot=0.0
 		self.viewtarget.yRot=0.0

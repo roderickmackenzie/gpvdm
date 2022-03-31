@@ -210,7 +210,7 @@ struct intersections
 {
 	int intersections;
 	int uid;
-	struct vec points[20];
+	struct vec points[30];
 	int n_points;
 };
 
@@ -245,7 +245,8 @@ int min_dist_index=-1;
 
 int objs_found=0;
 
-struct intersections ft[100];	//found triangles
+int FT_MAX=100;
+struct intersections ft[FT_MAX];	//found triangles
 
 //double dist[100];
 int uid=0;
@@ -313,7 +314,7 @@ vec_cpy(&(my_ray.dir),&tmp);
 					//ray_dump_triangle(sim,in,i);
 					//getchar();
 					in_list=FALSE;
-					//printf("%d\n",uid);
+
 					for (ii=0;ii<objs_found;ii++)
 					{
 						if (ft[ii].uid==uid)
@@ -325,7 +326,7 @@ vec_cpy(&(my_ray.dir),&tmp);
 								//{
 								//	fprintf(out,"%le %le %le\n\n",ret.x,ret.y,ret.z);
 								//}
-
+								//printf("%d %d %d\n",ii,objs_found,ft[ii].n_points);
 								vec_cpy(&(ft[ii].points[ft[ii].n_points]),&ret);
 								ft[ii].intersections++;
 								ft[ii].n_points++;
@@ -363,6 +364,10 @@ vec_cpy(&(my_ray.dir),&tmp);
 						//fclose(oh);
 						//printf("here1\n");
 						objs_found++;
+						if (objs_found>FT_MAX)
+						{
+							ewe(sim,"objs_found>FT_MAX");
+						}
 					}
 
 				}

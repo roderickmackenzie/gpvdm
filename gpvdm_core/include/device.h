@@ -367,6 +367,8 @@ struct device
 		long double ***Jp_x_diffusion;
 		long double ***Jp_x_drift;
 
+		long double ***Jion;
+
 	//Applied voltages
 		long double **Vapplied_y0;
 		long double **Vapplied_y1;

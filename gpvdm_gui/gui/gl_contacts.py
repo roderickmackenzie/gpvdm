@@ -127,10 +127,7 @@ class gl_contacts():
 
 						a.xyz.append(xyz)
 
-						if self.draw_device_cut_through==False:
-							a.type="solid_and_mesh"
-						else:
-							a.type="solid_and_mesh_cut_through"
+						a.type="solid_and_mesh"
 
 						a.r=c.color_r
 						a.g=c.color_g

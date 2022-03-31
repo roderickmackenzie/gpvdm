@@ -30,12 +30,12 @@ import os
 import shutil
 import json
 from json_base import json_base
-
+from json_gl import json_gl_view
 
 class json_opengl_config(json_base):
 
 	def __init__(self):
-		json_base.__init__(self,"opengl_config")
+		json_base.__init__(self,"opengl")
 		self.var_list=[]
 		self.var_list.append(["gl_dy_layer_offset",0.1])
 		self.var_list.append(["gl_device_height",1.4])
@@ -44,6 +44,7 @@ class json_opengl_config(json_base):
 		self.var_list.append(["color_g",0.8])
 		self.var_list.append(["color_b",0.8])
 		self.var_list.append(["color_alpha",0.8])
-		self.var_list.append(["gl_render_grid",True])
+		self.var_list.append(["render_grid",True])
+		self.var_list.append(["gl_view",json_gl_view()])
 		self.var_list_build()
 

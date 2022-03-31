@@ -120,7 +120,7 @@ def widget_get_value(widget):
 	elif type(widget)==QComboBoxLang:
 		return widget.currentText_english()
 	elif type(widget)==QColorPicker:
-		return widget.text()
+		return widget.get_value()
 	elif type(widget)==QColorPicker_one_line:
 		return str(widget.r)+","+str(widget.g)+","+str(widget.b)+","+str(widget.alpha)
 	elif type(widget)==QChangeLog:

@@ -184,7 +184,6 @@ if open_gl_ok==True:
 			self.dy_layer_offset=0.05
 
 			self.draw_electrical_mesh=False
-			self.draw_device_cut_through=False
 			self.enable_draw_ray_mesh=False
 			self.plot_graph=False
 			self.plot_circuit=False

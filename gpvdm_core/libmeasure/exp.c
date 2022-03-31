@@ -41,46 +41,46 @@
 */
 void get_avg_np_pos(struct device *in,gdouble *nx,gdouble *px)
 {
-int x;
-int y;
-int z;
+	int x;
+	int y;
+	int z;
 
-gdouble navg=0.0;
-gdouble pavg=0.0;
-gdouble nsum=0.0;
-gdouble psum=0.0;
-struct newton_state *ns=&in->ns;
-struct dimensions *dim=&in->ns.dim;
+	gdouble navg=0.0;
+	gdouble pavg=0.0;
+	gdouble nsum=0.0;
+	gdouble psum=0.0;
+	struct newton_state *ns=&in->ns;
+	struct dimensions *dim=&in->ns.dim;
 
-for (z=0;z<dim->zlen;z++)
-{
-	for (x=0;x<dim->xlen;x++)
+	for (z=0;z<dim->zlen;z++)
 	{
-		for (z=0;z<dim->zlen;z++)
+		for (x=0;x<dim->xlen;x++)
 		{
-			navg+=(in->n[z][x][y]+in->nt_all[z][x][y]-in->n_orig[z][x][y])*dim->y[y];
-			pavg+=(in->p[z][x][y]+in->pt_all[z][x][y]-in->p_orig[z][x][y])*dim->y[y];
-			nsum+=(in->n[z][x][y]+in->nt_all[z][x][y]-in->n_orig[z][x][y]);
-			psum+=in->p[z][x][y]+in->pt_all[z][x][y]-in->p_orig[z][x][y];
+			for (z=0;z<dim->zlen;z++)
+			{
+				navg+=(in->n[z][x][y]+in->nt_all[z][x][y]-in->n_orig[z][x][y])*dim->y[y];
+				pavg+=(in->p[z][x][y]+in->pt_all[z][x][y]-in->p_orig[z][x][y])*dim->y[y];
+				nsum+=(in->n[z][x][y]+in->nt_all[z][x][y]-in->n_orig[z][x][y]);
+				psum+=in->p[z][x][y]+in->pt_all[z][x][y]-in->p_orig[z][x][y];
+			}
 		}
 	}
-}
 
-if (nsum!=0.0)
-{
-	*nx=navg/nsum;
-}else
-{
-	*nx=0.0;
-}
+	if (nsum!=0.0)
+	{
+		*nx=navg/nsum;
+	}else
+	{
+		*nx=0.0;
+	}
 
-if (psum!=0.0)
-{
-*px=pavg/psum;
-}else
-{
-*px=0.0;
-}
+	if (psum!=0.0)
+	{
+	*px=pavg/psum;
+	}else
+	{
+	*px=0.0;
+	}
 
 
 
@@ -92,11 +92,11 @@ if (psum!=0.0)
 */
 gdouble get_tot_photons_abs(struct device *in)
 {
-long double ret=0.0;
+	long double ret=0.0;
 
-ret=three_d_integrate(&(in->ns.dim), in->Gn);
+	ret=three_d_integrate(&(in->ns.dim), in->Gn);
 
-return ret;
+	return ret;
 }
 
 
@@ -107,11 +107,11 @@ return ret;
 */
 gdouble get_avg_relax_n(struct device *in)
 {
-long double ret=0.0;
+	long double ret=0.0;
 
-ret=three_d_avg(in, in->nrelax);
+	ret=three_d_avg(in, in->nrelax);
 
-return ret;
+	return ret;
 }
 
 /**
@@ -119,11 +119,11 @@ return ret;
 */
 gdouble get_avg_relax_p(struct device *in)
 {
-long double ret=0.0;
+	long double ret=0.0;
 
-ret=three_d_avg(in, in->prelax);
+	ret=three_d_avg(in, in->prelax);
 
-return ret;
+	return ret;
 }
 
 
@@ -133,34 +133,34 @@ return ret;
 */
 gdouble get_J_recom(struct device *in)
 {
-int x=0;
-int y=0;
-int z=0;
+	int x=0;
+	int y=0;
+	int z=0;
 
-gdouble Rtot=0.0;
-gdouble add=0.0;
-struct newton_state *ns=&in->ns;
-struct dimensions *dim=&in->ns.dim;
+	gdouble Rtot=0.0;
+	gdouble add=0.0;
+	struct newton_state *ns=&in->ns;
+	struct dimensions *dim=&in->ns.dim;
 
-gdouble dx=dim->y[1]-dim->y[0];
+	gdouble dx=dim->y[1]-dim->y[0];
 
 
 
-for (z=0;z<dim->zlen;z++)
-{
-	for (x=0;x<dim->xlen;x++)
+	for (z=0;z<dim->zlen;z++)
 	{
-		for (y=0;y<dim->ylen;y++)
+		for (x=0;x<dim->xlen;x++)
 		{
+			for (y=0;y<dim->ylen;y++)
+			{
 
-			add=(in->Rn[z][x][y]-in->Gn[z][x][y]-in->Rp[z][x][y]-in->Gn[z][x][y])*dx/2.0;
+				add=(in->Rn[z][x][y]-in->Gn[z][x][y]-in->Rp[z][x][y]-in->Gn[z][x][y])*dx/2.0;
 
-			Rtot+=add;
+				Rtot+=add;
+			}
 		}
 	}
-}
 
-return Rtot*Qe;
+	return Rtot*Qe;
 }
 
 
@@ -172,66 +172,66 @@ return Rtot*Qe;
 */
 gdouble get_avg_J_std(struct device *in)
 {
-int x=0;
-int y=0;
-int z=0;
+	int x=0;
+	int y=0;
+	int z=0;
 
-gdouble J=0.0;
-gdouble Javg=0.0;
-gdouble Jstd_dev=0.0;
-gdouble Jtot=0.0;
+	gdouble J=0.0;
+	gdouble Javg=0.0;
+	gdouble Jstd_dev=0.0;
+	gdouble Jtot=0.0;
 
-struct dimensions *dim=&in->ns.dim;
+	struct dimensions *dim=&in->ns.dim;
 
-for (z=0;z<dim->zlen;z++)
-{
-	for (x=0;x<dim->xlen;x++)
+	for (z=0;z<dim->zlen;z++)
 	{
-		for (y=0;y<dim->ylen;y++)
+		for (x=0;x<dim->xlen;x++)
 		{
-			Javg+=in->Jn[z][x][y]+in->Jp[z][x][y];
-		}
-	}
-}
-
-Javg/=(gdouble)dim->ylen;
-
-for (z=0;z<dim->zlen;z++)
-{
-	for (x=0;x<dim->xlen;x++)
-	{
-		for (y=0;y<dim->ylen;y++)
-		{
-			Jstd_dev+=pow(((in->Jn[z][x][y]+in->Jp[z][x][y])-Javg),2.0);
-		}
-	}
-}
-
-Jstd_dev/=(gdouble)dim->ylen;
-Jstd_dev=sqrt(Jstd_dev);
-
-for (z=0;z<dim->zlen;z++)
-{
-	for (x=0;x<dim->xlen;x++)
-	{
-		for (y=0;y<dim->ylen;y++)
-		{
-			J=in->Jn[z][x][y]+in->Jp[z][x][y];
-			if (fabs(J-Javg)<Jstd_dev*0.05)
+			for (y=0;y<dim->ylen;y++)
 			{
-				Jtot+=in->Jn[z][x][y]+in->Jp[z][x][y];
-
-
+				Javg+=in->Jn[z][x][y]+in->Jp[z][x][y];
 			}
 		}
 	}
-}
-Jtot/=(gdouble)dim->xlen;
-Jtot/=(gdouble)dim->ylen;
-Jtot/=(gdouble)dim->zlen;
+
+	Javg/=(gdouble)dim->ylen;
+
+	for (z=0;z<dim->zlen;z++)
+	{
+		for (x=0;x<dim->xlen;x++)
+		{
+			for (y=0;y<dim->ylen;y++)
+			{
+				Jstd_dev+=pow(((in->Jn[z][x][y]+in->Jp[z][x][y])-Javg),2.0);
+			}
+		}
+	}
+
+	Jstd_dev/=(gdouble)dim->ylen;
+	Jstd_dev=sqrt(Jstd_dev);
+
+	for (z=0;z<dim->zlen;z++)
+	{
+		for (x=0;x<dim->xlen;x++)
+		{
+			for (y=0;y<dim->ylen;y++)
+			{
+				J=in->Jn[z][x][y]+in->Jp[z][x][y];
+				if (fabs(J-Javg)<Jstd_dev*0.05)
+				{
+					Jtot+=in->Jn[z][x][y]+in->Jp[z][x][y];
 
 
-return Javg;
+				}
+			}
+		}
+	}
+	Jtot/=(gdouble)dim->xlen;
+	Jtot/=(gdouble)dim->ylen;
+	Jtot/=(gdouble)dim->zlen;
+
+
+	return Javg;
 }
 
 /**
@@ -242,10 +242,12 @@ return Javg;
 */
 gdouble get_avg_J(struct device *in)
 {
-gdouble Javg=0.0;
-Javg=(three_d_avg(in, in->Jn)+three_d_avg(in, in->Jp))/2.0;
+	gdouble Javg=0.0;
+	Javg+=three_d_avg(in, in->Jn);
+	Javg+=three_d_avg(in, in->Jp);
+	Javg+=three_d_avg(in, in->Jion);
 
-return Javg;
+	return Javg;
 }
 
 /**

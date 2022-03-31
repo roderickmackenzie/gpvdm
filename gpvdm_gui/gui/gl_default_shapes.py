@@ -20,7 +20,7 @@
 #   
 
 ## @package gl_default_shapes
-#  The gl_view_point class for the OpenGL display.
+#  The gl_default_shapes class for the OpenGL display.
 #
 
 import sys

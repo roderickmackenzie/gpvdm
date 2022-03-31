@@ -64,13 +64,18 @@ class equation_editor(QGroupBox):
 	changed = pyqtSignal()
 
 	def load(self):
+		print(self.json_path)
+		data=eval(self.json_path)
+		dos_data=data.find_object_by_id(self.uid)
+		dos_data=getattr(dos_data,self.append_path)
+
 		self.tab.blockSignals(True)
 
 		self.tab.clear()
 		self.tab.setHorizontalHeaderLabels([_("Function"), _("Enabled"), _("a"), _("b"), _("c")])
 		
 		row=0
-		for l in self.data.segments:
+		for l in dos_data.segments:
 			if (row+1)>self.tab.rowCount():
 				self.tab.insert_row()
 			self.add_row(row,l.function,l.function_enable,l.function_a,l.function_b,l.function_c)
@@ -78,10 +83,13 @@ class equation_editor(QGroupBox):
 
 		self.tab.blockSignals(False)
 
-	def __init__(self,name,data):
+	def __init__(self,name,json_path,uid,append_path):
 		QGroupBox.__init__(self)
-		self.data=data
+		self.json_path=json_path
+		self.uid=uid
+		self.append_path=append_path
 		self.name=name
+
 		self.setTitle(name)
 		self.setStyleSheet("QGroupBox {  border: 1px solid gray;}")
 		vbox=QVBoxLayout()
@@ -166,7 +174,11 @@ class equation_editor(QGroupBox):
 		self.changed.emit()
 		
 	def save(self):
-		self.data.segments=[]
+		data=eval(self.json_path)
+		dos_data=data.find_object_by_id(self.uid)
+		dos_data=getattr(dos_data,self.append_path)
+
+		dos_data.segments=[]
 		for i in range(0,self.tab.rowCount()):
 			a=shape_homo_lumo_item()
 			a.function=self.tab.get_value(i, 0)
@@ -174,7 +186,7 @@ class equation_editor(QGroupBox):
 			a.function_a=self.tab.get_value(i, 2)
 			a.function_b=self.tab.get_value(i, 3)
 			a.function_c=self.tab.get_value(i, 4)
-			self.data.segments.append(a)
+			dos_data.segments.append(a)
 		gpvdm_data().save()
 
 
@@ -494,10 +506,10 @@ class dos_editor(QWidget):
 
 		self.status_bar.showMessage("Trap density: LUMO="+tot_lumo_str+" m-3,  HOMO="+tot_homo_str+" m-3")
 
-	def __init__(self,json_path,uid):
+	def __init__(self,json_path_str,uid):
 		QWidget.__init__(self)
 
-		json_path=eval(json_path)
+		json_path=eval(json_path_str)
 		self.dos_data=json_path.find_object_by_id(uid)
 
 
@@ -508,10 +520,10 @@ class dos_editor(QWidget):
 		edit_boxes=QWidget()
 		vbox=QVBoxLayout()
 
-		self.lumo=equation_editor("LUMO",self.dos_data.complex_lumo)
+		self.lumo=equation_editor("LUMO",json_path_str,uid,"complex_lumo")
 		vbox.addWidget(self.lumo)
 		
-		self.homo=equation_editor("HOMO",self.dos_data.complex_homo)
+		self.homo=equation_editor("HOMO",json_path_str,uid,"complex_homo")
 		vbox.addWidget(self.homo)
 		
 		self.plot=plot_widget(enable_toolbar=False)

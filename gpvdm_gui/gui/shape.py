@@ -250,7 +250,8 @@ class shape_display_options(json_base):
 		self.var_list=[]
 		self.var_list.append(["show_solid",True])
 		self.var_list.append(["show_mesh",True])
-		self.var_list.append(["show_cut_through",False])
+		self.var_list.append(["show_cut_through_x",False])
+		self.var_list.append(["show_cut_through_y",False])
 		self.var_list.append(["hidden",False])
 		self.var_list_build()
 

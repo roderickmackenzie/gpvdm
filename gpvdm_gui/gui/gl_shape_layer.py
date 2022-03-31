@@ -95,15 +95,19 @@ class shape_layer():
 			a.triangles.extend(shape0.triangles.data)
 
 		self.gl_objects_add(a)
-		slice_plane=-1e6
-		if shape0.display_options.show_cut_through==True:
-			slice_plane=0.3
+		slice_plane_x=-1e6
+		slice_plane_y=-1e6
+		if shape0.display_options.show_cut_through_x==True:
+			slice_plane_x=0.3
+
+		if shape0.display_options.show_cut_through_y==True:
+			slice_plane_y=0.3
 
 		if shape0.display_options.show_solid==True:
-			self.objects[-1].compile("triangles_solid",[shape0.color_r,shape0.color_g,shape0.color_b,0.5],slice_plane=slice_plane)
+			self.objects[-1].compile("triangles_solid",[shape0.color_r,shape0.color_g,shape0.color_b,0.5],slice_plane_x=slice_plane_x, slice_plane_y=slice_plane_y)
 
 		if shape0.display_options.show_mesh==True:
-			self.objects[-1].compile("triangles_open",[shape0.color_r*0.9,shape0.color_g*0.9,shape0.color_b*0.9,shape0.color_alpha],line_width=3,slice_plane=slice_plane)
+			self.objects[-1].compile("triangles_open",[shape0.color_r*0.9,shape0.color_g*0.9,shape0.color_b*0.9,shape0.color_alpha],line_width=3,slice_plane_x=slice_plane_x, slice_plane_y=slice_plane_y)
 
 		
 		#now itterate over other shapes in this shape

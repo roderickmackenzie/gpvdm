@@ -312,8 +312,6 @@ class gl_objects():
 					self.paint_from_array(o)
 				else:
 					self.paint_open_triangles_from_array(o,false_color=False,line_width=2)
-			elif o.type=="solid_and_mesh_cut_through":
-				self.paint_from_array_cut_through(o)
 			elif o.type=="box":
 				self.box(o)
 			elif o.type=="marker":

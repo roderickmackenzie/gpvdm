@@ -148,7 +148,7 @@ class gl_base_object(json_base):
 			self.gl_line_width=[]
 			#self.gl_array_false_colors_float32=[]
 
-	def compile(self,gl_render_type,color,line_width=3,slice_plane=-1e6):
+	def compile(self,gl_render_type,color,line_width=3,slice_plane_x=-1e6,slice_plane_y=-1e6):
 		self.points=[]
 		colors=[]
 		false_colors=[]
@@ -163,7 +163,7 @@ class gl_base_object(json_base):
 			b.gl_array_type=GL_TRIANGLES
 			points_per_tri=3
 			for t in self.triangles:
-				if t.xyz0.x>slice_plane:
+				if t.xyz0.x>slice_plane_x and t.xyz0.y>slice_plane_y:
 					self.points.append([t.xyz0.x,t.xyz0.y,t.xyz0.z])
 					colors.append(color)
 					false_colors.append(false_color)
@@ -177,7 +177,7 @@ class gl_base_object(json_base):
 			b.gl_array_type=GL_LINES
 			points_per_tri=6
 			for t in self.triangles:
-				if t.xyz0.x>slice_plane:
+				if t.xyz0.x>slice_plane_x and t.xyz0.y>slice_plane_y:
 					self.points.append([t.xyz0.x,t.xyz0.y,t.xyz0.z])
 					colors.append(color)
 					false_colors.append(false_color)

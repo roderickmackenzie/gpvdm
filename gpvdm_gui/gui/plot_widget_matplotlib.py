@@ -207,8 +207,8 @@ class plot_widget_matplotlib():
 				elif self.data[i].plot_type=="contour":
 					im=self.ax[0].contourf( Y,X, Z,color=col)
 				elif self.data[i].plot_type=="heat":
-					my_max,my_min=self.data[0].dat_file()
-					im=self.ax[0].plot_surface(Y,X, Z, linewidth=0, vmin=my_min, vmax=my_max,cmap="hot", antialiased=False)
+					my_max,my_min=self.data[0].max_min()
+					im=self.ax[0].plot_surface(Y,X, Z, linewidth=0, vmin=my_min, vmax=my_max,cmap="hsv", antialiased=False)
 
 				self.ax[0].legend()
 				#im=self.ax[0].contourf( Y,X, Z,color=col)

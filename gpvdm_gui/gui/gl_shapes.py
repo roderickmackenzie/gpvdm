@@ -135,42 +135,6 @@ class gl_shapes:
 			glDisableClientState(GL_COLOR_ARRAY)
 			glDisable(GL_BLEND)
 
-	def paint_from_array_cut_through(self,o):
-		self.set_color(o)
-
-		min_vec=triangles_get_min(o.triangles)
-		max_vec=triangles_get_max(o.triangles)
-
-
-		i=0
-
-		for xyz in o.xyz:
-			glPushMatrix()
-			glTranslatef(xyz.x,xyz.y,xyz.z)
-			glBegin(GL_TRIANGLES)
-			#for t in o.triangles:
-
-			for t in o.triangles:
-				plot=True
-				if t.xyz0.x==min_vec.x and t.xyz1.x==min_vec.x and t.xyz2.x==min_vec.x:
-					plot=False
-
-				if t.xyz0.y==max_vec.y and t.xyz1.y==max_vec.y and t.xyz2.y==max_vec.y:
-					plot=False
-
-				if t.xyz0.y==min_vec.y and t.xyz1.y==min_vec.y and t.xyz2.y==min_vec.y:
-					plot=False
-
-				if t.xyz0.z==min_vec.z and t.xyz1.z==min_vec.z and t.xyz2.z==min_vec.z:
-					plot=False
-
-				if plot==True:
-					glVertex3f(t.xyz0.x,t.xyz0.y,t.xyz0.z)
-					glVertex3f(t.xyz1.x,t.xyz1.y,t.xyz1.z)
-					glVertex3f(t.xyz2.x,t.xyz2.y,t.xyz2.z)
-
-			glEnd()
-			glPopMatrix()
 
 	def paint_open_triangles_from_array(self,o,false_color=True,line_width=5):
 		

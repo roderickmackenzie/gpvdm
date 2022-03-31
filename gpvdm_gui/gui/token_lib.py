@@ -550,24 +550,31 @@ def build_token_lib():
 	lib.append(my_data("image_boundary_y1_color","rgb",_("Color"),"QColorPicker_one_line"))
 
 	#math.inp
-	lib.append(my_data("maxelectricalitt_first","au",_("Max Electrical itterations (first step)"),"QLineEdit"))
+	lib.append(my_data("text_newton_first_itt","au",_("<b>Fist iteration</b>"),"QLabel"))
+	lib.append(my_data("maxelectricalitt_first","au",_("Max Electrical iterations (first step)"),"QLineEdit"))
 	lib.append(my_data("electricalclamp_first","au",_("Electrical clamp (first step)"),"QLineEdit"))
-	lib.append(my_data("math_electrical_error_first","au",_("Desired electrical solver error (first step)"),"QLineEdit"))
-	lib.append(my_data("maxelectricalitt","au",_("Max electrical itterations"),"QLineEdit"))
+	lib.append(my_data("math_electrical_error_first","au",_("Desired solver error (first step)"),"QLineEdit"))
+
+	lib.append(my_data("text_newton_later_itt","au",_("<b>Later iterations</b>"),"QLabel"))
+	lib.append(my_data("maxelectricalitt","au",_("Max electrical iterations"),"QLineEdit"))
 	lib.append(my_data("electricalclamp","au",_("Electrical clamp"),"QLineEdit"))
-	lib.append(my_data("electricalerror","au",_("Minimum electrical error"),"QLineEdit"))
+	lib.append(my_data("electricalerror","au",_("Desired solver error"),"QLineEdit"))
 
 
-
+	lib.append(my_data("text_newton_exit_strategy","au",_("<b>Exit strategy</b>"),"QLabel"))
 	lib.append(my_data("newton_clever_exit",_("True/False"),"Newton solver clever exit","gtkswitch"))
 	lib.append(my_data("newton_min_itt","au",_("Newton minimum iterations"),"QLineEdit"))
+
+	lib.append(my_data("text_newton_solver_type","au",_("<b>Solver type</b>"),"QLabel"))
 	lib.append(my_data("complex_solver_name",_("dll name"),_("Complex matrix solver to use"),"QLineEdit"))
+
 	lib.append(my_data("math_stop_on_convergence_problem",_("True/False"),_("Quit on convergence problem"),"gtkswitch"))
 	lib.append(my_data("math_stop_on_inverted_fermi_level",_("True/False"),_("Quit on inverted Fermi-level"),"gtkswitch"))
+	lib.append(my_data("text_newton_output","au",_("<b>Output</b>"),"QLabel"))
 
 	#pos
-	lib.append(my_data("pos_max_ittr","au",_("Poisson solver max itterations"),"QLineEdit"))
-	lib.append(my_data("pos_min_error","au",_("Minimum electrical error"),"QLineEdit"))
+	lib.append(my_data("pos_max_ittr","au",_("Poisson solver max iterations"),"QLineEdit"))
+	lib.append(my_data("pos_min_error","au",_("Desired solver error"),"QLineEdit"))
 	lib.append(my_data("posclamp","au",_("Poisson clamping"),"QLineEdit"))
 	lib.append(my_data("math_enable_pos_solver",_("True/False"),_("Enable poisson solver"),"gtkswitch"))
 	lib.append(my_data("pos_dump_verbosity","au",_("Output verbosity to disk"),"QComboBoxLang",defaults=[["0",_("Nothing")],[("1"),_("Write everything to disk")]]))

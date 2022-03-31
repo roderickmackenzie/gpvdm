@@ -19,8 +19,8 @@
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #   
 
-## @package gl_view_point
-#  The gl_view_point class for the OpenGL display.
+## @package gl_graph
+#  The gl_graph class for the OpenGL display.
 #
 
 import os

@@ -92,9 +92,13 @@ class gl_object_editor():
 		self.menu_show_mesh.triggered.connect(self.menu_toggle_object_view)
 		self.menu_show_mesh.setCheckable(True)
 
-		self.menu_show_cut_through=view.addAction(_("Show cut through"))
-		self.menu_show_cut_through.triggered.connect(self.menu_toggle_object_view)
-		self.menu_show_cut_through.setCheckable(True)
+		self.menu_show_cut_through_x=view.addAction(_("Show cut through x"))
+		self.menu_show_cut_through_x.triggered.connect(self.menu_toggle_object_view)
+		self.menu_show_cut_through_x.setCheckable(True)
+
+		self.menu_show_cut_through_y=view.addAction(_("Show cut through y"))
+		self.menu_show_cut_through_y.triggered.connect(self.menu_toggle_object_view)
+		self.menu_show_cut_through_y.setCheckable(True)
 
 		self.menu_hidden=view.addAction(_("Hidden"))
 		self.menu_hidden.triggered.connect(self.menu_toggle_object_view)
@@ -102,7 +106,8 @@ class gl_object_editor():
 
 		self.menu_show_solid.setChecked(obj.display_options.show_solid)
 		self.menu_show_mesh.setChecked(obj.display_options.show_mesh)
-		self.menu_show_cut_through.setChecked(obj.display_options.show_cut_through)
+		self.menu_show_cut_through_x.setChecked(obj.display_options.show_cut_through_x)
+		self.menu_show_cut_through_y.setChecked(obj.display_options.show_cut_through_y)
 		self.menu_hidden.setChecked(obj.display_options.hidden)
 
 		menu.exec_(event.globalPos())
@@ -116,7 +121,8 @@ class gl_object_editor():
 			if s!=None:
 				s.display_options.show_solid=self.menu_show_solid.isChecked()
 				s.display_options.show_mesh=self.menu_show_mesh.isChecked()
-				s.display_options.show_cut_through=self.menu_show_cut_through.isChecked()
+				s.display_options.show_cut_through_x=self.menu_show_cut_through_x.isChecked()
+				s.display_options.show_cut_through_y=self.menu_show_cut_through_y.isChecked()
 				s.display_options.hidden=self.menu_hidden.isChecked()
 				data.save()
 		self.force_redraw()

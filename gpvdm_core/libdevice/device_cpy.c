@@ -284,6 +284,8 @@ void device_cpy(struct simulation *sim,struct device *out,struct device *in)
 		cpy_zxy_long_double(dim, &(out->Jp_x_diffusion), &(in->Jp_x_diffusion));
 		cpy_zxy_long_double(dim, &(out->Jp_x_drift), &(in->Jp_x_drift));
 
+		cpy_zxy_long_double(dim, &(out->Jion), &(in->Jion));
+
 	//Applied voltages
 		cpy_zx_long_double(dim, &(out->Vapplied_y0),&(in->Vapplied_y0));
 		cpy_zx_long_double(dim, &(out->Vapplied_y1),&(in->Vapplied_y1));

@@ -289,6 +289,7 @@ void device_free(struct simulation *sim,struct device *dev)
 		free_zxy_long_double(dim,&dev->Jp_x_drift);
 		free_zxy_long_double(dim,&dev->Jp_x_diffusion);
 
+		free_zxy_long_double(dim,&dev->Jion);
 	//Applied voltages
 		free_zx_gdouble(dim,&dev->Vapplied_y0);
 		free_zx_gdouble(dim,&dev->Vapplied_y1);
