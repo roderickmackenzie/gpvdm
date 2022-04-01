@@ -1,0 +1,45 @@
+\subsection{Simulating disordered devices without traps}
+\emph{This section needs to be rewritten, to more generally talk about recombination and not just Langevin recombination. For a more complete view watch the video below}
+
+Related YouTube videos:
+\begin{figure}[H]
+
+\begin{tabular}{ c l }
+
+\includegraphics[width=0.05\textwidth]{./images/youtube.png}
+
+&
+\href{https://www.youtube.com/watch?v=2EHfulz7UDU}{Please stop simulating disordered semiconductors without trap states.}
+
+\end{tabular}
+\end{figure}
+
+
+In my view Langevin recombination is in general a really bad way to describe recombination in OPV devices.  This is because the mechanism assumes Brownian motion of electrons and holes and that charge carriers of opposite polarity will recombine when they get close enough to fall into each others electrostatic field.  This picture assumes the charge carriers are free and completely neglects the influence of trap states.  I therefore think Langeving recombination should be avoided in OPVs.
+But in dx.doi.org/10.1021/jp200234m you used Langevin recombination - why?: In this paper I allowed the mobility in the Langevin expression to vary as a function of carrier density i.e.
+\begin{equation}
+R_{free}=q k_{r}\frac{(\alpha \mu_e(n)+\beta \mu_h(n)) n_{tot} p_{tot}}{2\epsilon_0\epsilon_r}
+\end{equation}
+
+I then by defining a mobility edge and assuming any carrier below the mobility edge could not move and any carrier above it could.  I could define the averaged electron/hole mobility as: 
+
+\begin{equation}
+\mu_e(n)=\frac{\mu_e^0 n_{free}}{n_{free}+n_{trap}}
+\end{equation}
+
+and
+
+\begin{equation}
+\mu_h(n)=\frac{\mu_h^0 p_{free}}{p_{free}+p_{trap}}
+\end{equation}
+
+and if one assumes the density of free charge carriers is much smaller than the density of trapped charge carriers one can arrive at
+
+\begin{equation}
+R(n,p)=q k_{r}\frac{(\alpha \mu_e^0 n_{free} p_{trap}+\beta \mu_h p_{free} n_{trap}) }{2\epsilon_0\epsilon_r}
+\end{equation}
+
+Thus by making the mobility carrier density dependent we arrive at an expression for Langeving recombination that's dependent upon the density of free and trapped carriers (i.e. $n_{free} p_{trap}$ and $ p_{free} n_{trap}$) This is in principle the same as SRH recombination (i.e. a process involving free electrons (holes) recombining with trapped holes (electrons)).  This was a nice simple approach and it worked quite well in the steady state.  However, to make this all work I had to assume all electrons (holes) at any given position in space had a single quasi-Fermi level, which meant they were all in equilibrium with each other.  For this to be true, all electrons (holes) would have to be able to exchange energy with all other electrons (holes) at that position in space and have an infinite charge carrier thermalization velocity.  This seemed like an OK assumption in steady state when electrons (holes) had time to exchange energy, however once we start thinking about things happening in time domain, it becomes harder to justify because there are so many trap states in the device it is unlikely that charge carriers will be able to act as one equilibrated gas with one quasi-Fermi level.  On the other hand the SRH mechanism does not make this assumption, so it is probably a better description of recombination/trapping.  I would also add that I have never found a situation in OPV device modeling where SRH recombination was unable to describe the device in question.  Conclusion: SRH is better than Langevin.  
+
+
+

@@ -118,7 +118,22 @@ Often when running a parameter scan one wants to set a constant value, this can 
 \label{fig:scanconst}
 \end{figure}
 
+\subsubsection{The equivalent of loops}
+Often when scanning over a parameter range one may want to simulate so many parameters that it is not practical to type them in.  In this case gpvdm has the equivalent of a loop. So for example if one wanted to change a value from 100 to 400 in steps of 1, one could type
 
+\begin{listing}[H]
+\begin{minted}[frame=single,
+               framesep=3mm,
+               linenos=false,
+               xleftmargin=21pt,
+               tabsize=4]{matlab}
+
+[100 400 1]
+
+\end{minted}
+\caption{JSON example} 
+\label{json-example}
+\end{listing}
 
 \subsubsection{Limitations of the scan window}
 Although the scan window is convenient in that it provides a quick way to scan simulation parameters, it is by nature rather limited in terms of flexibility. If you want to do complex scans were multiple parameters are changed or to programmatically collect data from each simulation then you can use the python or matlab interfaces to gpvdm.  These are described in the next section.

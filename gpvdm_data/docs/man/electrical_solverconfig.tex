@@ -1,8 +1,6 @@
 \newpage
-\subsection{Configuring the electrical solver}
+\section{Configuring the electrical solver}
 \label{sec:solverconfig}
-
-
 
 
 Behind gpvdm are a series of non-linear solvers that solve the electrical equations in a highly efficient way.  These can be configured by going to the electrical tab. There you will see the Drift diffusion button, to the left of that is an arrow. If you click on this it will bring up a window which allows you to configure the "Newton solver". The options are described below.
@@ -55,16 +53,17 @@ Related YouTube videos:
 
 \end{itemize}
 
-\subsubsection{Solver stability}
+\subsection{Solver stability}
 \label{sec:solverstability}
 
-\emph{Avoiding very big and very small numbers}: Try opening up MATLAB (Octave if you are on Linux) and typing in the following equation $((1e-1+1e1)-1e1)/1e-1$. Before pressing enter, try to evaluate it in your head. the $1e1$ and the $-1e1$ cancel leaving $\frac{1e-1}{1e-1}$ which equates to $1$.  Now try replacing the powers to 1 with to the 19, so type in $((1e-19+1e19)-1e19)/1e-19$, again evaluate this in your head.  Again , $1e19$ and the $-1e19$ cancel leaving $\frac{1e-19}{1e-19}$ which equates to $1$  Now let the computer evaluate the expression.  In fact this time the computer does not give you $1$ but gives you $0$. Double check that you typed it in correctly... you did so what is happening. Why is the computer giving me an answer which is 100\% wrong.  The answer is easy, computers have a limited precision. This means that they can only store a limited number of decimal places. On a modern PC it's about 15 decimal places. After this the computer starts ignoring the numbers.  So when we added $(1e-19+1e19)$ the computer could not keep track of the decimal places so it assumed that the answer was exactly $1.000000000000000e19$ and not $1.0000000000000000001e19$, then when we subtracted $-1e19$ from the answer the computer gave us zero instead of $1e-19$.  The $1e-19$ was lost in the precision.
+\subsubsection{Avoiding very big and very small numbers}
+Try opening up MATLAB (Octave if you are on Linux) and typing in the following equation $((1e-1+1e1)-1e1)/1e-1$. Before pressing enter, try to evaluate it in your head. the $1e1$ and the $-1e1$ cancel leaving $\frac{1e-1}{1e-1}$ which equates to $1$.  Now try replacing the powers to 1 with to the 19, so type in $((1e-19+1e19)-1e19)/1e-19$, again evaluate this in your head.  Again , $1e19$ and the $-1e19$ cancel leaving $\frac{1e-19}{1e-19}$ which equates to $1$  Now let the computer evaluate the expression.  In fact this time the computer does not give you $1$ but gives you $0$. Double check that you typed it in correctly... you did so what is happening. Why is the computer giving me an answer which is 100\% wrong.  The answer is easy, computers have a limited precision. This means that they can only store a limited number of decimal places. On a modern PC it's about 15 decimal places. After this the computer starts ignoring the numbers.  So when we added $(1e-19+1e19)$ the computer could not keep track of the decimal places so it assumed that the answer was exactly $1.000000000000000e19$ and not $1.0000000000000000001e19$, then when we subtracted $-1e19$ from the answer the computer gave us zero instead of $1e-19$.  The $1e-19$ was lost in the precision.
 
 All computers are affected by this no matter how powerful they are, this has important implications when solving device equations.  If you have too big a spread of numbers in your simulation (matrix/Jacobian) the computer won't be able to solve it easily.  So if you have very low values of mobility say $1e-19$ and very big values say $1e5$ the computer wills start to have problems solving the electrical problem. There fore generally try to reduce the spread of parameters in you model. This is important when simulating insulators.
-\\
-\\
-\emph{Avoid zeros}: Zeros are bad because they cause divide by zero errors. So don't have zero mobilities, carrier cross sections, tail slopes or densities of states.  It's fine to have zero recombination constants though.
-\\
-\\
-\emph{Very big steps in the band gap}: Big steps in the band gap will produce very small and very large carrier densities - see \emph{Avoiding very big and very small numbers} above.
-\\
+
+\subsubsection{Avoid zeros}
+Zeros are bad because they cause divide by zero errors. So don't have zero mobilities, carrier cross sections, tail slopes or densities of states.  It's fine to have zero recombination constants though.
+
+\subsubsection{Very big steps in the band gap}
+Big steps in the band gap will produce very small and very large carrier densities - see \emph{Avoiding very big and very small numbers} above.
+

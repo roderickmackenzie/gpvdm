@@ -1,4 +1,4 @@
-\subsection{Finite Difference Time Domain}
+\section{Finite Difference Time Domain}
 Finite Difference Time Domain (FDTD) is a very computationally intensive way to simulate the propagation of electromagnetic radiation.  It solves full on Maxwell's equations in time domain making no assumptions.  This approach has only been possible in the last few years with the increase in computing power.
 
 Food for thought: Before using FDTD, you should be aware that in many cases when simulating a device, using FDTD is like using a sledge hammer to crack a nut.  For example when simulating a standard solar cell, one could use FDTD, this would involve simulating a wave front entering the cell through the top contact in time domain and waiting until the optical field reaches steady state then calculating how much light is being absorbed. This would require thousands of time domain simulation steps per wavelength.  However usually one is not interested in the time evolution of light in a solar cell as sunlight varies very slowly indeed, so one is better off not using a steady state method but other methods which assume light has already reached steady state, such as the transfer matrix method discussed above.
@@ -25,7 +25,7 @@ Related YouTube videos:
 
 
 
-\subsubsection{Running an FDTD simulation}
+\subsection{Running an FDTD simulation}
 There is a demo FDTD simulation in the new simulations window. To open this click on new simulation in the file ribbon of the main window. The window in figure \ref{fig:fdtdnewdemo} will appear. Double click on the "Photonic-xtal FDTD" simulation to open it.  Save the simulation on your local hard disk, don't save it on a remote disk, USB disk or OneDrive they will be too slow to run the simulation.
 
 \begin{figure}[H]
@@ -60,7 +60,7 @@ After the simulation has run click on the \emph{Output} tab and \ref{fig:fdtdout
 \label{fig:fdtdsnapshots}
 \end{figure}
 
-\subsubsection{Manipulating objects in gpvdm}
+\subsection{Manipulating objects in gpvdm}
 Now close the snapshot viewer and go back to the main simulation window and select the \emph{Device tab}.  On the left of the window, you will see four buttons \emph{xy}, \emph{yz}, \emph{xz} and for little square boxes this can be seen in figure \ref{fig:fdtdmainwindow}. Try clicking them to see what happens to the view of the device.  After you have had a play select the \emph{xz} option, so that the screen looks like the left hand side of \ref{fig:fdtdmovingobjects}.  If you left click on the lenses, you will notice that you will be able to move them around. Try to move the lenses back in the device so that your device looks more like the right hand side of figure \ref{fig:fdtdmainwindow}.  If you hold shift down while dragging an object you can rotate it on the spot.
 
 If you right click on the lenses and select \emph{Edit} you will be able to bring up the object Editor.  This shows the user all the object properties, this is visible in figure \ref{fig:objectviewer}. Try changing the object type from $convex\_lens$ to $concave\_ lens$ by clicking the edit button and rerunning the simulation.  If you want to add your own shapes to the shape data base see section \ref{sec:shapedatabase}. Using this window you can also change the material which is used in the FDTD simulation, the color of the object as well as its position or rotational angle.
@@ -101,10 +101,10 @@ The \emph{shape enabled} button enables you to turn off the shape if you don't w
 \label{fig:objectviewer}
 \end{figure}
 
-\subsubsection{Manipulating light sources in gpvdm}
+\subsection{Manipulating light sources in gpvdm}
  Also visible in figure \ref{fig:fdtdmovingobjects} is the light source given by the green arrow. Try moving this more forward in the device.
 
-\subsubsection{Theoretical background}
+\subsection{Theoretical background}
 References for this section are \cite{FDTD_Schneider}. This section of the manual aims to describe the FDTD code in full with verbose derivations to help understanding/pick up errors.
 
 Ampere’s law is given as  \cite{FDTD_Schneider}

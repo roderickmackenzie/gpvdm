@@ -1,8 +1,8 @@
-\newpage
-\section{Simulation modes and simulation editors}
+\chapter{Simulation modes and simulation editors}
 \label{sec:simmodes}
 
-Gpvdm has various plugins which enable the base simulation code to perform a variety of simulation types. For example there is a plugin to perform steady state JV simulations, another plugin to perform frequency domain simulations, and another to calculate the Quantum Efficiency etc... In the simulation editors ribbon (see \ref{fig:simeditors}) you can see the icons for each plugin. By clicking on an icon in this ribbon you will be able to edit how the plugin performs the various simulation types.  For example under the JV plugin editor one can change the start/stop voltages of a voltage sweep.  The simulation model ribbon shown in figure \ref{fig:simmodes} enables the user to select which simulation mode is run.  You can see in the image that the "JV curve" icon is depressed which means when the user clicks run, a JV curve will be simulated. 
+Gpvdm has various plugins which enable the base simulation code to perform a variety of simulation types. For example there is a plugin to perform steady state JV simulations, another plugin to perform frequency domain simulations, and another to calculate the Quantum Efficiency etc... In the simulation editors ribbon (see \ref{fig:simeditors}) you can see the icons for each plugin. By clicking on an icon in this ribbon you will be able to edit how the plugin performs the various simulation types.  For example under the JV plugin editor one can change the start/stop voltages of a voltage sweep.  The simulation model ribbon shown in figure \ref{fig:simmodes} enables the user to select which simulation mode is run.  You can see in the image that the "JV curve" icon is depressed which means when the user clicks run, a JV curve will be simulated.
+
 \begin{figure}[H]
 \centering
 \includegraphics[width=1.0\textwidth]{./images/ribbon_sim_editors.png}
@@ -19,7 +19,7 @@ Each plugin editor can generate multiple simulation modes.  For example the time
 \label{fig:simmodes}
 \end{figure}
 
-\subsection{JV editor}
+\section{JV editor}
 The JV editor icon in figure \ref{fig:simeditors} will bring up the JV editor window see figure \ref{fig:jvcurveeditor}. This window can be used to set the start and stop voltage of simulations. You can set stop currents and the by how much the voltage step grows each simulation step as well as other parameters.
 
 \begin{figure}[H]
@@ -29,7 +29,7 @@ The JV editor icon in figure \ref{fig:simeditors} will bring up the JV editor wi
 \label{fig:jvcurveeditor}
 \end{figure}
 
-\subsection{Time domain editor}
+\section{Time domain editor}
 Related YouTube videos:
 \begin{figure}[H]
 
@@ -79,7 +79,7 @@ Figure \ref{fig:timedomaineditor2} shows different tabs in of the time domain ed
 \label{fig:timedomaineditor2}
 \end{figure}
 
-\subsection{Suns-Voc editor}
+\section{Suns-Voc editor}
 The Suns-Voc plugin can be used to calculate how open circuit voltage changes as a function of light intensity.  This can be useful for understanding tail slope and disorder in devices.  A picture of the suns-voc editor window can be seen below in figure \ref{fig:sunsvoceditor}.  The window can be used to set the start and stop light intensity.
 
 \begin{figure}[H]
@@ -90,7 +90,7 @@ The Suns-Voc plugin can be used to calculate how open circuit voltage changes as
 \end{figure}
 
 
-\subsection{Suns-Jsc editor}
+\section{Suns-Jsc editor}
 The Jsc editor can be used to configure suns-Jsc simulations. It enables you to set the start light intensity, stop light intensity and how big the steps are. This is shown in figure \ref{fig:sunsjsceditor}.
 
 \begin{figure}[H]
@@ -101,7 +101,7 @@ The Jsc editor can be used to configure suns-Jsc simulations. It enables you to 
 \end{figure}
 
 
-\subsection{Frequency domain editor}
+\section{Frequency domain editor}
 The frequency domain editor allows you to configure frequency domain simulations. This is shown in figure \ref{fig:fxdomaineditor}. On the right of the window you can see the frequency points which will be simulated. These are also displayed on the graph to the right of the window.  Notice that in the figure there are multiple simulations configured, IMPS, IMVS, IS and "test".  Each of these simulations will appear as an separate simulation mode in the simulation mode ribbon.
 
 Related YouTube videos:
@@ -125,7 +125,7 @@ Related YouTube videos:
 \label{fig:fxdomaineditor}
 \end{figure}
 
-\subsection{Quantum efficiency editor}
+\section{Quantum efficiency editor}
 The quantum efficiency editor simulates both EQE and IQE.  The configuration window can be used to set the voltage at which EQE and IQE are performed.
 \begin{figure}[H]
 \centering

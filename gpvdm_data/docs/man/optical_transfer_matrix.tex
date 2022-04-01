@@ -1,7 +1,7 @@
-\subsection{Transfer matrix model}
+\section{Transfer matrix model}
 The transfer matrix model is used for simulating external light incident on the device. It assumes light hits the device normal to the surface and the light has reached steady state. This method is good for understanding optical absorption, reflection and transition in structures such as solar cells, optical filters or sensors.  In general any structure where the structure can generally be described as 1D. There are other methods which can be used for this such as FDTD, however general speaking the transfer matrix model will be orders of magnitude faster.
 
-\subsubsection{The user interface}
+\subsection{The user interface}
 This simulation can be reached from the file ribbon and selection "Optical simulation".  If you click "Run optical simulation" (see \ref{fig:transfermatrix0}) the distribution of light within the structure will be calculated as a function of position and wavelength. You can see from the top of the figure that there are various simulation modes. The full transfer matrix method is selected by selecting "Transfer matrix", this will do full optical simulation.  There are also other simplified simulation modes which allow the user to explore more simple charge carrier generation profiles and answer "what if" questions.
 
 \begin{itemize}
@@ -55,7 +55,7 @@ The optical simulation window has various tabs which can be used to explore how 
 
 
 
-\subsubsection{Theory of the transfer matrix method}
+\subsection{Theory of the transfer matrix method}
 On the left of the interface the electric field is given by
 
 \begin{equation}
@@ -98,7 +98,7 @@ H^{y}_{2}=\frac{k}{\omega \mu}E^{+}_{2} e^{-j k_2 z}-\frac{k}{\omega \mu} E^{-}_
 \end{equation}
 
 
-\subsubsection{Refractive index and absorption}
+\subsection{Refractive index and absorption}
 \begin{equation}
 E(z,t)=Re(E_0 e^{j(-kz+\omega t)})= Re(E_0 e^{j(\frac{-2 \pi (n+j\kappa)}{\lambda}z + \omega t)})=e^{\frac{2\pi\kappa z}{\lambda}}Re(E_0 e^{\frac{j(-2 \pi (n+j\kappa)}{\lambda}z +\omega t})
 \end{equation}

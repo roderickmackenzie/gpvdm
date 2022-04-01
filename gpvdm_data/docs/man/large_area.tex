@@ -1,5 +1,4 @@
-\newpage
-\section{Large area device simulation}
+\chapter{Large area device simulation}
 \label{ref:la}
 Gpvdm primarily focuses on drift diffusion modelling of small area device such as solar cells and OFETs. Drift and diffusion simulations are good at describing the microscopic operation of devices. They allow you to understand how carriers, potential and recombination interact on the nanometer scale.  However, sometimes one wants to simulate large area devices such as printed substrates spanning over many square centimetres.  For this type of simulation one needs to use less detailed and more efficient circuit models, this section describes how to do that.
 
@@ -23,7 +22,7 @@ Related YouTube videos:
 
 
 
-\subsection{Designing contacts for large area devices}
+\section{Designing contacts for large area devices}
 A common problem is designing large area contacts for solar cells.  This paper \cite{solak2021understanding} gives an overview of such a problem.   To start designing large area contacts open the new simulation window in the file ribbon, and select the \emph{Large area hexagonal contact} simulation (see figure \ref{fig:newsimlargeareacontact}).  Once you have opened it you should get a window which looks like figure \ref{fig:basecontactsimulation}.  This simulation consists for a hexagonal solver contact printed on top of a PEDOT substrate.  We are going to find out how the resistance of this contact varies as a function of position.
 
 
@@ -100,6 +99,6 @@ The scanning probe microscopy editor can be found in the \emph{Simulation Editor
 \label{fig:spmeditor}
 \end{figure}
 
-\subsection{Simulating large area solar cells}
+\section{Simulating large area solar cells}
 
 

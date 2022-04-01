@@ -1,7 +1,6 @@
-\newpage
-\section{Input files and the databases}
+\chapter{Input files and the databases}
 
-\subsection{the .gpvdm simulation file format}
+\section{the .gpvdm simulation file format}
 \label{sec:gpvdmfileformat} 
 The .gpvdm file is simply a zip file. If you rename the file so to be called gpvdm.zip you will be able to open it in windows explorer or your favourite zip viwer.  Inside the .gpvdm file is another file called sim.json. You can view this file in any text editor but the file is quite long so I recommend you use firefox to view it as it has a built in json viewer.  Json is a simple way of storing text and configuration information first developed for Java, you can see examples here: \url{https://json.org/example.html}. Or below in code listing \ref{json-example}.
 
@@ -86,7 +85,7 @@ You can see that the json file has various headings, key headings are listed bel
 
 If you wish to programmatically drive gpvdm you can simply use one of the many available json editors most languages have them freely available. 
 
-\subsubsection{Qwerks of the gpvdm json format}
+\subsection{Qwerks of the gpvdm json format}
 \begin{itemize}
   \item Gpvdm json does not support standard json lists.  If there is a list of items it is defined by firstly declaring the variable segments, with the number of items in the list so for example "segments",0 . Each item in the list is then stored under, "segment0", "segment1" etc... This is because gpvdm does not implement json arrays.  This can be seen in figure \ref{fig:jsonfirefox} where there is a list with 1 segment.
   \item Many items in the json file will be given an id number which is a 16 digit hex code, this can be used to uniquely reference the item. An ID number can also be seen in figure \ref{fig:jsonfirefox}
@@ -94,7 +93,7 @@ If you wish to programmatically drive gpvdm you can simply use one of the many a
 
 
 
-\subsection{Databases}
+\section{Databases}
 
 
 
@@ -112,7 +111,7 @@ There are two copies of these databases, one copy in the install directory of gp
 The structure of the databases are simple, they are a series of directories with one directory dedicated to each material or spectra etc.. E.g. there will be one directory called Ag in the optical database which defines silver, and another directory in the spectra database called am1.5g which defines the solar spectrum.  Each of these database directories will from now on be referred to an object.  Within each object there is a data.json file which defines basic material properties and configuration information.  There will may be a couple of .bib files which contain reference information for the object in bibtex format and either .gmat files for n/k spectral data or .inp files for other types of data.  All these files are just human readable text files, so you can open them in your preferred text editor such as notepad.
 
 
-\subsubsection{Materials database}
+\subsection{Materials database}
 \label{sec:materialdatabase}
 Related YouTube videos:
 \begin{figure}[H]
@@ -130,19 +129,19 @@ Related YouTube videos:
 This database primarily contains n/k data but also contains some electrical information and thermal information. Each subdirectory within the materials database identifies the material name.  In each sub directory there are two key files $alpha.gmat$ and $n.gmat$, these files are standard text files can be opened with any text editor such as wordpad.    Alpha.gmat contains the absorption coefficient of the material while n.gmat contains the the refractive index.  The first column of the file contains the wavelength in $m$ (not $cm$ or $nm$), and the second column of the file contains the absorption coefficient in $m^{-1}$ (for alpha.omat) and the real part of the refractive index (i.e. n) in au (for n.omat). The data.json defines the material color and any known electrical or thermal data.
 
 
-\subsubsection{Adding new materials - the hard way}
+\subsection{Adding new materials - the hard way}
 If you wish to add materials to the database which do not come as standard with the model you can do it in the following way:  Simply copy an existing material directory (say gpvdm\_local$\backslash$oxieds$\backslash$ito) to a new directory (say gpvdm\_local$\backslash$oxieds$\backslash$mynewmaterial).  Then replace alpha.gmat and n.gmat with your data for the new material. You can ignore the data.json file, although if you know the energy levels you can add the values in the file.
 \newline
 \newline
 If you don't have data to hand for your material, but you do have a paper containing the data, you use the program Engauge Digitizer, written by  Mark Mitchell \url{https://github.com/markummitchell/engauge-digitizer} to export data from publications.  After you have finished updating the new material directory, whenever a new simulation is generated the new material files will automatically be copied into the active simulation directory ready for use. 
 
-\subsubsection{Adding new materials - the easy way}
+\subsection{Adding new materials - the easy way}
 There is a youtube video on the gpvdm you tube channel describing how to do this. All objects within the model are defied by a series of triangles with a closed surface.
 
-\subsubsection{Emission database}
+\subsection{Emission database}
 This contains emission spectra for OLED materials.
 
-\subsubsection{Shape database}
+\subsection{Shape database}
 \label{sec:shapedatabase}
 This defines all the shapes used within the model.
 
@@ -153,10 +152,10 @@ This defines all the shapes used within the model.
 \label{fig:shapedb}
 \end{figure}
 
-\subsubsection{Filters database}
+\subsection{Filters database}
 This contains optical filters.
 
-\subsubsection{Backups of simulations}
+\subsection{Backups of simulations}
 Very often when running a simulation you want to make a copy of it before continuing to play with the parameters.  To do this click on the backup simulation button in the database ribbon (see figure \ref{fig:database}), this will bring up the backup window, see figure \ref{fig:backup}. If you click on the "New backup" icon on the top right of the window, a backup will be made of your current simulation.  And an icon representing the backup will appear in the backup window.  To restore the backup double click on the icon representing your stored simulation. Note this backup is only stored in the your local simulation directory, and is more of a checkpoint than a real backup.... so make sure you have other copies of your simulation if it is very important to you..
 
 \begin{figure}[H]

@@ -1,5 +1,4 @@
-\newpage
-\section{Output files}
+\chapter{Output files}
 In general writing to disk is slow on even the most modern of computers with an SSD.  The seek speed of mechanical disks has increased little of their history.  Thus often writing the output data to the hard disk is the most time consuming part of any simulation.  By default gpvdm writes all output files to disk this is so the new user can get a feel for what output gpvdm can provide.  However to speed up simulations you should limit how much data is written to disk. The simulation editor windows (steady state,time domain etc..) offer options to decide how much data you want to dump to disk. This is shown in figure \ref{fig:jveditorwindow} 
 
 \begin{figure}[H]
@@ -12,7 +11,7 @@ In general writing to disk is slow on even the most modern of computers with an 
 The option "Output verbosity to disk" can be toggled between "None" and "write everything to disk".  When "None" is selected nothing is outputted to disk at all - even simulation results are not written.  When "write everything to disk" is selected the simulation dumps everything to disk, so JV curves and all internal variables of the solver are written to disk so that the user can examine how carrier densities, fermi-levels, potentials etc.. change during the course of the simulation (see section \ref{sec:snapshots}). The second option below "Output verbosity to disk" called "dump trap distribution" will write out the distribution of traps in energy and position space.  See section \ref{sec:trapmap}.
 
 
-\subsection{Snapshots directory - dir}
+\section{Snapshots directory - dir}
 \label{sec:snapshots}
 The snapshots directory (see figure \ref{fig:fileviewer}) allows the user to plot all internal solver parameters.  For example figure \ref{fig:snapshots} where the snapshots tool is being used to plot the conduction band, valance band and quasi Fermi-levels as a function of voltage.  The slider can be used to view different voltages.
 
@@ -30,7 +29,7 @@ The snapshots directory (see figure \ref{fig:fileviewer}) allows the user to plo
 \label{fig:snapshots}
 \end{figure}
 
-\subsection{Trap\_map directory - dir}
+\section{Trap\_map directory - dir}
 The trap map directory contains the distribution and density of carriers in the traps as a function of position and energetic depth. An example is given in figure \ref{fig:trapmap}
 \label{sec:trapmap}
 
@@ -42,23 +41,23 @@ The trap map directory contains the distribution and density of carriers in the 
 \label{fig:trapmap}
 \end{figure}
 
-\subsection{Optical snapshots - dir}
+\section{Optical snapshots - dir}
 \label{sec:snapshotsoptical}
 Contains results of the optical simulations.
 
-\subsection{Cache - dir}
+\section{Cache - dir}
 \label{sec:cache}
 Getting a computer to do math is on the whole a slow thing to do. It's much faster to precalculate results then store the answers in a look up table.  This can speed up calculations significantly.  The cahce dir stores the results of such precalculations, you can delete if you want it gpvdm will just remake it when it runs.
 
-\subsection{Equilibrium directory}
+\section{Equilibrium directory}
 Before the solver starts any simulation it solves the device equations in the dark with 0V applied bias.  The result of this calculation are placed in this directory.  The practical reason for doing this is that Newton's method only works if you give it a reasonable starting guess for any given problem.  Thus to start the solver, we guess the carrier densities at 0V in the dark, we then use Newton's method to calculate the exact carrier density profiles at 0V in the dark (results are stored in the equilibrium directory), then from this point we can work our way to other solutions say at +1V in the light.\cite{0953-8984-25-21-215301}
 
-\subsection{sim\_info.dat}
+\section{sim\_info.dat}
 \label{sec:siminfo}
 This is a json file containging all key simulation metrics such as $J_{sc}$, $V_{oc}$, and example sim\_info.dat file is given below:
 
 
-\subsubsection{Steady state electrical simulation}
+\subsection{Steady state electrical simulation}
 \label{sec:siminfo}
 In steady state electrical simulations such as performing a JV scan the sim\_info.dat outputs the following parameters.
 
@@ -143,7 +142,7 @@ $theta_{srh}$ 	&$theta\_{srh}$ & $\theta_{SRH}$ Collection coefficient at $P_{ma
 
 \end{landscape}
 
-\subsubsection{Optical simulation}
+\subsection{Optical simulation}
 
 \begin{center}
 \begin{tabular}{ |c|c|c| c|} 
@@ -159,15 +158,15 @@ $I_{photo}$ & Photo current $A$& &\\
 \end{center}
 
 
-\subsection{File formats}
+\section{File formats}
 Almost all input and output files associated with gpvdm are human readable, meaning that they are straight up text files.  All output files can be directly plotted in gnuplot/excel as can the input files.  Output files are currently called .dat, but they are simply text files. All configuration files are in json format so can be edit directly or by using the python json library.
 
-\subsubsection{.dat files}
+\subsection{.dat files}
 This type of file is a straight text file which can be imported into excel or any other plotting program. It contains two columns of data x and y. There is also a preamble in the file containing information such as units etc..  Gpvdm is moving from .dat files to .csv files.
 
-\subsubsection{.csv files}
+\subsection{.csv files}
 This is a straight csv file as you would expect which can be imported into any text editor.  The first line of the file is a json string containing information such as units etc.  You can ignore this. The second line of the file describes the x/y data in a human readable form then the rest of the file contains the data.
 
-\subsubsection{Binary .csv files - files which are not human readable}
+\subsection{Binary .csv files - files which are not human readable}
 In some cases it is not practical to dump text files. Examples are when dealing with 3D structures.  In this case gpvdm will dump the same json header as used in the csv file but then dump a series of C floats representing the data.
 

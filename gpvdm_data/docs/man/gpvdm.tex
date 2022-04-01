@@ -1,5 +1,5 @@
 %\documentclass[10pt,twocolumn]{article}
-\documentclass[a4paper,12pt]{extarticle}
+\documentclass[a4paper,12pt,openany]{book}
 
 \usepackage{graphicx}% Include figure files
 \usepackage{setspace}
@@ -16,10 +16,13 @@
 \usepackage{color}
 \usepackage{geometry}
 \usepackage{minted} 
+\usepackage{datetime}
+\usepackage{titlesec}
 
 %\providecommand{\e}[1]{\ensuremath{\times 10^{#1}}}
 
-
+\newdateformat{monthdayyeardate}{%
+  \monthname[\THEMONTH]~\THEDAY, \THEYEAR}
 
 \geometry{a4paper,margin=20mm,heightrounded,}
 
@@ -29,11 +32,6 @@
 
 \begin{document}
 
-
-\input{front_cover.tex}
-\newpage
-\tableofcontents
-\newpage
 \input{document.tex}
 
 

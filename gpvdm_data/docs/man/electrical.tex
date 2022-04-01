@@ -1,15 +1,14 @@
-\newpage
-\section{The drift diffusion electrical model}
+\chapter{Theory of drift diffusion modelling}
 \label{sec:electrical}
 
-\subsection{Outline}
+\section{Outline}
 Gpvdm's electrical model is a 1D/2D drift-diffusion model (like many others) however the special thing about gpvdm which makes it very good for disordered materials (Think organics, perovskites and a-Si) is that it goes to the trouble of explicitly solving the Shockley-Read-Hall equations as a function of energy and position space.  This enables one to model effects such as mobility/recombination rates changing as a function of carrier population and enables one to correctly model transients as one does not have to assume all the carriers in the trap states have reached equilibrium.  Things such as ToF transients, CELIV transients etc.. can be modelled with ease. Of course can be used for more ordered materials as well, you then just need to turn the traps off.
 
-\subsection{Summary of model inputs}
+\section{Summary of model inputs}
 A device is comprised of a series of layers (upto 10 layers), all these layers will interact with light.  Usually only one or two of these layers are electrically active, meaning the transport of electrons and holes must be modeled in detail.  Each electrically active layer with in the device has a set of electrical input parameters which define, charge transport, recombination and trapping. (see table)  If a device has more than one electrically active layer, then multiple sets of these parameters must be defined.  It should be noted that for organic materials (unlike inorganic) there is no standard set of material parameters for any given material.  The exact parameters will depend a lot on the fabrication conditions.  All layers in the device will also need a refractive index spectrum to be defined, this includes the real and imaginary refractive index as a function of wavelength (typically 300-1000 nm).
  
 
-\subsection{Electrostatic potential}
+\section{Electrostatic potential}
 The conduction band/valance band (or LUMO/HOMO in organic semiconductor speak) are defined as
 
 \begin{equation}
@@ -29,7 +28,7 @@ To obtain the internal potential distribution within the device Poisson's equati
 
 where $n_{f}$, $n_{t}$ are the carrier densities of free and trapped electrons; $p_{f}$ and $p_{t}$ are the carrier densities of the free and trapped holes; and $N_{ad}$ is the doping density. $N_{ion}$ is the background density of perovskite ions and a is the density of mobile ions.
 
-\subsection{Free charge carrier statistics}
+\section{Free charge carrier statistics}
 For free carriers the model can either use Maxwell-Boltzmann statistics i.e.
 
 \begin{equation}
@@ -80,8 +79,8 @@ The average energy of the carriers is defined as
 \input{electrical_perovskite.tex}
 \input{interfaces.tex}
 \input{electrical_solverconfig.tex}
-
-\subsection{Calculating the built in potential}  \label{sssec:initial}
+\input{free_to_free_is_bad.tex}
+\section{Calculating the built in potential}  \label{sssec:initial}
 The first step to performing a device simulation, is to calculate the built in potential of the device.  To do this we must know the following things:
 
 \begin{itemize}
@@ -152,7 +151,7 @@ Once this calculation has been performed, we can estimate the potential profile 
 
 
 
-\subsubsection{Average free carrier mobility}
+\subsection{Average free carrier mobility}
 In this model there are two types of electrons (holes), free electrons (holes) and trapped electrons (holes).  Free electrons (holes) have a finite mobility of $\mu_e^0$ ($\mu_h^0$) and trapped electrons (holes) can not move at all and have a mobility of zero.  To calculate the average mobility we take the ratio of free to trapped carriers and multiply it by the free carrier mobility.:
 
 \begin{equation}
