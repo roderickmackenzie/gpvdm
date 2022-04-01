@@ -136,7 +136,74 @@ If you wish to add materials to the database which do not come as standard with 
 If you don't have data to hand for your material, but you do have a paper containing the data, you use the program Engauge Digitizer, written by  Mark Mitchell \url{https://github.com/markummitchell/engauge-digitizer} to export data from publications.  After you have finished updating the new material directory, whenever a new simulation is generated the new material files will automatically be copied into the active simulation directory ready for use. 
 
 \subsection{Adding new materials - the easy way}
-There is a youtube video on the gpvdm you tube channel describing how to do this. All objects within the model are defied by a series of triangles with a closed surface.
+
+To add a new material go to the data base ribbon and click on \emph{Materials database} as shown in figure \ref{fig:materialadd1}.
+\begin{figure}[H]
+\centering
+\includegraphics[height=0.18\textwidth]{./images/database_materials.png}
+\caption{Opening the materials database}
+\label{fig:materialadd1}
+\end{figure}
+
+Then click \emph{add material} in the top right of the window, this will bring up a dialogue box which will ask you to give a name for your new material, this is visible in figure \ref{fig:materialadd3}.
+\begin{figure}[H]
+\centering
+\includegraphics[height=0.5\textwidth]{./images/database_materials_add.png}
+\caption{Select Add material}
+\label{fig:materialadd2}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[height=0.2\textwidth]{./images/database_materials_set_name.png}
+\caption{Type the name of the new material}
+\label{fig:materialadd3}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[height=0.5\textwidth]{./images/database_materials_open.png}
+\caption{Open the new material}
+\label{fig:materialadd4}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[height=0.6\textwidth]{./images/database_window.png}
+\caption{The new material without any data}
+\label{fig:materialadd5}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[height=0.7\textwidth]{./images/database_import_window.png}
+\caption{The data importer window}
+\label{fig:materialadd6}
+\end{figure}
+
+
+
+\begin{figure}[H]
+\centering
+\begin{tabular}{ c c }
+
+\includegraphics[width=0.5\textwidth,height=0.4\textwidth]{./images/database_final.png}
+
+&
+\includegraphics[width=0.5\textwidth,height=0.4\textwidth]{./images/database_material_basic.png}
+\\
+
+\includegraphics[width=0.5\textwidth,height=0.4\textwidth]{./images/database_electrical_parameters.png}
+
+&
+\includegraphics[width=0.5\textwidth,height=0.4\textwidth]{./images/database_thermal_params.png}
+\\
+\end{tabular}
+\caption{Clockwise from the top left; The imported absorption sepctrum; The basic material parameters; The electrical parameters; and the Thermal parameters.}
+\label{fig:materialadd7}
+\end{figure}
+
+
 
 \subsection{Emission database}
 This contains emission spectra for OLED materials.
