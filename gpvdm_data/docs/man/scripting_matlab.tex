@@ -1,13 +1,11 @@
 \newpage
 \subsection{MATLAB scripting}
 \label{sec:matlabscripts}
-As described in section \ref{sec:gpvdmfileformat} gpvdm simulations are stored in .json files zipped up inside a zip archive. Matlab has both a zip decompressor and a json decoder.  Therefore it is straight forward to edit and read and edit .gpvdm files in MATLAB. You can then use MATLAB to perform quite complex parameter scans.  The example script below demonstrates how to run multiple simulations with mobilities ranging from 1e-7 to 1e-5 $m^{2}V^{-1}s^{-1})$. The script starts off by unzipping the sim.json file, if you already have extracted your sim.json file from the sim.gpvdm file you don't need these lines. The code then reads in sim.json using the MATLAB json decoder $jsondecode$. A new directory is made which corresponds to the mobility value, the sim.gpvdm file copied into that directory. Then $json\_data.epitaxy.layer0.shape\_dos.mue_y$ is set to the desired value of mobility and the simulation saved using $jsonencode$ and $fopen,fprintf,fclose$.  The $system$ call is then used to run $gpvdm\_core.exe$ to perform the simulation. Out put parameters such as $J_{sc}$ are stored in sim\_data.dat again in json format, see section \ref{sec:siminfo}, although this is not done in this simple script.
-
-Before using this script make sure you have added gpvdm to your windows paths:
-\url{https://docs.microsoft.com/en-us/previous-versions/office/developer/sharepoint-2010/ee537574(v=office.14)}
+As described in section \ref{sec:gpvdmfileformat} gpvdm simulations are stored in .json files zipped up inside a zip archive. Matlab has both a zip decompressor and a json decoder.  Therefore it is straight forward to edit and read and edit .gpvdm files in MATLAB. You can then use MATLAB to perform quite complex parameter scans.  The example script below in listing \ref{matlab-example} demonstrates how to run multiple simulations with mobilities ranging from 1e-7 to 1e-5 $m^{2}V^{-1}s^{-1})$. The script starts off by unzipping the sim.json file, if you already have extracted your sim.json file from the sim.gpvdm file you don't need these lines. The code then reads in sim.json using the MATLAB json decoder $jsondecode$. A new directory is made which corresponds to the mobility value, the sim.gpvdm file copied into that directory. Then $json\_data.epitaxy.layer0.shape\_dos.mue_y$ is set to the desired value of mobility and the simulation saved using $jsonencode$ and $fopen,fprintf,fclose$.  The $system$ call is then used to run $gpvdm\_core.exe$ to perform the simulation. Out put parameters such as $J_{sc}$ are stored in sim\_data.dat again in json format, see section \ref{sec:siminfo}, although this is not done in this simple script.
 
 
-\begin{listing}[H]
+
+\begin{listing}
 \begin{minted}[frame=single,
                framesep=3mm,
                linenos=false,
@@ -62,6 +60,6 @@ end
 cd(origonal_path)
 
 \end{minted}
-\caption{JSON example} 
-\label{json-example}
+\caption{An example of how to call gpvdm from MATLAB} 
+\label{matlab-example}
 \end{listing}

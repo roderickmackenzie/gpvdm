@@ -1,0 +1,182 @@
+\subsection{Python scripting}
+\label{sec:pythonscripts}
+Related YouTube videos:
+\begin{figure}
+
+\begin{tabular}{ c l }
+
+\includegraphics[width=0.05\textwidth]{./images/youtube.png}
+
+&
+\href{https://www.youtube.com/watch?v=vyeAzxBZjMg}{Python scripting perovskite solar cell simulation}
+
+\end{tabular}
+\end{figure}
+
+There are two ways to interact with .gpvdm files via python, using native python commands or by using the gpvdm class structures, examples of both are given below.
+
+
+\subsubsection{The native python way}
+As described in section \ref{sec:gpvdmfileformat}, .gpvdm files are simply json files zipped up in an archive. If you extract the sim.json file form the sim.gpvdm file you can use Python's json reading/writing code to edit the .json config file directly, this is a quick and dirty approach which will work. You can then use the $os.system$ call to run \emph{gpvdm\_core.exe} to execute gpvdm.
+
+For example were one to want to change the mobility of the 1st device layer to 1.0 and then run a simulation you would use the code listed in listing \ref{python-example}.
+
+\begin{listing}
+\begin{minted}[frame=single,framesep=3mm,linenos=false,xleftmargin=21pt,tabsize=4]{python}
+
+	import json
+	import os
+	import sys
+
+	f=open('sim.json')		#open the sim.json file
+	lines=f.readlines()
+	f.close()
+	lines="".join(lines)	#convert the text to a python json object
+	data = json.loads(lines)
+
+	#Edit a value (use firefox as a json viewer
+	# to help you figure out which value to edit)
+	# this time we are editing the mobility of layer 1
+	data['epitaxy']['layer1']['shape_dos']['mue_y']=1.0
+
+
+	#convert the json object back to a string
+	jstr = json.dumps(data, sort_keys=False, indent='\t')
+
+	#write it back to disk
+	f=open('sim.json',"w")
+	f.write(jstr)
+	f.close()
+
+	#run the simulation using gpvdm_core
+	os.system("gpvdm_core.exe")
+\end{minted}
+\caption{Manipulating a sim.json file with python and running a gpvdm simulation.} 
+\label{python-example}
+\end{listing}
+
+If the simulation in sim.json is setup to run a JV curve, then a file called sim\_data.dat will be written to the simulation directory containing paramters such as PCE, fill factor, $J_{sc}$ and $V_{oc}$.  This again is a raw json file, to read this file in using python and write out the value of $V_oc$ to a second file use the code given in listing \ref{python-example2}.
+
+\begin{listing}
+\begin{minted}[frame=single,framesep=3mm,linenos=false,xleftmargin=21pt,tabsize=4]{python}
+f=open('sim_info.dat')
+lines=f.readlines()
+f.close()
+lines="".join(lines)
+data = json.loads(lines)
+
+f=open('out.dat',"a")
+f.write(str(data["Voc"])+"\n");
+f.close()
+
+\end{minted}
+\caption{Reading in a sim\_data.dat file using Python's native json reader.} 
+\label{python-example2}
+\end{listing}
+
+
+
+\subsubsection{Using gpvdm's built in classes for reading and writing json}
+Gpvdm has a set of classes that can read in gpvdm files and write them to disk. The difference between using python's native commands and the gpvmd classes is that, gpvdm will convert the json save files to a hierarchical tree of python classes rather than leaving them as raw json. So for example using Python's native json interpreters one would write:
+
+ 
+\begin{listing}
+\begin{minted}[frame=single,framesep=3mm,linenos=false,xleftmargin=21pt,tabsize=4]{python}
+	data['epitaxy']['layer1']['shape_dos']['mue_y']=1.0
+\end{minted}
+\caption{Reading in a sim\_data.dat file using Python's native json reader.} 
+\label{python-example3}
+\end{listing}
+
+but using the gpvdm interpreter one would write
+
+\begin{listing}
+\begin{minted}[frame=single,framesep=3mm,linenos=false,xleftmargin=21pt,tabsize=4]{python}
+	data.epitaxy.layer[1].shape_dos.mue_y=1.0
+\end{minted}
+\caption{Reading in a sim\_data.dat file using Python's native json reader.} 
+\label{python-example4}
+\end{listing}
+
+The gpvdm class tree also has embedded functions for searching for objects and alike some of which are described below in listing \ref{python-example5}.
+
+\begin{listing}
+\begin{minted}[frame=single,framesep=3mm,linenos=false,xleftmargin=21pt,tabsize=4]{python}
+#!/usr/bin/env python3
+import json
+import os
+import sys
+
+sys.path.append('c:\Program files x86\gpvdm\modules')
+from gpvdm_json import gpvdm_data
+
+data=gpvdm_data()
+data.load("sim.json")
+data.epitaxy.layer[1].shape_dos.mue_y=1.0
+data.save()
+
+os.system("gpvdm_core.exe")
+
+\end{minted}
+\caption{Editing sim.json files using gpvdm's built in classes.} 
+\label{python-example5}
+\end{listing}
+
+\subsubsection{Running gpvdm across multiple cores}
+The scan window by default uses gpvdm's built in job scheduler so that if you want to scan across 10 parameters and have a CPU with multiple cores, the jobs will be spread across all cores.  This increases the overall speed of the simulations. You can access this API using the gpvdm\_api class, an example of how to do this is given in listing \ref{python-example6}.
+
+\begin{listing}
+\begin{minted}[frame=single,framesep=3mm,linenos=false,xleftmargin=4pt,tabsize=4]{python}
+#!/usr/bin/env python3
+import os
+import sys
+sys.path.append('c:\Program files x86\gpvdm\modules')
+
+from gpvdm_api import gpvdm_api
+
+#initialize the API
+api=gpvdm_api(verbose=False)
+
+#Use the name of the current script to determine the directory name to make
+script_name=os.path.basename(__file__).split(".")[0]
+
+#define the name of the simulation dir
+scan_dir=os.path.join(os.getcwd(),script_name)
+
+#make the simulation dir
+api.mkdir(scan_dir)					#make a new scandir
+
+#tell the API where we are going to run the simulation
+api.server.server_base_init(scan_dir)
+
+#Loop over electron and hole mobilities.
+for mue in [ 1e-5, 1e-6, 1e-7, 1e-8]:
+	for muh in [ 1e-5, 1e-6, 1e-7, 1e-8 ]:
+		#define the sub sim path
+		sim_path=os.path.join(scan_dir,"{:.2e}".format(mue),"{:.2e}".format(muh))
+		#make the directory
+		api.mkdir(sim_path)
+
+		#clone the current sim dir to the new dir
+		api.clone(sim_path,os.getcwd())		
+
+		#make edit the newly generated sim.json file
+		data=gpvdm_data()
+		data.load(os.path.join(sim_path,"sim.json"))
+		data.epitaxy.layer[1].shape_dos.mue_y=mue
+		data.epitaxy.layer[1].shape_dos.muh_y=muh
+		data.save()
+
+		#Add the path to the job list
+		api.add_job(path=sim_path)
+
+#run all the jobs over multiple CPUs
+api.server.simple_run()
+
+#Generate GNUPLOT compatible files for plotting the results together.
+api.build_multiplot(scan_dir,gnuplot=True])
+
+\end{minted}
+\caption{Running jobs across multiple CPUs using python} 
+\label{python-example6}
+\end{listing}

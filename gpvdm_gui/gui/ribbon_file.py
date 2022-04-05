@@ -179,7 +179,6 @@ class ribbon_file(ribbon_page):
 		self.cite_me.setEnabled(val)
 
 	def callback_script(self):
-		adsasd
 		self.scripts=scripts()
 		self.scripts.show()
 
