@@ -690,6 +690,7 @@ class gpvdm_viewer(QListWidget,gpvdm_viewer_new):
 		for i in range(0,len(self.file_list)):
 			if self.file_list[i].display_name==display_name:
 				return self.file_list[i]
+		return None
 
 	def on_item_activated(self,item):
 		data=gpvdm_data()
@@ -707,6 +708,9 @@ class gpvdm_viewer(QListWidget,gpvdm_viewer_new):
 			return
 
 		decode=self.decode_name(text)
+		if decode==None:
+			return
+
 		full_path=os.path.join(self.path,decode.file_name)
 
 		if decode.file_name.startswith("http"):
@@ -855,7 +859,9 @@ class gpvdm_viewer(QListWidget,gpvdm_viewer_new):
 				self.file_path=os.path.join(self.path, file_name)
 	
 			for item in self.selectedItems():
-				self.selected.append(self.decode_name(item.text()))
+				obj_decode=self.decode_name(item.text())
+				if obj_decode!=None:
+					self.selected.append(obj_decode)
 
 			full_path=self.file_path
 

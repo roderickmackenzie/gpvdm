@@ -51,6 +51,7 @@
 #include <matrix_solver_memory.h>
 #include <json.h>
 #include <world_struct.h>
+#include <optical_mode.h>
 
 struct solver_cache
 {
@@ -75,7 +76,7 @@ struct newton_state
 	long double ***x_Nt;
 	long double ***x_Nsd;
 	long double ***x_Ntd;
-	long double ***x_Nho;
+	long double x_Nho;
 
 	long double ***x;
 	long double ***xp;
@@ -204,13 +205,21 @@ struct device
 		long double ***Nt;
 		long double ***Nsd;
 		long double ***Ntd;
-		long double ***Nho;
+		long double Nho;
 
 		long double ***dNs;
 		long double ***dNt;
 		long double ***dNsd;
 		long double ***dNtd;
-		long double ***dNho;
+		long double dNho;
+
+		long double ***Ns_last;
+		long double ***Nt_last;
+		long double ***Nsd_last;
+		long double ***Ntd_last;
+		long double Nho_last;
+
+		struct optical_mode mode;
 
 	//Generation
 		long double ***G;

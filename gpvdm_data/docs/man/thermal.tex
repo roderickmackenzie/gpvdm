@@ -1,4 +1,4 @@
-\section{Thermal models}
+\section{\index{Thermal models}}
 There are three options for thermal simulation in gpvdm; 1) A constant temperature through the device. This is recommended for most simulation and is set at 300K by default; 2) a lattice thermal solver \ref{sec:lattice}, this solves the heat equation throughout the device taking into account self heating.  This is useful for simulating devices which get hot through their operation; 3) A hydrodynamic thermal \ref{sec:energy} solver which does not assume the electron, hole and lattice temperatures are equal.  This is useful for simulating heat flow over heterojunctions or where carriers do not have time to relax to the lattice temperature.
 
 The drift diffusion equations given in \ref{eq:ndrive} and \ref{eq:pdrive} are only valid in isothermal conditions.  The full transport equations as derived from the BTE \cite{Azoff} are given by

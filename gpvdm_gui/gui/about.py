@@ -39,6 +39,9 @@ from icon_lib import icon_get
 from cal_path import get_device_lib_path, get_bin_path, get_plugins_path, get_exe_path, get_exe_command, get_exe_name
 from lock import get_lock
 
+from cal_path import multiplatform_exe_command
+from cal_path import get_exe_command
+
 class about_dlg(QDialog):
 	def __init__(self):
 		QDialog.__init__(self)
@@ -50,6 +53,7 @@ class about_dlg(QDialog):
 		self.setWindowIcon(icon_get("icon"))
 		self.gpvdm=QLabel("<font size=40><b>gpvdm_gui</b></font>")
 		self.image=QLabel()
+		self.image.mousePressEvent=self.callback
 		self.written_by=QLabel(_("Written by Roderick MacKenzie 2012-2019, published under the GPL V2.0 license."))
 		self.written_by.setWordWrap(True)
 		self.ver=QLabel(_("Version ")+const_ver())
@@ -159,5 +163,8 @@ class about_dlg(QDialog):
 
 	def callback_close(self):
 		self.close()
-		
 
+	def callback(self,event):
+		command=multiplatform_exe_command(get_exe_command()+" --license")
+		os.system(command)
+		print("ok")

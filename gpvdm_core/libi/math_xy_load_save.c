@@ -143,7 +143,7 @@ if (backup==FALSE)
 */
 void inter_save_a(struct math_xy* in,char *path,char *name)
 {
-char wholename[200];
+char wholename[PATH_MAX];
 join_path(2, wholename,path,name);
 inter_save(in,wholename);
 }

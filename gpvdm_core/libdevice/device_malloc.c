@@ -48,6 +48,7 @@
 #include <heat_fun.h>
 #include <device_fun.h>
 #include <enabled_libs.h>
+#include <optical_mode_fun.h>
 
 static int unused __attribute__((unused));
 static char* unused_pchar __attribute__((unused));
@@ -131,6 +132,7 @@ void device_get_memory(struct simulation *sim,struct device *in)
 	}
 
 
+	//Singlet
 	if (in->drift_diffision_simulations_enabled==TRUE)
 	{
 		if (ns->singlet_enabled==TRUE)
@@ -139,13 +141,19 @@ void device_get_memory(struct simulation *sim,struct device *in)
 			malloc_zxy_long_double(dim,&(in->Nt));
 			malloc_zxy_long_double(dim,&(in->Nsd));
 			malloc_zxy_long_double(dim,&(in->Ntd));
-			malloc_zxy_long_double(dim,&(in->Nho));
+			in->Nho=-1.0;
 
 			malloc_zxy_long_double(dim,&(in->dNs));
 			malloc_zxy_long_double(dim,&(in->dNt));
 			malloc_zxy_long_double(dim,&(in->dNsd));
 			malloc_zxy_long_double(dim,&(in->dNtd));
-			malloc_zxy_long_double(dim,&(in->dNho));
+			in->dNho=-1.0;
+
+			malloc_zxy_long_double(dim,&(in->Ns_last));
+			malloc_zxy_long_double(dim,&(in->Nt_last));
+			malloc_zxy_long_double(dim,&(in->Nsd_last));
+			malloc_zxy_long_double(dim,&(in->Ntd_last));
+			in->Nho_last=-1.0;
 		}
 
 	}

@@ -26,6 +26,7 @@
 #define libnewtontricks_enabled
 #define libsimplex_enabled
 #define libfdtd_enabled
+#define libmode_enabled
 #define liblock_enabled
 #define libcircuit_enabled
 #define libfit_enabled

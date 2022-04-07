@@ -517,13 +517,13 @@ void get_initial(struct simulation *sim,struct device *in,int guess)
 						ns->x_Nt[z][x][y]=top;
 						ns->x_Nsd[z][x][y]=top;
 						ns->x_Ntd[z][x][y]=top;
-						ns->x_Nho[z][x][y]=top;
+						ns->x_Nho=top;
 
 						in->Ns[z][x][y]=1e22;
 						in->Nt[z][x][y]=1e22;
 						in->Nsd[z][x][y]=1e22;
 						in->Ntd[z][x][y]=1e22;
-						in->Nho[z][x][y]=1e22;
+						in->Nho=1e22;
 
 					}
 

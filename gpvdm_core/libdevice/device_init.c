@@ -60,6 +60,7 @@
 
 #include <world_struct.h>
 #include <world.h>
+#include <optical_mode_fun.h>
 
 static int unused __attribute__((unused));
 static char* unused_pchar __attribute__((unused));
@@ -133,13 +134,21 @@ void device_init(struct simulation *sim,struct device *dev)
 		dev->Nt=NULL;
 		dev->Nsd=NULL;
 		dev->Ntd=NULL;
-		dev->Nho=NULL;
+		dev->Nho=-1.0;
 
 		dev->dNs=NULL;
 		dev->dNt=NULL;
 		dev->dNsd=NULL;
 		dev->dNtd=NULL;
-		dev->dNho=NULL;
+		dev->dNho=-1.0;
+
+		dev->Ns_last=NULL;
+		dev->Nt_last=NULL;
+		dev->Nsd_last=NULL;
+		dev->Ntd_last=NULL;
+		dev->Nho_last=-1.0;
+
+		mode_init(sim,&(dev->mode));
 
 	//Generation
 		dev->G= NULL;

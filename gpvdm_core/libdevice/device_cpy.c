@@ -61,6 +61,7 @@
 
 #include <world_struct.h>
 #include <world.h>
+#include <optical_mode_fun.h>
 
 static int unused __attribute__((unused));
 static char* unused_pchar __attribute__((unused));
@@ -130,6 +131,27 @@ void device_cpy(struct simulation *sim,struct device *out,struct device *in)
 		cpy_zxy_long_double(dim, &(out->dNion), &(in->dNion));
 		cpy_zxy_long_double(dim, &(out->dNiondphi), &(in->dNiondphi));
 		cpy_zxy_long_double(dim, &(out->Nion_last), &(in->Nion_last));
+
+	//Singlet
+		cpy_zxy_long_double(dim, &(out->Ns), &(in->Ns));
+		cpy_zxy_long_double(dim, &(out->Nt), &(in->Nt));
+		cpy_zxy_long_double(dim, &(out->Nsd), &(in->Nsd));
+		cpy_zxy_long_double(dim, &(out->Ntd), &(in->Ntd));
+		out->Nho=in->Nho;
+
+		cpy_zxy_long_double(dim, &(out->dNs), &(in->dNs));
+		cpy_zxy_long_double(dim, &(out->dNt), &(in->dNt));
+		cpy_zxy_long_double(dim, &(out->dNsd), &(in->dNsd));
+		cpy_zxy_long_double(dim, &(out->dNtd), &(in->dNtd));
+		out->dNho=in->dNho;
+
+		cpy_zxy_long_double(dim, &(out->Ns_last), &(in->Ns_last));
+		cpy_zxy_long_double(dim, &(out->Nt_last), &(in->Nt_last));
+		cpy_zxy_long_double(dim, &(out->Nsd_last), &(in->Nsd_last));
+		cpy_zxy_long_double(dim, &(out->Ntd_last), &(in->Ntd_last));
+		out->Nho_last=in->Nho_last;
+
+		mode_cpy(sim,&(out->mode),&(in->mode));
 
 	//Generation
 		cpy_zxy_long_double(dim, &(out->G), &(in->G));

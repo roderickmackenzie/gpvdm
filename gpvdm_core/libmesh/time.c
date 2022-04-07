@@ -263,6 +263,14 @@ for (z=0;z<dim->zlen;z++)
 					in->Nion_last[z][x][y]=in->Nion[z][x][y];
 				}
 
+				if (ns->singlet_enabled==TRUE)
+				{
+					in->Ns_last[z][x][y]=in->Ns[z][x][y];
+					in->Nt_last[z][x][y]=in->Nt[z][x][y];
+					in->Nsd_last[z][x][y]=in->Nsd[z][x][y];
+					in->Ntd_last[z][x][y]=in->Ntd[z][x][y];
+				}
+
 				for (band=0;band<dim->srh_bands;band++)
 				{
 					in->ntlast[z][x][y][band]=in->nt[z][x][y][band];
@@ -271,6 +279,11 @@ for (z=0;z<dim->zlen;z++)
 			}
 		}
 	}
+}
+
+if (ns->singlet_enabled==TRUE)
+{
+	in->Nho_last=in->Nho;
 }
 
 contacts_time_step(sim,in);

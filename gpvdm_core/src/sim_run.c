@@ -68,6 +68,7 @@
 #include <detector.h>
 #include <singlet.h>
 #include <singlet_fun.h>
+#include <optical_mode_fun.h>
 
 int device_run_simulation(struct simulation *sim, struct device *dev)
 {
@@ -182,6 +183,7 @@ int device_run_simulation(struct simulation *sim, struct device *dev)
 	}
 	epi=&(dev->my_epitaxy);
 	layers=epitaxy_load(sim,epi,json_epi);
+	mode_load(sim,&(dev->mode),dev);
 
 	if (layers==0)
 	{

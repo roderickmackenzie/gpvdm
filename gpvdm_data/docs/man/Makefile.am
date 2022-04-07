@@ -9,6 +9,7 @@ all: gpvdm.pdf
 
 gpvdm.pdf: *.tex gpvdm.bib
 	pdflatex -shell-escape gpvdm
+	makeindex gpvdm
 	bibtex gpvdm
 	pdflatex -shell-escape  gpvdm
 	

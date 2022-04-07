@@ -6,7 +6,7 @@ On both windows gpvdm will install on the start menu, click on it to launch it. 
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=100mm,height=70mm]{./images/new_open.png}
+\includegraphics[width=0.6\textwidth]{./images/running/new_open.png}
 \caption{The main gpvdm simulation window.}
 \label{fig:new_open}
 \end{figure}
@@ -15,7 +15,7 @@ Click on the $new~simulation$ button.  This will bring up the new simulation win
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=100mm,height=70mm]{./images/new.png}
+\includegraphics[width=0.6\textwidth,height=0.5\textwidth]{./images/running/new.png}
 \caption{New simulation window}
 \label{fig:new_new}
 \end{figure}
@@ -25,7 +25,7 @@ Once you have saved the simulation, the main gpvdm simulation window will be bro
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=100mm,height=70mm]{./images/simple_interface.png}
+\includegraphics[width=0.6\textwidth]{./images/running/simple_interface.png}
 \caption{The main gpvdm simulation window}
 \label{fig:simpleinterface}
 \end{figure}
@@ -35,7 +35,7 @@ Click on the button called \emph{Run simulation} (hint it looks like a blue play
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=100mm,height=70mm]{./images/output.png}
+\includegraphics[width=0.6\textwidth,height=0.5\textwidth]{./images/running/output.png}
 \caption{The \emph{Output} tab this is just like windows file explorer, you can explore the simulation directory tree.}
 \label{fig:output}
 \end{figure}
@@ -70,7 +70,7 @@ Try opening $jv.dat$. This is a plot of the voltage applied to the solar cell ag
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=100mm,height=70mm]{./images/jv_curve.png}
+\includegraphics[width=0.6\textwidth]{./images/running/jv_curve.png}
 \caption{The output tab}
 \label{fig:jv_curve}
 \end{figure}
@@ -78,20 +78,38 @@ Try opening $jv.dat$. This is a plot of the voltage applied to the solar cell ag
 
 Now try opening up the file $sim\_info.dat$, this file displays information on the performance of the solar cell, such as the Open Circuit Voltage ($V_{oc}$ - the maximum Voltage the solar cell can produce when iluminated), efficiency ($\eta$ - the efficiency of the cell) , and short circuit current ($J_{sc}$ - the maximum current the cell can produce when it is illuminated).  Figure \ref{fig:jv_curve}, shows where you can find these values on the JV curve.  The $sim\_info.dat$ file contains a lot of other parameters, these are described in detail in section \ref{sec:siminfo}.
 
-\newpage
+\vspace*{\fill}
+\fbox{
+\parbox{0.9\textwidth}{
+\color{blue} Question \addtocounter{question}{1}\thequestion: What is the $J_{sc}$, $V_{oc}$ and Fill Factor (FF) of this solar cell?  How do these number compare to a typical Silicon solar cell? (Use the internet to find typical values for a Silicon solar cell.)
+}\par
+}
+
 \subsection{Editing device layers}
 \label{sec:layereditor}
-Any device in gpvdm consists of a series of layers (this is sometimes referred to as the epitaxy - this is a term which comes from inorganic semiconductors). The layer editor can be accessed from the main simulation window, under the \emph{device structure} tab. This is visible towards the top of figure \ref{fig:simpleinterface}, and the layer editor is visible in figure \ref{fig:layereditor}.
+Any device in gpvdm consists of a series of layers (this is sometimes referred to as the epitaxy - this is a term which comes from inorganic semiconductors). The layer editor can be accessed from the main simulation window, under the \emph{device structure} tab. This is visible towards the top of figure \ref{fig:simpleinterface}, and the layer editor is visible in figure \ref{fig:layereditor}. Within the window is a table which describes the structure of the device. The column thickness describes the thickness of each layer. The P3HT:PCBM layer is the layer of material which
+converts photons into electrons and holes, this is commonly called the active layer. An active layer thickness of 50nm is considered very thin for an organic solar cell, while an active layer of 400nm is considered very thick (too thick for efficient device operation). Vary the active layer between 50 nm and 400 nm, for each thickness record the device efficiency (I suggest you perform the simulation for at least eight active layer widths).
 
 
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=100mm,height=70mm]{./images/layer_editor.png}
+\includegraphics[width=100mm,height=70mm]{./images/running/layer_editor.png}
 \caption{The layer editor window.}
 \label{fig:layereditor}
 \end{figure}
 
+\vspace*{\fill}
+\fbox{
+\parbox{0.9\textwidth}{
+\color{blue} Task \addtocounter{question}{1}\thequestion : Plot a graph (using excel or any other graphing tool), of device efficiency v.s. thickness of the active layer. What is the optimum efficiency/thickness of the active layer? Also plot graph $V_{oc}$ , $J_{sc}$ and $FF$
+as a function of active layer thickness. $J_{sc}$ is generally speaking the maximum current a solar cell can generate, try to explain your graph of J sc
+v.s. thickness, [Hint, the next section may help you answer this part of the question.]
+}\par
+}
+
+\newpage
+\subsubsection{More on the layer editor}
 The layer editor has the following columns:
 
 \begin{itemize}
@@ -109,15 +127,138 @@ The layer editor has the following columns:
 
 %\vspace*{\fill}
 
-\fbox{
-\parbox{0.9\textwidth}{
-\color{blue} Task \addtocounter{question}{1}\thequestion : Try varying the thickness of the P3HT:PCBM layer in 10 steps $100 nm$ to $500 nm$ each time you do this, run the simulation and make a note of the $V_{oc}$, Fill Factor and the $J_{sc}$ current.  Plot a graph of thickness v.s. these parameters. Which thickness is most efficient? 
-}\par
-}
-\\
+
 
 Which layers should be active?: A common mistake people make when starting to simulate devices is to try to make all the layers in their device active because their logic is: Current must be flowing through them so they must be active right?  However, in for example a solar cell only the BHJ or in a perovskite device the perovskite layer will have both species of carriers (electrons+holes) and complex effects such as photogeneration, recombination and carrier trapping. So in this layer it makes sense to solver the drift diffusion equations.  Other layers which don't have both species of carriers can be treated simple parasitic resistances see section \ref{sec:parasitic}. I would only recommend setting other layers of the device to active (such as the HTL/ETL) if you are trying to investigate effects such as s-shaped JV curves or devices which clearly need multiple active layers such as OLEDs. In general, try to minimize the number of active layers and always keep simulations as simple as possible to explain the physical effects you see.  
 
+\newpage
+\subsection{How do solar cells absorb light?}
+In this section we are going to learn how a solar cells interact with light.  Firstly, let's have a look at the solar spectrum.  Sunlight contains many wavelengths of light, from ultraviolet light, though to visible light to infrared.  The human eye can only see a small fraction of the light emitted by the sun.  Gpvdm stores a copy of the suns spectrum to perform the simulations.  Let's have a look at this spectrum, to do this go to the \emph{Database} tab, the choose \emph{Optical database}.  This should, bring up a window as shown in figure \ref{fig:optical_database}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.6\textwidth]{./images/running/optical_database.png}
+\caption{The optical database viewer}
+\label{fig:optical_database}
+\end{figure}
+
+Double click on the icon called, \emph{AM1.5G}, this should bring up a spectrum of the sun's spectrum.  Have a look at where the peak of the spectrum is.  Now close this window, and open the spectrum called $led$.  Where is the peak of this spectrum.
+
+
+\begin{figure}[H]
+\centering
+\begin{tabular}{ c c }
+
+\raisebox{-.1\height}{\includegraphics[width=0.45\textwidth]{./images/running/spectrum.png}}
+
+&
+\includegraphics[width=0.45\textwidth]{./images/running/SolarCCD.jpg}
+\\
+\end{tabular}
+\caption{a: A plot of the entire \href{https://commons.wikimedia.org/wiki/File:Solar_Spectrum.png}{solar spectrum}. b: The image below shows the \href{https://solarsystem.nasa.gov/resources/390/the-solar-spectrum/}{solar spectrum} at 392 nm (blue) to 692 nm (red) as observed with the Fourier Transform Spectrograph at Kitt Peak National Observatory in 1981. R. Kurucz }
+\end{figure}
+
+
+\vspace*{\fill}
+\fbox{
+\parbox{0.9\textwidth}{
+\color{blue} Question \addtocounter{question}{1}\thequestion: Describe the main differences between the light which comes from the LED and the sun.  Rather than referring to the various regions of the spectrum by their wavelengths, refer to them using English words, such as $infrared$, $Ultra Violet$, $Red$, and $Green$ etc... you will find which wavelengths match to each color on the internet.  If you were designing a material for a solar cell, what wavelengths would.}
+}
+
+\newpage
+\subsection{Light inside solar cells}
+As you will have seen from when you fist opened the simulation, the solar cells are often made from many layers of different materials.  Some of these materials, are designed to absorb light, some are designed to conduct charge carriers out of the cell.  The simulator has a database of these materials, to look at the database, click on the $Database$ tab, the click on $Material database$.  This should bring up a window as shown in figure \ref{fig:db}, once this is open navigate to the directory $polymers$, and double click on the material $p3ht$, in the new window click on the tab $Absorption$ (see figure \ref{fig:alpha}).  This plot shows how light is absorbed in the material as a function of wavelength.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=100mm]{./images/running/db.png}
+\caption{The materials database}
+\label{fig:db}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=100mm]{./images/running/alpha.png}
+\caption{Optical absorption of the light.}
+\label{fig:alpha}
+\end{figure}
+
+\vspace*{\fill}
+\fbox{
+\parbox{0.9\textwidth}{
+\color{blue} Question \addtocounter{question}{1}\thequestion: What color of light does the polymer $p3ht$ absorb best?  Which material in the $polymers$ directory do you think will absorb the suns light best?}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\subsection{Parasitic elements}
+\label{sec:parasitic}
+
+Many devices have parasitic shunt and series resistances associated with them.  Shunt resistances ($R_{s}$) are caused by conduction straight through the device in thin novel devices this is often caused by impurities in the material system.  Parasitic series resistances ($R_{s}$) are often associated with the resistance of the contacts, the resistance of the HTL/ETL or any other resistances which are not associated with the active layer.  These resistance can be seen for a typical solar cell in figure \ref{fig:parasitic_circuit} also shown in the figure is the ideal diode of the device. These resistances can be set in the parasitic component window shown in figure \ref{fig:parasitic}
+
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=100mm]{./images/running/parasitic_circuit.png}
+\caption{Circuit model of a solar cell.}
+\label{fig:parasitic_circuit}
+\end{figure}
+
+
+You can change the values of series and shunt resistance in gpvdm, by going to the \emph{Device structure} tab and then clicking on the \emph{Parasitic components} button.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=100mm,height=70mm]{./images/running/parasitic.png}
+\caption{The parasitic component editor}
+\label{fig:parasitic}
+\end{figure}
+
+Due to the flat broad contacts on a solar cell, there is often a capacitance associated with the device, this is important for transient measurements and can be calculated with the equation:
+
+\begin{equation}
+C=\frac{\epsilon_r \epsilon_0 A}{d+\Delta}
+\end{equation}
+
+where $A$ is the area of the device $\epsilon$ are the hyperactivities, and $d$ is the thickness of the device.  Often for various reasons the measured capacitance of the device does not match what one would expect from the above equation. Therefore the term "Other layers" ($\Delta$) has been added to the parasitic window to account for differences between measured capacitance and layer measured layer thicknesses.
+
+\vspace*{\fill}
+\fbox{
+\parbox{0.9\textwidth}{
+\color{blue} Task \addtocounter{question}{1}\thequestion : In the optical tab you will find a control called \emph{Light intensity}, this controls the amount of light which falls on the device in Suns.  Set it to zero so that the device is in the dark.  Then run two JV curve simulations, one with a shunt resistance of $1~Ohm~m^2$ and one with a shunt resistance of $1x10^{6}~Ohm~m^2$ (Hint you will have to enter $1e6$ in the text box).  What happens to the dark JV curve?  Now try running the same same simulations again but in the light.
+}\par
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagebreak
+\subsection{Solar cells in the dark}
+So far, all the simulations we have run have been performed in the light.  This is a logical, as usually we are interested in solar cell performance only in the light.  However, a lot of interesting information can be gained about solar cells by studying their performance in the dark.  We are now going to turn off the light in the simulation.  From the 'Home' tab set the light intensity to 0.0 Suns.  The photons in the 3D image should disappear as seen in figure \ref{fig:dark}.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=100mm]{./images/running/dark.png}
+\caption{Running gpvdm in the dark.}
+\label{fig:dark}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=100mm]{./images/running/jv_dark.png}
+\caption{A sketch of a typical dark JV curve.}
+\label{fig:jv_dark}
+\end{figure}
+
+Now set the shunt resistance to $1M \Omega$, and run a simulation.  Plot the jv curve.  It is customary to plot jv curves on a x-linear y-log scale.  To do this in the plot window, hit the 'l' key to do this.  The shape should resemble, the JV curve in figure \ref{fig:jv_dark}.  Certain solar cell parameters affect different parts of the dark JV curve differently, the lower region is affected very strongly by shunt resistance, the middle part is affected strongly by recombination, and the upper part is strongly affected by the series resistance.
+
+
+\vspace*{\fill}
+\fbox{
+\parbox{0.9\textwidth}{
+\color{blue} Question \addtocounter{question}{1}\thequestion: What values of series and shunt resistance, would produce the best possible solar cell?  Enter these values into the device simulator and copy and paste the dark JV curve into your report.
+}\par
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 \subsection{The contact editor}
 \label{sec:contacteditor}
@@ -125,7 +266,7 @@ The contact editor is used to configure the electrical contacts.  Which layers a
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=100mm,height=70mm]{./images/contact_editor.png}
+\includegraphics[width=100mm,height=70mm]{./images/running/contact_editor.png}
 \caption{The contact editor}
 \label{fig:contacteditor}
 \end{figure}
@@ -152,43 +293,8 @@ The contact editor is used to configure the electrical contacts.  Which layers a
 }
 \\
 
-\newpage
-\subsection{Parasitic elements}
-\label{sec:parasitic}
+%%%%%%%%%%%%%%%%%%%%%%
 
-Many devices have parasitic shunt and series resistances associated with them.  Shunt resistances ($R_{s}$) are caused by conduction straight through the device in thin novel devices this is often caused by impurities in the material system.  Parasitic series resistances ($R_{s}$) are often associated with the resistance of the contacts, the resistance of the HTL/ETL or any other resistances which are not associated with the active layer.  These resistance can be seen for a typical solar cell in figure \ref{fig:parasitic_circuit} also shown in the figure is the ideal diode of the device. These resistances can be set in the parasitic component window shown in figure \ref{fig:parasitic}
-
-
-\begin{figure}[h!]
-\centering
-\includegraphics[width=100mm]{./images/parasitic_circuit.png}
-\caption{Circuit model of a solar cell.}
-\label{fig:parasitic_circuit}
-\end{figure}
-
-
-You can change the values of series and shunt resistance in gpvdm, by going to the \emph{Device structure} tab and then clicking on the \emph{Parasitic components} button.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=100mm,height=70mm]{./images/parasitic.png}
-\caption{The parasitic component editor}
-\label{fig:parasitic}
-\end{figure}
-
-Due to the flat broad contacts on a solar cell, there is often a capacitance associated with the device, this is important for transient measurements and can be calculated with the equation:
-
-\begin{equation}
-C=\frac{\epsilon_r \epsilon_0 A}{d+\Delta}
-\end{equation}
-
-where $A$ is the area of the device $\epsilon$ are the hyperactivities, and $d$ is the thickness of the device.  Often for various reasons the measured capacitance of the device does not match what one would expect from the above equation. Therefore the term "Other layers" ($\Delta$) has been added to the parasitic window to account for differences between measured capacitance and layer measured layer thicknesses.
-
-\fbox{
-\parbox{0.9\textwidth}{
-\color{blue} Task \addtocounter{question}{1}\thequestion : In the optical tab you will find a control called \emph{Light intensity}, this controls the amount of light which falls on the device in Suns.  Set it to zero so that the device is in the dark.  Then run two JV curve simulations, one with a shunt resistance of $1~Ohm~m^2$ and one with a shunt resistance of $1x10^{6}~Ohm~m^2$ (Hint you will have to enter $1e6$ in the text box).  What happens to the dark JV curve?  Now try running the same same simulations again but in the light.
-}\par
-}
 \newpage
 \subsection{Electrical parameters}
 \label{sec:doseditor}
@@ -203,7 +309,7 @@ The electrical parameter editor enables you to change the electrical parameters 
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=100mm,height=70mm]{./images/dos_editor.png}
+\includegraphics[width=100mm,height=70mm]{./images/running/dos_editor.png}
 \caption{Electrical parameter window}
 \label{fig:electricalparamwindow}
 \end{figure}

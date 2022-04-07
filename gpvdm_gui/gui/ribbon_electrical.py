@@ -177,7 +177,6 @@ class ribbon_electrical(ribbon_page2):
 		data.save()
 
 	def callback_singlet(self):
-		return
 		data=gpvdm_data()
 		data.singlet.singlet_enabled=self.singlet.isChecked()
 		data.save()

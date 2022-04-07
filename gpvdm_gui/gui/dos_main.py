@@ -48,6 +48,7 @@ from cal_path import get_sim_path
 
 from gpvdm_json import gpvdm_data
 from help import QAction_help
+from lock import get_lock
 
 class dos_main(QWidget,tab_base):
 
@@ -91,7 +92,8 @@ class dos_main(QWidget,tab_base):
 		self.singlet = QAction(icon_get("singlet"), _("Excited\nstates"), self)
 		self.singlet.setCheckable(True)
 		self.singlet.triggered.connect(self.callback_singlet)
-		toolbar.addAction(self.singlet)
+		if get_lock().is_gpvdm_next()==True:
+			toolbar.addAction(self.singlet)
 
 		toolbar.addWidget(spacer)
 

@@ -67,6 +67,7 @@ light_solve_and_update(sim,in,&(in->mylight),0.0);
 
 	if (in->drift_diffision_simulations_enabled==TRUE)
 	{
+
 		cpy_zxy_long_double(dim, &(Bfree_bk), &(in->B));
 		cpy_zxy_long_double(dim, &(Binterface_bk), &(in->interface_B));
 		cpy_zxy_long_double(dim, &(Bt_interface_bk), &(in->interface_Bt));

@@ -61,6 +61,7 @@
 
 #include <world_struct.h>
 #include <world.h>
+#include <optical_mode_fun.h>
 
 static int unused __attribute__((unused));
 static char* unused_pchar __attribute__((unused));
@@ -134,13 +135,21 @@ void device_free(struct simulation *sim,struct device *dev)
 		free_zxy_long_double(dim,&dev->Nt);
 		free_zxy_long_double(dim,&dev->Nsd);
 		free_zxy_long_double(dim,&dev->Ntd);
-		free_zxy_long_double(dim,&dev->Nho);
+		dev->Nho=-1.0;
 
 		free_zxy_long_double(dim,&dev->dNs);
 		free_zxy_long_double(dim,&dev->dNt);
 		free_zxy_long_double(dim,&dev->dNsd);
 		free_zxy_long_double(dim,&dev->dNtd);
-		free_zxy_long_double(dim,&dev->dNho);
+		dev->dNho=-1.0;
+
+		free_zxy_long_double(dim,&dev->Ns_last);
+		free_zxy_long_double(dim,&dev->Nt_last);
+		free_zxy_long_double(dim,&dev->Nsd_last);
+		free_zxy_long_double(dim,&dev->Ntd_last);
+		dev->Nho_last=-1.0;
+
+		mode_free(sim,&(dev->mode));
 
 	//Generation
 		free_zxy_long_double(dim,&dev->G);

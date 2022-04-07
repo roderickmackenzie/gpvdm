@@ -93,7 +93,10 @@ class gpvdm_viewer_new(QWidget):
 			#ret=clone_material(new_material,os.path.join(gpvdm_paths.get_inp_template_path(),"material"))
 			#if ret==False:
 			#	error_dlg(self,_("I cant write to:")+new_material+" "+_("This means either the disk is full or your system administrator has not given you write permissions to that location."))
-			os.makedirs(new_material)
+			try:
+				os.makedirs(new_material)
+			except:
+				error_dlg(self,_("I cant write to: ")+new_material+" "+_("This means either the disk is full or your system administrator has not given you write permissions to that location."))
 			from json_material_db_item import json_material_db_item
 			a=json_material_db_item()
 			a.save_as(os.path.join(new_material,"data.json"))

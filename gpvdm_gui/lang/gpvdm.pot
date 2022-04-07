@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gpvdm 5.0\n"
 "Report-Msgid-Bugs-To: roderick.mackenzie@nottingham.ac.uk\n"
-"POT-Creation-Date: 2022-04-05 09:35+0100\n"
+"POT-Creation-Date: 2022-04-07 19:15+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,7 +35,7 @@ msgid "Wrong password"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/new_simulation.py:99
-#: ../../gpvdm_gui/gui/new_simulation.py:91
+#: ../../gpvdm_gui/gui/new_simulation.py:94
 msgid ""
 "It's not a good idea to save the simulation in the gpvdm installation "
 "directory.  Try saving it somewhere else, such as your desktop or home "
@@ -43,67 +43,67 @@ msgid ""
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/new_simulation.py:103
-#: ../../gpvdm_gui/gui/new_simulation.py:95
+#: ../../gpvdm_gui/gui/new_simulation.py:98
 msgid ""
 "That directory already exists.  Pick another name or delete the old one."
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/new_simulation.py:140
-#: ../../gpvdm_gui/gui/new_simulation.py:109
+#: ../../gpvdm_gui/gui/new_simulation.py:112
 msgid "Please select a device before clicking next"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/new_simulation.py:147
-#: ../../gpvdm_gui/gui/new_simulation.py:116
+#: ../../gpvdm_gui/gui/new_simulation.py:119
 msgid "Organic LED"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/new_simulation.py:148
-#: ../../gpvdm_gui/gui/new_simulation.py:117
+#: ../../gpvdm_gui/gui/new_simulation.py:120
 msgid "Crystalline silicon solar cell"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/new_simulation.py:149
-#: ../../gpvdm_gui/gui/new_simulation.py:118
+#: ../../gpvdm_gui/gui/new_simulation.py:121
 msgid "a-Si solar cell "
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/new_simulation.py:150
-#: ../../gpvdm_gui/gui/new_simulation.py:119
+#: ../../gpvdm_gui/gui/new_simulation.py:122
 msgid "polycrystalline silicon "
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/new_simulation.py:151
-#: ../../gpvdm_gui/gui/new_simulation.py:120
+#: ../../gpvdm_gui/gui/new_simulation.py:123
 msgid "OFET "
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/new_simulation.py:152
-#: ../../gpvdm_gui/gui/new_simulation.py:121
+#: ../../gpvdm_gui/gui/new_simulation.py:124
 msgid "Perovskite solar cell"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/new_simulation.py:153
-#: ../../gpvdm_gui/gui/new_simulation.py:122
+#: ../../gpvdm_gui/gui/new_simulation.py:125
 msgid "CIGS Solar cell"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/new_simulation.py:164
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_file.py:72
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_file.py:76
-#: ../../gpvdm_gui/gui/new_simulation.py:133
+#: ../../gpvdm_gui/gui/new_simulation.py:135
 #: ../../gpvdm_gui/gui/ribbon_file.py:70 ../../gpvdm_gui/gui/ribbon_file.py:74
 msgid "New simulation"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/new_simulation.py:166
-#: ../../gpvdm_gui/gui/new_simulation.py:135
+#: ../../gpvdm_gui/gui/new_simulation.py:137
 msgid "Which type of device would you like to simulate?"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/new_simulation.py:190
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/help.py:128
-#: ../../gpvdm_gui/gui/new_simulation.py:159 ../../gpvdm_gui/gui/help.py:135
+#: ../../gpvdm_gui/gui/new_simulation.py:161 ../../gpvdm_gui/gui/help.py:135
 msgid "Next"
 msgstr ""
 
@@ -111,7 +111,7 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/scan_select.py:82
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/connect_to_cluster.py:90
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/dlg_get_multi_text.py:74
-#: ../../gpvdm_gui/gui/new_simulation.py:160
+#: ../../gpvdm_gui/gui/new_simulation.py:162
 #: ../../gpvdm_gui/gui/scan_select.py:81
 #: ../../gpvdm_gui/gui/connect_to_cluster.py:93
 #: ../../gpvdm_gui/gui/dlg_get_multi_text.py:72
@@ -119,7 +119,7 @@ msgid "Cancel"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/new_simulation.py:196
-#: ../../gpvdm_gui/gui/new_simulation.py:165
+#: ../../gpvdm_gui/gui/new_simulation.py:167
 msgid "Show hidden"
 msgstr ""
 
@@ -240,7 +240,7 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/object_editor.py:114
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/jvexperiment.py:140
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/plexperiment.py:142
-#: ../../gpvdm_gui/gui/help.py:151 ../../gpvdm_gui/gui/about.py:145
+#: ../../gpvdm_gui/gui/help.py:151 ../../gpvdm_gui/gui/about.py:149
 msgid "Close"
 msgstr ""
 
@@ -489,6 +489,7 @@ msgstr ""
 #: ../../gpvdm_gui/gui/gpvdm_viewer_new.py:55
 #: ../../gpvdm_gui/gui/gpvdm_viewer_new.py:65
 #: ../../gpvdm_gui/gui/gpvdm_viewer_new.py:80
+#: ../../gpvdm_gui/gui/gpvdm_viewer_new.py:99
 msgid ""
 "This means either the disk is full or your system administrator has not "
 "given you write permissions to that location."
@@ -932,7 +933,7 @@ msgid "Please enter your license key:"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gpvdm_viewer.py:845
-#: ../../gpvdm_gui/gui/gpvdm_viewer.py:797
+#: ../../gpvdm_gui/gui/gpvdm_viewer.py:801
 #: ../../gpvdm_core/old/lock_py/gpvdm_viewer.py:845
 msgid ""
 "<big><b>Examine the results in time domain</b></big><br> After you have run "
@@ -943,7 +944,7 @@ msgid ""
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gpvdm_viewer.py:853
-#: ../../gpvdm_gui/gui/gpvdm_viewer.py:807
+#: ../../gpvdm_gui/gui/gpvdm_viewer.py:811
 #: ../../gpvdm_core/old/lock_py/gpvdm_viewer.py:853
 msgid ""
 "Are you sure you want restore this file from the backup, it will overwrite "
@@ -951,41 +952,41 @@ msgid ""
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gpvdm_viewer.py:912
-#: ../../gpvdm_gui/gui/gpvdm_viewer.py:865
-#: ../../gpvdm_gui/gui/gpvdm_viewer.py:870
+#: ../../gpvdm_gui/gui/gpvdm_viewer.py:871
+#: ../../gpvdm_gui/gui/gpvdm_viewer.py:876
 #: ../../gpvdm_core/old/lock_py/gpvdm_viewer.py:912
 msgid "title"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gpvdm_viewer.py:912
-#: ../../gpvdm_gui/gui/gpvdm_viewer.py:865
-#: ../../gpvdm_gui/gui/gpvdm_viewer.py:870
+#: ../../gpvdm_gui/gui/gpvdm_viewer.py:871
+#: ../../gpvdm_gui/gui/gpvdm_viewer.py:876
 #: ../../gpvdm_core/old/lock_py/gpvdm_viewer.py:912
 msgid "x axis"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gpvdm_viewer.py:912
-#: ../../gpvdm_gui/gui/gpvdm_viewer.py:865
-#: ../../gpvdm_gui/gui/gpvdm_viewer.py:870
+#: ../../gpvdm_gui/gui/gpvdm_viewer.py:871
+#: ../../gpvdm_gui/gui/gpvdm_viewer.py:876
 #: ../../gpvdm_core/old/lock_py/gpvdm_viewer.py:912
 msgid "y axis"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gpvdm_viewer.py:912
-#: ../../gpvdm_gui/gui/gpvdm_viewer.py:865
-#: ../../gpvdm_gui/gui/gpvdm_viewer.py:870
+#: ../../gpvdm_gui/gui/gpvdm_viewer.py:871
+#: ../../gpvdm_gui/gui/gpvdm_viewer.py:876
 #: ../../gpvdm_core/old/lock_py/gpvdm_viewer.py:912
 msgid "Double click to open"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gpvdm_viewer.py:918
-#: ../../gpvdm_gui/gui/gpvdm_viewer.py:875
+#: ../../gpvdm_gui/gui/gpvdm_viewer.py:881
 #: ../../gpvdm_core/old/lock_py/gpvdm_viewer.py:918
 msgid "equilibrium"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gpvdm_viewer.py:918
-#: ../../gpvdm_gui/gui/gpvdm_viewer.py:875
+#: ../../gpvdm_gui/gui/gpvdm_viewer.py:881
 #: ../../gpvdm_core/old/lock_py/gpvdm_viewer.py:918
 msgid "This contains the simulation output at 0V in the dark."
 msgstr ""
@@ -1219,8 +1220,8 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/optics_ribbon.py:243
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/scan_ribbon.py:152
 #: ../../gpvdm_gui/gui/scan_tab_ribbon.py:113
-#: ../../gpvdm_gui/gui/script_ribbon.py:118 ../../gpvdm_gui/gui/about.py:49
-#: ../../gpvdm_gui/gui/about.py:81 ../../gpvdm_gui/gui/ribbon_solar.py:82
+#: ../../gpvdm_gui/gui/script_ribbon.py:118 ../../gpvdm_gui/gui/about.py:52
+#: ../../gpvdm_gui/gui/about.py:85 ../../gpvdm_gui/gui/ribbon_solar.py:82
 #: ../../gpvdm_gui/gui/ribbon.py:118
 #: ../../gpvdm_gui/gui/ribbon_simulation_notes.py:89
 #: ../../gpvdm_gui/gui/status_icon.py:53
@@ -1592,7 +1593,7 @@ msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_device.py:168
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_electrical.py:120
-#: ../../gpvdm_gui/gui/ribbon_electrical.py:228
+#: ../../gpvdm_gui/gui/ribbon_electrical.py:227
 msgid ""
 "<big><b>Doping window</b></big>\n"
 "Use this window to add doping to the simulation"
@@ -1606,7 +1607,7 @@ msgid ""
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_device.py:193
-#: ../../gpvdm_gui/gui/ribbon_electrical.py:240
+#: ../../gpvdm_gui/gui/ribbon_electrical.py:239
 msgid ""
 "<big><b>Parasitic components</b></big>\n"
 "Use this window to edit the shunt and series resistance."
@@ -1939,7 +1940,7 @@ msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/dos_main.py:62
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/contacts_boundary.py:63
-#: ../../gpvdm_gui/gui/dos_main.py:62
+#: ../../gpvdm_gui/gui/dos_main.py:63
 #: ../../gpvdm_gui/gui/contacts_boundary.py:50
 msgid "Electrical parameter editor"
 msgstr ""
@@ -2742,6 +2743,10 @@ msgstr ""
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/get_email.py:66
 #: ../../gpvdm_gui/gui/gpvdm_graph.py:248 ../../gpvdm_core/libemission/pl.c:416
 #: ../../gpvdm_core/libemission/pl.c:433
+#: ../../gpvdm_core/libmode/mode_dump.c:61
+#: ../../gpvdm_core/libmode/mode_dump.c:64
+#: ../../gpvdm_core/libmode/mode_dump.c:77
+#: ../../gpvdm_core/libmode/mode_dump.c:80
 #: ../../gpvdm_core/libperovskite/perovskite.c:110
 #: ../../gpvdm_core/libmath2d/math_2d_dump.c:63
 #: ../../gpvdm_core/libcircuit/circuit_dump.c:630
@@ -2818,12 +2823,10 @@ msgstr ""
 #: ../../gpvdm_core/libdump/dump_singlet.c:88
 #: ../../gpvdm_core/libdump/dump_singlet.c:106
 #: ../../gpvdm_core/libdump/dump_singlet.c:124
-#: ../../gpvdm_core/libdump/dump_singlet.c:142
-#: ../../gpvdm_core/libdump/dump_singlet.c:163
-#: ../../gpvdm_core/libdump/dump_singlet.c:181
-#: ../../gpvdm_core/libdump/dump_singlet.c:199
-#: ../../gpvdm_core/libdump/dump_singlet.c:217
-#: ../../gpvdm_core/libdump/dump_singlet.c:235
+#: ../../gpvdm_core/libdump/dump_singlet.c:150
+#: ../../gpvdm_core/libdump/dump_singlet.c:168
+#: ../../gpvdm_core/libdump/dump_singlet.c:186
+#: ../../gpvdm_core/libdump/dump_singlet.c:204
 msgid "Position"
 msgstr ""
 
@@ -2890,7 +2893,7 @@ msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_configure.py:132
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_electrical.py:110
-#: ../../gpvdm_gui/gui/ribbon_electrical.py:201
+#: ../../gpvdm_gui/gui/ribbon_electrical.py:200
 msgid ""
 "<big><b>Mesh editor</b></big>\n"
 "Use this window to setup the mesh, the window can also be used to change the "
@@ -2898,7 +2901,7 @@ msgid ""
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_configure.py:142
-#: ../../gpvdm_gui/gui/ribbon_electrical.py:212
+#: ../../gpvdm_gui/gui/ribbon_electrical.py:211
 msgid ""
 "<big><b>Interface editor</b></big>\n"
 "Use this window to edit how electrical interfaces behave."
@@ -4911,8 +4914,6 @@ msgstr ""
 #: ../../gpvdm_gui/gui/token_lib.py:826
 #: ../../gpvdm_core/liblight/light_dump.c:226
 #: ../../gpvdm_core/liblight/light_dump.c:228
-#: ../../gpvdm_core/libdump/dump_singlet.c:142
-#: ../../gpvdm_core/libdump/dump_singlet.c:143
 msgid "Photon density"
 msgstr ""
 
@@ -5554,6 +5555,10 @@ msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/gl_main_menu.py:94
 #: ../../gpvdm_gui/gui/gl_main_menu.py:93
+#: ../../gpvdm_core/libmode/mode_dump.c:61
+#: ../../gpvdm_core/libmode/mode_dump.c:63
+#: ../../gpvdm_core/libmode/mode_dump.c:77
+#: ../../gpvdm_core/libmode/mode_dump.c:79
 msgid "Optical mode"
 msgstr ""
 
@@ -5684,19 +5689,19 @@ msgid "Shape editor"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/about.py:58
-#: ../../gpvdm_gui/gui/about.py:53
+#: ../../gpvdm_gui/gui/about.py:57
 msgid ""
 "Written by Roderick MacKenzie 2012-2019, published under the GPL V2.0 "
 "license."
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/about.py:60
-#: ../../gpvdm_gui/gui/about.py:55
+#: ../../gpvdm_gui/gui/about.py:59
 msgid "Version "
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/about.py:73
-#: ../../gpvdm_gui/gui/about.py:68
+#: ../../gpvdm_gui/gui/about.py:72
 msgid ""
 "gpvdm is a general-purpose tool for simulation of light harvesting devices. "
 "It was originally written to simulate organic solar cells and OLEDs, but it "
@@ -5705,32 +5710,32 @@ msgid ""
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/about.py:75
-#: ../../gpvdm_gui/gui/about.py:70
+#: ../../gpvdm_gui/gui/about.py:74
 msgid "Organic solar cells"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/about.py:76
-#: ../../gpvdm_gui/gui/about.py:71
+#: ../../gpvdm_gui/gui/about.py:75
 msgid "Organic LEDs"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/about.py:77
-#: ../../gpvdm_gui/gui/about.py:72
+#: ../../gpvdm_gui/gui/about.py:76
 msgid "Crystalline silicon solar cells"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/about.py:78
-#: ../../gpvdm_gui/gui/about.py:73
+#: ../../gpvdm_gui/gui/about.py:77
 msgid "a-Si solar cells"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/about.py:79
-#: ../../gpvdm_gui/gui/about.py:74
+#: ../../gpvdm_gui/gui/about.py:78
 msgid "CIGS solar cells"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/about.py:81
-#: ../../gpvdm_gui/gui/about.py:76
+#: ../../gpvdm_gui/gui/about.py:80
 msgid ""
 "The model solves both electron and hole drift-diffusion, and carrier "
 "continuity equations in position space to describe the movement of charge "
@@ -5744,37 +5749,37 @@ msgid ""
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/about.py:101
-#: ../../gpvdm_gui/gui/about.py:96
+#: ../../gpvdm_gui/gui/about.py:100
 msgid "Legal"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/about.py:138
-#: ../../gpvdm_gui/gui/about.py:123
+#: ../../gpvdm_gui/gui/about.py:127
 msgid "Materials library path"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/about.py:139
-#: ../../gpvdm_gui/gui/about.py:124
+#: ../../gpvdm_gui/gui/about.py:128
 msgid "Device library path"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/about.py:140
-#: ../../gpvdm_gui/gui/about.py:125
+#: ../../gpvdm_gui/gui/about.py:129
 msgid "Binary path"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/about.py:141
-#: ../../gpvdm_gui/gui/about.py:126
+#: ../../gpvdm_gui/gui/about.py:130
 msgid "Plugins path"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/about.py:142
-#: ../../gpvdm_gui/gui/about.py:127
+#: ../../gpvdm_gui/gui/about.py:131
 msgid "Binary name"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/about.py:146
-#: ../../gpvdm_gui/gui/about.py:131
+#: ../../gpvdm_gui/gui/about.py:135
 msgid "Paths"
 msgstr ""
 
@@ -6911,7 +6916,7 @@ msgid ""
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_home.py:194
-#: ../../gpvdm_gui/gui/ribbon_file.py:187
+#: ../../gpvdm_gui/gui/ribbon_file.py:186
 msgid ""
 "<big><b>The scan window</b></big><br> Very often it is useful to be able to "
 "systematically very a device parameter such as mobility or density of trap "
@@ -6919,19 +6924,19 @@ msgid ""
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_home.py:194
-#: ../../gpvdm_gui/gui/ribbon_file.py:187
+#: ../../gpvdm_gui/gui/ribbon_file.py:186
 msgid "Use the plus icon to add a new scan line to the list."
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_home.py:194
-#: ../../gpvdm_gui/gui/ribbon_file.py:187
+#: ../../gpvdm_gui/gui/ribbon_file.py:186
 msgid ""
 "<big><b><a href=\"https://www.youtube.com/watch?v=cpkPht-CKeE\">Tutorial "
 "video</b></big><br>Using the parameter scan window."
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_home.py:214
-#: ../../gpvdm_gui/gui/ribbon_file.py:205
+#: ../../gpvdm_gui/gui/ribbon_file.py:204
 msgid ""
 "<big><b>Fit window</b></big><br> Use this window to fit the simulation to "
 "experimental data.  Gpvdm uses advanced and optimized fitting algorithms to "
@@ -6940,7 +6945,7 @@ msgid ""
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_home.py:214
-#: ../../gpvdm_gui/gui/ribbon_file.py:205
+#: ../../gpvdm_gui/gui/ribbon_file.py:204
 msgid ""
 "<big><b><a href=\"https://www.youtube.com/watch?v=61umU4hrsqk\">Watch the "
 "tutorial video 1</b></big><br>Fitting gpvdm to experimental data to extract "
@@ -6948,28 +6953,28 @@ msgid ""
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_home.py:214
-#: ../../gpvdm_gui/gui/ribbon_file.py:205
+#: ../../gpvdm_gui/gui/ribbon_file.py:204
 msgid ""
 "<big><b><a href=\"https://www.youtube.com/watch?v=_cm3Cb3kzUg\">Watch the "
 "tutorial video 2</b></big><br>Fitting gpvdm to large area solar cells"
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_home.py:221
-#: ../../gpvdm_gui/gui/ribbon_file.py:218
+#: ../../gpvdm_gui/gui/ribbon_file.py:217
 msgid ""
 "<big><b>The optical simulation window</b></big><br>Use this window to "
 "perform optical simulations.  Click on the play button to run a simulation."
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_home.py:221
-#: ../../gpvdm_gui/gui/ribbon_file.py:218
+#: ../../gpvdm_gui/gui/ribbon_file.py:217
 msgid ""
 "Click on the play button to run an optical simulation.  The results will be "
 "displayed in the tabs to the right."
 msgstr ""
 
 #: ../../gpvdm_gui/out/usr/local/share/gpvdm_gui/gui/ribbon_home.py:221
-#: ../../gpvdm_gui/gui/ribbon_file.py:218
+#: ../../gpvdm_gui/gui/ribbon_file.py:217
 msgid ""
 "<big><b><a href=\"https://www.youtube.com/watch?v=A_3meKTBuWk\">Tutorial "
 "video</b></big><br>Designing optical filters and reflective coatings."
@@ -7977,6 +7982,13 @@ msgstr ""
 msgid "HOMO numerical"
 msgstr ""
 
+#: ../../gpvdm_gui/gui/new_simulation.py:91
+msgid ""
+"Gpvdm can't save to a directory with non-English characters in the path, so "
+"characters in the Chinese, Greek, Arabic and Greek alphabet.. Sorry! Try "
+"again with a different file path containing only English characters."
+msgstr ""
+
 #: ../../gpvdm_gui/gui/experiment.py:178
 msgid "Clone:"
 msgstr ""
@@ -8238,29 +8250,29 @@ msgstr ""
 msgid "Video"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/dos_main.py:71
+#: ../../gpvdm_gui/gui/dos_main.py:72
 msgid ""
 "Enable\n"
 "Auger"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/dos_main.py:76
+#: ../../gpvdm_gui/gui/dos_main.py:77
 msgid ""
 "Dynamic\n"
 "SRH traps"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/dos_main.py:81
+#: ../../gpvdm_gui/gui/dos_main.py:82
 msgid ""
 "Equilibrium\n"
 "SRH traps"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/dos_main.py:86
+#: ../../gpvdm_gui/gui/dos_main.py:87
 msgid "Excitons"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/dos_main.py:91
+#: ../../gpvdm_gui/gui/dos_main.py:92
 #: ../../gpvdm_gui/gui/ribbon_electrical.py:116
 msgid ""
 "Excited\n"
@@ -9513,11 +9525,11 @@ msgid ""
 "Ion solver"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/ribbon_electrical.py:223
+#: ../../gpvdm_gui/gui/ribbon_electrical.py:222
 msgid "Electrical boundary conditions"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/ribbon_electrical.py:223
+#: ../../gpvdm_gui/gui/ribbon_electrical.py:222
 msgid "Excitonic boundary conditions"
 msgstr ""
 
@@ -9685,11 +9697,11 @@ msgstr ""
 msgid "Configure threshold"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/about.py:115
+#: ../../gpvdm_gui/gui/about.py:119
 msgid "Translations"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/about.py:128
+#: ../../gpvdm_gui/gui/about.py:132
 msgid "Install ID"
 msgstr ""
 
@@ -9836,7 +9848,7 @@ msgid ""
 "Learning"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/ribbon_file.py:234
+#: ../../gpvdm_gui/gui/ribbon_file.py:233
 msgid ""
 "<big><b>Machine learning window</b></big><br>Use this window to generate "
 "machine learning vectors"
@@ -10002,11 +10014,15 @@ msgstr ""
 msgid "Configure hardware"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/gpvdm_viewer_new.py:104
+#: ../../gpvdm_gui/gui/gpvdm_viewer_new.py:99
+msgid "I cant write to: "
+msgstr ""
+
+#: ../../gpvdm_gui/gui/gpvdm_viewer_new.py:107
 msgid "New filter name:"
 msgstr ""
 
-#: ../../gpvdm_gui/gui/gpvdm_viewer_new.py:104
+#: ../../gpvdm_gui/gui/gpvdm_viewer_new.py:107
 msgid "New filter name"
 msgstr ""
 
@@ -10232,7 +10248,7 @@ msgstr ""
 msgid "Finding equilibrium conditions"
 msgstr ""
 
-#: ../../gpvdm_core/libdevice/find_n0.c:150
+#: ../../gpvdm_core/libdevice/find_n0.c:160
 msgid "Finished finding equilibrium conditions"
 msgstr ""
 
@@ -10241,11 +10257,11 @@ msgstr ""
 msgid "Electrical objects"
 msgstr ""
 
-#: ../../gpvdm_core/libdevice/device_malloc.c:68
+#: ../../gpvdm_core/libdevice/device_malloc.c:69
 msgid "I can't allocate a device with less than 1 mesh point."
 msgstr ""
 
-#: ../../gpvdm_core/libdevice/device_malloc.c:73
+#: ../../gpvdm_core/libdevice/device_malloc.c:74
 msgid ""
 "You are asking me to simulate a device with more than 50000 mesh points, "
 "although I could do this I am not going to because it seems a bad idea to me."
@@ -10711,15 +10727,15 @@ msgstr ""
 msgid "The server has detected a crash"
 msgstr ""
 
-#: ../../gpvdm_core/src/sim_run.c:105
+#: ../../gpvdm_core/src/sim_run.c:106
 msgid "Runing simulation"
 msgstr ""
 
-#: ../../gpvdm_core/src/sim_run.c:511
+#: ../../gpvdm_core/src/sim_run.c:513
 msgid "Solved"
 msgstr ""
 
-#: ../../gpvdm_core/src/sim_run.c:511
+#: ../../gpvdm_core/src/sim_run.c:513
 msgid "Equations"
 msgstr ""
 
@@ -11650,39 +11666,31 @@ msgstr ""
 msgid "Triplet in donor density"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_singlet.c:163
+#: ../../gpvdm_core/libdump/dump_singlet.c:150
 msgid "Singlet 'IMREF'"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_singlet.c:164
-#: ../../gpvdm_core/libdump/dump_singlet.c:200
+#: ../../gpvdm_core/libdump/dump_singlet.c:151
+#: ../../gpvdm_core/libdump/dump_singlet.c:187
 msgid "Singlet energy"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_singlet.c:181
+#: ../../gpvdm_core/libdump/dump_singlet.c:168
 msgid "Triplet 'IMREF'"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_singlet.c:182
+#: ../../gpvdm_core/libdump/dump_singlet.c:169
 msgid "Triplet energy"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_singlet.c:199
+#: ../../gpvdm_core/libdump/dump_singlet.c:186
 msgid "Singlet in donor 'IMREF'"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_singlet.c:217
+#: ../../gpvdm_core/libdump/dump_singlet.c:204
 msgid "Triplet in donor 'IMREF'"
 msgstr ""
 
-#: ../../gpvdm_core/libdump/dump_singlet.c:218
+#: ../../gpvdm_core/libdump/dump_singlet.c:205
 msgid "Ion energy"
-msgstr ""
-
-#: ../../gpvdm_core/libdump/dump_singlet.c:235
-msgid "Photon 'IMREF'"
-msgstr ""
-
-#: ../../gpvdm_core/libdump/dump_singlet.c:236
-msgid "Photon energy"
 msgstr ""

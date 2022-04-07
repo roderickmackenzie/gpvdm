@@ -1,10 +1,19 @@
 \newpage
 \section{JV editor (Steady state simulation editor)}
-If you click on the JV editor icon in figure \ref{fig:simeditors}, the JV editor window will open. This window can be used to configure steady state simulations. It does not matter if you are running a current-voltage sweep on a solar cell or an OFET.  This plugin will steadily ramp the voltage from a start voltage to a stop voltage.  The voltage will be applied to the \emph{active} contact as defined in the \emph{contact editor}.  You can set the start voltage, stop voltage and step size.  Use \emph{JV voltage step multiplayer} to make the voltage step grow each step.  The default is 1.0, i.e. no growth.
+If you click on the JV editor icon in figure \ref{fig:ribbon_jv}, the JV editor window will open shown below in figure \ref{fig:jvcurveeditor}.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.7\textwidth,height=0.6\textwidth]{./images/jv_editor.png}
+\includegraphics[width=0.8\textwidth]{./images/sim_editors/ribbon_jv.png}
+\caption{Opening the JV editor from the simulation editor ribbon.}
+\label{fig:ribbon_jv}
+\end{figure}
+
+This window can be used to configure steady state simulations. It does not matter if you are running a current-voltage sweep on a solar cell or an OFET.  This plugin will steadily ramp the voltage from a start voltage to a stop voltage.  The voltage will be applied to the \emph{active} contact as defined in the \emph{contact editor}.  You can set the start voltage, stop voltage and step size.  Use \emph{JV voltage step multiplayer} to make the voltage step grow each step.  The default is 1.0, i.e. no growth.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth,height=0.6\textwidth]{./images/sim_editors/jv_editor.png}
 \caption{The JV editor editor window, use this to configure steady state simulations.}
 \label{fig:jvcurveeditor}
 \end{figure}

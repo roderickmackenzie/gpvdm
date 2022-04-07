@@ -597,7 +597,7 @@ in->data[i]+=value;
 @param in input math_xy
 @param mul number to multiply the math_xy by
 */
-void inter_norm_area(struct math_xy* in,long double mul)
+void math_xy_norm_area(struct math_xy* in,long double mul)
 {
 int i;
 long double tot=0.0;

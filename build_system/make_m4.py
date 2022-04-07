@@ -145,6 +145,10 @@ def make_m4_core(path,hpc=False, win=False,usear=False,dbus=True,windows=False):
 		config_files.append("libfdtd")
 		gpvdm_lib.append("libfdtd")
 
+	if os.path.isdir(os.path.join(path,"libmode")):
+		config_files.append("libmode")
+		gpvdm_lib.append("libmode")
+
 	if os.path.isdir(os.path.join(path,"liblock")):
 		config_files.append("liblock")
 		gpvdm_lib.append("liblock")

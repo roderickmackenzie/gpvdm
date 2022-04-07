@@ -87,6 +87,9 @@ class new_simulation(QDialog):
 			file_path=save_as_gpvdm(self)
 			#print(file_path,get_exe_path())
 			if file_path!=None:
+				if file_path.isascii()==False:
+					error_dlg(self,_("Gpvdm can't save to a directory with non-English characters in the path, so characters in the Chinese, Greek, Arabic and Greek alphabet.. Sorry! Try again with a different file path containing only English characters."))
+
 				if file_path.startswith(get_exe_path())==True:
 					error_dlg(self,_("It's not a good idea to save the simulation in the gpvdm installation directory.  Try saving it somewhere else, such as your desktop or home directory."))
 					return
@@ -124,7 +127,6 @@ class new_simulation(QDialog):
 	def callback_toggle_hidden(self):
 		self.viewer.set_show_hidden(self.show_hidden.isChecked())
 		self.viewer.fill_store()
-		#print("toggle")
 	
 	def __init__(self):
 		QDialog.__init__(self)

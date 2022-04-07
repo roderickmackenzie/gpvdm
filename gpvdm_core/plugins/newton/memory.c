@@ -123,7 +123,7 @@ if (sing->full_newton==TRUE)
 		N+=dim->ylen;		//dNsd_build_dNtd
 		N+=dim->ylen;		//dNsd_build_dxic
 		N+=dim->ylen;		//dNsd_build_dxipc
-		N+=dim->ylen;		//dNsd_build_dNho
+		//N+=dim->ylen;		//dNsd_build_dNho
 
 		N+=dim->ylen;		//dNtd
 		N+=dim->ylen;		//dNtd_build_dNsd
@@ -131,15 +131,15 @@ if (sing->full_newton==TRUE)
 		N+=dim->ylen;		//dNtd_build_dxipc
 		N+=dim->ylen;		//dNtd_build_dNt;
 
-		N+=dim->ylen;		//dNho
-		N+=dim->ylen;		//dNho_build_dNsd
-		N+=dim->ylen;		//dNho_build_dNtd
+		N+=1;//dim->ylen;		//dNho
+		N+=1;//dim->ylen;		//dNho_build_dNsd
+		N+=1;//dim->ylen;		//dNho_build_dNtd
 
 		M+=dim->ylen;		//Ns
 		M+=dim->ylen;		//Nt
 		M+=dim->ylen;		//Nsd
 		M+=dim->ylen;		//Ntd
-		M+=dim->ylen;		//Nho
+		M+=1;//dim->ylen;		//Nho
 
 	}
 }

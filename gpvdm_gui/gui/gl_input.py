@@ -268,6 +268,7 @@ class gl_input():
 	def wheelEvent(self,event):
 		p=event.angleDelta()
 		self.active_view=self.event_to_view(event)
-		self.active_view.zoom =self.active_view.zoom - p.y()/120
-		self.force_redraw(level="no_rebuild")
+		if self.active_view!=False:
+			self.active_view.zoom =self.active_view.zoom - p.y()/120
+			self.force_redraw(level="no_rebuild")
 

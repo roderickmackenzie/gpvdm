@@ -94,7 +94,7 @@ void inter_free(struct math_xy* in);
 void inter_rescale(struct math_xy* in,gdouble xmul, gdouble ymul);
 void inter_mod(struct math_xy* in);
 void inter_add(struct math_xy* out,struct math_xy* in);
-void inter_norm_area(struct math_xy* in,gdouble mul);
+void math_xy_norm_area(struct math_xy* in,gdouble mul);
 long double math_xy_get_max(struct math_xy* in);
 void math_xy_get_max_and_pos(struct math_xy* in,long double *max, long double *x);
 gdouble inter_get_max_range(struct math_xy* in,int start, int stop);
